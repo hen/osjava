@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<reports>
+
+  <!-- Need a report that basically just dumps the log file in various tabular formats -->
+  <report name="showlog" label="Show log" class="org.osjava.logview.reports.ShowLogReport" description="Shows the log file">
+    <renderers>txt,csv,excel,invhtml,html</renderers>
+    <columns>ip,login,username,timestamp,request,status,bytes,referrer,user-agent</columns>
+  </report>
+
+  <!-- version of the above that filters by date -->
+
+  <!-- Using an example of a HTTP access log: -->
+  <!-- ip l username time request status bytes referere user-agent -->
+
+  <report name="total" label="Totals" class="org.osjava.logview.reports.TotalLogReport" description="Shows the totals">
+    <renderers>txt,csv,excel,invhtml,html</renderers>
+    <columns>hits,files,pages,visits,bytes,unique sites,uniqute urls,unique referrers,unique user-agents</columns>
+  </report>
+
+  <report name="hitsByResponse" label="Hits by Response Code" class="org.osjava.logview.reports.HitsByResponseCodeLogReport" description="Shows the hits by response code">
+    <renderers>txt,csv,excel,invhtml,html</renderers>
+  </report>
+
+<!-- webalizer reports to clone:
+Totals
+ Total Hits
+ Total Files
+ Total Pages
+ Total Visits
+ Total KBytes
+ Total Unique Sites
+ Total Unique URLs
+ Total Unique Referrers
+ Total Unique User Agents
+
+Avg/Max
+ Hits per Hour
+ Hits per Day
+ Files per Day
+ Pages per Day
+ Visits per Day
+ KBytes per Day
+
+Hits by Response Code
+Daily Usage graphs (KBytes, Sites/Visits, Pages/Files/Hits)
+Daily Statistics table (Hits, Files, Pages, Visits, Sites, KBytes) (Count and Percentage)
+Hourly Usage graph
+Hourly Statistics (Hits, Files, Pages, KBytes) (Avg, Total count, Total percent)
+Top 30 of N Total URLs (Hits (count,%), KBytes (count,%), URL) Including grouping concept
+Top 5 of N Total URLs By KBytes
+Top 10 of N Total Entry Pages (Hits (count,%), Visits (count,%), URL) Including grouping concept
+Top 10 of N Total Exit Pages (Hits (count,%), Visits (count,%), URL) Including grouping concept
+Top 30 of N Total Sites (Hits (count,%), Files (count,%), KBytes (count,%), Visits (count,%), URL) Including grouping concept
+Top 10 of N Total Sites by KBytes (Hits (count,%), Files (count,%), KBytes (count,%), Visits (count,%), URL) Including grouping concept
+Top 30 of N Total Referrers (Hits (count,%), Referrer URL) Including grouping concept
+Top 10 of N Total Search Strings (Hits (count, %), Search String)
+Top 5 of N Total User Agents (Hits (count, %), User Agent) Including grouping concept
+Pie-chart of Country usage (Hits per .tld)
+Top 15 of N Total Countries (Hits (count, %), Files (count, %), KBytes (count, %), Country aka .tld)
+-->
+
+<!-- Webalizer cloning plan
+
+ From Webalizer's help:
+ ====================================================================
+ Hits  represent the total number of requests made to the server during the given time period (month, day, hour etc..).
+
+ Files represent the total number of hits (requests) that actually resulted in something being sent back to the user. Not all hits will send data, such as 404-Not Found requests and requests for pages that are already in the browsers cache.
+
+ Tip: By looking at the difference between hits and files, you can get a rough indication of repeat visitors, as the greater the difference between the two, the more people are requesting pages they already have cached (have viewed already).
+
+ Sites is the number of unique IP addresses/hostnames that made requests to the server. Care should be taken when using this metric for anything other than that. Many users can appear to come from a single site, and they can also appear to come from many ip addresses so it should be used simply as a rough guage as to the number of visitors to your server.
+
+ Visits occur when some remote site makes a request for a page on your server for the first time. As long as the same site keeps making requests within a given timeout period, they will all be considered part of the same Visit. If the site makes a request to your server, and the length of time since the last request is greater than the specified timeout period (default is 30 minutes), a new Visit is started and counted, and the sequence repeats. Since only pages will trigger a visit, remotes sites that link to graphic and other non- page URLs will not be counted in the visit totals, reducing the number of false visits.
+
+ Pages are those URLs that would be considered the actual page being requested, and not all of the individual items that make it up (such as graphics and audio clips). Some people call this metric page views or page impressions, and defaults to any URL that has an extension of .htm, .html or .cgi.
+
+ A KByte (KB) is 1024 bytes (1 Kilobyte). Used to show the amount of data that was transfered between the server and the remote machine, based on the data found in the server log.
+ ====================================================================
+
+-->
+</reports>
