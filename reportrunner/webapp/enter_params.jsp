@@ -56,6 +56,11 @@ while(pms.hasMoreElements()) {
 
         Choice[] choices = report.getParamChoices(params[i]);
         if(choices == null) {
+            if(Boolean.class.isAssignableFrom(params[i].getType())) {
+%>
+    <tr><td><label for="<%= params[i].getName() %>"><%= params[i].getLabel() %></label></td><td><input type="checkbox" name="<%= params[i].getName() %>" value="<%= value %>"></td></tr>
+<%
+            } else
             if(java.util.Date.class.isAssignableFrom(params[i].getType())) {
 %>
 
@@ -88,8 +93,12 @@ while(pms.hasMoreElements()) {
 <%
             }
         } else {
+            String multiple = "";
+            if(Object[].class.isAssignableFrom(params[i].getType()) {
+                multiple = "multiple=\"multiple\"";
+            }
 %>
-    <tr><td><label for="<%= params[i].getName() %>"><%= params[i].getLabel() %></label></td><td><select name="<%= params[i].getName() %>">
+    <tr><td><label for="<%= params[i].getName() %>"><%= params[i].getLabel() %></label></td><td><select name="<%= params[i].getName() %>"<%= multiple %>>
 <%
           for(int j=0; j<choices.length; j++) {
               String selected = "";
