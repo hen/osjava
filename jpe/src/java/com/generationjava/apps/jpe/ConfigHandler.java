@@ -23,7 +23,7 @@ public class ConfigHandler extends AbstractHandler {
                 super("Config",jpe);
 
                 // Open the config file within the defined path in getMyPath()
-                file=new OpenFile(getJPE().getMyPath()+"\\config.xml");
+                file=new OpenFile(getJPE().getMyPath()+"/config.xml");
                 if (file!=null) {
 
                         // read the XML based config file.
