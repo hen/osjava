@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<document>
+
+  <properties>
+      <author email="bayard@generationjava.com">Henri Yandell</author>
+      <title>Changes</title>
+  </properties>
+
+  <body>
+    <release version="0.1" date="2004-03-09">
+      <action dev="hen" type="add">ListTag which allows a trail to be displayed. </action>
+      <action dev="hen" type="add">PushTag which allows a label/url to be placed onto the trail. </action>
+    </release>
+</body>
+</document>
