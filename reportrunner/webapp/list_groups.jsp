@@ -1,6 +1,8 @@
+<%@ include file="header.inc" %>
 <%@ page import="org.osjava.reportrunner.*" %>
 <%@ page import="org.osjava.reportrunner.servlets.*" %>
 
+<div class="input">
 <p>Select a group: </p>
 
 <table>
@@ -13,3 +15,5 @@
     }
 %>
 </table>
+</div>
+<%@ include file="footer.inc" %>

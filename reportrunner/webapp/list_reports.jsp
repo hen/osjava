@@ -1,3 +1,4 @@
+<%@ include file="header.inc" %>
 <%@ page import="org.osjava.reportrunner.*" %>
 <%@ page import="org.osjava.reportrunner.servlets.*" %>
 
@@ -5,8 +6,11 @@
     String groupName = request.getParameter(ReportRunnerServlet.GROUP);
 %>
 
+<div class="feedback">
 <p>You have chosen the <%= groupName %> group. </p>
+</div>
 
+<div class="input">
 <p>Select a report: </p>
 
 <table>
@@ -19,3 +23,5 @@
     }
 %>
 </table>
+</div>
+<%@ include file="footer.inc" %>
