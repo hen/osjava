@@ -279,11 +279,8 @@ LABEL:  while(nodes.hasMoreElements()) {
                             XMLNode var = (XMLNode) vars.nextElement();
                             renderer.setVariable( var.getAttr("name"), var.getAttr("value") );
                         }
-                        System.err.println("Adding: "+rendererType+" - "+renderer.getName()+" "+i+" "+report.getName());
                         report.addRenderer(renderer);
                         break;
-                    } else {
-                        System.err.println("Failed: "+rendererType+" - "+renderer.getName()+" "+i+" "+report.getName());
                     }
                 }
 
