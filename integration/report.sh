@@ -142,6 +142,11 @@ do
         cat jdepend-report.xml | sed 's/document>/html>/' | sed 's/properties>/head>/' | sed 's/<\/section>//' | sed 's/<\/subsection>//' | sed 's/<section name="\([^"]*\)"/<h1>\1<\/h1/' | sed 's/<subsection name="\([^"]*\)"/<h2>\1<\/h2/' > jdepend-report.html
     fi
 
+    if [ -d builds/ ];
+    then
+        echo "<li><a href='$i/builds/'>builds</a></li>" >> $report
+    fi
+
     echo '</ul>' >> $report
 
     echo '<hr>' >> $report
