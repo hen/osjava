@@ -552,15 +552,12 @@ public class ThreadContext
      * @see javax.naming.Context#bind(javax.naming.Name, java.lang.Object)
      */
     public void bind(Name name, Object obj) throws NamingException {
-        /* 
-         * If the thread is an instance of Thread, make sure that it is not 
-         * alive.
-         */
-        if(obj instanceof Thread &&
-           ((Thread)obj).isAlive()) {
-            throw new ThreadIsRunningException("A thread stored in the context cannot already be running.");
+        /* This is a NOP if obj is null */
+        if(obj == null) {
+            throw new InvalidObjectTypeException("Objects in this context must implement " +
+                            "org.osjava.threads.ExtendedRunnable or ThreadContext.  " + 
+                            "Object is null");
         }
-        
         /*
          * Only the following types are allowed to be bound through this 
          * method: 
@@ -571,16 +568,22 @@ public class ThreadContext
          * TODO: If this is a Runnable of any sort, we can wrap an
          * ExtendedThread around it, solving this problem.
          */
+        System.out.println("Object -- " + obj);
         if(!(obj instanceof ExtendedRunnable) &&
            !(obj instanceof ThreadContext)) {
-            /*
-             * This should be changed back to an InvalidObjectType exception 
-             * if it gets incorporated into directory-naming.
-             */
             throw new InvalidObjectTypeException("Objects in this context must implement " +
                     "org.osjava.threads.ExtendedRunnable or ThreadContext.  " + 
                     "Object is of type '" + obj.getClass() + "'.");
         }
+        /* 
+         * If the thread is an instance of Thread, make sure that it is not 
+         * alive.
+         */
+        if(obj instanceof Thread &&
+           ((Thread)obj).isAlive()) {
+            throw new ThreadIsRunningException("A thread stored in the context cannot already be running.");
+        }
+        
         super.bind(name, obj);
     }
 
