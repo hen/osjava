@@ -83,13 +83,6 @@
       <version>1.1</version>
       <url>http://jakarta.apache.org/commons/</url>
     </dependency>
-    <!-- if you do some kind of converting, you'll need this -->
-    <!-- this is only if you use .type, though not DataSource -->
-    <dependency>
-      <id>commons-convert</id>
-      <version>SNAPSHOT</version>
-      <url>http://jakarta.apache.org/commons/sandbox/convert/</url>
-    </dependency>
   </dependencies>
 
   <build>
