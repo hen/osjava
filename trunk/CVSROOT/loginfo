@@ -30,7 +30,7 @@
 ^genjava-core -s "[GENJAVA-CORE] checkin of `echo %s` by `whoami`" bayard@generationjava.com, tigran@osjava.org
 ^mudclient mail -s "[MUDCLIENT] checkin of `echo %s` by `whoami`" antony@cyberiantiger.org, tigran@osjava.org
 ^norbert mail -s "[NORBERT] checkin of `echo %s` by `whoami`" bayard@generationjava.com, tigran@osjava.org
-^scrapping-engine mail -s "[SCRAPPING-ENGINE] checkin of `echo %s` by `whoami`" bayard@generationjava.com
+^scraping-engine mail -s "[SCRAPING-ENGINE] checkin of `echo %s` by `whoami`" bayard@generationjava.com
 ^simple-jndi mail -s "[SIMPLE-JNDI] checkin of `echo %s` by `whoami`" bayard@generationjava.com,tigran@osjava.org
 ^tigthreads mail -s "[TIGTHREADS] checkin of `echo %s` by `whoami`" tigran@osjava.org
 ^xmlwriter mail -s "[XMLWRITER] checkin of `echo %s` by `whoami`" bayard@generationjava.com
