@@ -30,9 +30,9 @@
   <mailingLists>
     <mailingList>
       <name>osjava-users</name>
-      <subscribe>http://lists.flamefew.net/mailman/listinfo/osjava-users</subscribe>
-      <unsubscribe>http://lists.flamefew.net/mailman/listinfo/osjava-users</unsubscribe>
-      <archive>http://lists.flamefew.net/mailman/private/osjava-users/</archive>
+      <subscribe>http://lists.osjava.org/mailman/listinfo/osjava-users</subscribe>
+      <unsubscribe>http://lists.osjava.org/mailman/listinfo/osjava-users</unsubscribe>
+      <archive>http://lists.osjava.org/mailman/private/osjava-users/</archive>
     </mailingList>
   </mailingLists>
 
