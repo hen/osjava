@@ -9,4 +9,10 @@
    <p>There are other Jakarta Commons books on the way, and this book is ideal for the newbie to Jakarta Commons. I'll be ensuring my workplace has a copy. </p>
   </review>
 
+  <review isbn="1590592557">
+   <p>This is a bizarre book, the bane of a librarian everywhere with its coverage of Struts, ObjectRelationBridge, Lucene and Velocity. As if that wasn't enough, the contents page shows that it also covers other open source Java projects, namely, Ant, Anthill and XDoclet, along with concepts such as RSS and EJB. All to create an application called JavaEdge. All of this within 300 pages. </p>
+   <p>Originally published by Wrox, the edition I've read is the reprint from Apress. I'm reading the book as someone who feels they know enough about Struts, but would like to pick up the other technologies the book covers, so my attention to the Struts part of the book is relatively glancing. </p>
+   <p>The first chapter is also bizarre. Rather than launching into the open source tools in question, it leads the reader through a series of web anti-patterns that contribute to entropy, though I wish they had defined what that term means to them with regards to a software project. I imagine many speakers of English around the world would not be too sure. I take it to the increasing tendency of any project to turn into a complete mess. </p>
+  </review>
+
 </reviews>
