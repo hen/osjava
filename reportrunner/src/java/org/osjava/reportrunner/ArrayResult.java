@@ -16,4 +16,8 @@ public class ArrayResult implements Result {
     public Object[] nextRow() {
         return (Object[]) result[idx++];
     }
+
+    public void reset() {
+        this.idx = 0;
+    }
 }

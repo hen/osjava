@@ -21,7 +21,9 @@ public class FormattingResult implements Result {
             return row;
         }
 
-        for(int i=0; i<row.length; i++) {
+        int sz = Math.min( row.length, this.report.getColumns().length );
+        
+        for(int i=0; i<sz; i++) {
             if(this.report.getColumns()[i].getFormatter() != null) {
                 row[i] = this.report.getColumns()[i].getFormatter().format(row[i]);
             }
