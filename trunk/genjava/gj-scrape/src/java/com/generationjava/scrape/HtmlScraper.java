@@ -146,6 +146,22 @@ public class HtmlScraper {
             return false;
         } else {
             idx = this.page.lastIndexOf("<", idx);
+            if(idx == this.currentIndex) {
+                // then we just found the previous one, so we need to bump things 
+                // along a little bit
+                int nextTag = this.page.indexOf("<", this.currentIndex + 1);
+                if(nextTag == -1) {
+                    return false;
+                } else {
+                    this.currentIndex = nextTag;
+                    boolean found = moveToTagWith(name, value);
+                    if(!found) {
+                        // reset the currentIndex
+                        this.currentIndex = idx;
+                    }
+                    return found;
+                }
+            }
             this.currentIndex = idx;
             return true;
         }

@@ -60,4 +60,17 @@ public class HtmlScraperTest extends TestCase {
         assertEquals( "<tr><td align='center'>FOO</td></tr>", scraper2.toString() );
     }
 
+    public void testMoveToTagWithTwice() {
+        HtmlScraper scraper = new HtmlScraper();
+        scraper.scrape(TEST_PAGE);
+        assertTrue( scraper.moveToTagWith("bgcolor", "ffffff") );
+        assertFalse( scraper.moveToTagWith("bgcolor", "ffffff") );
+
+        scraper.scrape(TEST_PAGE+TEST_PAGE);
+        assertTrue( scraper.moveToTagWith("bgcolor", "ffffff") );
+        assertTrue( scraper.moveToTagWith("bgcolor", "ffffff") );
+        assertFalse( scraper.moveToTagWith("bgcolor", "ffffff") );
+    }
+
+
 }
