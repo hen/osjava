@@ -2,8 +2,8 @@
 <project>
   
   <pomVersion>3</pomVersion>
-  <id>genjava-logview</id>
-  <name>genjava-logview</name>
+  <id>logview</id>
+  <name>logview</name>
   <currentVersion>0.5</currentVersion>
   <organization>
     <name>GenerationJava</name>
@@ -18,21 +18,12 @@
     A log reporting and analyser framework.
   </description>
   
-  <shortDescription>Store code</shortDescription>
+  <shortDescription>Java log analysing framework</shortDescription>
 
   <url>http://www.generationjava.com/</url>
   <!--
   <issueTrackingUrl>http://nagoya.apache.org/scarab/servlet/scarab/</issueTrackingUrl>
   -->
-  <siteAddress>www.generationjava.com/maven/genjava/genjava-logview</siteAddress>
-  <siteDirectory>/sites/com/generationjava/www/maven/genjava-logview/</siteDirectory>
-  <distributionDirectory>/sites/com/generationjava/www/maven/builds/</distributionDirectory>
-
-  <repository>
-    <connection>scm:cvshen@umbongo.flamefew.net:/var/cvs:genjava-logview</connection>
-    <url>http://www.generationjava.com/view-cvs/viewcvs.cgi/genjava-logview/</url>
-  </repository>
-
 
   <developers>
 
@@ -78,17 +69,9 @@
 
   <build>
 
-    <nagEmailAddress>bayard@www.generationjava.com</nagEmailAddress>
+    <nagEmailAddress>bayard@generationjava.com</nagEmailAddress>
 
     <sourceDirectory>src/java</sourceDirectory>
-
-    <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
-    <aspectSourceDirectory></aspectSourceDirectory>
-
-    <!-- Unit test classes -->
-    <unitTestPatterns>
-      <unitTestPattern>include = **/*Test.java</unitTestPattern>
-    </unitTestPatterns>
 
   </build>
 </project>
