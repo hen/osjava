@@ -32,5 +32,6 @@
 ^norbert mail -s "[NORBERT] checkin of `echo %s` by `whoami`" bayard@generationjava.com, tigran@osjava.org
 ^scrapping-engine mail -s "[SCRAPPING-ENGINE] checkin of `echo %s` by `whoami`" bayard@generationjava.com
 ^simple-jndi mail -s "[SIMPLE-JNDI] checkin of `echo %s` by `whoami`" bayard@generationjava.com,tigran@osjava.org
+^tigthreads mail -s "[TIGTHREADS] checkin of `echo %s` by `whoami`" tigran@osjava.org
 ^xmlwriter mail -s "[XMLWRITER] checkin of `echo %s` by `whoami`" bayard@generationjava.com
 
