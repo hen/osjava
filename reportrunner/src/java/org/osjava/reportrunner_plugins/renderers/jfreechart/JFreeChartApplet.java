@@ -30,7 +30,17 @@ public class JFreeChartApplet extends JApplet {
             String url = getParameter("serUrl");
 
             if(url == null) {
+                // TODO: Switch to replace _renderer=foo with _renderer=jfreechart
                 url = getDocumentBase().toString().replaceFirst("jfreechart-applet", "jfreechart");
+            }
+
+            if(!url.startsWith("http://")) {
+                String dBase = getDocumentBase().toString();
+                int idx = dBase.lastIndexOf("/");
+                if(idx != -1) {
+                    dBase = dBase.substring(0, idx+1);
+                }
+                url = dBase + url;
             }
 
             this.chart = loadChart( new URL( url ) );
