@@ -94,7 +94,7 @@ while(pms.hasMoreElements()) {
             }
         } else {
             String multiple = "";
-            if(Object[].class.isAssignableFrom(params[i].getType()) {
+            if(Object[].class.isAssignableFrom(params[i].getType())) {
                 multiple = "multiple=\"multiple\"";
             }
 %>

@@ -54,6 +54,9 @@ public class Param {
         if(typeName == null) {
             return;
         }
+        if(typeName.endsWith("[]")) {
+            typeName = "[L" + typeName.substring(0,typeName.length() - "[]".length()) + ";";
+        }
         try {
             this.type = Thread.currentThread().getContextClassLoader().loadClass(typeName);
         } catch(ClassNotFoundException cnfe) {
