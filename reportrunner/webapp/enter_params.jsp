@@ -25,7 +25,7 @@
 %>
 -&gt;
 <%
-  if(report.getVariants() != null) {
+  if(report.getVariants().length != 0) {
 %>
 <a href="enter_variants.jsp?<%= request.getQueryString() %>">choose variants</a>
 <% 
