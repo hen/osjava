@@ -1,0 +1,145 @@
+<?xml version="1.0"?>
+<project>
+  
+  <pomVersion>3</pomVersion>
+  <id>simple-jndi</id>
+  <name>simple-jndi</name>
+  <currentVersion>0.7</currentVersion>
+  <organization>
+    <name>OSJava</name>
+    <url>http://www.osjava.org/</url>
+    <logo>/images/osjava.gif</logo>
+  </organization>
+  <inceptionYear>2003</inceptionYear>
+  <package>org.osjava</package>
+  <logo>/images/1x1.gif</logo>
+  
+  <description>
+    A simple implementation of JNDI. It is entirely library based, so no server instances are started, and it sits upon Java .properties files or XML files, so it is easy to use and simple to understand. The .properties/.xml files may be either on the file system or in the classpath. 
+  </description>
+  
+  <shortDescription>A JNDI implementation using .properties</shortDescription>
+
+  <url>http://www.osjava.org/simple-jndi/</url>
+  <issueTrackingUrl>http://www.osjava.org:8080/jira/secure/BrowseProject.jspa?id=10000</issueTrackingUrl>
+  <siteAddress>www.osjava.org/maven/simple-jndi</siteAddress>
+  <siteDirectory>/sites/org/osjava/www/maven/genjava/simple-jndi/</siteDirectory>
+  <distributionDirectory>/sites/org/osjava/www/maven/builds/</distributionDirectory>
+
+  <repository>
+    <connection>scm:cvs:pserver:anonymous@cvs.osjava.org:/var/cvs:simple-jndi</connection>
+    <url>http://www.osjava.org/view-cvs/viewcvs.cgi/simple-jndi/</url>
+  </repository>
+
+  <mailingLists>
+    <mailingList>
+      <name>osjava-users</name>
+      <subscribe>http://lists.flamefew.net/mailman/listinfo/osjava-users</subscribe>
+      <unsubscribe>http://lists.flamefew.net/mailman/listinfo/osjava-users</unsubscribe>
+      <archive>http://lists.flamefew.net/mailman/private/osjava-users/</archive>
+    </mailingList>
+  </mailingLists>
+
+  <developers>
+
+    <developer>
+      <name>Henri Yandell</name>
+      <id>hen</id>
+      <email>bayard@generationjava.com</email>
+      <organization>GenerationJava</organization>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+
+  </developers>
+
+  <contributors>
+  </contributors>
+  
+  <!-- Need to mark these as compile-time/run-time -->
+
+  <dependencies>
+    <!--
+    <dependency>
+      <id>jdbc</id>
+      <version>2.0</version>
+      <url>http://www.ibiblio.org/maven/jdbc/jars/</url>
+    </dependency>
+    -->
+    <dependency>
+      <id>genjava-core</id>
+      <version>2.2</version>
+      <url>http://www.osjava.org/</url>
+    </dependency>
+    <dependency>
+      <id>commons-lang</id>
+      <version>1.0.1</version>
+      <url>http://jakarta.apache.org/commons/lang.html</url>
+    </dependency>
+    <dependency>
+      <id>commons-collections</id>
+      <version>2.1</version>
+      <url>http://jakarta.apache.org/commons/collections.html</url>
+    </dependency>
+  </dependencies>
+
+  <build>
+
+    <nagEmailAddress>bayard@www.osjava.org</nagEmailAddress>
+
+    <sourceDirectory>src/java</sourceDirectory>
+    <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
+
+    <unitTest>
+      <resources>
+        <resource>
+          <directory>src/test/config</directory>
+          <targetPath>config</targetPath>
+        </resource>
+        <resource>
+          <directory>src/test</directory>
+          <includes>
+            <include>jndi.properties</include>
+          </includes>
+        </resource>
+      </resources>
+      <includes>
+        <include>**/*Test.java</include>
+      </includes>
+    </unitTest>
+
+    <!--
+
+    <integrationUnitTestSourceDirectory/>
+
+    <aspectSourceDirectory></aspectSourceDirectory>
+
+    <integrationUnitTestPatterns>
+    </integrationUnitTestPatterns>
+    -->
+
+    <!-- J A R  R E S O U R C E S -->
+    <!-- Resources that are packaged up inside the JAR file -->
+
+    <jarResources>
+        <jarResource>include = *.dtd</jarResource>
+        <jarResource>include = log4j.properties</jarResource>
+    </jarResources>
+
+    <jars>
+    </jars>
+  </build>
+
+    <reports>
+        <report>maven-jxr-plugin</report>
+        <report>maven-javadoc-plugin</report>
+        <report>maven-license-plugin</report>
+        <report>maven-changes-plugin</report>           
+        <report>maven-changelog-plugin</report>        
+        <report>maven-statcvs-plugin</report>          
+    </reports>
+
+
+</project>
+
