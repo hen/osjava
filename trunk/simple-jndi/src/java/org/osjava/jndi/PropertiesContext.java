@@ -764,6 +764,8 @@ if(DEBUG)       System.err.println("[CTXT]HTTPException? :"+e);
     private void put(Name name, Object object) {
         if(isSpecialKey(name.toString())) {
             setSpecial(name.toString(), object);
+        } else if(object instanceof Context) {
+            this.subContexts.put(name, object);
         } else {
             this.table.put(name, object);
         }
