@@ -99,9 +99,10 @@ public class PropertiesContext implements Context  {
             // No root means we're using a classpath protocol,
             // no protocol means we're using file protocol [legacy]
             if(root != null) {
-                if(root.indexOf("://") != -1) {
-                    String proto = StringUtils.chomp(root, "://");
-                    this.root = StringUtils.prechomp(root, "://");
+                int idx = root.indexOf("://");
+                if(idx != -1) {
+                    String proto = root.substring(0,idx);
+                    this.root = root.substring(idx + 3);
                     if("file".equals(proto)) {
                         this.protocol = FILE;
                         this.separator = ""+File.separatorChar;
