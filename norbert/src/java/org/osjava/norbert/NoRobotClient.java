@@ -94,6 +94,14 @@ public class NoRobotClient {
             throw new NoRobotException("Unable to get content for: "+txtUrl, ioe);
         }
 
+        try {
+            parseText(txt);
+        } catch(NoRobotException nre) {
+            throw new NoRobotException("Problem while parsing "+txtUrl, nre);
+        }
+    }
+
+    public void parseText(String txt) throws NoRobotException {
 
         // Classic basic parser style, read an element at a time, 
         // changing a state variable [checkAllows]
@@ -160,7 +168,7 @@ public class NoRobotClient {
             }
         } catch (IOException ioe) {
             // As this is parsing a String, it should not have an IOE
-            throw new NoRobotException("Problem while parsing: "+txtUrl, ioe);
+            throw new NoRobotException("Problem while parsing text. ", ioe);
         }
     }
 
