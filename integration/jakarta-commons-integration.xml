@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<integration version="1.0">
+  <site label="Jakarta Commons" url="http://jakarta.apache.org/" css="http://jakarta.apache.org/foo.css" logo="http://jakarta.apache.org/images/logo.png"/>
+  <buildables>
+    <buildable project="jakarta-commons/beanutils" repository="cvs:pserver:anoncvs@cvs.apache.org:/home/cvspublic" />
+    <buildable project="jakarta-commons/betwixt" repository="cvs:pserver:anoncvs@cvs.apache.org:/home/cvspublic" />
+    <buildable project="jakarta-commons/cli" repository="cvs:pserver:anoncvs@cvs.apache.org:/home/cvspublic" />
+    <buildable project="jakarta-commons/codec" repository="cvs:pserver:anoncvs@cvs.apache.org:/home/cvspublic" />
+    <buildable project="jakarta-commons/collections" repository="cvs:pserver:anoncvs@cvs.apache.org:/home/cvspublic" />
+    <buildable project="jakarta-commons/configuration" repository="cvs:pserver:anoncvs@cvs.apache.org:/home/cvspublic" />
+    <buildable project="jakarta-commons/dbcp" repository="cvs:pserver:anoncvs@cvs.apache.org:/home/cvspublic" />
+    <buildable project="jakarta-commons/dbutils" repository="cvs:pserver:anoncvs@cvs.apache.org:/home/cvspublic" />
+    <buildable project="jakarta-commons/discovery" repository="cvs:pserver:anoncvs@cvs.apache.org:/home/cvspublic" />
+    <buildable project="jakarta-commons/el" repository="cvs:pserver:anoncvs@cvs.apache.org:/home/cvspublic" />
+    <buildable project="jakarta-commons/fileupload" repository="cvs:pserver:anoncvs@cvs.apache.org:/home/cvspublic" />
+    <buildable project="jakarta-commons/httpclient" repository="cvs:pserver:anoncvs@cvs.apache.org:/home/cvspublic" />
+    <buildable project="jakarta-commons/io" repository="cvs:pserver:anoncvs@cvs.apache.org:/home/cvspublic" />
+    <buildable project="jakarta-commons/jelly" repository="cvs:pserver:anoncvs@cvs.apache.org:/home/cvspublic" />
+    <buildable project="jakarta-commons/jexl" repository="cvs:pserver:anoncvs@cvs.apache.org:/home/cvspublic" />
+    <buildable project="jakarta-commons/jxpath" repository="cvs:pserver:anoncvs@cvs.apache.org:/home/cvspublic" />
+    <buildable project="jakarta-commons/lang" repository="cvs:pserver:anoncvs@cvs.apache.org:/home/cvspublic" />
+    <buildable project="jakarta-commons/latka" repository="cvs:pserver:anoncvs@cvs.apache.org:/home/cvspublic" />
+    <buildable project="jakarta-commons/launcher" repository="cvs:pserver:anoncvs@cvs.apache.org:/home/cvspublic" />
+    <buildable project="jakarta-commons/logging" repository="cvs:pserver:anoncvs@cvs.apache.org:/home/cvspublic" />
+    <buildable project="jakarta-commons/math" repository="cvs:pserver:anoncvs@cvs.apache.org:/home/cvspublic" />
+    <buildable project="jakarta-commons/modeler" repository="cvs:pserver:anoncvs@cvs.apache.org:/home/cvspublic" />
+    <buildable project="jakarta-commons/net" repository="cvs:pserver:anoncvs@cvs.apache.org:/home/cvspublic" />
+    <buildable project="jakarta-commons/pool" repository="cvs:pserver:anoncvs@cvs.apache.org:/home/cvspublic" />
+    <buildable project="jakarta-commons/primitives" repository="cvs:pserver:anoncvs@cvs.apache.org:/home/cvspublic" />
+    <buildable project="jakarta-commons/validator" repository="cvs:pserver:anoncvs@cvs.apache.org:/home/cvspublic" />
+  </buildables>
+</integration>
