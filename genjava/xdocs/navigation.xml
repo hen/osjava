@@ -5,6 +5,7 @@
 
   <body>
     <menu name="Genjava">
+      <item href="index.html" name="Component list"/>
       <item href="Genjava.html" name="What is Genjava?"/>
     </menu>
     <menu name="Genjava Projects">
