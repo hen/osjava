@@ -1,19 +1,28 @@
 <?xml version="1.0"?>
 <document>
     <properties>
-        <author email="rzigweid@tigransoft.org">Robert M. Zigweidl</author>
+        <author email="rzigweid@tigransoft.org">Robert M. Zigweid</author>
         <title>Introduction</title>
     </properties>
     <body>
         <section name="Pending Tasks">
-            <ul><li>Thread Pooling</li>
-            <li>Unit Tests</li>
+            <ul><li>
+                Thread Pooling
+            </li>
+            <li>
+                Unit Tests
+            </li>
             <li>
                 Eliminating ThreadManager and replacing it with ThreadContext.
             </li>
-            <li>ThreadNameParser needs to be improved drastically. <ul><li>
-                    Should pay attention to it's environment properties</li>
-                <li>.equals is abysmal and going to be often wrong.</li></ul>
+            <li>
+                ThreadNameParser needs to be improved drastically. 
+                <ul><li>
+                    Should pay attention to it's environment properties
+                </li>
+                <li>
+                    .equals is abysmal and going to be often wrong.
+                </li></ul>
             </li></ul>
         </section>
     </body>
