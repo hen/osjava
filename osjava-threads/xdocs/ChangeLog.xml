@@ -20,10 +20,6 @@
                 Improved API to work better with threads that implement 
                 ExtendedRunnable, but do not extend ExtendedThread.
             </action>
-            <action dev="rzigweid" type="update">
-                Added additional constructors to ExtendedThread.  Constructors
-                should now map to those in java.lang.Thread
-            </action>
             <action dev="rzigweid" type="update" issue="TGT-5">
                 AbstractExtendedRunnable, and ExtendedThread are made 
                 uncloneable.
