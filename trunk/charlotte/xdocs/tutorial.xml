@@ -33,6 +33,40 @@ sourceIp=32<br/>
 destinationIp=32
 </code>
 
+<p>It would then be used like this:</p>
+
+<pre>
+import code316.charlotte.Encoding;
+import code316.charlotte.EncodingUtil;
+import code316.charlotte.Parser;
+
+public class Test {
+
+    private static final Encoding TCP_ENCODING;
+    private static final String TCP_ENCODING_FILE = "encoding-definitions/tcp-encoding.enc";
+    static {
+        try {
+            Parser ep = new Parser();
+            InputStream in =
+                Test.class.getClassLoader().getResourceAsStream(TCP_ENCODING_FILE);
+
+            if ( in == null ) {
+                throw new IllegalStateException("could not load tcp encoding file: " + TCP_ENCODING_FILE);
+            }
+            TCP_ENCODING = ep.parse(in);
+        }
+        catch (IOException ioe) {
+            throw new RuntimeException("Could not create encoding", ioe);
+        }
+    }
+
+    public static TcpValue decodeTcpValue(BigInteger bits) {
+        Map valueMap = EncodingUtil.expandFields(TCP_ENCODING, bits);
+	TcpValue tcp = new TcpValue();
+	tcp.setVersion( valueMap.get("version") );
+	....
+</pre>
+
 </section>
 </body>
 </document>
