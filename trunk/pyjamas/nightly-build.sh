@@ -49,7 +49,7 @@ then
                 fi
                 if [ $SCM = 'CVS' ];
                 then
-                    LIST=`cvs -nq update 2>/dev/null | grep -v '^\?' | grep -v '^A' | grep -v '^M' | awk '{print $2}'`
+                    UPDATES=`cvs -nq update 2>/dev/null | grep -v '^\?' | grep -v '^A' | grep -v '^M' | awk '{print $2}'`
                 fi
                 if [ "x${UPDATES}x" != "xx" ];
                 then
