@@ -51,7 +51,7 @@ public class WildcardUtils {
         StringBuffer buffer = new StringBuffer();
         for(int i=0; i<array.length; i++) {
             if(array[i] == '?' || array[i] == '*') {
-                if(i != 0) {
+                if(buffer.length() != 0) {
                    list.add(buffer.toString());
                    buffer.setLength(0);
                 }
