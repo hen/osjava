@@ -36,14 +36,14 @@ Need PUBLICATION DATES for each book.
 Need more in the coming-soon/new books.
 Need an explanatory link, about this site and the word pergamum. Philosophy.
 
+=====
+2004-03-25->29
+
+Nav-lists are sorted.
+Pergamum.org aquired and moved to.
+
 TODO
 
-Need to be sorting lists.
-Need an RDF file for the coming-soon bit.
+Need an RSS file for the coming-soon, new-books and new-reviews.
 Need reviews.
-Get pergamum.org
 Need a copyright and a last updated bit at the bottom.
-
-Books to add:
-
-Objectbridge book?
