@@ -10,7 +10,7 @@
  </report>
  <report name="paramsql" label="ParamSql" class="org.osjava.reportrunner.reports.SqlReport" description="This shows the usage of parameters, and binding of a parameter to a list of options. It prints out the user roles for a particular rolename and username. ">
   <sql>select * from userrole where rolename=? and username=?</sql>
-  <param name="rolename" type="java.lang.String" description="The role name of the user role; most likely author. "/>
+  <param name="rolename" type="java.lang.String" description="The role name of the user role; most likely author. " default="hen"/>
   <param name="username" type="java.lang.String" binding="select username, username from userrole"/>
   <renderers>html,csv,excel</renderers>
  </report>
