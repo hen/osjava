@@ -19,6 +19,7 @@
     .library-list, .category-list, .publisher-list { font-size: 90%; list-style-type: none; background:#eeeeee; }
     .category-list, .publisher-list { }
     .book-links { padding: 0 0.5em 1; }
-    .nav { padding: 1em 0 0 1em; width: 12em; float: left;}
-    .index-body { padding: 1em 0 0 10em; margin-left: 6em; margin-right: 2em; }
+    .nav { padding: 0 0 0 1em; width: 12em; float: left;}
+    .index-body { padding: 0 0 0 10em; margin-left: 6em; margin-right: 2em; }
+    .page { padding: 1em 0 0 0; }
 
