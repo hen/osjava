@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<pg:pergamum xmlns:pg="http://www.osjava.org/pergamum/ns" name="Help">
+  <div class="sub-title">Purpose of the site?</div>
+  <p>This site is designed to provide information on open-source Java books. </p>
+  <div class="sub-title">What's with the name?</div>
+  <p>Pergamum was a city in southern Turkey which was a competitor to the Great Library in Alexandria. The Egyptians put an export embargo on papyrus to protect themselves from a brain drain and so Pergamum invented the art of writing on animal skins. This is where we get the name parchment. </p>
+</pg:pergamum>
