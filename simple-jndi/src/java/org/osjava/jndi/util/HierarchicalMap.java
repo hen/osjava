@@ -230,23 +230,14 @@ if(org.osjava.jndi.PropertiesContext.DEBUG)        System.err.println("[PROP]Set
             } else {
                 String first = keyStr.substring(0,idx);
                 Object ob = nodeMap.get(first);
-                Map subMap = null;
-                if(ob != null) {
-                    if(ob instanceof Map) {
-                            subMap = (Map)ob;
-                        return subMap.put(keyStr.substring(idx+1),value);
-                    } else {
-                        subMap = createEmptyMap();
-                        subMap.put(keyStr.substring(idx+1),value);
-                        nodeMap.put(first,subMap);
-                        return ob;
-                    }                
+                if(ob != null && ob instanceof Map) {
+                    return ((Map)ob).put(keyStr.substring(idx+1),value);
                 } else {
-                    subMap = createEmptyMap();
+                    Map subMap = createEmptyMap();
                     subMap.put(keyStr.substring(idx+1),value);
                     nodeMap.put(first,subMap);
                     return ob;
-                }
+                }                
             }
         } else {  // handle non-string keys
             return nodeMap.put(key,value);
