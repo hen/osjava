@@ -4,9 +4,6 @@
   <title>norbert</title>
 
   <body>
-    <links>
-      <item name="Maven"                 href="http://maven.apache.org/"/>
-    </links>
     <menu name="Overview">
       <item name="How To"              href="/HowTo.html"/>
       <item name="News"              href="/News.html"/>
