@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<reports>
+ <report name="BasicSql" class="com.genscape.reports.reports.SqlReport">
+  <sql>select * from userrole</sql>
+  <renderers>Text</renderers>
+ </report>
+ <report name="Dummy" class="com.genscape.reports.reports.DummyReport">
+  <renderers>Text,HtmlTable</renderers>
+ </report>
+ <report name="ParamSql" class="com.genscape.reports.reports.SqlReport">
+  <sql>select * from userrole where rolename=? and username=?</sql>
+  <param name="rolename" type="java.lang.String"/>
+  <param name="username" type="java.lang.String" binding="select username, username from userrole"/>
+  <renderers>HtmlTable</renderers>
+ </report>
+ <report name="DateSql" class="com.genscape.reports.reports.SqlReport">
+  <sql>select * from weblogentry where pubtime between ? and ?</sql>
+  <param name="after date" type="java.sql.Timestamp"/>
+  <param name="before date" type="java.sql.Timestamp"/>
+  <renderers>HtmlTable</renderers>
+ </report>
+</reports>
