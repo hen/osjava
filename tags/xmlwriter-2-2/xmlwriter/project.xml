@@ -1,0 +1,135 @@
+<?xml version="1.0"?>
+<project>
+  
+  <pomVersion>3</pomVersion>
+  <id>xmlwriter</id>
+  <name>xmlwriter</name>
+  <currentVersion>2.2</currentVersion>
+  <organization>
+    <name>OSJava</name>
+    <url>http://www.osjava.org/</url>
+    <logo>http://www.osjava.org/images/osjava.gif</logo>
+  </organization>
+  <inceptionYear>2000</inceptionYear>
+  <package>com.generationjava.io.xml</package>
+  <logo>http://www.osjava.org/images/1x1.gif</logo>
+  
+  <description>
+    A great way to output Xml. Far easier to code with than painful DOM or 
+    SAX like solutions and much nicer in terms of speed and memory usage. 
+    &lt;br/&gt;
+    &lt;br/&gt;
+   While XmlWriter contains its own xml outputter, it has the ability to sit on top of other core Xml writing products, such as &lt;a href="http://xmlenc.sf.net/"&gt;XmlEnc&lt;/a&gt;. In addition, the user may layer other functionalities on top of the core writing, such as on the fly schema checking, date/number formatting, specific empty-element handling and pretty-printing. 
+ </description>
+  
+  <shortDescription>XmlWriter</shortDescription>
+
+  <url>http://www.osjava.org/xmlwriter/</url>
+  <issueTrackingUrl>http://www.osjava.org:8080/jira/secure/BrowseProject.jspa?id=10024</issueTrackingUrl>
+  <siteAddress>www.osjava.org/xmlwriter</siteAddress>
+  <siteDirectory>/</siteDirectory>
+  <distributionDirectory></distributionDirectory>
+
+  <repository>
+    <connection>scm:cvs:pserver:anonymous@cvs.osjava.org:/var/cvs:xmlwriter</connection>
+    <url>http://www.osjava.org/view-cvs/viewcvs.cgi/xmlwriter/</url>
+  </repository>
+
+
+  <mailingLists>
+    <mailingList>
+      <name>osjava-users</name>
+      <subscribe>http://lists.flamefew.net/mailman/listinfo/osjava-users</subscribe>
+      <unsubscribe>http://lists.flamefew.net/mailman/listinfo/osjava-users</unsubscribe>
+      <archive>http://lists.flamefew.net/mailman/private/osjava-users/</archive>
+    </mailingList>
+  </mailingLists>
+
+
+  <developers>
+
+    <developer>
+      <name>Henri Yandell</name>
+      <id>hen</id>
+      <email>bayard@generationjava.com</email>
+      <organization>GenerationJava</organization>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Peter Casssetta</name>
+      <id>petecassetta</id>
+      <email>pete@fingertipsoft.com</email>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+
+  </developers>
+
+  <contributors>
+    <contributor>
+    </contributor>
+    
+  </contributors>
+  
+  <!-- Need to mark these as compile-time/run-time -->
+
+  <dependencies>
+    <dependency>
+      <id>xmlenc</id>
+      <version>0.39</version>
+      <url>http://xmlenc.sf.net</url>
+    </dependency>
+    <dependency>
+      <id>xerces</id>
+      <version>2.0.2</version>
+      <url>http://xml.apache.org/xerces/</url>
+      <jar>xmlParserAPIs-2.0.0.jar</jar>
+    </dependency>
+    <dependency>
+      <id>isorelax</id>
+      <version>20020414</version>
+      <url>http://isorelax.sourceforge.net/</url>
+    </dependency>
+  </dependencies>
+
+  <build>
+
+    <nagEmailAddress>bayard@www.generationjava.com</nagEmailAddress>
+
+    <sourceDirectory>src/java</sourceDirectory>
+
+    <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
+
+    <unitTest>
+      <includes>
+        <include>**/*Test.java</include>
+      </includes>
+    </unitTest>
+
+    <!-- J A R  R E S O U R C E S -->
+    <!-- Resources that are packaged up inside the JAR file -->
+
+    <!--
+    <jarResources>
+        <jarResource>include = *.properties</jarResource>
+    </jarResources>
+    -->
+
+    <jars>
+    </jars>
+  </build>
+
+    <reports>
+        <report>maven-jxr-plugin</report>
+        <report>maven-javadoc-plugin</report>
+        <report>maven-license-plugin</report>
+        <report>maven-changes-plugin</report>           
+        <report>maven-changelog-plugin</report>        
+        <report>maven-statcvs-plugin</report>          
+    </reports>
+
+</project>
+
