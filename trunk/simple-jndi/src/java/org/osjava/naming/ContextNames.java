@@ -72,11 +72,7 @@ public class ContextNames extends ContextBindings {
      *         object bound to the name
      */
     public Object nextElement() {
-        try {
-            return next();
-        } catch(NamingException e) {
-            return null;
-        }
+        return super.nextElement();
     }
 
     /**
