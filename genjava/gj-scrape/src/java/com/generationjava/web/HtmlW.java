@@ -193,20 +193,29 @@ public class HtmlW {
         return getAttribute(attribute, text, 0);
     }
     static public String getAttribute(String attribute, String text, int idx) {
-         int close = text.indexOf(">", idx);
-         int attrIdx = text.toLowerCase().indexOf(attribute.toLowerCase()+"=\"", idx);
-         if(attrIdx == -1) {
-             return null;
-         }
-         if(attrIdx > close) {
-             return null;
-         }
-         int attrStartIdx = attrIdx + attribute.length() + 2;
-         int attrCloseIdx = text.indexOf("\"", attrStartIdx);
-         if(attrCloseIdx > close) {
-             return null;
-         }
-         return XmlW.unescapeXml(text.substring(attrStartIdx, attrCloseIdx));
+        int close = text.indexOf(">", idx);
+        int doubleAttrIdx = text.toLowerCase().indexOf(attribute.toLowerCase()+"=\"", idx);
+        int singleAttrIdx = text.toLowerCase().indexOf(attribute.toLowerCase()+"='", idx);
+
+        int attrIdx = doubleAttrIdx;
+        String endQuote = "\"";
+        if(doubleAttrIdx == -1 || (singleAttrIdx != -1 && singleAttrIdx < doubleAttrIdx) ) {
+            attrIdx = singleAttrIdx;
+            endQuote = "'";
+        }
+
+        if(attrIdx == -1) {
+            return null;
+        }
+        if(attrIdx > close) {
+            return null;
+        }
+        int attrStartIdx = attrIdx + attribute.length() + 2;
+        int attrCloseIdx = text.indexOf(endQuote, attrStartIdx);
+        if(attrCloseIdx > close) {
+            return null;
+        }
+        return XmlW.unescapeXml(text.substring(attrStartIdx, attrCloseIdx));
     }
 
 }

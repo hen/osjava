@@ -159,24 +159,29 @@ final public class XmlW {
      * @deprecated because the parameters are the wrong way
      */
     static public String getAttribute(String attribute, String text, int idx) {
-         int close = text.indexOf(">", idx);
-         int doubleAttrIdx = text.indexOf(attribute+"=\"", idx);
-         int singleAttrIdx = text.indexOf(attribute+"='", idx);
-         int attrIdx = doubleAttrIdx;
-//         if(doubleAttrIdx > singleAttrIdx) {
-//         }
-         if(attrIdx == -1) {
-             return null;
-         }
-         if(attrIdx > close) {
-             return null;
-         }
-         int attrStartIdx = attrIdx + attribute.length() + 2;
-         int attrCloseIdx = text.indexOf("\"", attrStartIdx);
-         if(attrCloseIdx > close) {
-             return null;
-         }
-         return unescapeXml(text.substring(attrStartIdx, attrCloseIdx));
+        int close = text.indexOf(">", idx);
+        int doubleAttrIdx = text.indexOf(attribute+"=\"", idx);
+        int singleAttrIdx = text.indexOf(attribute+"='", idx);
+
+        int attrIdx = doubleAttrIdx;
+        String endQuote = "\"";
+        if(doubleAttrIdx == -1 || (singleAttrIdx != -1 && singleAttrIdx < doubleAttrIdx) ) {
+            attrIdx = singleAttrIdx;
+            endQuote = "'";
+        }
+
+        if(attrIdx == -1) {
+            return null;
+        }
+        if(attrIdx > close) {
+            return null;
+        }
+        int attrStartIdx = attrIdx + attribute.length() + 2;
+        int attrCloseIdx = text.indexOf(endQuote, attrStartIdx);
+        if(attrCloseIdx > close) {
+            return null;
+        }
+        return unescapeXml(text.substring(attrStartIdx, attrCloseIdx));
     }
 
 }
