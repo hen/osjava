@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<integration version="1.0">
+  <site label="Jakarta" url="http://jakarta.apache.org" css="css/site.css" logo="http://jakarta.apache.org/images/jakarta-logo.gif" target="report"/>
+  <groups>
+    <group title="Alexandria" conf="Alexandria-integration.xml"/>
+    <group title="BCEL" conf="BCEL-integration.xml"/>
+    <group title="BSF" conf="BSF-integration.xml"/>
+    <group title="Cactus" conf="Cactus-integration.xml"/>
+    <group title="Commons" conf="jakarta-commons-integration.xml"/>
+    <group title="ECS" conf="ECS-integration.xml"/>
+    <group title="HiveMind" conf="HiveMind-integration.xml"/>
+    <group title="JMeter" conf="JMeter-integration.xml"/>
+    <group title="Lucene" conf="Lucene-integration.xml"/>
+    <group title="ORO" conf="ORO-integration.xml"/>
+    <group title="POI" conf="POI-integration.xml"/>
+    <group title="Regexp" conf="Regexp-integration.xml"/>
+    <group title="Slide" conf="Slide-integration.xml"/>
+    <group title="Taglibs" conf="Taglibs-integration.xml"/>
+    <group title="Tapestry" conf="Tapestry-integration.xml"/>
+    <group title="Tomcat" conf="Tomcat-integration.xml"/>
+    <group title="Turbine" conf="Turbine-integration.xml"/>
+    <group title="Velocity" conf="Velocity-integration.xml"/>
+    <group title="Watchdog" conf="Watchdog-integration.xml"/>
+  </groups>
+</integration>

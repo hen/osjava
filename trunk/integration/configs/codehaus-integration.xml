@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<integration version="1.0">
+  <site label="Codehaus" url="http://www.codehaus.org" css="../css/site.css" logo="http://codehaus.org/codehaus-small.png" target="report/codehaus"/>
+  <buildables>
+    <buildable project="blissed" repository="cvs::pserver:anonymous@cvs.codehaus.org:/scm/cvspublic" />
+    <buildable project="classworlds" repository="cvs::pserver:anonymous@cvs.codehaus.org:/scm/cvspublic" />
+    <buildable project="dataforge/dataforge-common" repository="cvs::pserver:anonymous@cvs.codehaus.org:/scm/cvspublic" />
+    <buildable project="dataforge/dataforge-editor" repository="cvs::pserver:anonymous@cvs.codehaus.org:/scm/cvspublic" />
+    <buildable project="dataforge/dataforge-engine" repository="cvs::pserver:anonymous@cvs.codehaus.org:/scm/cvspublic" />
+    <buildable project="dataforge/dataforge-example" repository="cvs::pserver:anonymous@cvs.codehaus.org:/scm/cvspublic" />
+    <buildable project="dataforge/dataforge-portal" repository="cvs::pserver:anonymous@cvs.codehaus.org:/scm/cvspublic" />
+    <buildable project="drools/drools-base" repository="cvs::pserver:anonymous@cvs.codehaus.org:/scm/cvspublic" />
+    <buildable project="drools/drools-core" repository="cvs::pserver:anonymous@cvs.codehaus.org:/scm/cvspublic" />
+    <buildable project="drools/drools-examples" repository="cvs::pserver:anonymous@cvs.codehaus.org:/scm/cvspublic" />
+    <buildable project="drools/drools-groovy" repository="cvs::pserver:anonymous@cvs.codehaus.org:/scm/cvspublic" />
+    <buildable project="drools/drools-io" repository="cvs::pserver:anonymous@cvs.codehaus.org:/scm/cvspublic" />
+    <buildable project="drools/drools-java" repository="cvs::pserver:anonymous@cvs.codehaus.org:/scm/cvspublic" />
+    <buildable project="drools/drools-jsr94" repository="cvs::pserver:anonymous@cvs.codehaus.org:/scm/cvspublic" />
+    <buildable project="drools/drools-python" repository="cvs::pserver:anonymous@cvs.codehaus.org:/scm/cvspublic" />
+    <buildable project="drools/drools-smf" repository="cvs::pserver:anonymous@cvs.codehaus.org:/scm/cvspublic" />
+    <buildable project="forehead" repository="cvs::pserver:anonymous@cvs.codehaus.org:/scm/cvspublic" />
+    <buildable project="gleipner" repository="cvs::pserver:anonymous@cvs.codehaus.org:/scm/cvspublic" />
+    <buildable project="graph" repository="cvs::pserver:anonymous@cvs.codehaus.org:/scm/cvspublic" />
+    <buildable project="jcontainer/dna" repository="cvs::pserver:anonymous@cvs.codehaus.org:/scm/cvspublic" />
+    <buildable project="jcontainer/loom" repository="cvs::pserver:anonymous@cvs.codehaus.org:/scm/cvspublic" />
+    <buildable project="jerk" repository="cvs::pserver:anonymous@cvs.codehaus.org:/scm/cvspublic" />
+    <buildable project="jibe" repository="cvs::pserver:anonymous@cvs.codehaus.org:/scm/cvspublic" />
+    <buildable project="jmock" repository="cvs::pserver:anonymous@cvs.codehaus.org:/scm/cvspublic" />
+    <buildable project="jrcs" repository="cvs::pserver:anonymous@cvs.codehaus.org:/scm/cvspublic" />
+    <buildable project="ldapserver" repository="cvs::pserver:anonymous@cvs.codehaus.org:/scm/cvspublic" />
+    <buildable project="maven-fetch" repository="cvs::pserver:anonymous@cvs.codehaus.org:/scm/cvspublic" />
+    <buildable project="maven-proxy/common" repository="cvs::pserver:anonymous@cvs.codehaus.org:/scm/cvspublic" />
+    <buildable project="maven-proxy/core" repository="cvs::pserver:anonymous@cvs.codehaus.org:/scm/cvspublic" />
+    <buildable project="maven-proxy/standalone" repository="cvs::pserver:anonymous@cvs.codehaus.org:/scm/cvspublic" />
+    <buildable project="maven-proxy/testrepo" repository="cvs::pserver:anonymous@cvs.codehaus.org:/scm/cvspublic" />
+    <buildable project="maven-proxy/webapp" repository="cvs::pserver:anonymous@cvs.codehaus.org:/scm/cvspublic" />
+    <buildable project="quilt" repository="cvs::pserver:anonymous@cvs.codehaus.org:/scm/cvspublic" />
+    <buildable project="shocks" repository="cvs::pserver:anonymous@cvs.codehaus.org:/scm/cvspublic" />
+    <buildable project="sphere" repository="cvs::pserver:anonymous@cvs.codehaus.org:/scm/cvspublic" />
+    <buildable project="spice/components/alchemist" repository="cvs::pserver:anonymous@cvs.codehaus.org:/scm/cvspublic" />
+    <buildable project="spice/components/configkit" repository="cvs::pserver:anonymous@cvs.codehaus.org:/scm/cvspublic" />
+    <buildable project="spice/components/jndikit" repository="cvs::pserver:anonymous@cvs.codehaus.org:/scm/cvspublic" />
+    <buildable project="spice/components/loggerstore" repository="cvs::pserver:anonymous@cvs.codehaus.org:/scm/cvspublic" />
+    <buildable project="spice/components/netserve" repository="cvs::pserver:anonymous@cvs.codehaus.org:/scm/cvspublic" />
+    <buildable project="spice/components/salt" repository="cvs::pserver:anonymous@cvs.codehaus.org:/scm/cvspublic" />
+    <buildable project="spice/components/threadpool" repository="cvs::pserver:anonymous@cvs.codehaus.org:/scm/cvspublic" />
+    <buildable project="spice/sandbox/event" repository="cvs::pserver:anonymous@cvs.codehaus.org:/scm/cvspublic" />
+    <buildable project="spice/sandbox/jervlet/jervlet" repository="cvs::pserver:anonymous@cvs.codehaus.org:/scm/cvspublic" />
+    <buildable project="spice/sandbox/jervlet/jervlet-jetty" repository="cvs::pserver:anonymous@cvs.codehaus.org:/scm/cvspublic" />
+    <buildable project="spice/sandbox/jmxtools" repository="cvs::pserver:anonymous@cvs.codehaus.org:/scm/cvspublic" />
+    <buildable project="spice/sandbox/netevent" repository="cvs::pserver:anonymous@cvs.codehaus.org:/scm/cvspublic" />
+    <buildable project="spice/sandbox/packet" repository="cvs::pserver:anonymous@cvs.codehaus.org:/scm/cvspublic" />
+    <buildable project="spice/sandbox/netevent" repository="cvs::pserver:anonymous@cvs.codehaus.org:/scm/cvspublic" />
+    <buildable project="spice/sandbox/repository/componenthaus" repository="cvs::pserver:anonymous@cvs.codehaus.org:/scm/cvspublic" />
+    <buildable project="spice/sandbox/sca" repository="cvs::pserver:anonymous@cvs.codehaus.org:/scm/cvspublic" />
+    <buildable project="spice/sandbox/swingactions" repository="cvs::pserver:anonymous@cvs.codehaus.org:/scm/cvspublic" />
+    <buildable project="spice/sandbox/timeevent" repository="cvs::pserver:anonymous@cvs.codehaus.org:/scm/cvspublic" />
+    <buildable project="sysunit" repository="cvs::pserver:anonymous@cvs.codehaus.org:/scm/cvspublic" />
+    <buildable project="werkflow/werkflow-aop" repository="cvs::pserver:anonymous@cvs.codehaus.org:/scm/cvspublic" />
+    <buildable project="werkflow/werkflow-core" repository="cvs::pserver:anonymous@cvs.codehaus.org:/scm/cvspublic" />
+    <buildable project="werkz" repository="cvs::pserver:anonymous@cvs.codehaus.org:/scm/cvspublic" />
+  </buildables>
+</integration>
