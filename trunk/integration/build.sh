@@ -175,18 +175,16 @@ do
     fi
 
 # Needs to get smarter...
-    if [ -f target/*.?ar ];
-    then
-#        rm -f $reportDir/$i/builds/*.jar
+    DEPLOYABLES=`ls -1 target/*.?ar 2>/dev/null`
+#    rm -f $reportDir/$i/builds/*.jar
+    DT=`date +%Y%m%d`
+    for t in $DEPLOYABLES
+    do
         mkdir -p $reportDir/$i/builds/
-        DT=`date +%Y%m%d`
-        for t in target/*.?ar
-        do
-            file_name=`echo $t | sed 's/target\///' | sed 's/\.[^\.]*ar//'`
-            file_ext=`echo $t | sed 's/target\///' | sed 's/.*\.//g'`
-            mv $t $reportDir/$i/builds/${file_name}-$DT.${file_ext}
-        done
-    fi
+        file_name=`echo $t | sed 's/target\///' | sed 's/\.[^\.]*ar//'`
+        file_ext=`echo $t | sed 's/target\///' | sed 's/.*\.//g'`
+        mv $t $reportDir/$i/builds/${file_name}-$DT.${file_ext}
+    done
 
     date +"%Y/%m/%d %k:%M" > $reportDir/$i/BUILD_TIME
     if [ -e $buildDir/SCM_UPDATE ];
