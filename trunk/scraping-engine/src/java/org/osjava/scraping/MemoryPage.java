@@ -39,8 +39,9 @@ public class MemoryPage extends AbstractPage {
 
     private String page;
 
-    public MemoryPage(String page) {
+    public MemoryPage(String page, String type) {
         this.page = page;
+        setType(type);
     }
 
     public Reader read() throws IOException {

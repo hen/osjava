@@ -64,9 +64,23 @@ public abstract class AbstractHttpFetcher implements Fetcher {
             if(result != 200) {
                 throw new FetchingException("Unable to fetch from "+uri+" due to error code "+result);
             }
+            // Now we look at the content type
+            // If doesn't start with text or plain, we ignore
+            // TODO: Implement a lazy downloader instead
+            // Also, might want to check Content-Length. 
+            // Some binaries might be declaring an ascii type
+            org.apache.commons.httpclient.Header hdr = get.getResponseHeader("Content-Type");
+            String type = "unknown";
+            if(hdr != null) {
+                type = hdr.toExternalForm();
+                if(!type.startsWith("Content-Type: text") && !type.startsWith("Content-Type: plain")) {
+                    throw new FetchingException("Not going to fetch a non-text file");
+                }
+            }
+
             String txt = get.getResponseBodyAsString();
             get.releaseConnection(); 
-            Page page = new MemoryPage(txt);
+            Page page = new MemoryPage(txt, type);
             String base = url.getProtocol()+"://"+url.getHost();
             if(url.getPort() != -1) {
                 base += ":"+url.getPort();
