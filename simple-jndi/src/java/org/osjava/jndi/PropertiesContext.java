@@ -78,7 +78,7 @@ public class PropertiesContext implements Context  {
 
     // table is used as a read-write cache which sits 
     // above the file-store
-    private Hashtable table = new PropertiesStore();
+    private Hashtable table = new Hashtable();
 
     private Hashtable env;
     private String root;
