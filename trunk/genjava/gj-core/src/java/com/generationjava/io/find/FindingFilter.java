@@ -111,6 +111,9 @@ public class FindingFilter implements FileFilter {
     }
 
     public boolean accept(File file) {
+        if(filters == null) {
+            return true;
+        }
         Iterator itr = filters.iterator();
         while(itr.hasNext()) {
             FileFilter filter = (FileFilter) itr.next();
