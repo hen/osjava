@@ -3,11 +3,11 @@
 
   <properties>
       <author email="bayard@generationjava.com">Henri Yandell</author>
-      <title>Task List</title>
+      <title>Future Ideas</title>
   </properties>
 
   <body>
-    <section name="Tasks">
+    <section name="Future Ideas">
 <ul>
 <li>Allow converters to be configured/plugged in somehow. </li>
 <li>Implement Type in such a way that the object to create may be specified, say JDOPersistenceFactory, and that sub-properties may be set as bean properties.</li>
