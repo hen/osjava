@@ -11,21 +11,10 @@ import org.osjava.reportrunner.Result;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
 
-public class JFreeChartPNGRenderer extends AbstractRenderer {
+public class JFreeChartPNGRenderer extends JFreeChartAbstractRenderer {
 
     private int width;
     private int height;
-    private JFreeChartCreator creator = null;
-
-    public void setCreator(String name) {
-        try {
-            Class c = Class.forName(name);
-            creator = (JFreeChartCreator) c.newInstance();
-        } catch(ClassNotFoundException cnfe) {
-        } catch(InstantiationException ie) {
-        } catch(IllegalAccessException iae) {
-        }
-    }
 
     public void setHeight(String height) {
         this.height = Integer.parseInt(height);
@@ -35,12 +24,8 @@ public class JFreeChartPNGRenderer extends AbstractRenderer {
         this.width = Integer.parseInt(width);
     }
 
-	public void display(Result result, Report report, Writer out) throws IOException {
-		throw new RuntimeException("This should not be used with a Writer. ");
-	}
-
 	public void display(Result result, Report report, OutputStream out)	throws IOException {
-		ChartUtilities.writeChartAsPNG(out, this.creator.createChart(result, report), this.width, this.height);		
+		ChartUtilities.writeChartAsPNG(out, createChart(result, report), this.width, this.height);		
 	}
 
 }
