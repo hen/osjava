@@ -8,17 +8,19 @@
 
   <body>
     <section name="News">
+    <p>2003-12-06: Version 0.7 has been <a href="/changes-report.html#0.7">released</a>. </p>
+<hr />
         <p>2003-12-06: More work on the website to get away from the default Maven output and to something a bit more usable. </p>
 <hr />
         <p>2003-10-20: The website has been improved a touch. Attempting to respond to the some of the complaints in <a href="http://www.jroller.com/page/fate/20030926#simple_jndi_shoots_self_in"> simple-jndi shoots self in foot</a>. </p>
 <hr />
-    <p>2003-08-12: Version 0.6 has been released. </p>
+    <p>2003-08-12: Version 0.6 has been <a href="/changes-report.html#0.6">released</a>. </p>
 <hr />
-    <p>2003-04-08: Version 0.5 has been released. </p>
+    <p>2003-04-08: Version 0.5 has been <a href="/changes-report.html#0.5">released</a>. </p>
 <hr />
-    <p>2003-02-27: Version 0.4 has been released. </p>
+    <p>2003-02-27: Version 0.4 has been <a href="/changes-report.html#0.4">released</a>. </p>
     <hr />
-    <p>2003-02-14: Version 0.3 has been released. </p>
+    <p>2003-02-14: Version 0.3 has been <a href="/changes-report.html#0.3">released</a>. </p>
 
 </section>
 </body>
