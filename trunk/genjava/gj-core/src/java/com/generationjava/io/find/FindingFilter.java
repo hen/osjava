@@ -214,7 +214,6 @@ class SizeFilter implements FileFilter {
     }
 }
 
-// implement Wildcards
 class NameFilter implements FileFilter {
     private Object option;
     private Object argument;
