@@ -7,7 +7,7 @@
   </properties>
 
   <body>
-    <release version="2.0" date="2004-06-19">
+    <release version="2.0" date="2004-06-20">
         <action dev="hen" type="fix" issue="GJC-3">HtmlScraper does not handle apostrophe's [rather than double-quotes].</action>
         <action dev="hen" type="fix" issue="GJC-7">moveToTagWith called twice will find the first one again</action>
         <action dev="hen" type="fix" issue="GJC-17">Performance Bottleneck: extensive use of  toLowerCase in com.generationjava.web.HtmlW.getIndexOpeningTag</action>
