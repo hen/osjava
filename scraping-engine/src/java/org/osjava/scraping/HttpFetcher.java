@@ -33,8 +33,6 @@ package org.osjava.scraping;
 
 import org.apache.commons.httpclient.*;
 import org.apache.commons.httpclient.methods.*;
-import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 import com.generationjava.config.Config;
