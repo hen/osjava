@@ -89,13 +89,16 @@ public class RRTool {
      * Does not include the _report, _group or _renderer parts of a 
      * Report's query string.
      */
-    public static String generateQueryString(Report report) {
+    public static String generateQueryString(Report report, Collection ignore) {
         StringBuffer url = new StringBuffer();
 
         // Variants
         Variant[] variant = report.getVariants();
         for (int i=0;i<variant.length;i++) {
             String name = variant[i].getName();
+            if(ignore.contains(name)) {
+                continue;
+            }
             String selectedName = variant[i].getSelected().getName();
             url.append("&" + URLEncoder.encode(name) + "=" + URLEncoder.encode(selectedName));
         }
@@ -104,6 +107,9 @@ public class RRTool {
         Param[] param = report.getParams();
         for (int i=0;i<param.length;i++) {
             String name = param[i].getName();
+            if(ignore.contains(name)) {
+                continue;
+            }
             Object value = param[i].getOriginalValue();
             url.append("&" + URLEncoder.encode(name) + "=");
             if (value instanceof Object[]) {
