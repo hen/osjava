@@ -11,7 +11,7 @@
 <ul>
 <li>Types. com.foo.Value can have a partner key of com.foo.Value.type which specifies the type of object to use for the key. <b>DONE v0.4</b></li>
 <li>Implement Type in such a way that the object to create may be specified, say JDOPersistenceFactory, and that sub-properties may be set as bean properties.</li>
-<li>Allow converters to be configured/plugged in somehow. </li>
+<li>Allow converters to be configured/plugged in somehow. Add new converters. [URL/Boolean converters added in v0.5. Dependency on Lang 2.0] </li>
 <li>Implement binding so that values may be stored in the system, making it Read/Write. </li>
 <li>Implementing the list methods so you can see the values in a particular directory/properties file. </li>
 <li>Searches. Consider implementing DirContext. </li>
