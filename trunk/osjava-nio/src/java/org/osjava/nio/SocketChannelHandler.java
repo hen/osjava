@@ -5,11 +5,12 @@ import java.io.Writer;
 
 import java.net.Socket;
 
-import java.nio.channels.SocketChannel;
-import java.nio.channels.SelectionKey;
-import java.nio.channels.SelectableChannel;
-
 import java.nio.ByteBuffer;
+
+import java.nio.channels.SelectableChannel;
+import java.nio.channels.SelectionKey;
+import java.nio.channels.SocketChannel;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;

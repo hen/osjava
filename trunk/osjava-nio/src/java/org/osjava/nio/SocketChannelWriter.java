@@ -8,8 +8,10 @@ package org.osjava.nio;
 
 import java.io.IOException;
 import java.io.Writer;
+
 import java.nio.BufferOverflowException;
 import java.nio.ByteBuffer;
+
 import java.nio.channels.SelectionKey;
 
 /**

@@ -1,8 +1,14 @@
 package org.osjava.nio;
 
-import java.io.*;
-import java.nio.channels.*;
-import java.util.*;
+import java.io.IOException;
+import java.io.InterruptedIOException;
+
+import java.nio.channels.SelectableChannel;
+import java.nio.channels.SelectionKey;
+import java.nio.channels.Selector;
+
+import java.util.Iterator;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 
