@@ -32,9 +32,7 @@
   <logo>http://www.osjava.org/images/1x1.gif</logo>
   
   <description>
-    <p>Trail Taglib allows a dynamic breadcrumbs trail to be built up and records a user's movements for the entire session, while providing a normalized version to display to the user. </p>
-
-    <p>It uses http-referer headers to guess when the user has hit the back button and correctly understands when a server-side forward has happened under servlet 2.4 containers. A filter is provided which emulates the servlet 2.4 functionality in pre 2.4 containers. </p>
+    Trail Taglib allows a dynamic breadcrumbs trail to be built up and records a user's movements for the entire session, while providing a normalized version to display to the user. 
   </description>
   
   <shortDescription>Dynamic breadcrumb trail taglib</shortDescription>
@@ -95,6 +93,13 @@
       <groupId>osj-tmp</groupId>
       <artifactId>jsp-api</artifactId>
       <version>2.0.osjava</version>
+    </dependency>
+    <dependency>
+      <groupId>maven-taglib</groupId>
+      <artifactId>maven-taglib-plugin</artifactId>
+      <version>1.0</version>
+      <type>plugin</type>
+      <url>http://maven-taglib.sourceforge.net</url>
     </dependency>
   </dependencies>
 
