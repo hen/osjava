@@ -193,38 +193,18 @@ public class ThreadContext
      * </code>, if it is not null, will be wrapped in an ExtendedThread.  The 
      * target's run() method will be called when the thread is started.
      * 
-     * @param name the name of the thread.
+     * @param target the target Runnable to bind to the context..
      * @return the newly created ExtendedThread
      * @throws NameAlreadyBoundException if <code>name</code> is already bound 
      *         to another object.
      * @throws ThreadIsRunningException if the target is a running thread.
      * @throws NamingException if another naming exception is encountered.
      */
-    public Thread createThread(Name name)
+    public Thread createThread(Runnable target)
         throws NameAlreadyBoundException, NamingException, ThreadIsRunningException {
-        return this.createThread(null, name);
+        return this.createThread(target, (Name)null);
     }
-    
-    /**
-     * Create a new ExtendedThread with the Name <code>name</code>.  The name 
-     * is relative to this context and all subcontexts must already be
-     * created.  Null or empty names are not permitted.  The <code>target
-     * </code>, if it is not null, will be wrapped in an ExtendedThread.  The 
-     * target's run() method will be called when the thread is started.
-     * 
-     * @param name the name of the thread.
-     * @return the newly created ExtendedThread
-     * @throws NameAlreadyBoundException if <code>name</code> is already bound 
-     *         to another object.
-     * @throws ThreadIsRunningException if the target is a running thread.
-     * @throws NamingException if another naming exception is encountered.
-     */
-    public Thread createThread(String name)
-        throws NameAlreadyBoundException, NamingException, ThreadIsRunningException {
-        NameParser nameParser = getNameParser((Name)null);
-        return this.createThread(null, nameParser.parse(name));
-    }
-    
+        
     /**
      * Create a new ExtendedThread with the Name <code>name</code>.  The name 
      * is relative to this context and all subcontexts must already be
@@ -242,6 +222,10 @@ public class ThreadContext
      */
     public Thread createThread(Runnable target, Name name)
         throws NameAlreadyBoundException, NamingException, ThreadIsRunningException {
+        /* The target must not be null */
+        if(target == null) {
+            throw new  NullPointerException("Target must not be null");
+        }
         /* 
          * If no name is supplied, make up a name for the Thread based upon 
          * the context. 
@@ -552,7 +536,6 @@ public class ThreadContext
      * @see javax.naming.Context#bind(javax.naming.Name, java.lang.Object)
      */
     public void bind(Name name, Object obj) throws NamingException {
-        /* This is a NOP if obj is null */
         if(obj == null) {
             throw new InvalidObjectTypeException("Objects in this context must implement " +
                             "org.osjava.threads.ExtendedRunnable or ThreadContext.  " + 
