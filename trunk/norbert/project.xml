@@ -18,7 +18,7 @@
   <gumpRepositoryId>norbert</gumpRepositoryId>
 
   <description>
-  A handler for robots.txt, as described in http://www.robotstxt.org/wc/norobots-rfc.html.
+  A handler for robots.txt, as described in &lt;a href="http://www.robotstxt.org/wc/norobots-rfc.html"&gt;http://www.robotstxt.org/wc/norobots-rfc.html&lt;/a&gt;.
   </description>
   
   <shortDescription>A handler for robots.txt</shortDescription>
@@ -32,7 +32,7 @@
   <distributionDirectory>/sites/org/osjava/www/releases/official/</distributionDirectory>
 
   <repository>
-    <connection>scm:cvshen@umbongo.flamefew.net:/var/cvs:norbert</connection>
+    <connection>scm:cvs:ext:hen@umbongo.flamefew.net:/var/cvs:norbert</connection>
     <url>http://www.generationjava.com/view-cvs/viewcvs.cgi/norbert/</url>
   </repository>
 
