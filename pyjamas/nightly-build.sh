@@ -19,6 +19,7 @@ if [ "x$1x" != "xx" ];
 then
     if [ $1 = 'all' ];
     then
+        INIT='forced'
         LIST=`cat NIGHTLY.txt | grep -v '^#' | awk '{print $2}'`
         echo 'Forced build of all components. ' > REASON
         for i in `cat NIGHTLY.txt | grep -v '^#' | sed 's/ /::::/'`
@@ -38,6 +39,7 @@ then
         done
     elif [ $1 = 'update' ];
     then
+        INIT='update'
         for i in `cat NIGHTLY.txt | grep -v '^#' | awk '{print $2}'`
         do
             if [ -d $i ];
@@ -68,6 +70,7 @@ then
             fi
         done
     else
+        INIT='forced'
 # needs to handle doing the checkout if it's not there?
         LIST=$1   # $* ?
         echo 'Forcd update: Built because someone specifically chose to build it. ' > REASON
@@ -104,6 +107,10 @@ do
         echo "Failed to build $i"
         echo "Failed to build $i" > $reportDir/$i/FAILED
         mv ERROR.log OUTPUT.log $reportDir/$i
+        if [ $INIT = 'update' ];
+        then
+            cat $reportDir/$i/ERROR.log | mail -s "Failed to build $i" bayard@osjava.org
+        fi
     fi
     if [ -e ERROR.log ];
     then
@@ -113,12 +120,16 @@ do
             # errors in report
             echo "There were errors in building $i"
             echo "There were errors in building $i" > $reportDir/$i/FAILED
-        if [ $count != '0' ];
-        then
-            echo >> ERROR.log
-            cat OUTPUT.log | grep '\[ERROR\] TEST' >> ERROR.log
-        fi
+            if [ $count != '0' ];
+            then
+                echo >> ERROR.log
+                cat OUTPUT.log | grep '\[ERROR\] TEST' >> ERROR.log
+            fi
             mv ERROR.log OUTPUT.log $reportDir/$i
+            if [ $INIT = 'update' ];
+            then
+                cat $reportDir/$i/ERROR.log | mail -s "Failed to build $i" bayard@osjava.org
+            fi
         fi
     fi
     # run checkstyle, pmd, junit report, javadoc, xref
