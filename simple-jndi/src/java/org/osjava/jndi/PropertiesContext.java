@@ -381,7 +381,7 @@ public class PropertiesContext implements Context  {
 
         if("true".equals(properties.get("org.osjava.jndi.datasource"))) {
 //            System.err.println("Datasource!");
-            PropertiesDataSource pds = new PropertiesDataSource(properties, env);
+            PropertiesDataSource pds = new PropertiesDataSource(properties, env, this.delimiter);
             pds.setName(StringUtils.prechomp(StringUtils.getChomp(name,this.delimiter),this.delimiter));
             return pds;
         }

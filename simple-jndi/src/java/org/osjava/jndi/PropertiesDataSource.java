@@ -46,16 +46,19 @@ public class PropertiesDataSource implements DataSource {
     private Properties props;
     private PrintWriter pw;
     private String name;
+    private String delimiter;
 
-    public PropertiesDataSource(Properties props, Hashtable env) {
+    // make delimiter a beanproperty?
+    public PropertiesDataSource(Properties props, Hashtable env, String delimiter) {
         this.props = props;
         this.env = env;
         this.pw = new PrintWriter(System.err);
+        this.delimiter = delimiter;
     }
 
     void setName(String name) {
         this.name = name;
-//        System.err.println("Loading: "+name+"."+get("driver")+" from "+props);
+//        System.err.println("Loading: "+name+this.delimiter+get("driver")+" from "+props);
 //        DbUtils.ensureLoaded(get("driver"));
         ensureLoaded(get("driver"));
     }
@@ -72,7 +75,7 @@ public class PropertiesDataSource implements DataSource {
 
     private String get(String val) {
         if(name != null && !name.equals("")) {
-            val = name + "." + val;
+            val = name + this.delimiter + val;
         }
 //        System.err.println("Getting: "+val);
         return this.props.getProperty(val);
@@ -86,6 +89,8 @@ public class PropertiesDataSource implements DataSource {
 
     public Connection getConnection(String username, String password) throws SQLException {
         String url = get("url");
+//        System.err.println(this);
+//        System.err.println("url "+url);
         if(username == null || password == null) {
             return DriverManager.getConnection(url);
         } else {
@@ -107,6 +112,11 @@ public class PropertiesDataSource implements DataSource {
 
     public void setLoginTimeout(int timeout) throws SQLException {
         // ignored
+    }
+
+    // temporary
+    public String toString() {
+        return this.props.toString();
     }
 
 }
