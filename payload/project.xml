@@ -1,0 +1,121 @@
+<?xml version="1.0"?>
+<project>
+  
+  <pomVersion>3</pomVersion>
+  
+  <!-- This is the unique id of your project. It should be the same 
+       as the CVS module name -->
+  <id>payload</id>
+
+  <!-- The name of your project. Doesn't have to be unique, but life is 
+       easy if you keep it the same as your id -->
+  <name>Payload</name>
+
+  <!-- The version of your software. Life is easy if you use 
+       major.minor.bugfix, but you can also use RC's, alpha, -dev or anything 
+       you want. SNAPSHOT is a special version which is never cached by the 
+       dependency downloader. -->
+  <currentVersion>0.1</currentVersion>
+
+  <organization>
+    <name>OSJava</name>
+    <url>http://www.osjava.org</url>
+    <logo>http://www.osjava.org/images/osjava.gif</logo>
+  </organization>
+  <!-- When you started the project. Appears as copyright start in the site -->
+  <inceptionYear>2004</inceptionYear>
+
+  <!-- The Java package. Javadoc will not build without this. -->
+  <package>org.osjava.payload</package>
+
+  <!-- Or provide your own if you have a logo -->
+  <logo>http://www.osjava.org/images/1x1.gif</logo>
+  
+  <description>
+    Payload is a jar which self-extracts a payload and performs search and replace on some of the files as they leave based on an extraction-time specified properties file.
+  </description>
+  
+  <shortDescription><yload, the self-extracting jar</shortDescription>
+
+  <!-- This stuff contains OSJava linked bits. Only change the capitals -->
+  <url>http://www.osjava.org/payload/</url>
+
+  <!-- You'll need to log into JIRA and find out what your ID is -->
+  <issueTrackingUrl>http://www.osjava.org:8080/jira/secure/BrowseProject.jspa?id=YOUR_ID</issueTrackingUrl>
+
+  <repository>
+    <connection>scm:cvs:ext:anonymous@cvs.osjava.org:/var/cvs/:payload</connection>
+    <url>http://cvs.osjava.org/view-cvs/viewcvs.cgi/payload/</url>
+  </repository>
+
+  <mailingLists>
+    <mailingList>
+        <name>osjava-users</name>
+	<subscribe>http://lists.flamefew.net/mailman/listinfo/osjava-users</subscribe>
+        <unsubscribe>http://lists.flamefew.net/mailman/listinfo/osjava-users</unsubscribe>
+        <archive>http://lists.flamefew.net/mailman/private/osjava-users/</archive>
+    </mailingList>
+  </mailingLists>
+
+
+  <!-- Put your name in here -->
+  <developers>
+
+    <developer>
+      <name>Henri Yandell</name>
+      <id>hen</id>
+      <email>bayard@generationjava.com</email>
+      <organization>GenerationJava</organization>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+
+  </developers>
+
+  <!-- Same as above. Use this to recognise important users/ideasmiths -->
+  <contributors>
+    <contributor>
+    </contributor>
+  </contributors>
+  
+  <!-- One of the major parts of Maven. Record your dependencies here. 
+       Look in http://www.ibiblio.org/maven for public copies of your 
+       dependencies. There is an OSJava specific one which may 
+       need to be used, http://www.osjava.org/maven -->
+  <!--
+  <dependencies>
+    <dependency>
+      <id>DEPENDENCY ID</id>
+      <version>VERSION</version>
+      <url>URL FOR SITE TO LINK TO</url>
+    </dependency>
+  </dependencies>
+  -->
+
+  <build>
+
+    <!-- This is usually a good default -->
+    <sourceDirectory>src/java</sourceDirectory>
+
+    <!-- Also, usually a good default -->
+    <!--
+    <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
+
+    <unitTest>
+      <includes>
+        <include>**/*Test.java</include>
+      </includes>
+    </unitTest>
+    -->
+
+    <!-- You might want to build properties into the jar -->
+    <!--
+    <jarResources>
+        <jarResource>include = *.properties</jarResource>
+    </jarResources>
+    -->
+
+  </build>
+</project>
+
