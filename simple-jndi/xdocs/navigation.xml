@@ -5,9 +5,9 @@
 
   <body>
     <menu name="Overview">
-      <item name="About"              href="/index.html"/>
+      <item name="Introduction"              href="/index.html"/>
       <item name="News"              href="/News.html"/>
-      <item name="Description"              href="/Intro.html"/>
+      <item name="Installing"              href="/Intro.html"/>
       <item name="Examples"              href="/Examples.html"/>
       <item name="FAQ"              href="/FAQ.html"/>
       <item name="Download"              href="/Download.html"/>
