@@ -21,7 +21,14 @@ public class SqlReport extends AbstractSqlReport {
 
                 // hack to handle ?? preprocessing for arrays
                 if(Object[].class.isAssignableFrom(params[i].getType())) {
-                    Object[] array = (Object[]) params[i].getValue();
+                    Object value = params[i].getValue();
+                    Object[] array = null;
+                    if(value instanceof Object[]) {
+                        array = (Object[]) params[i].getValue();
+                    } else {
+                        array = new Object[] { value };
+                    }
+                    System.out.println("?? MARK HACK "+array.length);
                     String marks = StringUtils.chomp(StringUtils.repeat("?,", array.length), ",");
                     setSql(StringUtils.replaceOnce(getSql(), "??", marks));
                     for(int j=0; j<array.length; j++) {
