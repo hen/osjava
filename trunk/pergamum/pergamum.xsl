@@ -13,7 +13,7 @@
        <link href="css/style.css" rel="stylesheet" type="text/css" />
       </head>
       <body>
-       <div class="banner">Pergamum: Open Source Java Books</div>
+       <div class="banner">Pergamum: Books on Open Source Java</div>
        <div class="help"><a href="help.html">?</a></div>
        <div class="page">
          <xsl:apply-templates/>
