@@ -7,3 +7,5 @@ LI { list-style-type: none }
 .project_block { float: left; padding-right: 3em }
 
 .build_info { padding-top: 1em; }
+
+.error_text { color: red; }

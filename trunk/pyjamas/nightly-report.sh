@@ -142,7 +142,7 @@ do
     then
         echo '<pre>' `cat FAILED` '</pre>' >> $report
         echo '<hr>' >> $report
-        echo '<pre>' `cat ERROR.log | sed 's/$/<br>/'` '</pre>' >> $report
+        echo '<pre class="error_text">' `cat ERROR.log | sed 's/$/<br>/'` '</pre>' >> $report
     else
         echo '<pre>Build successful.</pre>' >> $report
 
