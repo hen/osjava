@@ -8,11 +8,11 @@
   <organization>
     <name>OSJava</name>
     <url>http://www.osjava.org/</url>
-    <logo>/images/initials.jpg</logo>
+    <logo>/images/osjava.gif</logo>
   </organization>
   <inceptionYear>2003</inceptionYear>
   <package>org.osjava</package>
-  <logo>/images/core-logo.jpg</logo>
+  <logo>/images/1x1.gif</logo>
   
   <!-- Gump integration -->
   <gumpRepositoryId>simple-jndi</gumpRepositoryId>
