@@ -12,3 +12,6 @@ Further down the road:
  * Deprecate ExtendedThreadGroup.  We're going to try to function without them
    Completely, instead relying upon ThreadContexts
  * Write Unit Tests for the projects. 
+ * ThreadNameParser needs to be improved drastically
+   * Should pay attention to it's environment properties
+   * .equals is abysmal and going to be often wrong.
