@@ -5,14 +5,15 @@
 
   <body>
     <menu name="Projects">
-      <item href="multiproject/beans/" name="beans"/>
-      <item href="multiproject/core/" name="core"/>
-      <item href="multiproject/csv/" name="csv"/>
-      <item href="multiproject/gui/" name="gui"/>
-      <item href="multiproject/mail/" name="mail"/>
-      <item href="multiproject/scrape/" name="scrape"/>
-      <item href="multiproject/tools/" name="tools"/>
-      <item href="multiproject/xml/" name="xml"/>
+      <item href="multiproject/gj-beans/" name="gj-beans"/>
+      <item href="multiproject/gj-core/" name="gj-core"/>
+      <item href="multiproject/gj-csv/" name="gj-csv"/>
+      <item href="multiproject/gj-gui/" name="gj-gui"/>
+      <item href="multiproject/gj-mail/" name="gj-mail"/>
+      <item href="multiproject/gj-scrape/" name="gj-scrape"/>
+      <item href="multiproject/gj-servlet/" name="gj-servlet"/>
+      <item href="multiproject/gj-tools/" name="gj-tools"/>
+      <item href="multiproject/gj-xml/" name="gj-xml"/>
     </menu>
   </body>
 </project>
