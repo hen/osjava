@@ -31,7 +31,7 @@
 <script type="text/javascript" src="jscalendar/calendar-setup.js"></script>
 <!-- End of Calendar widget header -->
   <!-- Calendar widget -->
-  <%= params[i].getName() %>:  <input type="text" id="<%= params[i].getName() %>" name="<%= params[i].getName() %>" />
+  <%= params[i].getLabel() %>:  <input type="text" id="<%= params[i].getName() %>" name="<%= params[i].getName() %>" />
   <!-- TODO: Make this either button or input-button so it can be on the tab order -->
   <img src="jscalendar/img.gif" id="trigger_<%= params[i].getName() %>" style="cursor: pointer; border: 1px solid red;" title="Date selector"
       onmouseover="this.style.background='red';" onmouseout="this.style.background=''" /><br>
@@ -49,12 +49,12 @@
 <%
             } else {
 %>
-    <%= params[i].getName() %>: <input type="text" name="<%= params[i].getName() %>"><br>
+    <%= params[i].getLabel() %>: <input type="text" name="<%= params[i].getName() %>"><br>
 <%
             }
         } else {
 %>
-    <%= params[i].getName() %>: <select name="<%= params[i].getName() %>">
+    <%= params[i].getLabel() %>: <select name="<%= params[i].getName() %>">
 <%
           for(int j=0; j<choices.length; j++) {
 %>
