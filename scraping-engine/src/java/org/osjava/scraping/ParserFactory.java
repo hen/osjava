@@ -33,7 +33,7 @@ package org.osjava.scraping;
 
 import com.generationjava.lang.ClassW;
 
-import org.osjava.oscube.container.Config;
+import com.generationjava.config.Config;
 import org.osjava.oscube.container.Session;
 
 public class ParserFactory {

@@ -34,7 +34,7 @@ package org.osjava.scraping;
 import java.io.IOException;
 import java.io.Reader;
 
-import org.osjava.oscube.container.Config;
+import com.generationjava.config.Config;
 import org.osjava.oscube.container.Session;
 
 // TODO: Have a page know its URI

@@ -31,7 +31,7 @@
  */
 package org.osjava.scraping;
 
-import org.osjava.oscube.container.Config;
+import com.generationjava.config.Config;
 import org.osjava.oscube.container.Session;
 
 public class NullFetcher implements Fetcher {

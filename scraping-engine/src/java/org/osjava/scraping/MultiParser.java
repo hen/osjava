@@ -35,7 +35,7 @@ import java.util.List;
 import java.util.LinkedList;
 import java.util.Iterator;
 
-import org.osjava.oscube.container.Config;
+import com.generationjava.config.Config;
 import org.osjava.oscube.container.Session;
 import org.osjava.oscube.container.Result;
 import org.osjava.oscube.container.MultiResult;
