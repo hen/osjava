@@ -11,10 +11,6 @@
             <li>
                 Eliminating ThreadManager and replacing it with ThreadContext.
             </li>
-            <li>
-                Deprecate ExtendedThreadGroup. We're going to try to function
-                without them completely, instead relying upon ThreadContexts.
-            </li>
             <li>ThreadNameParser needs to be improved drastically. <ul><li>
                     Should pay attention to it's environment properties</li>
                 <li>.equals is abysmal and going to be often wrong.</li></ul>

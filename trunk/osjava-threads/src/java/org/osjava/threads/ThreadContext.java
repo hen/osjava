@@ -53,7 +53,6 @@ import javax.naming.NameParser;
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 import javax.naming.NotContextException;
-import javax.naming.OperationNotSupportedException;
 
 import org.osjava.naming.ContextBindings;
 import org.osjava.naming.ContextNames;
@@ -65,10 +64,11 @@ import org.osjava.naming.InvalidObjectTypeException;
  * This context depends upon the Simple-JNDI <b>TODO: VERSION OF SIMPLE_JNDI</b>
  * package available from http://www.osjava.org.
  * <br/><br/>
- * This Context does not implement subcontexts because that would severely 
- * affect the way that this Context type works with ThreadGroups.  This is 
- * an issue that will be dealt with if the need arises and an adequate 
- * method of accoplishing it can be determined.
+ * A ThreadContext object can only be bound once in a hierarchy of Contexts.
+ * Being bound in more than one place will result in undefined behavior.  
+ * Additionally, even though a ThreadContext object can be duplicated as 
+ * other Contexts, renaming Threads bound to the Context will result in 
+ * undefined behavior, and this activity is not at all recommended.
  * 
  * @author Robert M. Zigweid
  * @version $Rev$ $LastChangedDate$
@@ -90,7 +90,12 @@ public class ThreadContext
      * The map of sub contexts. 
      */
     private Map subContexts = new HashMap();
-            
+    
+    /* 
+     * The name full name of this context. 
+     */
+    private Name nameInNamespace = null;
+    
     /* 
      * The NameParser utilized by the Context.
      */
@@ -101,15 +106,25 @@ public class ThreadContext
      */
     private Hashtable environment = new Hashtable();
     
+    /* 
+     * The status of the context.  If it is in the process of closing, 
+     * this will be true.
+     */
+    private boolean closing = false;
+    
     /****************
      * Constructors *
      ****************/
     /**
      * Create a ThreadContext.
      * 
+     * @param name The name of the ThreadContext.  It can be null, and if it is
+     *        considered to be the root context.
+     * 
      * @throws NamingException if a naming exception is encountered.
      */
-    protected ThreadContext() throws NamingException {
+    protected ThreadContext(Name name) throws NamingException {
+        nameInNamespace = name; 
         nameParser = new ThreadNameParser(this);
     }
         
@@ -223,6 +238,15 @@ public class ThreadContext
     public ExtendedThread createThread(Runnable target, String name)
         throws NameAlreadyBoundException, NamingException, ThreadIsRunningException {
         return this.createThread(target, nameParser.parse(name));
+    }
+    
+    /**
+     * Determine whether or not the ThreadContext is empty.
+     * 
+     * @return true if the Context is empty
+     */
+    protected boolean isEmpty() {
+        return (contextStore.size() > 0 || subContexts.size() > 0);
     }
     
     /** 
@@ -732,6 +756,7 @@ public class ThreadContext
         if(names.hasMore()) {
             throw new ContextNotEmptyException();
         }
+        ((Context)subContexts.get(name)).close();
         subContexts.remove(name);
     }
 
@@ -774,7 +799,9 @@ public class ThreadContext
             throw new NameAlreadyBoundException();
         }
 
-        newContext = new ThreadContext();
+        Name contextName = (Name)nameInNamespace.clone();
+        contextName.addAll(name);
+        newContext = new ThreadContext(contextName);
         subContexts.put(name, newContext);
         return newContext;
     }
@@ -963,19 +990,45 @@ public class ThreadContext
      * @see javax.naming.Context#close()
      */
     public void close() throws NamingException {
+        /* Don't try anything if we're already in the process of closing */
+        if(closing) {
+            return;
+        }
+        setAbort(true);
+        Iterator it = subContexts.keySet().iterator();
+        while(it.hasNext()) {
+            destroySubcontext((Name)it.next());
+        }
         
-    // TODO Auto-generated method stub
-
+        while(contextStore.size() > 0 || subContexts.size() > 0) {
+            it = contextStore.keySet().iterator();
+            while(it.hasNext()) {
+                Name name = (Name)it.next();
+                if(!((Thread)contextStore.get(name)).isAlive()) {
+                    contextStore.remove(name);
+                }
+            }
+            it = subContexts.keySet().iterator();
+            while(it.hasNext()) {
+                Name name = (Name)it.next();
+                ThreadContext context = (ThreadContext)subContexts.get(name);
+                if(context.isEmpty()) {
+                    subContexts.remove(name);
+                }
+            }
+        }
     }
 
     /**
-     * The current way that ThreadContext is implemented, getNameInNamespace 
-     * cannot be implemented.
+     * Returns a string represnetation of the name of this context in its 
+     * namespace.
      * 
+     * @return a String representing the name of this context.
+     * @throws NamingException if a naming exception is encountered.
      * @see javax.naming.Context#getNameInNamespace()
      */
     public String getNameInNamespace() throws NamingException {
-        throw new OperationNotSupportedException();
+        return nameParser.nameToString(nameInNamespace);
     }
 
 }
