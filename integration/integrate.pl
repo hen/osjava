@@ -11,9 +11,10 @@ use POSIX qw(strftime);
 
 sub usage() {
     print "Usage:\n";
-    print " ./integrate-builds.pl foo-integration.xml all       -  Will build every component specified in the given xml file. \n";
-    print " ./integrate-builds.pl foo-integration.xml update    -  Will build only components that have had a changed file since the last update. \n";
-#    print " ./integrate-builds.pl foo-integration.xml <project> -  Will build only the component specified. \n";
+    print " ./integrate-builds.pl foo-integration.xml all            -  Will build every component specified in the given xml file. \n";
+    print " ./integrate-builds.pl foo-integration.xml update         -  Will build only components that have had a changed file since the last update. \n";
+    print " ./integrate-builds.pl foo-integration.xml report         -  Will regenerate the frontpage. \n";
+    print " ./integrate-builds.pl foo-integration.xml xxx <projects> -  Applies the action to only those projects. \n";
     exit 1;
 }
 
@@ -84,14 +85,18 @@ if(@ARGV < 2) {
 my $conf_filename = $ARGV[0];
 my $action = $ARGV[1];
 
+my @filter = ();
+if(@ARGV > 2) {
+    @filter = @ARGV[2 .. $#ARGV];
+}
+
 # This is pretty ugly, need to pass CONF_FILE to XMLin somehow.
 open(CONF_FILE, $conf_filename) or die("Unable to open xml configuration: $!");
 close(CONF_FILE);
+
 my $conf = XMLin($conf_filename, forcearray=>1);
 #NOT YET#$global_repository = $conf->{'buildables'}->{'repository'};
 @projects = @{$conf->{'buildables'}[0]->{'buildable'}};
-
-##print Dumper($conf->{'site'}[0]);
 
 my @build_list = ();
 
@@ -100,6 +105,7 @@ my @build_list = ();
 # loop over each component in the xml
     foreach $buildable (@projects) {
         $project = $buildable->{'project'};
+
         $repository = $buildable->{'repository'};
         $tag = $buildable->{'tag'};
         if(not $tag) {
@@ -110,6 +116,12 @@ my @build_list = ();
         $buildable->{'directory'} = $directory;
         $buildable->{'escapedDirectory'} = $directory;
         $buildable->{'escapedDirectory'} =~ s/\//_/g;
+
+        if(@filter) {
+            unless(grep (/$project/, @filter)) {
+                next;
+            }
+        }
 
         # is component there?
         if(-e $directory) {
