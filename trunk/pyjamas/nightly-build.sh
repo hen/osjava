@@ -19,40 +19,40 @@ then
     if [ $1 = 'all' ];
     then
         LIST=`cat NIGHTLY.txt | awk '{print $2}' | grep -v '^#'`
-	echo 'No updates: Built because all components were built. ' > REASON
+        echo 'No updates: Built because all components were built. ' > REASON
         for i in `cat NIGHTLY.txt | sed 's/ /::::/'`
         do
             checkoutDir=`echo $i | sed 's/.*:::://'`
             if [ ! -e $checkoutDir ];
             then
-		if [ $SCM = 'SVN' ];
-		then
+                if [ $SCM = 'SVN' ];
+                then
                     svn co `echo $i | sed 's/::::/\//'` $checkoutDir
-		fi
-		if [ $SCM = 'CVS' ];
-		then
-		    cvs -d `echo $i | sed 's/:::://'` co $checkoutDir
-		fi
+                fi
+                if [ $SCM = 'CVS' ];
+                then
+                    cvs -d `echo $i | sed 's/:::://'` co $checkoutDir
+                fi
             fi
         done
     elif [ $1 = 'update' ];
     then
-	cat NIGHTLY.txt | awk '{print $2}' > tmp.NIGHTLY.txt
-	if [ $SCM = 'SVN' ];
-	then
+        cat NIGHTLY.txt | awk '{print $2}' > tmp.NIGHTLY.txt
+        if [ $SCM = 'SVN' ];
+        then
             LIST=`svn -u status | grep -v '^\?' | grep -v '^A' | grep -v '^M' | grep -v 'Status against revision' | awk '{print $3}' | grep -o -f tmp.NIGHTLY.txt  | sort -u`
             svn update | grep -v '^?' > REASON
-	fi
-	if [ $SCM = 'CVS' ];
-	then
+        fi
+        if [ $SCM = 'CVS' ];
+        then
             LIST=`cvs -nq update 2>/dev/null | grep -v '^\?' | grep -v '^A' | grep -v '^M' | grep -v 'Status against revision' | awk '{print $2}' | grep -o -f tmp.NIGHTLY.txt  | sort -u`
             cvs -q update 2>/dev/null | grep -v '^?' > REASON
-	fi
+        fi
         rm tmp.NIGHTLY.txt
     else
 # needs to handle doing the checkout if it's not there?
         LIST=$1   # $* ?
-	echo 'No updates: Built because someone specifically chose to build it. ' > REASON
+        echo 'No updates: Built because someone specifically chose to build it. ' > REASON
     fi
 else
     usage
