@@ -145,6 +145,14 @@ public class SocketChannelHandler extends AbstractChannelHandler {
 
     public void connect() throws IOException {
         try {
+            /* If already connected we want to make sure that the socket isn't 
+             * interested in connecting.  More than likely we want to throw 
+             * an IllegalStateException or something similar to that too, but
+             * I'm not going to be putting that in right now.  -- Robert */
+            if (chan.isConnected()) {
+                key.interestOps(chan.validOps() & ~SelectionKey.OP_CONNECT);
+                return;
+            }
             if (chan.isConnectionPending()) {
                 if (chan.finishConnect()) {
                     key.interestOps(chan.validOps() & ~SelectionKey.OP_CONNECT);

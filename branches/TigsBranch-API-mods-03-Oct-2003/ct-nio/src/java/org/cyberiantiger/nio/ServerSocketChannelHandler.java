@@ -37,7 +37,7 @@ public class ServerSocketChannelHandler
 
         try {
             SocketChannel sockChan = chan.accept();
-            int ops = sockChan.validOps();
+            int ops = sockChan.validOps() & ~SelectionKey.OP_CONNECT  ;
 
             if (sockChan != null) {
                 // Create a new SocketChannelHandler
