@@ -36,7 +36,6 @@ import java.io.IOException;
 import java.util.LinkedList;
 
 import org.apache.commons.lang.StringUtils;
-//import com.generationjava.net.UrlW;
 import com.generationjava.web.HtmlW;
 
 /// simple system in. need to now consider the move methods.
@@ -108,7 +107,7 @@ public class HtmlScraper {
      */
      // This needs to be case-insensitive
     public boolean move(String tag) {
-        int idx = HtmlW.getIndexOpeningTag(tag, data.substring(1));
+        int idx = HtmlW.getIndexOpeningTag(data.substring(1), tag);
         if(idx == -1) {
             return false;
         } else {
@@ -259,10 +258,10 @@ public class HtmlScraper {
             if(idx != -1) {
                 attr = StringUtils.getNestedString(strs[i], "[", "]");
                 strs[i] = strs[i].substring(0, idx);
-                int start = HtmlW.getIndexOpeningTag(strs[i], str);
-                return HtmlW.getAttribute(attr, str, start);
+                int start = HtmlW.getIndexOpeningTag(str, strs[i]);
+                return HtmlW.getAttribute(str, attr, start);
             } else {
-                str = HtmlW.getContent(strs[i], str);
+                str = HtmlW.getContent(str, strs[i]);
             }
         }
         return str;
