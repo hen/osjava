@@ -58,7 +58,7 @@ final public class XmlW {
 
     /**
      * Remove any xml tags from a String.
-     * Same as HtmlW's method.
+     * Remove any xml tags from a String.
      */
     static public String removeXml(String str) {
         int sz = str.length();

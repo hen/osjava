@@ -35,6 +35,7 @@ import org.apache.commons.lang.StringUtils;
 
 /**
  * HTML helping static methods.
+ * Due to case insensitivity, these methods can't match the XML ones.
  */
 public class HtmlW {
 
