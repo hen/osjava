@@ -32,27 +32,14 @@
 package org.osjava.norbert;
 
 /**
- * A norobots Disallow: rule. 
- * Any path which begins with the rule's path is 
- * not allowed. 
+ * Application exception for anything that might go wrong 
+ * in the checking of a robots.txt file. It does not 
+ * wrap an Exception to maintain support for older JDKs.
  */
-class DisallowedRule extends AbstractRule {
+public class NoRobotException extends Exception {
 
-    public DisallowedRule(String path) {
-        super(path);
+    public NoRobotException(String message, Throwable t) {
+        super(message);
     }
-
-    public Boolean isAllowed(String query) {
-        if("".equals(super.getPath())) {
-            return null;
-        }
-        boolean test = query.startsWith( super.getPath() );
-        if(!test) {
-            return null;
-        } else {
-            return Boolean.FALSE;
-        }
-    }
-
 
 }
