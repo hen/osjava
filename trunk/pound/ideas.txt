@@ -1,0 +1,27 @@
+Whole realm of games for kids. Yeah right.
+Still.
+
+Game #1:
+  Bash n Pound. Kid hits the keyboard and hears musical notes and the screen changes colour. 
+    TODO: Needs to go full-screen. Needs to stop special-chars quitting it. Needs new ideas in colour-maps and sound-maps.
+
+Game #2: 
+  Shape Pound. Kid hits the keyboard and hears musical notes and sees the screen change, with shapes displayed on the screen.
+
+Game #3: 
+  Animal Pound. Kid hits the keyboard and hears animal noises and sees animals.
+
+Game #4: 
+  Velocity Pound. Kid hits the keybord. The more they hit, the higher the velocity of a visual effect, the less they hit it calms down again.
+
+Game #5:
+  Flag Pound. Kid hits keyboard. Sees flags. Game-like sound effects (noise for hitting keyboard? music?)
+
+Game #6: 
+  Letter Pound. Kid hits keyboard. Play music and show character typed.
+
+Game #7:
+  Guess the letter. Older kid has to select character for a letter. Same variant for 6, 8, 3.
+
+Game #8: 
+  Object Pound. Kid hits keyboard, sees picture of object starting with letter (A is for pound).
