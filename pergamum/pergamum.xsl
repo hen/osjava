@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:pg="http://www.osjava.org/pergamum/ns"
-                xmlns="http://www.w3.org/1999/xhtml"
+		xmlns="http://www.w3.org/1999/xhtml"
   version="1.0">
 
   <!-- this is our top level match. Should include headers etc later on -->
@@ -13,7 +13,10 @@
        <link href="css/style.css" rel="stylesheet" type="text/css" />
       </head>
       <body>
-       <xsl:apply-templates/>
+       <div class="banner">Pergamum: Open Source Java Books</div>
+       <div class="page">
+         <xsl:apply-templates/>
+       </div>
       </body>
      </html>
   </xsl:template>
@@ -148,7 +151,7 @@
     <xsl:variable name="src">
       <xsl:value-of select="@src"/>
     </xsl:variable>
-    <xsl:copy-of select="document($src)"/>
+    <xsl:copy-of select="document($src)/:html/:body/:div[@class='page']"/>
   </xsl:template>
 
   <!-- pass unrecognized nodes along unchanged -->
