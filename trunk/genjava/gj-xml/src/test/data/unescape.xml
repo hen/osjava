@@ -1,0 +1,3 @@
+<one>
+ <two test="1&gt;2">Foo &lt; Bar</two>
+</one>
