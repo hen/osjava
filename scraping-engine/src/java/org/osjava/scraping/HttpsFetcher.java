@@ -36,7 +36,6 @@ import org.apache.commons.httpclient.methods.*;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import com.generationjava.net.UrlW;
 
 /**
  * Fetches a piece of content for a url
