@@ -59,7 +59,7 @@ public class ReportFactory {
         }
 
         String filename = group.getFilename();
-        XMLNode node = parseXml( new File(filename) ).getNode("reports");
+        XMLNode node = parseXml( filename ).getNode("reports");
         Enumeration reportNodes = node.enumerateNode("report");
         while(reportNodes.hasMoreElements()) {
             XMLNode reportNode = (XMLNode) reportNodes.nextElement();
@@ -77,7 +77,7 @@ public class ReportFactory {
 
         String filename = group.getFilename();
         List reports = new ArrayList();
-        XMLNode node = parseXml( new File(filename) ).getNode("reports");
+        XMLNode node = parseXml( filename ).getNode("reports");
         Enumeration reportNodes = node.enumerateNode("report");
         while(reportNodes.hasMoreElements()) {
             XMLNode reportNode = (XMLNode) reportNodes.nextElement();
@@ -243,7 +243,24 @@ LABEL:  while(nodes.hasMoreElements()) {
         }
     }
 
-    private static XMLNode parseXml(File file) {
+    private static XMLNode parseXml(String file) {
+        if(file.startsWith("classpath:")) {
+            file = file.substring("classpath:".length());
+            return parseXmlFromClasspath( file );
+        }
+
+        if(file.startsWith("file:")) {
+            file = file.substring("file:".length());
+        }
+
+        File f = new File(file);
+        if(f.exists()) {
+            return parseXmlFromFile( f );
+        } else {
+            return parseXmlFromClasspath( file );
+        }
+    }
+    private static XMLNode parseXmlFromFile(File file) {
         Reader reader = null;
         try {
             XMLParser parser = new XMLParser();
@@ -255,7 +272,7 @@ LABEL:  while(nodes.hasMoreElements()) {
             try { if(reader != null) { reader.close(); } } catch(IOException ioe) { ; }
         }
     }
-    private static XMLNode parseXml(String file) {
+    private static XMLNode parseXmlFromClasspath(String file) {
         Reader reader = null;
         try {
             XMLParser parser = new XMLParser();
