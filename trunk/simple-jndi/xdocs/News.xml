@@ -8,6 +8,10 @@
 
   <body>
     <section name="News">
+        <p>2003-12-06: More work on the website to get away from the default Maven output and to something a bit more usable. </p>
+<hr />
+        <p>2003-10-20: The website has been improved a touch. Attempting to respond to the some of the complaints in <a href="http://www.jroller.com/page/fate/20030926#simple_jndi_shoots_self_in"> simple-jndi shoots self in foot</a>. </p>
+<hr />
     <p>Version 0.6 has been released, as of 2003-08-12. The following features were added: </p>
 <ul>
 <li>You may now see and modify the Simple-JNDI parameters through Simple-JNDI. </li>
