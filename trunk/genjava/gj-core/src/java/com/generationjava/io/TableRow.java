@@ -43,7 +43,6 @@ import java.util.ArrayList;
 public class TableRow implements Iterator {
 
     private List     stringList;
-    private int      width;
     private int[]    colsizes;
     private Iterator myIterator;
     private int      ptr;

@@ -131,8 +131,6 @@ public final class JdbcW {
     static public Object getAutoIncrement(String tablename, Connection conn, String pkey) throws SQLException {
         DatabaseMetaData meta = conn.getMetaData();
         ResultSet rs = meta.getPrimaryKeys(null, null, tablename);
-        ResultSetMetaData rsmd = rs.getMetaData();
-        HashMap map = new HashMap();
         while(rs.next()) {
             rs.getObject(1);
             rs.getObject(2);
@@ -150,7 +148,6 @@ public final class JdbcW {
         try {
             DatabaseMetaData meta = conn.getMetaData();
             ResultSet rs = meta.getPrimaryKeys(null, null, tablename);
-            ResultSetMetaData rsmd = rs.getMetaData();
             HashMap map = new HashMap();
             while(rs.next()) {
                 map.put(rs.getObject(4), rs.getObject(5));

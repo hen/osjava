@@ -40,14 +40,11 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.BufferedReader;
 import java.util.Properties;
-import java.util.Enumeration;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.apache.commons.collections.IteratorUtils;
 import com.generationjava.collections.OrderedSet;
 import com.generationjava.lang.StringW;
 

@@ -32,7 +32,6 @@
 package com.generationjava.io;
 
 import java.io.File;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.FileReader;
 import java.io.Reader;
@@ -44,9 +43,6 @@ import java.io.FileWriter;
 import java.net.URL;
 
 import java.util.LinkedList;
-
-import org.apache.commons.lang.StringUtils;
-//import com.generationjava.util.Wildcard;
 
 /**
  * Provides useful, standard behaviour for dealing with java.io.Files.
@@ -147,7 +143,6 @@ final public class FileW {
 	        new File(file.getParent()).mkdirs();
             }
             Writer wtr = new FileWriter( file );
-            long sz = file.length();
             char[] ch = contents.toCharArray();
             wtr.write(ch);
             wtr.close();
