@@ -7,6 +7,11 @@
     <menu name="Genjava">
       <item href="index.html" name="Component list"/>
       <item href="Genjava.html" name="What is Genjava?"/>
+      <item name="Downloads"   href="http://www.osjava.org/releases/official/genjava/"/>
+    </menu>
+    <menu name="Resources">
+      <item name="Mailing list"       href="/mail-lists.html"/>
+      <item name="Bug tracking"       href="/issue-tracking.html"/>
     </menu>
     <menu name="Genjava Projects">
       <item href="multiproject/gj-beans/" name="gj-beans"/>
