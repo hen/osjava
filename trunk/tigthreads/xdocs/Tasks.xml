@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<document>
+  <properties>
+    <author email="rzigweid@tigransoft.org">Robert M. Zigweidl</author>
+    <title>Introduction</title>
+  </properties>
+  
+  <body>
+    <section name="Pending Tasks">
+      <p>
+        <ul>
+          <li>Thread Pooling</li>
+          <li>Investigate utilizing JNDI (or even Simple-JNDI) to replace a large portion of ThreadManager</li>
+        </ul>
+      </p>
+    </section>
+  </body>
+</document>
