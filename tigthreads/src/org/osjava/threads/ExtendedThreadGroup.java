@@ -1,7 +1,7 @@
 /* 
  * org.osjava.threads.ExtendedThreadGroup
  * 
- * $Revision: 1.1 $
+ * $Revision: 1.2 $
  * 
  * Created on Aug 01, 2002
  * 
@@ -52,7 +52,7 @@ import java.util.Set;
  * children, be they other ExtendedThreadGroups, or {@link ExtendedThreads}.
  * 
  * @author Robert M. Zigweid
- * @version $Revision: 1.1 $ $Date: 2003/09/08 16:40:26 $
+ * @version $Revision: 1.2 $ $Date: 2003/11/03 08:55:23 $
  */
 public class ExtendedThreadGroup extends ThreadGroup {
     /**
@@ -323,8 +323,7 @@ public class ExtendedThreadGroup extends ThreadGroup {
         subGroups = getThreadGroupNames();
         it = subGroups.iterator();
         while (it.hasNext()) {
-            ExtendedThreadGroup next =
-                (ExtendedThreadGroup)getThreadGroup((String)it.next());
+            ExtendedThreadGroup next = getThreadGroup((String)it.next());
             ret.addAll(next.getThreadGroupNames(true));
         }
         return ret;
@@ -429,8 +428,7 @@ public class ExtendedThreadGroup extends ThreadGroup {
         }
 
         while (it.hasNext()) {
-            ExtendedThreadGroup next =
-                (ExtendedThreadGroup)getThreadGroup((String)it.next(), true);
+            ExtendedThreadGroup next = getThreadGroup((String)it.next(), true);
             ret = next.getThreadGroup(name, recurse);
             if (ret != null) {
                 return ret;
@@ -475,7 +473,7 @@ public class ExtendedThreadGroup extends ThreadGroup {
         Iterator it = threadChildren.keySet().iterator();
 
         while (it.hasNext()) {
-            Object next = threadChildren.get((String)it.next());
+            Object next = threadChildren.get(it.next());
             ((ExtendedThread)next).setAbort(abort);
         }
 
