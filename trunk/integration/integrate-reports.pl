@@ -1,12 +1,24 @@
 #!/usr/bin/perl -w
 
-#function usage() {
-#    echo 'Usage:'
-#    echo ' ./nightly-report.sh all       -  Will report every component specified in NIGHTLY.txt. '
-#    echo ' ./nightly-report.sh update    -  Will report only components that are in the LAST_BUILD file. '
-#    echo ' ./nightly-report.sh <project> -  Will report only the component specified. '
-#}
-#
+sub usage() {
+    print "Usage:\n";
+    print " ./nightly-report.sh all       -  Will report every component specified in NIGHTLY.txt. \n";
+    print " ./nightly-report.sh update    -  Will report only components that are in the LAST_BUILD file. \n";
+#    print " ./nightly-report.sh <project> -  Will report only the component specified. \n";
+    exit 1;
+}
+
+usage();
+
+# generate new front page
+# for each element in the xml
+    # generate line in front page
+
+# for each built file
+  # generate a report page, with links if targets of said links are available
+  # TODO: Make the links unactive if not available, rather than not there
+  
+
 #if [ "x$1x" != "xx" ];
 #then
 #    if [ $1 = 'all' ];
