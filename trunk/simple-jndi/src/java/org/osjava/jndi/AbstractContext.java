@@ -753,7 +753,7 @@ public abstract class AbstractContext implements Context  {
      * @param name the Name of the context.
      * @throws NamingException if the subContext already has a name.
      */
-    protected void setName(Name name) throws NamingException {
+    protected void setNameInNamespace(Name name) throws NamingException {
         if(nameLock) {
             if(nameInNamespace != null || !nameInNamespace.isEmpty()) {
                 throw new NamingException("Name already set.");
