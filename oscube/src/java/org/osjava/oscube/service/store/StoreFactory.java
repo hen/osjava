@@ -33,7 +33,7 @@ package org.osjava.oscube.service.store;
 
 import org.osjava.oscube.util.FactoryUtils;
 
-import org.osjava.oscube.container.Config;
+import com.generationjava.config.Config;
 import org.osjava.oscube.container.Session;
 
 public class StoreFactory {

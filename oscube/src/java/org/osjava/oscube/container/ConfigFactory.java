@@ -31,10 +31,21 @@
  */
 package org.osjava.oscube.container;
 
+import javax.naming.NamingException;
+
+import com.generationjava.config.Config;
+import com.generationjava.config.JndiConfig;
+import com.generationjava.config.MapConfig;
+
 public class ConfigFactory {
 
     static public Config getConfig(String[] args) {
-        return new JndiConfig();
+        try {
+            return new JndiConfig();
+        } catch(NamingException ne) {
+            ne.printStackTrace();
+            return new MapConfig( new java.util.HashMap() );
+        }
     }
 
 }

@@ -49,6 +49,8 @@ import java.text.ParseException;
 
 import org.apache.log4j.Logger;
 
+import com.generationjava.config.Config;
+
 /// BEWARE: Name clash. Scheduler and org.quartz.Scheduler
 public class QuartzScheduler implements Scheduler {
 

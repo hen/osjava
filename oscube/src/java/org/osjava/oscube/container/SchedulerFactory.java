@@ -34,6 +34,8 @@ package org.osjava.oscube.container;
 import org.osjava.oscube.util.FactoryUtils;
 import java.util.HashMap;
 
+import com.generationjava.config.Config;
+
 public class SchedulerFactory {
 
     static private HashMap cache = new HashMap();

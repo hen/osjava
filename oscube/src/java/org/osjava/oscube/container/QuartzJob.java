@@ -37,6 +37,8 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.quartz.Job;
 
+import com.generationjava.config.Config;
+
 public class QuartzJob implements Job {
 
     public QuartzJob() {

@@ -31,7 +31,7 @@
  */
 package org.osjava.oscube.service.notify;
 
-import org.osjava.oscube.container.Config;
+import com.generationjava.config.Config;
 import org.osjava.oscube.container.Session;
 
 // so currently it's doing the job of a default notifier

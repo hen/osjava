@@ -31,6 +31,8 @@
  */
 package org.osjava.oscube.container;
 
+import com.generationjava.config.Config;
+
 public interface Runner {
 
     public void run(Config cfg, Session session);
