@@ -140,47 +140,24 @@ public class HtmlW {
 
     // add unescape for the html entities
 
-    /**
-     * Remove any html tags from a String.
-     */
-    static public String removeHtml(String str) {
-        int sz = str.length();
-        StringBuffer buffer = new StringBuffer(sz);
-        boolean inString = false;
-        boolean inTag = false;
-        for(int i=0; i<sz; i++) {
-            char ch = str.charAt(i);
-            if(ch == '<') {
-                inTag = true;
-            } else
-            if(ch == '>') {
-                inTag = false;
-            }
-            if(!inTag) {
-                buffer.append(ch);
-            }
-        }
-        return buffer.toString();
-    }
-
     //-------------------------------------------------------------
     // Variants of the XmlW methods that work on case-insensitivity
     //-------------------------------------------------------------
-    static public int getIndexOpeningTag(String tag, String text) {
-        return XmlW.getIndexOpeningTag(tag.toLowerCase(), text.toLowerCase() );
+    static public int getIndexOpeningTag(String text, String text) {
+        return XmlW.getIndexOpeningTag(text.toLowerCase(), tag.toLowerCase() );
     }
-    static public int getIndexClosingTag(String tag, String text) {
-        return XmlW.getIndexClosingTag(tag.toLowerCase(), text.toLowerCase() );
+    static public int getIndexClosingTag(String text, String text) {
+        return XmlW.getIndexClosingTag(text.toLowerCase(), tag.toLowerCase() );
     }
 
     // Copy of XmlW at the moment
-    static public String getContent(String tag, String text) {
-        int idx = HtmlW.getIndexOpeningTag(tag, text);
+    static public String getContent(String text, String tag) {
+        int idx = HtmlW.getIndexOpeningTag(text, tag);
         if(idx == -1) {
             return "";
         }
         text = text.substring(idx);
-        int end = HtmlW.getIndexClosingTag(tag, text);
+        int end = HtmlW.getIndexClosingTag(text, tag);
         idx = text.indexOf('>');
         if(idx == -1) {
             return "";
@@ -189,10 +166,10 @@ public class HtmlW {
     }
 
     // Copies of XmlW. Need to merge these.
-    static public String getAttribute(String attribute, String text) {
-        return getAttribute(attribute, text, 0);
+    static public String getAttribute(String text, String attribute) {
+        return getAttribute(text, attribute, 0);
     }
-    static public String getAttribute(String attribute, String text, int idx) {
+    static public String getAttribute(String text, String attribute, int idx) {
         int close = text.indexOf(">", idx);
         int doubleAttrIdx = text.toLowerCase().indexOf(attribute.toLowerCase()+"=\"", idx);
         int singleAttrIdx = text.toLowerCase().indexOf(attribute.toLowerCase()+"='", idx);
