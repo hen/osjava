@@ -73,7 +73,7 @@ do
 
     if [ -e BUILD_TIME ]; 
     then
-        echo "Last built: `cat BUILD_TIME`<br/>Build took: `cat BUILD_DURATION`<br/>" >> $report
+        echo "<div class='build_info'>Last built: `cat BUILD_TIME`<br/>Build took: `cat BUILD_DURATION`</div><br/>" >> $report
     fi
 
     echo '<ul>' >> $report
