@@ -173,7 +173,6 @@ final public class XmlW {
          }
          int attrStartIdx = attrIdx + attribute.length() + 2;
          int attrCloseIdx = text.indexOf("\"", attrStartIdx);
-         if(attrCloseIdx = 
          if(attrCloseIdx > close) {
              return null;
          }
