@@ -21,10 +21,10 @@
   <siteDirectory>/sites/org/osjava/www/releases/official/genjava-core/${pom.id}/</siteDirectory>
   <distributionDirectory>/sites/org/osjava/www/releases/official/genjava-core/${pom.id}/</distributionDirectory>
 
-  <!-- Complains of more than 6 elements
+  <!-- complains of more than 6 values
   <repository>
-    <connection>scm:cvs:ext:hen@orinoco.flamefew.net:/var/cvs:genjava-core/${pom.id}/</connection>
-    <url>http://www.generationjava.com/view-cvs/viewcvs.cgi/genjava-core/${pom.id}/</url>
+    <connection>scm:cvs:pserver:anonymous@cvs.osjava.org:/var/cvs:genjava/${pom.id}/</connection>
+    <url>http://www.osjava.org/view-cvs/viewcvs.cgi/genjava/${pom.id}/</url>
   </repository>
   -->
   
