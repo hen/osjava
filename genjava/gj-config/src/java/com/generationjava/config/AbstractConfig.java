@@ -93,10 +93,18 @@ public abstract class AbstractConfig implements Config {
     }
 
     public void setContext(String context) {
-        if("".equals(this.context)) {
-            this.context = context;
+        this.context = context;
+    }
+
+    public void pushToContext(String contextElement) {
+        this.context = this.context + contextElement;
+    }
+
+    public void popFromContext(String contextElement) {
+        if(this.context.endsWith(contextElement)) {
+            this.context = this.context.substring(0, this.context.length() - contextElement.length());
         } else {
-            this.context = this.context + context;
+            throw new IllegalArgumentException("Context does not end with: "+contextElement);
         }
     }
 

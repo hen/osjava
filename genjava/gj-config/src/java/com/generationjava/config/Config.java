@@ -45,6 +45,8 @@ public interface Config extends Cloneable {
     public Date getDate(String key);
     public List getList(String key);
     public void setContext(String context);
+    public void pushToContext(String contextElement);
+    public void popFromContext(String contextElement);
     public String getContext();
     public Config cloneConfig();
 
