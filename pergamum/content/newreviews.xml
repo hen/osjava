@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <pg:pergamum xmlns:pg="http://www.osjava.org/pergamum/ns" name="Recently Reviewed">
-  <div class="sub-title">Recently Reviewed</div>
+  <div class="sub-title">Recently Reviewed - <pg:rss-link>newreviews</pg:rss-link></div>
   <div class="body-block">
   <ul>
     <pg:book>1590592832</pg:book>

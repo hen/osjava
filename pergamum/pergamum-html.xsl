@@ -22,6 +22,13 @@
      </html>
   </xsl:template>
 
+  <xsl:template match="pg:rss-link">
+    <xsl:variable name="name">
+      <xsl:value-of select="."/>
+    </xsl:variable>
+    <a href="{$name}.rss">&lt;rss/&gt;</a>
+  </xsl:template>
+
   <xsl:template match="pg:publisher-list">
     <div class="sub-title"><xsl:value-of select="."/></div>
     <ul class="publisher-list">
