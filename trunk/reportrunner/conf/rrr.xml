@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<reports>
+ <report name="show-rrr-log" label="ReportRunner Log" class="org.osjava.reportrunner.reports.CsvReport" description="Shows the rrr.log file">
+  <renderers>txt,csv,excel,html</renderers>
+ </report>
+</reports>

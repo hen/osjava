@@ -1,6 +1,7 @@
 package org.osjava.reportrunner.servlets;
 
-import java.io.IOException;
+import java.io.*;
+import java.util.Date;
 import javax.servlet.http.*;
 import org.osjava.reportrunner.*;
 
@@ -44,18 +45,50 @@ public class ReportRunnerServlet extends HttpServlet {
 
         // render results
         if(renderer != null && report != null) {
+
+            long rep_start = System.currentTimeMillis();
             Result result = report.execute();
+            long rep_time = System.currentTimeMillis() - rep_start;
+            
             if(result == null) {
                 throw new RuntimeException("Result is null. ");
             }
             result = new FormattingResult(result, report);
+
+            long rend_start = System.currentTimeMillis();
             renderer.display( result, report, response.getOutputStream() );
+            long rend_time = System.currentTimeMillis() - rend_start;
+
+            logReport(report, request, rep_time, rend_time);
         } else {
             throw new RuntimeException("Renderer or Report is null. ");
         }
 
         response.getOutputStream().flush();
 
+    }
+
+    private static synchronized void logReport(Report report, HttpServletRequest request, long report_time, long render_time) {
+        FileWriter writer = null;
+        try {
+            writer = new FileWriter( new File("rrr.log") );
+            // add more to this
+            StringBuffer buffer = new StringBuffer();
+            buffer.append(new Date());
+            buffer.append(",");
+            buffer.append(report_time);
+            buffer.append(",");
+            buffer.append(render_time);
+            buffer.append(",");
+            buffer.append(report.getName());
+            writer.write(buffer.toString());
+            writer.flush();
+            writer.close();
+        } catch(IOException ioe) {
+            ioe.printStackTrace();
+        } finally {
+            if(writer != null) { try { writer.close(); } catch(IOException ioe) { } }
+        }
     }
 
     public static void applyResources(Report report, HttpServletRequest request) {
