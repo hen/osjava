@@ -58,12 +58,10 @@
   <siteDirectory>/sites/org/osjava/www/maven/genjava/mudclient/</siteDirectory>
   <distributionDirectory>/sites/org/osjava/www/maven/builds/</distributionDirectory>
 
-  <!--
   <repository>
-    <connection>scm:cvs:ext:hen@umbongo.flamefew.net:/var/publiccvs:mudclient</connection>
-    <url>http://www.osjava.org/view-cvs/viewcvs.cgi/mudclient/</url>
+    <connection>scm:cvs:pserver:anonymous@cvs.osjava.org:/var/cvs/:mudclient</connection>
+    <url>http://cvs.osjava.org/view-cvs/viewcvs.cgi/mudclient/</url>
   </repository>
-  -->
 
   <versions>
     <version>
