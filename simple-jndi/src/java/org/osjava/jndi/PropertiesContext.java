@@ -61,7 +61,7 @@ import java.net.MalformedURLException;
 import org.osjava.convert.Convert;
 import org.osjava.jndi.util.CustomProperties;
 import org.osjava.jndi.util.IniProperties;
-import com.generationjava.util.XmlProperties;
+import org.osjava.jndi.util.XmlProperties;
 
 public class PropertiesContext implements Context  {
 
