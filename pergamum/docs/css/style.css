@@ -8,7 +8,7 @@
 
     .sub-title { font-size: 120%; background: #00bb99; padding-left: 0.5em; }
     .sub-title a:visited { color: black; }
-    .banner, .help { font-size: 150%; background: #ff2244; }
+    .banner, .help { font-size: 150%; background: #00bb99; }
     .banner { margin-left: 0.5em; float: left; text-align: left; }
     .help { margin-right: 0.5em; text-align: right; }
     .help a:visited { color:black; }
