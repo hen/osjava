@@ -84,6 +84,7 @@ public class ReportFactory {
             XMLNode reportNode = (XMLNode) reportNodes.nextElement();
             String className = reportNode.getAttr("class");
             Report report = (Report) ClassW.createObject(className);
+            // TODO: If report is null, throw exception
             applyAttrs( report, reportNode, new String[] { "class" } );
             applyNodes( report, reportNode.enumerateNode(), new String[] { "param", "column", "renderer", "columns", "renderers", "variant" } );
             applyParamTag( report, reportNode.enumerateNode("param") );
