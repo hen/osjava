@@ -1,19 +1,34 @@
-a) Create configuration:
-     URL to Javadoc
 
-b) Scrape overview-summary and get Name, Description, Packages(?). Generate Overview.
+Create a single multidoc that wraps anything that has a vaguely javadoc style to it.
 
-b.2) Scrape all-packages. Generate package-list.
+Usage would be something like:
 
-b.3) Scrape all-classes. Generate classes-list.
+java -jar multidoc.jar multidocs.conf target/multidocs
+
+Does: xref, xref-tests, javadoc, jcoverage, clover, jdiff
+
+Multidoc is the front end. It is given, via the conf file, a list of document types to multidoc, and a file containing 
+urls for each one. 
+
+For each document type, it asks a factory for a loader and a site creator
+
+The loader returns a DocumentSite object, which is added to a collection
+
+The site-creator is given a collection of DocumentSites
+
+The site-creator uses N page-creators to output a site?
+
+DocumentSites contain DocumentPackages
+
+----
+Wishlist
+
 
 c) Scrape index. Merge into uber-index. 1 page per letter.
 
 d) Create dynamic searcher. ( :( ).  Perl CGI.  Uses uber-index?
 
 e) Maintain separate versions of data so they can be rejoined later on. ie) When Lang 2.1 replaces 2.0.
-
-f) Write Help by hand.
 
 g) Write JavaScript to load more than one frame at a time.
 
@@ -22,7 +37,7 @@ h) Mode to replace an existing one, rather than rebuild the entire system.
 
 ====
 
-Design:
+Long term Design:
 
 mdoc-load 'Commons Lang' <url>
 mdoc-unload 'Commons Lang' <url>
