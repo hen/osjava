@@ -171,6 +171,7 @@ public abstract class AbstractHttpFetcher implements Fetcher {
     }
 
     private boolean checkIllegal(URL url) throws MalformedURLException {
+        // TODO: Use User-Agent here. And fix Norbert.
         NoRobotClient nrc = new NoRobotClient("osjava-scraping-engine");
 
         // only parse the root, not the whole url
