@@ -8,8 +8,8 @@ import com.generationjava.lang.*;
 
 public class ReportFactory {
 
-    public static Report getReport(String reportName) {
-        Report[] reports = getReports();
+    public static Report getReport(String groupName, String reportName) {
+        Report[] reports = getReports(groupName);
         for(int i=0; i<reports.length; i++) {
             if(reports[i].getName().equals(reportName)) {
                 return reports[i];
@@ -17,9 +17,33 @@ public class ReportFactory {
         }
         return null;
     }
-    public static Report[] getReports() {
+    public static ReportGroup[] getReportGroups() {
+        List groups = new ArrayList();
+        XMLNode node = parseXml("reportrunner.xml").getNode("reportrunner");
+        Enumeration groupNodes = node.enumerateNode("reports");
+        while(groupNodes.hasMoreElements()) {
+            XMLNode groupNode = (XMLNode) groupNodes.nextElement();
+            ReportGroup group = new ReportGroup();
+            applyAttrs(group, groupNode);
+            groups.add(group);
+        }
+        return (ReportGroup[]) groups.toArray( new ReportGroup[0] );
+    }
+    public static Report[] getReports(String groupName) {
+        ReportGroup[] groups = getReportGroups();
+        ReportGroup group = null;
+        for(int i=0; i<groups.length; i++) {
+            if(groups[i].getName().equals(groupName)) {
+                group = groups[i];
+            }
+        }
+        if(group == null) {
+            throw new RuntimeException("Illegal group somehow chosen. ");
+        }
+
+        String filename = group.getFilename();
         List reports = new ArrayList();
-        XMLNode node = parseXml("reports.xml").getNode("reports");
+        XMLNode node = parseXml( new File(filename) ).getNode("reports");
         Enumeration reportNodes = node.enumerateNode("report");
         while(reportNodes.hasMoreElements()) {
             XMLNode reportNode = (XMLNode) reportNodes.nextElement();
@@ -60,6 +84,26 @@ public class ReportFactory {
         return (Renderer[]) renderers.toArray( new Renderer[0] );
     }
 
+    private static void applyAttrs( Object obj, XMLNode node ) {
+        Enumeration attrs = node.enumerateAttr();
+        while(attrs.hasMoreElements()) {
+            String name = (String) attrs.nextElement();
+            String value = node.getAttr(name);
+            Class objClass = obj.getClass();
+            try {
+                Method method = objClass.getMethod("set"+Character.toTitleCase(name.charAt(0))+name.substring(1), new Class[] { String.class } );
+                method.invoke( obj, new String[] { value } );
+            } catch(NoSuchMethodException nsme) {
+                nsme.printStackTrace();
+            } catch(IllegalAccessException iae) {
+                iae.printStackTrace();
+            } catch(IllegalArgumentException iae) {
+                iae.printStackTrace();
+            } catch(InvocationTargetException ite) {
+                ite.printStackTrace();
+            }
+        }
+    }
     private static void applyNodes( Object obj, Enumeration nodes ) {
         while(nodes.hasMoreElements()) {
             XMLNode node = (XMLNode) nodes.nextElement();
@@ -137,6 +181,18 @@ public class ReportFactory {
         }
     }
 
+    private static XMLNode parseXml(File file) {
+        Reader reader = null;
+        try {
+            XMLParser parser = new XMLParser();
+            reader = new FileReader( file );
+            return parser.parseXML(reader);
+        } catch(IOException ioe) {
+            throw new RuntimeException("XML failed to be parsed: "+ioe, ioe);
+        } finally {
+            try { if(reader != null) { reader.close(); } } catch(IOException ioe) { ; }
+        }
+    }
     private static XMLNode parseXml(String file) {
         Reader reader = null;
         try {

@@ -2,18 +2,19 @@
 <%@ page import="org.osjava.reportrunner.servlets.*" %>
 
 <%
-    String reportName = request.getParameter("_report");
-
+    String groupName = request.getParameter(ReportRunnerServlet.GROUP);
+    String reportName = request.getParameter(ReportRunnerServlet.REPORT);
 %>
 
-<p>You have chosen the <%= reportName %> report. </p>
+<p>You have chosen the <%= groupName %>/<%= reportName %> report. </p>
 
 <p>It requires the following information: </p>
 
 <form action="/checkparameters">
-<input type="hidden" name="_report" value="<%= reportName %>">
+<input type="hidden" name="<%= ReportRunnerServlet.REPORT %>" value="<%= reportName %>">
+<input type="hidden" name="<%= ReportRunnerServlet.GROUP %>" value="<%= grouptName %>">
 <%
-    Report report = ReportFactory.getReport(reportName);
+    Report report = ReportFactory.getReport(groupName, reportName);
     if(report instanceof org.osjava.reportrunner.reports.SqlReport) {
         String dsName = getServletContext().getInitParameter(ReportRunnerServlet.DS_NAME);
         ((org.osjava.reportrunner.reports.SqlReport)report).setDataSource(dsName);

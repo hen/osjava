@@ -6,11 +6,10 @@ import org.osjava.reportrunner.*;
 
 public class CheckParametersServlet extends HttpServlet {
 
-    public static final String REPORT = "_report";
-
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String reportName = request.getParameter(REPORT);
-        Report report = ReportFactory.getReport(reportName);
+        String groupName = request.getParameter(ReportRunnerServlet.GROUP);
+        String reportName = request.getParameter(ReportRunnerServlet.REPORT);
+        Report report = ReportFactory.getReport(groupName, reportName);
         Param[] params = report.getParams();
         for(int i=0; i<params.length; i++) {
             Parser parser = params[i].getParser();

@@ -6,17 +6,16 @@ import org.osjava.reportrunner.*;
 
 public class ChooseReportServlet extends HttpServlet {
 
-    public static final String REPORT = "_report";
-
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String reportName = request.getParameter(REPORT);
-        Report report = ReportFactory.getReport(reportName);
+        String groupName = request.getParameter(ReportRunnerServlet.GROUP);
+        String reportName = request.getParameter(ReportRunnerServlet.REPORT);
+        Report report = ReportFactory.getReport(groupName, reportName);
         if(report.getParams().length != 0) {
             // redirect to choose params page
-            response.sendRedirect("enter_params.jsp?_report="+reportName);
+            response.sendRedirect("enter_params.jsp?"+ReportRunnerServlet.GROUP+"="+groupName+"&"+ReportRunnerServlet.REPORT+"="+reportName);
         } else {
             // redirect to choose renderer page
-            response.sendRedirect("list_renderers.jsp?_report="+reportName);
+            response.sendRedirect("list_renderers.jsp?"+ReportRunnerServlet.GROUP+"="+groupName+"&"+ReportRunnerServlet.REPORT+"="+reportName);
         }
     }
 

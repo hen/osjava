@@ -6,17 +6,19 @@ import org.osjava.reportrunner.*;
 
 public class ReportRunnerServlet extends HttpServlet {
 
+    public static final String GROUP = "_group";
     public static final String REPORT = "_report";
     public static final String RENDERER = "_renderer";
     public static final String DS_NAME = "ReportRunnerDS";
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
+        String groupName = request.getParameter(GROUP);
         String reportName = request.getParameter(REPORT);
         String rendererName = request.getParameter(RENDERER);
 
         // which report they want
-        Report report = ReportFactory.getReport(reportName);
+        Report report = ReportFactory.getReport(groupName, reportName);
 
         // HACK
         if(report instanceof org.osjava.reportrunner.reports.SqlReport) {

@@ -1,14 +1,16 @@
 <%@ page import="org.osjava.reportrunner.*" %>
+<%@ page import="org.osjava.reportrunner.servlets.*" %>
 
 <%
-    String reportName = request.getParameter("_report");
+    String groupName = request.getParameter(ReportRunnerServlet.GROUP);
+    String reportName = request.getParameter(ReportRunnerServlet.REPORT);
 
 %>
 
-<p>You have chosen the <%= reportName %> report: </p>
+<p>You have chosen the <%= groupName %>/<%= reportName %> report: </p>
 
 <%
-    Report report = ReportFactory.getReport(reportName);
+    Report report = ReportFactory.getReport(groupName, reportName);
     Param[] params = report.getParams();
     if(params != null && params.length != 0) {
 %>
@@ -33,7 +35,7 @@
     Renderer[] renderers = report.getRenderers();
     for(int i=0; i<renderers.length; i++) {
 %>
-    <tr><td><a href="reportrunner?<%= request.getQueryString() %>&_renderer=<%= renderers[i].getName() %>"><%= renderers[i].getLabel() %></a></td></tr>
+    <tr><td><a href="reportrunner?<%= request.getQueryString() %>&<% ReportRunnerServlet.RENDERER %>=<%= renderers[i].getName() %>"><%= renderers[i].getLabel() %></a></td></tr>
 <%
     }
 %>
