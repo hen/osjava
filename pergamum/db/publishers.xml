@@ -15,4 +15,5 @@
  <publisher id="ptr" name="Prentice Hall" url="http://www.prenticehall.com/"/>
  <publisher id="qos" name="QoS" url="http://www.qos.ch/"/>
  <publisher id="sbt" name="SourceBeat" url="http://www.sourcebeat.com/"/>
+ <publisher id="mgh" name="McGraw-Hill" url="http://www.mcgraw-hill.com/"/>
 </publishers>
