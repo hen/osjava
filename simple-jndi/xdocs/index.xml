@@ -20,7 +20,7 @@ Applications need configuration. A servlets container uses the web.xml files to 
 </section>
     <section name="A Solution">
     <p>A simple implementation of JNDI. It is entirely library based, so no server instances are started, and it sits upon Java .properties files, XML files or Windows-style .ini files, so it is easy to use and simple to understand. The files may be either on the file system or in the classpath. </p>
-    <p>Currently simple-jndi depends on 3 external jars. This is being reevaluated to minimise the impact of a simple-jndi download, however creating large amounts of redundant code is also not an answer. The download section provides easy links to download the correct versions of these jars directly. </p>
+    <p>Simple-JNDI no longer depends on external jars for its basic functionality, however to get certain optional features you will still need to download external jars. This is discussed on the <a href="Optional.html">optional features</a> page. </p>
 </section>
 <section name="Getting more help">
     <p>Feel free to ask any questions to the user's <a href="http://www.osjava.org/simple-jndi/mail-lists.html">mailing list</a>. Please report bugs either in the <a href="http://www.osjava.org:8080/jira/secure/BrowseProject.jspa?id=10000 ">issue tracker</a> or to the <a href="http://www.osjava.org/simple-jndi/mail-lists.html">mailing list</a>. </p>
