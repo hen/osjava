@@ -55,7 +55,15 @@ public class ReportRunnerServlet extends HttpServlet {
             }
         }
 
-        Renderer renderer = ReportFactory.getRenderer(rendererName);
+        Renderer[] renderers = report.getRenderers();
+        Renderer renderer = null;
+        // TODO: Move into Report.getRenderer(String)
+        for(int i=0; i<renderers.length; i++) {
+            if(rendererName.equals(renderers[i].getName())) {
+                renderer = renderers[i];
+                break;
+            }
+        }
 
         // prepare response
         response.setContentType( renderer.getMimeType() );
