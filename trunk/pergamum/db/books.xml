@@ -100,4 +100,6 @@
   <book isbn="0596007434" name="JUnit Pocket Guide" publisher="ora" url="http://www.oreilly.com/catalog/junitpg/" published="2004-10"/>
   <book isbn="059600706X" name="Jakarta Commons Cookbook" publisher="ora" url="http://www.oreilly.com/catalog/jakartackbk/" published="2004-11"/>
   <book isbn="0596006543" name="AspectJ Cookbook" publisher="ora" url="http://www.oreilly.com/catalog/aspectjckbk/" published="2004-12"/>
+  <book isbn="1932394354" name="Spring in Action" publisher="man" url="http://www.manning.com/walls2/" published="2004-12"/>
+  <book isbn="1932394273" name="SWT/JFace in Action" publisher="man" url="http://www.manning.com/scarpino/" published="2004-10"/>
 </library>
