@@ -1,5 +1,8 @@
 package org.osjava.taglib.trail;
 
+import java.net.URL;
+import java.net.MalformedURLException;
+
 import java.io.IOException;
 import java.io.StringWriter;
 
@@ -28,10 +31,10 @@ public class PushTag extends TagSupport {
 
     public int doEndTag() throws JspException {
         BreadCrumbs breadcrumbs = JspUtils.getBreadCrumbs(pageContext);
+        HttpServletRequest request = (HttpServletRequest) pageContext.getRequest();
 
         String uri = this.url;
         if(this.url == null) {
-            HttpServletRequest request = (HttpServletRequest) pageContext.getRequest();
             Object requestUri = request.getAttribute("javax.servlet.forward.request_uri");
             if(requestUri != null) {
                 uri = ""+requestUri;
@@ -47,7 +50,22 @@ public class PushTag extends TagSupport {
             }
         }
 
-        breadcrumbs.addToTrail( new BreadCrumb(uri, this.label) );
+        String referer = request.getHeader("Referer");
+
+        // check if referer is from the same machine
+        // ...
+
+        // strip out the url part
+        if(referer != null) {
+            try {
+                URL url = new URL(referer);
+                referer = url.getFile();
+            } catch(MalformedURLException murle) {
+                referer = null;
+            }
+        }
+
+        breadcrumbs.addToTrail( referer, new BreadCrumb(uri, this.label) );
 
         return EVAL_PAGE;
     }

@@ -18,7 +18,7 @@ public class BreadCrumbs {
 
     // also have to fix the .do/.jsp problem. servlet filter?
 
-    public void addToTrail(BreadCrumb bc) {
+    public void addToTrail(String referer, BreadCrumb bc) {
         trail.add(bc);
 
         //    if crumb equals last crumb, do not add to norm
@@ -37,8 +37,19 @@ public class BreadCrumbs {
             return;
         }
 
-        //    if crumb's referrer can be found in the trail, remove 
-        //      all entries after the crumb's referrer, then add to norm
+        //    if crumb's referer can be found in the trail, remove 
+        //      all entries after the crumb's referer, then add to norm
+        if(referer != null) {
+            Iterator itr = normalizedTrail.iterator();
+            while(itr.hasNext()) {
+                BreadCrumb tmp = (BreadCrumb) itr.next();
+                if(tmp.getUrl().equals(referer)) {
+                    int idx = normalizedTrail.indexOf(tmp);
+                    normalizedTrail = normalizedTrail.subList(0, idx + 1);
+                    break;
+                }
+            }
+        }
 
         normalizedTrail.add( bc );
     }
