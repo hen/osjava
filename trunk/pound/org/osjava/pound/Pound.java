@@ -67,15 +67,15 @@ public class Pound extends Frame implements KeyListener {
         System.err.println("Key: " + KeyEvent.getKeyText(keyCode) + " " + keyCode + " " + modifiers);
        
        
-        this.canvas.setBackground(chooseColor(this.canvas.getBackground(), keyCode)); //normalize(keyCode, 20, 110, 0, 255)));
+        this.canvas.setBackground(chooseColor(this.canvas.getBackground(), normalize(keyCode, 20, 110, 0, 255)));
        
-        playNote(keyCode);//normalize(keyCode, 20, 110, 0, 127));
+        playNote(normalize(keyCode, 20, 110, 10, 127));
     }
    
-    public int normalize(int keyCode, int min, int max, int new_min,
+    public static int normalize(int keyCode, int min, int max, int new_min,
 int new_max) {
         if(keyCode < min) keyCode = min;
-        if(keyCode < max) keyCode = max;
+        if(keyCode > max) keyCode = max;
         return new_min + (new_max - new_min) * (keyCode - min) / (max
 - min);
     }
