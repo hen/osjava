@@ -33,10 +33,15 @@ package org.osjava.scraping;
 
 import com.generationjava.config.Config;
 import org.osjava.oscube.container.Session;
+import java.util.Map;
 
 public class NullFetcher implements Fetcher {
 
     public Page fetch(String uri, Config cfg, Session session) throws FetchingException {
+        return new NullPage();
+    }
+
+    public Page fetch(String uri, Map values, Config cfg, Session session) throws FetchingException {
         return new NullPage();
     }
 

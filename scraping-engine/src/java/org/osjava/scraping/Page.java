@@ -34,6 +34,8 @@ package org.osjava.scraping;
 import java.io.IOException;
 import java.io.Reader;
 
+import java.util.Map;
+
 import com.generationjava.config.Config;
 import org.osjava.oscube.container.Session;
 
@@ -42,7 +44,10 @@ public interface Page {
 
     public Reader read() throws IOException;
     public String readAsString() throws IOException;
+
+    // have this be a 'get' for a Fetcher?
     public Page fetch(String uri, Config cfg, Session session) throws FetchingException;
+    public Page fetch(String uri, Map values, Config cfg, Session session) throws FetchingException;
 
     public void setDocumentBase(String documentBase);
     public String getDocumentBase();

@@ -37,6 +37,8 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import java.util.*;
+
 import org.osjava.norbert.NoRobotClient;
 import org.osjava.norbert.NoRobotException;
 import com.generationjava.config.Config;
@@ -52,6 +54,10 @@ public abstract class AbstractHttpFetcher implements Fetcher {
     protected abstract void startSession(URL url, int port, HttpClient client, Config cfg, Session session);
 
     public Page fetch(String uri, Config cfg, Session session) throws FetchingException {
+        return fetch(uri, null, cfg, session);
+    }
+
+    public Page fetch(String uri, Map values, Config cfg, Session session) throws FetchingException {
         try {
             URL url = new URL(uri);
 
@@ -63,7 +69,19 @@ public abstract class AbstractHttpFetcher implements Fetcher {
             }
 
             HttpClient client = new HttpClient();
-            GetMethod get = new GetMethod(url.getFile());
+            HttpMethod method = null;
+
+            if(values == null) {
+                method = new GetMethod(url.getFile());
+            } else {
+                PostMethod post = new PostMethod(url.getFile());
+                Iterator itr = values.entrySet().iterator();
+                while(itr.hasNext()) {
+                    Map.Entry entry = (Map.Entry) itr.next();
+                    post.addParameter(entry.getKey().toString(), entry.getValue().toString());
+                }
+                method = post;
+            }
 
             int port = url.getPort();
             if(port == -1) {
@@ -73,7 +91,7 @@ public abstract class AbstractHttpFetcher implements Fetcher {
             if(cfg.has("timeout")) {
                 client.setTimeout(cfg.getInt("timeout"));
             }
-            int result = client.executeMethod(get);
+            int result = client.executeMethod(method);
             if(result != 200) {
                 throw new FetchingException("Unable to fetch from "+uri+" due to error code "+result);
             }
@@ -82,7 +100,7 @@ public abstract class AbstractHttpFetcher implements Fetcher {
             // TODO: Implement a lazy downloader instead
             // Also, might want to check Content-Length. 
             // Some binaries might be declaring an ascii type
-            org.apache.commons.httpclient.Header hdr = get.getResponseHeader("Content-Type");
+            org.apache.commons.httpclient.Header hdr = method.getResponseHeader("Content-Type");
             String type = "unknown";
             if(hdr != null) {
                 type = hdr.toExternalForm();
@@ -92,8 +110,8 @@ public abstract class AbstractHttpFetcher implements Fetcher {
                 }
             }
 
-            String txt = get.getResponseBodyAsString();
-            get.releaseConnection(); 
+            String txt = method.getResponseBodyAsString();
+            method.releaseConnection(); 
             Page page = new MemoryPage(txt, type);
             String base = url.getProtocol()+"://"+url.getHost();
             if(url.getPort() != -1) {

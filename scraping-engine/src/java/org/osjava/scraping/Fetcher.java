@@ -33,6 +33,7 @@ package org.osjava.scraping;
 
 import com.generationjava.config.Config;
 import org.osjava.oscube.container.Session;
+import java.util.Map;
 
 /**
  * Fetches a piece of content for a uri
@@ -42,5 +43,6 @@ public interface Fetcher {
 
     // allow URL url??
     public Page fetch(String uri, Config cfg, Session session) throws FetchingException;
+    public Page fetch(String uri, Map values, Config cfg, Session session) throws FetchingException;
 
 }
