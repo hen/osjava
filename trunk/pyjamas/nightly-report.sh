@@ -86,9 +86,9 @@ do
         cat pmd-report.xml | sed 's/document>/html>/' | sed 's/properties>/head>/' | sed 's/<\/section>//' | sed 's/<\/subsection>//' | sed 's/<section name="\([^"]*\)"/<h1>\1<\/h1/' | sed 's/<subsection name="\([^"]*\)"/<h2>\1<\/h2/' > pmd-report.html
     fi
 
-    if [ -d javadoc/ ];
+    if [ -d apidocs/ ];
     then
-        echo "<li><a href='$i/javadoc/'>javadoc</a></li>" >> $report
+        echo "<li><a href='$i/apidocs/'>apidocs</a></li>" >> $report
     fi
 
     if [ -d jcoverage/ ];
