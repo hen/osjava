@@ -1,4 +1,4 @@
-package org.apache.commons.dbutils.jndi;
+package com.generationjava.jndi;
 
 import javax.naming.Context;
 import javax.naming.NamingException;
@@ -32,7 +32,7 @@ public class PropertiesContext implements Context  {
     public PropertiesContext(Hashtable env) {
         if(env != null) {
             this.env = (Hashtable)env.clone();
-            root = (String)this.env.get("org.apache.commons.dbutils.jndi.root");
+            root = (String)this.env.get("com.generationjava.jndi.root");
         }
     }
 
@@ -77,6 +77,8 @@ public class PropertiesContext implements Context  {
                 } catch(IOException ioe) {
                     throw new NamingException("Failure to open: "+file);
                 }
+
+                // build the rest of the list
                 java.util.ArrayList list = new java.util.ArrayList();
                 for(int j=i+1; j<sz; j++) {
                     list.add(elements[j]);
@@ -85,8 +87,20 @@ public class PropertiesContext implements Context  {
                     remaining = StringUtils.join(list.iterator(), ".");
                 }
                 break;
+            } else {
+                java.util.ArrayList list = new java.util.ArrayList();
+                for(int j=i; j<sz; j++) {
+                    list.add(elements[j]);
+                }
+                if(list.size() > 0) {
+                    remaining = StringUtils.join(list.iterator(), ".");
+                }
             }
         }
+
+//        if(properties == null && remaining == null) {
+//            remaining = path;
+//        }
 
         if(properties == null) {
             //  if properties is null, then we look for default.properties
@@ -110,7 +124,7 @@ public class PropertiesContext implements Context  {
             throw new InvalidNameException("Properties for "+name+" not found. ");
         }
 
-        if("true".equals(properties.get("org.apache.commons.dbutils.jndi.datasource"))) {
+        if("true".equals(properties.get("com.generationjava.jndi.datasource"))) {
 //            System.err.println("Datasource!");
             PropertiesDataSource pds = new PropertiesDataSource(properties, env);
             pds.setName(StringUtils.prechomp(StringUtils.getChomp(name,"."),"."));
@@ -119,7 +133,6 @@ public class PropertiesContext implements Context  {
 
 //        System.err.println("remaining: "+remaining);
         if(remaining == null) {
-            // check here to see if org.apache.commons.dbutils.jndi.datasource=true is set.
             return properties;
         }
 

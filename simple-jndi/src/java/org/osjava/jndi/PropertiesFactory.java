@@ -1,4 +1,4 @@
-package org.apache.commons.dbutils.jndi;
+package com.generationjava.jndi;
 
 import javax.naming.spi.InitialContextFactory;
 import javax.naming.Context;
