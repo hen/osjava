@@ -37,18 +37,15 @@ public class ReportRunnerServlet extends HttpServlet {
             }
         }
 
-        // what renderers does the report work with?
-
-        // which renderer does user want?
         Renderer renderer = ReportFactory.getRenderer(rendererName);
 
-
+        // prepare response
         response.setContentType( renderer.getMimeType() );
         if(!renderer.isInline()) {
             response.setHeader("Content-Disposition", "attachment; filename="+report.getName()+"."+renderer.getExtension());
         }
 
-        // bang
+        // render results
         if(renderer != null && report != null) {
             Result result = report.execute();
             result = new FormattingResult(result, report);
