@@ -19,8 +19,10 @@ public class ReportRunnerServlet extends HttpServlet {
 
         // which report they want
         Report report = ReportFactory.getReport(groupName, reportName);
+//System.out.println(new java.util.Date()+" Applying resources");
         applyResources(report, request);
         ChooseReportServlet.applyVariantParams(report, request);
+//System.out.println(new java.util.Date()+" Applying params");
 
         // does report require parameters?
         Param[] params = report.getParams();
@@ -63,6 +65,7 @@ public class ReportRunnerServlet extends HttpServlet {
             }
         }
 
+//System.out.println(new java.util.Date()+" Obtaining renderers");
         Renderer[] renderers = report.getRenderers();
         Renderer renderer = null;
         // TODO: Move into Report.getRenderer(String)
@@ -73,6 +76,7 @@ public class ReportRunnerServlet extends HttpServlet {
             }
         }
 
+//System.out.println(new java.util.Date()+" Preparing response");
         // prepare response
         response.setContentType( renderer.getMimeType() );
         if(!renderer.isInline()) {
@@ -83,8 +87,10 @@ public class ReportRunnerServlet extends HttpServlet {
         if(renderer != null && report != null) {
 
             long rep_start = System.currentTimeMillis();
+//System.out.println(new java.util.Date()+" Executing report");
             Result result = report.execute();
             long rep_time = System.currentTimeMillis() - rep_start;
+//System.out.println(new java.util.Date()+" Took "+rep_time);
             
             if(result == null) {
                 throw new RuntimeException("Result is null. ");
@@ -92,11 +98,14 @@ public class ReportRunnerServlet extends HttpServlet {
             if(result.hasNextRow() == false) {
                 throw new EmptyReportException();
             }
+//System.out.println(new java.util.Date()+" Formatting result");
             result = new FormattingResult(result, report);
 
             long rend_start = System.currentTimeMillis();
+//System.out.println(new java.util.Date()+" Rendering result");
             renderer.display( result, report, response.getOutputStream() );
             long rend_time = System.currentTimeMillis() - rend_start;
+//System.out.println(new java.util.Date()+" Took "+rend_time);
 
             logReport(report, request, rep_time, rend_time);
         } else {
