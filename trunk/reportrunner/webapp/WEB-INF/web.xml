@@ -6,6 +6,16 @@
 
 <web-app>
 
+ <servlet>   
+     <servlet-name>ReportRunnerServlet</servlet-name>      
+     <servlet-class>org.osjava.reportrunner.ReportRunnerServlet</servlet-class>      
+ </servlet>      
+     
+ <servlet-mapping>   
+     <servlet-name>ReportRunnerServlet</servlet-name>      
+     <url-pattern>/reportrunner</url-pattern>    
+ </servlet-mapping>
+
 <resource-ref>
   <description>
     EuroDev2
