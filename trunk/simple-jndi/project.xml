@@ -4,14 +4,14 @@
   <pomVersion>3</pomVersion>
   <id>simple-jndi</id>
   <name>simple-jndi</name>
-  <currentVersion>0.3</currentVersion>
+  <currentVersion>0.4</currentVersion>
   <organization>
     <name>GenerationJava</name>
     <url>http://www.generationjava.com/</url>
     <logo>/images/initials.jpg</logo>
   </organization>
   <inceptionYear>2003</inceptionYear>
-  <package>com.generationjava.jndi</package>
+  <package>com.generationjava</package>
   <logo>/images/core-logo.jpg</logo>
   
   <!-- Gump integration -->
@@ -95,6 +95,11 @@
       <id>commons-collections</id>
       <version>2.1</version>
       <url>http://jakarta.apache.org/commons/collections.html</url>
+    </dependency>
+    <dependency>
+      <id>jdbc</id>
+      <version>2.0</version>
+      <url>http://java.sun.com/</url>
     </dependency>
   </dependencies>
 
