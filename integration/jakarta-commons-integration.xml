@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <integration version="1.0">
-  <site label="Jakarta Commons" url="http://jakarta.apache.org/" css="http://jakarta.apache.org/foo.css" logo="http://jakarta.apache.org/images/logo.png"/>
+  <site label="Jakarta Commons" url="http://jakarta.apache.org/" css="http://jakarta.apache.org/foo.css" logo="http://jakarta.apache.org/images/logo.png" target="report/jakarta-commons"/>
   <buildables>
     <buildable project="jakarta-commons/beanutils" repository="cvs:pserver:anoncvs@cvs.apache.org:/home/cvspublic" />
     <buildable project="jakarta-commons/betwixt" repository="cvs:pserver:anoncvs@cvs.apache.org:/home/cvspublic" />
