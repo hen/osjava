@@ -17,7 +17,7 @@
 <li>Searches. Consider implementing DirContext. </li>
 <li>Switch to using Names in the system, with the String argument being turned to a Name based on delimiters specified in the jndi.properties. Allow more than one delimiter.</li>
 <li>Other DataSource like things? JDO?</li>
-<li>XML underneath as well as .properties</li>
+<li>XML underneath as well as .properties: <b>DONE v0.4</b></li>
 <li>If root is unspecified, then use the classpath: <b>DONE v0.3</b></li>
 <li>Allow the root to be a classpath root, ie) com.generationjava: <b>DONE v0.3</b></li>
 <li>Allow the root to be a url, so properties can be found online</li>
@@ -31,7 +31,7 @@
 <li>Add a jdbc implementation underneath for the configuration. </li>
 <li>Put the standard configuration options into the JNDI scope itself and pay attention for when they are changed. Thus allowing the system to change at runtime. </li>
 <li>Allow the underlying Properties class to use [when applicable] to be specified. </li>
-<li>multiple domains. ie) Configure com.genearationjava to use .properties over http, and org.osjava to use xml over classpath. </li>
+<li>multiple domains. ie) Configure com.generationjava to use .properties over http, and org.osjava to use xml over classpath. </li>
 <li>Implement a Name class which finds the lookup key separator and injects that inside the name values [a string array]</li>
 </ul>
 
