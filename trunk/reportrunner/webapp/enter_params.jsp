@@ -10,7 +10,7 @@
 
 <p>It requires the following information: </p>
 
-<form action="_check_params.jsp">
+<form action="/checkparameters">
 <input type="hidden" name="_report" value="<%= reportName %>">
 <%
     Report report = ReportFactory.getReport(reportName);
