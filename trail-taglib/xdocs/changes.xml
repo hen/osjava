@@ -7,6 +7,9 @@
   </properties>
 
   <body>
+    <release version="0.2" date="2004-04-14">
+      <action dev="hen" type="add">Normalized trails consider the query string to not be important in equality. This was found to be the most desirable behaviour for an automatic bookmark. </action>
+    </release>
     <release version="0.1" date="2004-03-09">
       <action dev="hen" type="add">ListTag which allows a trail to be displayed. </action>
       <action dev="hen" type="add">PushTag which allows a label/url to be placed onto the trail. </action>
