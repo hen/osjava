@@ -51,7 +51,7 @@
   <dependencies>
     <dependency>
       <id>jstyle</id>
-      <version>1.0</version>
+      <version>unknown</version>
     </dependency>
     <!--
     <dependency>
