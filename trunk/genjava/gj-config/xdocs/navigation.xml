@@ -4,14 +4,26 @@
   <title>gj-config</title>
 
   <body>
-    <menu name="Overview">
+    <menu name="gj-config">
       <item name="How To"              href="/HowTo.html"/>
-      <item name="News"              href="/News.html"/>
-      <item name="Download" href="http://www.osjava.org/releases/official/gj-config/"/>
+      <item name="News"       href="/News.html"/>
+      <item name="Download"   href="http://www.osjava.org/releases/official/genjava/gj-xml/"/>
       <item name="Changes"              href="/changes-report.html"/>
       <item name="License"              href="/license.html"/>
     </menu>
-    <menu name="Code docs">              
+    <menu name="Genjava Projects">
+      <item href="../gj-beans/" name="gj-beans"/>
+      <item href="../gj-core/" name="gj-core"/>
+      <item href="../gj-config/" name="gj-config"/>
+      <item href="../gj-csv/" name="gj-csv"/>
+      <item href="../gj-gui/" name="gj-gui"/>
+      <item href="../gj-mail/" name="gj-mail"/>
+      <item href="../gj-scrape/" name="gj-scrape"/>
+      <item href="../gj-servlet/" name="gj-servlet"/>
+      <item href="../gj-tools/" name="gj-tools"/>
+      <item href="../gj-xml/" name="gj-xml"/>
+    </menu>
+    <menu name="Code docs">
       <item name="JavaDocs"              href="/apidocs/index.html"/>
       <item name="Source XReference"              href="/xref/index.html"/>
       <item name="Test XReference"              href="/xref-test/index.html"/>
@@ -26,5 +38,8 @@
       <item name="CVS History"              href="/changelog-report.html"/>
       <item name="CVS Statistics"              href="/statcvs/"/>
     </menu>
+    <links>
+        <item name="Genjava"                 href="../../"/>
+    </links>
   </body>
 </project>
