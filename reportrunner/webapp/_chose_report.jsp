@@ -5,9 +5,9 @@
     Report report = ReportFactory.getReport(reportName);
     if(report.getParams().length != 0) {
         // redirect to choose params page
-        response.sendRedirect("enter_params.jsp?report="+reportName);
+        response.sendRedirect("enter_params.jsp?_report="+reportName);
     } else {
         // redirect to choose renderer page
-        response.sendRedirect("list_renderers.jsp?report="+reportName);
+        response.sendRedirect("list_renderers.jsp?_report="+reportName);
     }
 %>
