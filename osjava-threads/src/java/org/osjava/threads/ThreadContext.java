@@ -242,6 +242,17 @@ public class ThreadContext
      */
     public Thread createThread(Runnable target, Name name)
         throws NameAlreadyBoundException, NamingException, ThreadIsRunningException {
+        /* 
+         * If no name is supplied, make up a name for the Thread based upon 
+         * the context. 
+         */        
+        if(name.isEmpty()) {
+            /* Generate a new name for the thread */
+            Name newName = getNameParser((Name)null).parse(getNameInNamespace());
+            String add = generateNextThreadName();
+            newName.add(add);
+            name = getNameParser(getNameInNamespace()).parse(add);
+        }
         /* Make sure that the target is not already running. */
         if(target instanceof Thread) {
              if(((Thread)target).isAlive()) {
@@ -263,35 +274,14 @@ public class ThreadContext
                  target = newTarget;
              }
              
-             /* 
-              * If no name is supplied, make up a name for the Thread based upon 
-              * the context. 
-              */        
-             if(name.isEmpty()) {
-                 /* Generate a new name for the thread */
-                 Name newName = getNameParser((Name)null).parse(getNameInNamespace());
-                 String add = generateNextThreadName();
-                 newName.add(add);
-                 name = getNameParser(getNameInNamespace()).parse(add);
-                 ((Thread)target).setName(add);
-             } else {
-                 /* Use the supplied name to name the thread */
-                 /* XXX: Might want to move this to using the whole name */
-                 ((Thread)target).setName(name.getSuffix(name.size() - 1).toString());
-             }
+             /* Use the supplied name to name the thread */
+             /* XXX: Might want to move this to using the whole name */
+             ((Thread)target).setName(name.getSuffix(name.size() - 1).toString());
         } else if(target instanceof ExtendedRunnable) {
             String threadName = null;
-            if(name.isEmpty()) {
-                /* Generate a new name for the thread */
-                Name newName = getNameParser((Name)null).parse(getNameInNamespace());
-                threadName = generateNextThreadName();
-                newName.add(threadName);
-                name = getNameParser(getNameInNamespace()).parse(threadName);
-            } else {
-                /* Use the supplied name to name the thread */
-                /* XXX: Might want to move this to using the whole name */
-                threadName = name.getSuffix(name.size() - 1).toString();
-            }
+            /* Use the supplied name to name the thread */
+            /* XXX: Might want to move this to using the whole name */
+            threadName = name.getSuffix(name.size() - 1).toString();
             target = new ExtendedThread(target, threadName);
         }
         
