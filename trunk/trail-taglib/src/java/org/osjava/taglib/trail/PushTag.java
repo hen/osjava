@@ -34,9 +34,16 @@ public class PushTag extends TagSupport {
             HttpServletRequest request = (HttpServletRequest) pageContext.getRequest();
             Object requestUri = request.getAttribute("javax.servlet.forward.request_uri");
             if(requestUri != null) {
-                uri = requestUri + "?" + request.getAttribute("javax.servlet.forward.query_string");
+                uri = ""+requestUri;
+                Object queryString = request.getAttribute("javax.servlet.forward.query_string");
+                if(queryString != null) {
+                    uri += "?" + queryString;
+                }
             } else {
-                uri = request.getRequestURI() + "?" + request.getQueryString();
+                uri = request.getRequestURI();
+                if(request.getQueryString() != null) {
+                    uri += "?" + request.getQueryString();
+                }
             }
         }
 
