@@ -1,7 +1,9 @@
 package org.osjava.nio;
 
 import java.io.IOException;
+
 import java.net.ServerSocket;
+
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.nio.channels.SelectionKey;

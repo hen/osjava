@@ -1,9 +1,15 @@
 package org.osjava.nio;
 
-import java.nio.channels.*;
+//import java.nio.channels.*;
+
 import java.io.IOException;
+
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
+
+import java.nio.channels.SelectionKey;
+import java.nio.channels.ServerSocketChannel;
+import java.nio.channels.SocketChannel;
 
 /**
  * Utility methods....
