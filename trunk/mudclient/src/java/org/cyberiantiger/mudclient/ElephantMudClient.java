@@ -1,6 +1,7 @@
 package org.cyberiantiger.mudclient;
 
 import java.util.*;
+import java.io.*;
 import org.cyberiantiger.console.*;
 import org.cyberiantiger.mudclient.parser.*;
 import org.cyberiantiger.mudclient.net.*;
@@ -15,43 +16,38 @@ public class ElephantMudClient implements MudClient {
     private Map customOutputTypes = new HashMap();
     private Map customOutputNames = new HashMap();
 
-    public ElephantMudClient() {
-	connection = new MudConnection(this,"elephant.org",4444);
+    public ElephantMudClient(Properties config) {
+	connection = 
+	new MudConnection(
+		this,
+		config.getProperty("host"),
+		Integer.parseInt(config.getProperty("port"))
+		);
 	setParser(new ANSIParser());
 	//defaultWindow = createOutputWindow("default");
 	control = new ControlWindow(this);
 	control.show();
 
-	// Lame, hard coding, till I can be bothered to setup a config file.
-	List tmp;
+	Iterator i;
+	
+	i = config.keySet().iterator();
+	while(i.hasNext()) {
+	    String propName = (String) i.next();
+	    if(propName.startsWith("outputs.")) {
+		String outputName = propName.substring("outputs.".length());
+		List tmp = new ArrayList();
+		StringTokenizer msgClasses = new StringTokenizer(
+			config.getProperty(propName),
+			","
+			);
+		while(msgClasses.hasMoreTokens()) {
+		    tmp.add(msgClasses.nextToken());
+		}
+		customOutputTypes.put(outputName, tmp);
+	    }
+	}
 
-	tmp = new ArrayList();
-	tmp.add("cleric");
-	tmp.add("fighter");
-	tmp.add("warmage");
-	tmp.add("monk");
-	tmp.add("druid");
-	tmp.add("ranger");
-	tmp.add("rogue");
-	customOutputTypes.put("Guilds",tmp);
-	tmp = new ArrayList();
-	tmp.add("ip");
-	tmp.add("advice");
-	tmp.add("bugs");
-	customOutputTypes.put("Events",tmp);
-	tmp = new ArrayList();
-	tmp.add("boom");
-	tmp.add("shout");
-	customOutputTypes.put("Spam",tmp);
-	tmp = new ArrayList();
-	tmp.add("gossip");
-	tmp.add("hline");
-	tmp.add("pline");
-	tmp.add("council");
-	tmp.add("newbie");
-	customOutputTypes.put("Other channels",tmp);
-
-	Iterator i = customOutputTypes.entrySet().iterator();
+	i = customOutputTypes.entrySet().iterator();
 	while(i.hasNext()) {
 	    Map.Entry entry = (Map.Entry) i.next();
 	    String name = (String) entry.getKey();
@@ -85,9 +81,6 @@ public class ElephantMudClient implements MudClient {
 	connection.disconnect();
     }
 
-    public static void main(String[] args) {
-	new ElephantMudClient();
-    }
 
     public void command(String sourceId, String msg) {
 	connection.command(msg);
@@ -123,5 +116,25 @@ public class ElephantMudClient implements MudClient {
 
     public void connectionDoLocalEcho(boolean echo) {
 	this.echo = echo;
+    }
+
+    public static void main(String[] args) {
+	if(args.length == 1) {
+	    try {
+		Properties props = new Properties();
+		props.load(new FileInputStream(args[0]));
+		new ElephantMudClient(props);
+	    } catch (IOException ioe) {
+		System.out.println("Failed to load config!");
+	    }
+	}  else {
+	    try {
+		Properties config = new Properties();
+		config.load(ElephantMudClient.class.getResourceAsStream("config.properties"));
+		new ElephantMudClient(config);
+	    } catch (IOException ioe) {
+		System.out.println("Failed to load default config!");
+	    }
+	}
     }
 }

@@ -1,6 +1,7 @@
 package org.cyberiantiger.mudclient.ui;
 
 import java.awt.*;
+import java.awt.datatransfer.*;
 import java.awt.event.*;
 import javax.swing.*;
 import org.cyberiantiger.console.*;
@@ -9,12 +10,16 @@ public class ConsoleView extends JComponent implements ConsoleModelListener
 {
 
     private ConsoleModel model;
-    private int lineOffset = 0;
+
+    private Insets borderArea;
+    private int rowHeight;
+    private int charWidth;
 
     public ConsoleView(ConsoleModel model) {
 	this.model = model;
 	model.addView(this);
 	setOpaque(true);
+	borderArea = new Insets(0,0,0,0);
 	setFont(new Font("monospaced",Font.PLAIN,14));
 	setForeground(Color.white);
 	setBackground(Color.black);
@@ -27,56 +32,93 @@ public class ConsoleView extends JComponent implements ConsoleModelListener
 
     }
 
+    public void setFont(Font f) {
+	super.setFont(f);
+	FontMetrics fm = getFontMetrics(f);
+	rowHeight = fm.getHeight();
+	charWidth = fm.charWidth('A');
+    }
+
+    /**
+     * Resize our model depending on our size
+     */
+    public void resizeConsole() {
+	if(isVisible()) {
+	    int width = getWidth() / charWidth;
+	    int height = getHeight() / rowHeight;
+
+	    if(width < 1) {
+		width = 1;
+	    }
+	    if(height < 1) {
+		height = 1;
+	    }
+
+	    borderArea.left = (getWidth() - width * charWidth)/2;
+	    borderArea.top = (getHeight() - height * rowHeight)/2;
+	    borderArea.right = getWidth() - width * charWidth - borderArea.left;
+	    borderArea.bottom = getHeight() - height * rowHeight - borderArea.top;
+
+	    synchronized(this) {
+		model.addAction(new ResizeConsoleAction(width,height));
+	    }
+	}
+    }
+
     public synchronized void paintComponent(Graphics g) {
 	int width = getWidth();
 	int height = getHeight();
 	g.setFont(getFont());
 	FontMetrics fm = g.getFontMetrics();
-	int char_width = fm.charWidth('A');
-	int row_height = fm.getHeight();
 	{
-	    // Fill the borders, and translate the origin
-	    int w = model.getWidth() * char_width;
-	    int x = (width - w) / 2;
-	    int h = model.getHeight() * row_height;
-	    int y = (height - h) / 2;
 	    g.setColor(getBackground());
-	    g.fillRect(0,0,width,y);
-	    g.fillRect(0,y+h,width,height-y-h);
-	    g.fillRect(0,y,x,h);
-	    g.fillRect(x+w,y,width-x-w,h);
-	    g.translate(x,y);
+	    g.fillRect(0,0,width,borderArea.top);
+	    g.fillRect(0,height-borderArea.bottom,width,borderArea.bottom);
+	    g.fillRect(0,borderArea.top,borderArea.left,height-borderArea.top-borderArea.bottom);
+	    g.fillRect(width-borderArea.right,borderArea.top,borderArea.right,height-borderArea.top-borderArea.bottom);
+	    g.translate(borderArea.left,borderArea.top);
 	}
-	int text_offset = row_height - fm.getDescent();
+	int text_offset = rowHeight - fm.getDescent();
 	int y = 0;
+
 	for(int i=0;i<model.getHeight();i++) {
-	    Line line = model.getLine(lineOffset + i);
+	    Line line = model.getViewLine(i);
 	    if(line == null) {
 		g.setColor(getBackground());
-		g.fillRect(0,y,width,y+row_height);
+		g.fillRect(0,y,width,y+rowHeight);
 	    } else {
 		LineSegment segment = line.first;
 		int x = 0;
 		while(segment != null) {
-		    int chars_width = fm.charsWidth(segment.data,segment.offset,segment.len);
+		    int chars_width = 
 		    fm.charsWidth(segment.data,segment.offset,segment.len);
 		    g.setColor(getBackgroundColor(segment.attr));
-		    g.fillRect(x,y,chars_width,row_height);
+		    g.fillRect(x,y,chars_width,rowHeight);
 		    g.setColor(getForegroundColor(segment.attr));
 		    g.drawChars(segment.data,segment.offset,segment.len,x,y+text_offset);
 		    x += chars_width;
 		    segment = segment.next;
 		}
 		g.setColor(getBackground());
-		g.fillRect(x,y,width-x,row_height);
+		g.fillRect(x,y,width-x,rowHeight);
 	    }
-	    y+=row_height;
+	    y+=rowHeight;
 	}
-	g.fillRect(0,y,width,height);
-    }
-
-    public int getRowHeight() {
-	return getFontMetrics(getFont()).getHeight();
+	if(model.hasSelection()) {
+	    Point start = model.getSelectionStart();
+	    Point end = model.getSelectionEnd();
+	    g.setXORMode(getBackground());
+	    g.setColor(getForeground());
+	    if(start.y == end.y) {
+		g.fillRect(start.x * charWidth, start.y * rowHeight, (end.x - start.x) * charWidth, rowHeight);
+	    } else {
+		g.fillRect(start.x * charWidth, start.y * rowHeight, (model.getWidth() - start.x) * charWidth, rowHeight);
+		g.fillRect(0,end.y * rowHeight, end.x * charWidth, rowHeight);
+		if(end.y - start.y > 1) {
+		    g.fillRect(0,(start.y+1)*rowHeight,model.getWidth()*charWidth, (end.y-start.y-1)*rowHeight);
+		}
+	    }
+	}
     }
 
     public Color getForegroundColor(int attr) {
@@ -99,11 +141,6 @@ public class ConsoleView extends JComponent implements ConsoleModelListener
 		return Color.white;
 	}
 	return Color.white;
-    }
-
-    public void setLineOffset(int lineOffset) {
-	this.lineOffset = lineOffset;
-	repaint();
     }
 
     public Color getBackgroundColor(int attr) {
@@ -129,92 +166,99 @@ public class ConsoleView extends JComponent implements ConsoleModelListener
     }
 
     public Dimension getPreferredSize() {
-	FontMetrics fm = getFontMetrics(getFont());
-	int row_height = fm.getHeight();
-	int char_width = fm.charWidth('A');
 	return new Dimension(
-		model.getWidth() * char_width, 
-		model.getHeight() * row_height
+		model.getWidth() * charWidth, 
+		model.getHeight() * rowHeight
 		);
 
     }
 
     public Dimension getMinimumSize() {
-	FontMetrics fm = getFontMetrics(getFont());
-	int row_height = fm.getHeight();
-	int char_width = fm.charWidth('A');
-	return new Dimension(
-		char_width, 
-		row_height
-		);
+	return new Dimension( charWidth, rowHeight);
     }
 
     /**
      * Write something to our model
      */
     public synchronized void consoleAction(ConsoleAction action) {
-	cancelSelection();
 	model.addAction(action);
     }
 
-    /**
-     * Resize our model depending on our size
-     */
-    public synchronized void resizeConsole() {
-	FontMetrics fm = getFontMetrics(getFont());
-	int width = getWidth() /  fm.charWidth('A');
-	int height = getHeight() / fm.getHeight();
-
-	if(width < 1) {
-	    width = 1;
+    public Point getCharacterAt(Point p) {
+	if(
+		p.x > borderArea.left && 
+		p.x < getWidth()-borderArea.right &&
+		p.y > borderArea.top && 
+		p.y < getHeight() - borderArea.bottom
+	  ) {
+	    return new Point(
+		    (p.x - borderArea.left) / charWidth,
+		    (p.y - borderArea.top) / rowHeight
+		    );
+	} else {
+	    return null;
 	}
-	if(height < 1) {
-	    height = 1;
-	}
-	model.addAction(new ResizeConsoleAction(width,height));
-    }
-
-    private boolean doing_selection;
-    private int x_start;
-    private int y_start;
-
-    private int char_x_start;
-    private int char_y_start;
-    private int char_x_end;
-    private int char_y_end;
-
-    private void startSelection(int x, int y) {
-    }
-
-    private void continueSelection(int x, int y) {
-    }
-
-    private void endSelection(int x, int y) {
-    }
-
-    private void cancelSelection() {
     }
 
     protected void processComponentEvent(ComponentEvent ce) {
 	super.processComponentEvent(ce);
-	if(ce.getID() == ComponentEvent.COMPONENT_RESIZED) {
+	if(
+		ce.getID() == ComponentEvent.COMPONENT_RESIZED ||
+		ce.getID() == ComponentEvent.COMPONENT_SHOWN
+		) 
+	{
 	    resizeConsole();
 	}
     }
 
+    int xStart;
+    int yStart;
+
     protected void processMouseEvent(MouseEvent me) {
 	super.processMouseEvent(me);
 	if(me.getID() == MouseEvent.MOUSE_PRESSED) {
-	    startSelection(me.getX(),me.getY());
+	    Point p = getCharacterAt(me.getPoint());
+	    if(p!=null) {
+		model.startSelection(p);
+		repaint();
+	    }
 	} else if(me.getID() == MouseEvent.MOUSE_RELEASED) {
-	    endSelection(me.getX(),me.getY());
+	    Point p = getCharacterAt(me.getPoint());
+	    if(p!=null) {
+		model.endSelection(p);
+		repaint();
+	    }
+	    if(model.hasSelection()) {
+		String selection = model.getSelection();
+		if(selection != null) {
+		    getToolkit().getSystemClipboard().setContents(
+			    new StringSelection(selection),
+			    new ClipboardOwner() {
+				public void lostOwnership(
+				    Clipboard clip, 
+				    Transferable trans
+				    ) 
+				{
+				    model.cancelSelection();
+				    repaint();
+				}
+			    }
+			    );
+		}
+	    }
+	} else if(me.getID() == MouseEvent.MOUSE_CLICKED) {
+	    model.cancelSelection();
 	}
     }
 
     protected void processMouseMotionEvent(MouseEvent me) {
 	super.processMouseMotionEvent(me);
 	if(me.getID() == MouseEvent.MOUSE_DRAGGED) {
-	    continueSelection(me.getX(),me.getY());
+	    Point p = getCharacterAt(me.getPoint());
+	    if(p!=null) {
+		model.endSelection(p);
+		repaint();
+	    }
 	}
     }
 

@@ -2,6 +2,7 @@ package org.cyberiantiger.mudclient.ui;
 
 import java.util.*;
 import java.awt.Toolkit;
+import java.awt.Point;
 import org.cyberiantiger.console.*;
 
 /**
@@ -15,6 +16,8 @@ public class ConsoleModel implements Console {
     int height;
     // The lines of buffer that the console uses.
     private int bufferSize;
+    // The line that is current at the top of the screen
+    private int lineOffset = 0;
 
     // The buffer each element represents a line.
     List buffer;
@@ -86,9 +89,20 @@ public class ConsoleModel implements Console {
 	if(y >= height) {
 	    buffer_offset += y - height + 1;
 	    cursor_y = height - 1;
-	    while(buffer_offset > bufferSize) {
-		buffer.remove(0);
-		buffer_offset--;
+
+	    if(buffer_offset>bufferSize) {
+		if(hasSelection) {
+		    start.y -= buffer_offset - bufferSize;
+		    end.y -= buffer_offset - bufferSize;
+		    if(start.y < 0) {
+			hasSelection = false;
+		    }
+		}
+
+		while(buffer_offset > bufferSize) {
+		    buffer.remove(0);
+		    buffer_offset--;
+		}
 	    }
 	} else if(y<0) {
 	    cursor_y = 0;
@@ -168,6 +182,7 @@ public class ConsoleModel implements Console {
 	setCursorY(0);
     }
 
+
     protected List actions = new ArrayList();
 
     public void addAction(ConsoleAction action) {
@@ -226,5 +241,167 @@ public class ConsoleModel implements Console {
 	    buffer.set(buffer_offset + cursor_y, ret);
 	}
 	return ret;
+    }
+
+    // XXX: This stuff shouldn't be here, we should be able to have more than
+    // one view on the same ConsoleModel at different positions
+    public void setLineOffset(int lineOffset) {
+	if(lineOffset < 0) {
+	    this.lineOffset = 0;
+	} else if(lineOffset > buffer_offset) {
+	    this.lineOffset = buffer_offset;
+	} else {
+	    this.lineOffset = lineOffset;
+	}
+    }
+
+    public Line getViewLine(int line) {
+	return getLine(lineOffset + line);
+    }
+
+    private boolean hasSelection = false;
+    private Point start;
+    private Point end;
+
+    public void startSelection(Point start) {
+	this.start = (Point) start.clone();
+	this.start.y += lineOffset;
+	this.end = this.start;
+	hasSelection = true;
+    }
+
+    public void endSelection(Point end) {
+	if(hasSelection) {
+	    this.end = (Point) end.clone();
+	    this.end.y += lineOffset;
+	}
+    }
+
+    public void cancelSelection() {
+	hasSelection = false;
+    }
+
+    public boolean hasSelection() {
+	return hasSelection && !start.equals(end);
+    }
+
+    public Point getSelectionStart() {
+	if(!hasSelection) return null;
+	Point ret;
+	if(
+		start.y < end.y ||
+		( start.y == end.y && start.x < end.x )
+	  )
+	{
+	    ret = (Point) start.clone();
+	} else {
+	    ret = (Point) end.clone();
+	}
+	ret.y -= lineOffset;
+	if(ret.y < 0) {
+	    ret.y = 0;
+	    ret.x = 0;
+	}
+	if(ret.y > getHeight()) {
+	    ret.y = getHeight();
+	    ret.x = 0;
+	}
+	return ret;
+    }
+
+    public Point getSelectionEnd() {
+	if(!hasSelection) return null;
+	Point ret;
+	if(
+		start.y < end.y ||
+		( start.y == end.y && start.x < end.x )
+	  )
+	{
+	    ret = (Point) end.clone();
+	} else {
+	    ret = (Point) start.clone();
+	}
+	ret.y -= lineOffset;
+	if(ret.y < 0) {
+	    ret.y = 0;
+	    ret.x = 0;
+	}
+	if(ret.y > getHeight()) {
+	    ret.y = getHeight();
+	    ret.x = 0;
+	}
+	return ret;
+    }
+
+    public String getSelection() {
+	if(hasSelection()) {
+	    Point start;
+	    Point end;
+	    if(
+		    this.start.y < this.end.y ||
+		    ( this.start.y == this.end.y && this.start.x < this.end.x )
+	      )
+	    {
+		start = this.start;
+		end = this.end;
+	    } else {
+		end = this.start;
+		start = this.end;
+	    }
+
+	    StringBuffer ret = new StringBuffer();
+	    Line tmpLine;
+	    String tmpString;
+
+	    // Nasty code to pull a string out
+	    if(start.y == end.y) {
+		tmpLine = getLine(start.y);
+		if(tmpLine != null)
+		{
+		    tmpString = tmpLine.toString();
+		    if(start.x <= tmpString.length()) {
+			if(end.x <= tmpString.length()) {
+			    return tmpString.substring(start.x,end.x);
+			} else {
+			    return tmpString.substring(start.x);
+			}
+		    } else {
+			return "";
+		    }
+		} else {
+		    return "";
+		}
+	    } else {
+		tmpLine = getLine(start.y);
+		if(tmpLine != null)
+		{
+		    tmpString = tmpLine.toString();
+		    if(start.x <= tmpString.length()) {
+			ret.append(tmpString.substring(start.x));
+		    }
+		}
+		ret.append(System.getProperty("line.separator"));
+		for(int i=1;i<end.y - start.y;i++) {
+		    tmpLine = getLine(start.y + i);
+		    if(tmpLine != null) {
+			ret.append(tmpLine.toString());
+		    }
+		    ret.append(System.getProperty("line.separator"));
+		}
+		tmpLine = getLine(end.y);
+		if(tmpLine != null)
+		{
+		    tmpString = tmpLine.toString();
+		    if(start.x < tmpString.length()) {
+			ret.append(tmpString.substring(0,start.x));
+		    } else {
+			ret.append(tmpString);
+		    }
+		}
+		return ret.toString();
+	    }
+	} else {
+	    return null;
+	}
     }
 }
