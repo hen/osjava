@@ -62,8 +62,7 @@ public class DataSourceLookupTest extends TestCase {
             "jdbc:mysql://192.168.133.2/bikehell", 
             "org.gjt.mm.mysql.Driver", 
             "nico", 
-            "bear","ATestDS");
-            System.err.println("DS: "+aTestDS);
+            "bear","ATestDS", this.delimiter);
             assertEquals( fake, aTestDS );
         } catch(NamingException ne) {
             fail("NamingException: "+ne.getMessage());
@@ -93,7 +92,7 @@ public class DataSourceLookupTest extends TestCase {
             "jdbc:mysql://192.168.133.2/bikehell", 
             "org.gjt.mm.mysql.Driver", 
             "nico", 
-            "bear","ATestDS");
+            "bear","ATestDS", this.delimiter);
             assertEquals( fake, aTestDS );
 
         } catch(NamingException ne) {
