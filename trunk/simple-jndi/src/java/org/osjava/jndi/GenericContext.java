@@ -162,7 +162,7 @@ public class GenericContext extends AbstractContext {
         contextName.addAll(name);
         newContext = new GenericContext(this);
         ((AbstractContext)newContext).setNameInNamespace(contextName);
-        subContexts.put(name, newContext);
+        bind(name, newContext);
         return newContext;
     }
 }
