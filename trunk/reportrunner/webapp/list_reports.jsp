@@ -1,4 +1,4 @@
-<%@ page import="com.genscape.reports.*" %>
+<%@ page import="org.osjava.reportrunner.*" %>
 
 <p>Select a report: </p>
 
