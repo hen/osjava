@@ -4,7 +4,7 @@
   <pomVersion>3</pomVersion>
   <id>simple-jndi</id>
   <name>simple-jndi</name>
-  <currentVersion>0.2</currentVersion>
+  <currentVersion>0.3</currentVersion>
   <organization>
     <name>GenerationJava</name>
     <url>http://www.generationjava.com/</url>
@@ -18,7 +18,7 @@
   <gumpRepositoryId>simple-jndi</gumpRepositoryId>
 
   <description>
-    A simple implemenntation of JNDI. It is entirely library based, so no server instances are started, and it sits upon Java .properties files, so it is easy and simple to understand.
+    A simple implementation of JNDI. It is entirely library based, so no server instances are started, and it sits upon Java .properties files, so it is easy to use and simple to understand. The .properties files may be either on the file system or in the classpath. 
   </description>
   
   <shortDescription>A JNDI implementation using .properties</shortDescription>
