@@ -1,7 +1,7 @@
 /* 
  * org.osjava.threads.ThreadManager
  * 
- * $Revision: 1.3 $
+ * $Revision: 1.4 $
  * 
  * Created on Aug 01, 2002
  * 
@@ -44,7 +44,7 @@ import javax.naming.NameAlreadyBoundException;
  * application
  * 
  * @author Robert M. Zigweid
- * @version $Revision: 1.3 $ $Date: 2003/12/24 22:09:20 $
+ * @version $Revision: 1.4 $ $Date: 2003/12/26 16:24:54 $
  */
 public class ThreadManager {
     /* TODO: Something to prevent cloning this object should be added */
@@ -321,12 +321,12 @@ public class ThreadManager {
     }
     
     /**
-     * Gets a registered {@link ExtendedThread} by its <code>name</code>.
+     * Gets a registered {@link Thread} by its <code>name</code>.
      * All decendant thread groups are checked for the name of this thread.
      *
-     * @param name the name of the ExtendedThread to retreive.
+     * @param name the name of the Thread to retreive.
      * 
-     * @return the ExtendedThread matching the name <code>name</code>.
+     * @return the Thread matching the name <code>name</code>.
      */
     public static Thread getThread(String name) {
         return instanceOf().masterGroup.getThread(name, true);
@@ -444,6 +444,32 @@ public class ThreadManager {
             return null;
         }
         return instanceOf().masterGroup.getThreadGroup(name, true);
+    }
+    
+    /** 
+     * Notify an {@link ExtendedThread}.  This method handles
+     * synchronizatio issues, and allows a Thread managed by the this object
+     * to be have <code>notify()</code> called in it.  If the named Thread 
+     * is not managed by the ThreadManager, this method has no effect.
+     * 
+     * @param name the name of the <code>ExtendedThread</code> or 
+     *        <code>ExtendedThreadGroup</code>.
+     */
+    public static void notifyThread(String name) {
+        System.out.println("Looking to notify thread -- " + name);
+        ExtendedRunnable thread = (ExtendedRunnable)getThread(name);
+        System.out.println("Found -- " + thread);
+        if(thread != null) {
+            /* If the found thread implements ExtendedRunnable, we really want
+             * to be notifying the ExtendedRunnable object instead of the 
+             * Thread itself.  -- Robert */
+            if(thread instanceof ExtendedThread)  {
+                thread = ((ExtendedThread)thread).getRunnable();
+            }
+            synchronized(thread) {
+                thread.notify();
+            }
+        }
     }
 
     /**
