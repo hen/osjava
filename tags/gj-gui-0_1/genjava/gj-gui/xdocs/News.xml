@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<document>
+
+  <properties>
+      <author email="bayard@generationjava.com">Henri Yandell</author>
+      <title>News</title>
+  </properties>
+
+  <body>
+    <section name="News">
+      <p>Version 0.1 has been released, as of 2003-12-08. </p>
+      <p>'gj-gui' has long existed but never been released, so this is the first showing of this code. </p>
+      <hr />
+    </section>
+</body>
+</document>
