@@ -15,9 +15,6 @@ public class WildcardUtils {
                 if("*".equals(wcs[i])) {
                     return true;
                 }
-                if("?".equals(wcs[i])) {
-                    return true;
-                }
                 return wcs[i].length() == 0;
             }
 
