@@ -1,6 +1,9 @@
 make dependent on jakarta sandbox convert
 also on gj-xml and gj-core [though would be nice to remove gj-core]
 possibly remove commons-lang dep, as I only use a handful of StringUtils meths
+commons-collections can go whenever commons-convert is moved to
+genjava-core can goto gj-xml whenever it's ready, gj-core unneeded as long as 
+commons-convert moved to
 
 package as a zip with all jars needed in it
 
@@ -18,3 +21,13 @@ Need a page for:
    Changing the delimiter
 
    Implementing a configuration system
+
+External imports
+================
+import com.generationjava.collections.ClassMap;     replaced by convert
+import com.generationjava.collections.OrderedSet;
+import com.generationjava.io.xml.XMLNode;           gj-xml
+import com.generationjava.io.xml.XMLParser;         gj-xml
+import com.generationjava.lang.ClassW;              replaced by convert
+import org.apache.commons.lang.NumberUtils;         replaced by convert
+import org.apache.commons.lang.StringUtils;
