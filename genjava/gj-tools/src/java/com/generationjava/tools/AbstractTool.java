@@ -36,15 +36,13 @@ import org.apache.commons.cli.PosixParser;
 import org.apache.commons.cli.PatternOptionBuilder;
 import org.apache.commons.cli.ParseException;
 
-import org.apache.commons.lang.exception.NestableRuntimeException;
-
 abstract public class AbstractTool implements Tool {
 
     public CommandLine getCArgs(String flags, String[] args) {
         try {
             return new PosixParser().parse(PatternOptionBuilder.parsePattern(flags), args);
         } catch(ParseException pe) {
-            throw new NestableRuntimeException(pe);
+            throw new RuntimeException(pe);
         }
     }
 

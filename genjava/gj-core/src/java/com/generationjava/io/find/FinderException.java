@@ -31,13 +31,11 @@
  */
 package com.generationjava.io.find;
 
-import org.apache.commons.lang.exception.NestableRuntimeException;
 
 /**
  * Something went wrong in the finding.
- * Currently a Runtime, but will be moved to a NestableException.
  */
-public class FinderException extends NestableRuntimeException {
+public class FinderException extends RuntimeException {
 
     public FinderException() {
         super();
