@@ -41,6 +41,8 @@ import java.util.List;
 import java.util.LinkedList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
 import com.generationjava.util.WildcardUtils;
 
@@ -97,9 +99,11 @@ public class FindingFilter implements FileFilter {
         if( option.equals(Finder.IPATH) ) {
             return new PathFilter(option, argument, true);
         }
-        // IREGEX ignored as too much of a pain
         if( option.equals(Finder.REGEX) ) {
-            return new RegexFilter(option, argument);
+            return new RegexFilter(option, argument, false);
+        }
+        if( option.equals(Finder.IREGEX) ) {
+            return new RegexFilter(option, argument, true);
         }
         if( option.equals(Finder.TYPE) ) {
             return new TypeFilter(option, argument);
@@ -253,12 +257,20 @@ class PathFilter implements FileFilter {
 class RegexFilter implements FileFilter {
     private Object option;
     private Object argument;
-    public RegexFilter(Object option, Object argument) {
+    private boolean ignoreCase;
+    public RegexFilter(Object option, Object argument, boolean ignoreCase) {
         this.option = option;
         this.argument = argument;
+        this.ignoreCase = ignoreCase;
     }
     public boolean accept(File file) {
-        return file.getPath().matches(this.argument.toString());
+        if(this.ignoreCase) {
+            Pattern pattern = Pattern.compile(this.argument.toString(), Pattern.CASE_INSENSITIVE);
+            Matcher matcher = pattern.matcher(file.getPath());
+            return matcher.matches();
+        } else {
+            return file.getPath().matches(this.argument.toString());
+        }
     }
 }
 
