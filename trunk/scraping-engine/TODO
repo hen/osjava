@@ -37,6 +37,10 @@ can call Checkers.
 
 Or:  A Parser has a precondition/postcondition. These are the checkers.
 
+Also a post-condition might in fact be a Converter. One Converter might 
+be an Object[]2CSVConverter. FileStore would then know about CSVs??????
+Or just let the parser build CSV objects to place for the FileStore
+
 Specify a Page content-type. ie) loose html, xhtml, csv, xml, xls etc. 
   This would lead to a sub-class of Page in reply
 
