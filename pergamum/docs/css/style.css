@@ -17,7 +17,7 @@
     .category-name { ; }
     .book-name { background:#eeeeee;}
     .book-url { ; }
-    .bkp, .amz { font-size: 80%; }
+    .ext { font-size: 80%; }
     .review-text { background:#eeeeee;}
     .library-list, .category-list, .publisher-list { font-size: 90%; list-style-type: none; background:#eeeeee; }
     .category-list, .publisher-list { }
