@@ -14,7 +14,7 @@ public interface Report {
     String getLabel();
     void setLabel(String label);
     Renderer[] getRenderers();
-    void setRenderers(String renderers);
+    void addRenderer(Renderer renderer);
     Result execute() throws ReportException;
     Param[] getParams();
     void addParam(Param param);

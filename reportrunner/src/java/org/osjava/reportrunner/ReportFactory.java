@@ -85,9 +85,10 @@ public class ReportFactory {
             String className = reportNode.getAttr("class");
             Report report = (Report) ClassW.createObject(className);
             applyAttrs( report, reportNode, new String[] { "class" } );
-            applyNodes( report, reportNode.enumerateNode(), new String[] { "param", "column" } );
+            applyNodes( report, reportNode.enumerateNode(), new String[] { "param", "column", "renderer", "columns", "renderers" } );
             applyParamTag( report, reportNode.enumerateNode("param") );
             applyColumnTags( report, reportNode );
+            applyRendererTags( report, reportNode );
             report.setReportGroup(group);
             reports.add(report);
         }
@@ -216,6 +217,46 @@ LABEL:  while(nodes.hasMoreElements()) {
             }
         }
         return param;
+    }
+
+    // move <renderers> into here too
+    private static void applyRendererTags( Report report, XMLNode reportNode ) {
+        Renderer[] renderers = ReportFactory.getRenderers();
+        Enumeration nodes = reportNode.enumerateNode();
+        while(nodes.hasMoreElements()) {
+            XMLNode node = (XMLNode) nodes.nextElement();
+            String name = node.getName();
+            if(name.equals("renderers")) {
+                String[] rendererNames = StringUtils.split(node.getValue(), ",");
+                for(int i=0; i<rendererNames.length; i++) {
+                    for(int j=0; j<renderers.length; j++) {
+                        if(rendererNames[i].equals(renderers[j].getName())) {
+                            // need to clone renderer
+                            report.addRenderer(renderers[j]);
+                            break;
+                        }
+                    }
+                }
+            } else
+            if(name.equals("renderer")) {
+                String rendererName = node.getAttr("name");
+                for(int i=0; i<renderers.length; i++) {
+                    Renderer renderer = renderers[i];
+                    if(rendererName.equals(renderer.getName())) {
+                        // need to clone renderer
+                        applyAttrs(renderer, node, new String[0]);
+                        Enumeration vars = node.enumerateNode("variable");
+                        while(vars.hasMoreElements()) {
+                            XMLNode var = (XMLNode) vars.nextElement();
+                            renderer.setVariable( var.getAttr("name"), var.getAttr("value") );
+                        }
+                        report.addRenderer(renderer);
+                        break;
+                    }
+                }
+
+            }
+        }
     }
 
     // Can either be <column> or <columns>

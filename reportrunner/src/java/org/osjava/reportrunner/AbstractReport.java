@@ -11,9 +11,9 @@ public abstract class AbstractReport implements Report {
     private String author;
     private String label;
     private String description;
-    private String renderers;
     private List params = new ArrayList();
     private List columns = new ArrayList();
+    private List renderers = new ArrayList();
     private ReportGroup reportGroup;
 
     public String getName() {
@@ -35,23 +35,12 @@ public abstract class AbstractReport implements Report {
     public String getDescription() { return this.description; }
     public void setDescription(String description) { this.description = description; }
 
-    public void setRenderers(String renderers) {
-        this.renderers = renderers;
+    public void addRenderer(Renderer renderer) {
+        this.renderers.add(renderer);
     }
 
     public Renderer[] getRenderers() {
-        String[] array = org.apache.commons.lang.StringUtils.split(this.renderers, ",");
-        Renderer[] array2 = ReportFactory.getRenderers();
-        List list = new ArrayList();
-        for(int i=0; i<array.length; i++) {
-            for(int j=0; j<array2.length; j++) {
-                if(array[i].equals(array2[j].getName())) {
-                    list.add(array2[j]);
-                    break;
-                }
-            }
-        }
-        return (Renderer[]) list.toArray( new Renderer[0] );
+        return (Renderer[]) this.renderers.toArray(new Renderer[0]);
     }
 
     public Param[] getParams() {
