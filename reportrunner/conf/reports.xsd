@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+  <xs:element name="reports">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="report"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="report">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" ref="sql"/>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="param"/>
+        <xs:element ref="renderers"/>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="column"/>
+      </xs:sequence>
+      <xs:attribute name="class" use="required"/>
+      <xs:attribute name="description" use="required"/>
+      <xs:attribute name="label" use="required" type="xs:NCName"/>
+      <xs:attribute name="name" use="required" type="xs:NCName"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="sql" type="xs:string"/>
+  <xs:element name="param">
+    <xs:complexType>
+      <xs:attribute name="binding"/>
+      <xs:attribute name="default" type="xs:NCName"/>
+      <xs:attribute name="description"/>
+      <xs:attribute name="name" use="required"/>
+      <xs:attribute name="parser"/>
+      <xs:attribute name="pattern"/>
+      <xs:attribute name="type" use="required" type="xs:NCName"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="renderers" type="xs:string"/>
+  <xs:element name="column">
+    <xs:complexType>
+      <xs:attribute name="format"/>
+      <xs:attribute name="formatter"/>
+      <xs:attribute name="label" use="required"/>
+      <xs:attribute name="name" use="required" type="xs:NCName"/>
+      <xs:attribute name="pattern"/>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
