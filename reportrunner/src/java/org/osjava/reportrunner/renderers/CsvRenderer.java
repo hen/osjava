@@ -20,6 +20,14 @@ public class CsvRenderer extends AbstractRenderer {
             csv.setFieldDelimiter(this.fieldDelimiter.charAt(0));
         }
 
+        Column[] columns = result.getHeader();
+        if(columns != null) {
+            for(int i=0; i<columns.length; i++) {
+                csv.writeField(columns[i].getLabel());
+            }
+            csv.endBlock();
+        }
+
         while(result.hasNextRow()) {
             Object[] row = result.nextRow();
             for(int j=0; j<row.length; j++) {
