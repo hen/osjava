@@ -103,15 +103,16 @@
     <sourceDirectory>src/java</sourceDirectory>
 
     <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
+
+    <unitTestPatterns>
+      <unitTestPattern>include = **/*Test.java</unitTestPattern>
+    </unitTestPatterns>
+
     <!--
 
     <integrationUnitTestSourceDirectory/>
 
     <aspectSourceDirectory></aspectSourceDirectory>
-
-    <unitTestPatterns>
-      <unitTestPattern>include = **/*Test.java</unitTestPattern>
-    </unitTestPatterns>
 
     <integrationUnitTestPatterns>
     </integrationUnitTestPatterns>
