@@ -27,7 +27,7 @@
 ^CVSROOT mail -s "[OSJAVA-CVSROOT] checkin of `echo %s` by `whoami`" tigran@osjava.org
 ^atom4j mail -s "[ATOM4J] checkin of `echo %s` by `whoami` " lance@brainopolis.com,tigran@osjava.org
 ^ct-nio mail -s "[CT-NIO] checkin of `echo %s` by `whoami`" antony@cyberiantiger.org, tigran@osjava.org
-^genjava mail -s "[GENJAVA] checkin of `echo %s` by `whoami`" bayard@generationjava.com, tigran@osjava.org
+^genjava-core mail -s "[GENJAVA-CORE] checkin of `echo %s` by `whoami`" bayard@generationjava.com, tigran@osjava.org
 ^jpe mail -s "[JPE] checkin of `echo %s` by `whoami`" bayard@generationjava.com
 ^mudclient mail -s "[MUDCLIENT] checkin of `echo %s` by `whoami`" antony@cyberiantiger.org, tigran@osjava.org
 ^norbert mail -s "[NORBERT] checkin of `echo %s` by `whoami`" bayard@generationjava.com, tigran@osjava.org
@@ -35,6 +35,4 @@
 ^simple-jndi mail -s "[SIMPLE-JNDI] checkin of `echo %s` by `whoami`" bayard@generationjava.com,tigran@osjava.org
 ^tigthreads mail -s "[TIGTHREADS] checkin of `echo %s` by `whoami`" tigran@osjava.org
 ^xmlwriter mail -s "[XMLWRITER] checkin of `echo %s` by `whoami`" bayard@generationjava.com
-^trail-taglib mail -s "[TRAIL-TAGLIB] checkin of `echo %s` by `whoami`" bayard@generationjava.com
 
-DEFAULT mail -s "Unknown OSJava project checkin of `echo %s` by `whoami`" bayard@generationjava.com,tigran@osjava.org
