@@ -15,6 +15,7 @@
  */
 package org.osjava.atom4j.servlet;
 
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -27,6 +28,9 @@ import org.osjava.atom4j.reader.FeedReader;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -131,18 +135,84 @@ public abstract class AtomServlet extends HttpServlet
     }
 
     /**
-     * Implementor should override this method.
-     * 
-     * @return
+     * Authenticate user based on information in request.
      */
-    protected boolean authorized()
-    {   
-        return false;
+    protected boolean authorized(HttpServletRequest request)
+    {  
+        // for now, we do WSSE as do Typepad and Blogger.com
+        return wsseAuthentication(request);
+    }
+    
+    /** 
+     * Get password for specified user name. 
+     */
+    public abstract String getPassword(String userName) throws Exception;
+    
+    /** 
+     * Perform WSSE authentication based on information in request. 
+     */
+    protected boolean wsseAuthentication(HttpServletRequest request) 
+    {
+        return wsseAuthentication(request.getHeader("X-WSSE"));
+    }
+    
+    /** 
+     * Authenticate based on WSSE header string, public for unit testing purposes. 
+     */
+    public boolean wsseAuthentication(String wsseHeader)
+    {
+        boolean ret = false;
+        Base64 base64 = new Base64();
+        String userName = null;
+        String created = null;
+        String nonce = null;
+        String passwordDigest = null;
+        String[] tokens = wsseHeader.split(",");
+        for (int i = 0; i < tokens.length; i++)
+        {
+            int index = tokens[i].indexOf('=');
+            if (index != -1)
+            {
+                String key = tokens[i].substring(0, index).trim();
+                String value = tokens[i].substring(index + 1).trim();
+                value = value.replaceAll("\"", "");
+                if (key.startsWith("UsernameToken"))
+                {
+                    userName = value;
+                }
+                else if (key.equalsIgnoreCase("nonce"))
+                {
+                    nonce = value;
+                }
+                else if (key.equalsIgnoreCase("passworddigest"))
+                {
+                    passwordDigest = value;
+                }
+                else if (key.equalsIgnoreCase("created"))
+                {
+                    created = value;
+                }
+            }
+        }
+        String digest = null;
+        try
+        {
+            digest = WSSEUtilities.generateDigest(
+                         WSSEUtilities.base64Decode(nonce), 
+                         created.getBytes("UTF-8"), 
+                         getPassword(userName).getBytes("UTF-8"));
+            ret = digest.equals(passwordDigest);
+        }
+        catch (Exception e)
+        {
+            logger.warn("ERROR in wsseAuthenticataion: " + e.getMessage());
+        }
+        return ret;
     }
 
     /**
      * Invalid request, return error message.
-     * 
+     *
      * @param request
      * @param response
      */
@@ -179,7 +249,7 @@ public abstract class AtomServlet extends HttpServlet
             return;
         } 
 
-        if (authorized())
+        if (authorized(request))
         {
             if ("entry".equals(pathInfo[1]))
             {
@@ -213,7 +283,7 @@ public abstract class AtomServlet extends HttpServlet
         } 
 
         // first the options that don't require authorization
-        boolean authorized = authorized();
+        boolean authorized = authorized(request);
         if ("entry".equals(pathInfo[1]))
         {
             getEntry(pathInfo, request, response);
@@ -269,7 +339,7 @@ public abstract class AtomServlet extends HttpServlet
             return;
         } 
 
-        boolean authorized = authorized();
+        boolean authorized = authorized(request);
         if (authorized && "entry".equals(pathInfo[1]))
         {
             postEntry(pathInfo, request, response);
@@ -302,7 +372,7 @@ public abstract class AtomServlet extends HttpServlet
             return;
         } 
         
-        if (authorized())
+        if (authorized(request))
         {
             if ("entry".equals(pathInfo[1]))
             {
