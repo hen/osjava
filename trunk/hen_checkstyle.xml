@@ -124,7 +124,9 @@
         <!-- Modifier Checks                                    -->
         <!-- See http://checkstyle.sf.net/config_modifiers.html -->
         <module name="ModifierOrder"/>
+<!-- I like public in my interface signature
         <module name="RedundantModifier"/>
+-->
 
 
         <!-- Checks for blocks. You know, those {}'s         -->
