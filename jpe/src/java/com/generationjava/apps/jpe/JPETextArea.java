@@ -1,8 +1,7 @@
 package com.generationjava.apps.jpe;
 
-import java.io.*;
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.TextArea;
+import java.awt.event.KeyEvent;
 import java.util.Vector;
 
 /**

@@ -1,9 +1,12 @@
 package com.generationjava.apps.jpe;
 
-import java.awt.*;
-import java.io.*;
-import java.util.*;
-import java.awt.event.*;
+import java.awt.Menu;
+import java.awt.MenuBar;
+import java.awt.MenuShortcut;
+import java.awt.event.ActionEvent;
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.Vector;
 
 /**
 * OpenFileHandler handles all the request from the opened menu

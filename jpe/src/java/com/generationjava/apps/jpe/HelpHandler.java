@@ -1,9 +1,9 @@
 package com.generationjava.apps.jpe;
 
-import java.awt.*;
-import java.io.*;
-import java.util.*;
-import java.awt.event.*;
+import java.awt.Menu;
+import java.awt.MenuBar;
+import java.awt.MenuShortcut;
+import java.awt.event.ActionEvent;
 
 /**
  * Handles the Help information.

@@ -1,6 +1,8 @@
 package com.generationjava.apps.jpe;
 
-import java.io.*;
+import java.io.FilterOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 
 public class Log2AreaStream  extends FilterOutputStream 
 {

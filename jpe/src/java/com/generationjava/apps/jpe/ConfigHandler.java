@@ -1,9 +1,9 @@
 package com.generationjava.apps.jpe;
 
-import java.util.Hashtable;
-import java.util.Vector;
 import java.util.Enumeration;
+import java.util.Hashtable;
 import java.util.StringTokenizer;
+import java.util.Vector;
 
 /**
  * Config handler reads, keeps and stores all the states within

@@ -1,13 +1,18 @@
 package com.generationjava.apps.jpe;
 
-import java.awt.*;
-import java.io.*;
-import java.util.*;
-import java.awt.event.*;
-
 import gnu.regexp.RE;
 import gnu.regexp.REException;
+
+import java.awt.FileDialog;
+import java.awt.Menu;
+import java.awt.MenuBar;
+import java.awt.MenuShortcut;
+import java.awt.event.ActionEvent;
+import java.io.File;
 import java.util.Date;
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.Vector;
 
 /**
 * File handler handles all the request from the file menu

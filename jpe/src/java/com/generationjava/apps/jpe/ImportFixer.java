@@ -1,18 +1,16 @@
 package com.generationjava.apps.jpe;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.Reader;
-import java.io.StringReader;
-import java.io.StringWriter;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.FileNotFoundException;
-import java.util.Vector;
-import java.util.Enumeration;
 import gnu.regexp.RE;
 import gnu.regexp.REException;
 import gnu.regexp.REMatch;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.Reader;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.util.Enumeration;
+import java.util.Vector;
 
 public class ImportFixer {
 

@@ -1,9 +1,11 @@
 package com.generationjava.apps.jpe;
 
-import java.awt.*;
-import java.io.*;
-import java.util.*;
-import java.awt.event.*;
+import java.awt.MenuBar;
+import java.awt.event.KeyEvent;
+import java.io.File;
+import java.util.Hashtable;
+import java.util.StringTokenizer;
+import java.util.Vector;
 
 /**
 * core class for JPE, works like a hub to all the handlers that do
