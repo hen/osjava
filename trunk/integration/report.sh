@@ -114,7 +114,7 @@ do
         echo "<li><a href='$i/apidocs/'>apidocs</a></li>" >> $report
     fi
 
-    if [ -d jcoverage/ ];
+    if [ -f jcoverage/index.html ];
     then
         echo "<li><a href='$i/jcoverage/'>jcoverage</a></li>" >> $report
     fi
