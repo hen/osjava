@@ -55,6 +55,7 @@ import javax.naming.OperationNotSupportedException;
 
 import org.osjava.naming.ContextBindings;
 import org.osjava.naming.ContextNames;
+import org.osjava.naming.InvalidObjectTypeException;
 
 /**
  * A Context for managing Threads and ThreadGroups.  The ThreadContext attempts
@@ -207,10 +208,11 @@ public class ThreadContext
          *      ExtendedRunnable
          *      ThreadContext
          */
-        if(   obj instanceof ExtendedRunnable
-           || obj instanceof ThreadContext) {
+        if(obj instanceof ExtendedRunnable) {
             contextStore.put(name, obj);
         }
+        
+        throw new InvalidObjectTypeException("Objects in this context must implement org.osjava.threads.ExtendedRunnable");
     }
 
     /**
