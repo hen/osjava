@@ -5,6 +5,7 @@
 
   <body>
     <menu name="Overview">
+      <item name="Introduction"              href="/index.html"/>
       <item name="How To"              href="/HowTo.html"/>
       <item name="News"              href="/News.html"/>
       <item name="Future Plans"              href="/Tasks.html"/>
