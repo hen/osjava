@@ -1,0 +1,107 @@
+<?xml version="1.0"?>
+<project>
+  
+  <pomVersion>2</pomVersion>
+  <id>TigThreads</id>
+  <name>TigranSoft TigThreads</name>
+  <currentVersion>1.1</currentVersion>
+  <organization>
+    <name>TigranSoft</name>
+    <url>http://www.tigransoft.org/</url>
+    <!-- <logo>/images/initials.jpg</logo> -->
+  </organization>
+  <inceptionYear>2002</inceptionYear>
+  <package>org.tigransoft.threads</package>
+  
+  <description>
+  	An extention of the threading implementation that accompanies the Java-SDK designed to make the use of threads and thread groups simpler without sacrificing features.
+  </description>
+  
+  <shortDescription>An extention to Java Threading</shortDescription>
+
+  <url>http://www.tigransoft.org/projects/TigThreads/</url>
+  <issueTrackingUrl>http://www.osjava.org:8180/secure/BrowseProject.jspa?id=10010</issueTrackingUrl>
+  <siteAddress>www.tigransoft.org</siteAddress>
+  <siteDirectory>/home/tigran/tigransoft.org/projects/TigThreads</siteDirectory>
+  <distributionDirectory>/home/tigran/tigransoft.org/projects/TigThreads/builds/</distributionDirectory>
+
+<!--
+  <repository>
+    <connection>scm:cvshen@umbongo.flamefew.net:/var/cvs:simple-jndi</connection>
+    <url>http://www.generationjava.com/view-cvs/viewcvs.cgi/simple-jndi/</url>
+  </repository>
+  
+  <versions>
+    <version>
+      <id>1.0</id>
+      <name>1.0</name>
+      <tag>HEAD</tag>
+    </version>
+  </versions>
+
+  <branches>
+  </branches>
+-->
+  <!--
+  <mailingLists>
+    <mailingList>
+    </mailingList>
+  </mailingLists>
+  -->
+
+  <developers>
+
+    <developer>
+      <name>Robert M. Zigweid</name>
+      <id>rzigweid</id>
+      <email>rzigweid@tigransoft.org</email>
+      <organization>TigranSoft</organization>
+      <roles>
+        <role>Developer</role>
+      </roles>
+    </developer>
+
+  </developers>
+
+  <contributors>
+  </contributors>
+
+  <dependencies>
+  </dependencies>
+  
+  <build>
+
+    <nagEmailAddress>rzigweid@tigransoft.org</nagEmailAddress>
+
+    <sourceDirectory>src</sourceDirectory>
+
+    <unitTestSourceDirectory>test</unitTestSourceDirectory>
+    <!--
+
+    <integrationUnitTestSourceDirectory/>
+
+    <aspectSourceDirectory></aspectSourceDirectory>
+
+    <unitTestPatterns>
+      <unitTestPattern>include = **/*Test.java</unitTestPattern>
+    </unitTestPatterns>
+
+    <integrationUnitTestPatterns>
+    </integrationUnitTestPatterns>
+    -->
+
+    <!-- J A R  R E S O U R C E S -->
+    <!-- Resources that are packaged up inside the JAR file -->
+
+    <jarResources>
+<!--
+	<jarResource>include = *.dtd</jarResource>
+        <jarResource>include = log4j.properties</jarResource>
+-->
+    </jarResources>
+
+    <jars>
+    </jars>
+  </build>
+</project>
+
