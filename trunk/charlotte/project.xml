@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<project>
+  <pomVersion>.1</pomVersion>
+  <name>code316</name>
+  <id>code316</id>
+  <currentVersion>1.0</currentVersion>
+  <organization>
+    <name>code316</name>
+    <url>http://www.code316.com/</url>
+  </organization>
+  <inceptionYear>2003</inceptionYear>
+  <package>code316.charlotte</package>
+
+  <shortDescription>bit format utility</shortDescription>
+  <description>bit format utility</description>
+  
+  <developers>
+    <developer>
+      <name>David Petersheim</name>
+      <id>dave</id>
+      <email>david.petersheim@genscape.com</email>
+      <organization>code316</organization>
+    </developer>
+  </developers>
+
+  <dependencies>
+    <dependency>
+      <id>code316-core</id>
+      <type>required</type>
+      <version>0.8</version>
+      <url>http://www.code316.com/</url>
+    </dependency>
+
+    <dependency>
+      <id>jep</id>
+      <type>required</type>
+      <version>2.24</version>
+    </dependency>
+
+    <dependency>
+      <id>junit</id>
+      <type>required</type>
+      <version>3.8.1</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <nagEmailAddress>david.petersheim@genscape.com</nagEmailAddress>
+    <sourceDirectory>src/java</sourceDirectory>
+    <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
+  </build>
+</project>
