@@ -24,13 +24,24 @@ public class IOThread extends Thread {
        super();
        mySelector = Selector.open();
     }
-    
+
+    /**
+     * Create a new IOThread.
+     *
+     * @param name The name of the thread.
+     * @throws IOException If there is a problem creating the Selector
+     */
+    public IOThread(String name)
+        throws IOException {
+        super(name);
+        mySelector = Selector.open();
+    }
+
     /**
      * Create a new IOThread.
      *
      * @param group the Threadgroup which the created Thread is a member
      * @param name The name of the thread.
-     * 
      * @throws IOException If there is a problem creating the Selector
      */
     public IOThread(ThreadGroup group, String name)
