@@ -49,6 +49,7 @@ import javax.naming.NameParser;
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 import javax.naming.NotContextException;
+import javax.naming.OperationNotSupportedException;
 
 import org.osjava.naming.ContextBindings;
 import org.osjava.naming.ContextNames;
@@ -161,16 +162,14 @@ public class ThreadContext
      * Method not implemented in ThreadContext
      */
     public void rebind(Name name, Object obj) throws NamingException {
-        /* Shouldn't this throw an exception */
-        return;
+        throw new OperationNotSupportedException("Rebind not implemented.");
     }
 
     /**
      * Method not implemented in ThreadContext
      */
     public void rebind(String name, Object obj) throws NamingException {
-        /* Shouldn't this throw an exception? */
-        return;
+        throw new OperationNotSupportedException("Rebind not implemented.");
     }
 
     /** 
