@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <pg:pergamum xmlns:pg="http://www.osjava.org/pergamum/ns" name="Pergamum: Open Source Java Books">
 
-<div class="logo">Logo</div><div class="banner">Pergamum title</div>
+<div class="logo"></div><div class="banner">Pergamum: Open Source Java Books</div>
 <table>
 <tr>
 <!-- nav -->
-<td>
+<td class="nav">
 <pg:include src="../docs/listcategories.html"/><br/>
 <pg:include src="../docs/listpublishers.html"/><br/>
 <div class="sub-title"><a href="listbooks.html">List all books</a></div>
 </td>
 <!-- body -->
-<td>
+<td class="index-body">
 <div class="sub-title">Coming Soon</div>
 <pg:include src="../docs/comingsoon.html"/><br/>
 <div class="sub-title">New Books</div>

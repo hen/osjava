@@ -2,15 +2,22 @@
     td{font-family:verdana,tahoma;}
     dt{font-weight:bold;}
     code{background:#eeeeee;}
+    a:visited { color: #888888; }
+    a:link { color: black; }
+    a:active { color: white; background: black; }
 
-    .sub-title { background:#ff0000;}
-    .banner { background:#0000ff;}
-    .logo { background:#ff2244;}
-    .publisher-name { background:#ffff00;}
-    .category-name { background:#00ff00;}
-    .book-name { background:#009999;}
-    .book-url { background:#009900;}
-    .bkp { background:#000099;}
-    .amz { background:#990000;}
-    .review-text { background:#990099;}
+    .sub-title { font-size: 120%; background: #00bb99; padding-left: 0.5em; }
+    .sub-title a:visited { color: black; }
+    .banner { font-size: 150%; background: #ff2244; }
+    .logo { background: #ff2244; }
+    .publisher-name { ; }
+    .category-name { ; }
+    .book-name { background:#eeeeee;}
+    .book-url { ; }
+    .bkp, .amz { font-size: 80%; }
+    .review-text { background:#eeeeee;}
+    .library-list, .category-list, .publisher-list { font-size: 90%; list-style-type: none; background:#eeeeee; }
+    .book-links { padding: 0 0.5em 1; }
+    .nav { padding: 1em 0 0 1em; }
+    .index-body { padding-left: 10em; }
 
