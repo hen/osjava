@@ -47,6 +47,8 @@ import java.io.Serializable;
  * value. It's not an interface, allowing people to provide their 
  * own classes which are 'Constantable' as this does not fit the 
  * use of ==.
+ *
+ * @deprecated as 1.5 has enums
  */
 public class Constant implements Serializable {
 
