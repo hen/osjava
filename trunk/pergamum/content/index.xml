@@ -2,21 +2,18 @@
 <pg:pergamum xmlns:pg="http://www.osjava.org/pergamum/ns" name="Pergamum: Open Source Java Books">
 
 <div class="banner">Pergamum: Open Source Java Books</div>
-<table>
-<tr>
 <!-- nav -->
-<td class="nav">
+<div class="nav">
 <pg:include src="../docs/listcategories.html"/><br/>
 <pg:include src="../docs/listpublishers.html"/><br/>
 <div class="sub-title"><a href="listbooks.html">List all books</a></div>
-</td>
+</div>
+
 <!-- body -->
-<td class="index-body">
-<pg:include src="../docs/newreviews.html"/><br/>
+<div class="index-body">
 <pg:include src="../docs/newbooks.html"/><br/>
+<pg:include src="../docs/newreviews.html"/><br/>
 <pg:include src="../docs/comingsoon.html"/><br/>
-</td>
-</tr>
-</table>
+</div>
 
 </pg:pergamum>
