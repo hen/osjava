@@ -49,6 +49,7 @@ then
                     if [ "x${UPDATES}x" != "xx" ];
                     then
                         LIST="$LIST $i"
+#BUG: this does not quite work as we now put these all in the same file and they don't contain the project name
                         svn update | grep -v '^?' >> $buildDir/SVN_UPDATE
                     fi
                     cd -
