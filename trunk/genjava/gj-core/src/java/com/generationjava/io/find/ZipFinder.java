@@ -41,13 +41,11 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Iterator;
-//import java.util.Date;
+import java.util.Enumeration;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipEntry;  
 import java.util.zip.ZipException;  
 import java.io.IOException;
-
-import org.apache.commons.collections.IteratorUtils;
 
 /**
  * A Finder which finds files inside a Zip file.
@@ -89,9 +87,9 @@ public class ZipFinder implements Finder {
 
         try {
             ZipFile zip = new ZipFile(zipfile);
-            Iterator iterator = IteratorUtils.asIterator(zip.entries());
-            while(iterator.hasNext()) {
-                ZipEntry entry = (ZipEntry)iterator.next();
+            Enumeration enum = zip.entries();
+            while(enum.hasMoreElements()) {
+                ZipEntry entry = (ZipEntry)enum.nextElement();
                 if(extension != null) {
                     if(entry.getName().endsWith(extension)) {
                         addFile(retlist, entry.getName());
