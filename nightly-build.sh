@@ -94,6 +94,11 @@ do
     then
         mv target/generated-xdocs/junit-report.xml $reportDir/$i
     fi
+    if [ -f target/$i*.jar ];
+    then
+        silentrm $reportDir/$i/*.jar
+        mv target/$i*.jar $reportDir/$i/$i-`date +%Y%m%d`.jar
+    fi
 
     echo "Finished with $i"
     cd -
