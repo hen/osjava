@@ -7,10 +7,10 @@ import com.generationjava.lang.*;
 
 public interface Renderer {
 
-    String getRendererName();
-    void setRendererName(String name);
-    String getRendererLabel();
-    void setRendererLabel(String label);
+    String getName();
+    void setName(String name);
+    String getLabel();
+    void setLabel(String label);
     String getMimeType();
     void setMimeType(String mimeType);
     void display(Report report, OutputStream out) throws IOException;

@@ -16,8 +16,8 @@ public class ReportFactory {
             if(reportNode.getAttr("name").equals(reportName)) {
                 String className = reportNode.getAttr("class");
                 Report report = (Report) ClassW.createObject(className);
-                report.setReportName(reportName);
-                report.setReportLabel(reportNode.getAttr("label"));
+                report.setName(reportName);
+                report.setLabel(reportNode.getAttr("label"));
                 applyNodes( report, reportNode.enumerateNode() );
                 applyParamTag( report, reportNode.enumerateNode("param") );
                 return report;
@@ -34,8 +34,8 @@ public class ReportFactory {
             if(rendererNode.getAttr("name").equals(rendererName)) {
                 String className = rendererNode.getAttr("class");
                 Renderer renderer = (Renderer) ClassW.createObject(className);
-                renderer.setRendererName(rendererName);
-                renderer.setRendererLabel(rendererNode.getAttr("label"));
+                renderer.setName(rendererName);
+                renderer.setLabel(rendererNode.getAttr("label"));
                 applyNodes( renderer, rendererNode.enumerateNode() );
                 return renderer;
             }
@@ -43,7 +43,7 @@ public class ReportFactory {
         return null;
     }
 
-    public static String[] getReportNames() {
+    public static String[] getNames() {
         ArrayList list = new ArrayList();
         XMLNode node = parseXml("reports.xml").getNode("reports");
         Enumeration reports = node.enumerateNode("report");
