@@ -13,6 +13,7 @@
     <p>Allow the delimiter to be an image. </p>
     <p>Create a session report object that turns the trail into a report. Or just have the developer write a JSP page?</p>
     <p>Create a session listener which evaluates a JSP page(?) and mails it to the user on session expiry.</p>
+    <p>Add an attribute to :push to make query-strings not be placed on the trail. </p>
    </section>
 
  </body>
