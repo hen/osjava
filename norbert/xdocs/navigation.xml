@@ -8,7 +8,7 @@
       <item name="Maven"                 href="http://maven.apache.org/"/>
     </links>
     <menu name="Overview">
-      <item name="About"              href="/About.html"/>
+      <item name="How To"              href="/HowTo.html"/>
       <item name="News"              href="/News.html"/>
       <item name="Clover Report"              href="/clover/"/>
       <item name="Download" href="http://www.osjava.org/releases/official/norbert/"/>
