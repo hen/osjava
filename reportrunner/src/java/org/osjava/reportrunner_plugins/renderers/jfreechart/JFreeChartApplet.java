@@ -26,7 +26,6 @@ public class JFreeChartApplet extends JApplet {
     private JFreeChart chart;
     
     public void init() {
-        setBackground( new Color( 0xff, 0xff, 0xff ) );
         try {
             String url = getParameter("serUrl");
 
@@ -47,6 +46,9 @@ public class JFreeChartApplet extends JApplet {
             this.chart = loadChart( new URL( url ) );
 
             final ChartPanel panel = new ChartPanel(chart);
+
+            panel.setBackground( new Color( 0xff, 0xff, 0xff ) );
+
             panel.setMouseZoomable(true);
             
             XYPlot plot = chart.getXYPlot();
@@ -60,11 +62,13 @@ public class JFreeChartApplet extends JApplet {
 
             // setup the hide line panel
             JPanel hidePanel = new JPanel();
+            hidePanel.setBackground( new Color( 0xff, 0xff, 0xff ) );
             hidePanel.setLayout( new BoxLayout(hidePanel, BoxLayout.Y_AXIS) );
 
             for(int i=0; i<sz; i++) {
                 String name = plot.getDataset().getSeriesName(i);
                 JCheckBox box = new JCheckBox(name, true);
+                box.setBackground( new Color( 0xff, 0xff, 0xff ) );
                 final int n = i;
                 box.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent ae) {
@@ -73,7 +77,7 @@ public class JFreeChartApplet extends JApplet {
                 });
                 hidePanel.add(box);
             }                                     
-            
+
             // set colors if any set
             for(int i=0; i<sz; i++) {
                 if(getParameter("color-"+i) != null) {
