@@ -88,6 +88,11 @@ reportDir=`pwd`/report
 
 for i in $LIST
 do
+    if [ ! -e $i/project.xml ];
+    then
+        echo "Unable to build $i, as not mavenised. "
+        continue
+    fi
     rm -fr report/$i
     echo "Building $i"
     echo $i >> LAST_BUILD
