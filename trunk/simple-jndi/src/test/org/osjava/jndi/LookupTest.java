@@ -136,6 +136,18 @@ public class LookupTest extends TestCase {
         }
     }
 
+    public void testXmlLookup() {
+        try {
+            InitialContext ctxt = new InitialContext();
+            this.delimiter = (String) ctxt.lookup("org.osjava.jndi.delimiter");
+
+            assertEquals( "13", lookup("xmltest/value", ctxt) );
+        } catch(NamingException ne) {
+            fail("NamingException: "+ne.getMessage());
+        }
+    }
+
+
     private Object lookup(String key, Context ctxt) throws NamingException {
         return ctxt.lookup( StringUtils.replace(key, ".", delimiter) );
     }
