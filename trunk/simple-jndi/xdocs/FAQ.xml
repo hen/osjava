@@ -19,6 +19,10 @@
 <dd>You have not specified the org.osjava.jndi.root correctly in your jndi.properties.</dd>
 <dt>ClassNotFoundException: org.osjava.jndi.PropertiesFactory.</dt>
 <dd>You don't have the simple-jndi jar in the classpath.</dd>
+<dt>I get ClassNotFoundException with a <i>com.generationjava</i> or an <i>org.apache</i> package name.</dt>
+<dd>You don't have the dependent jars in your classpath. Please see the <a href="http://www.osjava.org/simple-jndi/Download.html">download</a> page.</dd>
+<dt>How do I use xml instead of .properties?</dt>
+<dd>Each delimited option in the .properties simply becomes a tag in the xml. The last element may be a tag or may be an attribute. </dd>
 </dl>
 
 </section>
