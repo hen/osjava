@@ -7,6 +7,7 @@
     <menu name="gj-csv">
       <item name="News"       href="/News.html"/>
       <item name="Download"   href="http://www.osjava.org/releases/official/genjava/gj-csv/"/>
+      <item name="Jar"        href="http://www.osjava.org/maven/genjava/jars/"/>
       <item name="License"              href="/license.html"/>
     </menu>
     <menu name="Genjava Projects">
