@@ -5,7 +5,6 @@ import org.osjava.reportrunner.*;
 public abstract class AbstractParser implements Parser {
 
     private String pattern;
-    private Class type;
 
     public void setPattern(String pattern) {
         this.pattern = pattern;
@@ -15,20 +14,6 @@ public abstract class AbstractParser implements Parser {
         return this.pattern;
     }
 
-    public void setType(String typeName) {
-        if(typeName == null) {
-            return;
-        }
-        try {
-            this.type = Thread.currentThread().getContextClassLoader().loadClass(typeName);
-        } catch(ClassNotFoundException cnfe) {
-        }
-    }
-
-    public Class getType() {
-        return this.type;
-    }
-
-    public abstract Object parse(String input);
+    public abstract Object parse(String input, Class type);
 
 }
