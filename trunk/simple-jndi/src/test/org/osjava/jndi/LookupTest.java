@@ -154,6 +154,16 @@ public class LookupTest extends TestCase {
         }
     }
 
+    public void testIniLookup() {
+        try {
+            assertEquals( "13", lookup("testini/block1/value") );
+            assertEquals( "pears", lookup("testini/block2/apple") );
+            assertEquals( "stairs", lookup("testini/block2/orange") );
+        } catch(NamingException ne) {
+            fail("NamingException: "+ne.getMessage());
+        }
+    }
+
     private DataSource createFakeDS(String url, String driver, String user, String passwd, String name) {
         Properties props = new Properties();
         // even though delimiter is a /, we use . here for the 
