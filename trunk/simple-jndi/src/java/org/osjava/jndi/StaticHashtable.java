@@ -36,7 +36,7 @@ import java.util.Hashtable;
 
 class PropertiesStaticStore extends Hashtable {
 
-    static private Hashtable SELF = new Hashtable();
+    private static final Hashtable SELF = new Hashtable();
 
     public synchronized int size() {
         return SELF.size();
