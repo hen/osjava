@@ -109,7 +109,7 @@ public class XMLNode {
         if(obj instanceof Vector) {
             return ((Vector)obj).elements();
         } else {
-            return EMPTY;
+            return new SingleEnumeration(obj);
         }
     }
 
@@ -217,7 +217,7 @@ public class XMLNode {
         if(isInvisible()) {
             return "";
         }
-        // QUERY: shouldnt call toString. Needs to improve
+        // QUERY: shouldn't call toString. Needs to improve
         if(this.myNodeList != null) {
             StringBuffer buffer = new StringBuffer();
             Enumeration enum = enumerateNode();
@@ -414,5 +414,26 @@ class NullEnumeration implements Enumeration {
  
     public boolean hasMoreElements() {
         return false;
+    }   
+}
+/**
+ * A single enumeration. Saves time on making a Vector.
+ */
+class SingleEnumeration implements Enumeration {
+
+    private Object obj;
+
+    public SingleEnumeration(Object obj) {
+        this.obj = obj;
+    }
+
+    public Object nextElement() {
+        Object tmp = this.obj;
+        this.obj = null;
+        return tmp;
+    }
+ 
+    public boolean hasMoreElements() {
+        return (obj != null);
     }   
 }
