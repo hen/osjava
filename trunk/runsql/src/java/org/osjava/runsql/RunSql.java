@@ -10,7 +10,7 @@ import com.generationjava.io.*;
 
 public class RunSql {
 
-    static public void main(String[] args) throws Exception {
+    public static void main(String[] args) throws Exception {
         String dsname = args[0];
         InitialContext ctxt = new InitialContext();
         DataSource ds = (DataSource)ctxt.lookup(dsname);
