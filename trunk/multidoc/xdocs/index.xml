@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<document>
+
+ <properties>
+     <author email="bayard@generationjava.com">Henri Yandell</author>
+     <title>Multidoc</title>
+ </properties>
+
+ <body>
+
+  <section name="Multidoc - the multiple documentation system">
+    <p>Multidoc is a simple tool that outputs a wrapping-site for existing javadoc-style sites. It depends on a bunch of jars, so make sure you aquire these. Multidoc currently supports:
+    <ul>
+      <li>Javadoc</li>
+      <li>XRef (source code in HTML)</li>
+      <li>JCoverage (test coverage)</li>
+    </ul>
+  </section>
+
+ </body>
+</document>

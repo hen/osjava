@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<document>
+
+  <properties>
+      <author email="bayard@generationjava.com">Henri Yandell</author>
+      <title>News</title>
+  </properties>
+
+  <body>
+    <section name="News">
+    <p>2004-07-14: Version <a href="changes-report.html#0.1">0.1</a>, of Multidoc, the javadoc amalgramater, released. </p>
+<hr />
+
+</section>
+</body>
+</document>
