@@ -1,2 +1,2 @@
-java Style listbooks.xml listbooks.xsl
-java Style comingsoon.xml listbooks.xsl
+java Style listbooks.xml pergamum.xsl
+java Style comingsoon.xml pergamum.xsl
