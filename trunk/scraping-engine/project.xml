@@ -53,7 +53,7 @@
   <dependencies>
     <dependency>
       <id>oscube</id>
-      <version>SNAPSHOT</version>
+      <version>0.1</version>
     </dependency>
     <dependency>
       <groupId>genjava</groupId>
