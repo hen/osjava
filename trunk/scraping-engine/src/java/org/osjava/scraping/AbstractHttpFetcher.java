@@ -51,9 +51,15 @@ import org.osjava.oscube.container.Session;
  */
 public abstract class AbstractHttpFetcher implements Fetcher {
 
+    private Cookie[] cookies;
+
     public abstract int getDefaultPort();
 
     protected abstract void startSession(URL url, int port, HttpClient client, Config cfg, Session session);
+
+    public void setCookies(Cookie[] cookies) {
+        this.cookies = cookies;
+    }
 
     public Page fetch(String uri, Config cfg, Session session) throws FetchingException {
         try {
@@ -75,6 +81,10 @@ public abstract class AbstractHttpFetcher implements Fetcher {
             }
 
             HttpClient client = new HttpClient();
+            if(this.cookies != null) {
+                client.getState().addCookies(this.cookies);
+            }
+
             HttpMethod method = null;
 
             if(postQuery != null) {
@@ -94,6 +104,19 @@ public abstract class AbstractHttpFetcher implements Fetcher {
                 method = post;
             } else {
                 method = new GetMethod(url.getFile());
+            }
+
+            if(cfg.has("header")) {
+                List list = (List) cfg.getList("header");
+                if(list != null) {
+                    Iterator itr = list.iterator();
+                    while(itr.hasNext()) {
+                        String str = (String) itr.next();
+                        String header = StringUtils.substringBefore(str, "=");
+                        String value = StringUtils.substringAfter(str, "=");
+                        method.addRequestHeader( header, value );
+                    }
+                }
             }
 
             int port = url.getPort();
@@ -124,8 +147,13 @@ public abstract class AbstractHttpFetcher implements Fetcher {
             }
 
             String txt = method.getResponseBodyAsString();
+            Cookie[] cookies = client.getState().getCookies();
             method.releaseConnection(); 
-            Page page = new MemoryPage(txt, type);
+            MemoryPage page = new MemoryPage(txt, type);
+
+            // TODO: how best to handle this?
+            page.setCookies(cookies);
+
             String base = url.getProtocol()+"://"+url.getHost();
             if(url.getPort() != -1) {
                 base += ":"+url.getPort();
