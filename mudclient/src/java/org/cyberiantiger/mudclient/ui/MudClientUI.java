@@ -30,7 +30,8 @@ public class MudClientUI extends JPanel implements ConsoleModelListener {
 	scrollBar.addAdjustmentListener(
 		new AdjustmentListener() {
 		    public void adjustmentValueChanged(AdjustmentEvent ae) {
-			view.setLineOffset(scrollBar.getValue());
+			model.setLineOffset(scrollBar.getValue());
+			view.repaint();
 		    }
 		});
 

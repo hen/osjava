@@ -3,6 +3,7 @@ package org.cyberiantiger.mudclient.ui;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import javax.swing.event.*;
 import java.util.*;
 import org.cyberiantiger.mudclient.MudClient;
 import org.cyberiantiger.mudclient.parser.*;
@@ -10,6 +11,8 @@ import org.cyberiantiger.mudclient.net.MudConnection;
 import org.cyberiantiger.console.*;
 
 public class ControlWindow extends JFrame {
+
+    public static final String DEFAULT_OUTPUT_NAME = "Main";
 
     private MudClient client;
 
@@ -106,6 +109,16 @@ public class ControlWindow extends JFrame {
 		JTabbedPane.BOTTOM,
 		JTabbedPane.WRAP_TAB_LAYOUT
 		);
+	tabbedOutputPane.addChangeListener(
+		new ChangeListener() {
+		    public void stateChanged(ChangeEvent e) {
+			tabbedOutputPane.setForegroundAt(
+			    tabbedOutputPane.getSelectedIndex(),
+			    Color.black
+			    );
+		    }
+		}
+		);
 	getContentPane().add(tabbedOutputPane,BorderLayout.CENTER);
 
 	inputField = new JTextField();
@@ -129,7 +142,7 @@ public class ControlWindow extends JFrame {
 	
 	getContentPane().add(inputField,BorderLayout.SOUTH);
 
-	defaultOutput = createView("Main");
+	defaultOutput = createView(DEFAULT_OUTPUT_NAME);
 	defaultOutput.sendSizeChangeEvents(client);
 
 	pack();
@@ -180,6 +193,7 @@ public class ControlWindow extends JFrame {
 
 	    if((destination = (MudClientUI)customOutput.get(tmp) ) == null) {
 		if((outputName = client.getCustomOutputName(tmp)) == null) {
+		    outputName = DEFAULT_OUTPUT_NAME;
 		    destination = defaultOutput;
 		} else {
 		    destination = createView(outputName);
@@ -189,6 +203,20 @@ public class ControlWindow extends JFrame {
 			customOutput.put(i.next(), destination);
 		    }
 		}
+	    } else {
+		outputName = client.getCustomOutputName(tmp);
+	    }
+	    if(!outputName.equals(
+			tabbedOutputPane.getTitleAt(
+			    tabbedOutputPane.getSelectedIndex()
+			    )
+			)
+	      ) 
+	    {
+		tabbedOutputPane.setForegroundAt(
+			tabbedOutputPane.indexOfTab(outputName), 
+			Color.red
+			);
 	    }
 	    destination.consoleAction(action);
 	} else {
