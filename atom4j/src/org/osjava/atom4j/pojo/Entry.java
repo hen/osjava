@@ -8,8 +8,7 @@ import java.util.Date;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import org.osjava.atom4j.reader.AtomReader;
+import org.osjava.atom4j.Atom4J;
 import org.osjava.atom4j.reader.EntryReader;
 
 /**
@@ -242,7 +241,7 @@ public class Entry
     {
         StringBuffer buf = new StringBuffer();
 
-        buf.append("<entry xmlns=\"" + AtomReader.xmlns + "\" >\n");
+        buf.append("<entry xmlns=\"" + Atom4J.xmlns + "\" >\n");
         buf.append("    <title>" + this.getTitle() + "</title>\n");
         buf.append("    <summary>A very boring entry...</summary>\n");
         //buf.append("    <subtitle>" + this.getSummary()+ "</subtitle>\n");

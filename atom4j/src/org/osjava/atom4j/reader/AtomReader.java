@@ -1,7 +1,4 @@
-/*
- * http://bitworking.org/news/AtomAPI_URIs
- * http://bitworking.org/rfc/draft-gregorio-07.html
- * 
+/* 
  * Created on Aug 23, 2003
  */
 package org.osjava.atom4j.reader;
@@ -20,8 +17,6 @@ import org.xml.sax.SAXException;
  */
 public abstract class AtomReader
 {
-    public static String xmlns = "http://example.com/newformat#";
-    
     protected Digester digester = null;
     protected InputStream input = null;
     

@@ -3,7 +3,7 @@
  */
 package org.osjava.atom4j.pojo;
 
-import org.osjava.atom4j.reader.AtomReader;
+import org.osjava.atom4j.Atom4J;
 
 /**
  * @author llavandowska
@@ -16,7 +16,7 @@ public class UserPreferences
     
     public String toString()
     {
-        StringBuffer buf = new StringBuffer("<userprefs xmlns=\"" + AtomReader.xmlns + "\">\n");
+        StringBuffer buf = new StringBuffer("<userprefs xmlns=\"" + Atom4J.xmlns + "\">\n");
         buf.append("    <name>Reilly</name>\n");
         buf.append("    <id>1234</id>\n");
         buf.append("    <email>reilly@example.org</email>\n");
