@@ -1,11 +1,13 @@
 package org.osjava.reportrunner.reports;
 
+import org.apache.commons.lang.*;
 import org.apache.commons.dbutils.*;
 import org.apache.commons.dbutils.handlers.*;
 import org.osjava.reportrunner.*;
 
 import java.sql.*;
 import java.util.List;
+import java.util.ArrayList;
 import javax.sql.DataSource;
 import javax.naming.*;
 
@@ -40,14 +42,25 @@ public class SqlReport extends AbstractReport {
             QueryRunner runner = new QueryRunner(ds);
 
             Param[] params = getParams();
-            Object[] values = new Object[params.length];
+            ArrayList values = new ArrayList();
             for(int i=0; i<params.length; i++) {
-                values[i] = params[i].getValue();
+
+                // hack to handle ?? preprocessing for arrays
+                if(Object[].class.isAssignableFrom(params[i].getType())) {
+                    Object[] array = (Object[]) params[i].getValue();
+                    String marks = StringUtils.chomp(StringUtils.repeat("?,", array.length), ",");
+                    this.sql = StringUtils.replaceOnce(this.sql, "??", marks);
+                    for(int j=0; j<array.length; j++) {
+                        values.add( array[j] );
+                    }
+                } else {
+                    values.add( params[i].getValue() );
+                }
             }
 
             ResultSetHandler handler = new ReportArrayListHandler(this);
 
-            List list = (List) runner.query(this.sql, values, handler);
+            List list = (List) runner.query(this.sql, values.toArray(), handler);
 
             if(getColumns().length == 0) {
                 // should goto the ResultSetMetaData and get the column names
