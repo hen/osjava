@@ -8,7 +8,9 @@
 
     .sub-title { font-size: 120%; background: #00bb99; padding-left: 0.5em; }
     .sub-title a:visited { color: black; }
-    .banner { font-size: 150%; background: #ff2244; }
+    .banner, .help { font-size: 150%; background: #ff2244; }
+    .banner { float: left; text-align: left; }
+    .help { text-align: right; }
     .logo { background: #ff2244; }
     .publisher-name { ; }
     .category-name { ; }
