@@ -152,6 +152,10 @@ public class SocketChannelWriter extends Writer {
         
         /* Reset the buffer to the mark */
         buffer.reset();
+        
+        /* Let the selector know that we are ready to write. */
+        SelectionKey key = parent.getSelectionKey();
+        key.interestOps( key.interestOps() | SelectionKey.OP_WRITE);
     }
 
     /* (non-Javadoc)
