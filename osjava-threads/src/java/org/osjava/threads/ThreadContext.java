@@ -52,7 +52,6 @@ import javax.naming.NameParser;
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 import javax.naming.NotContextException;
-import javax.naming.OperationNotSupportedException;
 
 import org.osjava.naming.ContextBindings;
 import org.osjava.naming.ContextNames;
@@ -95,16 +94,18 @@ public class ThreadContext
     /* 
      * The NameParser utilized by the Context.
      */
-    private NameParser nameParser = null;
+    private ThreadNameParser nameParser = null;
 
     /****************
      * Constructors *
      ****************/
     /**
      * Create a ThreadContext.
+     * 
+     * @throws NamingException if a naming exception is encountered.
      */
-    protected ThreadContext() {
-        /* We're just using the defaults, so we don't need to do anything */
+    protected ThreadContext() throws NamingException{
+        nameParser = new ThreadNameParser(this);
     }
         
     /* ************************
@@ -384,7 +385,7 @@ public class ThreadContext
      * @see javax.naming.Context#list(javax.naming.Name)
      */
     public NamingEnumeration list(Name name) throws NamingException {
-        if("".equals(name)) {
+        if(name.isEmpty()) {
             /* 
              * Because there are two mappings that need to be used here, 
              * create a new mapping and add the two maps to it.  This also 
@@ -587,6 +588,8 @@ public class ThreadContext
      * not be empty.  This essentialy calls {@link #lookup(javax.naming.Name)}.
      * 
      * @param name The name to be looked up.
+     * @return The object bound to <code>name</code>.
+     * @throws NamingException if a naming exception is encountered.
      * @see javax.naming.Context#lookupLink(javax.naming.Name)
      */
     public Object lookupLink(Name name) throws NamingException {
@@ -598,6 +601,8 @@ public class ThreadContext
      * not be empty.  This essentialy calls {@link #lookup(javax.naming.Name)}.
      * 
      * @param name The name to be looked up.
+     * @return The object bound to <code>name</code>.
+     * @throws NamingException if a naming exception is encountered.
      * @see javax.naming.Context#lookupLink(javax.naming.Name)
      */
     public Object lookupLink(String name) throws NamingException {
@@ -607,44 +612,74 @@ public class ThreadContext
     /**
      * Return the parser that is associated with the context.
      * 
+     * @param name The name of the context to get the name parser from
+     * @return the name parser associated with the named context.
+     * @throws NotContextException if the object bound to <code>name</code>
+     *         is not a context.
+     * @throws NamingException if a naming exception is encountered.
      * @see javax.naming.Context#getNameParser(javax.naming.Name)
      */
     public NameParser getNameParser(Name name) throws NamingException {
-        /* I'm not entirely sure that I like this implementation.  Given that 
-         * there shouldn't really be sub-Contexts, becau    se of the existance of 
-         * the ExtendedThreadGroup, there shouldn't really be a sub-Context. */
-        return nameParser;
+        if(name.isEmpty() ) {
+            return nameParser;
+        }
+        Name subName = name.getPrefix(1); 
+        if(subContexts.containsKey(subName)) {
+            return ((Context)subContexts.get(subName)).getNameParser(name.getSuffix(1));
+        }
+        throw new NotContextException();
     }
 
     /**
-     * (non-Javadoc)
+     * Return the parser that is associated with the context.
      * 
+     * @param name The name of the context to get the name parser from
+     * @return the name parser associated with the named context.
+     * @throws NotContextException if the object bound to <code>name</code>
+     *         is not a context.
+     * @throws NamingException if a naming exception is encountered.
      * @see javax.naming.Context#getNameParser(java.lang.String)
      */
     public NameParser getNameParser(String name) throws NamingException {
         return getNameParser(nameParser.parse(name));
     }
 
-    /*
-     * (non-Javadoc)
+    /**
+     * Create a name from <code>prefix</code> and <code>name</code>, where 
+     * prefix is the name of this context.
      * 
+     * @param name a name relative to this context.
+     * @param prefix the name of this context
+     * @return a name which is the composition of <code>prefix</code> and 
+     *         <code>name</code>.
+     * @throws NamingException if a naming exception is encountered.
      * @see javax.naming.Context#composeName(javax.naming.Name,
      *      javax.naming.Name)
      */
     public Name composeName(Name name, Name prefix) throws NamingException {
-        // TODO Auto-generated method stub
-        return null;
+        if(name == null || prefix == null) {
+            throw new NamingException("Arguments must not be null");
+        }
+        Name retName = (Name)prefix.clone();
+        retName.addAll(name);
+        return retName;
     }
 
-    /*
-     * (non-Javadoc)
+    /**
+     * Create a name from <code>prefix</code> and <code>name</code>, where 
+     * prefix is the name of this context.
      * 
+     * @param name a name relative to this context.
+     * @param prefix the name of this context
+     * @return a name which is the composition of <code>prefix</code> and 
+     *         <code>name</code>.
+     * @throws NamingException if a naming exception is encountered.
      * @see javax.naming.Context#composeName(java.lang.String, java.lang.String)
      */
     public String composeName(String name, String prefix)
         throws NamingException {
-        // TODO Auto-generated method stub
-        return null;
+        Name retName = composeName(nameParser.parse(name), nameParser.parse(prefix));
+        return nameParser.nameToString(retName);
     }
 
     /*
