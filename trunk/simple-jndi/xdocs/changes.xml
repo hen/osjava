@@ -7,6 +7,8 @@
   </properties>
 
   <body>
+    <release version="0.11" date="2004-xx-xx">
+    </release>
     <release version="0.10" date="2004-12-09">
         <action dev="rzigweid" type="add">Added NameParser support.</action>
         <action dev="rzigweid" type="add">Added subcontext support.</action>
