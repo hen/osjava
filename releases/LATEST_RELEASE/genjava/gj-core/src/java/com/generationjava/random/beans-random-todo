@@ -1,7 +1,0 @@
-Suck RandomString over.
-
-RandomBeanMaker needs a Dynamic Proxy one if the Class passed in is an interface.
-
-NullBeanMaker needs to emulate RandomBeanMaker, though it'll need a little 
-help from the developer.
-
