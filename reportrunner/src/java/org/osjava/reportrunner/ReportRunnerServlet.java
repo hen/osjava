@@ -35,7 +35,6 @@ public class ReportRunnerServlet extends HttpServlet {
                 } 
                 params[i].setValue(value);
             }
-            System.out.println("Data: "+java.util.Arrays.asList(params));
         }
 
         // what renderers does the report work with?
@@ -43,9 +42,11 @@ public class ReportRunnerServlet extends HttpServlet {
         // which renderer does user want?
         Renderer renderer = ReportFactory.getRenderer(rendererName);
 
-        System.out.println("["+renderer.getMimeType()+"]");
 
         response.setContentType( renderer.getMimeType() );
+        if(!renderer.isInline()) {
+            response.setHeader("Content-Disposition", "attachment; filename="+report.getName()+"."+renderer.getExtension());
+        }
 
         // bang
         if(renderer != null && report != null) {

@@ -13,6 +13,11 @@ public interface Renderer {
     void setLabel(String label);
     String getMimeType();
     void setMimeType(String mimeType);
+    String getExtension();
+    void setExtension(String extension);
+    boolean isInline();
+    void setInline(String yesno);
+
     void display(Result result, Report report, OutputStream out) throws IOException;
     void display(Result result, Report report, Writer out) throws IOException;
 
