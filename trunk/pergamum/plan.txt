@@ -41,9 +41,9 @@ Need an explanatory link, about this site and the word pergamum. Philosophy.
 
 Nav-lists are sorted.
 Pergamum.org aquired and moved to.
+RSS created for comingsoon, newbooks and newreleases, and it's subscribed to javablogs.com.
 
 TODO
 
-Need an RSS file for the coming-soon, new-books and new-reviews.
 Need reviews.
 Need a copyright and a last updated bit at the bottom.
