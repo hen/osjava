@@ -32,7 +32,7 @@ then
                 fi
                 if [ $SCM = 'CVS' ];
                 then
-                    cvs -d `echo $i | sed 's/:::://'` co $checkoutDir
+                    cvs -d `echo $i | sed 's/::::.*//'` co $checkoutDir
                 fi
             fi
         done
