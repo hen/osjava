@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<document>
+
+  <properties>
+      <author email="bayard@generationjava.com">Henri Yandell</author>
+      <title>Genjava</title>
+  </properties>
+
+  <body>
+    <section name="What is Genjava?">
+      <p>Genjava is a collection of small Java libraries that I've created while working on various other projects. It was formally known as 'genjava-core', but I'm now attempting to leave the monolithic single project and move to a more Commons-like style akin to Jakarta Commons. </p>
+    </section>
+    <section name="'I'?">
+      <p>A couple of questions in 1 letter here. First, my name is Henri Yandell and secondly, yes this is mainly a non-community project for various personal uses. By open-sourcing my own generic code, I believe this lets me use it at work more easily. It also provides me with a way to educate myself about library management and the creation of a product site. </p>
+    </section>
+    <section name="Jakarta Commons is crappy">
+      <p>Some don't like the style of Jakarta Commons, but I've yet to see them provide any better solution. </p>
+    </section>
+    <section name="Dependencies?">
+      <p>I enjoy working on Jakarta Commons projects and so you can expect to see my code depend on those projects whenever I feel the need. I also will happily depend on any of the Genjava code and of course, I'll depend on other jars if that is the role of the utility. So expect to see gj-mail depend on Sun's mail.jar etc... </p>
+    </section>
+</body>
+</document>
