@@ -1,7 +1,7 @@
 /* 
  * org.osjava.threads.InvalidThreadParentException
  * 
- * $Revision: 1.2 $
+ * $Revision: 1.1 $
  * 
  * Created on Aug 01, 2002
  * 
@@ -39,20 +39,20 @@ package org.osjava.threads;
 
 /**
  * Exception to be thrown in the event that a Thread or ThreadGroup is added 
- * that does not implement {@link ExtendedRunnable).
+ * as a child to an ExtendedThreadGroup that is not its parent
  * 
  * @author Robert M. Zigweid
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.1 $ $Date: 2003/11/30 16:40:24 $
  */
-public class InvalidThreadParentException extends Exception {
+public class InvalidRunnableException extends Exception {
 
     /** 
      * Construction of the Exception with the default message
      */
-    public InvalidThreadParentException() {
+    public InvalidRunnableException() {
         super(
-            "Attempted to add Thread which does not implement " +
-            "org.osjava.threads.ExtendedRunnable");
+            "Attempted to add Thread or ThreadGroup as child to a ThreadGroup "
+                + "that is not the parent.");
     }
 
     /** 
@@ -62,7 +62,7 @@ public class InvalidThreadParentException extends Exception {
      * @param message the String that assigns the message that will be used
      *                in the exception's message.
      */
-    public InvalidThreadParentException(String message) {
+    public InvalidRunnableException(String message) {
         super(message);
     }
 }

@@ -1,7 +1,7 @@
 /* 
  * org.osjava.threads.ExtendedThread
  * 
- * $Revision: 1.2 $
+ * $Revision: 1.3 $
  * 
  * Created on Aug 01, 2002
  * 
@@ -47,13 +47,9 @@ package org.osjava.threads;
  * This class is designed to only be instantiated by the {@link ThreadManager}.
  *
  * @author Robert M. Zigweid
- * @version $Revision: 1.2 $ $Date: 2003/09/14 16:02:45 $
+ * @version $Revision: 1.3 $ $Date: 2003/11/30 16:40:24 $
  */
 public class ExtendedThread extends Thread implements ExtendedRunnable {
-
-    /* TODO: Add a clone() override to prevent the ExtendedThread from being 
-     * cloned*/
-
     /** 
      * Field containing the {@link ExtendedRunnable} object 
      */
@@ -65,28 +61,38 @@ public class ExtendedThread extends Thread implements ExtendedRunnable {
      */
     private boolean started = false;
 
-    /** 
-     * Create an ExtendedThread that is part of a specified 
-     * {@link ExtendedThreadGroup} and with a specified name.  The 
-     * {@link ExtendedRunnable} is assigned to be the newly created 
-     * ExtendedThread. This method is designed to be only called by the
-     * {@link ThreadManager} thread creation methods.
-     * 
-     * @param threadGroup The {@link ExtendedThreadGroup} to which the thread  
-     *                    is to belong
-     * @param name        The name of the thread.
-     */
-    protected ExtendedThread(ExtendedThreadGroup threadGroup, String name) {
-        super(threadGroup, name);
-        setRunnable(this);
-    }
-
     /**
-     * Create an ExtendedThread that is part of a specified
-     * {@link ExtendedRunnable} associated with it, an
-     * {@link ExtendedThreadGroup} and with a specified name.
-     * This method is designed to be only called by the
-     * {@link ThreadManager} thread creation methods.
+     * Creates an ExtendedThread with a specified {@link ExtendedRunnable}
+     * as it's run target, a member of {@link ExtendedThreadGroup}, having the 
+     * name of <code>name</code> and a specified <code>stacksize</code>.
+     * 
+     * <p>See the notes on stacksize in the discussion of java.lang.Thread's 
+     * constructor.
+     * 
+     * @param threadGroup The ExtendedThreadGroup to which the thread
+     *        is to belong.
+     * @param target      The ExtendedRunnable target for the thread.
+     * @param name        The name of the thread.
+     * @param stacksize   the desired stack size for the new thread, or zero to
+     *        indicate that this parameter is to be ignored
+     */
+    protected ExtendedThread(
+            ExtendedThreadGroup threadGroup,
+            ExtendedRunnable target,
+            String name,
+            long stacksize) {
+        super(threadGroup, target, name, stacksize);
+        setRunnable(target);
+    }
+    
+    
+    /**
+     * Creates an ExtendedThread with a specified {@link ExtendedRunnable}
+     * as it's run target, a member of {@link ExtendedThreadGroup}, and having 
+     * the name of <code>name</code>.
+     * <p>
+     * This constructor has the same effect as calling <code>
+     * ExtendedThreadGroup(threadGroup, target, name, 0)</code>
      * 
      * @param threadGroup The ExtendedThreadGroup to which the thread
      *                    is to belong.
@@ -94,18 +100,97 @@ public class ExtendedThread extends Thread implements ExtendedRunnable {
      * @param name        The name of the thread.
      */
     protected ExtendedThread(
-        ExtendedThreadGroup threadGroup,
-        ExtendedRunnable target,
-        String name) {
-        super(threadGroup, target, name);
-        setRunnable(target);
+            ExtendedThreadGroup threadGroup,
+            ExtendedRunnable target,
+            String name) {
+        this(threadGroup, target, name, 0);
+    }
+    
+    /** 
+     * Creates an ExtendedThread that is a member of {@link ExtendedThreadGroup}
+     * and has the name of <code>name</code>.
+     * <p>
+     * This constructor has the same effect as calling <code>
+     * ExtendedThreadGroup(threadGroup, null, name, 0)</code>
+     * 
+     * @param threadGroup The {@link ExtendedThreadGroup} to which the thread  
+     *                    is to belongs.
+     * @param name        The name of the thread.
+     */
+    protected ExtendedThread(ExtendedThreadGroup threadGroup, String name) {
+        this(threadGroup, null, name);
     }
 
     /**
-     * Private constructor which does nothing, just to make sure we don't 
-     * 'accidently' get created.
+     * Creates an ExtendedThread with a specified {@link ExtendedRunnable}
+     * as it's run target, and having a name that is automatically generated 
+     * in the same fashion as java.lang.Thread.
+     * <p>
+     * This constructor has the same effect as calling <code>
+     * ExtendedThreadGroup(null, target, null, 0)</code>
+     * 
+     * @param target The ExtendedRunnable target for the thread.
      */
-    private ExtendedThread() {}
+    protected ExtendedThread(ExtendedRunnable target) {
+        this(null, target, null, 0);
+    }
+
+    /**
+     * Creates an ExtendedThread with a specified {@link ExtendedRunnable}
+     * as it's run target, and having the name of <code>name</code>.
+     * <p>
+     * This constructor has the same effect as calling <code>
+     * ExtendedThreadGroup(null, target, name, 0)</code>
+     * 
+     * @param target The ExtendedRunnable target for the thread.
+     * @param name   The name of the thread.
+     */
+    protected ExtendedThread(ExtendedRunnable target, String name) {
+        this(null, target, name, 0);
+    }
+
+    /**
+     * Creates an ExtendedThread with the name <code>name</code>.
+     * <p>
+     * This constructor has the same effect as calling <code>
+     * ExtendedThreadGroup(null, null, name, 0)</code>
+     * 
+     * @param name The name of the thread.
+     */
+    protected ExtendedThread(String name) {
+        super(null, null, name, 0);
+    }
+
+    /**
+     * Creates an ExtendedThread with a specified {@link ExtendedRunnable}
+     * as it's run target, a member of {@link ExtendedThreadGroup}, and having a
+     * name that is automatically generated in the same fashion as 
+     * java.lang.Thread.
+     * <p>
+     * This constructor has the same effect as calling <code>
+     * ExtendedThreadGroup(threadGroup, target, null, 0)</code>
+     * 
+     * @param threadGroup The ExtendedThreadGroup to which the thread
+     *                    is to belong.
+     * @param target      The ExtendedRunnable target for the thread.
+     */
+    protected ExtendedThread(
+            ExtendedThreadGroup threadGroup,
+            ExtendedRunnable target) {
+        this(threadGroup, target, null, 0);
+    }
+
+    /**
+     * Creates an ExtendedThread with itself as its run target, and having 
+     * the name that is automatically generated in the same fashion as 
+     * java.lang.Thread
+     * <p>
+     * This constructor has the same effect as calling <code>
+     * ExtendedThreadGroup(null, null, null, 0)</code>
+     */
+    protected ExtendedThread() {
+        this(null,null,null,0);
+    }
 
     /** 
      * Sets the runnable object for the thread.  An 
@@ -178,5 +263,16 @@ public class ExtendedThread extends Thread implements ExtendedRunnable {
      */
     public boolean isAborting() {
         return getRunnable().isAborting();
+    }
+    
+    /**
+     * Prevents the cloneing of an ExtendedThread
+     * 
+     * @return nothing.  This method will never return an object
+     * @throws CloneNotSupportedException to indicate that this 
+     */
+    protected Object clone() throws CloneNotSupportedException {
+        throw new 
+            CloneNotSupportedException("ExtendedThread cannot be cloned.");
     }
 }

@@ -1,7 +1,7 @@
 /* 
  * org.osjava.threads.AbstractExtendedRunnable
  * 
- * $Revision: 1.2 $
+ * $Revision: 1.3 $
  * 
  * Created on Aug 01, 2002
  * 
@@ -42,7 +42,7 @@ package org.osjava.threads;
  * methods.
  *
  * @author Robert M. Zigweid
- * @version $Revision: 1.2 $ $Date: 2003/09/14 16:02:45 $
+ * @version $Revision: 1.3 $ $Date: 2003/11/30 16:40:24 $
  *
  */
 public abstract class AbstractExtendedRunnable implements ExtendedRunnable {
@@ -50,7 +50,8 @@ public abstract class AbstractExtendedRunnable implements ExtendedRunnable {
      * boolean field containing the value of whether to abort or not.
      */
     private boolean abort = false;
-
+    
+    
     /**
      * Defines an AbstractExtendedRunnable.
      */
@@ -91,5 +92,17 @@ public abstract class AbstractExtendedRunnable implements ExtendedRunnable {
      * @see java.lang.Runnable#run()
      */
     public abstract void run();
+    
+    /**
+     * Prevents the cloneing of an ExtendedRunnable
+     * 
+     * @return nothing.  This method will never return an object
+     * @throws CloneNotSupportedException to indicate that this 
+     */
+    protected Object clone() throws CloneNotSupportedException {
+        throw new 
+            CloneNotSupportedException("An AbstractExtendedRunnable should " +
+                    "be cloned.");
+    }
 
 }

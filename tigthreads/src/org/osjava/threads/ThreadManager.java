@@ -1,7 +1,7 @@
 /* 
  * org.osjava.threads.ThreadManager
  * 
- * $Revision: 1.1 $
+ * $Revision: 1.2 $
  * 
  * Created on Aug 01, 2002
  * 
@@ -44,7 +44,7 @@ import javax.naming.NameAlreadyBoundException;
  * application
  * 
  * @author Robert M. Zigweid
- * @version $Revision: 1.1 $ $Date: 2003/09/08 16:40:26 $
+ * @version $Revision: 1.2 $ $Date: 2003/11/30 16:40:24 $
  */
 public class ThreadManager {
     /* TODO: Something to prevent cloning this object should be added */
@@ -277,6 +277,50 @@ public class ThreadManager {
     }
 
     /**
+     * Add an already created Thread 
+     * @param name the name to add the Thread as.
+     * @param inThread thread to add to the ThreadManager
+     * @throws InvalidThreadParentException if an invalid ThreadParent is 
+     *         the threads parent
+     * @throws NameAlreadyBoundException if the name of the Thread is already 
+     *         bound.
+     * @throws InvalidRunnableException if {@link ExtendedRunnable} is not 
+     *         implemented
+     */
+    public static void addThread(String name, Thread inThread)
+        throws InvalidThreadParentException, InvalidRunnableException,
+               NameAlreadyBoundException {
+        /* Make sure that the inThread implements ExtendedRunnable */
+        if(!(inThread instanceof ExtendedRunnable)) {
+            throw new InvalidRunnableException();
+        }
+        
+        /* Ensure that the name is not already used.*/
+        if(instanceOf().masterGroup.getThreadNames(true).contains(name)) {
+            throw new NameAlreadyBoundException();
+        }
+        
+        /* The ThreadGroup that inThread is in, must be an
+         *  ExtendedThreadGroup */
+        if(!(inThread.getThreadGroup() instanceof ExtendedThreadGroup)) {
+            throw new InvalidThreadParentException();
+        }
+        
+        /* Check the parent of the thread to ensure that the ThreadManager knows
+         * about it */
+        ExtendedThreadGroup threadGroup = 
+            (ExtendedThreadGroup)inThread.getThreadGroup();
+        String groupName = threadGroup.getName();
+        ExtendedThreadGroup testedGroup = getThreadGroup(groupName);
+        
+        if(testedGroup != threadGroup) {
+            throw new InvalidThreadParentException();
+        }
+        
+        threadGroup.addThread(inThread);
+    }
+    
+    /**
      * Gets a registered {@link ExtendedThread} by its <code>name</code>.
      * All decendant thread groups are checked for the name of this thread.
      *
@@ -284,7 +328,7 @@ public class ThreadManager {
      * 
      * @return the ExtendedThread matching the name <code>name</code>.
      */
-    public static ExtendedThread getThread(String name) {
+    public static Thread getThread(String name) {
         return instanceOf().masterGroup.getThread(name, true);
     }
 
@@ -411,7 +455,7 @@ public class ThreadManager {
      * @param name the name of the thread or thread group.
      */
     public static void start(String name) {
-        ExtendedThread thread = getThread(name);
+        Thread thread = getThread(name);
         ExtendedThreadGroup group = null;
 
         /* Handle the easy instance of the single thread */
@@ -438,7 +482,7 @@ public class ThreadManager {
      * @param name the name of the thread or thread group.
      */
     public static void stop(String name) {
-        ExtendedThread thread = getThread(name);
+        ExtendedRunnable thread = (ExtendedRunnable)getThread(name);
         ExtendedThreadGroup group = null;
 
         /* Handle the easy instance of working with just the single thread */
@@ -446,6 +490,7 @@ public class ThreadManager {
             thread.setAbort(true);
             return;
         }
+        
         group = getThreadGroup(name);
         if (group == null) {
             /* If group is also null, there's nothing to do */
@@ -453,5 +498,16 @@ public class ThreadManager {
         }
 
         group.setAbort(true);
+    }
+    
+    /**
+     * Prevents the cloneing of an ThreadManager
+     * 
+     * @return nothing.  This method will never return an object
+     * @throws CloneNotSupportedException to indicate that this 
+     */
+    protected Object clone() throws CloneNotSupportedException {
+        throw new 
+        CloneNotSupportedException("ThreadManager cannot be cloned.");
     }
 }

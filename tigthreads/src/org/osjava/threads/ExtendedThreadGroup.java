@@ -1,7 +1,7 @@
 /* 
  * org.osjava.threads.ExtendedThreadGroup
  * 
- * $Revision: 1.2 $
+ * $Revision: 1.3 $
  * 
  * Created on Aug 01, 2002
  * 
@@ -52,7 +52,7 @@ import java.util.Set;
  * children, be they other ExtendedThreadGroups, or {@link ExtendedThreads}.
  * 
  * @author Robert M. Zigweid
- * @version $Revision: 1.2 $ $Date: 2003/11/03 08:55:23 $
+ * @version $Revision: 1.3 $ $Date: 2003/11/30 16:40:24 $
  */
 public class ExtendedThreadGroup extends ThreadGroup {
     /**
@@ -155,11 +155,17 @@ public class ExtendedThreadGroup extends ThreadGroup {
         it = keys.iterator();
         while (it.hasNext()) {
             String next = (String)it.next();
-            ExtendedThread thread = (ExtendedThread)threadChildren.get(next);
-
-            if (!thread.isAlive() && thread.isStarted()) {
-                threadChildren.remove(next);
+            Thread thread = (Thread)threadChildren.get(next);
+            
+            if(thread instanceof ExtendedThread) {
+                if (! ((ExtendedThread)thread).isAlive() &&
+                      ((ExtendedThread)thread).isStarted() ) {
+                    threadChildren.remove(next);
+                }
             }
+            /* TODO: Currently we don't have a good mechanism to detect if 
+             * regular Threads wrapping ExtendedRunnables have terminated.
+             * Add this.  But in the meantime, they all get left here.  */
             if (threadChildren.get(next) == null) {
                 threadChildren.remove(next);
             }
@@ -183,21 +189,23 @@ public class ExtendedThreadGroup extends ThreadGroup {
     }
 
     /**
-     * Adds an {@link ExtendedThread} to the ExtendedThreadGroup.  This is a 
-     * somewhat tricky method because the <code>newThread</code> is passed as 
-     * a parameter must have been created specifying this object as its parent
-     * because {@link Thread} does not have any methods which allow the
-     * parent of the ThreadGroup to be set after it's creation. 
+     * Adds a {@link Thread} which must implement {@link ExtendedRunnable} to  
+     * the ExtendedThreadGroup.  This is a somewhat tricky method because the 
+     * <code>newThread</code> is passed as a parameter must have been created
+     * specifying this object as its parent because {@link Thread} does not
+     * have any methods which allow the parent of the ThreadGroup to be set
+     * after it's creation. 
      * <p>
      * An InvalidThreadParentException is thrown if <code>newThread</code>
      * does not have a parent of this object.   
      * 
-     * @param newThread The ExtendedThread to be parented.
+     * @param newThread The Thread to be parented.  This thread must implement 
+     *        ExtendedRunnable
      * 
      * @throws InvalidThreadParentException if <code>newThread<code>'s parent 
-     *                                      is not this object.
+     *         is not this object.
      */
-    public void addThread(ExtendedThread newThread)
+    public void addThread(Thread newThread)
         throws InvalidThreadParentException {
         cleanUp();
         /* Check first to ensure that the Thread is actually parented by 
@@ -338,7 +346,7 @@ public class ExtendedThreadGroup extends ThreadGroup {
      * 
      * @return An ExtendedThread with the name <code>name</code>.
      */
-    public ExtendedThread getThread(String name) {
+    public Thread getThread(String name) {
         return getThread(name, false);
     }
 
@@ -354,15 +362,15 @@ public class ExtendedThreadGroup extends ThreadGroup {
      * 
      * @return An ExtendedThread with the name <code>name</code>.
      */
-    public ExtendedThread getThread(String name, boolean recurse) {
+    public Thread getThread(String name, boolean recurse) {
         Set allThreads;
         Iterator it;
-        ExtendedThread ret;
+        Thread ret;
 
         cleanUp();
 
         if (!recurse) {
-            return (ExtendedThread)threadChildren.get(name);
+            return (Thread)threadChildren.get(name);
         }
 
         allThreads = threadGroupChildren.keySet();
@@ -436,7 +444,7 @@ public class ExtendedThreadGroup extends ThreadGroup {
         }
         return null;
     }
-
+    
     /**
      * Invokes <code>start()</code> on all of the {@link ExtendedThreads}
      *  that this group is an ancestor of.
@@ -444,11 +452,12 @@ public class ExtendedThreadGroup extends ThreadGroup {
     public void start() {
         Iterator it = threadChildren.keySet().iterator();
 
-        while (it.hasNext()) {
-            ExtendedThread next = (ExtendedThread)it.next();
+        while (it.hasNext()) {           
+            Thread next = getThread((String)it.next());
             if (next == null) {
                 it.remove();
             }
+            
             next.start();
         }
 
@@ -481,5 +490,16 @@ public class ExtendedThreadGroup extends ThreadGroup {
         while (it.hasNext()) {
             ((ExtendedThreadGroup)it.next()).setAbort(abort);
         }
+    }
+    
+    /**
+     * Prevents the cloneing of an ExtendedThreadGroup.
+     * 
+     * @return nothing.  This method will never return an object
+     * @throws CloneNotSupportedException to indicate that this 
+     */
+    protected Object clone() throws CloneNotSupportedException {
+        throw new 
+        CloneNotSupportedException("ExtendedThreadGroup cannot be cloned.");
     }
 }
