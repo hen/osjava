@@ -123,9 +123,13 @@ do
         mv target/$i*.jar $reportDir/$i/$i-`date +%Y%m%d`.jar
     fi
     date +"%Y/%m/%d %k:%M" > $reportDir/$i/BUILD_TIME
+    if [ -e $buildDir/SVN_UPDATE ];
+    then
+        cat $buildDir/SVN_UPDATE | grep ^$i > $reportDir/$i/REASON
+    fi
     if [ -e $buildDir/REASON ];
     then
-        cat $buildDir/REASON | grep ^$i > $reportDir/$i/REASON
+        cat $buildDir/REASON > $reportDir/$i/REASON
     fi
     echo $BUILD_DURATION > $reportDir/$i/BUILD_DURATION
 
