@@ -140,6 +140,10 @@ public class LookupTest extends TestCase {
             assertEquals( "13", lookup("xmltest.config.value") );
             assertEquals( "Bang", lookup("xmltest.config.four.five") );
             assertEquals( "three", lookup("xmltest.config.one.two") );
+            List list = new ArrayList();
+            list.add("one");
+            list.add("two");
+            assertEquals( list, lookup("xmltest.config.multi.item") );
         } catch(NamingException ne) {
             fail("NamingException: "+ne.getMessage());
         }
