@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<document>
+
+  <properties>
+      <author email="bayard@generationjava.com">Henri Yandell</author>
+      <title>News</title>
+  </properties>
+
+  <body>
+    <section name="News">
+    <p>Version 2.2 has been released, as of 2003-08-12. The following features were added: </p>
+<ul>
+  <li>Added first set of unit tests. </li>
+  <li>Added a RunMain class which runs main(String[]) methods in a new Thread. </li>
+  <li>Deprecated various classes and methods and made various other small improvements. </li>
+  <li>Republished under OSJava site. </li>
+</ul>
+<hr />
+
+</section>
+</body>
+</document>
