@@ -40,16 +40,47 @@ import java.net.URL;
 /**
  * Fetches a piece of content for a url
  */
-public class HttpFetcher extends AbstractHttpFetcher {
+public abstract class AbstractHttpFetcher implements Fetcher {
 
-    public int getDefaultPort() {
-        return 80;
-    }
+    public abstract int getDefaultPort();
 
-    protected void startSession(URL url, int port, HttpClient client, Config cfg, Session session) {
-            client.startSession( url.getHost(), 
-                                 port
-            );
+    protected abstract void startSession(URL url, int port, HttpClient client, Config cfg, Session session);
+
+    public Page fetch(String uri, Config cfg, Session session) throws FetchingException {
+        try {
+            URL url = new URL(uri);
+            HttpClient client = new HttpClient();
+            GetMethod get = new GetMethod(url.getFile());
+
+            int port = url.getPort();
+            if(port == -1) {
+                port = getDefaultPort();
+            }
+            startSession(url, port, client, cfg, session);
+            if(cfg.has("timeout")) {
+                client.setTimeout(cfg.getInt("timeout"));
+            }
+            int result = client.executeMethod(get);
+            if(result != 200) {
+                throw new FetchingException("Unable to fetch from "+uri+" due to error code "+result);
+            }
+            String txt = get.getResponseBodyAsString();
+            get.releaseConnection(); 
+            Page page = new MemoryPage(txt);
+            String base = url.getProtocol()+"://"+url.getHost();
+            if(url.getPort() != -1) {
+                base += ":"+url.getPort();
+            }
+            String path = url.getPath();
+            int idx = path.lastIndexOf("/");
+            if(idx != -1) {
+                base += path.substring(0, idx);
+            }
+            page.setDocumentBase(base);
+            return page;
+        } catch(IOException ioe) {
+            throw new FetchingException("Error. "+ioe.getMessage(), ioe);
+        }
     }
 
 }
