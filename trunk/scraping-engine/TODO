@@ -50,3 +50,12 @@ Provide a scraping language
 Provide a design GUI
 Provide an automatic analyser. Looks for tables with high levels of 
 content. Looks for comments etc.
+
+
+
+DOCUMENTATION:
+
+Docs need to mention:
+
+How to setup the jndi.properties
+How to actually run the goddamn thing
