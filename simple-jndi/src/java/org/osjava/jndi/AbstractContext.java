@@ -70,9 +70,6 @@ public abstract class AbstractContext
     private Hashtable table = new Hashtable();
     private Hashtable subContexts = new Hashtable();
     private Hashtable env = new Hashtable();
-    private String root;
-    private Object protocol;
-    private String separator;
     private String delimiter;
     private NameParser nameParser;
     /* 
@@ -80,11 +77,6 @@ public abstract class AbstractContext
      */
     private Name nameInNamespace = null;
     private boolean nameLock = false;
-
-    // original values
-    private String originalRoot;
-    private String originalDelimiter;
-
     private boolean closing;
 
     /* **********************************************************************
@@ -173,7 +165,6 @@ public abstract class AbstractContext
         String shared = null;
         if(env != null) {
             this.env = (Hashtable)env.clone();
-            this.root = (String)this.env.get("org.osjava.jndi.root");
             this.delimiter = (String)this.env.get("org.osjava.jndi.delimiter");
             shared = (String)this.env.get("org.osjava.jndi.shared");
         }
@@ -181,9 +172,6 @@ public abstract class AbstractContext
         /* let System properties override the jndi.properties file, if
          * systemOverride is true */
         if(systemOverride) {
-            if(System.getProperty("org.osjava.jndi.root") != null) {
-                this.root = System.getProperty("org.osjava.jndi.root");
-            }
             if(System.getProperty("org.osjava.jndi.delimiter") != null) {
                 this.delimiter = System.getProperty("org.osjava.jndi.delimiter");
             }
@@ -199,8 +187,6 @@ public abstract class AbstractContext
         if(this.delimiter == null) {
             this.delimiter = ".";
         }
-        this.originalRoot = this.root;
-        this.originalDelimiter = this.delimiter;
         
         if(parser == null) {
             try {
@@ -285,7 +271,8 @@ public abstract class AbstractContext
             if(subContexts.containsKey(objName)) {
                 return ((Context)subContexts.get(objName)).lookup(name.getSuffix(1));
             }
-            throw new NamingException("Invalid subcontext");
+            throw new NamingException("Invalid subcontext '" + objName.toString() + "' in context '" 
+                            + getNameInNamespace() + "'");
         }
         
         /* Lookup the object in this context */
@@ -293,6 +280,17 @@ public abstract class AbstractContext
             return table.get(objName);
         }
         
+        /* 
+         * Lookup the object from the subcontexts table and return it if found.
+         */
+        if(subContexts.containsKey(name)) {
+            return subContexts.get(name);
+        }
+        
+        /* Look it up in the environment. */
+        if(env.containsKey(name)) {
+            return env.get(name.toString());
+        }
         /* Nothing could be found.  Return null. */
         /*
          * XXX: Is this right?  Should a NamingException be thrown here 
@@ -327,9 +325,16 @@ public abstract class AbstractContext
             throw new InvalidNameException("Cannot bind to an empty name");
         }
         /* Determine if the name is already bound */
-        if(env.containsKey(name)) {
+        if(table.containsKey(name) ||
+           subContexts.containsKey(name) ||
+           env.containsKey(name.toString())) {
             throw new NameAlreadyBoundException("Name " + name.toString()
                 + " already bound.  Use rebind() to override");
+        }
+        
+        if(object instanceof Context) {
+            subContexts.put(name, object);
+            return;
         }
         table.put(name, object);
     }
@@ -368,12 +373,10 @@ public abstract class AbstractContext
      * @see javax.naming.Context#unbind(javax.naming.Name)
      */
     public void unbind(Name name) throws NamingException {
-        String stringName = name.toString();
         if(name.isEmpty()) {
             throw new InvalidNameException("Cannot unbind to empty name");
         }
 
-        Object obj = null;
         if(name.size() == 1) {
             if(table.containsKey(name)) {
                 table.remove(name);
@@ -441,7 +444,6 @@ public abstract class AbstractContext
      */
     public NamingEnumeration list(Name name) throws NamingException {
         Logger logger = Logger.getLogger(this.getClass());
-        logger.debug("From AbstractContext.list() Name --" + name);
 //      if name is a directory, we should do the same as we do above
 //      if name is a properties file, we should return the keys (?)
 //      issues: default.properties ?
@@ -667,9 +669,8 @@ public abstract class AbstractContext
     public Object addToEnvironment(String name, Object object) throws NamingException {
         if(this.env == null) {
             return null;
-        } else {
-            return this.env.put(name, object);
         }
+        return this.env.put(name, object);
     }
 
     /**
@@ -678,9 +679,8 @@ public abstract class AbstractContext
     public Object removeFromEnvironment(String name) throws NamingException {
         if(this.env == null) {
             return null;
-        } else {
-            return this.env.remove(name);
         }
+        return this.env.remove(name);
     }
 
     /**
@@ -689,9 +689,8 @@ public abstract class AbstractContext
     public Hashtable getEnvironment() throws NamingException {
         if(this.env == null) {
             return new Hashtable();
-        } else {
-            return (Hashtable)this.env.clone();
         }
+        return (Hashtable)this.env.clone();
     }
 
     /**
