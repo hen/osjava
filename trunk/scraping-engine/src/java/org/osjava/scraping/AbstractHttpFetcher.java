@@ -58,7 +58,7 @@ public abstract class AbstractHttpFetcher implements Fetcher {
     public Page fetch(String uri, Config cfg, Session session) throws FetchingException {
         try {
             String postQuery = null;
-            if(cfg.has("action") && "POST".equalsIgnoreCase(""+cfg.get("action")) ) {
+            if(cfg.has("method") && "POST".equalsIgnoreCase(""+cfg.get("method")) ) {
                 int idx = uri.indexOf("?");
                 if(idx != -1) {
                     postQuery = uri.substring(idx+1);
