@@ -38,6 +38,10 @@ public class JavadocCreator implements DocumentProjectCreator {
         if("".equals(title)) {
             title = scraper.get("h1").trim();
         }
+        
+        // hack for Commons APIs that have <h1> in their title
+        title = XmlW.removeXml(title);
+        
         // title seems to have ' API' on the end
         title = title.replaceFirst(" API$", "");
 
