@@ -125,7 +125,7 @@ public class ZipFinder implements Finder {
 
     public void notifyDirectoryStarted(File directory) {
         if(findListeners != null) {
-            FindEvent fe = new FindEvent(this,directory);
+            FindEvent fe = new FindEvent(this,"directoryStarted",directory);
             Iterator itr = findListeners.iterator();
             while(itr.hasNext()) {
                 FindListener findListener = (FindListener)itr.next();
@@ -136,7 +136,7 @@ public class ZipFinder implements Finder {
 
     public void notifyDirectoryFinished(File directory, File[] files) {
         if(findListeners != null) {
-            FindEvent fe = new FindEvent(this,directory,files);
+            FindEvent fe = new FindEvent(this,"directoryFinished",directory,files);
             Iterator itr = findListeners.iterator();
             while(itr.hasNext()) {
                 FindListener findListener = (FindListener)itr.next();
@@ -147,7 +147,7 @@ public class ZipFinder implements Finder {
 
     public void notifyFileFound(File directory, File file) {
         if(findListeners != null) {
-            FindEvent fe = new FindEvent(this,directory,file);
+            FindEvent fe = new FindEvent(this,"fileFound",directory,file);
             Iterator itr = findListeners.iterator();
             while(itr.hasNext()) {
                 FindListener findListener = (FindListener)itr.next();

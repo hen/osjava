@@ -50,22 +50,26 @@ public class FindEvent {
     private Finder finder;
     private File file;
     private File[] files;
+    private String type;
 
-    public FindEvent(Finder finder, File directory) {
+    public FindEvent(Finder finder, String type, File directory) {
         this.finder = finder;
         this.directory = directory;
+        this.type = type;
     }
     
-    public FindEvent(Finder finder, File directory, File file) {
+    public FindEvent(Finder finder, String type, File directory, File file) {
         this.finder = finder;
         this.directory = directory;
         this.file = file;
+        this.type = type;
     }
     
-    public FindEvent(Finder finder, File directory, File[] files) {
+    public FindEvent(Finder finder, String type, File directory, File[] files) {
         this.finder = finder;
         this.directory = directory;
         this.files = files;
+        this.type = type;
     }
 
     public File getDirectory() {
@@ -88,6 +92,18 @@ public class FindEvent {
      */
     public File[] getFiles() {
         return this.files;
+    }
+
+    public String getType() {
+        return this.type;
+    }
+
+    public String toString() {
+        String str = "FindEvent - "+this.type+"; dir="+this.directory+", file="+this.file;
+        if(this.files != null) {
+            str += ", files="+java.util.Arrays.asList(this.files);
+        }
+        return str;
     }
 
 }
