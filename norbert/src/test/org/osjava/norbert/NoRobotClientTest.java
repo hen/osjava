@@ -36,12 +36,13 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import junit.textui.TestRunner;
 
+import java.io.File;
 import java.net.URL;
 import java.net.MalformedURLException;
 
 public class NoRobotClientTest extends TestCase {
 
-    private String hardCode = "file:///Users/hen/osj/trunk/norbert/data/";
+    private String hardCode = "file://"+new File("data/").getAbsoluteFile()+File.separator;
 
     public NoRobotClientTest(String name) {
         super(name);
