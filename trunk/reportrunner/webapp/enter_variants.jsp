@@ -26,6 +26,21 @@
 
 <div class="feedback">
 <p>You have chosen the <span class="chosen-data"><%= report.getLabel() %></span> report from the <span class="chosen-data"><%= report.getReportGroup().getLabel() %></span> report group. </p>
+<p>The report will run against the following resources: </p>
+<table>
+<%
+    String[] names = report.getResourceNames();
+    for(int i=0; i<names.length; i++) {
+        String value = request.getParameter(names[i]);
+        if(value == null) {
+            value = names[i];
+        }
+        %>
+        <tr><td><span class="chosen-data"><%= report.getReportGroup().getResource(value).getLabel() %></span></td></tr>
+        <%
+    }
+%>
+</table>
 </div>
 
 <div class="input">
