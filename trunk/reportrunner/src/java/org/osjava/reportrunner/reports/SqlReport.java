@@ -48,6 +48,11 @@ public class SqlReport extends AbstractReport {
             }
 
             List list = (List) runner.query(this.sql, values, new ArrayListHandler() );
+
+            // TODO: if getColumns().length == 0
+            // should goto the ResultSetMetaData and get the column names
+            // this means not using the DBUtils code above
+
             Object[] array = list.toArray(new Object[0]);
 
             if(array == null) {
