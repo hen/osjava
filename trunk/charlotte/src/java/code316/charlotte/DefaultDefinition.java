@@ -4,6 +4,7 @@ public class DefaultDefinition implements FieldDefinition {
     private String operands = "";
     private int offset;
     private int length;
+    private int index;
 
     public String getName() {
         return name;
@@ -36,4 +37,12 @@ public class DefaultDefinition implements FieldDefinition {
     public void setWidth(int length) {
         this.length = length;
     }
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
+    }
+
 }
