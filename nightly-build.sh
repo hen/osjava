@@ -17,8 +17,9 @@ function silentrm() {
 
 function usage() {
     echo 'Usage:'
-    echo ' ./nightly-build.sh all    -  Will build every component specified in NIGHTLY.txt. '
-    echo ' ./nightly-build.sh update -  Will build only components that have had a changed file since the last update. '
+    echo ' ./nightly-build.sh all       -  Will build every component specified in NIGHTLY.txt. '
+    echo ' ./nightly-build.sh update    -  Will build only components that have had a changed file since the last update. '
+    echo ' ./nightly-build.sh <project> -  Will build only the component specified. '
 }
 
 if [ "x$1x" != "xx" ];
@@ -31,8 +32,7 @@ then
         LIST=`svn -u status | grep -v '^?' | grep -v 'Status against revision' | awk '{print $3}' | grep -o -f NIGHTLY.txt  | sort -u`
         svn update | grep -v '^?'
     else
-        usage
-        exit
+        LIST=$1   # $* ?
     fi
 else
     usage
