@@ -1,7 +1,7 @@
 /* 
  * org.osjava.threads.ExtendedThread
  * 
- * $Revision: 1.1 $
+ * $Revision: 1.2 $
  * 
  * Created on Aug 01, 2002
  * 
@@ -47,7 +47,7 @@ package org.osjava.threads;
  * This class is designed to only be instantiated by the {@link ThreadManager}.
  *
  * @author Robert M. Zigweid
- * @version $Revision: 1.1 $ $Date: 2003/09/08 16:40:26 $
+ * @version $Revision: 1.2 $ $Date: 2003/09/14 16:02:45 $
  */
 public class ExtendedThread extends Thread implements ExtendedRunnable {
 
@@ -176,7 +176,7 @@ public class ExtendedThread extends Thread implements ExtendedRunnable {
      * @return A boolean value indicating whether the thread has aborted or 
      *         not. 
      */
-    public boolean getAbort() {
-        return getRunnable().getAbort();
+    public boolean isAborting() {
+        return getRunnable().isAborting();
     }
 }
