@@ -618,14 +618,14 @@ public abstract class AbstractContext implements Context  {
      * @see javax.naming.Context#getNameParser(javax.naming.Name)
      */
     public NameParser getNameParser(Name name) throws NamingException {
-        if(name.isEmpty() ) {
+        if(name == null || name.isEmpty()) {
             return nameParser;
         }
         Name subName = name.getPrefix(1); 
         if(subContexts.containsKey(subName)) {
             return ((Context)subContexts.get(subName)).getNameParser(name.getSuffix(1));
         }
-        throw new NotContextException();    
+        throw new NotContextException();
     }
 
     /**
