@@ -18,7 +18,7 @@ then
     elif [ $1 = 'update' ];
     then
         LIST=`svn -u status | grep -v '^\?' | grep -v '^A' | grep -v '^M' | grep -v 'Status against revision' | awk '{print $3}' | grep -o -f NIGHTLY.txt  | sort -u`
-        svn update | grep -v '^?' > SVN_UPDATE
+        svn update | grep -v '^?' > REASON
     else
         LIST=$1   # $* ?
 	echo 'No updates: Built because someone specifically chose to build it. ' > REASON
@@ -95,11 +95,9 @@ do
         mv target/$i*.jar $reportDir/$i/$i-`date +%Y%m%d`.jar
     fi
     date +"%Y/%m/%d %k:%M" > $reportDir/$i/BUILD_TIME
-    if [ -e SVN_UPDATE ];
+    if [ -e REASON ];
     then
-        cat $buildDir/SVN_UPDATE | grep ^$i > $reportDir/$i/SVN_UPDATE
-    else
-        cat $buildDir/REASON > $reportDir/$i/SVN_UPDATE
+        cat $buildDir/REASON | grep ^$i > $reportDir/$i/REASON
     fi
     echo $BUILD_DURATION > $reportDir/$i/BUILD_DURATION
 
