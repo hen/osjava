@@ -36,7 +36,7 @@ import java.io.Reader;
 
 import org.osjava.oscube.container.Runner;
 import org.osjava.oscube.container.Engine;
-import org.osjava.oscube.container.Config;
+import com.generationjava.config.Config;
 import org.osjava.oscube.container.Session;
 import org.osjava.oscube.container.Result;
 
