@@ -15,7 +15,7 @@
        major.minor.bugfix, but you can also use RC's, alpha, -dev or anything 
        you want. SNAPSHOT is a special version which is never cached by the 
        dependency downloader. -->
-  <currentVersion>0.1</currentVersion>
+  <currentVersion>0.2</currentVersion>
 
   <organization>
     <name>OSJava</name>
