@@ -12,19 +12,19 @@ public abstract class AbstractReport implements Report {
     private String renderers;
     private List params = new ArrayList();
 
-    public String getReportName() {
+    public String getName() {
         return this.name;
     }
 
-    public void setReportName(String name) {
+    public void setName(String name) {
         this.name = name;
     }
 
-    public String getReportLabel() {
+    public String getLabel() {
         return this.label;
     }
 
-    public void setReportLabel(String label) {
+    public void setLabel(String label) {
         this.label = label;
     }
 

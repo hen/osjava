@@ -11,19 +11,19 @@ public abstract class AbstractRenderer implements Renderer {
     private String label;
     private String mimeType;
 
-    public String getRendererName() {
+    public String getName() {
         return this.name;
     }
 
-    public void setRendererName(String name) {
+    public void setName(String name) {
         this.name = name;
     }
 
-    public String getRendererLabel() {
+    public String getLabel() {
         return this.label;
     }
 
-    public void setRendererLabel(String label) {
+    public void setLabel(String label) {
         this.label = label;
     }
 

@@ -7,10 +7,10 @@ import com.generationjava.lang.*;
 
 public interface Report {
 
-    String getReportName();
-    void setReportName(String name);
-    String getReportLabel();
-    void setReportLabel(String label);
+    String getName();
+    void setName(String name);
+    String getLabel();
+    void setLabel(String label);
     String getRenderers();
     void setRenderers(String renderers);
     Object[] execute();
