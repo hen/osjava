@@ -5,36 +5,29 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import java.util.*;
-import org.cyberiantiger.mudclient.MudClient;
-import org.cyberiantiger.mudclient.parser.*;
 import org.cyberiantiger.mudclient.net.MudConnection;
+import org.cyberiantiger.mudclient.parser.*;
+import org.cyberiantiger.mudclient.config.*;
 import org.cyberiantiger.console.*;
 
 public class ControlWindow extends JFrame {
 
-    public static final String DEFAULT_OUTPUT_NAME = "Main";
-
-    private MudClient client;
+    private Connection client;
 
     private JMenuBar menuBar;
     private JMenu fileMenu;
-    private JMenu emulationMenu;
     private JMenu helpMenu;
     private JMenuItem connectMenuItem;
     private JMenuItem disconnectMenuItem;
     private JMenuItem exitMenuItem;
-    private JMenuItem ansiMenuItem;
-    private JMenuItem externalMenuItem;
     private JMenuItem helpMenuItem;
     private JMenuItem aboutMenuItem;
     private JTabbedPane tabbedOutputPane;
     private JTextField inputField;
-
-    private MudClientUI defaultOutput;
-    private Map customOutput = new HashMap();
     private Map views = new HashMap();
+    private ConsoleWriter defaultView;
 
-    public ControlWindow(MudClient client) {
+    public ControlWindow(Connection client) {
 	super("Elephant Mud Client");
 	this.client = client;
 	initComponents();
@@ -45,26 +38,19 @@ public class ControlWindow extends JFrame {
 
 	menuBar = new JMenuBar();
 	fileMenu = new JMenu("File");
-	emulationMenu = new JMenu("Emulation");
 	helpMenu = new JMenu("Help");
 	connectMenuItem = new JMenuItem("Connect");
 	disconnectMenuItem= new JMenuItem("Disconnect");
 	exitMenuItem = new JMenuItem("Exit");
-	ansiMenuItem = new JMenuItem("Ansi");
-	externalMenuItem = new JMenuItem("External Client");
 	helpMenuItem = new JMenuItem("Help");
 	aboutMenuItem = new JMenuItem("About");
 
 	menuBar.add(fileMenu);
-	menuBar.add(emulationMenu);
 	menuBar.add(helpMenu);
 
 	fileMenu.add(connectMenuItem);
 	fileMenu.add(disconnectMenuItem);
 	fileMenu.add(exitMenuItem);
-
-	emulationMenu.add(ansiMenuItem);
-	emulationMenu.add(externalMenuItem);
 
 	helpMenu.add(helpMenuItem);
 	helpMenu.add(aboutMenuItem);
@@ -85,19 +71,9 @@ public class ControlWindow extends JFrame {
 	exitMenuItem.addActionListener(
 		new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
-			client.exit();
-		    }
-		});
-	ansiMenuItem.addActionListener(
-		new ActionListener() {
-		    public void actionPerformed(ActionEvent e) {
-			client.setParser(new ANSIParser());
-		    }
-		});
-	externalMenuItem.addActionListener(
-		new ActionListener() {
-		    public void actionPerformed(ActionEvent e) {
-			client.setParser(new ElephantMUDParser());
+			client.disconnect();
+			hide();
+			System.exit(0); // Not needed in most cases.
 		    }
 		});
 	helpMenuItem.setEnabled(false);
@@ -132,7 +108,7 @@ public class ControlWindow extends JFrame {
 			// reason java swallows it.
 			if(e.getKeyChar() == '\n') {
 			    client.command(
-				getSelectedView().getViewID(), 
+				getCurrentViewName(), 
 				inputField.getText()
 				);
 			    inputField.selectAll();
@@ -142,85 +118,88 @@ public class ControlWindow extends JFrame {
 	
 	getContentPane().add(inputField,BorderLayout.SOUTH);
 
-	defaultOutput = createView(DEFAULT_OUTPUT_NAME);
-	defaultOutput.sendSizeChangeEvents(client);
+	// TODO: Get the list of outputs, and create them.
+	java.util.List outputs = client.getConfiguration().getOutputNames();
+	Iterator i = outputs.iterator();
+	while(i.hasNext()) {
+	    createView((String) i.next());
+	}
+
+	defaultView = getView(
+		client.getConfiguration().getDefaultOutputName()
+		    );
+
+	((MudClientUI)defaultView).setConnection(client);
 
 	pack();
 
 	enableEvents(AWTEvent.WINDOW_EVENT_MASK);
     }
 
-    public MudClientUI createView(String id) {
-	MudClientUI ui = getView(id);
+    public ConsoleWriter createView(String id) {
+	ConsoleWriter ui = getView(id);
 	if(ui != null) {
 	    return ui;
 	} else {
-	    ui = new MudClientUI(id);
-	    tabbedOutputPane.addTab(id, ui);
-	    views.put(id,ui);
-	    return ui;
+	    OutputConfiguration config = 
+	    client.getConfiguration().getOutputConfiguration(id);
+
+	    if(config != null) {
+		ui = new MudClientUI(this,config);
+		views.put(id,ui);
+
+		if(config.getVisible()) {
+		    makeVisible((MudClientUI)ui);
+		}
+
+		return ui;
+	    } else {
+		return null;
+	    }
 	}
-    }
-
-    public void deleteView(String id) {
-    }
-
-    public MudClientUI getView(String viewId) {
-	return (MudClientUI) views.get(viewId);
-    }
-
-    public MudClientUI getSelectedView() {
-	return (MudClientUI)tabbedOutputPane.getSelectedComponent();
     }
 
     public void processWindowEvent(WindowEvent we) {
 	super.processWindowEvent(we);
 	if(we.getID() == WindowEvent.WINDOW_CLOSING) {
-	    client.exit();
+	    client.disconnect();
+	    hide();
 	}
     }
 
-    public void consoleAction(ConsoleAction action) {
-	if(action instanceof ElephantMUDConsoleAction) {
-	    ElephantMUDConsoleAction eAction = 
-	    (ElephantMUDConsoleAction) action;
+    public ConsoleWriter getView(String id) {
+	return (ConsoleWriter) views.get(id);
+    }
 
-	    String tmp = eAction.getPrimaryClass();
+    public ConsoleWriter getDefaultView() {
+	return defaultView;
+    }
 
-	    // First check if there's an existing window to grab this message.
-	    String outputName;
-	    MudClientUI destination;
+    public ConsoleWriter getCurrentView() {
+	return (ConsoleWriter) tabbedOutputPane.getSelectedComponent();
+    }
 
-	    if((destination = (MudClientUI)customOutput.get(tmp) ) == null) {
-		if((outputName = client.getCustomOutputName(tmp)) == null) {
-		    outputName = DEFAULT_OUTPUT_NAME;
-		    destination = defaultOutput;
-		} else {
-		    destination = createView(outputName);
-		    java.util.List types = client.getCustomOutputTypes(outputName);
-		    Iterator i = types.iterator();
-		    while(i.hasNext()) {
-			customOutput.put(i.next(), destination);
-		    }
-		}
-	    } else {
-		outputName = client.getCustomOutputName(tmp);
+    public String getCurrentViewName() {
+	return tabbedOutputPane.getTitleAt(
+		tabbedOutputPane.getSelectedIndex()
+		);
+    }
+
+    public void viewUpdated(MudClientUI ui) {
+	if(ui != tabbedOutputPane.getSelectedComponent()) {
+	    int i = tabbedOutputPane.indexOfComponent(ui);
+	    if(i>=0) {
+		tabbedOutputPane.setForegroundAt(i, Color.red);
 	    }
-	    if(!outputName.equals(
-			tabbedOutputPane.getTitleAt(
-			    tabbedOutputPane.getSelectedIndex()
-			    )
-			)
-	      ) 
-	    {
-		tabbedOutputPane.setForegroundAt(
-			tabbedOutputPane.indexOfTab(outputName), 
-			Color.red
-			);
-	    }
-	    destination.consoleAction(action);
+	}
+    }
+
+    public void makeVisible(MudClientUI ui) {
+	OutputConfiguration config = ui.getConfiguration();
+	if(config.getFloating()) {
+	    new OutputFrame(ui).show();
 	} else {
-	    defaultOutput.consoleAction(action);
+	    tabbedOutputPane.addTab(config.getName(), (Component) ui);
 	}
     }
 

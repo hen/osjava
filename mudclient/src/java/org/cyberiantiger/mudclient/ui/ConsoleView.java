@@ -10,6 +10,7 @@ public class ConsoleView extends JComponent implements ConsoleModelListener
 {
 
     private ConsoleModel model;
+    private Connection connection;
 
     private Insets borderArea;
     private int rowHeight;
@@ -61,8 +62,15 @@ public class ConsoleView extends JComponent implements ConsoleModelListener
 
 	    synchronized(this) {
 		model.addAction(new ResizeConsoleAction(width,height));
+		if(connection != null) {
+		    connection.setWindowSize(width,height);
+		}
 	    }
 	}
+    }
+
+    public void setConnection(Connection connection) {
+	this.connection = connection;
     }
 
     public synchronized void paintComponent(Graphics g) {
@@ -205,7 +213,7 @@ public class ConsoleView extends JComponent implements ConsoleModelListener
 	if(
 		ce.getID() == ComponentEvent.COMPONENT_RESIZED ||
 		ce.getID() == ComponentEvent.COMPONENT_SHOWN
-		) 
+	  ) 
 	{
 	    resizeConsole();
 	}
@@ -231,18 +239,9 @@ public class ConsoleView extends JComponent implements ConsoleModelListener
 	    if(model.hasSelection()) {
 		String selection = model.getSelection();
 		if(selection != null) {
-		    getToolkit().getSystemClipboard().setContents(
+		    getToolkit().getSystemSelection().setContents(
 			    new StringSelection(selection),
-			    new ClipboardOwner() {
-				public void lostOwnership(
-				    Clipboard clip, 
-				    Transferable trans
-				    ) 
-				{
-				    model.cancelSelection();
-				    repaint();
-				}
-			    }
+			    getClipboardOwner()
 			    );
 		}
 	    }
@@ -263,11 +262,29 @@ public class ConsoleView extends JComponent implements ConsoleModelListener
     }
 
     protected void processMouseWhellEvent(MouseWheelEvent mwe) {
-	System.out.println("Got MouseWheelEvent: "+mwe);
 	super.processMouseWheelEvent(mwe);
     }
 
     public void consoleChanged() {
 	repaint();
+    }
+
+    private ClipboardOwner clipboardOwner;
+
+    protected ClipboardOwner getClipboardOwner() {
+	if(clipboardOwner == null) {
+	    clipboardOwner = new ClipboardOwner()
+	    {
+		public void lostOwnership(
+			Clipboard clip, 
+			Transferable trans
+			) 
+		{
+		    model.cancelSelection();
+		    repaint();
+		}
+	    };
+	}
+	return clipboardOwner;
     }
 }

@@ -4,7 +4,6 @@ import java.io.*;
 import java.net.*;
 import org.cyberiantiger.telnet.*;
 import org.cyberiantiger.mudclient.parser.Parser;
-import org.cyberiantiger.mudclient.MudClient;
 
 public class MudConnection extends Thread {
 
@@ -18,17 +17,17 @@ public class MudConnection extends Thread {
     private int port;
     private TelnetSocket sock;
     private SimpleTelnetSession session;
-    private MudClient client;
+    private Display client;
     private Parser parser;
     
     /**
      * Create a new MudConnection for the specified MudClient to the
      * destination:port.
      */
-    public MudConnection(MudClient client, String destination, int port) {
+    public MudConnection(Display client) {
 	this.client = client;
-	this.destination = destination;
-	this.port = port;
+	this.destination = client.getConfiguration().getHost();
+	this.port = client.getConfiguration().getPort();
 	start();
     }
 
@@ -49,7 +48,9 @@ public class MudConnection extends Thread {
 	if(status == CONNECTED) return true;
 	status = CONNECTING;
 	client.connectionStatusChanged(CONNECTING);
-	session = new SimpleTelnetSession("ANSI") {
+	session = new SimpleTelnetSession(
+		client.getConfiguration().getTerminalType()
+		) {
 	    protected void serverWillEcho(boolean echo) {
 		client.connectionDoLocalEcho(!echo);
 	    }
@@ -114,7 +115,7 @@ public class MudConnection extends Thread {
     public void setParser(Parser parser) {
 	if(this.parser != null) {
 	    synchronized(this.parser) {
-		parser.flush(client);
+		parser.flush(client.getConsoleWriter());
 		this.parser = parser;
 	    }
 	} else {
@@ -163,7 +164,7 @@ public class MudConnection extends Thread {
 				if(parser.changeParser()) {
 				    setParser(parser.getNewParser());
 				} else if(!sock.getReader().ready()) {
-				    parser.flush(client);
+				    parser.flush(client.getConsoleWriter());
 				}
 			    }
 			}
