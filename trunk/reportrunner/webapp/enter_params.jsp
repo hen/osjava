@@ -2,7 +2,7 @@
 <%@ page import="org.apache.commons.lang.StringUtils" %>
 
 <%
-    String reportName = request.getParameter("report");
+    String reportName = request.getParameter("_report");
 
 %>
 
@@ -11,7 +11,7 @@
 <p>It requires the following information: </p>
 
 <form action="list_renderers.jsp">
-<input type="hidden" name="report" value="<%= reportName %>">
+<input type="hidden" name="_report" value="<%= reportName %>">
 <%
     Report report = ReportFactory.getReport(reportName);
     if(report instanceof org.osjava.reportrunner.reports.SqlReport) {

@@ -3,8 +3,8 @@
 <%@ page import="org.apache.commons.lang.*" %>
 ReportRunner:
 <%
-String reportName = request.getParameter("report");
-String rendererName = request.getParameter("renderer");
+String reportName = request.getParameter("_report");
+String rendererName = request.getParameter("_renderer");
 
         // ask user which report they want
         Report report = ReportFactory.getReport(reportName);
