@@ -1,0 +1,16 @@
+Some problems that simulchron needs to solve:
+
+P1: A max'd line that suddenly drops to 0 [over 30 minutes] and then rises to 
+capacity again [over 30 minutes] at another time.
+
+S1: This implies a Constant(1) that drops to a Constant(0) gradually and then later on gradually rises to a Constant(1). It can be implemented in one of two ways:
+  i) hard-coded. 1500 is Constant(1), 1501->1559 is 1->0, and 1600 is 0, 
+     followed by similar hard-coding at 1700,   [Play1Algorithm]
+
+ ii) generic. time t is Algorithm A, time t2 is Algorithm B, and between 
+     there is a ratio between the two algorithms of some kind. 
+
+P2: Two separate line components, which sum together to form the line. One may 
+give out without the other going etc.
+
+S2: SharedAlgorithm and a Play1Algorithm-ii/generic with each a Constant(0.5)->Constant(0).

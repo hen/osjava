@@ -1,0 +1,33 @@
+From hyandell@genscape.com Sat Jan 10 19:50:54 2004
+Date: Sat, 10 Jan 2004 18:39:35 -0500
+From: Henri Yandell <hyandell@genscape.com>
+To: hen@yandell.org
+Subject: simulchron
+
+    [ The following text is in the "iso-8859-1" character set. ]
+    [ Your display is set for the "US-ASCII" character set.  ]
+    [ Some characters may be displayed incorrectly. ]
+
+
+A framework to simulate a plant feed, or line feed, or unit feed, or
+whatever into the database.
+
+In a large way it is much like OSJ-scraping-engine in that it provides an
+automatic database handler to the written module, a configuration system
+and an active element of some kind. This does tend to suggest that an
+osj-container could be written to handle running frameworks in my chosen
+way.
+
+simulate(Timestamp, Map input)...
+
+isPoint(Timestamp, Map) to decide if it is going to return a value?
+
+plant-id: 52 capacity: 2000 offset(secs) 72 scheduler cron schedule ...
+
+simulate:
+
+void simulator.isPoint(ts, map) Object simulator.simulate(ts, map)
+
+config has (Tablename, csv_file, simulator to use, schedule*)
+
+

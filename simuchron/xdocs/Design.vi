@@ -1,0 +1,47 @@
+
+Sits on OSCUBE
+
+The engine needs to take the current time and pass it into the specified 
+algorithm.
+
+Algorithms have:
+
+    public Number evaluate(Date ts, Map session);
+
+Known algorithms:
+
+[let t be minutes of the day]
+[let signed-capacity be +capacity when combined by a +ve number
+                    and -capacity when combined with a -ve number]
+[let x be an algorithm result]
+
+Algorithm
+  CosAlgorithm              COS(2 pi t) * signed-capacity
+  SinAlgorithm              SIN(2 pi t) * signed-capacity
+  MaxAlgorithm              +ve-capacity
+  MinAlgorithm              -ve-capacity
+  SharedAlgorithm           SUM( algorithm-i * ratio-i)
+  PostAlgorithm             post(algorithm)
+    Post                    post(x)
+      WobblePost            post(x + x*0.03 % 4 - 2)
+  PreAlgorithm              pre(algorithm)
+    Pre                     pre(t)
+  SlopeAlgorithm            2*(t-shifted 12)-1 * signed-capacity
+
+SlopeAlgorithm needs recoding a little to use a PreAlgorithm.
+All need to stop knowing about max/min and work on a 1 basis? Then 
+a post algorithm with the capacity/min-capacity may be applied?
+
+ORIGINAL PLAN:
+
+simulate(Timestamp, Map input)...
+
+isPoint(Timestamp, Map) to decide if it is going to return a value?
+
+plant-id: 52 capacity: 2000 offset(secs) 72 scheduler cron schedule ...
+
+simulate:
+
+void simulator.isPoint(ts, map) Object simulator.simulate(ts, map)
+
+config has (Tablename, csv_file, simulator to use, schedule*)
