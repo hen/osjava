@@ -61,6 +61,12 @@
       <version>SNAPSHOT</version>
     </dependency>
     <dependency>
+      <groupId>genjava</groupId>
+      <artifactId>gj-config</artifactId>
+      <version>1.1</version>
+      <url>http://www.osjava.org/genjava/</url>
+    </dependency>
+    <dependency>
       <id>log4j</id>
       <version>1.2.7</version>
       <url>http://jakarta.apache.org/log4j/</url>
@@ -89,7 +95,7 @@
     </dependency>
     <dependency>
       <id>norbert</id>
-      <version>0.1.1</version>
+      <version>0.2</version>
       <url>http://www.osjava.org/norbert/</url>
     </dependency>
   </dependencies>

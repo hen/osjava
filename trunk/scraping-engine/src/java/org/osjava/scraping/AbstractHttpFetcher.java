@@ -39,7 +39,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.osjava.norbert.NoRobotClient;
-import org.osjava.oscube.container.Config;
+import com.generationjava.config.Config;
 import org.osjava.oscube.container.Session;
 
 /**
@@ -118,6 +118,9 @@ public abstract class AbstractHttpFetcher implements Fetcher {
         try {
             nrc.parse( toBase(url) );
         } catch(FileNotFoundException fnfe) {
+            // no robots.txt, so who cares :)
+            return false;
+        } catch(IOException ioe) {
             // no robots.txt, so who cares :)
             return false;
         }
