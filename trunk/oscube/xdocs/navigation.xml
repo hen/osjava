@@ -22,7 +22,7 @@
     <menu name="Resources">
       <item name="Mailing List"              href="/mail-lists.html"/>
       <item name="Jar Dependencies"              href="/dependencies.html"/>
-      <item name="SVN Repository"              href="http://www.osjava.org/svn.php?project=oscube"/>
+      <item name="SVN Repository"              href="http://www.osjava.org/svn.html?project=oscube"/>
       <item name="Bug Tracking"              href="/issue-tracking.html"/>
     </menu>
   </body>

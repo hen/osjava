@@ -26,7 +26,7 @@
     <menu name="Resources">
       <item name="Mailing list"       href="/mail-lists.html"/>
       <item name="Bug tracking"       href="/issue-tracking.html"/>
-      <item name="SVN Repository"     href="http://www.osjava.org/svn.php?project=genjava"/>
+      <item name="SVN Repository"     href="http://www.osjava.org/svn.html?project=genjava"/>
     </menu>
   </body>
 </project>
