@@ -3,7 +3,7 @@
   <extend>../project.xml</extend>
   <id>gj-scrape</id>
   <name>GenJava-Scrape</name>
-  <currentVersion>2.0</currentVersion>
+  <currentVersion>2.0.1</currentVersion>
   <inceptionYear>2002</inceptionYear>
   
   <description>
