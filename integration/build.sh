@@ -191,7 +191,7 @@ do
     date +"%Y/%m/%d %k:%M" > $reportDir/$i/BUILD_TIME
     if [ -e $buildDir/SCM_UPDATE ];
     then
-        cat $buildDir/SCM_UPDATE | grep " $i " > $reportDir/$i/REASON
+        cat $buildDir/SCM_UPDATE | grep "$i " > $reportDir/$i/REASON
     fi
     if [ -e $buildDir/REASON ];
     then
