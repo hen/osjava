@@ -1,0 +1,141 @@
+<?xml version="1.0"?>
+<project>
+  
+  <pomVersion>3</pomVersion>
+  <id>mudclient</id>
+  <name>mudclient</name>
+  <currentVersion>0.5</currentVersion>
+  <organization>
+    <name>OSJava</name>
+    <url>http://www.osjava.org/</url>
+    <logo>/images/osjava.gif</logo>
+  </organization>
+  <inceptionYear>2003</inceptionYear>
+  <package>org.cyberiantiger</package>
+  <logo>/images/1x1.gif</logo>
+  
+  <!-- Gump integration -->
+  <gumpRepositoryId>mudclient</gumpRepositoryId>
+
+  <description>
+  <![CDATA[
+  <h1>Mudclient</h1>
+  <h2>Description</h2>
+  <p>A mudclient written entirely in java, using the swing UI components,
+  and some of it's own custom components.</p>
+  <h2>Aims</h2>
+  <p>Initially the mud client will only work with 
+  <a href="http://www.elephant.org/">Elephant Mud</a>, however later on in the
+  project it is planned to make specific support and features plugins.</p>
+  <p>The mudclient requires java 1.4 or higher which can be downloaded from 
+  <a href="http://www.java.com/">www.java.com</a>.</p>
+  <h2>Current Status</h2>
+  <h3>Implemented</h3>
+  <ul>
+  <li>Telnet Negotiation</li>
+  <li>Ansi control code support</li>
+  <li>Elephant Mud external client mode support</li>
+  <li>Multiple output windows for one mud</li>
+  <li>Configurable Keybindings</li>
+  </ul>
+  <h3>To Do</h3>
+  <ul>
+  <li>Make the configuration alterable at runtime</li>
+  <li>Make the configuration persistent</li>
+  <li>Aliases, Macros &amp; Triggers</li>
+  <li>Support for using 'ed' whilst in external client mode</li>
+  <li>A pluggin framework</li>
+  <li>Remove specific Elephant Mud stuff and make it into a plugin</li>
+  </ul>
+  ]]>
+  </description>
+  
+  <shortDescription>A mudclient</shortDescription>
+
+  <url>http://www.osjava.org/mudclient/</url>
+  <issueTrackingUrl>http://www.osjava.org:8080/jira/secure/BrowseProject.jspa?id=10011</issueTrackingUrl>
+  <siteAddress>www.osjava.org/maven/mudclient</siteAddress>
+  <siteDirectory>/sites/org/osjava/www/maven/genjava/mudclient/</siteDirectory>
+  <distributionDirectory>/sites/org/osjava/www/maven/builds/</distributionDirectory>
+
+  <!--
+  <repository>
+    <connection>scm:cvs:ext:hen@umbongo.flamefew.net:/var/publiccvs:mudclient</connection>
+    <url>http://www.osjava.org/view-cvs/viewcvs.cgi/mudclient/</url>
+  </repository>
+  -->
+
+  <versions>
+    <version>
+      <id>1.0</id>
+      <name>1.0</name>
+      <tag>HEAD</tag>
+    </version>
+  </versions>
+
+  <branches>
+  </branches>
+
+  <!--
+  <mailingLists>
+    <mailingList>
+    </mailingList>
+  </mailingLists>
+  -->
+
+  <developers>
+
+    <developer>
+      <name>Antony Riley</name>
+      <id>antony</id>
+      <email>antony@cyberiantiger.org</email>
+      <organization>Cyberiantiger.org</organization>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+
+  </developers>
+
+  <contributors>
+  </contributors>
+  
+  <dependencies>
+  </dependencies>
+
+  <build>
+
+    <nagEmailAddress>antony@www.osjava.org</nagEmailAddress>
+
+    <sourceDirectory>src/java</sourceDirectory>
+    <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
+
+    <unitTest>
+      <resources>
+        <resource>
+          <directory>src/test/config</directory>
+          <targetPath>config</targetPath>
+        </resource>
+        <resource>
+          <directory>src/test</directory>
+          <includes>
+            <include>jndi.properties</include>
+          </includes>
+        </resource>
+      </resources>
+      <includes>
+        <include>**/*Test.java</include>
+      </includes>
+    </unitTest>
+
+    <!-- J A R  R E S O U R C E S -->
+    <!-- Resources that are packaged up inside the JAR file -->
+
+    <jarResources>
+    </jarResources>
+
+    <jars>
+    </jars>
+  </build>
+</project>
+
