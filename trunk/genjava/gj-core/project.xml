@@ -3,7 +3,7 @@
   <extend>../project.xml</extend>
   <id>gj-core</id>
   <name>GenJava-Core</name>
-  <currentVersion>3.0.1</currentVersion>
+  <currentVersion>3.1</currentVersion>
   <inceptionYear>2000</inceptionYear>
   
   <description>
