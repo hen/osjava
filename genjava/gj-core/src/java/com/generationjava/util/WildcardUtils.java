@@ -1,37 +1,71 @@
 package com.generationjava.util;
 
+import java.util.ArrayList;
+
 public class WildcardUtils {
 
     public static boolean match(String text, String wildcard) {
-        int wildcardIdx = 0;
-        boolean globbing = false;
-        for( int textIdx=0; textIdx < text.length(); textIdx++) {
-            if(wildcardIdx == wildcard.length()) {
-                return globbing;
+        // split wildcard on ? and *
+        // for each element of the array, find a matching block in text
+        // earliest matching block counts
+        String[] wcs = splitOnTokens(wildcard);
+        int textIdx = 0;
+        for(int i=0; i<wcs.length; i++) {
+            if(textIdx == text.length()) {
+                return wcs[i].length() == 0;
             }
-            char ch = wildcard.charAt(wildcardIdx);
-            char th = text.charAt(textIdx);
 
-            if(globbing) {
-                if(ch == th) {
-                    wildcardIdx++;
-                    globbing = false;
+            if("?".equals(wcs[i])) {
+                textIdx++;
+            } else
+            if("*".equals(wcs[i])) {
+                int nextIdx = i+1;
+                if(nextIdx == wcs.length) {
+                    return true;
                 }
-            } else
-            if(ch == '?') {
-                wildcardIdx++;
-            } else
-            if(ch == '*') {
-                globbing = true;
-                wildcardIdx++;
-            } else 
-            if(ch != th) {
-                return false;
+                int restartIdx = text.indexOf(wcs[nextIdx], textIdx);
+                if(restartIdx == -1) {
+                    return false;
+                } else {
+                    textIdx = restartIdx;
+                }
             } else {
-                wildcardIdx++;
+                if(!text.startsWith(wcs[i], textIdx)) {
+                    return false;
+                } else {
+                    textIdx += wcs[i].length();
+                }
             }
         }
+
         return true;
     }
+
+    static String[] splitOnTokens(String text) {
+        char[] array = text.toCharArray();
+        if(text.indexOf("?") == -1 && text.indexOf("*") == -1) {
+            return new String[] { text };
+        }
+
+        ArrayList list = new ArrayList();
+        StringBuffer buffer = new StringBuffer();
+        for(int i=0; i<array.length; i++) {
+            if(array[i] == '?' || array[i] == '*') {
+                if(i != 0) {
+                   list.add(buffer.toString());
+                   buffer.setLength(0);
+                }
+                list.add(new String( new char[] { array[i] } ));
+            } else {
+                buffer.append(array[i]);
+            }
+        }
+        if(buffer.length() != 0) {
+            list.add(buffer.toString());
+        }
+
+        return (String[]) list.toArray(new String[0]);
+    }
+        
 
 }
