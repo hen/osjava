@@ -450,11 +450,15 @@ if(DEBUG)                System.err.println("[CTXT]Remaining2: "+remaining);
 
 if(DEBUG)        System.err.println("[CTXT]DS-property? : "+properties.get("org.osjava.jndi.datasource"));
 
-if(DEBUG)        System.err.println("[CTXT]DS-type? : " + properties.getProperty(remaining+this.delimiter+"type"));
-if(DEBUG)        System.err.println("[CTXT]DS-properties : " + properties);
         // TODO: Rewrite this block. Not enough grokk.
+        String typeLookup = "type";
+        if( remaining != null && !remaining.equals("")) {
+            typeLookup = remaining + this.delimiter + typeLookup;
+        }
+if(DEBUG)        System.err.println("[CTXT]DS-type? : " + properties.getProperty(typeLookup));
+if(DEBUG)        System.err.println("[CTXT]DS-properties : " + properties);
         if( "true".equals(properties.get("org.osjava.jndi.datasource")) ||
-            "javax.sql.DataSource".equals(properties.getProperty(remaining+this.delimiter+"type")) ) 
+            "javax.sql.DataSource".equals(properties.getProperty(typeLookup)) ) 
         {
 if(DEBUG)            System.err.println("[CTXT]Found Datasource!");
             PropertiesDataSource pds = new PropertiesDataSource(properties, env, this.delimiter);
