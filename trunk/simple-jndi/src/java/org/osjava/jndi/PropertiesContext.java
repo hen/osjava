@@ -65,7 +65,7 @@ import org.osjava.jndi.util.XmlProperties;
 
 public class PropertiesContext implements Context  {
 
-    public static final boolean DEBUG = true;
+    public static final boolean DEBUG = (System.getProperty("SJ.DEBUG")!=null);
 
     private static Object FILE = new String("FILE");
     private static Object CLASSPATH = new String("CLASSPATH");
