@@ -45,7 +45,7 @@ import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.TagSupport;
 
 // <trail:list/>
-// <trail:list normalized="false"/>
+// <trail:list type="full"/>
 public class ListTag extends TagSupport {
 
     private String var;
@@ -58,8 +58,8 @@ public class ListTag extends TagSupport {
     public String getVar() { return this.var; }
     public void setVar(String var) { this.var = var; }
 
-    public String getNormalized() { return this.normalized; }
-    public void setNormalized(String normalized) { this.normalized = normalized; }
+    public String getType() { return this.type; }
+    public void setType(String type) { this.type = type; }
 
     public String getDelimiter() { return this.delimiter; }
     public void setDelimiter(String delimiter) { this.delimiter = delimiter; }
@@ -70,9 +70,10 @@ public class ListTag extends TagSupport {
         StringBuffer buffer = new StringBuffer();
         Iterator itr = null;
         // fix
-        if(this.normalized == null) {
+        if(this.type == null || "normalized".equals(this.type) ) {
             itr = breadcrumbs.iterateNormalizedTrail();
         } else {
+            // "full" or anything else does this
             itr = breadcrumbs.iterateTrail();
         }
         while( itr.hasNext() ) {
