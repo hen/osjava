@@ -42,7 +42,7 @@ public class NullStore implements Store {
         while(iterator.hasNext()) {
             Object[] array = (Object[])iterator.next();
             for(int j=0; j<array.length; j++) {
-                System.err.println("["+i+", "+j+"] = "+array[j]);
+                System.out.println("["+i+", "+j+"] = "+array[j]);
             }
             i++;
         }
