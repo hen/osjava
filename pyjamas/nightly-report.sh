@@ -11,7 +11,7 @@ if [ "x$1x" != "xx" ];
 then
     if [ $1 = 'all' ];
     then
-        LIST=`cat NIGHTLY.txt | grep -v '^#'`
+        LIST=`cat NIGHTLY.txt | awk '{print $2}' | grep -v '^#'`
     elif [ $1 = 'update' ];
     then
         if [ ! -e LAST_BUILD ];
@@ -37,7 +37,7 @@ cat header.inc > $index
 
 echo '<ul id="project_list">' >> $index
 
-for i in `cat NIGHTLY.txt`
+for i in `cat NIGHTLY.txt | awk '{print $2}' | grep -v '^#'`
 do
     cd $reportDir/$i
     local_report=report_`echo $i | sed 's/\//_/g'`.html
