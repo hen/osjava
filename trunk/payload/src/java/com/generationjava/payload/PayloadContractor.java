@@ -60,7 +60,6 @@ public class PayloadContractor {
             jarFile = null;
             // get the jarFile as a -j argument
         }
-        String jarName = jarFile.substring( 0, jarFile.length() - ".jar".length() );
         System.out.println(".");
 
         if(args.length == 0) {
