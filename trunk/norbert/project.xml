@@ -4,7 +4,7 @@
   <pomVersion>3</pomVersion>
   <id>norbert</id>
   <name>norbert</name>
-  <currentVersion>0.2</currentVersion>
+  <currentVersion>0.3</currentVersion>
   <organization>
     <name>OSJava</name>
     <url>http://www.osjava.org/</url>
@@ -25,6 +25,10 @@
   <siteAddress>www.generationjava.com/maven/norbert</siteAddress>
   <siteDirectory>/sites/org/osjava/www/maven/norbert/</siteDirectory>
   <distributionDirectory>/sites/org/osjava/www/releases/official/</distributionDirectory>
+
+  <repository>
+    <connection>scm:subversion:http:/svn.osjava.org/svn/osjava/trunk/norbert/</connection>
+  </repository>
 
   <mailingLists>
     <mailingList>

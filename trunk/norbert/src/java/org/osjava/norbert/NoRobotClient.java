@@ -39,6 +39,8 @@ import java.io.InputStream;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.net.MalformedURLException;
+import java.net.HttpURLConnection;
+import java.net.URLConnection;
 
 /**
  * A Client which may be used to decide which urls on a website 
@@ -84,7 +86,7 @@ public class NoRobotClient {
 
         String txt = null;
         try {
-            txt = loadContent(txtUrl);
+            txt = loadContent(txtUrl, this.userAgent);
             if(txt == null) {
                 throw new NoRobotException("No content found for: "+txtUrl);
             }
@@ -196,8 +198,15 @@ public class NoRobotClient {
 
     // INLINE: as such from genjava/gj-core's net package. Simple method 
     // stolen from Payload too.
-    private static String loadContent(URL url) throws IOException {
-        InputStream in = url.openStream();
+    private static String loadContent(URL url, String userAgent) throws IOException {
+        URLConnection urlConn = url.openConnection();
+        if(urlConn instanceof HttpURLConnection) {
+            HttpURLConnection httpUrlConn = (HttpURLConnection) url.openConnection();
+            if(userAgent != null) {
+                httpUrlConn.addRequestProperty("User-Agent", userAgent);
+            }
+        }
+        InputStream in = urlConn.getInputStream();
         BufferedReader rdr = new BufferedReader(new InputStreamReader(in));
         StringBuffer buffer = new StringBuffer();
         String line = "";
