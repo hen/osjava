@@ -1,4 +1,4 @@
-<%@ page import="com.genscape.reports.*" %>
+<%@ page import="org.osjava.reportrunner.*" %>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
 
 <%
@@ -14,16 +14,44 @@
 <input type="hidden" name="report" value="<%= reportName %>">
 <%
     Report report = ReportFactory.getReport(reportName);
-    if(report instanceof com.genscape.reports.reports.SqlReport) {
-        ((com.genscape.reports.reports.SqlReport)report).setDataSource("jdbc/rollerdb");
+    if(report instanceof org.osjava.reportrunner.reports.SqlReport) {
+        ((org.osjava.reportrunner.reports.SqlReport)report).setDataSource("jdbc/rollerdb");
     }
     Param[] params = report.getParams();
     for(int i=0; i<params.length; i++) {
         Choice[] choices = report.getParamChoices(params[i]);
         if(choices == null) {
+            if(java.util.Date.class.isAssignableFrom(params[i].getType())) {
+%>
+
+<!-- Calendar widget header -->
+<style type="text/css">@import url(jscalendar/calendar-blue.css);</style>
+<script type="text/javascript" src="jscalendar/calendar.js"></script>
+<script type="text/javascript" src="jscalendar/lang/calendar-en.js"></script>
+<script type="text/javascript" src="jscalendar/calendar-setup.js"></script>
+<!-- End of Calendar widget header -->
+  <!-- Calendar widget -->
+  <%= params[i].getName() %>:  <input type="text" id="<%= params[i].getName() %>" name="<%= params[i].getName() %>" />
+  <!-- TODO: Make this either button or input-button so it can be on the tab order -->
+  <img src="jscalendar/img.gif" id="trigger_<%= params[i].getName() %>" style="cursor: pointer; border: 1px solid red;" title="Date selector"
+      onmouseover="this.style.background='red';" onmouseout="this.style.background=''" /><br>
+<script type="text/javascript">
+  Calendar.setup(
+    {
+      inputField  : "<%= params[i].getName() %>",     // ID of the input field
+      ifFormat    : "%m/%d/%Y", // the date format
+      button      : "trigger_<%= params[i].getName() %>",  // trigger for the calendar (button ID)
+    }
+  );
+</script>
+   <!-- End of Calendar widget -->
+
+<%
+            } else {
 %>
     <%= params[i].getName() %>: <input type="text" name="<%= params[i].getName() %>"><br>
 <%
+            }
         } else {
 %>
     <%= params[i].getName() %>: <select name="<%= params[i].getName() %>">
