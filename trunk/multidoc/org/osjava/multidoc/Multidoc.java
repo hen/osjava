@@ -87,17 +87,23 @@ public class Multidoc {
 
     public static void generateMenu(File targetDirectory, DocumentSite site) throws IOException {
         FileWriter fw = new FileWriter( new File( targetDirectory, "menu.html") );
-        fw.write("<html><head><LINK REL ='stylesheet' TYPE='text/css' HREF='stylesheet.css' TITLE='Style'></head><body>\n");
+        fw.write("<html><head><LINK REL ='stylesheet' TYPE='text/css' HREF='stylesheet.css' TITLE='Style'>\n");
+        fw.write("<script> function load() { for(var i=0; i < arguments.length; i+=2) { parent.frames[arguments[i]].location.href=arguments[i+1]; } } </script>\n");
+        fw.write("</head><body>\n");
         fw.write("<table width='100%'><tr><td class='NavBarCell1'>\n");
-        fw.write("<a href='API/overview-summary.html' target='classFrame'><FONT CLASS='NavBarFont1'><b>Overview</b></FONT></a> - \n");
+//        fw.write("<a href='API/overview-summary.html' target='classFrame'><FONT CLASS='NavBarFont1'><b>Overview</b></FONT></a> - \n"); 
 
         Collection names = site.getNames();
         Iterator iterator = names.iterator();
         while(iterator.hasNext()) {
             String name = (String) iterator.next();
-            fw.write("<a href='");
-            fw.write(name); // needs escaping
-            fw.write("/project-frame.html' target='projectListFrame'><FONT CLASS='NavBarFont1'><b>");
+            fw.write("<a href=\"javascript:load('projectListFrame','");
+            fw.write(name);
+            fw.write("/project-frame.html','classFrame','");
+            fw.write(name);
+            fw.write("/overview-summary.html','packageListFrame','");
+            fw.write(name);
+            fw.write("/overview-frame.html')\"><FONT CLASS=\"NavBarFont1\"><b>");
             fw.write(name);
             fw.write("</b></FONT></a> - \n");
         }
@@ -107,4 +113,3 @@ public class Multidoc {
         fw.close();
     }
 }
-
