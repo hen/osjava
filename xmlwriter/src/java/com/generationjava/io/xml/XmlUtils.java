@@ -39,7 +39,7 @@ package com.generationjava.io.xml;
  */
 final public class XmlUtils {
 
-    static public String escapeXml(String str) {
+    public static String escapeXml(String str) {
         str = str.replaceAll("&","&amp;");
         str = str.replaceAll("<","&lt;");
         str = str.replaceAll(">","&gt;");
@@ -48,7 +48,7 @@ final public class XmlUtils {
         return str;
     }
 
-    static public String unescapeXml(String str) {
+    public static String unescapeXml(String str) {
         str = str.replaceAll("&amp;","&");
         str = str.replaceAll("&lt;","<");
         str = str.replaceAll("&gt;",">");
@@ -61,7 +61,7 @@ final public class XmlUtils {
      * Remove any xml tags from a String.
      * Same as HtmlW's method.
      */
-    static public String removeXml(String str) {
+    public static String removeXml(String str) {
         int sz = str.length();
         StringBuffer buffer = new StringBuffer(sz);
         boolean inString = false;
@@ -82,7 +82,7 @@ final public class XmlUtils {
         return buffer.toString();
     }
 
-    static public String getContent(String tag, String text) {
+    public static String getContent(String tag, String text) {
         int idx = XmlUtils.getIndexOpeningTag(tag, text);
         if(idx == -1) {
             return "";
@@ -96,10 +96,10 @@ final public class XmlUtils {
         return text.substring(idx+1, end);
     }
 
-    static public int getIndexOpeningTag(String tag, String text) {
+    public static int getIndexOpeningTag(String tag, String text) {
         return getIndexOpeningTag(tag, text, 0);
     }
-    static private int getIndexOpeningTag(String tag, String text, int start) {
+    private static int getIndexOpeningTag(String tag, String text, int start) {
         // consider whitespace?
         int idx = text.indexOf("<"+tag, start);
         if(idx == -1) {
@@ -116,10 +116,10 @@ final public class XmlUtils {
     // Pass in "para" and a string that starts with 
     // <para> and it will return the index of the matching </para>
     // It assumes well-formed xml. Or well enough.
-    static public int getIndexClosingTag(String tag, String text) {
+    public static int getIndexClosingTag(String tag, String text) {
         return getIndexClosingTag(tag, text, 0);
     }
-    static public int getIndexClosingTag(String tag, String text, int start) {
+    public static int getIndexClosingTag(String tag, String text, int start) {
         String open = "<"+tag;
         String close = "</"+tag+">";
 //        System.err.println("OPEN: "+open);
@@ -147,10 +147,10 @@ final public class XmlUtils {
         return nextCloseIdx;
     }
 
-    static public String getAttribute(String attribute, String text) {
+    public static String getAttribute(String attribute, String text) {
         return getAttribute(attribute, text, 0);
     }
-    static public String getAttribute(String attribute, String text, int idx) {
+    public static String getAttribute(String attribute, String text, int idx) {
          int close = text.indexOf(">", idx);
          int attrIdx = text.indexOf(attribute+"=\"", idx);
          if(attrIdx == -1) {

@@ -32,10 +32,10 @@
 package com.generationjava.io.xml;
 
 import java.io.IOException;
-import java.io.Writer;
 
-import java.util.Stack;
-
+/**
+ * Handles indentation on the fly. 
+ */
 public class PrettyPrinterXmlWriter extends DelegatingXmlWriter {
 
     private boolean empty;      // is the current node empty
@@ -110,7 +110,7 @@ public class PrettyPrinterXmlWriter extends DelegatingXmlWriter {
 
         // writeText used instead of getWriter(). This makes the 
         // whitespace appaer in the right place
-        if (! this.closed || this.wroteText) {
+        if ( !this.closed || this.wroteText) {
             writeText(newline);
         }
         for (int i = 0; i < indentSize; i++) {
@@ -132,8 +132,8 @@ public class PrettyPrinterXmlWriter extends DelegatingXmlWriter {
      */
     public XmlWriter endEntity() throws IOException {
         indentSize--;
-        if (!this.empty) {
-            if (!this.wroteText) {
+        if(!this.empty) {
+            if(!this.wroteText) {
                 for (int i = 0; i < this.indentSize; i++) {
                     getWriter().write(indent); // Indent closing tag to proper level
                 }
@@ -190,7 +190,7 @@ public class PrettyPrinterXmlWriter extends DelegatingXmlWriter {
     }
     private void indentChunk() throws IOException {
         this.empty = false;
-        if (! this.wroteText) {
+        if(!this.wroteText) {
             for (int i = 0; i < this.indentSize; i++) {
                 getWriter().write(indent); 
             }

@@ -32,29 +32,30 @@
 package com.generationjava.io.xml;
 
 import java.io.IOException;
-import java.io.Writer;
 
-import java.util.Stack;
-
+/**
+ * Has various strategies for dealing with null or empty-string 
+ * values. 
+ */
 public class EmptyElementXmlWriter extends DelegatingXmlWriter {
 
     /** 
      * Ignores empty concepts and prints out all attributes/entities. 
      * So it will print out foo="null"
      */
-    public static Object IGNORE_EMPTY_MODE = new Object();
+    public static final Object IGNORE_EMPTY_MODE = new Object();
 
     /**
      * Only considers null to be empty, so empty strings are outputted.
      */
-    public static Object NULL_EMPTY_MODE = new Object();
+    public static final Object NULL_EMPTY_MODE = new Object();
 
     /**
      * Considers null and an empty string to be 'empty'. 
      * If somethign is empty, it will not output them. 
      * This is the default mode.
      */
-    public static Object EMPTY_MODE = new Object();
+    public static final Object EMPTY_MODE = new Object();
 
     private StringBuffer attrs; // current attribute string
     private boolean empty;      // is the current node empty

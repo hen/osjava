@@ -34,8 +34,12 @@ package com.generationjava.io.xml;
 import java.io.IOException;
 import java.io.Writer;
 
-import java.util.Stack;
-
+/**
+ * Interface for anything which is able to output Xml. 
+ * Implementations of this interface are expected to either be 
+ * filters on other XmlWriters, ie) subclasses of DelegatingXmlWriter, 
+ * or actual outputters themselves, ie) subclasses of AbstractXmlWriter. 
+ */
 public interface XmlWriter {
 
     /**

@@ -34,6 +34,13 @@ package com.generationjava.io.xml;
 import java.io.IOException;
 import java.io.Writer;
 
+/**
+ * Superclass for any XmlWriter which will wrap another XmlWriter. 
+ * It passes all calls on to the underlying XmlWriter, and is 
+ * expected to be used by all filtering XmlWriters. 
+ *
+ * Possibly this class should be abstract.
+ */
 public class DelegatingXmlWriter implements XmlWriter {
 
     private XmlWriter xmlWriter;

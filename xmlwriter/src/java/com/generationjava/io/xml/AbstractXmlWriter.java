@@ -32,10 +32,12 @@
 package com.generationjava.io.xml;
 
 import java.io.IOException;
-import java.io.Writer;
 
-import java.util.Stack;
-
+/**
+ * Provides a few method implementations for XmlWriter implementations. 
+ * The method implementations all depend on other methods which must 
+ * be implemented. 
+ */
 public abstract class AbstractXmlWriter implements XmlWriter {
 
     /**

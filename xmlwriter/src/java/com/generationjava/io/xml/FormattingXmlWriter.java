@@ -32,13 +32,15 @@
 package com.generationjava.io.xml;
 
 import java.io.IOException;
-import java.io.Writer;
 
 import java.text.NumberFormat;
 import java.text.DateFormat;
 import java.util.Date;
 
 
+/**
+ * Formats Numbers and Dates on the fly. 
+ */
 public class FormattingXmlWriter extends DelegatingXmlWriter {
 
     private DateFormat dateFormat;

@@ -31,8 +31,6 @@
  */
 package com.generationjava.io.xml;
 
-import java.io.Writer;
-
 import java.io.IOException;
 import org.iso_relax.verifier.*;
 import org.xml.sax.SAXException;
@@ -41,6 +39,10 @@ import org.xml.sax.ErrorHandler;
 import org.xml.sax.helpers.AttributesImpl;
 
 /// TODO: Supply an ErrorHandler in a constructor
+/**
+ * Validates the written XML against a DTD or XML Schema using 
+ * the iso_relax/jarv library. 
+ */
 public class JarvWriter extends DelegatingXmlWriter implements ErrorHandler {
 
     private VerifierHandler verifierHandler;
