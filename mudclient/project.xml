@@ -18,7 +18,7 @@
   <gumpRepositoryId>mudclient</gumpRepositoryId>
 
   <description>
-  If you want to connect to any mud other than elephhant.org you'll
+  If you want to connect to any mud other than elephant.org you'll
   currently have to hack the source code, as there's some elephant specific
   code in there. [support of their "external client mode"]
   </description>
