@@ -58,17 +58,15 @@ public class FileFinder implements Finder {
     public File[] find(File directory, Map options) {
         notifyDirectoryStarted(directory);
         boolean depthFirst = options.containsKey(Finder.DEPTH);
-        return find(directory, new FindingFilter(options), depthFirst);
+        File[] list = find(directory, new FindingFilter(options), depthFirst);
+        notifyDirectoryFinished(directory, list);
+        return list;
     }
 
     private File[] find(File directory, FindingFilter filter, boolean depthFirst) {
 
-        File[] list = null;
-        if (filter == null) {
-            list = directory.listFiles();
-        } else {
-            list = directory.listFiles(filter);
-        }
+        // we can't use listFiles(filter) here, directories don't work correctly
+        File[] list = directory.listFiles();
 
         if (list == null) {
             return new File[0];
@@ -79,9 +77,9 @@ public class FileFinder implements Finder {
 
         for (int i = 0; i < sz; i++) {
             File tmp = list[i];
-            if(depthFirst) {
-                retlist.add(list[i]);
-                notifyFileFound(directory,list[i]);
+            if(!depthFirst && filter.accept(tmp)) {
+                retlist.add(tmp);
+                notifyFileFound(directory,tmp);
             }
             if (tmp.isDirectory()) {
                 notifyDirectoryStarted(tmp);
@@ -90,13 +88,14 @@ public class FileFinder implements Finder {
                 for (int j = 0; j < subsz; j++) {
                     retlist.add(sublist[j]);
                 }
+                notifyDirectoryFinished(tmp, sublist);
             }
-            if(!depthFirst) {
-                retlist.add(list[i]);
-                notifyFileFound(directory,list[i]);
+            if(depthFirst && filter.accept(tmp)) {
+                retlist.add(tmp);
+                notifyFileFound(directory,tmp);
             }
         }
-        notifyDirectoryFinished(directory, list);
+
         return (File[]) retlist.toArray(list);
     }
     
@@ -127,7 +126,7 @@ public class FileFinder implements Finder {
             return;
         }
         if(findListeners != null) {
-            FindEvent fe = new FindEvent(this,directory);
+            FindEvent fe = new FindEvent(this,"directoryStarted",directory);
             Iterator itr = findListeners.iterator();
             while(itr.hasNext()) {
                 FindListener findListener = (FindListener)itr.next();
@@ -145,7 +144,7 @@ public class FileFinder implements Finder {
             return;
         }
         if(findListeners != null) {
-            FindEvent fe = new FindEvent(this,directory,files);
+            FindEvent fe = new FindEvent(this,"directoryFinished",directory,files);
             Iterator itr = findListeners.iterator();
             while(itr.hasNext()) {
                 FindListener findListener = (FindListener)itr.next();
@@ -162,7 +161,7 @@ public class FileFinder implements Finder {
             return;
         }
         if(findListeners != null) {
-            FindEvent fe = new FindEvent(this,directory,file);
+            FindEvent fe = new FindEvent(this,"fileFound",directory,file);
             Iterator itr = findListeners.iterator();
             while(itr.hasNext()) {
                 FindListener findListener = (FindListener)itr.next();
