@@ -2,7 +2,8 @@ package org.osjava.reportrunner;
 
 public interface Result {
 
-    public Object[] nextRow();
-    public boolean hasNextRow();
+    Object[] nextRow();
+    boolean hasNextRow();
+    void reset();
 
 }

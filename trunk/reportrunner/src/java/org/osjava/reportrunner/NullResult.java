@@ -10,4 +10,7 @@ public class NullResult implements Result {
         throw new RuntimeException("No rows available from a NullResult. ");
     }
 
+    public void reset() {
+    }
+
 }
