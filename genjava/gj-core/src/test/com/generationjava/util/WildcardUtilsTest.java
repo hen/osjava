@@ -24,6 +24,19 @@ public class WildcardUtilsTest extends TestCase {
         assertTrue( WildcardUtils.match("New Bookmarks", "N?w ?o?k??r?s") );
         assertFalse( WildcardUtils.match("Foo", "Bar") );
         assertTrue( WildcardUtils.match("Foo Bar Foo", "F*o Bar*") );
+        assertTrue( WildcardUtils.match("Adobe Acrobat Installer", "Ad*er") );
+    }
+
+    public void testSplitOnTokens() {
+        assertArrayEquals( new String[] { "Ad", "*", "er" }, WildcardUtils.splitOnTokens("Ad*er") );
+        assertArrayEquals( new String[] { "" }, WildcardUtils.splitOnTokens("") );
+    }
+
+    private void assertArrayEquals(Object[] a1, Object[] a2) {
+        assertEquals(a1.length, a2.length);
+        for(int i=0; i<a1.length; i++) {
+            assertEquals(a1[i], a2[i]);
+        }
     }
 
 }
