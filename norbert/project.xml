@@ -29,7 +29,7 @@
   <distributionDirectory>/sites/org/osjava/www/releases/official/</distributionDirectory>
 
   <repository>
-    <connection>scm:cvs:ext:hen@umbongo.flamefew.net:/var/publiccvs:norbert</connection>
+    <connection>scm:cvs:ext:hen@orinoco.flamefew.net:/var/cvs:norbert</connection>
     <url>http://www.generationjava.com/view-cvs/viewcvs.cgi/norbert/</url>
   </repository>
 

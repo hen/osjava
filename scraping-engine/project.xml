@@ -28,7 +28,7 @@
   <distributionDirectory>/sites/org/osjava/www/releases/official/</distributionDirectory>
 
   <repository>
-    <connection>scm:cvshen@umbongo.flamefew.net:/var/cvs:scraping-engine</connection>
+    <connection>scm:cvshen@orinoco.flamefew.net:/var/cvs:scraping-engine</connection>
     <url>http://www.generationjava.com/view-cvs/viewcvs.cgi/scraping-engine/</url>
   </repository>
 
