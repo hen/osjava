@@ -88,27 +88,35 @@ public class XmlProperties extends Properties {
     }
     
     public void add(String level, XMLNode node) {
+//        System.err.println("Adding: "+level);
         if( node.getValue() != null ) {
-            setProperty( level+node.getName(), node.getValue());
+            setProperty( level+getDelimiter()+node.getName(), node.getValue());
         }
         Enumeration attrs = node.enumerateAttr();
         if(attrs != null) {
             while(attrs.hasMoreElements()) {
                 String attr = (String)attrs.nextElement();
-                setProperty( level+node.getName()+getDelimiter()+attr, node.getAttr(attr));
-//                System.err.println("Prop: "+(level+node.getName()+getDelimiter()+attr) +":"+node.getAttr(attr));
+                setProperty( level+getDelimiter()+node.getName()+getDelimiter()+attr, node.getAttr(attr));
+//                System.err.println("Attr: "+(level+getDelimiter()+node.getName()+getDelimiter()+attr) +":"+node.getAttr(attr));
             }
         }
         Enumeration nodes = node.enumerateNode();
         if(nodes != null) {
+            level = level+getDelimiter()+node.getName();
             while(nodes.hasMoreElements()) {
                 XMLNode subnode = (XMLNode)nodes.nextElement();
-                add(level+subnode.getName()+getDelimiter(), subnode);
+                // temporary pending research into XMLNode parsing:
+                if(!"".equals(subnode.getName())) {
+//                    System.err.println("Walking children: "+node.getName());
+//                    System.err.println("on: "+level);
+                    add(level, subnode);
+                }
             }
         }
     }
     
     public Object setProperty(String key, String value) {
+//        System.err.println("Setting property: "+key+" to "+value);
         return put( key, value );
     }
  
