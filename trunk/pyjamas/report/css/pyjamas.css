@@ -4,9 +4,12 @@ LI { list-style-type: none }
 
 .success_link, .failed_link { font-size: larger }
 
-.failed_link { background: red; padding: 2px }
+.success_link:link { color: #060; }
+.success_link:visited { color: #050; }
+
+.failed_link { background: #900; padding: 2px }
 .failed_link:link { color: white; }
-.failed_link:visited { color: #ddd; }
+.failed_link:visited { color: #eee; }
 
 .project_block { float: left; padding-right: 3em }
 
