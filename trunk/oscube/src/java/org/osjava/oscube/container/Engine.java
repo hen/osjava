@@ -61,20 +61,22 @@ public class Engine {
 
         // test and how schedule=startup will be handled
         List list = cfg.getList(prefix);
+
         for(int i=0; i<list.size(); i++) {
             String key = (String)list.get(i);
 
             Session session = new NamespaceSession();
             session.put(prefix, key);
-            cfg.setContext(key+".");
+            Config clonedCfg = cfg.cloneConfig();
+            clonedCfg.setContext(key+".");
 
             // schedule the times to run parsers
             // TODO: allow this to be pluggable.
-            Scheduler scheduler = SchedulerFactory.getScheduler(cfg, session);
+            Scheduler scheduler = SchedulerFactory.getScheduler(clonedCfg, session);
             // Engine suddenly becomes a part of the system. 
             // Possibly the run(Config, Session) needs to 
             // move into an interface
-            scheduler.schedule(cfg, session, runner);
+            scheduler.schedule(clonedCfg, session, runner);
         }
     }
 
