@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<document>
+
+  <properties>
+      <author email="bayard@generationjava.com">Henri Yandell</author>
+      <title>Changes</title>
+  </properties>
+
+  <body>
+    <release version="0.3" date="2004-06-23">
+      <action dev="hen" type="add" issue="SCB-12">Move the example UrlScraper into the main distro so everyone may use it</action>
+      <action dev="hen" type="add" issue="SCB-16">Add support for POST requests</action>
+      <action dev="hen" type="update" issue="SCB-14">Create .bat files for the example</action>
+    </release>
+
+    <release version="0.2" date="2004-04-13">
+      <action dev="hen" type="add" issue="SCB-8">Examples zip download</action>
+      <action dev="hen" type="update">Extracted OSCube</action>
+    </release>
+
+    <release version="0.1" date="2003-12-23">
+      <action dev="hen" type="fix" issue="SCB-2">Infinite loops on africainsight.org</action>
+      <action dev="hen" type="add" issue="SCB-3">Needs to respect robots.txt before being unleashed fully</action>
+      <action dev="hen" type="add" issue="SCB-5">Add the PrinterStore, a store that prints out</action>
+      <action dev="hen" type="add" issue="SCB-7">Add a FileStore concept so that scraped data may be saved</action>
+    </release>
+</body>
+</document>

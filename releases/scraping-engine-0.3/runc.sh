@@ -1,0 +1,1 @@
+javac -classpath /usr/local/javalib/commons-lang-1.0.1.jar:/usr/local/javalib/genjava-core-2.0.jar:target/scraping-engine-0.1.jar:.:/usr/local/javalib/maven/repository/log4j/jars/log4j-1.2.7.jar com/*/scraper/*.java

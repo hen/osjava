@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<document>
+
+  <properties>
+      <author email="bayard@generationjava.com">Henri Yandell</author>
+      <title>scraping-engine</title>
+  </properties>
+
+  <body>
+    <section name="Scraping-engine - so what is it?">
+      <p>I've been playing for a while with an engine to make web-site scraping nice and easy, without trying to suggest that it is simple to do the scrape. This scraping-engine is aimed to be a framework to improve the speed of development and provide stability. </p>
+      <p>It's intended to not just be a scraper, but to be able to do other robot-like things. One tool I plan to release is a link-checker. </p>
+    </section>
+    <section name="Pre-built Example">
+      <p>A full example is available (<a href="http://www.osjava.org/releases/official/scraping-engine/scraping-examples-for-0.2.tar.gz">scraping-examples-for-0.2.tar.gz</a>) from the download directory, and the example is available in <a href="http://svn.osjava.org/cgi-bin/viewcvs.cgi/trunk/scraping-engine/src/examples/Comics/">subversion</a>. </p>
+    </section>
+  </body>
+</document>
