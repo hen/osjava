@@ -105,6 +105,7 @@ if(org.osjava.jndi.PropertiesContext.DEBUG)        System.err.println("[DS]Getti
         String url = get("url");
         String pool = get("pool");
         if(pool != null) {
+if(org.osjava.jndi.PropertiesContext.DEBUG)        System.err.println("[DS]Getting Pool information");
             if(!poolSetup) {
                 PoolSetup.setupConnection(pool, url, username, password);
                 this.poolSetup = true;
