@@ -11,6 +11,11 @@
    <extension>html</extension>
    <mimeType>text/html</mimeType>
  </renderer>
+ <renderer name="xml" label="XML" class="org.osjava.reportrunner.renderers.XmlRenderer">
+   <inline>false</inline>
+   <extension>xml</extension>
+   <mimeType>text/xml</mimeType>
+ </renderer>
  <renderer name="tdf" label="Tab delimited" class="org.osjava.reportrunner.renderers.CsvRenderer">
    <inline>false</inline>
    <extension>csv</extension>
