@@ -141,7 +141,12 @@ public class LookupTest extends TestCase {
             InitialContext ctxt = new InitialContext();
             this.delimiter = (String) ctxt.lookup("org.osjava.jndi.delimiter");
 
-            assertEquals( "13", lookup("xmltest/value", ctxt) );
+//            System.err.println("XML: "+lookup("xmltest", ctxt) );
+// TODO: Should this return something? XML?
+//            System.err.println("XML: "+lookup("xmltest/config", ctxt) );
+            assertEquals( "13", lookup("xmltest/config/value", ctxt) );
+            assertEquals( "Bang", lookup("xmltest/config/four/five", ctxt) );
+            assertEquals( "three", lookup("xmltest/config/one/two", ctxt) );
         } catch(NamingException ne) {
             fail("NamingException: "+ne.getMessage());
         }
