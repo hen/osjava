@@ -56,4 +56,13 @@
   <book isbn="0471431044" name="Mastering AspectJ" publisher="wil" url="http://www.wiley.com/WileyCDA/WileyTitle/productCd-0471431044.html" published="2003-03"/>
   <book isbn="0596002807" name="NetBeans: The Definitive Guide" publisher="ora" url="http://www.oreilly.com/catalog/netbeans/" published="2002-10"/>
   <book isbn="0471457949" name="Mastering Apache Velocity " publisher="wil" url="http://www.wiley.com/WileyCDA/WileyTitle/productCd-0471457949.html" published="2003-07"/>
+  <book isbn="0201771861" name="Processing XML with Java" publisher="aw" url="http://www.aw-bc.com/catalog/academic/product?ISBN=0201771861" published="2002-11"/>
+  <book isbn="0201325829" name="Programming and Deploying Java Mobile Agents with Aglets" publisher="aw" url="http://www.aw-bc.com/catalog/academic/product/0,4096,0201325829,00.html" published="1998-08"/>
+  <book isbn="1930110464" name="Instant Messaing in Java" publisher="man" url="http://www.manning.com/shigeoka" published="2002-03"/>
+  <book isbn="sbt-1" name="Apache Axis Live" publisher="sbt" url="http://www.sourcebeat.com/TitleAction.do?id=1" published="2004-03"/>
+  <book isbn="sbt-2" name="Eclipse Live" publisher="sbt" url="http://www.sourcebeat.com/TitleAction.do?id=2" published="2004-03"/>
+  <book isbn="sbt-3" name="Jakarta Struts Live" publisher="sbt" url="http://www.sourcebeat.com/TitleAction.do?id=3" published="2004-03"/>
+  <book isbn="sbt-4" name="Jakarta Commons Live" publisher="sbt" url="http://www.sourcebeat.com/TitleAction.do?id=4" published="2004-05"/>
+  <book isbn="sbt-5" name="Jakarta Tomcat Live" publisher="sbt" url="http://www.sourcebeat.com/TitleAction.do?id=5" published="2004-05"/>
+  <book isbn="sbt-7" name="Spring Live" publisher="sbt" url="http://www.sourcebeat.com/TitleAction.do?id=7" published="2004-05"/>
 </library>

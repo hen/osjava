@@ -11,6 +11,7 @@
     <book>0974848808</book>
     <book>0471213020</book>
     <book>159059228X</book>
+    <book>sbt-3</book>
   </category>
   <category id="2" name="Jakarta Tapestry">
     <book>1932394117</book>
@@ -33,6 +34,7 @@
   <category id="5" name="Jakarta Commons">
     <book>1590592832</book>
     <book>1584502460</book>
+    <book>sbt-4</book>
   </category>
   <category id="6" name="Jakarta Tomcat">
     <book>0764543725</book>
@@ -43,6 +45,7 @@
     <book>0471237647</book>
     <book>1861008309</book>
     <book>1893115364</book>
+    <book>sbt-5</book>
   </category>
   <category id="7" name="JUnit">
     <book>1930110995</book>
@@ -60,6 +63,11 @@
     <book>1932394192</book>
     <book>1932394060</book>
     <book>1590591259</book>
+    <book>1930110464</book>
+    <book>0201325829</book>
+    <book>0201771861</book>
+    <book>sbt-1</book>
+    <book>sbt-7</book>
   </category>
   <category id="10" name="Eclipse">
     <book>1930110960</book>
@@ -67,6 +75,7 @@
     <book>0131425420</book>
     <book>0321205758</book>
     <book>1583470441</book>
+    <book>sbt-2</book>
   </category>
   <category id="11" name="Hibernate">
     <book>193239415X</book>
