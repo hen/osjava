@@ -12,5 +12,18 @@
   
   <shortDescription>XML Parser</shortDescription>
 
+  <build>
+    <unitTest>
+      <resources>
+        <resource>
+          <directory>src/test/data</directory>
+        </resource>
+      </resources>
+      <includes>
+        <include>**/*Test.java</include>
+      </includes>
+    </unitTest>
+  </build>
+
 </project>
 
