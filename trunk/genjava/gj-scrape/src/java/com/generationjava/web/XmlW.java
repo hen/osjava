@@ -97,7 +97,7 @@ final public class XmlW {
     static public int getIndexOpeningTag(String text, String tag) {
         return getIndexOpeningTag(text, tag, 0);
     }
-    static private int getIndexOpeningTag(String text, String tag, int start) {
+    static public int getIndexOpeningTag(String text, String tag, int start) {
         // consider whitespace?
         int idx = text.indexOf("<"+tag, start);
         if(idx == -1) {

@@ -7,10 +7,20 @@ import junit.textui.TestRunner;
 
 public class HtmlScraperTest extends TestCase {
 
-    public final String TEST_PAGE = "<html><body><table bgcolor=\"ffffff\"><tr><td align='center'>FOO</td></tr></table></body></html>";
+    public static final String TEST_PAGE = "<html><body><table bgcolor=\"ffffff\"><tr><td align='center'>FOO</td></tr></table></body></html>";
+
+    private HtmlScraper scraper;
 
     public HtmlScraperTest(String name) {
         super(name);
+    }
+
+    public void setUp() {
+        scraper = new HtmlScraper();
+        scraper.scrape(TEST_PAGE);
+    }
+
+    public void tearDown() {
     }
 
     //-----------------------------------------------------------------------
@@ -18,20 +28,14 @@ public class HtmlScraperTest extends TestCase {
     //   HtmlScraper()->scrape(..)->get/move etc
 
     public void testScrape() {
-        HtmlScraper scraper = new HtmlScraper();
-        scraper.scrape(TEST_PAGE);
         assertEquals( "FOO", scraper.get("td") );
     }
 
     public void testScrapeAttribute() {
-        HtmlScraper scraper = new HtmlScraper();
-        scraper.scrape(TEST_PAGE);
         assertEquals( "ffffff", scraper.get("table[bgcolor]") );
     }
 
     public void testCaseInsensitive() {
-        HtmlScraper scraper = new HtmlScraper();
-        scraper.scrape(TEST_PAGE);
         assertEquals( "FOO", scraper.get("TD") );
         assertEquals( "FOO", scraper.get("Td") );
         assertEquals( "FOO", scraper.get("tD") );
@@ -39,8 +43,6 @@ public class HtmlScraperTest extends TestCase {
     }
     
     public void testCaseInsensitiveAttribute() {
-        HtmlScraper scraper = new HtmlScraper();
-        scraper.scrape(TEST_PAGE);
         assertEquals( "ffffff", scraper.get("TABLE[bgcolor]") );
         assertEquals( "ffffff", scraper.get("TABLE[BGCOLOR]") );
         assertEquals( "ffffff", scraper.get("table[BGCOLOR]") );
@@ -48,21 +50,15 @@ public class HtmlScraperTest extends TestCase {
     }
 
     public void testSingleQuoteAttributes() {
-        HtmlScraper scraper = new HtmlScraper();
-        scraper.scrape(TEST_PAGE);
         assertEquals( "center", scraper.get("td[align]") );
     }
 
     public void testScrapeTag() {
-        HtmlScraper scraper = new HtmlScraper();
-        scraper.scrape(TEST_PAGE);
         HtmlScraper scraper2 = scraper.scrapeTag("table");
         assertEquals( "<tr><td align='center'>FOO</td></tr>", scraper2.toString() );
     }
 
     public void testMoveToTagWithTwice() {
-        HtmlScraper scraper = new HtmlScraper();
-        scraper.scrape(TEST_PAGE);
         assertTrue( scraper.moveToTagWith("bgcolor", "ffffff") );
         assertFalse( scraper.moveToTagWith("bgcolor", "ffffff") );
 
@@ -70,6 +66,16 @@ public class HtmlScraperTest extends TestCase {
         assertTrue( scraper.moveToTagWith("bgcolor", "ffffff") );
         assertTrue( scraper.moveToTagWith("bgcolor", "ffffff") );
         assertFalse( scraper.moveToTagWith("bgcolor", "ffffff") );
+    }
+
+    public void testMove() {
+        assertTrue( scraper.move("td") );
+        assertFalse( scraper.move("td") );
+
+        scraper.scrape(TEST_PAGE+TEST_PAGE);
+        assertTrue( scraper.move("td") );
+        assertTrue( scraper.move("td") );
+        assertFalse( scraper.move("td") );
     }
 
 
