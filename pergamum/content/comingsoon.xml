@@ -3,7 +3,6 @@
   <div class="sub-title">Coming Soon - <pg:rss-link>comingsoon</pg:rss-link></div>
   <div class="body-block">
   <ul>
-    <pg:book>0764559028</pg:book>
     <pg:book>0596005822</pg:book>
     <pg:book>1932394192</pg:book>
     <pg:book>193239415X</pg:book>
@@ -13,7 +12,6 @@
     <pg:book>sbt-4</pg:book>
     <pg:book>sbt-5</pg:book>
     <pg:book>sbt-7</pg:book>
-    <pg:book>0596006969</pg:book>
     <pg:book>1932394281</pg:book>
     <pg:book>0596006764</pg:book>
     <pg:book>0672326361</pg:book>
