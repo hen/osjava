@@ -32,10 +32,12 @@ public class PushTag extends TagSupport {
         String uri = this.url;
         if(this.url == null) {
             HttpServletRequest request = (HttpServletRequest) pageContext.getRequest();
-            // add query string
-            uri = request.getRequestURI();
-            uri += "?";
-            uri += request.getQueryString();
+            Object requestUri = request.getAttribute("javax.servlet.forward.request_uri");
+            if(requestUri != null) {
+                uri = requestUri + "?" + request.getAttribute("javax.servlet.forward.query_string");
+            } else {
+                uri = request.getRequestURI() + "?" + request.getQueryString();
+            }
         }
 
         breadcrumbs.addToTrail( new BreadCrumb(uri, this.label) );
