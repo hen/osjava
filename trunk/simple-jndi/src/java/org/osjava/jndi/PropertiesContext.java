@@ -61,6 +61,7 @@ import java.net.MalformedURLException;
 import org.apache.commons.lang.StringUtils;
 import com.generationjava.convert.Convert;
 import com.generationjava.jndi.util.CustomProperties;
+import com.generationjava.jndi.util.XmlProperties;
 
 public class PropertiesContext implements Context  {
 
@@ -161,7 +162,26 @@ public class PropertiesContext implements Context  {
     }
 
     private Properties loadProperties(Object file) throws NamingException {
-        Properties properties = new CustomProperties();
+        Properties properties = null;
+        if(file instanceof File) {
+            if( ((File)file).getName().endsWith(".xml") ) {
+                properties = new XmlProperties();
+                ((XmlProperties)properties).setDelimiter(this.delimiter);
+            } else {
+                properties = new CustomProperties();
+            }
+        } else
+        if(file instanceof URL) {
+            if( ((URL)file).getFile().endsWith(".xml") ) {
+                properties = new XmlProperties();
+                ((XmlProperties)properties).setDelimiter(this.separator);
+            } else {
+                properties = new CustomProperties();
+            }
+        } else {
+            properties = new CustomProperties();
+        }
+
         if(this.protocol == FILE) {
             try {
                 FileInputStream fis = new FileInputStream((File)file);
@@ -278,6 +298,9 @@ public class PropertiesContext implements Context  {
             }
 
             file = getElement(path+this.separator+element+".properties");
+            if(file == null) {
+                file = getElement(path+this.separator+element+".xml");
+            }
 //            System.err.println("Into file? "+file);
             if(file != null) {
                 properties = loadProperties(file);
@@ -307,6 +330,9 @@ public class PropertiesContext implements Context  {
         if(properties == null) {
             //  if properties is null, then we look for default.properties
             Object file = getElement(path+this.separator+"default.properties");
+            if(file == null) {
+                file = getElement(path+this.separator+"default.xml");
+            }
             if(file != null) {
                 properties = loadProperties(file);
             }
