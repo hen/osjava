@@ -3,6 +3,7 @@ package org.osjava.jndi;
 import javax.naming.*;
 import javax.sql.*;
 import java.util.*;
+import org.osjava.jndi.util.HierarchicalMap;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -38,11 +39,11 @@ public class ClasspathLookupTest extends TestCase {
 
     public void testDSLookup() {
         try {
-            Properties props = new Properties();
-            props.setProperty("ATestDS/url", "jdbc:mysql://192.168.133.2/bikehell");
-            props.setProperty("ATestDS/driver", "org.gjt.mm.mysql.Driver");
-            props.setProperty("ATestDS/user", "nico");
-            props.setProperty("ATestDS/password", "bear");
+            HierarchicalMap props = new HierarchicalMap("/");
+            props.put("ATestDS/url", "jdbc:mysql://192.168.133.2/bikehell");
+            props.put("ATestDS/driver", "org.gjt.mm.mysql.Driver");
+            props.put("ATestDS/user", "nico");
+            props.put("ATestDS/password", "bear");
             PropertiesDataSource fake = new PropertiesDataSource(props, new Hashtable(), delimiter);
             fake.setName("ATestDS");
             assertEquals( fake, lookup("db/ATestDS") );
@@ -53,11 +54,11 @@ public class ClasspathLookupTest extends TestCase {
 
     public void testDSLookup2() {
         try {
-            Properties props = new Properties();
-            props.setProperty("url", "jdbc:mysql://192.168.133.2/bikehell");
-            props.setProperty("driver", "org.gjt.mm.mysql.Driver");
-            props.setProperty("user", "nico");
-            props.setProperty("password", "bear");
+            HierarchicalMap props = new HierarchicalMap("/");
+            props.put("url", "jdbc:mysql://192.168.133.2/bikehell");
+            props.put("driver", "org.gjt.mm.mysql.Driver");
+            props.put("user", "nico");
+            props.put("password", "bear");
             PropertiesDataSource fake = new PropertiesDataSource(props, new Hashtable(), delimiter);
             fake.setName("");
             assertEquals( fake, lookup("jdbc/BTestDS") );
