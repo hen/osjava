@@ -59,7 +59,7 @@ public class IOUtils {
         String line = "";
         while( (line = rdr.readLine()) != null) {
             buffer.append(line);
-            buffer.append("\n");
+            buffer.append(System.getProperty("line.separator"));
         }
         return buffer.toString();
     }
