@@ -1,4 +1,4 @@
-package org.apache.commons.dbutils.jndi;
+package com.generationjava.jndi;
 
 import java.sql.Connection;
 import java.sql.SQLException;
