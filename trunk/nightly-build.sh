@@ -33,7 +33,7 @@ fi
 buildDir=`pwd`
 reportDir=`pwd`/report
 
-rm -f LAST_BUILD
+rm -f LAST_BUILD SVN_UPDATE REASON
 
 for i in $LIST
 do
