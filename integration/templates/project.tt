@@ -18,7 +18,7 @@
     <div id="advertising">an Integration-built site</div>
 
 
-        <div class='build_info'>Last built: [% timestamp %]<br/>Build took: [% project.duration %]</div><br/>
+        <div class='build_info'>Last built: [% timestamp %]<br/>[% project.project %] build took: [% project.duration %]</div><br/>
 
    <ul class="doc_menu">
 [% FOREACH key IN reports.keys -%]
@@ -36,5 +36,6 @@
        <pre>Build successful.</pre>
    [% END %]
 
-   <hr><h2>Built because:</h2><pre>[% build_reason %]</pre>
+   <hr><h2>Built because:</h2><pre>[% build_reason %]</pre><br/>
+   [% project.updated %]
 </body></html>

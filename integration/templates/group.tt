@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<title>[% site.label %] Integration</title>
+
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+
+    <link href="[% site.css %]" rel="stylesheet" type="text/css">
+    <link href="css/pyjamas.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body bgcolor="white" class="[% site.label %]">
+
+    <div id="banner"><table width="100%"><tr><td><a href="[% site.url %]"><img border="0" alt="[% site.label %]" src="[% site.logo %]" align="left"></a></td></tr></table></div>
+    <div id="breadcrumbs">
+      <div id="tagline">
+        <a href="index.html">[% site.label %] integration</a> - [% timestamp %]
+      </div>
+      <div id="copyright" align="right">&copy;2004</div>
+    </div>
+<div class="integration-body">    
+    <div id="advertising">an Integration-built site</div>
+
+<!-- the green bar -->
+<p><table width="100%"><tr><td>
+<table width="95%" border="0" cellpadding="0" cellspacing="0"><tr>
+[% good_count = 0 %]
+[% FOREACH project IN projects -%]
+  [% IF project.failed %]
+    <td bgcolor="#CC0000">
+  [% ELSE %]
+    [% good_count = good_count + 1 %]
+    <td bgcolor="#009900">
+  [% END %]
+    <a href="report_[% project.escapedDirectory %].html"><img border="0" height="10" width="100%" title="[% project.label %]" src="http://www.osjava.org/images/1x1.gif"></a></td>
+[% END -%]
+</tr></table>
+</td><td> [% good_count %]/[% projects.size %]</td>
+</tr></table>
+</p>
+
+<ul id="project_list">
+
+[% FOREACH project IN projects -%]
+
+  [% IF project.failed %]
+     <li class='project_line'><img class='failed_image' src='/images/failed.gif'> <a class='failed_link' href='report_[% project.escapedDirectory %].html'>[% project.directory %]</a></li>
+  [% ELSE %]
+     <li class='project_line'><img class='success_image' src='/images/success.gif'> <a class='success_link' href='report_[% project.escapedDirectory %].html'>[% project.directory %]</a></li>
+  [% END %]
+[% END -%]
+
+</ul>
+</div>
+</html></body>
