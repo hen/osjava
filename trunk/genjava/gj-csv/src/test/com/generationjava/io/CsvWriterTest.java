@@ -39,6 +39,34 @@ public class CsvWriterTest extends TestCase {
         }
     }
 
+    public void testWriteObjectFields() {
+        try {
+            StringWriter sw = new StringWriter();
+            CsvWriter csv = new CsvWriter(sw);
+            csv.setBlockDelimiter('\n');
+            csv.setFieldDelimiter(',');
+            csv.writeField(new Integer(1));
+            csv.writeField(new Integer(2));
+            csv.writeField(new Long(3));
+            csv.writeField(new Long(4));
+            csv.writeField(new Short((short)5));
+            csv.endBlock();
+            csv.writeField(new Short((short)6));
+            csv.writeField(new Byte((byte)7));
+            csv.writeField(new Byte((byte)8));
+            csv.writeField(new Integer(9));
+            csv.writeField(new Integer(0));
+            csv.endBlock();
+            csv.close();
+            assertEquals("Does not write simple csv file from objects out correctly. ", 
+                         "1,2,3,4,5\n6,7,8,9,0\n",
+                         sw.toString() );
+            assertEquals("Does not return the right Writer", sw, csv.getWriter() );
+        } catch(IOException ioe) {
+            fail("IOException should not have been thrown. ");
+        }
+    }
+
     public void testWriteLines() {
         try {
             StringWriter sw = new StringWriter();
