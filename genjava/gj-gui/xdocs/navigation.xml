@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<project name="genjava-core">
+<project name="gj-gui">
 
-  <title>genjava-core</title>
+  <title>gj-gui</title>
 
   <body>
-    <menu name="Genjava">
-      <item href="Genjava.html" name="What is Genjava?"/>
+    <menu name="gj-gui">
+      <item name="News"       href="/News.html"/>
+      <item name="Download"   href="http://www.osjava.org/releases/official/genjava/gj-gui/"/>
     </menu>
     <menu name="Genjava Projects">
       <item href="multiproject/gj-beans/" name="gj-beans"/>
@@ -18,5 +19,8 @@
       <item href="multiproject/gj-tools/" name="gj-tools"/>
       <item href="multiproject/gj-xml/" name="gj-xml"/>
     </menu>
+    <links>
+        <item name="Genjava"                 href="/genjava/"/>
+    </links>
   </body>
 </project>
