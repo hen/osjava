@@ -233,6 +233,11 @@ public class XMLNode {
      * Set the plaintext contained in this node.
      */
     public void setPlaintext(String str) {
+        str = replace(str,"&amp;","&");
+        str = replace(str,"&lt;","<");
+        str = replace(str,"&gt;",">");
+        str = replace(str,"&quot;","\"");
+        str = replace(str,"&apos;","'");
         this.value = str;
     }
 
@@ -400,6 +405,27 @@ public class XMLNode {
             }                
         }
         return tmp.toString();
+    }
+
+    // from Commons.Lang.StringUtils
+    private static String replace(String text, String repl, String with) {   
+        int max = -1;
+        if (text == null || repl == null || with == null || repl.length() == 0 || max == 0) {
+            return text;
+        }
+        
+        StringBuffer buf = new StringBuffer(text.length());
+        int start = 0, end = 0;
+        while ((end = text.indexOf(repl, start)) != -1) {
+            buf.append(text.substring(start, end)).append(with);
+            start = end + repl.length();
+            
+            if (--max == 0) {
+                break;
+            }
+        }
+        buf.append(text.substring(start));
+        return buf.toString();
     }
         
 }
