@@ -1,5 +1,0 @@
-# robots.txt for http://www.genscape.com/
-# 6/8/2003 - jpc
-
-User-agent: *
-Disallow: /download/ # temporary download files
