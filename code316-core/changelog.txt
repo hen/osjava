@@ -1,0 +1,88 @@
+------------------------------------
+.7d to 0.8
+- General - deprecated ModelDescription 'names' in favor of 'columnNames'
+- added BeanTable, beans package, BeanUtil, and BeanProperty class
+- Launcher is now public
+- removed bits package again
+
+------------------------------------
+.7c to .7d - 22jul2003
+- BeanTableModel - now caches parsed property names and method names
+- BeanTableModel - added absolute method call ability for bean properties
+    e.g. message.body.topPart().category.name.length()
+
+------------------------------------
+.7b to .7c - 17jul2003
+- new class ExceptionUtil
+- BeanTableModel now supports nested property names, e.g. "message.body.size"
+- BeanTableModel now supports boolean "get" methods starting with "is"
+
+------------------------------------
+.7a to .7b - 10jul2003
+- add new methods to fileutil
+- exposed clear method for bean table model
+- clearing bean table model now fires rows deleted
+
+------------------------------------
+.6b to .7 - 14jun2003
+- added bits package, Encoding stuff
+- added methods to Args parser, better javadoc also
+
+------------------------------------
+.6a to .6b - 
+
+------------------------------------
+.6 to .6a - 14may2003
+- launch script builder now uses path separator to determine argument character
+
+
+------------------------------------
+.5b to .6 - 12may2003
+- imported gui package from code316
+
+------------------------------------
+.5a to .5b - 09may2003
+- added argument to launchscriptbuilder
+
+------------------------------------
+.5 to .5a - 22apr2003
+- added get extension methods to FileUtil
+
+------------------------------------
+.4a to .5 - ?
+- added FileMaskFilter to project (from sentinel)
+- changed package names, this will break everything
+
+------------------------------------
+.4 to .4a - 02mar2003
+- added features to launchscriptbuilder
+- added addl parse method to Args class
+
+
+------------------------------------
+.3 to .4 - 07feb2003
+- added filterProperties method to PropertiesUtil
+- removed logging from PropertiesUtil
+
+
+------------------------------------
+.2.1 to .3 - 05feb2003
+- added isEmpty method to PropertiesUtil
+- added charlotte project to core
+  - charlotte should be it's own project
+
+
+------------------------------------
+.2 to .2.1 - 27dec2002
+
+- ClassUtil
+  - add quiteInstantiatiate
+  - changed instantiate to throw exceptions
+
+- imported class loading utilities from code316
+
+
+------------------------------------
+.1 to .2
+ 
+removed deprecated methods

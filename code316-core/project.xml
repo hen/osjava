@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<project>
+  <pomVersion>3</pomVersion>
+  <name>code316 core</name>
+  <id>code316-core</id>
+  <currentVersion>0.8</currentVersion>
+  <organization>
+    <name>code316</name>
+    <url>http://www.code316.com/</url>
+  </organization>
+  <inceptionYear>2002</inceptionYear>
+  <package>com.code316.core</package>
+
+  <shortDescription>code316 core components. Programmer utility classes that depend only on core java SE APIs.</shortDescription>
+  <description>code316 core components. Programmer utility classes that depend only on core java SE APIs.</description>
+  
+  <developers>
+    <developer>
+      <name>David Petersheim</name>
+      <id>dave</id>
+      <email>david.petersheim@genscape.com</email>
+      <organization>code316</organization>
+    </developer>
+  </developers>
+
+
+  <build>
+    <nagEmailAddress>dave@code316.com</nagEmailAddress>
+    <sourceDirectory>src/java</sourceDirectory>
+    <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
+  </build>
+</project>

@@ -1,0 +1,235 @@
+
+C:\px\projects\code316-core>c:\px\classes\maven\bin\maven -g 
+ __  __
+|  \/  |__ Jakarta _ ___
+| |\/| / _` \ V / -_) ' \  ~ intelligent projects ~
+|_|  |_\__,_|\_/\___|_||_|   v. 1.0-beta-6
+
+C:\px\projects\code316-core
+
+
+Available [Plugins] / Goals
+```````````````````````````
+[activity] : Generate developer and file activity reports
+  generate ................... Generate developer and file activity reports
+
+[ant] : Generate an Ant build file
+  generate-build ............. Generate an Ant build file
+
+[appserver] ( NO DEFAULT GOAL )
+  clean ...................... Safely delete an installed appserver instance
+  install .................... Install or reinstall a appserver instance
+  start ...................... Start or restart an appserver instance
+  stop ....................... Stop an appserver instance if started
+
+[aspectj] : Compile code with AspectJ
+  compile .................... Compile code with AspectJ
+
+[changelog] : Generate a changelog report
+  generate ................... Generate a changelog report
+
+[checkstyle] : Generate code convention conformance reports
+  check-license-file ......... Checks the existence of the LICENSE.txt file
+  generate-report ............ Generate code convention conformance reports
+
+[clean] : Remove all project artifacts
+  clean ...................... Remove all project artifacts
+
+[clover] : Generate HTML test coverage reports with Clover
+  html-report ................ Generate HTML test coverage reports with Clover
+  on ......................... Create the needed directory structure
+  swing-report ............... Generate Swing test coverage reports with Clover
+
+[codeswitcher] ( NO DEFAULT GOAL )
+  init ....................... Validate the Maven XML project descriptor
+
+[console] : Generate the .jnlp file
+  help ....................... Prints the help message.
+  listGoals .................. Lists all available goals
+
+[dependency] : Map the packages to dependencies, check out the sources, discover
+              the dependencies and update the POM
+  checkout-sources ........... Check out the sources of the projects
+  dependencies-to-pom ........ Put the generated dependencies back to the POM
+  package-project-map ........ Map the packages to project names in a file
+  process-project-descriptors  Map the packages to dependencies, check out the 
+                               sources, discover the dependencies and update 
+                               the POM
+  resolve-projects ........... Discovers the dependencies from the source code
+
+[deploy] ( NO DEFAULT GOAL )
+  pom ........................ Deploy POM to the central repository.
+
+[dist] : Build a complete distribution.
+  build ...................... Build a complete distribution.
+  build-bin .................. Build the binary distribution.
+  build-src .................. Build the source distribution.
+  prepare-bin-filesystem ..... Builds the binary distribution file system.
+  prepare-src-filesystem ..... Builds the source distribution file system.
+
+[docbook] ( NO DEFAULT GOAL )
+  transform .................. Transform any docbook-simple source into xdocs 
+                               for later use
+
+[eclipse] : Generate Eclipse project files
+  add-maven-repo ............. Ensure that the classpath variable MAVEN_REPO is
+                               available
+  external-tools ............. Generate an Eclipse external tool for each goal
+  generate-project ........... Generate Eclipse .project and .classpath project
+                               files
+
+[fo] : Generate XSL:FO project documentation
+  fo ......................... Generate XSL:FO project documentation
+
+[graph] : Create an xdoc document from the project goals
+  goals-to-image ............. Get a .gif graph of current goals and their 
+                               dependencies
+  goals-to-xdoc .............. Create an xdoc document from the project goals
+  goals-to-xml ............... Get an xml file representing the goal structure
+
+[gump] : Generate Gump descriptor from Maven descriptor
+  generate-descriptor ........ Generate Gump descriptor from Maven descriptor
+
+[idea] : Generate IDEA project files
+  generate-project ........... Generate IDEA .ipr and .iws project files
+
+[importscrubber] : Scrub import statements
+
+[init-dvsl-tag] ( NO DESCRIPTION ) 
+
+[init-texen-tag] ( NO DESCRIPTION ) 
+
+[j2ee] : Check that a war file is valid
+  ear ........................ Create an EAR file from the project
+  validate-war ............... Check that a war file is valid
+
+[jalopy] : Format all sources with code convention conformance
+  format ..................... Format all sources with code convention 
+                               conformance
+
+[jar] ( NO DEFAULT GOAL )
+  deploy ..................... Deploy a jar to the remote repository
+  deploy-snapshot ............ Deploy a snapshot jar to the remote repository
+  install .................... Install the jar in the local repository
+  snapshot ................... Create a snapshot jar, ie 'id-YYYYMMDD.hhmmss.
+                               jar'
+
+[java] ( NO DEFAULT GOAL )
+  compile .................... Compile the project
+  jar ........................ Create the deliverable jar file.
+  jar-resources .............. Copy any resources that must be present in the 
+                               deployed JAR file
+  prepare-filesystem ......... Create the directory structure needed to compile
+
+[javadoc] : Generate API documentation
+  generate ................... Generate API documentation
+
+[jbuilder] : Generate JBuilder project files
+  generate-library ........... Generate JBuilder [id_project].library file
+  generate-project ........... Generate JBuilder [id_project].jpx file
+
+[jdepend] : Generate a dependency report with JDepend
+  generate-report ............ Generate a dependency report with JDepend
+
+[jdiff] : generate an api difference report between versions
+
+[junit-report] : Generate a report from the test results
+
+[jxr] : Generate HTML cross reference sources
+  generate ................... Generate HTML cross reference sources
+
+[license] : Generate a xml file from your license.txt
+  transfer ................... Generate a xml file from your license.txt
+
+[pdf] : Generate PDF project documentation
+  pdf ........................ Generate PDF project documentation
+
+[pom] : Validate the Maven XML project descriptor
+  update ..................... Update the POM from its current version to a 
+                               specified version
+  validate ................... Validate the Maven XML project descriptor
+  validate-new ............... Validate the Maven XML project descriptor (
+                               experimental)
+
+[site] : Generate the web site
+  generate ................... Generate the web site
+
+[statcvs] : Generate CVS statistics for the current CVS project
+  generate ................... Generate CVS statistics for the current CVS 
+                               project
+
+[struts] : Ensure a war file containing a Struts application is valid
+  validate-war ............... Ensure a war file containing a Struts 
+                               application is valid
+
+[tasklist] : Generate a list of tasks from @task tags in your code
+
+[test] : Test the application
+  compile .................... Compile the TestCases and TestSuites
+  match ...................... Execute all the tests matching the given '
+                               testmatch' variable
+  match-test ................. [deprecated] please use the test:match goal 
+                               instead
+  prepare-filesystem ......... Create the needed directory structure
+  single ..................... Execute a single test defined using the '
+                               testcase' variable
+  single-test ................ [deprecated] please use the test:single goal 
+                               instead
+  test ....................... Test the application
+  test-resources ............. Copy any resources that must be present for run 
+                               tests
+  ui ......................... Starts the Swing TestRunner front end
+
+[war] : Build a war file
+  install .................... Install the war in the local repository
+  war ........................ Build a war file
+  webapp ..................... Build a webapp directory
+
+[webserver] ( NO DEFAULT GOAL )
+  apache-2.x-reqs ............  ( NO DESCRIPTION ) 
+  clean ...................... Safely delete an installed webserver instance
+  install .................... Install or reinstall a webserver instance
+  start ...................... Start or restart a webserver instance
+  stop ....................... Stop a webserver instance if started
+
+[xdoc] : Generate html project documentation xdoc sources
+  generate-from-pom .......... Generates xdocs for site based on project 
+                               descriptor
+  transform .................. Generate html project documentation xdoc sources
+
+[xdoclet] : Perform XDocelt routines
+  ejbdoclet .................. Invokes xdoclet
+  prepare-filesystem ......... Prepares Filesystem for XDoclet
+  webdoclet .................. Create the directory structure needed to create 
+                               the war
+
+
+Non documented goals : 
+
+  appserver:init
+  appserver:install-tomcat-4.x
+  appserver:reinstall
+  appserver:restart
+  appserver:start-tomcat-4.x
+  appserver:stop-tomcat-4.x
+  dist:build-setup
+  dist:deploy
+  dist:deploy-bin
+  dist:deploy-snapshot
+  dist:deploy-src
+  graph:project-dependencies
+  init-dvsl-tag
+  init-texen-tag
+  jalopy:taskdef
+  junit-report:generate
+  site:deploy
+  tasklist:generate
+  webserver:apache-2.x-reqs
+  webserver:init
+  webserver:install-apache-2.x
+  webserver:reinstall
+  webserver:restart
+  webserver:restart-apache-2.x
+  webserver:start-apache-2.x
+  webserver:stop-apache-2.x
+
