@@ -30,6 +30,12 @@ implements SocketChannelHandlerAcceptor
         return true;
     }
 
-    protected abstract void setupSocketStream(SocketStream stream);
+    protected void setupSocketStream(SocketStream stream) {
+        Stream programStream = createStream();
+        stream.writeTo(programStream);
+        programStream.writeTo(stream);
+    }
+
+    protected abstract Stream createStream();
 
 }
