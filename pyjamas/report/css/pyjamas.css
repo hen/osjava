@@ -3,3 +3,5 @@ LI { list-style-type: none }
 .success_image, .failed_image { vertical-align: middle }
 
 .success_link, .failed_link { font-size: larger }
+
+.project_block { float: left; padding-right: 3em }
