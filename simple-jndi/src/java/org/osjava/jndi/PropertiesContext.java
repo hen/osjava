@@ -58,6 +58,7 @@ import java.net.URL;
 import java.net.MalformedURLException;
 
 import org.apache.commons.lang.StringUtils;
+import com.generationjava.convert.Convert;
 
 public class PropertiesContext implements Context  {
 
@@ -158,10 +159,10 @@ public class PropertiesContext implements Context  {
     }
 
     private Properties loadProperties(Object file) throws NamingException {
+        Properties properties = new CustomProperties();
         if(this.protocol == FILE) {
             try {
                 FileInputStream fis = new FileInputStream((File)file);
-                Properties properties = new Properties();
                 properties.load(fis);
                 fis.close();
                 return properties;
@@ -172,7 +173,6 @@ public class PropertiesContext implements Context  {
         if(this.protocol == CLASSPATH) {
             try {
                 InputStream fis = ((URL)file).openStream();
-                Properties properties = new Properties();
                 properties.load(fis);
                 fis.close();
                 return properties;
@@ -183,7 +183,6 @@ public class PropertiesContext implements Context  {
         if(this.protocol == HTTP) {
             try {
                 InputStream fis = ((URL)file).openStream();
-                Properties properties = new Properties();
                 properties.load(fis);
                 fis.close();
                 return properties;
@@ -336,7 +335,7 @@ public class PropertiesContext implements Context  {
         } else {
             if(properties.containsKey(remaining+".type")) {
                 String type = properties.getProperty(remaining+".type");
-                System.err.println("Should attempt to convert "+answer+" to "+type);
+                answer = Convert.convert(answer, type);
             }
             return answer;
         }
