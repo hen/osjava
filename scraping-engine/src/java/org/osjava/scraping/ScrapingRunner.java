@@ -31,8 +31,6 @@
  */
 package org.osjava.scraping;
 
-import java.io.Reader;
-
 import org.osjava.oscube.container.Runner;
 import org.osjava.oscube.container.Engine;
 import com.generationjava.config.Config;
