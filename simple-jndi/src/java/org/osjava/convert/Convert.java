@@ -36,6 +36,9 @@ import java.util.HashMap;
 import com.generationjava.collections.ClassMap;
 import com.generationjava.lang.ClassW;
 
+/**
+ * This should move to using Jakarta Convert I believe. 
+ */
 public class Convert {
 
 
