@@ -25,7 +25,12 @@ public class ReportRunnerServlet extends HttpServlet {
         Param[] params = report.getParams();
         if(params != null) {
             for(int i=0; i<params.length; i++) {
-                Object value = Convert.convert(request.getParameter(params[i].getName()), params[i].getType() );
+                Parser parser = params[i].getParser();
+                String parameter = request.getParameter(params[i].getName());
+                Object value = parameter;
+                if(parser != null) {
+                    value = parser.parse(parameter);
+                } 
                 params[i].setValue(value);
             }
             System.out.println("Data: "+java.util.Arrays.asList(params));
