@@ -104,7 +104,7 @@ do
     # somehow create a site from these reports
     if [ -d target/docs/apidocs/ ];
     then
-        mv target/docs/apidocs/ $reportDir/$i/javadoc
+        mv target/docs/apidocs/ $reportDir/$i/apidocs
     fi
     if [ -d target/docs/jcoverage/ ];
     then
