@@ -4,7 +4,7 @@
  * To change the template for this generated file go to
  * Window - Preferences - Java - Code Generation - Code and Comments
  */
-package org.cyberiantiger.nio.example;
+package org.osjava.nio.example;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -14,10 +14,11 @@ import java.nio.CharBuffer;
 import java.nio.charset.CharacterCodingException;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
-import org.cyberiantiger.nio.AbstractSocketChannelHandlerAcceptor;
-import org.cyberiantiger.nio.IOThread;
-import org.cyberiantiger.nio.SocketChannelHandler;
-import org.cyberiantiger.nio.SocketListener;
+
+import org.osjava.nio.AbstractSocketChannelHandlerAcceptor;
+import org.osjava.nio.IOThread;
+import org.osjava.nio.SocketChannelHandler;
+import org.osjava.nio.SocketListener;
 
 /**
  * @author rzigweid
@@ -48,7 +49,7 @@ public class ExampleListenerAcceptor
     }
 
     /* (non-Javadoc)
-     * @see org.cyberiantiger.nio.SocketListener#receiveData(java.nio.CharBuffer)
+     * @see org.osjava.nio.SocketListener#receiveData(java.nio.CharBuffer)
      */
     public void receiveData(ByteBuffer buf) {
         CharBuffer charBuffer = null;

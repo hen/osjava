@@ -1,4 +1,4 @@
-package org.cyberiantiger.nio;
+package org.osjava.nio;
 
 import java.nio.channels.SelectableChannel;
 import java.nio.channels.SelectionKey;
