@@ -71,7 +71,10 @@ public class PropertiesDataSource implements DataSource {
 if(org.osjava.jndi.PropertiesContext.DEBUG)        System.err.println("[DS]Loading driver: "+name+this.delimiter+get("driver")+" from "+props);
 //        DbUtils.ensureLoaded(get("driver"));
         ensureLoaded(get("driver"));
-        String type = this.name+this.delimiter+"type";
+        String type = "type";
+        if(this.name != null && !this.name.equals("")) {
+            type = this.name+this.delimiter+type;
+        }
         if(!props.containsKey(type)) {
             this.props.setProperty(type, "javax.sql.DataSource");
         }
