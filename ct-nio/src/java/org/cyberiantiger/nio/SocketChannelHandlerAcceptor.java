@@ -1,5 +1,7 @@
 package org.cyberiantiger.nio;
 
+import java.io.IOException;
+
 public interface SocketChannelHandlerAcceptor {
 
     /**
@@ -9,6 +11,7 @@ public interface SocketChannelHandlerAcceptor {
      * sch also Implements IOStream, and it must also setup an appropriate
      * input and output
      */
-    public void acceptSocketChannelHandler(SocketChannelHandler sch);
+    public void acceptSocketChannelHandler(SocketChannelHandler sch)
+        throws IOException;
 
 }
