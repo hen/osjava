@@ -1,6 +1,6 @@
 package org.cyberiantiger.nio;
 
-public interface SocketStreamAcceptor {
+public interface SocketChannelHandlerAcceptor {
 
     /**
      * This method must call sch.register(IOThread) to regsiter the

@@ -12,7 +12,7 @@ extends AbstractChannelHandler
 implements SocketStreamListener 
 {
     private ServerSocketChannel chan;
-    private SocketStreamAcceptor acceptor;
+    private SocketChannelHandlerAcceptor acceptor;
 
     public ServerSocketChannelHandler(
             ServerSocketChannel chan
@@ -23,7 +23,10 @@ implements SocketStreamListener
             this.chan = chan;
         }
 
-    public void setSocketStreamAcceptor(SocketStreamAcceptor acceptor) {
+    public void setSocketChannelHandlerAcceptor(
+            SocketChannelHandlerAcceptor acceptor
+            ) 
+    {
         this.acceptor = acceptor;
     }
 
