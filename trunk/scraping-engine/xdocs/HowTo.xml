@@ -8,7 +8,7 @@
 
   <body>
     <section name="Pre-built Example">
-      <p>While the below does shows how to create a scraper, it can still be quite confusing to get started. To combat this, a full example is available (<a href="http://www.osjava.org/releases/official/scraping-engine/scraping-examples-for-0.3.tar.gz">scraping-examples-for-0.3.tar.gz</a>) from the download directory, and the example is available in <a href="http://svn.osjava.org/cgi-bin/viewcvs.cgi/trunk/scraping-engine/src/examples/Comics/">subversion</a>. Currently this example is a bit odd as all the parsers are subclasses of one of the standard parsers, so it does not show you how to write your own parser. </p>
+      <p>While the below does shows how to create a scraper, it can still be quite confusing to get started. To combat this, a full example is available (<a href="http://dist.osjava.org/releases/official/scraping-engine/scraping-examples-for-0.3.tar.gz">scraping-examples-for-0.3.tar.gz</a>) from the download directory, and the example is available in <a href="http://svn.osjava.org/cgi-bin/viewcvs.cgi/trunk/scraping-engine/src/examples/Comics/">subversion</a>. Currently this example is a bit odd as all the parsers are subclasses of one of the standard parsers, so it does not show you how to write your own parser. </p>
     </section>
     <section name="A simple example">
     <p>Writing a scraper can be as simple as writing a parser and configuring the scraper. </p>

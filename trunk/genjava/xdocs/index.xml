@@ -30,7 +30,7 @@
       </table>
     </section>
     <section name="Legacy releases">
-      <p>For those looking for 'genjava-core' v2.2, the release is available at <a href="http://www.osjava.org/releases/official/genjava-core/">http://www.osjava.org/releases/official/genjava-core/</a>. </p>
+      <p>For those looking for 'genjava-core' v2.2, the release is available at <a href="http://dist.osjava.org/releases/official/genjava-core/">http://dist.osjava.org/releases/official/genjava-core/</a>. </p>
     </section>
   </body>
 </document>

@@ -8,7 +8,7 @@
       <item name="Introduction"              href="/index.html"/>
       <item name="How To"              href="/HowTo.html"/>
       <item name="News"              href="/News.html"/>
-      <item name="Download" href="http://www.osjava.org/releases/official/multidoc/"/>
+      <item name="Download" href="http://dist.osjava.org/releases/official/multidoc/"/>
       <item name="Changes"              href="/changes-report.html"/>
       <item name="License"              href="/license.html"/>
     </menu>
