@@ -1,6 +1,7 @@
 package org.osjava.jndi;
 
 import java.util.*;
+import java.io.*;
 import javax.naming.*;
 
 /**
@@ -29,23 +30,70 @@ public class JndiLoader {
         return (String) table.get(key);
     }
 
-    public void load(Properties properties) throws NamingException {
-
-        // find all .xxx files from a given root; 
-        // add their contents into the jndi system
-
         // problems: classpath doesn't work well here
         // if unpacked, it will do the find fine
         // if packed, it won't. So will need to iterate 
         // through the classpath I guess
+        //Context init = new InitialContext(this.table);
 
-        Context init = new InitialContext(table);
+    /**
+     * Loads all .properties files in a directory into a context
+     */
+    public void loadDirectory(File directory, Context ctxt) throws NamingException, IOException {
 
+        if( !directory.isDirectory() ) {
+            throw new IllegalArgumentException("java.io.File parameter must be a directory. ");
+        }
+
+        File[] files = directory.listFiles();
+        if(files == null) {
+            return;
+        }
+
+        for(int i=0; i<files.length; i++) {
+            File file = files[i];
+            if( file.isDirectory() ) {
+                loadDirectory(file, ctxt);
+            } else
+            if( file.getName().endsWith(".properties") ) {
+                load( loadFile(file), ctxt );
+            }
+        }
+
+    }
+
+    private Properties loadFile(File file) throws IOException {
+        // replace with better prop class
+        Properties p = new Properties();
+        FileInputStream fin = null;
+        try {
+            fin = new FileInputStream(file);
+            p.load(fin);
+            return p;
+        } finally {
+            if(fin != null) fin.close();
+        }
+    }
+
+
+    /**
+     * Loads a properties object into a context.
+     */
+    public void load(Properties properties, Context ctxt) throws NamingException {
+
+        Iterator iterator = properties.keySet().iterator();
+        while(iterator.hasNext()) {
+            String key = (String) iterator.next();
+            ctxt.bind( key, properties.get(key) );
+        }
+
+    }
+
+        /*
         Context cmp = init.createSubcontext("java:comp");
 
         // each directory equals a subcontext
         Context env = cmp.createSubcontext("env");
         env.bind("test", "42");
-    }
-
+        */
 }
