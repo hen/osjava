@@ -12,7 +12,7 @@
   <book isbn="1932394117" name="Tapestry in Action" publisher="man" url="http://www.manning.com/lewisship" published="2004-03"/>
   <book isbn="1930110588" name="Java Development with Ant" publisher="man" url="http://www.manning.com/hatcher" published="2002-08"/>
   <book isbn="0672324261" name="Ant Developer's Handbook" publisher="sam" url="http://www.sams.com/isapi/product_id~{AECD7734-B9A2-4325-8D04-BCEFCDA7B3DB}/catalog/product.asp" published="2002-10"/>
-  <book isbn="1584502487" name="Ant: The Java Build Tool in Practice" publisher="chr" url="YY" published="2003-09"/>
+  <book isbn="1584502487" name="Ant: The Java Build Tool in Practice" publisher="chr" url="http://www.charlesriver.com/titles/ant.html" published="2003-09"/>
   <book isbn="0596001843" name="Ant: The Definitive Guide" publisher="ora" url="http://www.oreilly.com/catalog/anttdg" published="2002-05"/>
   <book isbn="0672325624" name="Extreme Programming with Ant" publisher="sam" url="http://www.sams.com/isapi/product_id~{FB825A48-BC04-4C55-BD8C-DF93C6BBF920}/catalog/product.asp" published="2003-05"/>
   <book isbn="0471449156" name="Jakarta Pitfalls" publisher="wil" url="http://www.wiley.com/WileyCDA/WileyTitle/productCd-0471449156.html" published="2003-07"/>
@@ -22,7 +22,7 @@
   <book isbn="1590591259" name="Enterprise Java Development on a Budget" publisher="apr" url="http://apress.com/book/bookDisplay.html?bID=197" published="2004-03"/>
   <book isbn="1590590996" name="Logging in Java" publisher="apr" url="http://apress.com/book/bookDisplay.html?bID=166" published="2003-04"/>
   <book isbn="159059228X" name="Pro Jakarta Struts" publisher="apr" url="http://apress.com/book/bookDisplay.html?bID=228" published="2004-03"/>
-  <book isbn="1584502460" name="Applied Software Engineering Using Apache Jakarta Commons" publisher="chr" url="YY" published="2003-11"/>
+  <book isbn="1584502460" name="Applied Software Engineering Using Apache Jakarta Commons" publisher="chr" url="http://www.charlesriver.com/titles/apachejakarta.html" published="2003-11"/>
   <book isbn="0764543725" name="Professional Apache Tomcat" publisher="wrx" url="http://www.wrox.com/books/0764543725.shtml" published="2002-10"/>
   <book isbn="0596003188" name="Tomcat: The Definitive Guide" publisher="ora" url="http://www.oreilly.com/catalog/tomcat" published="2003-06"/>
   <book isbn="0764526065" name="Apache Tomcat Bible" publisher="wil" url="http://www.wiley.com/WileyCDA/WileyTitle/productCd-0764526065.html" published="2003-07"/>
