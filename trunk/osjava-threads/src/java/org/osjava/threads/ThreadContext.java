@@ -356,6 +356,7 @@ public class ThreadContext
 
         if(obj instanceof ThreadContext) {
             ((ThreadContext)obj).notifyThread((Name)null);
+            return;
         }
         
         /* 
