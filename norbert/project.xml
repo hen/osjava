@@ -27,7 +27,7 @@
   <distributionDirectory>/sites/org/osjava/www/releases/official/</distributionDirectory>
 
   <repository>
-    <connection>scm:cvs:ext:anonymous@cvs.osjava.org:/var/cvs:norbert</connection>
+    <connection>scm:cvs:pserver:anonymous@cvs.osjava.org:/var/cvs:norbert</connection>
     <url>http://www.osjava.org/view-cvs/viewcvs.cgi/norbert/</url>
   </repository>
 
