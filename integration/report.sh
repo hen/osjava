@@ -66,7 +66,7 @@ do
 
     if [ $entry_count = '0' ];
     then
-        echo "</div><div class='project_block'>" >> $index
+        echo "</div>" >> $index
         entry_count=$row_count;
     fi
 
