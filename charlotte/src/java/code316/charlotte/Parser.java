@@ -6,10 +6,14 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 
-class Parser {
+public class Parser {
     private int lineNumber = 0;
-    public Encoding parse(InputStream _in) throws IOException {
-        BufferedReader in = new BufferedReader(new InputStreamReader(_in));
+    public Encoding parse(InputStream is) throws IOException {
+        if (is == null) {
+            throw new IllegalArgumentException("invalid value for input stream: " + is);
+        }
+        
+        BufferedReader in = new BufferedReader(new InputStreamReader(is));
         String line = null;
         int bitPos = 0;
         Encoding encoding = new DefaultEncoding();
@@ -41,7 +45,7 @@ class Parser {
             
             bitPos += def.getWidth();
             
-            
+            def.setIndex(encoding.getFieldCount());
             encoding.addFieldDefinition(def);
         }
         

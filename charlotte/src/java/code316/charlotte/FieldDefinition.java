@@ -14,4 +14,7 @@ public interface FieldDefinition {
 
     int getOffset();
     void setOffset(int i);
+    
+    int getIndex();
+    void setIndex(int index);
 }
