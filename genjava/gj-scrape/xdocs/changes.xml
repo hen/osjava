@@ -8,14 +8,14 @@
 
   <body>
     <release version="2.0" date="2004-06-19">
-        <action dev="hen" type="fix">[<a href='http://www.osjava.org:8080/jira/browse/GJC-3'>GJC-3</a>] - HtmlScraper does not handle apostrophe's [rather than double-quotes].</action>
-        <action dev="hen" type="fix">[<a href='http://www.osjava.org:8080/jira/browse/GJC-7'>GJC-7</a>] - moveToTagWith called twice will find the first one again</action>
-        <action dev="hen" type="fix">[<a href='http://www.osjava.org:8080/jira/browse/GJC-17'>GJC-17</a>] - Performance Bottleneck: extensive use of  toLowerCase in com.generationjava.web.HtmlW.getIndexOpeningTag</action>
-        <action dev="hen" type="add">[<a href='http://www.osjava.org:8080/jira/browse/GJC-18'>GJC-18</a>] - Add a scrape(String tag) method </action>
-        <action dev="hen" type="fix">[<a href='http://www.osjava.org:8080/jira/browse/GJC-19'>GJC-19</a>] - Target is always the first argument in HtmlW/XmlW. </action>
+        <action dev="hen" type="fix" issue="GJC-3">HtmlScraper does not handle apostrophe's [rather than double-quotes].</action>
+        <action dev="hen" type="fix" issue="GJC-7">moveToTagWith called twice will find the first one again</action>
+        <action dev="hen" type="fix" issue="GJC-17">Performance Bottleneck: extensive use of  toLowerCase in com.generationjava.web.HtmlW.getIndexOpeningTag</action>
+        <action dev="hen" type="add" issue="GJC-18">Add a scrape(String tag) method </action>
+        <action dev="hen" type="fix" issue="GJC-19">Target is always the first argument in HtmlW/XmlW. </action>
     </release>
     <release version="1.0" date="2003-12-13">
-        <action dev="hen" type="add">[<a href='http://www.osjava.org:8080/jira/browse/GJC-2'>GJC-2</a>] - HtmlScraper needs to be case insensitive</action>
+        <action dev="hen" type="add" issue="GJC-2">HtmlScraper needs to be case insensitive</action>
     </release>
 </body>
 </document>
