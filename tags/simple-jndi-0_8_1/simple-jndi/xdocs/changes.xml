@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<document>
+
+  <properties>
+      <author email="bayard@generationjava.com">Henri Yandell</author>
+      <title>Changes</title>
+  </properties>
+
+  <body>
+    <release version="0.8.1" date="2004-01-18">
+        <action dev="hen" type="add">Added feature #SJN-48, in which the simple-jndi is configurable from system properties as well as jndi.properties and a Hashtable. The system property takes precedence. </action>
+    </release>
+    <release version="0.8" date="2004-01-03">
+        <action dev="hen" type="fix">Fixed bug #SJN-45, in which the XML property loader did not correctly handle multiple tags with the same name forming a List object. </action>
+        <action dev="hen" type="fix">Fixed a bug in which 'type' did not work in a DataSource file in which you had the DS name as the filename and not delimited in the file. </action>
+        <action dev="hen" type="remove">Deprecated usage of the 'org.osjava.jndi.datasource' property in favour of a simple type=javax.sql.DataSource. Especially as JIRA issue #SJN-42 exists with the datasource usage. Will be removed in 0.9. </action>
+        <action dev="hen" type="add">Added an example for xml, ini and properties creation of Collections in simple-jndi. </action>
+        <action dev="hen" type="add">Added an example for xml, ini and properties built DataSources in simple-jndi. </action>
+        <action dev="hen" type="add">Connection pooling added via the use of Jakarta Commons DBCP. </action>
+        <action dev="hen" type="update">While I've decided not to use log4j, I have implemented a classic System.out debug system with a -DSJ.DEBUG=true system property to turn it on. </action>
+        <action dev="hen" type="update">Switched dependencies and inlined code so that no jars are needed by default, but to get the xml feature you need gj-xml, to get converting you need commons-convert and to get connection-pooling you need commons-dbcp, which needs commons-pool and commons-collections. </action>
+    </release>
+
+    <release version="0.7" date="2003-12-06">
+        <action dev="hen" type="fix">XML bug #SJN-39 fixed. In 0.6, XML was barely functional and 0.7 fixes those bugs. </action>
+        <action dev="hen" type="add">In addition to .properties and .xml files, simple-jndi now supports .ini files. The precedence in case of similar naming is .properties, .xml then .ini. </action>
+        <action dev="hen" type="update">DataSources may now be configured through the '.type' conversion mechanism as well as the org.osjava.jndi.datasource mechanism. This is needed for XML which cannot use the org.osjava.jndi.datasource mechanism. Most likely this will be the only mechanism for DataSources in a future version. </action>
+    </release>
+
+    <release version="0.6" date="2003-08-12">
+        <action dev="hen" type="update">You may now see and modify the Simple-JNDI parameters through Simple-JNDI. </action>
+        <action dev="hen" type="fix">Because Windows cannot handle ':' in a filename, "java:" is quietly converted to "java". </action>
+        <action dev="hen" type="update">Unit Tests written and plugged into Maven. </action>
+    </release>
+
+    <release version="0.5" date="2003-04-08">
+        <action dev="hen" type="update">Moved from the 'com.generationjava' namespace to the 'org.osjava' namespace, and an accompanying change in look and feel to the site. </action>
+        <action dev="hen" type="add">Boolean and URL Converters added. </action>
+        <action dev="hen" type="add">Values in the System properties [ie) -Dfoo.bar=baa] now override simple-jndi. </action>
+        <action dev="hen" type="add">Values may now be bound to the JNDI space, where they override the configured simple-jndi properties. When removed, the value goes back to the simple-jndi default. </action>
+    </release>
+
+<!--    <release version="0.4" date="2003-02-27" description="<![CDATA[<a href='http://www.osjava.org:8080/jira/secure/IssueNavigator.jspa?reset=true&pid=10000&fixfor=10003'>jira<a>]]>"> -->
+    <release version="0.4" date="2003-02-27">
+      <action dev="hen" type="add">com.foo.Value can have a partner key of com.foo.Value.type which specifies the type of object to use for the key. While this system will be pluggable, currently it supports java.lang.Number only.</action>
+      <action dev="hen" type="add">Any XML format may be used underneath instead of a .properties system. Properties files take precedence over XML files, so in the light of foo.xml and foo.properties, only foo.properties will be read. </action>
+      <action dev="hen" type="update">The underlying properties parsing has been improved. It now handles ordered collections. These are implemented by specifying a key multiple times. One issue with this is that the object returned maybe a List or a String [or something else depending on type], leading to an ugly instanceof style of programming. The following eases this. </action>
+      <action dev="hen" type="add">org.osjava.naming.Jndi is a wrapper which automatically grabs the default InitialContext and provides simple helper routines for getting data out. One such example is getList(String key) which improves the situation in the previous bullet point. </action>
+    </release>
+
+<!--    <release version="0.3" date="2003-02-14" description="<![CDATA[<a href='http://www.osjava.org:8080/jira/secure/IssueNavigator.jspa?reset=true&pid=10000&fixfor=10002'>jira<a>]]>"> -->
+    <release version="0.3" date="2003-02-14">
+      <action dev="hen" type="add">Implemented a protocol system for the simple-jndi root's location. The original file location was retrofitted into this and a classpath location was added. A http location is planned</action>
+      <action dev="hen" type="add">If a protocol is unspecified, then resort to v0.2 format, ie) file://</action>
+      <action dev="hen" type="add">If root is unspecified, then use the classpath</action>
+      <action dev="hen" type="update">The delimiter in the search values is configurable, so people can more easily mimic LDAP</action>
+    </release>
+</body>
+</document>
