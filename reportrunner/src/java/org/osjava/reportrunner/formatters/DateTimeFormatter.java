@@ -6,7 +6,7 @@ import java.text.*;
 
 public class DateTimeFormatter extends AbstractFormatter {
 
-    public String format(Object input) {
+    public Object format(Object input) {
         if( ! (input instanceof java.util.Date) ) {
             throw new IllegalArgumentException("Type must be java.util.Date or a subclass. ");
         }
