@@ -42,7 +42,7 @@ package org.osjava.threads;
  * {@link #setAbort(boolean)} to {@link ExtendedThread}s and or their Runnables.
  * 
  * @author Robert M. Zigweid
- * @version $Revision: 1.3 $ $Date: 2003/11/30 16:40:24 $
+ * @version $Revision: 1.3 $ $Date$
  */
 
 public interface ExtendedRunnable extends Runnable {

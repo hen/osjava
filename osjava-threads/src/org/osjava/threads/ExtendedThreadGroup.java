@@ -53,7 +53,7 @@ import java.util.Set;
  * ExtendedThreads}.
  * 
  * @author Robert M. Zigweid
- * @version $Revision: 1.4 $ $Date: 2004/02/12 01:28:46 $
+ * @version $Revision: 1.4 $ $Date$
  */
 public class ExtendedThreadGroup extends ThreadGroup {
     /**

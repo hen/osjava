@@ -44,7 +44,7 @@ import javax.naming.NameAlreadyBoundException;
  * application
  * 
  * @author Robert M. Zigweid
- * @version $Revision: 1.5 $ $Date: 2004/02/12 01:28:46 $
+ * @version $Revision: 1.5 $ $Date$
  */
 public class ThreadManager {
     /* TODO: Something to prevent cloning this object should be added */

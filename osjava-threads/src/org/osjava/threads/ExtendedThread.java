@@ -47,7 +47,7 @@ package org.osjava.threads;
  * This class is designed to only be instantiated by the {@link ThreadManager}.
  *
  * @author Robert M. Zigweid
- * @version $Revision: 1.4 $ $Date: 2004/02/12 01:28:46 $
+ * @version $Revision: 1.4 $ $Date$
  */
 public class ExtendedThread extends Thread implements ExtendedRunnable {
     /** 

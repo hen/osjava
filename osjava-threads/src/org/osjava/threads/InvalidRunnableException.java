@@ -42,7 +42,7 @@ package org.osjava.threads;
  * as a child to an ExtendedThreadGroup that is not its parent
  * 
  * @author Robert M. Zigweid
- * @version $Revision: 1.1 $ $Date: 2003/11/30 16:40:24 $
+ * @version $Revision: 1.1 $ $Date$
  */
 public class InvalidRunnableException extends Exception {
 
