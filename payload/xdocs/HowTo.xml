@@ -13,8 +13,36 @@
     <li>Download the payload jar or distribution. </li>
     <li>Run:  java -jar payload-0.2.jar [new-jar.jar] {files...} </li>
     <li>Take the jar to the desired unpacking location. </li>
-    <li>Run:  java -jar [new-jar.jar] {optional-properties file} </li>
+    <li>Run:  java -jar [new-jar.jar]</li>
    </ol>
+  </section>
+  <section name="Extraction-time search and replace">
+   <p>The chief reason for Payload is to create environment dependent install files. When deployed to a machine, a .properties file on the machine is used to configure the install file for that machine. This is how that may be done. </p>
+   <ul>
+    <li>Create a payload.properties file and make it the first file listed on step 2 above. It should contain something like the following: 
+     <pre>
+     org.osjava.payload=true
+     org.osjava.payload.interpolate.endsWith=txt
+     org.osjava.payload.interpolate.endsWith=xml
+     org.osjava.payload.interpolate.matches=regexp
+     </pre>
+     This specifies which files are interpolated. 
+    </li>
+    <li>Provide a .properties file on the target machine as a 2nd argument when unpacking. It should contain something like the following:
+     <pre>
+      VARIABLE=A value for the variable
+      PORT=8080
+      IP=127.0.0.1
+     </pre>
+     and the jar'd files should contain ${VARIABLE}, ${PORT} and ${IP}. 
+    </li>
+    <li>This means you end up with two lines that look like:
+     <ol>
+      <li>Run:  java -jar payload-0.2.jar [new-jar.jar] [payload.properties] {files...} </li>
+      <li>Run:  java -jar [new-jar.jar] {some.properties}</li>
+     </ol>
+    </li>
+   </ul>
   </section>
 
  </body>
