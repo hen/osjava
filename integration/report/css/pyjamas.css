@@ -16,3 +16,5 @@ LI { list-style-type: none }
 .build_info { padding-top: 1em; }
 
 .error_text { color: red; }
+
+#advertising { font-style: italic; }
