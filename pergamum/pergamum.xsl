@@ -22,7 +22,7 @@
       <xsl:value-of select="."/>
     </xsl:variable>
     <h3><xsl:value-of select="$name"/></h3>
-    <xsl:for-each select="document('categories.xml')/category-list[@name=$name]/category">
+    <xsl:for-each select="document('db/categories.xml')/category-list[@name=$name]/category">
       <xsl:call-template name="pg:category"/>
     </xsl:for-each>
   </xsl:template>
@@ -43,19 +43,19 @@
       <xsl:value-of select="."/>
     </xsl:variable>
     <xsl:variable name="url">
-      <xsl:value-of select="document('books.xml')/library/book[@isbn=$isbn]/@url"/>
+      <xsl:value-of select="document('db/books.xml')/library/book[@isbn=$isbn]/@url"/>
     </xsl:variable>
     <xsl:variable name="pub">
-      <xsl:value-of select="document('books.xml')/library/book[@isbn=$isbn]/@publisher"/>
+      <xsl:value-of select="document('db/books.xml')/library/book[@isbn=$isbn]/@publisher"/>
     </xsl:variable>
     <xsl:variable name="name">
-      <xsl:value-of select="document('books.xml')/library/book[@isbn=$isbn]/@name"/>
+      <xsl:value-of select="document('db/books.xml')/library/book[@isbn=$isbn]/@name"/>
     </xsl:variable>
     <xsl:variable name="pubUri">
-      <xsl:value-of select="document('publishers.xml')/publishers/publisher[@id=$pub]/@url"/>
+      <xsl:value-of select="document('db/publishers.xml')/publishers/publisher[@id=$pub]/@url"/>
     </xsl:variable>
     <xsl:variable name="pubName">
-      <xsl:value-of select="document('publishers.xml')/publishers/publisher[@id=$pub]/@name"/>
+      <xsl:value-of select="document('db/publishers.xml')/publishers/publisher[@id=$pub]/@name"/>
     </xsl:variable>
     <li><div align="left"><a href="{$url}"><xsl:value-of select="$name"/></a></div> 
     <div align="right">(<a href="{$pubUri}"><xsl:value-of select="$pubName"/></a>) - <a href="http://www.amazon.com/exec/obidos/tg/detail/-/{$isbn}">[amz]</a> - <a href="http://www.bookpool.com/.x/1/sm/{$isbn}">[bkp]</a></div></li>
