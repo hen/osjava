@@ -79,7 +79,7 @@ public class XmlParser implements Parser {
             XMLNode node = (XMLNode)enum.nextElement();
             if(!node.isTag()) { continue; }
 //            add("", node);
-if(org.osjava.jndi.PropertiesContext.DEBUG)            System.err.println("[XML]Adding: "+root.getName()+getDelimiter()+" to "+node);
+if(org.osjava.jndi.PropertiesContext.DEBUG)            System.err.println("[XML]Adding: "+node+" to "+root.getName()+getDelimiter());
             add(root.getName(), node, map);
         }
         Enumeration attrs = root.enumerateAttr();
@@ -93,10 +93,7 @@ if(org.osjava.jndi.PropertiesContext.DEBUG)                System.err.println("[
     }
     
     private void add(String level, XMLNode node, Map map) {
-if(org.osjava.jndi.PropertiesContext.DEBUG)        System.err.println("[XML]Adding: "+level);
-        if( node.getValue() != null ) {
-            map.put( level+getDelimiter()+node.getName(), node.getValue());
-        }
+if(org.osjava.jndi.PropertiesContext.DEBUG)        System.err.println("[XML]Adding for level: "+level);
         Enumeration attrs = node.enumerateAttr();
         if(attrs != null) {
             while(attrs.hasMoreElements()) {
@@ -110,12 +107,17 @@ if(org.osjava.jndi.PropertiesContext.DEBUG)                System.err.println("[
             level = level+getDelimiter()+node.getName();
             while(nodes.hasMoreElements()) {
                 XMLNode subnode = (XMLNode)nodes.nextElement();
-                if(!subnode.isTag()) { continue; }
-                // temporary pending research into XMLNode parsing:
-                if(!"".equals(subnode.getName())) {
-if(org.osjava.jndi.PropertiesContext.DEBUG)                    System.err.println("[XML]Walking children: "+node.getName());
-if(org.osjava.jndi.PropertiesContext.DEBUG)                    System.err.println("[XML]on: "+level);
-                    add(level, subnode, map);
+                if( subnode.isTextNode() ) {
+    if(org.osjava.jndi.PropertiesContext.DEBUG)        System.err.println("[XML]Adding value: "+node.getValue());
+                    map.put( level+getDelimiter()+node.getName(), node.getValue());
+                }
+                if(subnode.isTag()) {
+                    // temporary pending research into XMLNode parsing:
+                    if(!"".equals(subnode.getName())) {
+    if(org.osjava.jndi.PropertiesContext.DEBUG)                    System.err.println("[XML]Walking children: "+node.getName());
+    if(org.osjava.jndi.PropertiesContext.DEBUG)                    System.err.println("[XML]on: "+level);
+                        add(level, subnode, map);
+                    }
                 }
             }
         }
