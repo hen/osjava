@@ -7,6 +7,14 @@
   </properties>
 
   <body>
+    <section name="OSJava-Threads 2.0">
+        <p>Version 2.0 was released on 2004-10-??.  This is a significant
+            version upgrade and there are several combat busters.  It is 
+            recommended, however, that you upgrade because versions previous.
+            to this one will not be supported, in large part, due to the 
+            complete architectural change.
+        </p>
+    </section>
     <section name="TigThreads 1.1">
       <p>
         Version 1.1 was released on 2003-05-19.
