@@ -9,7 +9,7 @@ import org.osjava.oscube.container.Session;
 import org.osjava.oscube.container.Header;
 import org.osjava.oscube.container.Result;
 
-public class PrinterStore implements Store {
+public class ConsoleStore implements Store {
 
     public void store(Result result, Config cfg, Session session) throws StoringException {
         if(false) throw new StoringException(null,null);
