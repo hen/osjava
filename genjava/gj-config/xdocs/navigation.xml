@@ -5,7 +5,6 @@
 
   <body>
     <menu name="gj-config">
-      <item name="How To"              href="/HowTo.html"/>
       <item name="News"       href="/News.html"/>
       <item name="Download"   href="http://www.osjava.org/releases/official/genjava/gj-xml/"/>
       <item name="Jar"        href="http://www.osjava.org/maven/genjava/jars/"/>
