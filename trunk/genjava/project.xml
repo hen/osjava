@@ -3,7 +3,7 @@
 <project>
   <pomVersion>3</pomVersion>
   <id>genjava</id>
-  <name>GenJava Commons</name>
+  <name>GenJava</name>
   <currentVersion>1.0</currentVersion>
 
   <organization>
