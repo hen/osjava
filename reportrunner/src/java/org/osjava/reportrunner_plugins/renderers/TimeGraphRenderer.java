@@ -10,18 +10,17 @@ import org.jfree.data.time.*;
 
 public class TimeGraphRenderer extends AbstractRenderer {
 
-    public void display(Report report, Writer out) throws IOException {
+    public void display(Result result, Report report, Writer out) throws IOException {
         throw new RuntimeException("This should not be used with a Writer. ");
     }
 
-    public void display(Report report, OutputStream out) throws IOException {
-        Result data = report.execute();
+    public void display(Result result, Report report, OutputStream out) throws IOException {
         Column[] columns = report.getColumns();
 
         List list = new ArrayList();
 
-        while(data.hasNextRow()) {
-            Object[] row = data.nextRow();
+        while(result.hasNextRow()) {
+            Object[] row = result.nextRow();
             Date date = (Date) row[0];
 
             for(int j=1; j<row.length; j++) {
