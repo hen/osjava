@@ -15,7 +15,7 @@
   <logo>http://www.osjava.org/images/1x1.gif</logo>
   
   <description>
-  A handler for robots.txt, as described in http://www.robotstxt.org/wc/norobots-rfc.html.
+    A handler for robots.txt, as described in http://www.robotstxt.org/wc/norobots-rfc.html.
   </description>
   
   <shortDescription>A handler for robots.txt</shortDescription>
@@ -77,4 +77,3 @@
     </reports>
 
 </project>
-
