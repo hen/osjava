@@ -8,6 +8,7 @@
       <item href="multiproject/beans/" name="beans"/>
       <item href="multiproject/core/" name="core"/>
       <item href="multiproject/csv/" name="csv"/>
+      <item href="multiproject/gui/" name="gui"/>
       <item href="multiproject/mail/" name="mail"/>
       <item href="multiproject/scrape/" name="scrape"/>
       <item href="multiproject/tools/" name="tools"/>
