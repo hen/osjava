@@ -5,7 +5,8 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import junit.textui.TestRunner;
 
-import com.generationjava.lang.ClassW;
+import java.beans.Beans;
+
 import java.util.Map;
 
 public class FQMapTest extends TestCase {
@@ -26,7 +27,7 @@ public class FQMapTest extends TestCase {
         assertEquals("you", map.get("hey"));
         assertEquals(this, map.get(this));
         assertEquals("hmmm", map.get("well.you"));
-        assertEquals(true, ClassW.classInstanceOf(map.get("well").getClass(), "java.util.Map"));
+        assertEquals(true, Beans.isInstanceOf(map.get("well"), java.util.Map.class));
         assertEquals(3, map.size());
     }
 }
