@@ -15,7 +15,7 @@ public interface Report {
     void setLabel(String label);
     Renderer[] getRenderers();
     void setRenderers(String renderers);
-    Result execute();
+    Result execute() throws ReportException;
     Param[] getParams();
     void addParam(Param param);
     Choice[] getParamChoices(Param param);
@@ -25,5 +25,7 @@ public interface Report {
     ReportGroup getReportGroup();
     String[] getResourceNames();
     void setResource(String name, String resourceName);
+    String getAuthor();
+    void setAuthor(String author);
 
 }
