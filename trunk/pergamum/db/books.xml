@@ -70,4 +70,5 @@
   <book isbn="0596006411" name="Eclipse" publisher="ora" url="http://www.oreilly.com/catalog/eclipse/" published="2004-04"/>
   <book isbn="0471469513" name="Professional Portal Development" publisher="wrx" url="http://www.wrox.com/books/0471469513.shtml" published="2004-02"/>
   <book isbn="0764556177" name="Professional Java Tools for Extreme Programming" publisher="wrx" url="http://www.wrox.com/books/0764556177.shtml" published="2004-04"/>
+  <book isbn="0764559028" name="Professional Apache Tomcat 5" publisher="wrx" url="http://www.wrox.com/books/0764559028.shtml" published="2004-05"/>
 </library>
