@@ -6,26 +6,24 @@ import java.text.*;
 
 public class DateTimeParser extends AbstractParser {
 
-    public Object parse(String input) {
+    public Object parse(String input, Class type) {
         try {
             SimpleDateFormat sdf = new SimpleDateFormat( getPattern() );
             java.util.Date date = sdf.parse(input);
-            if(java.util.Date.class == getType()) {
-                return date;
-            } else 
-            if(java.sql.Date.class == getType()) {
+            System.err.println("THE TYPE IS: "+type);
+            if(type == java.sql.Date.class) {
                 return new java.sql.Date(date.getTime());
             } else 
-            if(java.sql.Time.class == getType()) {
+            if(type == java.sql.Time.class) {
                 return new java.sql.Time(date.getTime());
             } else 
-            if(java.sql.Timestamp.class == getType()) {
+            if(type == java.sql.Timestamp.class) {
                 return new java.sql.Timestamp(date.getTime());
             } else {
-                throw new RuntimeException("Illegal type for formatter. ");
+                return date;
             }
         } catch(ParseException pe) {
-            return null;
+            throw new RuntimeException("Failed parsing: "+getPattern()+" for a "+type+" with input "+input);
         }
     }
 
