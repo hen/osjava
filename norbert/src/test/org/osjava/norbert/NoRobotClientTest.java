@@ -41,6 +41,8 @@ import java.net.MalformedURLException;
 
 public class NoRobotClientTest extends TestCase {
 
+    private String hardCode = "file:///Users/hen/osj/HEAD/norbert/data/";
+
     public NoRobotClientTest(String name) {
         super(name);
     }
@@ -51,7 +53,7 @@ public class NoRobotClientTest extends TestCase {
 
     public void testAllowed() {
         try {
-            String base = "file:///Users/hen/gj/norbert/data/basic/";
+            String base = this.hardCode + "basic/";
             NoRobotClient nrc = new NoRobotClient("Scabies-1.0");
             nrc.parse( new URL(base) );
             assertTrue( nrc.isUrlAllowed( new URL(base+"index.html") ) );
@@ -65,7 +67,7 @@ public class NoRobotClientTest extends TestCase {
     public void testRfcExampleUnhipbot() {
         try {
             // pretend that http://www.fict.org/ is our base
-            String base = "file:///Users/hen/gj/norbert/data/rfc/";
+            String base = this.hardCode + "rfc/";
 
             NoRobotClient nrc = new NoRobotClient("unhipbot");
             nrc.parse( new URL(base) );
@@ -91,7 +93,7 @@ public class NoRobotClientTest extends TestCase {
     public void testRfcExampleWebcrawler() {
         try {
             // pretend that http://www.fict.org/ is our base
-            String base = "file:///Users/hen/gj/norbert/data/rfc/";
+            String base = this.hardCode + "rfc/";
 
             NoRobotClient nrc = new NoRobotClient("webcrawler");
             nrc.parse( new URL(base) );
@@ -116,7 +118,7 @@ public class NoRobotClientTest extends TestCase {
     public void testRfcExampleExcite() {
         try {
             // pretend that http://www.fict.org/ is our base
-            String base = "file:///Users/hen/gj/norbert/data/rfc/";
+            String base = this.hardCode + "rfc/";
 
             NoRobotClient nrc = new NoRobotClient("excite");
             nrc.parse( new URL(base) );
@@ -141,7 +143,7 @@ public class NoRobotClientTest extends TestCase {
     public void testRfcExampleOther() {
         try {
             // pretend that http://www.fict.org/ is our base
-            String base = "file:///Users/hen/gj/norbert/data/rfc/";
+            String base = this.hardCode + "rfc/";
 
             NoRobotClient nrc = new NoRobotClient("other");
             nrc.parse( new URL(base) );
@@ -166,12 +168,25 @@ public class NoRobotClientTest extends TestCase {
     public void testRfcBadWebDesigner() {
         try {
             // pretend that http://www.fict.org/ is our base
-            String base = "file:///Users/hen/gj/norbert/data/bad/";
+            String base = this.hardCode + "bad/";
 
             NoRobotClient nrc = new NoRobotClient("other");
             nrc.parse( new URL(base) );
 
             assertEquals( true,  nrc.isUrlAllowed( new URL(base+"%7Etest/%7Efoo.html") ) );
+        } catch(MalformedURLException murle) {
+            throw new RuntimeException("Test failed: "+murle.getMessage());
+        }
+    }
+
+    // Tests NRB-3
+    // http://www.osjava.org:8080/jira/secure/ViewIssue.jspa?key=NRB-3
+    public void testNrb3() {
+        try {
+            String base = this.hardCode + "basic/";
+            NoRobotClient nrc = new NoRobotClient("Scabies-1.0");
+            nrc.parse( new URL(base) );
+            assertTrue( nrc.isUrlAllowed( new URL(this.hardCode + "basic" ) ) );
         } catch(MalformedURLException murle) {
             throw new RuntimeException("Test failed: "+murle.getMessage());
         }
