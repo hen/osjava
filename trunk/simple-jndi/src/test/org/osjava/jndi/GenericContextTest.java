@@ -52,50 +52,73 @@ import junit.framework.TestCase;
  * @author rzigweid
  */
 public class GenericContextTest extends TestCase {
+
     Context context = null;
 
-    /**
-     * @param arg0
-     */
-    public GenericContextTest(String arg0) {
-        super(arg0);
+    public GenericContextTest(String name) {
+        super(name);
     }
 
     public void setUp() {
         /* Initial configuration voodoo for the default context. */
         Hashtable contextEnv = new Hashtable();
-        /* The intial context. */
         contextEnv.put("java.naming.factory.initial", "org.osjava.jndi.GenericContextFactory");
-        /* The default is 'flat', which isn't hierarchial and not what
-         *  I want. */
+
+        /* The default is 'flat', which isn't hierarchial and not what I want. */
         contextEnv.put("jndi.syntax.direction", "left_to_right");
-        /* Separatator is required for non-flat */
-        contextEnv.put("jndi.syntax.separator", ".");
+
+        /* Separator is required for non-flat */
+        contextEnv.put("jndi.syntax.separator", "/");
         
+        /* The intial context. */
         try {
             context = new InitialContext(contextEnv);
         } catch(NamingException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
     
     public void tearDown() {
+        /* - Needs improving as you cannot close a Context with values in
         try {
             context.close();
         } catch (NamingException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
+        */
     }
     
     public void testCreateSubContext1() {
         try {
             /* Create the subContext object */
             context.createSubcontext("path");
+
             /* Make sure that it exists. */
             Object sub = context.lookup("path");
             assertNotNull(sub);
+        } catch (NamingException e) {
+            fail("NamingException " + e.getMessage());
+        }
+    }
+
+    public void testCreateNestedSubcontext() {
+        try {
+            Context sub = context.createSubcontext("path");
+            sub = sub.createSubcontext("one");
+            sub = sub.createSubcontext("two");
+
+            assertNotNull( context.lookup("path/one/two") );
+        } catch (NamingException e) {
+            e.printStackTrace();
+            fail("NamingException " + e.getMessage());
+        }
+    }
+
+    public void testLookupInContext() {
+        try {
+            context.createSubcontext("path");
+            context.bind("path/foo", "42");
+            assertEquals("42", context.lookup("path/foo") );
         } catch (NamingException e) {
             fail("NamingException " + e.getMessage());
         }
