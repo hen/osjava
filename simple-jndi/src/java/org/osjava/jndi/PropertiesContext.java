@@ -59,10 +59,12 @@ import java.net.URL;
 import java.net.MalformedURLException;
 
 import org.osjava.convert.Convert;
+
+import org.osjava.naming.ContextBindings;
+import org.osjava.naming.ContextNames;
+
 import org.osjava.jndi.util.CustomProperties;
 import org.osjava.jndi.util.IniProperties;
-import org.osjava.jndi.util.ContextBindings;
-import org.osjava.jndi.util.ContextNames;
 import org.osjava.jndi.util.XmlProperties;
 
 /**
