@@ -18,3 +18,5 @@ LI { list-style-type: none }
 .error_text { color: red; }
 
 #advertising { font-style: italic; }
+
+.integration-body { padding-left: 1em }

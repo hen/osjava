@@ -24,6 +24,7 @@
       </div>
       <div id="copyright" align="right">&copy;2004</div>
     </div>
+<div class="integration-body">    
     <div id="advertising">an Integration-built site</div>
 
 <!-- the green bar -->
@@ -37,7 +38,7 @@
     [% good_count = good_count + 1 %]
     <td bgcolor="#090">
   [% END %]
-    <a href="report_[% project.escapedDirectory %].html"><img border="0" height="10" width="20" alt="[% project.label %]" src="http://www.osjava.org/images/1x1.gif"></a></td>
+    <a href="report_[% project.escapedDirectory %].html"><img border="0" height="10" width="20" title="[% project.label %]" src="http://www.osjava.org/images/1x1.gif"></a></td>
 [% END -%]
 </tr></table>
 </td><td> [% good_count %]/[% projects.size %]</td>
@@ -56,4 +57,5 @@
 [% END -%]
 
 </ul>
+</div>
 </html></body>
