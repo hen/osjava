@@ -7,17 +7,6 @@
   </properties>
 
   <body>
-    <section name="GenerationJava.com's Simple-JNDI">
-<p>
-Simple-JNDI is intended to solve two problems. The first is that of finding a container independent way of opening a database connection, the second is to find a good way of specifying application configurations.
-</p>
-<p>
-In a J2EE container, you can use JNDI as a java.sql.Connection factory. This code however is not usable outside of a J2EE container as you cannot guarrentee you have a JNDI implementation available, and to be honest, you don't want to start some other server to make your simple script run. Simple-JNDI is not a server, it is merely an API, however it looks exactly the same as the JNDI client code used in a J2EE container.
-</p>
-<p>
-Applications need configuration. A servlets container uses the web.xml files to configure, while a J2EE container uses a different system, for example, JBoss has a jboss.jcml configuration file which sets a system up via JMX managed beans. An application <i>could</i> however use Simple-JNDI for parameter values.
-</p>
-</section>
 <section name="Using Simple-JNDI">
 <p>
 Using Simple-JNDI is the same as using JNDI itself. So this is not covered here, however the examples do give the basic gist.
