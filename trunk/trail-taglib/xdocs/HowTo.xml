@@ -20,7 +20,6 @@
   </p>
   <p>The <code>push</code> tag has an optional attribute named <code>uri</code> which will override the url stored in the trail, but hopefully this will rarely be needed. </p>
   <p>The <code>list</code> tag has an optional attribute named <code>type</code> which specifies the type of list to create. By default the list will be <code>normalized</code>, but you can specify <code>full</code> to see the user&apos;s entire trail. </p>
-  <p>There also exists a <code>pop</code> tag which will remove values from the trail, though it should rarely need to be used. </p>
   </section>
 
  </body>
