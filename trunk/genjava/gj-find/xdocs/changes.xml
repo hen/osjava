@@ -8,7 +8,9 @@
 
   <body>
     <release version="0.1" date="2004-04-20">
-        <action dev="hen" type="add">Large rewrite of the more primitive find system that has been in genjava-core for years. </action>
+        <action dev="hen" type="add">Added many UNIX find-like parameters in the form of hidden FileFilters. They may be accessed via an options Map. </action>
+	<action dev="hen" type="update">Event/Listener system talks in terms of Lists now and not File[]. </action>
+	<action dev="hen" type="update">ZipFinder is non-functional, look for this to be fixed in the next release. </action>
     </release>
 </body>
 </document>
