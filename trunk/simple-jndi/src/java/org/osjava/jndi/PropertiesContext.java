@@ -280,6 +280,10 @@ public class PropertiesContext implements Context  {
             return this.table.get(name);
         }
 
+        if(System.getProperty(name) != null) {
+            return System.getProperty(name);
+        }
+
         // name is a delimited notation, each element is either a 
         // directory, file or part of a key.
         String[] elements = StringUtils.split(name, this.delimiter);
