@@ -82,7 +82,8 @@ public class XmlProperties extends Properties {
         while(enum.hasMoreElements()) {
             XMLNode node = (XMLNode)enum.nextElement();
 //            add("", node);
-            add(root.getName()+getDelimiter(), node);
+//            System.err.println("Adding: "+root.getName()+getDelimiter()+" to "+node);
+            add(root.getName(), node);
         }
     }
     
