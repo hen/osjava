@@ -15,7 +15,6 @@
         <action dev="hen" type="add">Added an example for xml, ini and properties built DataSources in simple-jndi. </action>
         <action dev="hen" type="add">Connection pooling added via the use of Jakarta Commons DBCP. </action>
         <action dev="hen" type="update">While I've decided not to use log4j, I have implemented a classic System.out debug system with a -DSJ.DEBUG=true system property to turn it on. </action>
-        <action dev="hen" type="add">Connection pooling added via the use of Jakarta Commons DBCP. </action>
         <action dev="hen" type="update">Switched dependencies and inlined code so that no jars are needed by default, but to get the xml feature you need gj-xml, to get converting you need commons-convert and to get connection-pooling you need commons-dbcp, which needs commons-pool and commons-collections. </action>
     </release>
 
