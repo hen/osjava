@@ -88,7 +88,7 @@
     </dependency>
     <dependency>
       <id>commons-lang</id>
-      <version>SNAPSHOT</version>
+      <version>1.0.1</version>
       <url>http://jakarta.apache.org/commons/lang.html</url>
     </dependency>
     <dependency>
