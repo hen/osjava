@@ -15,7 +15,7 @@
      &lt;%@ taglib prefix="trail" uri="http://www.osjava.org/taglibs/trail-1.0" %&gt;<br/>
 
      &lt;trail:push label="List Categories"/&gt;<br/>
-     &lt;trail:list delimiter=" -&gt; "/&gt;<br/>
+     &lt;trail:list delimiter=" -&amp;gt; "/&gt;<br/>
     </code>
   </p>
   <p>The <code>push</code> tag has an optional attribute named <code>url</code> which will override the url stored in the trail, but hopefully this will rarely be needed. </p>
