@@ -106,7 +106,12 @@ public class IOThread extends Thread {
                     }
                 }
                 try {
-                    while (mySelector.selectNow() == 0);
+                    boolean cont = true;
+                    while(cont) {
+                        int selected;
+                        selected = mySelector.select();
+                        cont = selected == 0;
+                    }
                 } catch (InterruptedIOException iie) {
                     logger.debug("Breaking out of IOThread");
                     break;
