@@ -32,9 +32,10 @@
   <distributionDirectory></distributionDirectory>
 
   <repository>
-    <connection>scm:cvs:ext:hen@orinoco.flamefew.net:/var/cvs/:xmlwriter</connection>
- <!--   <url></url>-->
+    <connection>scm:cvs:pserver:anonymous@cvs.osjava.org:/var/cvs:xmlwriter</connection>
+    <url>http://www.osjava.org/view-cvs/viewcvs.cgi/xmlwriter/</url>
   </repository>
+
 
   <mailingLists>
     <mailingList>
@@ -126,5 +127,15 @@
     <jars>
     </jars>
   </build>
+
+    <reports>
+        <report>maven-jxr-plugin</report>
+        <report>maven-javadoc-plugin</report>
+        <report>maven-license-plugin</report>
+        <report>maven-changes-plugin</report>           
+        <report>maven-changelog-plugin</report>        
+        <report>maven-statcvs-plugin</report>          
+    </reports>
+
 </project>
 
