@@ -7,6 +7,9 @@
   </properties>
 
   <body>
+    <release version="0.9.1" date="2004-02-10">
+        <action dev="hen" type="add">Fixed #SJN-49, a problem in loading DataSources from particular .properties files. </action>
+    </release>
     <release version="0.9" date="2004-02-07">
         <action dev="hen" type="add">Tested, and fixed, the usage of http as a protocol for getting simple-jndi values, #SJN-27. Untested on servers that do not allow directory-listings. </action>
         <action dev="hen" type="add">Feature #SJN-30, to have a static memory behind the contexts and not a per-instance memory. It is turned on via the org.osjava.jndi.shared=true jndi.properties parameter. </action>
