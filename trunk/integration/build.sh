@@ -20,27 +20,36 @@ then
     if [ $1 = 'all' ];
     then
         INIT='forced'
-        LIST=`cat NIGHTLY.txt | grep -v '^#' | awk '{print $2}'`
         echo 'Forced build of all components. ' > REASON
-        for i in `cat NIGHTLY.txt | grep -v '^#' | sed 's/ /::::/'`
+        for i in `cat NIGHTLY.txt | grep -v '^#' | sed 's/ /::::/g'`
         do
-            checkoutDir=`echo $i | sed 's/.*:::://'`
-            if [ ! -e $checkoutDir ];
+            checkoutDir=`echo $i | awk -F '::::' '{print $2}'`
+            repository=`echo $i | awk -F '::::' '{print $1}'`
+            tag=`echo $i | awk -F '::::' '{print $3}'`
+            expectedDir=$checkoutDir
+            if [ "x${tag}x" != "xx" ];
+            then
+                taggedName=`echo $checkoutDir | sed 's/\//-/g'`_$tag
+                tag="-d $taggedName -r $tag"
+                expectedDir=$taggedName
+            fi
+            if [ ! -e $expectedDir ];
             then
                 if [ $SCM = 'SVN' ];
                 then
-                    svn co `echo $i | sed 's/::::/\//'` $checkoutDir
+                    svn co "$repository$checkoutDir" $checkoutDir
                 fi
                 if [ $SCM = 'CVS' ];
                 then
-                    cvs -d `echo $i | sed 's/::::.*//'` co $checkoutDir
+                    cvs -d $repository co $tag $checkoutDir
                 fi
             fi
+            LIST="$LIST $expectedDir"
         done
     elif [ $1 = 'update' ];
     then
         INIT='update'
-        for i in `cat NIGHTLY.txt | grep -v '^#' | awk '{print $2}'`
+        for i in `cat NIGHTLY.txt | grep -v '^#' | awk '{print $2 "_" $3}' | sed 's/_$//'`
         do
             if [ -d $i ];
             then

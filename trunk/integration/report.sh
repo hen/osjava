@@ -11,7 +11,7 @@ if [ "x$1x" != "xx" ];
 then
     if [ $1 = 'all' ];
     then
-        LIST=`cat NIGHTLY.txt | awk '{print $2}' | grep -v '^#'`
+        LIST=`cat NIGHTLY.txt | grep -v '^#' | awk '{print $2 "_" $3}' | sed 's/_$//'`
 	LAST_BUILD_DATE="all"
     elif [ $1 = 'update' ];
     then
@@ -41,11 +41,11 @@ cat header.inc | sed 's/\${TITLE}/Build/' | sed "s/\${TIMESTAMP}/$LAST_BUILD_DAT
 echo '<ul id="project_list">' >> $index
 
 columns=3
-ALL=`cat NIGHTLY.txt | awk '{print $2}' | grep -v '^#'`
+ALL=`cat NIGHTLY.txt | grep -v '^#' | awk '{print $2 "_" $3}' | sed 's/_$//'`
 all_count=`echo $ALL | wc -w`
 row_count=`echo $all_count/$columns + 1 | bc`
 entry_count=$row_count
-for i in `cat NIGHTLY.txt | awk '{print $2}' | grep -v '^#'`
+for i in $ALL
 do
     if [ ! -d $reportDir/$i ];
     then
