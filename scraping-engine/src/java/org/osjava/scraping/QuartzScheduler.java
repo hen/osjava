@@ -13,7 +13,7 @@
  *   this list of conditions and the following disclaimer in the documentation 
  *   and/or other materials provided with the distribution.
  * 
- * + Neither the name of Simple-JNDI nor the names of its contributors 
+ * + Neither the name of Scabies nor the names of its contributors 
  *   may be used to endorse or promote products derived from this software 
  *   without specific prior written permission.
  * 
@@ -73,6 +73,8 @@ public class QuartzScheduler implements Scheduler {
             schedule = "startup";
         } 
 
+        logger.debug("SCHEDULE: "+schedule);
+
         // this should be one of the following:
         // a cron-like line or a 'startup' option 
         if("startup".equalsIgnoreCase(schedule)) { 
@@ -88,14 +90,15 @@ public class QuartzScheduler implements Scheduler {
                 map.put("session", session);
                 map.put("runner", runner);
 
-                logger.debug("SCHEDULE: "+schedule);
                 Trigger trigger = null;
                 if("cron".equalsIgnoreCase(schedule)) {
                     String cronTxt = cfg.getString("schedule.cron");
-                    CronTrigger cron = new CronTrigger(cfg.getContext()+"trigger", quartz.DEFAULT_GROUP);
-                    cron.setCronExpression(cronTxt);
+                    logger.debug("Creating cron trigger: "+cronTxt);
+                    CronTrigger cron = new CronTrigger(cfg.getContext()+"trigger", quartz.DEFAULT_GROUP, cfg.getContext()+"job", quartz.DEFAULT_GROUP, cronTxt);
+//                    cron.setCronExpression(cronTxt);
                     trigger = cron;
                 } else {
+                    // TODO: ie) "simple" in this case. need to make this explicit
 //                    Date start = cfg.getDate("start");
 //                    Date end = cfg.getDate("end");
                     int repeat = cfg.getInt("schedule.repeat");
