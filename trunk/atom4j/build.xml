@@ -78,9 +78,7 @@
 	<!-- make sure the destinations exist -->
 	<target name="prepare">
 		<mkdir dir="${build_classes}" />
-		<mkdir dir="${dist}/dev" />
-		<mkdir dir="${dist}/test" />
-		<mkdir dir="${dist}/prod" />
+		<mkdir dir="${dist}" />
 	</target>
 	
 	<!-- compile classes -->
@@ -121,97 +119,34 @@
 	<!-- zip up war files from contents -->
 	<target name="dist" depends="build">
 
-		<!-- "dev" war -->
-		<antcall target="dist-jar" >
-			<param name="dist-ver"			 value="dev" />
-			<param name="log4j.level"        value="${log4j.level.dev}" />
-		</antcall>
+		<echo>BUILDING CLASS JAR FILE</echo>
 		
-		<!-- "test" war -->
-		<antcall target="dist-jar" >
-			<param name="dist-ver"			 value="test" />
-			<param name="log4j.level"        value="${log4j.level.test}" />
-		</antcall>
+		<delete file="${dist}/${jar.name}" />
 
-		<!-- "prod" war -->
-		<antcall target="dist-jar" >
-			<param name="dist-ver"			 value="prod" />
-			<param name="log4j.level"        value="${log4j.level.prod}" />
-		</antcall>
+		<copy overwrite="true"
+			file="README.txt"
+			tofile="${build_classes}/README.txt"
+			/>
+
+		<zip zipfile="${dist}/${jar.name}">
+			<zipfileset dir="${build_classes}" includes="**" />
+		</zip>	
 		
 	</target>
 	
 	<!-- zip up war files with bin & src contents -->
-	<target name="dist-src" depends="build">
+	<target name="dist-src" depends="dist">
 
-		<!-- "dev" war -->
-		<antcall target="dist-src-jar" >
-			<param name="dist-ver"			 value="dev" />
-			<param name="log4j.level"        value="${log4j.level.dev}" />
-		</antcall>
-
-		<!-- "test" war -->
-		<antcall target="dist-src-jar" >
-			<param name="dist-ver"			 value="test" />
-			<param name="log4j.level"        value="${log4j.level.test}" />
-		</antcall>
-
-		<!-- "prod" war -->
-		<antcall target="dist-src-jar" >
-			<param name="dist-ver"			 value="prod" />
-			<param name="log4j.level"        value="${log4j.level.prod}" />
-		</antcall>
-			
-	</target>	
-	
-	<target name="dist-jar">
-		<echo>BUILDING "${dist-ver}" JAR FILE</echo>
+		<echo>BUILDING SRC-JAR FILE</echo>
 		
-		<delete file="${dist}/${dist-ver}/${jar.name}" />
+		<delete file="${dist}/${jar.src.name}" />
 
-		<copy overwrite="true"
-			file="README.txt"
-			tofile="${build_classes}/README.txt"
-			/>
-		<!--
-		<copy overwrite="true"
-			file="log4j.properties"
-			tofile="${build_classes}/log4j.properties"
-			/>
-		<replace file="${build_classes}/log4j.properties" 
-			token="LEVEL" 
-			value="${log4j.level}" 
-			/>
-		-->
-		<zip zipfile="${dist}/${dist-ver}/${jar.name}">
-			<zipfileset dir="${build_classes}" includes="**" />
-		</zip>	
-	</target>
-	
-	<target name="dist-src-jar">
-		<echo>BUILDING "${dist-ver}" SRC-JAR FILE</echo>
-		
-		<delete file="${dist}/${dist-ver}/${jar.src.name}" />
-
-		<copy overwrite="true"
-			file="README.txt"
-			tofile="${build_classes}/README.txt"
-			/>
-		<!--
-		<copy overwrite="true"
-			file="log4j.properties"
-			tofile="${build_classes}/log4j.properties"
-			/>
-		<replace file="${build_classes}/log4j.properties" 
-			token="LEVEL" 
-			value="${log4j.level}" 
-			/>
-		-->
-		<zip zipfile="${dist}/${dist-ver}/${jar.src.name}">
+		<zip zipfile="${dist}/${jar.src.name}">
 			<zipfileset dir="${build_classes}" includes="**" />
 			<zipfileset dir="${src}" includes="**" />
 		</zip>	
-	</target>
+			
+	</target>	
 
 	<!-- delete the build byproducts -->
 	<target name="clean">
