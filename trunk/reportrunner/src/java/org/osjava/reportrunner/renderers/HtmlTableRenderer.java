@@ -7,6 +7,8 @@ import com.generationjava.lang.*;
 
 import org.osjava.reportrunner.*;
 
+// TODO: Needs to somehow include the breadcrumbs trail
+// TODO: Match the l&f of the web-wizard. Dotted lines etc. Same CSS.
 public class HtmlTableRenderer extends AbstractRenderer {
 
     public void display(Result result, Report report, Writer out) throws IOException {
