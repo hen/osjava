@@ -210,9 +210,7 @@ public class ThreadContext
     public void rename(String oldName, String newName) throws NamingException {
     }
 
-    /**
-     * (non-Javadoc)
-     * 
+    /*
      * @see javax.naming.Context#list(javax.naming.Name)
      */
     public NamingEnumeration list(Name name) throws NamingException {
@@ -235,8 +233,7 @@ public class ThreadContext
      * @see javax.naming.Context#list(java.lang.String)
      */
     public NamingEnumeration list(String name) throws NamingException {
-        // TODO Auto-generated method stub
-        return null;
+        return list(nameParser.parse(name));
     }
 
     /*
@@ -245,8 +242,17 @@ public class ThreadContext
      * @see javax.naming.Context#listBindings(javax.naming.Name)
      */
     public NamingEnumeration listBindings(Name name) throws NamingException {
-        // TODO Auto-generated method stub
-        return null;
+        if("".equals(name)) {
+            // here we should return a list of the directories and prop files 
+            // minus the .properties that are in the root directory
+            return new ContextBindings((Map)((HashMap)contextStore).clone());
+        }
+
+        Object target = lookup(name);
+        if(target instanceof Context) {
+            return ((Context)target).list("");
+        }
+        throw new NotContextException("Bindings of " + name + " cannot be listed");
     }
 
     /*
@@ -255,8 +261,7 @@ public class ThreadContext
      * @see javax.naming.Context#listBindings(java.lang.String)
      */
     public NamingEnumeration listBindings(String name) throws NamingException {
-        // TODO Auto-generated method stub
-        return null;
+        return listBindings(nameParser.parse(name));
     }
 
     /*
