@@ -125,7 +125,7 @@ public class Multidoc {
         fw.write("<a href='");
         fw.write(site.getUrl());
         fw.write("' target='classFrame'><FONT CLASS='NavBarFont1'><b>");
-        fw.write(site.getUrl());
+        fw.write(site.getTitle());
         fw.write("</b></FONT></a>\n");
         fw.write("</td>\n<td align='right' class='NavBarCell1'>");
         fw.write("<a href='about.html' target='classFrame'><FONT CLASS='NavBarFont1'><b>About Multidoc</b></FONT></a>\n");
