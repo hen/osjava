@@ -36,7 +36,7 @@ import org.osjava.oscube.container.Session;
 
 public class FetchingFactory {
 
-    static public Fetcher getFetcher(Config cfg, Session session) {
+    public static Fetcher getFetcher(Config cfg, Session session) {
         String uri = cfg.getString("uri");
         if(uri == null) {
             return new NullFetcher();
