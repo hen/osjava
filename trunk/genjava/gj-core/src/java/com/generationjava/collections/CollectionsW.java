@@ -48,7 +48,7 @@ import org.apache.commons.collections.comparators.ComparableComparator;
  */
 final public class CollectionsW {
 
-    static public Collection slice(Collection coll, int start, int end) {
+    public static Collection slice(Collection coll, int start, int end) {
         if(coll == null) {
             return null;
         }
@@ -72,16 +72,16 @@ final public class CollectionsW {
     }
 
     // unimplemented 
-    static public Collection cloneNewEmptyCollection(Collection coll) {
+    public static Collection cloneNewEmptyCollection(Collection coll) {
         return (Collection)ClassW.createObject(coll.getClass());
     }
 
-    static public Map cloneNewEmptyMap(Map map) {
+    public static Map cloneNewEmptyMap(Map map) {
         return (Map)ClassW.createObject(map.getClass());
     }
 
     /// TODO: Improve this, so it takes start and end and is a slice()
-    static public String[] getSubArray(String[] ob, int idx) {
+    public static String[] getSubArray(String[] ob, int idx) {
         if (idx > ob.length) {
             return new String[0];
         }
@@ -93,10 +93,10 @@ final public class CollectionsW {
     }
 
     // A search that doesn't involve the list needing to be sorted
-    static public int simpleSearch(List list, Object obj) {
+    public static int simpleSearch(List list, Object obj) {
         return simpleSearch(list, obj, new ComparableComparator() );
     }
-    static public int simpleSearch(List list, Object obj, Comparator cmp) {
+    public static int simpleSearch(List list, Object obj, Comparator cmp) {
         int sz = list.size();
         for( int i=0; i<sz; i++ ) {
             Object tmp = list.get(i);
