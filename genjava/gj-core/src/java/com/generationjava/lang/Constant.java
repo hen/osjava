@@ -165,4 +165,11 @@ public class Constant implements Serializable {
         }
     }
 
+    /** 
+     * Runs hashCode on the underlying Object. 
+     */
+    public int hashCode() {
+        return getValue().hashCode();
+    }
+
 }
