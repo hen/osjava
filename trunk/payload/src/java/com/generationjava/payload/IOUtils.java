@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, Henri Yandell
+ * Copyright (c) 2003-2004, Henri Yandell
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or 
