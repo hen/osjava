@@ -50,7 +50,7 @@ public class ListTag extends TagSupport {
 
     private String var;
     private String delimiter = " -> ";
-    private String normalized;
+    private String type;
 
     public ListTag() {
     }
