@@ -32,8 +32,11 @@ public class JFreeChartAbstractRenderer extends AbstractRenderer {
 		throw new RuntimeException("This should not be used with a Writer. ");
 	}
 
-	protected synchronized JFreeChart createChart(Result result, Report report) {
-        return this.creator.createChart(result, report);
+	protected final JFreeChart createChart(Result result, Report report) {
+        // JFreeChart has threading problems
+        synchronized (JFreeChartAbstractRenderer.class) {
+            return this.creator.createChart(result, report);
+        }
 	}
 
 }
