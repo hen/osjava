@@ -44,6 +44,7 @@ import java.util.Collection;
 import java.util.Hashtable;
 import java.util.Iterator;
 
+import javax.naming.Binding;
 import javax.naming.Context;
 import javax.naming.Name;
 import javax.naming.NameAlreadyBoundException;
@@ -53,8 +54,10 @@ import javax.naming.NameParser;
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 
+import org.apache.log4j.Logger;
 import org.osjava.jndi.AbstractContext;
 import org.osjava.naming.InvalidObjectTypeException;
+
 
 /**
  * A Context for managing Threads and ThreadGroups.
@@ -378,9 +381,38 @@ public class ThreadContext
      *         context
      * @throws NamingException if a naming exception is encountered.
      */
-    public void start(Name name) throws NameNotFoundException, NamingException {        
+    public void start(Name name) throws NameNotFoundException, NamingException {
+        Logger logger = Logger.getLogger(this.getClass());
+        logger.debug("Name --" + name);
+        /* 
+         * If the name is empty, we don't need to look anything up.  We know 
+         * that the target is this context.
+         */
+        if(name.isEmpty()) {
+            logger.debug("Empty name");
+            NamingEnumeration list = listBindings(name);
+            while(list.hasMore()) {
+                logger.debug("Looking for item");
+                Binding next = (Binding)list.next();
+                Object item = next.getObject();
+                logger.debug("Found item --" + next + " class -- " + next.getClass());
+                if(item instanceof ExtendedThread) {
+                    logger.debug("It's a Thread!");
+                    synchronized(item) {
+                        ((ExtendedThread)item).start();
+                        continue;
+                    }
+                }
+                if(item instanceof ThreadContext) {
+                    ((ThreadContext)item).start(name.getSuffix(1));
+                }
+                /* Ignore anything not matching those two types. */
+            }
+            return;
+        }
+
         Object obj = lookup(name);
-        /* Take care of the easy case first, pointing at an actual thread. */
+        logger.debug("Found looked up object -- " + obj);
         if(obj instanceof ExtendedThread) {
             synchronized (obj) {
                 ((ExtendedThread)obj).start();
@@ -388,26 +420,8 @@ public class ThreadContext
             return;
         }
         
-        if(name.isEmpty()) {
-            NamingEnumeration list = list(name);
-            while(list.hasMore()) {
-                Object next = list.next();
-                if(next instanceof ExtendedThread) {
-                    synchronized(next) {
-                        ((ExtendedThread)obj).start();
-                        continue;
-                    }
-                }
-                if(next instanceof ThreadContext) {
-                    ((ThreadContext)next).start(name);
-                }
-                /* Ignore anything not matching those two types. */
-            }
-            return;
-        }
-        
-        Object next = lookup(name.getPrefix(1));
-        if(next instanceof ThreadContext) {
+        if(obj instanceof ThreadContext) {
+            Object next = lookup(name.getPrefix(1));
             ((ThreadContext)next).start(name.getSuffix(name.size()));
             return;
         }
