@@ -211,6 +211,8 @@ class EmptyFilter implements FileFilter {
     }
 }
 
+// needs to handle +5 for > 5 and -5 for < 5. Also needs 
+// to handle k, m, g, as suffixes.
 class SizeFilter implements FileFilter {
     private Object option;
     private int argument;
@@ -223,7 +225,7 @@ class SizeFilter implements FileFilter {
         }
     }
     public boolean accept(File file) {
-        return ((int)(file.length()/512))*512 == this.argument;
+        return (int)(file.length()/512) == this.argument;
     }
 }
 
