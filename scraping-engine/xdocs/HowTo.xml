@@ -25,7 +25,7 @@ import java.net.URL;
 import java.net.MalformedURLException;
 
 import org.osjava.scraping.AbstractParser;
-import org.osjava.scraping.Config;
+import com.generationjava.config.Config;
 import org.osjava.scraping.Page;
 import org.osjava.scraping.Session;
 import org.osjava.scraping.ParsingException;
@@ -59,8 +59,14 @@ ception {
     <section name="Configuring">
 <p>Configuration happens through simple-jndi, meaning that you could put your configuration values in an LDAP server if you should so choose. At least you ought to be able to, it's untested. As well as ensuring you have a correctly set up log4j and jndi properties files, you will need a default.properties that looks something like:</p>
 <pre>
+# first two lines configure scraping-engine under oscube
+org.osjava.oscube.runner=org.osjava.scraping.ScrapingRunner
+org.osjava.oscube.prefix=org.osjava.scrapers
+
+# now we hook up a scraper with the given name
 org.osjava.scrapers=UserFriendly
 
+# now we declare variables for the given scraper
 UserFriendly.uri=http://www.userfriendly.org/static/
 UserFriendly.parser=com.generationjava.comics.UserFriendlyParser
 UserFriendly.store=File
