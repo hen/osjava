@@ -14,7 +14,9 @@
       <item name="License"              href="/license.html"/>
     </menu>
     <menu name="Code docs">              
+      <!--
       <item name="Tag Reference"              href="/tagreference.html"/>
+      -->
       <item name="JavaDocs"              href="/apidocs/index.html"/>
       <item name="Source XReference"              href="/xref/index.html"/>
       <!--
