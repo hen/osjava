@@ -32,12 +32,28 @@
 
 package org.osjava.convert;
 
-import org.apache.commons.lang.BooleanUtils;
+//import org.apache.commons.lang.BooleanUtils;
 
 public class BooleanConverter implements Converter {
 
+    // TODO: Sit this on top of BooleanUtils
     public Object convert(String value) {
-        return BooleanUtils.toBooleanObject(value);
+//        return BooleanUtils.toBooleanObject(value);
+        if ("true".equalsIgnoreCase(value)) {
+            return Boolean.TRUE;
+        } else if ("false".equalsIgnoreCase(value)) {
+            return Boolean.FALSE;
+        } else if ("on".equalsIgnoreCase(value)) {
+            return Boolean.TRUE;
+        } else if ("off".equalsIgnoreCase(value)) {
+            return Boolean.FALSE;
+        } else if ("yes".equalsIgnoreCase(value)) {
+            return Boolean.TRUE;
+        } else if ("no".equalsIgnoreCase(value)) {
+            return Boolean.FALSE;
+        }
+        // no match
+        return null;
     }
 
 }
