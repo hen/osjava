@@ -6,7 +6,7 @@
     for(int i=0; i<params.length; i++) {
         Parser parser = params[i].getParser();
         if(parser != null) {
-            parser.parse( request.getParameter(params[i].getName()) );
+            parser.parse( request.getParameter(params[i].getName()), params[i].getType() );
         } 
     }
     // redirect to choose renderer page
