@@ -10,7 +10,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import javax.servlet.ServletException;
-import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -142,7 +141,7 @@ public abstract class AtomServlet extends HttpServlet
 
     /**
      * Invalid request, return error message.
-     * TODO : What is an appropriate error message/value?
+     * TODO : What is an appropriate error message/value/format?
      * 
      * @param request
      * @param response
@@ -669,6 +668,8 @@ public abstract class AtomServlet extends HttpServlet
     }
 
     /**
+     * This must return a List of Template objects.
+     * 
      * @param pathInfo
      * @return
      */
@@ -683,15 +684,22 @@ public abstract class AtomServlet extends HttpServlet
      */
     protected void getTemplate(String[] pathInfo, HttpServletRequest request, HttpServletResponse response)
         throws IOException, ServletException
-    {
-        try
+    {     
+        if (pathInfo.length > 2)
         {
-            byte[] template = getTemplate(pathInfo);
-            writeResults(response, template);
+            try
+            {
+                byte[] template = getTemplate(pathInfo);
+                writeResults(response, template);
+            }
+            catch (Exception e)
+            {
+                throw new ServletException(e);
+            }
         }
-        catch (Exception e)
+        else
         {
-            throw new ServletException(e);
+            error(request, response, "Invalid Request.");
         }
     }
 
@@ -716,7 +724,19 @@ public abstract class AtomServlet extends HttpServlet
     {
         try
         {
-            updateTemplate( request.getInputStream(), pathInfo );
+            java.io.BufferedReader streamReader =
+                new java.io.BufferedReader(
+                    new java.io.InputStreamReader(
+                        request.getInputStream()));
+
+            StringBuffer buf = new StringBuffer();
+            String dataLine;
+            while((dataLine = streamReader.readLine()) != null){
+                buf.append(dataLine);
+            }//end while loop
+            streamReader.close();
+
+            updateTemplate(buf.toString() , pathInfo );
             writeResults(response, "".getBytes());
         }
         catch (Exception e)
@@ -729,7 +749,7 @@ public abstract class AtomServlet extends HttpServlet
      * @param stream
      * @param pathInfo
      */
-    protected abstract void updateTemplate(ServletInputStream stream, String[] pathInfo) throws Exception;
+    protected abstract void updateTemplate(String template, String[] pathInfo) throws Exception;
 
     /**
      * Delete the template.
@@ -772,10 +792,30 @@ public abstract class AtomServlet extends HttpServlet
     protected void postComment(String[] pathInfo, HttpServletRequest request, HttpServletResponse response)
         throws IOException, ServletException
     {
-        // TODO : postComment
-        
+        try
+        {
+            Entry entry = getEntry(pathInfo);
+            if (entry != null)
+            {
+                Iterator iter = new EntryReader(request.getInputStream()).getEntries().iterator();
+                Entry comment = (Entry)iter.next();
+                if (comment != null)
+                    postComment(entry, comment, pathInfo);
+            }
+        }
+        catch (Exception e)
+        {
+            throw new ServletException(e);
+        }
     }
 
+
+    /**
+     * @param entry
+     * @param comment
+     * @param pathInfo
+     */
+    protected abstract void postComment(Entry entry, Entry comment, String[] pathInfo) throws Exception;
 
     /**
      * Save the User "Preferences"
