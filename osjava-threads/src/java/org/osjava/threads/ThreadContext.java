@@ -59,6 +59,7 @@ import javax.naming.NotContextException;
 import org.osjava.naming.ContextBindings;
 import org.osjava.naming.ContextNames;
 import org.osjava.naming.InvalidObjectTypeException;
+import org.osjava.naming.SimpleNameParser;
 
 /**
  * A Context for managing Threads and ThreadGroups.
@@ -101,7 +102,7 @@ public class ThreadContext
     /* 
      * The NameParser utilized by the Context.
      */
-    private ThreadNameParser nameParser = null;
+    private SimpleNameParser nameParser = null;
 
     /*
      * The environmental properties of the context
@@ -119,6 +120,8 @@ public class ThreadContext
      ****************/
     /**
      * Create a new ThreadContext as a root.
+     * 
+     * @throws NamingException if a naming exception is encountered.
      */
     public ThreadContext() throws NamingException {
         this((Name)null);
@@ -135,7 +138,7 @@ public class ThreadContext
      */
     private ThreadContext(Name name) throws NamingException {
         nameInNamespace = name; 
-        nameParser = new ThreadNameParser(this);
+        nameParser = new SimpleNameParser(this);
     }
     
     /* ************************
@@ -563,8 +566,10 @@ public class ThreadContext
         if(obj instanceof ExtendedRunnable) {
             contextStore.put(name, obj);
         }
-        
-        throw new InvalidObjectTypeException("Objects in this context must implement org.osjava.threads.ExtendedRunnable");
+        else {
+            throw new InvalidObjectTypeException("Objects in this context must implement " +
+                    "org.osjava.threads.ExtendedRunnable");
+        }
     }
 
     /**
