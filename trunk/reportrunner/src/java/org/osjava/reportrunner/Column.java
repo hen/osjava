@@ -6,6 +6,9 @@ public class Column implements Nameable {
     private Formatter formatter;
     private String label;
 
+    public Column() {
+    }
+
     /**
      * Constructs a Column with a name and label of text. 
      */
