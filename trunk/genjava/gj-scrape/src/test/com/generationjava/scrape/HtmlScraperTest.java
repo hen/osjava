@@ -7,7 +7,7 @@ import junit.textui.TestRunner;
 
 public class HtmlScraperTest extends TestCase {
 
-    public final String TEST_PAGE = "<html><body><table bgcolor=\"ffffff\"><tr><td>FOO</td></tr></table></body></html>";
+    public final String TEST_PAGE = "<html><body><table bgcolor=\"ffffff\"><tr><td align='center'>FOO</td></tr></table></body></html>";
 
     public HtmlScraperTest(String name) {
         super(name);
@@ -45,6 +45,12 @@ public class HtmlScraperTest extends TestCase {
         assertEquals( "ffffff", scraper.get("TABLE[BGCOLOR]") );
         assertEquals( "ffffff", scraper.get("table[BGCOLOR]") );
         assertEquals( "ffffff", scraper.get("table[bgcolor]") );
+    }
+
+    public void testSingleQuoteAttributes() {
+        HtmlScraper scraper = new HtmlScraper();
+        scraper.scrape(TEST_PAGE);
+        assertEquals( "center", scraper.get("td[align]") );
     }
 
 }
