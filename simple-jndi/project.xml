@@ -23,7 +23,7 @@
   
   <shortDescription>A JNDI implementation using .properties</shortDescription>
 
-  <url>http://www.osjava.org/</url>
+  <url>http://www.osjava.org/simple-jndi/</url>
   <!--
   <issueTrackingUrl>http://nagoya.apache.org/scarab/servlet/scarab/</issueTrackingUrl>
   -->
