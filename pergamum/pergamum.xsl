@@ -73,7 +73,10 @@
     <xsl:variable name="name">
       <xsl:value-of select="document('db/publishers.xml')/publishers/publisher[@id=$id]/@name"/>
     </xsl:variable>
-    <div class="sub-title"><xsl:value-of select="$name"/></div>
+    <xsl:variable name="url">
+      <xsl:value-of select="document('db/publishers.xml')/publishers/publisher[@id=$id]/@url"/>
+    </xsl:variable>
+    <div class="sub-title"><xsl:value-of select="$name"/> - <a href="{$url}"><xsl:value-of select="$url"/></a></div>
     <ul>
       <xsl:for-each select="document('db/books.xml')/library/book[@publisher=$id]">
         <xsl:sort select="@name"/>
