@@ -33,7 +33,7 @@ public class Style {
         TransformerFactory tFactory = TransformerFactory.newInstance();
         Transformer transformer = tFactory.newTransformer(new StreamSource(args[1]));
         // Use this in filename
-        String name = "docs/"+args[1].substring(0, args[1].length()-4)+".html";
+        String name = "docs/"+args[0].substring(0, args[0].length()-4)+".html";
 
         transformer.transform(new StreamSource(args[0]), new StreamResult(new FileOutputStream(name)));
         System.out.println(". "+name);

@@ -1,1 +1,2 @@
-java Style books.xml page.xsl
+java Style listbooks.xml listbooks.xsl
+java Style comingsoon.xml listbooks.xsl
