@@ -3,7 +3,7 @@
   <extend>../project.xml</extend>
   <id>gj-xml</id>
   <name>GenJava-XML</name>
-  <currentVersion>1.1</currentVersion>
+  <currentVersion>1.2</currentVersion>
   <inceptionYear>2002</inceptionYear>
   
   <description>
