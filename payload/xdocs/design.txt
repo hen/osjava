@@ -30,3 +30,10 @@ This will form a new jar with the extract class set as the main-class this
 time, and all the directories/files in the payload/.
 
 
+
+Found this just before 0.2 ready to release:
+
+http://www.javaworld.com/javaworld/javatips/jw-javatip120.html
+
+interesting tidbit in there to have a better way of working out the jar
+filename. Probably.
