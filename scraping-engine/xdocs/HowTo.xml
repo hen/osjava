@@ -75,5 +75,8 @@ UserFriendly.file.path=/tmp/comics/
 </pre>
 
 </section>
+    <section name="Pre-built Example">
+      <p>While the above does shows how to create a scraper, it can still be quite confusing to get started. To combat this, a full example is available for download from the <a href="http://www.osjava.org/releases/official/scraping-engine/">Downloads</a> directory, and the example is available in <a href="http://svn.osjava.org/cgi-bin/viewcvs.cgi/trunk/scraping-engine/src/examples/Comics/">subversion</a>. </p>
+    </section>
 </body>
 </document>
