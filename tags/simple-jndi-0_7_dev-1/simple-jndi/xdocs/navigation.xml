@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="simple-jndi">
+
+  <title>simple-jndi</title>
+
+  <body>
+    <menu name="Overview">
+      <item name="About"              href="/index.html"/>
+      <item name="News"              href="/News.html"/>
+      <item name="Introduction"              href="/Intro.html"/>
+      <item name="Examples"              href="/Examples.html"/>
+      <item name="Task list"              href="/Tasks.html"/>
+      <item name="FAQ"              href="/FAQ.html"/>
+      <item name="Download"              href="/Download.html"/>
+     <!-- <item name="Clover Report"              href="/clover/"/> -->
+    </menu>
+  </body>
+</project>
