@@ -141,6 +141,15 @@ public class PropertiesContext implements Context  {
         return false;
     }
 
+    private void setSpecial(String key, Object value) {
+        if("org.osjava.jndi.root".equals(key)) {
+            this.root = (String) value;
+        }
+        if("org.osjava.jndi.delimiter".equals(key)) {
+            this.delimiter = (String) value;
+        }
+    }
+
     private Object getSpecial(String key) throws NamingException {
         if("org.osjava.jndi.root".equals(key)) {
             return this.root;
@@ -402,7 +411,16 @@ public class PropertiesContext implements Context  {
         if("true".equals(properties.get("org.osjava.jndi.datasource"))) {
 //            System.err.println("Datasource!");
             PropertiesDataSource pds = new PropertiesDataSource(properties, env, this.delimiter);
-            pds.setName(StringUtils.getChomp(StringUtils.chomp(name,this.delimiter),this.delimiter).substring(1));
+            System.err.println("remaining: "+remaining);
+// need to figure out exactly what goes here.
+//            pds.setName(StringUtils.getChomp(StringUtils.chomp(name,this.delimiter),this.delimiter).substring(1));
+            String dsName = remaining;
+            int idx = dsName.indexOf(this.delimiter);
+            if(idx != -1) {
+                dsName = dsName.substring(0, idx);
+            }
+//            System.err.println("DsName: '"+dsName+"'");
+            pds.setName(dsName);
             return pds;
         }
 
@@ -445,7 +463,15 @@ public class PropertiesContext implements Context  {
         if(this.table.get(name) != null) {
             throw new NameAlreadyBoundException("Use rebind to override");
         }
-        this.table.put(name, object);
+        put(name, object);
+    }
+
+    private void put(String name, Object object) {
+        if(isSpecialKey(name)) {
+            setSpecial(name, object);
+        } else {
+            this.table.put(name, object);
+        }
     }
 
     public void rebind(Name name, Object object) throws NamingException {
@@ -456,7 +482,7 @@ public class PropertiesContext implements Context  {
         if("".equals(name)) {
             throw new InvalidNameException("Cannot bind to empty name");
         } 
-        this.table.put(name, object);
+        put(name, object);
     }
 
     public void unbind(Name name) throws NamingException {
