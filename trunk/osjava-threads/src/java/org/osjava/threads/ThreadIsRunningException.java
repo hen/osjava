@@ -47,9 +47,6 @@ import javax.naming.NamingException;
  * @author Robert M. Zigweid
  * @version $Rev$ $Date$
  * @since OSJava-Threads 2.0
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
  */
 public class ThreadIsRunningException extends NamingException {
 
