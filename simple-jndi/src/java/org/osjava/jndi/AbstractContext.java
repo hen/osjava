@@ -764,6 +764,18 @@ public abstract class AbstractContext implements Context  {
     }
     
     /**
+     * Set the name of the Context.  This is only used from createSubcontext. 
+     * It might get replaced by adding more constructors, but there is really
+     * no reason to expose it publicly anyway.
+     * 
+     * @param name a String representation of the Name of the context.
+     * @throws NamingException if the subContext already has a name.
+     */
+    protected void setNameInNamespace(String name) throws NamingException {
+        setNameInNamespace(nameParser.parse(name));
+    }
+
+    /**
      * Convenience method returning the subcontexts that this context parents.
      * @return a Hashtable of context objects that are parented by this 
      *         context.
