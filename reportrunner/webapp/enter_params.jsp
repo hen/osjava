@@ -103,7 +103,7 @@
         } else {
             String multiple = "";
             if(Object[].class.isAssignableFrom(params[i].getType())) {
-                multiple = "multiple=\"multiple\"";
+                multiple = "multiple=\"multiple\" size=\"30\"";
             }
 %>
     <tr><td><label for="<%= params[i].getName() %>"><%= params[i].getLabel() %></label></td><td><select name="<%= params[i].getName() %>"<%= multiple %>>
