@@ -102,7 +102,8 @@ do
     rm -fr target/ maven.log velocity.log ERROR.log OUTPUT.log
     # building
     TIME_START=`date +%s`
-    maven -b jar jar:install-snapshot 2> ERROR.log > OUTPUT.log
+    maven -b clean jar:install-snapshot clean jar 2> ERROR.log > OUTPUT.log
+    maven -b clean jar 2> ERROR.log > OUTPUT.log
     TIME_END=`date +%s`
     BUILD_DURATION=`echo $TIME_END - $TIME_START | bc`
     BUILD_DURATION=`date -d "1970-01-01 UTC $BUILD_DURATION seconds" +"%M minutes %S seconds"`
