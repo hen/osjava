@@ -53,14 +53,14 @@ import javax.naming.NameParser;
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 
-import org.osjava.jndi.PropertiesContext;
+import org.apache.naming.NamingContext;
 import org.osjava.naming.InvalidObjectTypeException;
 
 /**
  * A Context for managing Threads and ThreadGroups.
  * <br/><br/>
- * This context depends upon the Simple-JNDI <b>TODO: VERSION OF SIMPLE_JNDI</b>
- * package available from http://www.osjava.org.
+ * This context depends upon the Directory-Naming package available from 
+ * http://incubator.apache.org.
  * <br/><br/>
  * A ThreadContext object can only be bound once in a hierarchy of Contexts.
  * Being bound in more than one place will result in undefined behavior.  
@@ -74,7 +74,7 @@ import org.osjava.naming.InvalidObjectTypeException;
  */
 
 public class ThreadContext
-    extends PropertiesContext
+    extends NamingContext
     implements Context {
 
     private boolean closing;
@@ -88,7 +88,7 @@ public class ThreadContext
      * @throws NamingException if a naming exception is encountered.
      */
     public ThreadContext() throws NamingException {
-        super();
+        this((Hashtable)null);
     }
     
     /** 
