@@ -1,4 +1,4 @@
-package com.genscape.reportrunner.osjava;
+package org.osjava.reportrunner_plugins.renderers.velocity;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -14,10 +14,15 @@ import java.util.Properties;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
+import org.apache.velocity.tools.generic.MathTool;
+import org.apache.velocity.tools.view.tools.ImportTool;
+
 import org.osjava.reportrunner.AbstractRenderer;
 import org.osjava.reportrunner.Report;
 import org.osjava.reportrunner.ReportException;
 import org.osjava.reportrunner.Result;
+
+import org.osjava.reportrunner_plugins.RRTool;
 
 public class VelocityRenderer extends AbstractRenderer {
 	private String template;
@@ -52,6 +57,9 @@ public class VelocityRenderer extends AbstractRenderer {
 		//put result and report to the context
 		context.put("result", result);
 		context.put("report", report);
+        context.put("math", new MathTool());
+        context.put("import", new ImportTool());
+        context.put("rrtool", new RRTool());
 		
 		//hand over passed-in variables to the context
 		Map variables = this.getVariables();
