@@ -254,11 +254,10 @@ LABEL:  while(nodes.hasMoreElements()) {
             XMLNode node = (XMLNode) nodes.nextElement();
             String name = node.getName();
             if(name.equals("renderers")) {
-                String[] rendererNames = StringUtils.split(node.getValue(), ",");
-                for(int i=0; i<rendererNames.length; i++) {
+                String[] rendererTypes = StringUtils.split(node.getValue(), ",");
+                for(int i=0; i<rendererTypes.length; i++) {
                     for(int j=0; j<renderers.length; j++) {
-                        if(rendererNames[i].equals(renderers[j].getName())) {
-                            // need to clone renderer
+                        if(rendererTypes[i].equals(renderers[j].getName())) {
                             report.addRenderer(renderers[j]);
                             break;
                         }
@@ -266,19 +265,25 @@ LABEL:  while(nodes.hasMoreElements()) {
                 }
             } else
             if(name.equals("renderer")) {
-                String rendererName = node.getAttr("name");
+                String rendererType = node.getAttr("type");
+                if(rendererType == null) {
+                    rendererType = node.getAttr("name");
+                }
                 for(int i=0; i<renderers.length; i++) {
                     Renderer renderer = renderers[i];
-                    if(rendererName.equals(renderer.getName())) {
-                        // need to clone renderer
+                    if(rendererType.equals(renderer.getName())) {
+                        renderer = renderer.cloneRenderer();
                         applyAttrs(renderer, node, new String[0]);
                         Enumeration vars = node.enumerateNode("variable");
                         while(vars.hasMoreElements()) {
                             XMLNode var = (XMLNode) vars.nextElement();
                             renderer.setVariable( var.getAttr("name"), var.getAttr("value") );
                         }
+                        System.err.println("Adding: "+rendererType+" - "+renderer.getName()+" "+i+" "+report.getName());
                         report.addRenderer(renderer);
                         break;
+                    } else {
+                        System.err.println("Failed: "+rendererType+" - "+renderer.getName()+" "+i+" "+report.getName());
                     }
                 }
 

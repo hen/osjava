@@ -7,10 +7,11 @@ import com.generationjava.lang.*;
 
 import org.apache.commons.lang.BooleanUtils;
 
-public abstract class AbstractRenderer implements Renderer {
+public abstract class AbstractRenderer implements Renderer, Cloneable {
 
     private String name;
     private String label;
+    private String type;
     private String description;
     private String mimeType;
     private String extension;
@@ -23,6 +24,14 @@ public abstract class AbstractRenderer implements Renderer {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getType() {
+        return this.type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getLabel() {
@@ -66,6 +75,15 @@ public abstract class AbstractRenderer implements Renderer {
 
     public Map getVariables() {
         return this.variables;
+    }
+
+    public Renderer cloneRenderer() {
+        try {
+            return (Renderer) this.clone();
+        } catch(CloneNotSupportedException cnfe) {
+            cnfe.printStackTrace();
+            return this;
+        }
     }
 
     public void display(Result result, Report report, OutputStream out) throws IOException {
