@@ -21,7 +21,7 @@ then
            exit
         fi
         LIST=`cat LAST_BUILD`
-	LAST_BUILD_DATE=`date -r LAST_BUILD +"%Y/%m/%d %k:%M"`
+	LAST_BUILD_DATE=updated:`date -r LAST_BUILD +"%Y\\/%m\\/%d %k:%M"`
     else
         LIST=$1   # $* ?
 	LAST_BUILD_DATE="forced for $1"
