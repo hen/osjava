@@ -1,4 +1,4 @@
-<%@ page import="com.genscape.reports.*" %>
+<%@ page import="org.osjava.reportrunner.*" %>
 <%@ page import="java.util.*" %>
 <%@ page import="org.apache.commons.lang.*" %>
 ReportRunner:
@@ -9,8 +9,8 @@ String rendererName = request.getParameter("renderer");
         // ask user which report they want
         Report report = ReportFactory.getReport(reportName);
 
-        if(report instanceof com.genscape.reports.reports.SqlReport) {
-            ((com.genscape.reports.reports.SqlReport)report).setDataSource("jdbc/rollerdb");
+        if(report instanceof org.osjava.reportrunner.reports.SqlReport) {
+            ((org.osjava.reportrunner.reports.SqlReport)report).setDataSource("jdbc/rollerdb");
         }
 
         // does report require parameters?
