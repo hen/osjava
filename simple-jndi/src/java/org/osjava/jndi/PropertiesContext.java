@@ -50,6 +50,7 @@ import java.util.Hashtable;
 import java.util.Properties;
 import java.util.Enumeration;
 import java.util.Iterator;
+import java.util.List;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -59,6 +60,7 @@ import java.net.MalformedURLException;
 
 import org.apache.commons.lang.StringUtils;
 import com.generationjava.convert.Convert;
+import com.generationjava.jndi.util.CustomProperties;
 
 public class PropertiesContext implements Context  {
 
@@ -328,16 +330,25 @@ public class PropertiesContext implements Context  {
             return properties;
         }
 
-        String answer = properties.getProperty(remaining);
+        Object answer = properties.get(remaining);
 
         if(answer == null) {
             throw new InvalidNameException(""+name+" not found. ");
         } else {
             if(properties.containsKey(remaining+".type")) {
                 String type = properties.getProperty(remaining+".type");
-                answer = Convert.convert(answer, type);
+                if(answer instanceof List) {
+                    List list = (List)answer;
+                    for(int i=0; i<list.size(); i++) {
+                        list.set(i, Convert.convert((String)list.get(i), type) );
+                    }
+                    return list;
+                } else {
+                    return Convert.convert((String)answer, type);
+                }
+            } else {
+                return answer;
             }
-            return answer;
         }
     }
 
