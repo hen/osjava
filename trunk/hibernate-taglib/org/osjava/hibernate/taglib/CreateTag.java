@@ -26,7 +26,6 @@ import org.apache.commons.beanutils.BeanUtils;
 
 import java.lang.reflect.InvocationTargetException;
 
-// Make this need a DataSource
 public class CreateTag extends TagSupport {
 
     private String var;

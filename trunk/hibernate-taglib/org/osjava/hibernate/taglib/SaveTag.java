@@ -26,7 +26,6 @@ import org.apache.commons.beanutils.BeanUtils;
 
 import java.lang.reflect.InvocationTargetException;
 
-// Make this need a DataSource
 public class SaveTag extends TagSupport {
 
     private Object value;
