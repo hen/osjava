@@ -54,7 +54,7 @@ do
     fi
     entry_count=`echo $entry_count - 1 | bc`
 
-    if [ -f FAILED ];
+    if [ -f $reportDir/$i/FAILED ];
     then
         echo "<li class='project_line'><img class='failed_image' src='images/failed.gif'> <a class='failed_link' href='$local_report'>$i</a></li>" >> $index
     else
