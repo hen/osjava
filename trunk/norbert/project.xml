@@ -20,17 +20,15 @@
   
   <shortDescription>A handler for robots.txt</shortDescription>
 
-  <url>http://www.osjava.org/</url>
-  <!--
-  <issueTrackingUrl>http://nagoya.apache.org/scarab/servlet/scarab/</issueTrackingUrl>
-  -->
+  <url>http://www.osjava.org/norbert/</url>
+  <issueTrackingUrl>http://www.osjava.org:8080/jira/secure/BrowseProject.jspa?id=10022</issueTrackingUrl>
   <siteAddress>www.generationjava.com/maven/norbert</siteAddress>
   <siteDirectory>/sites/org/osjava/www/maven/norbert/</siteDirectory>
   <distributionDirectory>/sites/org/osjava/www/releases/official/</distributionDirectory>
 
   <repository>
-    <connection>scm:cvs:ext:hen@orinoco.flamefew.net:/var/cvs:norbert</connection>
-    <url>http://www.generationjava.com/view-cvs/viewcvs.cgi/norbert/</url>
+    <connection>scm:cvs:ext:anonymous@cvs.osjava.org:/var/cvs:norbert</connection>
+    <url>http://www.osjava.org/view-cvs/viewcvs.cgi/norbert/</url>
   </repository>
 
   <mailingLists>
@@ -90,5 +88,15 @@
     </unitTest>
 
   </build>
+
+    <reports>
+        <report>maven-jxr-plugin</report>
+        <report>maven-javadoc-plugin</report>
+        <report>maven-license-plugin</report>
+        <report>maven-changes-plugin</report>
+        <report>maven-statcvs-plugin</report>
+        <report>maven-changelog-plugin</report>
+    </reports>
+
 </project>
 
