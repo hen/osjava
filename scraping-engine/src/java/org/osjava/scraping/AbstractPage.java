@@ -44,8 +44,17 @@ public abstract class AbstractPage implements Page {
     private static Logger logger = Logger.getLogger(AbstractPage.class);
 
     private String documentBase;
+    private String type;
 
     public AbstractPage() {
+    }
+
+    protected void setType(String type) {
+        this.type = type;
+    }
+
+    public String getType() {
+        return this.type;
     }
 
     public abstract Reader read() throws IOException;
@@ -79,6 +88,13 @@ public abstract class AbstractPage implements Page {
         this.documentBase = documentBase;
     }
 
+    /**
+     * Set the documentBase. This is the path of the current 
+     * directory that has been fetched, so local urls may 
+     * be understood. 
+     * It does not include a '/' on the end.
+     */
+     // TODO: Should it include the '/'???
     public String getDocumentBase() {
         return this.documentBase;
     }

@@ -43,4 +43,7 @@ public interface Page {
 
     public void setDocumentBase(String documentBase);
     public String getDocumentBase();
+
+    // Page's have different types, this lets us decide what to do with it
+    public String getType();
 }
