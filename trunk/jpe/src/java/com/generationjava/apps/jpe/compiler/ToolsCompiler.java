@@ -10,6 +10,8 @@ import com.generationjava.apps.jpe.CompilerException;
 
 /**
  * @author hen
+ * This is a compiler using the javac jar. Most PDAs won't have tools.jar 
+ * though, so to use this you have to take that jar from an existing platform.
  */
 public class ToolsCompiler implements Compiler {
 

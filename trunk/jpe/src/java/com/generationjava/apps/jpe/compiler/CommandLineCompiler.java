@@ -3,10 +3,8 @@
  */
 package com.generationjava.apps.jpe.compiler;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,6 +16,10 @@ import com.generationjava.apps.jpe.CompilerException;
 
 /**
  * @author hen
+ * 
+ * Usually the easiest way to compile a file is to just go and 
+ * use the command line. This is a class for compiling on the 
+ * command line.
  */
 public class CommandLineCompiler implements Compiler {
 
