@@ -12,6 +12,8 @@ public class Example {
         try {
             Context ctxt =  new InitialContext();
             try {
+                Object item = ctxt.lookup("shopping/payment");
+                System.out.println("Payment method is: "+list);
                 List list = (List) ctxt.lookup("shopping/item");
                 System.out.println("Items are: "+list);
             } catch(ClassCastException cce) {
