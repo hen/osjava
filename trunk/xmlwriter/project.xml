@@ -4,7 +4,7 @@
   <pomVersion>3</pomVersion>
   <id>xmlwriter</id>
   <name>xmlwriter</name>
-  <currentVersion>2.1</currentVersion>
+  <currentVersion>2.2</currentVersion>
   <organization>
     <name>OSJava</name>
     <url>http://www.osjava.org/</url>
