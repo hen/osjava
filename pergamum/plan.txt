@@ -17,6 +17,7 @@ There now exists a view-namespace of sorts with an xsl to convert xml-content fi
 =====
 2004-03-22
 
-Splitting things up so I can do my front page out of various pages. Unsure how the hell that will work :)
+Pages generated for each book, publisher and category. An index page created out of much smaller pages.
+Much xsl hackery. 
 
-Need to create a page for every book, category and publisher.
+Next I need to make sure everything is css'd and start making it pretty.
