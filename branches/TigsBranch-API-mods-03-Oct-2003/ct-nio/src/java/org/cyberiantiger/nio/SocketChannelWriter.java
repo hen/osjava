@@ -40,59 +40,39 @@ public class SocketChannelWriter extends Writer {
         buffer.rewind();
         ByteBuffer ret = ByteBuffer.allocateDirect(buffer.remaining());
         ret.put(buffer);
-        ret.flip();
-        buffer.clear();
-        
+        ret.flip();        
         return ret;
     }
     
-    /* (non-Javadoc)
+    /**
+     * Write data to the ByteBuffer that is 
      * @see java.io.Writer#write(char[], int, int)
      */
-    public void write(char[] cbuf, int off, int len) throws IOException {
+    public void write(char[] cbuf, int off, int len) {
         /* if the buffer is null the channel has been closed, and we need to 
          * do nothing */
         if(buffer == null) {
             return;
         }
         
-        /* To avoid a BufferUnderflowException, determine if the len parameter 
-         * is small enough.  If it is larger than the maximum available, reset 
-         * it */
-        /* NOTE: off calculations have to consider that char is 2 bytes. */
-        int buffoffset = off * 2;
-        buffer.limit(buffer.capacity());
-        buffer.position(buffoffset);
-        int charmax = (buffer.remaining()) / 2;
+        /* Create a new indirect ByteBuffer which will be appended to the 
+         * SocketChannel's writeBuffer 
+         */
+        ByteBuffer newBuf = ByteBuffer.allocate((len - off) * 2);
         
-        /* If the charmax is too small, then we need to create a new buffer of 
-         * a larger size.  We will increase in by the number of bytes
-         * required.*/
-        if( charmax < len ) { 
-            int increase = len - charmax;
-            ByteBuffer newBuf = ByteBuffer
-                .allocateDirect(buffer.capacity() + increase );
-            newBuf.put(buffer);
-            buffer = newBuf;
-            write(cbuf, off, len);
-            return;
+        for(int i = off;i < len; i++) {
+            newBuf.putChar(cbuf[i]);
         }
         
-        byte[] bytes = new String(cbuf).trim().getBytes();
-        buffer.put(bytes, buffoffset, bytes.length);
-     
-        /* Set the limit to the current position and the position to 0 */
-        buffer.flip();
-        
-        /* Let the selector know that we are ready to write. */
-        SelectionKey key = parent.getSelectionKey();
-        key.interestOps( key.interestOps() | SelectionKey.OP_WRITE);
-        return;
+        newBuf.flip();
+        write(newBuf);
     }
     
     /**
      * Add data to the writer.  Data added to the SocketChannelReader is always
-     * appended to the end of the buffer.  The buffer is expanded as necessary. 
+     * appended to the end of the buffer.  The buffer is expanded as necessary.
+     * The ByteBuffer <code>data</code> is read from its <code>data.position()
+     * </code> to <code>data.limit()</code>.
      * 
      * @param data the Bytebuffer containing the data to be written into 
      *        the writer.
@@ -103,6 +83,7 @@ public class SocketChannelWriter extends Writer {
         if(buffer == null) {
             return;
         }
+        
         /* Set the position mark so that we can return to it. */
         buffer.mark();
         
@@ -112,17 +93,14 @@ public class SocketChannelWriter extends Writer {
         
         /* Make sure the limit is properly set at the end of the buffer */
         buffer.limit(buffer.capacity());
-
-        data.flip();
         
         /* Cheat and use the BufferOverflowException to our advantage to 
          * determine if there is room */
         try {
             buffer.put(data);
         } catch(BufferOverflowException e) {
-            /* For laziness sake, grow by another 1024 bytes */
-            /* TODO: We probably should really only increase by the amount 
-             * necessary to hold the new buffer */
+            /* Create a new ByteBuffer that will be large enough to fit both
+             * of the buffers */
             int newsize = buffer.capacity() + 
                 (data.remaining() - buffer.remaining());
             ByteBuffer newbuf=ByteBuffer.allocate(newsize);
