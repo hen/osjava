@@ -58,8 +58,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.net.MalformedURLException;
 
-import org.osjava.convert.Convert;
-
 import org.osjava.naming.ContextBindings;
 import org.osjava.naming.ContextNames;
 
@@ -569,20 +567,7 @@ if(DEBUG)        System.err.println("[CTXT]remaining: "+remaining);
         if(answer == null) {
             throw new InvalidNameException(""+name+" not found. ");
         } else {
-            if(hmap.containsKey(remaining+this.delimiter+"type")) {
-                String type = (String) hmap.get(remaining+this.delimiter+"type");
-                if(answer instanceof List) {
-                    List list = (List)answer;
-                    for(int i=0; i<list.size(); i++) {
-                        list.set(i, Convert.convert((String)list.get(i), type) );
-                    }
-                    return list;
-                } else {
-                    return Convert.convert((String)answer, type);
-                }
-            } else {
-                return answer;
-            }
+            return answer;
         }
     }
 
