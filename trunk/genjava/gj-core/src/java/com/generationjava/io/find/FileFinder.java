@@ -70,6 +70,10 @@ public class FileFinder implements Finder {
             list = directory.listFiles(filter);
         }
 
+        if (list == null) {
+            return new File[0];
+        }
+
         List retlist = new LinkedList();
         int sz = list.length;
 
