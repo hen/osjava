@@ -3,31 +3,31 @@
 <integration version="1.0">
   <site label="OSJava" url="http://www.osjava.org/" css="http://www.osjava.org/style.css" logo="http://www.osjava.org/images/logo.png"/>
   <buildables>
-    <buildable project="genjava/gj-beans repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
-    <buildable project="genjava/gj-config repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
-    <buildable project="genjava/gj-csv repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
-    <buildable project="genjava/gj-find repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
-    <buildable project="genjava/gj-mail repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
-    <buildable project="genjava/gj-scrape repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
-    <buildable project="genjava/gj-servlet repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
-    <buildable project="genjava/gj-tools repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
-    <buildable project="genjava/gj-xml repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
-    <buildable project="genjava/gj-gui repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
-    <buildable project="genjava/gj-core repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
-    <buildable project="xmlwriter repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
-    <buildable project="simple-jndi repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
-    <buildable project="norbert repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
-    <buildable project="oscube repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
-    <buildable project="payload repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
-    <buildable project="runsql repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
-    <buildable project="simuchron repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
-    <buildable project="trail-taglib repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
-    <buildable project="scraping-engine repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
-    <buildable project="jpe repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
-    <buildable project="atom4j repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
-    <buildable project="charlotte repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
-    <buildable project="mudclient repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
-    <buildable project="osjava-nio repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
-    <buildable project="osjava-threads repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
+    <buildable project="genjava/gj-beans" repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
+    <buildable project="genjava/gj-config" repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
+    <buildable project="genjava/gj-csv" repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
+    <buildable project="genjava/gj-find" repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
+    <buildable project="genjava/gj-mail" repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
+    <buildable project="genjava/gj-scrape" repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
+    <buildable project="genjava/gj-servlet" repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
+    <buildable project="genjava/gj-tools" repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
+    <buildable project="genjava/gj-xml" repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
+    <buildable project="genjava/gj-gui" repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
+    <buildable project="genjava/gj-core" repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
+    <buildable project="xmlwriter" repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
+    <buildable project="simple-jndi" repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
+    <buildable project="norbert" repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
+    <buildable project="oscube" repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
+    <buildable project="payload" repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
+    <buildable project="runsql" repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
+    <buildable project="simuchron" repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
+    <buildable project="trail-taglib" repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
+    <buildable project="scraping-engine" repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
+    <buildable project="jpe" repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
+    <buildable project="atom4j" repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
+    <buildable project="charlotte" repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
+    <buildable project="mudclient" repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
+    <buildable project="osjava-nio" repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
+    <buildable project="osjava-threads" repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
   </buildables>
 </integration>
