@@ -55,7 +55,7 @@
       <name>query</name>
       <required>false</required>
       <rtexprvalue>true</rtexprvalue>
-      <description>The query-string should not affect the trail. </description>
+      <description>Whether the query-string should affect the trail. If not specified, it does not affect it.</description>
     </attribute>
   </tag>
 </taglib>
