@@ -1,6 +1,7 @@
 package org.cyberiantiger.nio;
 
 import java.io.*;
+import java.net.*;
 import java.nio.channels.*;
 import java.util.*;
 
@@ -21,54 +22,29 @@ public class IOThread extends Thread {
      * @throws IOException If there is a problem creating the Selector
      */
     public IOThread() throws IOException {
-       super();
-       mySelector = Selector.open();
-    }
-    
-    /**
-     * Create a new IOThread.
-     *
-     * @param group the Threadgroup which the created Thread is a member
-     * @param name The name of the thread.
-     * 
-     * @throws IOException If there is a problem creating the Selector
-     */
-    public IOThread(ThreadGroup group, String name)
-        throws IOException {
-        super(group, name);
         mySelector = Selector.open();
     }
-    
 
     /**
      * Register a ChannelHandler with this IOThread
+     *
      */
-    public SelectionKey register(ChannelHandler handler, int ops) 
-    throws IOException {
+    public SelectionKey register(ChannelHandler handler, int ops) throws IOException {
         SelectableChannel chan = handler.getSelectableChannel();
 
         if (chan.isBlocking()) {
             throw new IllegalArgumentException("SelectableChannel is blocking");
         }
 
-        SelectionKey key = chan.register(mySelector, ops, handler);
-        handler.setSelectionKey(key);
+        SelectionKey ret = chan.register(mySelector, ops, handler);
 
         // XXX: Workaround, Selector hangs when it has nothing registered.
         synchronized (this) {
             notify();
         }
-        return key;
+        return ret;
     }
-    
-    public void deregister(ChannelHandler handler) {
-        SelectionKey key=handler.getSelectableChannel().keyFor(mySelector);
-        
-        if(key!=null) {
-            key.cancel();
-        }
-    }
-    
+
     public void run() {
         while (!isAborting()) {
             try {
@@ -104,10 +80,10 @@ public class IOThread extends Thread {
                             handler.connect();
                         }
                         if ((ops & SelectionKey.OP_READ) != 0) {
-                            handler.readFromChannel();
+                            handler.read();
                         }
                         if ((ops & SelectionKey.OP_WRITE) != 0) {
-                            handler.writeToChannel();
+                            handler.write();
                         }
                     }
                     i.remove();
@@ -127,7 +103,7 @@ public class IOThread extends Thread {
             if (key.isValid()) {
                 try {
                     handler.close();
-                    deregister(handler);
+                    handler.deregister();
                 } catch (IOException ioe) {
                     ioe.printStackTrace();
                 }

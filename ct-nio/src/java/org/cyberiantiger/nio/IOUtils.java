@@ -3,6 +3,7 @@ package org.cyberiantiger.nio;
 import java.nio.channels.*;
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.net.Socket;
 import java.net.ServerSocket;
 
 /**
@@ -28,25 +29,13 @@ public class IOUtils {
         {
             ServerSocketChannel chan = ServerSocketChannel.open();
             ServerSocketChannelHandler handler = 
-                new ServerSocketChannelHandler(chan,thread);
-            int ops = chan.validOps();
-            SelectionKey key=null;
+                new ServerSocketChannelHandler(chan);
 
             ServerSocket socket = chan.socket();
             socket.bind(addr);
 
-            // Feckski Offski, I hate the way *everything* throws IOException
-            // It is *NOT* an IOException if you try and register a closed 
-            // channel, it is an IllegalStateException.
-            //
-            // Fuckwits.
-            try {
-                key = thread.register(handler, ops);
-            } catch (IOException ioe) {
-                throw new IllegalStateException("Underlying Channel is closed");
-            }
-
             handler.setSocketChannelHandlerAcceptor(acceptor);
+            handler.register(thread);
             return handler;
         }
 
@@ -63,27 +52,20 @@ public class IOUtils {
      */
     public static SocketChannelHandler connect(
             InetSocketAddress addr,
-            IOThread thread) 
+            IOThread thread,
+            Stream stream) 
         throws IOException 
         {
             SocketChannel chan = SocketChannel.open();
             SocketChannelHandler handler = 
-                new SocketChannelHandler(chan,thread);
-            int ops = chan.validOps();
-            SelectionKey key=null;
-            
-            // Feckski Offski, I hate the way *everything* throws IOException
-            // It is *NOT* an IOException if you try and register a closed 
-            // channel, it is an IllegalStateException.
-            //
-            // Fuckwits.
-            try {
-                key = thread.register(handler, ops);
-            } catch (IOException ioe) {
-                throw new IllegalStateException("Underlying Channel is closed");
-            }
+                new SocketChannelHandler(chan);
 
             chan.connect(addr);
+
+            handler.register(thread);
+
+            handler.writeTo(stream);
+            stream.writeTo(handler);
 
             return handler;
         }
