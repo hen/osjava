@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<!-- 
+  NOTE: This file is not intended to be used in distribution.  This is a 
+        build file utilized only for convenience during development
+-->
+<!-- 
+ $Id$
+ $Rev$
+ $Date$
+ $Author$
+
+ Created on May 18, 2004
+
+ Copyright (c) 2004, Robert M. Zigweid
+ All rights reserved.
+
+ Redistribution and use in source and binary forms, with or without
+ modification, are permitted provided that the following conditions are met:
+
+ + Redistributions of source code must retain the above copyright notice,
+   this list of conditions and the following disclaimer.
+
+ + Redistributions in binary form must reproduce the above copyright notice,
+   this list of conditions and the following disclaimer in the documentation
+   and/or other materials provided with the distribution.
+
+ + Neither the name of the OSJava-Threads nor the names of its contributors may
+   be used to endorse or promote products derived from this software without
+   specific prior written permission.
+
+ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ POSSIBILITY OF SUCH DAMAGE.
+-->
+<project name    ="OSJava Threads"
+         default ="build"
+         basedir =".">
+
+    <!-- Global Properties -->
+    <property name        ="srcDir"
+              location    ="src/java"/>
+    <property name        ="buildDir"
+              location    ="build"/>
+    <property name        ="distDir"
+              location    ="dist"/>
+
+    <!-- Targets -->
+    <target name="init">
+        <!-- Create the time stamp -->
+        <tstamp/>
+        <!-- Create the build directory structure used by compile -->
+        <mkdir dir="${buildDir}"/>
+    </target>
+
+   <target name         ="build"
+           description  ="Compile all of the java files"
+           depends      ="init">
+        <javac srcdir ="${srcDir}"
+               destdir="${buildDir}">
+            <!-- Currently the project depends upon the HEAD of Simple JNDI -->
+            <classpath path="${classpath}:../simple-jndi/src/java"/>
+        </javac>
+   </target>     
+</project>
