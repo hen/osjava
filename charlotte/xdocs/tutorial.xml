@@ -17,56 +17,56 @@
 
 <p>A charlotte encoding description for a TCP Header would look like this:</p> 
 
-<code>
-name: TCP Header<br/>
-version=4<br/>
-headerLength=4<br/>
-typeOfService=8<br/>
-totalLength=16<br/>
-id=16<br/>
-flags=3<br/>
-fragmentOffset=13<br/>
-timeToLive=8<br/>
-protocol=8<br/>
-headerChecksum=16<br/>
-sourceIp=32<br/>
+<div class="code"><pre>
+name: TCP Header
+version=4
+headerLength=4
+typeOfService=8
+totalLength=16
+id=16
+flags=3
+fragmentOffset=13
+timeToLive=8
+protocol=8
+headerChecksum=16
+sourceIp=32
 destinationIp=32
-</code>
+</pre></div>
 
 <p>It would then be used like this:</p>
 
-<code>
-import code316.charlotte.Encoding;<br/>
-import code316.charlotte.EncodingUtil;<br/>
-import code316.charlotte.Parser;<br/>
-<br/>
-public class Test {<br/>
-<br/>
-    private static final Encoding TCP_ENCODING;<br/>
-    private static final String TCP_ENCODING_FILE = "encoding-definitions/tcp-encoding.enc";<br/>
-    static {<br/>
-        try {<br/>
-            Parser ep = new Parser();<br/>
-            InputStream in =<br/>
-                Test.class.getClassLoader().getResourceAsStream(TCP_ENCODING_FILE);<br/>
-<br/>
-            if ( in == null ) {<br/>
-                throw new IllegalStateException("could not load tcp encoding file: " + TCP_ENCODING_FILE);<br/>
-            }<br/>
-            TCP_ENCODING = ep.parse(in);<br/>
-        }<br/>
-        catch (IOException ioe) {<br/>
-            throw new RuntimeException("Could not create encoding", ioe);<br/>
-        }<br/>
-    }<br/>
-<br/>
-    public static TcpValue decodeTcpValue(BigInteger bits) {<br/>
-        // contains a Map of String to Double<br/>
-        Map valueMap = EncodingUtil.expandFields(TCP_ENCODING, bits);<br/>
-        TcpValue tcp = new TcpValue();<br/>
-        tcp.setVersion( valueMap.get("version") );<br/>
-        ....<br/>
-</code>
+<div class="code"><pre>
+import code316.charlotte.Encoding;
+import code316.charlotte.EncodingUtil;
+import code316.charlotte.Parser;
+
+public class Test {
+
+    private static final Encoding TCP_ENCODING;
+    private static final String TCP_ENCODING_FILE = "encoding-definitions/tcp-encoding.enc";
+    static {
+        try {
+            Parser ep = new Parser();
+            InputStream in =
+                Test.class.getClassLoader().getResourceAsStream(TCP_ENCODING_FILE);
+
+            if ( in == null ) {
+                throw new IllegalStateException("could not load tcp encoding file: " + TCP_ENCODING_FILE);
+            }
+            TCP_ENCODING = ep.parse(in);
+        }
+        catch (IOException ioe) {
+            throw new RuntimeException("Could not create encoding", ioe);
+        }
+    }
+
+    public static TcpValue decodeTcpValue(BigInteger bits) {
+        // contains a Map of String to Double
+        Map valueMap = EncodingUtil.expandFields(TCP_ENCODING, bits);
+        TcpValue tcp = new TcpValue();
+        tcp.setVersion( valueMap.get("version") );
+        ....
+</pre></div>
 
 </section>
 </body>
