@@ -279,7 +279,7 @@ my @build_list = ();
             if($buildable->{'build_attempted'}) {
                 print "Failed to build $buildable->{'project'}\n";
                 if($action eq 'update') {
-                    `cat $buildable->{'directory'}/ERROR.log | mail -s 'Failed to build $buildable->{'project'}' bayard\@osjava.org
+                    `cat $buildable->{'directory'}/ERROR.log | mail -s 'Failed to build $buildable->{'project'}' bayard\@osjava.org`;
                 }
             }
             $buildable->{'failed'} = "There were errors in building $buildable->{'project'}"; 
