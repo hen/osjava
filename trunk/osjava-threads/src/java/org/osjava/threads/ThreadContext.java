@@ -312,7 +312,9 @@ public class ThreadContext
 
     /**
      * Binds a new name to the object bound to an old name and unbinds the old 
-     * name. Both names are relative to this context.
+     * name Both names are relative to this context.  The method can throw a 
+     * ThreadIsRunningException if either the {@link ExtendedRunnable} bound 
+     * to either the old name or the new name are still running.
      * 
      * @param oldName the name of the existing binding. It must not be empty
      * @param newName the name of the new binding.  It must not be empty.
@@ -327,14 +329,9 @@ public class ThreadContext
             throw new NamingException("Name '" + oldName + "' not found.");
         }
         
-        /* If the new name is bound throw a NameAlreadyBoundException */
-        if(lookup(newName) != null) {
-            throw new NameAlreadyBoundException("Name '" + newName + "' already bound");
-        }
-        
-        /* All clear? */
         unbind(oldName);
-        
+        unbind(newName);
+        bind(newName, old);
         /* 
          * If the object is a Thread, or a ThreadContext, give it the new 
          * name.
@@ -342,7 +339,6 @@ public class ThreadContext
         if(old instanceof Thread) {
             ((Thread)old).setName(newName.toString());
         }
-        bind(newName, old);
     }
 
     /**
