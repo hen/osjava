@@ -39,8 +39,6 @@ import java.util.Stack;
 
 import org.znerd.xmlenc.XMLOutputter;
 
-import org.apache.commons.lang.exception.NestableRuntimeException;
-
 public class XmlEncXmlWriter extends AbstractXmlWriter {
 
     private XMLOutputter xmlenc;      // underlying writer
@@ -61,7 +59,7 @@ public class XmlEncXmlWriter extends AbstractXmlWriter {
         try {
             this.xmlenc = new XMLOutputter(writer, encoding);
         } catch(UnsupportedEncodingException uee) {
-            throw new NestableRuntimeException(uee);
+            throw new RuntimeException("UnsupportedEncodingException occurred in XmlEnc: "+uee.getMessage());
         }
         this.closed = true;
     }
