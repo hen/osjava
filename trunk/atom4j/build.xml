@@ -173,7 +173,7 @@
 			file="README.txt"
 			tofile="${build_classes}/README.txt"
 			/>
-			
+		<!--
 		<copy overwrite="true"
 			file="log4j.properties"
 			tofile="${build_classes}/log4j.properties"
@@ -182,7 +182,7 @@
 			token="LEVEL" 
 			value="${log4j.level}" 
 			/>
-	
+		-->
 		<zip zipfile="${dist}/${dist-ver}/${jar.name}">
 			<zipfileset dir="${build_classes}" includes="**" />
 		</zip>	
@@ -197,7 +197,7 @@
 			file="README.txt"
 			tofile="${build_classes}/README.txt"
 			/>
-
+		<!--
 		<copy overwrite="true"
 			file="log4j.properties"
 			tofile="${build_classes}/log4j.properties"
@@ -206,7 +206,7 @@
 			token="LEVEL" 
 			value="${log4j.level}" 
 			/>
-	
+		-->
 		<zip zipfile="${dist}/${dist-ver}/${jar.src.name}">
 			<zipfileset dir="${build_classes}" includes="**" />
 			<zipfileset dir="${src}" includes="**" />
