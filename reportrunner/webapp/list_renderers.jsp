@@ -6,12 +6,26 @@
     String groupName = request.getParameter(ReportRunnerServlet.GROUP);
     String reportName = request.getParameter(ReportRunnerServlet.REPORT);
     Report report = ReportFactory.getReport(groupName, reportName);
+    Param[] params = report.getParams();
 %>
+
+<div class="stages"><a href="list_groups.jsp">choose-group</a> -&gt; <a href="list_reports.jsp?<%= ReportRunnerServlet.GROUP %>=<%= groupName %>">choose-report</a> -&gt; 
+<% 
+  if(params != null && params.length != 0) {
+%>
+<a href="enter_params.jsp?<%= ReportRunnerServlet.GROUP %>=<%= groupName %>&<%= ReportRunnerServlet.REPORT %>=<%= reportName %>">enter information</a>
+<%
+  } else {
+%>
+<s>enter information</s>
+<%
+  }
+%>
+</div>
 
 <div class="feedback">
 <p>You have chosen the <span class="chosen-data"><%= report.getLabel() %></span> report from the <span class="chosen-data"><%= report.getReportGroup().getLabel() %></span> report group. </p>
 <%
-    Param[] params = report.getParams();
     if(params != null && params.length != 0) {
 %>
 <p>The report will run with the following user-supplied information: </p>

@@ -33,3 +33,9 @@ label {
 .chosen-data {
     background-color: #ffffff;
 }
+
+.stages a {
+    border: 1px dashed #3c78b5;
+    padding: 0px 10px 0px 10px;
+    margin: 10px;
+}

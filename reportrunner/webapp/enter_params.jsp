@@ -4,12 +4,17 @@
 
 <%
     String groupName = request.getParameter(ReportRunnerServlet.GROUP);
+%>
+
+<div class="stages"><a href="list_groups.jsp">choose-group</a> -&gt; <a href="list_reports.jsp?<%= ReportRunnerServlet.GROUP %>=<%= groupName %>">choose-report</a></div>
+
+<%
     String reportName = request.getParameter(ReportRunnerServlet.REPORT);
     Report report = ReportFactory.getReport(groupName, reportName);
 %>
 
 <div class="feedback">
-<p>You have chosen the <span class="chosen-data"><%= report.getLabel() %></span> report from the <spam class="chosen-data"><%= report.getReportGroup().getLabel() %></span> report group. </p>
+<p>You have chosen the <span class="chosen-data"><%= report.getLabel() %></span> report from the <span class="chosen-data"><%= report.getReportGroup().getLabel() %></span> report group. </p>
 </div>
 
 <div class="input">
