@@ -203,6 +203,16 @@ public class ThreadContext
             throw new NameAlreadyBoundException("Name " + name.toString()
                 + " already bound");
         }
+        
+        /* 
+         * If the thread is an instance of Thread, make sure that it is not 
+         * alive.
+         */
+        if(obj instanceof Thread &&
+           ((Thread)obj).isAlive()) {
+            throw new ThreadIsRunningException("A thread stored in the context cannot already be running.");
+        }
+        
         /*
          * Only the following types are allowed to be bound through this 
          * method: 
