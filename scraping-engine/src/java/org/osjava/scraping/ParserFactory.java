@@ -38,7 +38,7 @@ import org.osjava.oscube.container.Session;
 
 public class ParserFactory {
 
-    static public Parser getParser(Config cfg, Session session) {
+    public static Parser getParser(Config cfg, Session session) {
         String parserClass = cfg.getString("parser");
         if(parserClass == null) {
             return new NullParser();
