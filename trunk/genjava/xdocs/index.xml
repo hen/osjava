@@ -18,7 +18,7 @@
         <tr><td>gj-scrape</td><td>Set of helpers for dealing with HTML and XML without having to parse it. </td></tr>
         <tr><td>gj-servlet</td><td>A little bit of Servlet helping code. </td></tr>
         <tr><td>gj-tools</td><td>Command line tools framework, with a couple of tools. Designed to make it simpler to push out a command line program. </td></tr>
-        <tr><td>gj-xml</td><td>A tiny XML parser and an XML based Properties class. </td></tr>
+        <tr><td>gj-xml</td><td>A tiny XML parser. </td></tr>
       </table>
 
     </section>
