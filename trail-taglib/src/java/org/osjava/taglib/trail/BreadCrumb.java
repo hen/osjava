@@ -53,7 +53,20 @@ public class BreadCrumb {
 
         BreadCrumb b = (BreadCrumb) obj;
 
-        return this.url.equals(b.url) && this.label.equals(b.label);
+        // this is all to make the equality of a url not include the query string
+        // Could just use java.net.URL
+        String u1 = this.url;
+        String u2 = b.url;
+        int idx1 = u1.indexOf("?");
+        if(idx1 != -1) {
+            u1 = u1.substring(0, idx1);
+        }
+        int idx2 = u2.indexOf("?");
+        if(idx2 != -1) {
+            u2 = u2.substring(0, idx2);
+        }
+
+        return u1.equals(u2) && this.label.equals(b.label);
     }
 
     public String toString() {
