@@ -17,7 +17,7 @@ public class FormattingResult implements Result {
     public Object[] nextRow() {
         Object[] row = this.result.nextRow();
 
-        if(row == null || this.report.getColumns() == null) {
+        if(row == null || this.report.getColumns() == null || this.report.getColumns().length == 0) {
             return row;
         }
 
