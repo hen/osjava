@@ -58,18 +58,27 @@ public class FileFinder implements Finder {
     public File[] find(File directory, Map options) {
         notifyDirectoryStarted(directory);
         boolean depthFirst = options.containsKey(Finder.DEPTH);
-        File[] list = find(directory, new FindingFilter(options), depthFirst);
-        notifyDirectoryFinished(directory, list);
-        return list;
+        FindingFilter filter = new FindingFilter(options);
+        List list = find(directory, filter, depthFirst);
+        if(filter.accept(directory)) {
+            if(depthFirst) {
+                list.add( directory );
+            } else {
+                list.add( 0, directory );
+            }
+        }
+        File[] files = (File[]) list.toArray(new File[0]);
+        notifyDirectoryFinished(directory, files);
+        return files;
     }
 
-    private File[] find(File directory, FindingFilter filter, boolean depthFirst) {
+    private List find(File directory, FindingFilter filter, boolean depthFirst) {
 
         // we can't use listFiles(filter) here, directories don't work correctly
         File[] list = directory.listFiles();
 
         if (list == null) {
-            return new File[0];
+            return null;
         }
 
         List retlist = new LinkedList();
@@ -83,12 +92,12 @@ public class FileFinder implements Finder {
             }
             if (tmp.isDirectory()) {
                 notifyDirectoryStarted(tmp);
-                File[] sublist = find(tmp, filter, depthFirst);
-                int subsz = sublist.length;
+                List sublist = find(tmp, filter, depthFirst);
+                int subsz = sublist.size();
                 for (int j = 0; j < subsz; j++) {
-                    retlist.add(sublist[j]);
+                    retlist.add(sublist.get(j));
                 }
-                notifyDirectoryFinished(tmp, sublist);
+                notifyDirectoryFinished(tmp, (File[]) sublist.toArray(new File[0]));
             }
             if(depthFirst && filter.accept(tmp)) {
                 retlist.add(tmp);
@@ -96,7 +105,7 @@ public class FileFinder implements Finder {
             }
         }
 
-        return (File[]) retlist.toArray(new File[0]);
+        return retlist;
     }
     
     /**
