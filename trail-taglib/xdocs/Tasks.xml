@@ -9,6 +9,8 @@
   <body>
 
   <section name="Tasks for Trail-Taglib">
+    <p>Allow style/class values to pass through the taglib. </p>
+    <p>Allow the delimiter to be an image. </p>
     <p>Create a session report object that turns the trail into a report. Or just have the developer write a JSP page?</p>
     <p>Create a session listener which evaluates a JSP page(?) and mails it to the user on session expiry.</p>
    </section>
