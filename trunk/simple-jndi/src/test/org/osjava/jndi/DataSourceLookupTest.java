@@ -58,11 +58,12 @@ public class DataSourceLookupTest extends TestCase {
     public void testDS2Lookup() {
         try {
             DataSource aTestDS = (DataSource) lookup("thing.db.ATestDS");
-            DataSource fake = createFakeDS(
+            DataSource fake = TestUtils.createFakeDS(
             "jdbc:mysql://192.168.133.2/bikehell", 
             "org.gjt.mm.mysql.Driver", 
             "nico", 
             "bear","ATestDS");
+            System.err.println("DS: "+aTestDS);
             assertEquals( fake, aTestDS );
         } catch(NamingException ne) {
             fail("NamingException: "+ne.getMessage());
@@ -88,7 +89,7 @@ public class DataSourceLookupTest extends TestCase {
     public void testXmlDSLookup() {
         try {
             DataSource aTestDS = (DataSource) lookup("thing.db2.ATestDS");
-            DataSource fake = createFakeDS(
+            DataSource fake = TestUtils.createFakeDS(
             "jdbc:mysql://192.168.133.2/bikehell", 
             "org.gjt.mm.mysql.Driver", 
             "nico", 
@@ -98,19 +99,6 @@ public class DataSourceLookupTest extends TestCase {
         } catch(NamingException ne) {
             fail("NamingException: "+ne.getMessage());
         }
-    }
-
-    private DataSource createFakeDS(String url, String driver, String user, String passwd, String name) {
-        Properties props = new Properties();
-        // even though delimiter is a /, we use . here for the 
-        // test. This is because the dot needs to be in the file
-        props.setProperty(name+"/url", url);
-        props.setProperty(name+"/driver", driver);
-        props.setProperty(name+"/user", user);
-        props.setProperty(name+"/password", passwd);
-        PropertiesDataSource fake = new PropertiesDataSource(props, new Hashtable(), this.delimiter);
-        fake.setName(name);
-        return fake;
     }
 
     private Object lookup(String key) throws NamingException {
