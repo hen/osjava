@@ -32,6 +32,15 @@ public class HierarchicalMapTest extends TestCase {
         this.hmap = null;
     }
 
+    public void testContainsKey() {
+        assertTrue( "Failed to contained prepared 'one' key from Map. ", this.hmap.containsKey("one") );
+        assertFalse( "Should not have contained a 'two' key in the Map. ", this.hmap.containsKey("two") );
+        assertTrue( "Failed to contained delimited '1.2.3' key from Map. ", this.hmap.containsKey("1.2.3") );
+        assertTrue( "Failed to contained delimited '1.2.3' key from Map. ", ( (Map) ( (Map) this.hmap.get("1") ).get("2")).containsKey("3") );
+        assertTrue( "Failed to contained 'multiple' List from Map. ", this.hmap.containsKey("multiple") );
+        assertTrue( "Failed to contained 'delimited.multiple.pair' List from Map. ", this.hmap.containsKey("delimited.multiple.pair") );
+    }
+
     public void testGet() {
         assertEquals( "Failed to get prepared value from Map. ", "two", this.hmap.get("one") );
         assertNull( "Should not have found a value in the Map. ", this.hmap.get("two") );

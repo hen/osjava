@@ -83,7 +83,7 @@ public class HierarchicalMap implements Map {
 
     //  Returns true if this map contains a mapping for the specified key. 
     public boolean containsKey(Object key) {
-        return (get(key) == null);
+        return (get(key) != null);
     }
 
     //  Returns true if this map maps one or more keys to the specified value. 
@@ -111,7 +111,11 @@ public class HierarchicalMap implements Map {
 
     //  Compares the specified object with this map for equality. 
     public boolean equals(Object o) {
-        return nodeMap.equals(o);    // FIX:?
+        if(o instanceof HierarchicalMap) {
+            return nodeMap.equals( ((HierarchicalMap)o).nodeMap );
+        } else {
+            return false;
+        }
     }
 
     //  Returns the value to which this map maps the specified key. 
