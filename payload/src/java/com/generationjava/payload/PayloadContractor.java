@@ -156,7 +156,8 @@ if(DEBUG) System.out.println("DEBUG turned on. ");
 
     // overloaded so that payload.properties may be written to the top level
     private static void storeFile(JarOutputStream jout, File file) throws IOException {
-        storeFile(jout, file, "payload/"+file.toString());
+        String fileUnix = file.toString().replaceAll("\\\\", "/");
+        storeFile(jout, file, "payload/"+fileUnix);
     }
     private static void storeFile(JarOutputStream jout, File file, String targetName) throws IOException {
         if(file.isDirectory()) {
