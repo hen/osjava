@@ -39,6 +39,8 @@ import java.util.Stack;
 
 import org.znerd.xmlenc.XMLOutputter;
 
+import org.apache.commons.lang.exception.NestableRuntimeException;
+
 public class XmlEncXmlWriter extends AbstractXmlWriter {
 
     private XMLOutputter xmlenc;      // underlying writer
@@ -52,13 +54,15 @@ public class XmlEncXmlWriter extends AbstractXmlWriter {
 
 
     public XmlEncXmlWriter(Writer writer) {
+        this(writer, "UTF-8");
+    }
+    public XmlEncXmlWriter(Writer writer, String encoding) {
         this.writer = writer;
-//        super(writer);
-//        try {
-            this.xmlenc = XMLOutputter.getInstance(writer);
-//        } catch(UnsupportedEncodingException uee) {
-//            uee.printStackTrace();
-//        }
+        try {
+            this.xmlenc = new XMLOutputter(writer, encoding);
+        } catch(UnsupportedEncodingException uee) {
+            throw new NestableRuntimeException(uee);
+        }
         this.closed = true;
     }
 
