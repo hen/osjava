@@ -67,7 +67,7 @@ public class Engine {
 
             Session session = new NamespaceSession();
             session.put(prefix, key);
-            Config clonedCfg = cfg.cloneConfig();
+            Config clonedCfg = ConfigFactory.getConfig(args);
             clonedCfg.setContext(key+".");
 
             // schedule the times to run parsers
