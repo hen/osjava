@@ -40,12 +40,14 @@
 
 package org.osjava.threads;
 
+import org.apache.log4j.Logger;
+
 /**
  * Abstract implementation of {@link ExtendedRunnable} which handles the default
  * methods.
  *
  * @author Robert M. Zigweid
- * @version $Revision: 1.4 $ $Date$
+ * @version $Revision$ $Date$
  *
  */
 public abstract class AbstractExtendedRunnable
@@ -105,5 +107,12 @@ public abstract class AbstractExtendedRunnable
     protected Object clone() throws CloneNotSupportedException {
         throw new CloneNotSupportedException(
             "An AbstractExtendedRunnable should not be cloned.");
+    }
+
+    public void wakeup() {
+        System.out.println("Testing -- AbstractRunnable");
+        synchronized(this) {
+            this.notify();
+        }
     }
 }

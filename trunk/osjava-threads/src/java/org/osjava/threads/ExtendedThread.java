@@ -88,6 +88,7 @@ public class ExtendedThread extends Thread implements ExtendedRunnable {
      */
     public ExtendedThread(Runnable target, String name) {
         super(target, name);
+        runnable = target;
     }
 
     /**
@@ -205,5 +206,24 @@ public class ExtendedThread extends Thread implements ExtendedRunnable {
      */
     protected Object clone() throws CloneNotSupportedException {
         throw new  CloneNotSupportedException("ExtendedThread cannot be cloned.");
+    }
+
+    /* (non-Javadoc)
+     * @see org.osjava.threads.ExtendedRunnable#wakeup()
+     */
+    public void wakeup() {
+        System.out.println("Testing ExtendedThread");
+        if(runnable == this) {
+            synchronized(this) {
+                this.notify();
+            }
+        } else if(runnable instanceof ExtendedRunnable) {
+            ((ExtendedRunnable)runnable).wakeup();
+        } else {
+            /* Regular Runnable or Wrapped Thread */
+            synchronized(runnable) {
+                runnable.notify();
+            }
+        }
     }
 }
