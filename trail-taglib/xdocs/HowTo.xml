@@ -10,7 +10,7 @@
 
   <section name="How to use the Trail-Taglib">
    <p>The trail taglib mainly comes down to two tags. The first is used to add a page into the trail, and the other is used to to list the current trail. </p>
-   <p>For example: 
+   <p>For example: <br/>
     <code>
      &lt;%@ taglib prefix="trail" uri="http://www.osjava.org/taglibs/trail-1.0" %&gt;<br/>
 
@@ -23,7 +23,7 @@
   </section>
 
   <section name="Advanced usage">
-    <p>The trail is stored in an <code>org.osjava.taglib.trail.BreadCrumbs</code> object under the session variable <code>org.osjava.taglib.breadcrumbs</code>. </p>
+    <p>The trail is stored in an <code>org.osjava.taglib.trail.BreadCrumbs</code> object under the session variable <code>org.osjava.taglib.breadcrumbs</code>.</p>
   </section>
   
 
