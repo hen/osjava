@@ -1,12 +1,12 @@
 /*
- * org.osjava.jndi.util.ContextBindings
+ * org.osjava.naming.ContextBindings
  * 
  * $Id$
  * $Rev$
  * $Date$
  * $Author$
  * 
- * Created on Apr 27, 2004
+ * Created on Apr 20, 2004
  * Copyright (c) 2004, Robert M. Zigweid
  * All rights reserved.
  * 
@@ -36,62 +36,108 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.  
  */
-package org.osjava.jndi.util;
+package org.osjava.naming;
 
+import java.util.Iterator;
 import java.util.Map;
 
 import javax.naming.Binding;
-import javax.naming.NameClassPair;
+import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 
 /**
- * This class represents a NamingEnumeration of the class names of a Context. 
+ * This class represents a NamingEnumeration of the bindings of a Context. 
  * Originally authored by Henri Yandell and modified to make more flexable with other 
  * Context implementations.
  * 
  * @author Robert M. Zigweid and Henri Yandell
  * @version $Rev$ $Date$
  */
-public class ContextNames extends ContextBindings {
+public class ContextBindings implements NamingEnumeration {
+    
+    /**
+     * A Map of the bindings of a Context.
+     */
+    private Map bindings = null;
+    
+    /**
+     * The iterator utilized in the Enumeration
+     */
+    private Iterator iterator = null;
 
     /**
-     * Creates a ContextNames object based upon an a Map of names and the objects 
+     * Creates a ContextBindings object based upon an a Map of names and the objects 
      * the names are bound to.  If <code>table</code> is modified after instantiation 
      * of ContextBindings, behavior is undefined and should be considered invalid.
      * 
      * @param table The table upon which the ContextBindings is based.
      */
-    public ContextNames(Map table) {
-        super(table);
+    public ContextBindings(Map table) {
+        bindings = table;
+        iterator = bindings.keySet().iterator();
     }
 
     /**
-     * Returns a {@link NameClassPair} created from the next available name.
+     * Returns <code>true</code> if there are more elements available, otherwise
+     * <code>false</code>.
      * 
-     * @return a NameClassPair representing the binding of the name and the
-     *         object bound to the name
+     * @return <code>true</code> if there are more elements available, otherwise <code>
+     *         false</code>
+     */
+    public boolean hasMoreElements() {
+        return iterator.hasNext();
+    }
+
+    /**
+     * Returns <code>true</code> if there are more elements available, otherwise
+     * <code>false</code>.
+     * 
+     * @return <code>true</code> if there are more elements available, otherwise <code>
+     *         false</code>
+     * @throws NamingException if a naming exception is encountered
+     */
+    public boolean hasMore() throws NamingException {
+        if(bindings == null) {
+            throw new NamingException();
+        }
+        return hasMoreElements();
+    }
+
+    /**
+     * Returns a {@link Binding Binding} created from the next available name.
+     * 
+     * @return a Binding representing the binding of the name and the object bound to the
+     *         name
      */
     public Object nextElement() {
-        try {
-            return next();
-        } catch(NamingException e) {
+        if(bindings == null) { 
             return null;
         }
+        String name = (String)iterator.next();
+        return new Binding(name, bindings.get(name));
     }
 
     /**
-     * Returns a {@link NameClassPair} created from the next available name.
+     * Returns a {@link Binding Binding} created from the next available name.
      * 
-     * @return a NameClassPair representing the binding of the name and the
-     *         object bound to the name
-     * 
+     * @return a Binding representing the binding of the name and the object bound to the
+     *         name
      * @throws NamingException if a naming exception occurs
      */
     public Object next() throws NamingException {
-        Binding binding = null;
-        binding = (Binding)super.next();
-        return new NameClassPair(binding.getName(), 
-            binding.getObject().getClass().getName());
+        if(bindings == null) {
+            throw new NamingException();
+        }
+        return nextElement();
     }
+
+    /**
+     * Close the ContextBindings instance, rendering it inoperable.
+     */
+    public void close() {
+        bindings = null;
+        iterator = null;
+    }
+
 }
 
