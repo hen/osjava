@@ -60,9 +60,7 @@ import org.osjava.naming.ContextNames;
 import org.osjava.naming.InvalidObjectTypeException;
 
 /**
- * A Context for managing Threads and ThreadGroups.  The ThreadContext attempts
- * to keep synchronized with an underlying {@link ExtendedThreadGroup 
- * ExtendedThreadGroups}.
+ * A Context for managing Threads and ThreadGroups.
  * <br/><br/>
  * This context depends upon the Simple-JNDI <b>TODO: VERSION OF SIMPLE_JNDI</b>
  * package available from http://www.osjava.org.
@@ -111,13 +109,122 @@ public class ThreadContext
      * 
      * @throws NamingException if a naming exception is encountered.
      */
-    protected ThreadContext() throws NamingException{
+    protected ThreadContext() throws NamingException {
         nameParser = new ThreadNameParser(this);
     }
         
     /* ************************
      * Class Specific Methods *
      * ************************/
+    /**
+     * Create a new ExtendedThread with the Name <code>name</code>.  The name 
+     * is relative to this context and all subcontexts must already be
+     * created.  Null or empty names are not permitted.  The <code>target
+     * </code>, if it is not null, will be wrapped in an ExtendedThread.  The 
+     * target's run() method will be called when the thread is started.
+     * 
+     * @param name the name of the thread.
+     * @return the newly created ExtendedThread
+     * @throws NameAlreadyBoundException if <code>name</code> is already bound 
+     *         to another object.
+     * @throws ThreadIsRunningException if the target is a running thread.
+     * @throws NamingException if another naming exception is encountered.
+     */
+    public ExtendedThread createThread(Name name)
+        throws NameAlreadyBoundException, NamingException, ThreadIsRunningException {
+        return this.createThread(null, name);
+    }
+    
+    /**
+     * Create a new ExtendedThread with the Name <code>name</code>.  The name 
+     * is relative to this context and all subcontexts must already be
+     * created.  Null or empty names are not permitted.  The <code>target
+     * </code>, if it is not null, will be wrapped in an ExtendedThread.  The 
+     * target's run() method will be called when the thread is started.
+     * 
+     * @param name the name of the thread.
+     * @return the newly created ExtendedThread
+     * @throws NameAlreadyBoundException if <code>name</code> is already bound 
+     *         to another object.
+     * @throws ThreadIsRunningException if the target is a running thread.
+     * @throws NamingException if another naming exception is encountered.
+     */
+    public ExtendedThread createThread(String name)
+        throws NameAlreadyBoundException, NamingException, ThreadIsRunningException {
+        return this.createThread(null, nameParser.parse(name));
+    }
+    
+    /**
+     * Create a new ExtendedThread with the Name <code>name</code>.  The name 
+     * is relative to this context and all subcontexts must already be
+     * created.  Null or empty names are not permitted.  The <code>target
+     * </code>, if it is not null, will be wrapped in an ExtendedThread.  The 
+     * target's run() method will be called when the thread is started.
+     * 
+     * @param target the target of the newly created thread. 
+     * @param name the name of the thread.
+     * @return the newly created ExtendedThread
+     * @throws NameAlreadyBoundException if <code>name</code> is already bound 
+     *         to another object.
+     * @throws ThreadIsRunningException if the target is a running thread.
+     * @throws NamingException if another naming exception is encountered.
+     */
+    public ExtendedThread createThread(Runnable target, Name name)
+        throws NameAlreadyBoundException, NamingException, ThreadIsRunningException {
+        if(name.isEmpty()) {
+            throw new NamingException("Invalid thread Name");
+        }
+        
+        /* 
+         * Go to the right context
+         */
+        if(name.size() > 1) {
+            if(subContexts.containsKey(name.getPrefix(1))) {
+                return createThread(target, name.getSuffix(1));
+            }
+            throw new NotContextException("Invalid subcontext.");
+        }
+
+        /* 
+         * Make sure that the name isn't already in use.  We have to do this
+         * here, instead of letting bind() do it for us because we don't want
+         * to cretae the Thread (if necessary), just to destroy it.
+         */
+        String threadName = nameParser.nameToString(name);
+        if(contextStore.containsKey(name) ||  subContexts.containsKey(name)) {
+            throw new NameAlreadyBoundException();
+        }
+        
+        /* Make sure that the target is not already running. */
+        if(target instanceof Thread && ((Thread)target).isAlive()) {
+            throw new ThreadIsRunningException();
+        }
+        
+        ExtendedThread newThread = new ExtendedThread(target, threadName);
+        bind(name, newThread);
+        return newThread;
+    }
+
+    /**
+     * Create a new ExtendedThread with the Name <code>name</code>.  The name 
+     * is relative to this context and all subcontexts must already be
+     * created.  Null or empty names are not permitted.  The <code>target
+     * </code>, if it is not null, will be wrapped in an ExtendedThread.  The 
+     * target's run() method will be called when the thread is started.
+     * 
+     * @param target the target of the newly created thread. 
+     * @param name the name of the thread.
+     * @return the newly created ExtendedThread
+     * @throws NameAlreadyBoundException if <code>name</code> is already bound 
+     *         to another object.
+     * @throws ThreadIsRunningException if the target is a running thread.
+     * @throws NamingException if another naming exception is encountered.
+     */
+    public ExtendedThread createThread(Runnable target, String name)
+        throws NameAlreadyBoundException, NamingException, ThreadIsRunningException {
+        return this.createThread(target, nameParser.parse(name));
+}
+    
     /**
      * Invokes <code>start()</code> on all of the {@link ExtendedThread
      * ExtendedThreads} in this context and its subcontexts.
@@ -797,8 +904,12 @@ public class ThreadContext
     }
 
     /**
+     * Close this context.  Closing the context will attempt to abort all 
+     * of the Threads in this context, and all subcontexts.  The subcontexts
+     * will also be closed.
      * 
-     * @seee javax.naming.Context#close()
+     * @throws NamingException if a naming exception is encountered.
+     * @see javax.naming.Context#close()
      */
     public void close() throws NamingException {
         
