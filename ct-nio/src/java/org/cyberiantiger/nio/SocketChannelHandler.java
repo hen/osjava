@@ -1,18 +1,19 @@
 package org.cyberiantiger.nio;
 
 import java.io.IOException;
+import java.net.Socket;
 import java.nio.channels.SocketChannel;
 import java.nio.channels.SelectionKey;
+import java.nio.channels.SelectableChannel;
 import java.nio.ByteBuffer;
 
 public class SocketChannelHandler 
-implements ChannelHandler, Connection
+extends AbstractChannelHandler
+implements SocketStream
 {
-    protected Connection con;
+    protected Output out;
     // The underlying channel
     protected SocketChannel chan;
-    // Our SelectionKey
-    protected SelectionKey key;
 
     // Our write buffer (holds unwritten data
     private ByteBuffer writeBuffer;
@@ -22,27 +23,18 @@ implements ChannelHandler, Connection
     private boolean doClose = false;
 
     public SocketChannelHandler(
-	    ConnectionThread thread, 
-	    SocketChannel chan, 
-	    Connection con
+	    SocketChannel chan
 	    ) 
     throws IOException 
     {
 	this.chan = chan;
-	this.con = con;
 	chan.configureBlocking(false);
-	if(chan.isConnected()) {
-	    thread.add(chan, this, SelectionKey.OP_READ);
-	} else {
-	    thread.add(chan, this, SelectionKey.OP_CONNECT);
-	}
 	writeBuffer = ByteBuffer.allocateDirect(1024);
 	readBuffer = ByteBuffer.allocateDirect(1024);
-	con.setConnection(this);
     }
 
-    public void setConnection(Connection con) {
-	this.con = con;
+    public void writeTo(Output out) {
+	this.out = out;
     }
 
     public void read() {
@@ -53,7 +45,7 @@ implements ChannelHandler, Connection
 		readBuffer.limit(readBuffer.position());
 		readBuffer.rewind();
 		try {
-		    con.write(readBuffer);
+		    out.write(readBuffer);
 		} catch (RuntimeException re) {
 		    re.printStackTrace();
 		}
@@ -108,8 +100,6 @@ implements ChannelHandler, Connection
 	}
     }
 
-    public void accept() {}
-
     public void close() throws IOException {
 	key.cancel();
 	if(chan.isOpen()) {
@@ -117,8 +107,12 @@ implements ChannelHandler, Connection
 	}
 	readBuffer.limit(readBuffer.position());
 	readBuffer.rewind();
-	con.close(readBuffer);
-	con = null;
+	out.close(readBuffer);
+	out = null;
+    }
+
+    public SelectableChannel getSelectableChannel() {
+	return chan;
     }
 
     private void resizeBuffer(int size) {
@@ -149,7 +143,7 @@ implements ChannelHandler, Connection
     }
 
     public void close(ByteBuffer last) {
-	write(last);
+	if(last != null) write(last);
 	if(writeBuffer.position() != 0) {
 	    doClose = true;
 	} else {
@@ -160,4 +154,9 @@ implements ChannelHandler, Connection
 	    }
 	}
     }
+
+    public Socket getSocket() {
+	return chan.socket();
+    }
+
 }
