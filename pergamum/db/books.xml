@@ -78,4 +78,5 @@
   <book isbn="0764559575" name="Jakarta Struts for Dummies" publisher="wil" url="http://www.wiley.com/WileyCDA/WileyTitle/productCd-0764559575.html" published="2004-03"/>
   <book isbn="0596006969" name="Hibernate: A Developer's Notebook" publisher="ora" url="http://www.oreilly.com/catalog/0596006969/" published="2004-05"/>
   <book isbn="1932394281" name="Lucene in Action" publisher="man" url="http://www.manning.com/hatcher2/" published="2004-08"/>
+  <book isbn="0596006764" name="Better, Faster, Lighter Java" publisher="ora" url="http://www.oreilly.com/catalog/0596006764/" published="2004-06"/>
 </library>
