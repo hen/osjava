@@ -76,9 +76,9 @@ do
             mv ERROR.log OUTPUT.log $reportDir/$i
         fi
     fi
-    # run checkstyle, pmd, junit report, javadoc
+    # run checkstyle, pmd, junit report, javadoc, xref
     echo "Building documentation"
-    maven -b checkstyle maven-junit-report-plugin:report pmd javadoc 2> DOCS-ERROR.log > DOCS-OUTPUT.log
+    maven -b checkstyle maven-junit-report-plugin:report maven-jxr-plugin:report pmd javadoc 2> DOCS-ERROR.log > DOCS-OUTPUT.log
     
     # somehow create a site from these reports
     if [ -d target/docs/apidocs/ ];
@@ -88,6 +88,10 @@ do
     if [ -f target/generated-xdocs/pmd-report.xml ];
     then
         mv target/generated-xdocs/pmd-report.xml $reportDir/$i
+    fi
+    if [ -d target/docs/xref/ ];
+    then
+        mv target/docs/xref $reportDir/$i
     fi
     if [ -f target/generated-xdocs/checkstyle-report.xml ];
     then
