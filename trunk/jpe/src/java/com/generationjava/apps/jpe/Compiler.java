@@ -13,7 +13,7 @@ import java.io.PrintStream;
  */
 public interface Compiler {
 
-    void compile(String filename) throws CompilerException;
-    void setErrorStream(PrintStream errorStream);
+    public void compile(String filename) throws CompilerException;
+    public void setErrorStream(PrintStream errorStream);
 
 }
