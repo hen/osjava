@@ -9,7 +9,7 @@
   <body>
     <section name="Tasks">
 <ul>
-<li>Types. com.foo.Value can have a partner key of com.foo.Value.type which specifies the type of object to use for the key. </li>
+<li>Types. com.foo.Value can have a partner key of com.foo.Value.type which specifies the type of object to use for the key. <b>DONE v0.4</b></li>
 <li>Implement Type in such a way that the object to create may be specified, say JDOPersistenceFactory, and that sub-properties may be set as bean properties.</li>
 <li>Implement binding so that values may be stored in the system, making it Read/Write. </li>
 <li>Implementing the list methods so you can see the values in a particular directory/properties file. </li>
@@ -22,12 +22,14 @@
 <li>Allow the root to be a url, so properties can be found online</li>
 <li>Hook up DBCP or some other connection pool.</li>
 <li>Make it nice to hook up Enhanced drivers from DbUtils??</li>
-<li>Use OrderedProperties to order the underlying .properties files. </li>
+<li>Use OrderedProperties to order the underlying .properties files. <b>DONE v0.4</b></li>
 <li>Allow the delimiter in the search values to be configurable, so people can more easily mimic LDAP etc: <b>DONE v0.3</b></li>
 <li>Test if ProductionDS.com.generationjava.jndi.datasource is obtainable [from examples page]</li>
 <li>Confirm that jars and zips may be used in the classpath protocol. </li>
-<li>Add multiple-line format for .properties files. ie) if there are equal keys, they should create a collection. Note, with the OrderedProperties this becomes a list and not a collection. </li>
+<li>Add multiple-line format for .properties files. ie) if there are equal keys, they should create a collection. Note, with the OrderedProperties this becomes a list and not a collection. <b>DONE v0.4</b></li>
 <li>Add a jdbc implementation underneath for the configuration. </li>
+<li>Put the standard configuration options into the JNDI scope itself and pay attention for when they are changed. Thus allowing the system to change at runtime. </li>
+<li>Allow the underlying Properties class to use [when applicable] to be specified. </li>
 </ul>
 
 </section>
