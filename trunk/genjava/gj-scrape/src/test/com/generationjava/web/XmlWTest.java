@@ -21,6 +21,7 @@ public class XmlWTest extends TestCase {
         assertEquals( "FOO", XmlW.removeXml("<foo test='blah'>FOO</foo>") );
         assertEquals( "FOO", XmlW.removeXml("<foo><blah/>FOO</foo>") );
         assertEquals( "FOO", XmlW.removeXml("FOO") );
+        assertEquals( "some comment", XmlW.removeXml("<h2>some comment</h2>") );
         assertEquals( "", XmlW.removeXml("") );
     }
 
