@@ -1,0 +1,12 @@
+Currently has a couple of bugs:
+
+1) Pages which do server-side redirecting/forwarding do not have 
+   their urls correctly figured out.
+
+   Solution is:
+     i) Spec allows a parameter to be obtained to get the real thing
+    ii) Use a filter
+   iii) Hack a way into Struts [not good]
+
+2) Referrer's need to be checked to see if someone has hit 
+   back and then a page. 
