@@ -25,4 +25,3 @@ import com.generationjava.util.XmlProperties;
 import org.apache.commons.convert.ConvertRegistry;
 import org.apache.commons.convert.ConvertUtils;
 import org.apache.commons.convert.Converter;
-import org.apache.commons.lang.StringUtils;   // how to remove?

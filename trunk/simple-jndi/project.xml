@@ -66,11 +66,6 @@
       <url>http://www.osjava.org/</url>
     </dependency>
     <dependency>
-      <id>commons-lang</id>
-      <version>1.0.1</version>
-      <url>http://jakarta.apache.org/commons/lang.html</url>
-    </dependency>
-    <dependency>
       <id>commons-convert</id>
       <version>0.1</version>
       <url>http://jakarta.apache.org/commons/</url>
