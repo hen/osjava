@@ -112,7 +112,7 @@ public class PropertiesContext implements Context  {
         }
 
         if("true".equals(shared)) {
-            this.table = new PropertiesStaticStore();
+            this.table = new StaticHashtable();
         }
 
         if(this.delimiter == null) {
