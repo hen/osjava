@@ -14,4 +14,9 @@ So apply an xsl to an xml db. Add the names of the books later.
 The db is now split into multiple files. book.xml, categories.xml, publishers.xml
 There now exists a view-namespace of sorts with an xsl to convert xml-content files into html files, by pulling the data into the files from the database files.
 
+=====
+2004-03-22
 
+Splitting things up so I can do my front page out of various pages. Unsure how the hell that will work :)
+
+Need to create a page for every book, category and publisher.
