@@ -50,10 +50,12 @@ import javax.naming.NameParser;
 import javax.naming.NamingException;
 
 /**
- * @author rzigweid
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
+ * A generic context that requires no DataSource backend.   It is designed to
+ * live exclusively in memory and not have its state saved.
+ * 
+ * @author Robert M. Zigweid
+ * @since Simple-JNDI 0.11
+ * @version $Rev$ $Date$
  */
 public class GenericContext extends AbstractContext {
 

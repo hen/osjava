@@ -57,6 +57,10 @@ import org.osjava.naming.SimpleNameParser;
  * The heart of the system, the abstract implementation of context for 
  * simple-jndi.  There are no abstract methods in this class, but it is
  * not meant to be instantiated, but extended instead.
+ *
+ * @author Robert M. Zigweid
+ * @since Simple-JNDI 0.11
+ * @version $Rev$ $Date$
  */
 public abstract class AbstractContext implements Context  {
 
