@@ -1,3 +1,34 @@
+/*
+ * Copyright (c) 2003, Henri Yandell
+ * All rights reserved.
+ * 
+ * Redistribution and use in source and binary forms, with or 
+ * without modification, are permitted provided that the 
+ * following conditions are met:
+ * 
+ * + Redistributions of source code must retain the above copyright notice, 
+ *   this list of conditions and the following disclaimer.
+ * 
+ * + Redistributions in binary form must reproduce the above copyright notice, 
+ *   this list of conditions and the following disclaimer in the documentation 
+ *   and/or other materials provided with the distribution.
+ * 
+ * + Neither the name of OSJava nor the names of its contributors 
+ *   may be used to endorse or promote products derived from this software 
+ *   without specific prior written permission.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" 
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE 
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE 
+ * ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE 
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR 
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF 
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS 
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN 
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+ * POSSIBILITY OF SUCH DAMAGE.
+ */
 package org.osjava.norbert;
 
 import java.io.IOException;
@@ -7,22 +38,36 @@ import java.net.URL;
 import java.net.URLDecoder;
 import java.net.MalformedURLException;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import com.generationjava.net.UrlW;
 
+/**
+ * A Client which may be used to decide which urls on a website 
+ * may be looked at, according to the norobots specification 
+ * located at: 
+ * http://www.robotstxt.org/wc/norobots-rfc.html
+ */
 public class NoRobotClient {
 
     private String userAgent;
     private RulesEngine rules;
     private String base;
 
+    /**
+     * Create a Client for a particular user-agent name. 
+     *
+     * @param userAgent name for the robot
+     */
     public NoRobotClient(String userAgent) {
         this.userAgent = userAgent;
     }
 
+    /**
+     * Head to a website and suck in their robots.txt file. 
+     * Note that the URL passed in is for the website and does 
+     * not include the robots.txt file itself.
+     *
+     * @param baseUrl of the site
+     */
     public void parse(URL baseUrl) {
 
         this.rules = new RulesEngine();
@@ -118,10 +163,26 @@ public class NoRobotClient {
         }
     }
 
-    public boolean isUrlAllowed(URL url) throws RuntimeException {
+    /**
+     * Decide if the parsed website will allow this URL to be 
+     * be seen. 
+     *
+     * Note that parse(URL) must be called before this method 
+     * is called. 
+     *
+     * @param url in question
+     * @return is the url allowed?
+     *
+     * @throws IllegalStateException when parse has not been called
+     */
+    public boolean isUrlAllowed(URL url) throws IllegalStateException, IllegalArgumentException {
+        if(rules == null) {
+            throw new IllegalStateException("You must call parse before you call this method.  ");
+        }
+
         String urlStr = url.toExternalForm();
         if(!urlStr.startsWith(this.base)) {
-            throw new RuntimeException("Illegal to use a different url, " + urlStr + ",  for this robots.txt: "+this.base);
+            throw new IllegalArgumentException("Illegal to use a different url, " + urlStr + ",  for this robots.txt: "+this.base);
         }
         urlStr = urlStr.substring( this.base.length() - 1);
         if("/robots.txt".equals(urlStr)) {
