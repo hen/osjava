@@ -67,8 +67,6 @@ public class Engine {
             session.put(prefix, key);
             cfg.setContext(key+".");
 
-//            String scheduler = cfg.getString("scheduler");
-
             // schedule the times to run parsers
             // TODO: allow this to be pluggable.
             Scheduler scheduler = SchedulerFactory.getScheduler(cfg, session);
