@@ -10,7 +10,7 @@
     <section name="News">
     <p>Version 0.6 has been released, as of 2003-08-12. The following features were added: </p>
 <ul>
-<li>You may now see the Simple-JNDI parameters through Simple-JNDI. </li>
+<li>You may now see and modify the Simple-JNDI parameters through Simple-JNDI. </li>
 <li>Because Windows cannot handle ':' in a filename, "java:" is quietly converted to "java". </li>
 <li>Unit Tests written and plugged into Maven. </li>
 </ul>
