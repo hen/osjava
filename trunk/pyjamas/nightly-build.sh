@@ -103,7 +103,7 @@ do
     fi
     if [ -e ERROR.log ];
     then
-        count=`cat ERROR.log | grep 'BUILD FAILED' | wc -l | sed 's/ //g'`
+        count=`cat ERROR.log | grep 'BUILD FAILED\|build cannot continue' | wc -l | sed 's/ //g'`
         if [ $count != '0' ];
         then
             # errors in report
