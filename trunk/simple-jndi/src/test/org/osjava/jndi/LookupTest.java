@@ -67,12 +67,38 @@ public class LookupTest extends TestCase {
 
     public void testList2Lookup() {
         try {
-            ArrayList list2 = new ArrayList();
-            list2.add( "Henri" );
-            list2.add( "Fred" );
-            assertEquals( list2, lookup("name") );
+            ArrayList list = new ArrayList();
+            list.add( "Henri" );
+            list.add( "Fred" );
+            assertEquals( list, lookup("name") );
             assertEquals( "yandell.org", lookup("url") );
             assertEquals( "Foo", this.ctxt.lookup("com.genjava") );
+        } catch(NamingException ne) {
+            fail("NamingException: "+ne.getMessage());
+        }
+    }
+
+    public void testHierarchicalLookup() {
+        try {
+            ArrayList list1 = new ArrayList();
+            list1.add("1");
+            list1.add("3");
+            ArrayList list2 = new ArrayList();
+            list2.add("2");
+            list2.add("4");
+            assertEquals( list1, lookup("hierarchy.test.path.one") );
+            assertEquals( list2, lookup("hierarchy.test.path.two") );
+
+// depends on Xml or Properties/Ini
+//            HierarchicalMap hmap = (HierarchicalMap) lookup("hierarchy.test.path");
+//            assertEquals( HierarchicalMap.class, hmap.get("one").getClass() );
+//            assertEquals( HierarchicalMap.class, hmap.get("two").getClass() );
+// this one should have two hierarchical maps, one with one=1, two=2 and one with one=3, two=4
+//            System.out.println( lookup("hierarchy.test.path") );
+
+// ?? what should be here?
+//            System.out.println( lookup("hierarchy.test") );
+//            System.out.println( lookup("hierarchy") );
         } catch(NamingException ne) {
             fail("NamingException: "+ne.getMessage());
         }

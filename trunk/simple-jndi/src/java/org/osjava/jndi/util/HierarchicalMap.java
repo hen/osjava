@@ -16,9 +16,12 @@ import org.osjava.convert.Convert;
 
 // There is a potential bug, but it is rare, and a fix is 
 // scheduled. Also there are many opportunities for optimisation.
+// Was once known as FQMap in GenJava util library
 /**
  * A map which nests maps depending on a separator in the key.
  * The default case is to use the '.' character. 
+ * It is based on the FQMap in the gj-core library, but has 
+ * been adapted for simple-jndi's hierarchy requirements.
  */
 public class HierarchicalMap implements Map {
 
@@ -38,7 +41,7 @@ public class HierarchicalMap implements Map {
         return new HierarchicalMap(delimiter);
     }
 
-    public String getSeperationDelimiter() {
+    public String getSeparationDelimiter() {
         return delimiter;
     }
 
@@ -255,7 +258,7 @@ public class HierarchicalMap implements Map {
             ((List)obj).add(value);
             value = obj;
         }
-if(org.osjava.jndi.PropertiesContext.DEBUG)        System.err.println("[PROP]Setting: "+key+"="+value);
+if(org.osjava.jndi.PropertiesContext.DEBUG)        System.err.println("[HMAP]Setting: "+key+"="+value);
 
         if(key instanceof String) { 
             String keyStr = (String)key;
