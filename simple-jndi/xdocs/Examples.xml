@@ -12,6 +12,9 @@
 Simple-JNDI stores values in multiple .properties, xml or ini files and are looked up using a specified name convention, such as dot or slash delimited. It is also possible to set the type of object a property represents. Following are some examples.
 </p>
 </section>
+<section name="Downloadable Examples">
+<p>In addition to the examples below, there are also downloadable examples which show how to set up a DataSource and simple and List property usage. </p>
+</section>
 <section name="Examples">
 <p>
 Imagine a file-structure looking like,
@@ -29,7 +32,7 @@ in which the files look like;
 <dl>
 <dt>default.properties</dt>
 <dd>
-name=Prototype
+name=Prototype<br />
 url=http://www.generationjava.com/
 </dd>
 <dt>debug.properties</dt>
