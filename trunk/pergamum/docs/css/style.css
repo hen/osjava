@@ -46,12 +46,12 @@
          text-align: right;
     }
 
-    .help a:link{
+    .banner a:link, .help a:link{
         color:white;
         text-decoration:none;
    }
 
-    .help a:visited { 
+    .banner a:visited, .help a:visited { 
         color:white;
         text-decoration:none;
     }
