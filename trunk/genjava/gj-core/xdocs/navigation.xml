@@ -8,9 +8,6 @@
       <item name="News"              href="/News.html"/>
       <item name="Clover Report"              href="/clover/"/>
       <item name="Download" href="http://www.osjava.org/releases/official/genjava-core/"/>
-      <item name="Site archives" href="/Archives.html">
-        <item name="GenJava-Core v2.1"   href="http://www.generationjava.com/projects/GenJavaCore.shtml"/>
-      </item>
     </menu>
   </body>
 </project>
