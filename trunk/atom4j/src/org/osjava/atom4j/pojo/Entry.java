@@ -248,8 +248,8 @@ public class Entry
      
         buf.append("    <author>\n");
         buf.append("      <name>" + noNull( getAuthor().getName() ) + "</name>\n");
-        buf.append("      <homepage>" + noNull( getAuthor().getHomepage() ) + "</homepage>\n");
-        buf.append("      <weblog>" + noNull( getAuthor().getWeblog() ) + "</weblog>\n");
+        buf.append("      <homepage>" + noNull( getAuthor().getUrl() ) + "</homepage>\n");
+        buf.append("      <weblog>" + noNull( getAuthor().getEmail() ) + "</weblog>\n");
         buf.append("    </author>\n");
     
         buf.append("    <issued>" + EntryReader.formatIso8601(this.getIssued()) + "</issued>\n");

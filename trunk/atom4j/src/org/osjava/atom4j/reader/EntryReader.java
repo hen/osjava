@@ -52,8 +52,8 @@ public class EntryReader extends AtomReader
                 
         digester.addObjectCreate("entry/author",       "org.osjava.atom4j.pojo.Author");
         digester.addCallMethod("entry/author/name",    "setName", 0);
-        digester.addCallMethod("entry/author/homepage","setHomepage", 0);
-        digester.addCallMethod("entry/author/weblog",  "setWeblog", 0);
+        digester.addCallMethod("entry/author/url",     "setUrl", 0);
+        digester.addCallMethod("entry/author/email",   "setEmail", 0);
         digester.addSetNext("entry/author", "setAuthor", "org.osjava.atom4j.pojo.Author");
         
         digester.addObjectCreate("entry/content",   "org.osjava.atom4j.pojo.Content");
@@ -117,8 +117,6 @@ public class EntryReader extends AtomReader
             "" + 
             "<author>  " + 
             "  <name>Bob B. Bobbington</name>  " + 
-            "  <homepage>http://bob.name/</homepage>  " + 
-            "  <weblog>http://bob.blog/</weblog>  " + 
             "</author>  " + 
             "" + 
             "<issued>2003-02-05T12:29:29</issued>  " + 

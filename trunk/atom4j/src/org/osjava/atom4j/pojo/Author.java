@@ -9,14 +9,14 @@ package org.osjava.atom4j.pojo;
 public class Author
 {
     private String name;
-    private String homepage;
-    private String weblog;
+    private String url;
+    private String email;
     /**
      * @return
      */
-    public String getHomepage()
+    public String getUrl()
     {
-        return homepage;
+        return url;
     }
 
     /**
@@ -30,17 +30,17 @@ public class Author
     /**
      * @return
      */
-    public String getWeblog()
+    public String getEmail()
     {
-        return weblog;
+        return email;
     }
 
     /**
      * @param string
      */
-    public void setHomepage(String string)
+    public void setUrl(String string)
     {
-        homepage= string;
+        url= string;
     }
 
     /**
@@ -54,9 +54,9 @@ public class Author
     /**
      * @param string
      */
-    public void setWeblog(String string)
+    public void setEmail(String string)
     {
-        weblog= string;
+        email= string;
     }
 
 }
