@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<document>
+
+  <properties>
+      <author email="bayard@generationjava.com">Henri Yandell</author>
+      <title>Why?</title>
+  </properties>
+
+  <body>
+    <section name="Why a scraping engine?">
+<p>I need a system that will allow me to quickly write http scrapers, without 
+having to implement the same code again and again. This pays back in development speed, stability and maintenance. </p>
+
+    </section>
+    <section name="What is a scraping engine?">
+
+<p>The point of the scraping engine is to have most of the legwork of scraping taken care of and just let the programmer worry about the actual parsing. In reality it's not web-based or scraping-based but is just a framework which grabs content from somewhere, and runs some form of transformation on that content.</p>
+
+    </section>
+    <section name="Why simple-jndi for configuration?">
+
+<p>This is another project of mine. I've found it very nice for configuring systems as there is zero code to add a new configuration option. </p>
+
+</section>
+</body>
+</document>
