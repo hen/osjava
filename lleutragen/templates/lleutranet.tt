@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<title>[% this_section %] page</title>
+
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+
+<link href="../../hendocument.css" rel="stylesheet" type="text/css" />
+
+</head>
+
+
+
+<body class="[% this_section %]">
+
+
+
+<!-- header -->
+
+<br/>
+
+<div id="nav">
+
+<ul>
+
+[% FOREACH section IN sections -%]
+<li id="nav-[% section %]"><a href="[% section %].html">[% section %]</a></li>
+[% END -%]
+
+</ul>
+
+<span id="navclear"></span>
+
+</div>
+
+<!-- end of header -->
+
+
+
+<p><b><a href="http://lleu.genscape.com/homepage.html">lleutranet</a> - [% this_section %]</b></p>
+
+      [% FOREACH image IN db.section.$this_section.image -%]
+        <a href="[% image.link %]"><img align="right" src="[% image.uri %]" border="0"/></a>
+      [% END -%]
+
+   [% FOREACH category IN db.section.$this_section.category.keys -%]
+   <div style="padding: 1px; float: left">
+   <u>[% category %]</u>
+    <ul>
+    [% FOREACH bookmark IN db.section.$this_section.category.$category.bookmark -%]
+      <li><a href="[% bookmark.uri %]">[% bookmark.label %]</a></li>
+    [% END -%]
+    </ul>     
+   </div>
+   [% END -%]
+
+
+</body>
+
+</html>
+
