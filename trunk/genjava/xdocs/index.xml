@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<document>
+
+  <properties>
+      <author email="bayard@generationjava.com">Henri Yandell</author>
+      <title>Genjava</title>
+  </properties>
+
+  <body>
+    <section name="components">
+      <p>Genjava is a repository of reusable components. The released components are: </p>
+      <table>
+        <tr><td>gj-beans</td><td>A bean introspection library. </td></tr>
+        <tr><td>gj-core</td><td>The largest of the components, Core contains many things dependent on the JDK. </td></tr>
+        <tr><td>gj-csv</td><td>A component for reading and writing comma-separated-value files. </td></tr>
+        <tr><td>gj-gui</td><td>An assortment of widgets and other GUI components.</td></tr>
+        <tr><td>gj-mail</td><td>A helper for the Sun java-mail API. </td></tr>
+        <tr><td>gj-scrape</td><td>Set of helpers for dealing with HTML and XML without having to parse it. </td></tr>
+        <tr><td>gj-servlet</td><td>A little bit of Servlet helping code. </td></tr>
+        <tr><td>gj-tools</td><td>Command line tools framework, with a couple of tools. Designed to make it simpler to push out a command line program. </td></tr>
+        <tr><td>gj-xml</td><td>A tiny XML parser and an XML based Properties class. </td></tr>
+      </table>
+
+    </section>
+  </body>
+</document>
