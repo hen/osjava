@@ -59,7 +59,7 @@ public class PoolSetup {
             Class.forName("org.apache.commons.dbcp.PoolingDriver");
         } catch(ClassNotFoundException cnfe) {
             // not too good
-            System.err.println("WARNING: DBCP needed but no in the classpath. ");
+            System.err.println("WARNING: DBCP needed but not in the classpath. ");
         }
         PoolingDriver driver = (PoolingDriver) DriverManager.getDriver("jdbc:apache:commons:dbcp:");
         driver.registerPool(pool, connectionPool);
