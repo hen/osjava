@@ -5,10 +5,11 @@
 <%
     String groupName = request.getParameter(ReportRunnerServlet.GROUP);
     String reportName = request.getParameter(ReportRunnerServlet.REPORT);
+    Report report = ReportFactory.getReport(groupName, reportName);
 %>
 
 <div class="feedback">
-<p>You have chosen the <%= groupName %>/<%= reportName %> report. </p>
+<p>You have chosen the <%= report.getLabel() %> report from the <%= report.getReportGroup().getLabel() %> report group. </p>
 </div>
 
 <div class="input">
@@ -19,7 +20,6 @@
 <input type="hidden" name="<%= ReportRunnerServlet.GROUP %>" value="<%= groupName %>">
 <table>
 <%
-    Report report = ReportFactory.getReport(groupName, reportName);
     Param[] params = report.getParams();
     for(int i=0; i<params.length; i++) {
         Choice[] choices = report.getParamChoices(params[i]);

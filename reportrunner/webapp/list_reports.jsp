@@ -4,10 +4,11 @@
 
 <%
     String groupName = request.getParameter(ReportRunnerServlet.GROUP);
+    ReportGroup group = ReportFactory.getReportGroup(groupName);
 %>
 
 <div class="feedback">
-<p>You have chosen to run a <%= groupName %> kind of report. </p>
+<p>You have chosen to run from the <%= group.getLabel() %> report group. </p>
 </div>
 
 <div class="input">
