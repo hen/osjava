@@ -92,25 +92,17 @@ public class PayloadContractor {
             }
             System.out.println("");
 
+            // TODO: Look for args[1] being a .properties file 
+            //       with the org.osjava.payload=true property set.
+            // If so, store at the top level.
+
             // loop over every argument, handling recursion, 
             // and pushing into the payload/ directory
             System.out.print("Contracting payload body");
             for(int i=1; i<args.length; i++) {
                 String filename = args[i];
                 File file = new File(filename);
-                if(file.isDirectory()) {
-                    // recurse, ignore as we'll move to FileFinder
-                } else {
-                    FileInputStream fis = new FileInputStream(file);
-                    JarEntry entry = new JarEntry("payload/"+filename);
-                    // read time of file
-                    entry.setTime(System.currentTimeMillis());
-// ???                    entry.setSize();
-                    jout.putNextEntry(entry);
-                    IOUtils.pushBytes(fis, jout);
-                    jout.closeEntry();
-                }
-                System.out.print(".");
+                storeFile(jout, file);
             }
 
             System.out.println("\nFinished. ");
@@ -124,4 +116,24 @@ public class PayloadContractor {
         }
     }
 
+    private static void storeFile(JarOutputStream jout, File file) throws IOException {
+        if(file.isDirectory()) {
+            // recurse
+            File[] children = file.listFiles();
+            int sz = children.length;
+            for(int i=0; i<sz; i++) {
+                storeFile(jout, children[i]);
+            }
+        } else {
+            FileInputStream fis = new FileInputStream(file);
+            JarEntry entry = new JarEntry("payload/"+file.toString());
+            // read time of file
+            entry.setTime(System.currentTimeMillis());
+            entry.setSize( file.length() );
+            jout.putNextEntry(entry);
+            IOUtils.pushBytes(fis, jout);
+            jout.closeEntry();
+            System.out.print(".");
+        }
+    }
 }
