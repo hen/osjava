@@ -8,10 +8,7 @@
       <item href="index.html" name="Component list"/>
       <item href="Genjava.html" name="What is Genjava?"/>
       <item name="Downloads"   href="http://www.osjava.org/releases/official/genjava/"/>
-    </menu>
-    <menu name="Resources">
-      <item name="Mailing list"       href="/mail-lists.html"/>
-      <item name="Bug tracking"       href="/issue-tracking.html"/>
+      <item name="License"       href="/license.html"/>
     </menu>
     <menu name="Genjava Projects">
       <item href="multiproject/gj-beans/" name="gj-beans"/>
@@ -23,6 +20,14 @@
       <item href="multiproject/gj-servlet/" name="gj-servlet"/>
       <item href="multiproject/gj-tools/" name="gj-tools"/>
       <item href="multiproject/gj-xml/" name="gj-xml"/>
+    </menu>
+    <menu name="Resources">
+      <item name="Mailing list"       href="/mail-lists.html"/>
+      <item name="Bug tracking"       href="/issue-tracking.html"/>
+    </menu>
+    <menu name="CVS reports">
+      <item name="CVS History"       href="/changelog-report.html"/>
+      <item name="CVS Statistics"       href="/statcvs/index.html"/>
     </menu>
   </body>
 </project>
