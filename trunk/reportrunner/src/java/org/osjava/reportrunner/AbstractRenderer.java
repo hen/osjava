@@ -27,7 +27,9 @@ public abstract class AbstractRenderer implements Renderer {
     }
 
     public void display(Report report, OutputStream out) throws IOException {
-        display( report, new OutputStreamWriter(out) );
+        Writer writer = new OutputStreamWriter(out);
+        display( report, writer );
+        writer.flush();
     }
 
     public abstract void display(Report report, Writer out) throws IOException;
