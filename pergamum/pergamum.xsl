@@ -10,6 +10,7 @@
       <head>
        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
        <title><xsl:value-of select="@name"/></title>
+       <link href="css/style.css" rel="stylesheet" type="text/css" />
       </head>
       <body>
        <xsl:apply-templates/>
@@ -104,8 +105,8 @@
     <xsl:variable name="pubName">
       <xsl:value-of select="document('db/publishers.xml')/publishers/publisher[@id=$pub]/@name"/>
     </xsl:variable>
-    <li><div align="left"><a href="book-{$isbn}.html"><xsl:value-of select="$name"/></a></div> 
-    <div align="right">(<a href="{$pubUri}"><xsl:value-of select="$pubName"/></a>) - <a href="http://www.amazon.com/exec/obidos/tg/detail/-/{$isbn}">[amz]</a> - <a href="http://www.bookpool.com/.x/1/sm/{$isbn}">[bkp]</a></div></li>
+    <li><div class="book-name"><a href="book-{$isbn}.html"><xsl:value-of select="$name"/></a></div> 
+    <span class="publisher-name">(<a href="{$pubUri}"><xsl:value-of select="$pubName"/></a>)</span> - <span class="amz"><a href="http://www.amazon.com/exec/obidos/tg/detail/-/{$isbn}">[amz]</a></span> - <span class="bkp"><a href="http://www.bookpool.com/.x/1/sm/{$isbn}">[bkp]</a></span></li>
   </xsl:template>
 
   <!-- turns a book.isbn into a full table -->
@@ -131,12 +132,12 @@
     <xsl:variable name="review">
       <xsl:value-of select="document('db/reviews.xml')/reviews/review[@isbn=$isbn]"/>
     </xsl:variable>
-    <div><xsl:value-of select="$name"/></div><br/>
-    <div><a href="{$url}">url</a></div><br/>
-    <div>(<a href="{$pubUri}"><xsl:value-of select="$pubName"/></a>)</div><br/>
-    <div><a href="http://www.amazon.com/exec/obidos/tg/detail/-/{$isbn}">[amz]</a> - <a href="http://www.bookpool.com/.x/1/sm/{$isbn}">[bkp]</a></div><br/>
-    <div>Review</div><br/>
-    <div><xsl:value-of select="$review"/></div>
+    <div class="book-name"><xsl:value-of select="$name"/></div><br/>
+    <div class="book-url"><a href="{$url}">url</a></div><br/>
+    <div class="publisher-name">(<a href="{$pubUri}"><xsl:value-of select="$pubName"/></a>)</div><br/>
+    <span class="amz"><a href="http://www.amazon.com/exec/obidos/tg/detail/-/{$isbn}">[amz]</a></span> - <span class="bkp"><a href="http://www.bookpool.com/.x/1/sm/{$isbn}">[bkp]</a></span><br/>
+    <div class="sub-title">Review</div><br/>
+    <div class="review-text"><xsl:value-of select="$review"/></div>
   </xsl:template>
 
   <xsl:template match="pg:include">

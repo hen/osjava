@@ -1,0 +1,16 @@
+    body{font-family:verdana,tahoma;}
+    td{font-family:verdana,tahoma;}
+    dt{font-weight:bold;}
+    code{background:#eeeeee;}
+
+    .sub-title { background:#ff0000;}
+    .banner { background:#0000ff;}
+    .logo { background:#ff2244;}
+    .publisher-name { background:#ffff00;}
+    .category-name { background:#00ff00;}
+    .book-name { background:#009999;}
+    .book-url { background:#009900;}
+    .bkp { background:#000099;}
+    .amz { background:#990000;}
+    .review-text { background:#990099;}
+
