@@ -59,7 +59,6 @@ public class MBoxMimeMessage extends MimeMessage {
     }
 
     public void parseMBox(Part mimePart, String body) throws MessagingException {
-//        System.err.println("BODY["+body+"]");
 // Date: 26 Feb 2001 00:11:05 +0000
 // From: <email>
 // To: <email>
@@ -142,13 +141,10 @@ public class MBoxMimeMessage extends MimeMessage {
                         mimePart.setContent(multi);
                         for(int k=0; k<attachments.length; k++) {
                             String attach = attachments[k];
-//                            System.err.println("Attaching: "+attach);
                             int idx = attach.indexOf(" ");
                             int idx2 = attach.indexOf(" ", idx+1);
-//                            System.err.println("idx:"+idx+"idx2:"+idx2);
                             String filename = attach.substring(0,idx);
                             InputStream in = StreamW.loadFromClasspath(filename, this);
-//                            System.err.println("IN: "+in);
                             MimeBodyPart mbp = new MimeBodyPart();
                             mbp.setFileName(filename);
                             String type;
@@ -159,7 +155,6 @@ public class MBoxMimeMessage extends MimeMessage {
                                 type = attach.substring(idx+1, idx2);
                                 mbp.setDescription(attach.substring(idx2+1));
                             }
-//                            System.err.println("Type:"+type);
                             mbp.setContent("["+attach+"]",type);
                             multi.addBodyPart(mbp);
                         }
@@ -173,7 +168,6 @@ public class MBoxMimeMessage extends MimeMessage {
                         multipart = StringUtils.getNestedString(value, "\"", "\"");
                         mimeType = "multipart/"+subtype;
                     } else {
-//                        System.err.println("Setting mime type to :"+value);
                         mimePart.setHeader(hdr, value);
                         mimeType = value;
                     }
@@ -181,7 +175,6 @@ public class MBoxMimeMessage extends MimeMessage {
                 if("Content-Transfer-Encoding".equals(hdr)) {
                     // ignore
                 } else {
-//                    System.err.println("SETTING: "+hdr+": "+value);
                     mimePart.setHeader(hdr, value);
                 }
             }
@@ -190,7 +183,6 @@ public class MBoxMimeMessage extends MimeMessage {
         String[] rest = CollectionsW.getSubArray( lines, i+1 ); 
         body = StringUtils.join(rest, "\n");
 
-//        System.err.println("Multi: "+multipart);
         if(multipart != null) {
             // we know the flag at which the multipart stuff will be 
             // shown. Then we have a body of text which should be set text?,
@@ -213,7 +205,6 @@ public class MBoxMimeMessage extends MimeMessage {
             for(int j=0; j<chunks.length; j++) {
                 // TODO: try looking in chunk[j] to see if we think it's a 
                 // multipart....  if possible... can a MultiP contain a MP?
-//System.err.println("Looking at: ["+chunks[j]+"]");
                 BodyPart mp = new MimeBodyPart();
                 parseMBox(mp, chunks[j]);
                 mu.addBodyPart(mp);
@@ -225,10 +216,8 @@ public class MBoxMimeMessage extends MimeMessage {
                 mimePart.setContent(body, mimeType);
             } else {
                 if(mimePart == this) {
-//System.err.println("Setting this["+body+"]");                
                     super.setText(body);
                 } else {
-//System.err.println("Setting other["+body+"]");                
                     mimePart.setText(body);
                 }
             }

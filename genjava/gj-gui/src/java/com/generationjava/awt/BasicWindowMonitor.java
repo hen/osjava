@@ -26,7 +26,6 @@ public class BasicWindowMonitor extends WindowAdapter {
      */
     public void windowClosing(WindowEvent e) {
         Window w = e.getWindow();
-        //System.err.println("Window size is: "+w.getSize());
         w.setVisible(false);
         w.dispose();
         if(this.exit) {

@@ -212,11 +212,9 @@ final public class StringW {
             // on the last line
             if(i > sz - width) {
                 buffer.append(str.substring(i));
-//                System.err.print("LAST-LINE: "+str.substring(i));
                 break;
             }
 
-//            System.err.println("loop[i] is: "+i);
             // the current line
             substr = str.substring(i, i+width);
 
@@ -224,19 +222,15 @@ final public class StringW {
             idx = substr.indexOf(delim);
             if(idx != -1) {
                 buffer.append(substr.substring(0,idx));
-//                System.err.println("Substr: '"+substr.substring(0,idx)+"'");
                 buffer.append(delim);
                 i -= width-idx-delim.length();
                 
-//                System.err.println("loop[i] is now: "+i);
-//                System.err.println("found-whitespace: '"+substr.charAt(idx+1)+"'.");
                 // Erase a space after a delim. Is this too obscure?
                 if(substr.charAt(idx+1) != '\n') {
                     if(Character.isWhitespace(substr.charAt(idx+1))) {
                         i++;
                     }
                 }
-//                System.err.println("i -= "+width+"-"+idx);
                 continue;
             }
 
@@ -247,34 +241,27 @@ final public class StringW {
             for(int j=width; j>0; j--) {
                 if(Character.isWhitespace(chrs[j-1])) {
                     idx = j;
-//                    System.err.println("Found whitespace: "+idx);
                     break;
                 }
             }
 
             // idx is the last whitespace on the line.
-//            System.err.println("idx is "+idx);
             if(idx == -1) {
                 for(int j=width; j>0; j--) {
                     if(chrs[j-1] == '-') {
                         idx = j;
-//                        System.err.println("Found Dash: "+idx);
                         break;
                     }
                 }
                 if(idx == -1) {
                     buffer.append(substr);
                     buffer.append(delim);
-//                    System.err.print(substr);
-//                    System.err.print(delim);
                 } else {
                     if(idx != width) {
                         idx++;
                     }
                     buffer.append(substr.substring(0,idx));
                     buffer.append(delim);
-//                    System.err.print(substr.substring(0,idx));
-//                    System.err.print(delim);
                     i -= width-idx;
                 }
             } else {
@@ -296,16 +283,11 @@ final public class StringW {
                     // insert spaces
                     buffer.append(substr.substring(0,idx));
                     buffer.append(StringUtils.repeat(" ",width-idx));
-//                    System.err.print(substr.substring(0,idx));
-//                    System.err.print(StringUtils.repeat(" ",width-idx));
                     buffer.append(delim);
-//                    System.err.print(delim);
-//                    System.err.println("i -= "+width+"-"+idx);
                     i -= width-idx;
 //                }
             }
         }
-//        System.err.println("\n*************");
         return buffer.toString();
     }
 

@@ -80,7 +80,6 @@ public class Pair {
         if(two.cdr() == null) {
             this.two = two.car();
         } 
-//        System.out.println("Building Pair from: "+one+", "+two+" gives "+this);
     }
     
     /**

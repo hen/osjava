@@ -176,15 +176,12 @@ public class HtmlW {
     // Copy of XmlW at the moment
     static public String getContent(String tag, String text) {
         int idx = HtmlW.getIndexOpeningTag(tag, text);
-//        System.err.println("IDX"+text+": "+idx);
         if(idx == -1) {
             return "";
         }
         text = text.substring(idx);
         int end = HtmlW.getIndexClosingTag(tag, text);
-//        System.err.println("END[]: "+end);
         idx = text.indexOf('>');
-//        System.err.println("EDX["+text+"]: "+idx);
         if(idx == -1) {
             return "";
         }

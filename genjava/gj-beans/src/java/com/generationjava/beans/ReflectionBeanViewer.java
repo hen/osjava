@@ -156,8 +156,6 @@ public class ReflectionBeanViewer extends AbstractBeanViewer {
             return;
         }
 
-        System.err.println("CONVERT-TO"+setMethod.getParameterTypes()[0]);
-        System.err.println("CONVERT:"+value);
         value = BeansW.convert(value, setMethod.getParameterTypes()[0]);
         
         try {
