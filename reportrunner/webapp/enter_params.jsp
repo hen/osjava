@@ -10,7 +10,7 @@
 
 <p>It requires the following information: </p>
 
-<form action="/checkparameters">
+<form action="checkparameters">
 <input type="hidden" name="<%= ReportRunnerServlet.REPORT %>" value="<%= reportName %>">
 <input type="hidden" name="<%= ReportRunnerServlet.GROUP %>" value="<%= groupName %>">
 <%
