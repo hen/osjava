@@ -43,7 +43,7 @@
   <url>http://www.osjava.org/trail-taglib/</url>
 
   <!-- You'll need to log into JIRA and find out what your ID is -->
-  <issueTrackingUrl>http://www.osjava.org:8080/jira/secure/BrowseProject.jspa?id=YOUR_ID</issueTrackingUrl>
+  <issueTrackingUrl>http://www.osjava.org:8080/jira/secure/BrowseProject.jspa?id=10041</issueTrackingUrl>
 
   <repository>
     <connection>scm:cvs:pserver:anonymous@cvs.osjava.org:/var/cvs:trail-taglib</connection>
