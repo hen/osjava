@@ -8,28 +8,28 @@
   <organization>
     <name>OSJava</name>
     <url>http://www.osjava.org/</url>
-    <logo>/images/osjava.gif</logo>
+    <logo>http://www.osjava.org/images/osjava.gif</logo>
   </organization>
   <inceptionYear>2003</inceptionYear>
-  <package>com.generationjava.jndi</package>
-  <logo>/images/1x1.gif</logo>
+  <package>org.osjava.scraping</package>
+  <logo>http://www.osjava.org/images/1x1.gif</logo>
   
   <!-- Gump integration -->
   <gumpRepositoryId>scraping-engine</gumpRepositoryId>
 
   <description>
-    A simple implementation of JNDI. It is entirely library based, so no server instances are started, and it sits upon Java .properties files, so it is easy to use and simple to understand. The .properties files may be either on the file system or in the classpath. 
+      A web-scraping engine.
   </description>
   
-  <shortDescription>A JNDI implementation using .properties</shortDescription>
+  <shortDescription>A web-scraping engine</shortDescription>
 
-  <url>http://www.generationjava.com/</url>
+  <url>http://www.osjava.org/</url>
   <!--
   <issueTrackingUrl>http://nagoya.apache.org/scarab/servlet/scarab/</issueTrackingUrl>
   -->
   <siteAddress>www.generationjava.com/maven/scraping-engine</siteAddress>
-  <siteDirectory>/sites/com/generationjava/www/maven/genjava/scraping-engine/</siteDirectory>
-  <distributionDirectory>/sites/com/generationjava/www/maven/builds/</distributionDirectory>
+  <siteDirectory>/sites/org/osjava/www/maven/scraping-engine/</siteDirectory>
+  <distributionDirectory>/sites/org/osjava/www/releases/official/</distributionDirectory>
 
   <repository>
     <connection>scm:cvshen@umbongo.flamefew.net:/var/cvs:scraping-engine</connection>
@@ -74,6 +74,10 @@
   <!-- Need to mark these as compile-time/run-time -->
 
   <dependencies>
+    <dependency>
+      <id>jdbc</id>
+      <version>2.0</version>
+    </dependency>
     <dependency>
       <id>log4j</id>
       <version>1.2.7</version>
