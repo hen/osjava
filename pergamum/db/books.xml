@@ -43,7 +43,7 @@
   <book isbn="0131425420" name="Eclipse Modeling Framework" publisher="aw" url="http://www.aw-bc.com/catalog/academic/product?ISBN=0131425420" published="2003-08"/>
   <book isbn="0321205758" name="Contributing to Eclipse: Principles, Patterns, and Plugins" publisher="aw" url="http://www.aw-bc.com/catalog/academic/product?ISBN=0321205758" published="2003-10"/>
   <book isbn="1583470441" name="Eclipse: Step by Step" publisher="mc" url="http://www.mc-store.com/5059.html" published=""/>
-  <book isbn="193239415X" name="Hibernate in Action" publisher="man" url="#" published=""/>
+  <book isbn="193239415X" name="Hibernate in Action" publisher="man" url="http://www.manning.com/catalog/view.php?book=bauer" published="2004-08"/>
   <book isbn="1590592816" name="JBoss 3.2 Deployment and Administration" publisher="apr" url="http://apress.com/book/bookDisplay.html?bID=245" published="2003-11"/>
   <book isbn="0672323478" name="JBoss Administration and Development" publisher="sam" url="http://www.sams.com/isapi/product_id~{4B73CCDC-9D30-429F-A8A4-E73F14730DC8}/catalog/product.asp" published="2002-03"/>
   <book isbn="013112594X" name="Core JBoss 3.X: J2EE Application Development and Deployment" publisher="ptr" url="#" published=""/>
