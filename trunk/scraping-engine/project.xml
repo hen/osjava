@@ -22,7 +22,7 @@
 
   <url>http://www.osjava.org/</url>
   <issueTrackingUrl>http://www.osjava.org:8080/jira/secure/BrowseProject.jspa?id=10021</issueTrackingUrl>
-  <siteAddress>www.osjava.org/maven/scraping-engine</siteAddress>
+  <siteAddress>dist.osjava.org/maven/scraping-engine</siteAddress>
   <siteDirectory>/sites/org/osjava/www/maven/scraping-engine/</siteDirectory>
   <distributionDirectory>/sites/org/osjava/www/releases/official/</distributionDirectory>
 
@@ -91,7 +91,7 @@
     </dependency>
     <dependency>
       <id>norbert</id>
-      <version>0.2</version>
+      <version>0.3</version>
       <url>http://www.osjava.org/norbert/</url>
     </dependency>
   </dependencies>

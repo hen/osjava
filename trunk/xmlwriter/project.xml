@@ -83,8 +83,9 @@
       <jar>xmlParserAPIs-2.0.0.jar</jar>
     </dependency>
     <dependency>
-      <id>isorelax</id>
-      <version>20020414</version>
+      <groupId>msv</groupId>
+      <artifactId>isorelax</artifactId>
+      <version>20030807</version>
       <url>http://isorelax.sourceforge.net/</url>
     </dependency>
   </dependencies>

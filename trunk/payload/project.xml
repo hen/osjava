@@ -77,7 +77,7 @@
   <!-- One of the major parts of Maven. Record your dependencies here. 
        Look in http://www.ibiblio.org/maven for public copies of your 
        dependencies. There is an OSJava specific one which may 
-       need to be used, http://www.osjava.org/maven -->
+       need to be used, http://dist.osjava.org/maven -->
   <!--
   <dependencies>
     <dependency>
