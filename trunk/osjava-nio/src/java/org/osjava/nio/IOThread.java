@@ -4,6 +4,8 @@ import java.io.*;
 import java.nio.channels.*;
 import java.util.*;
 
+import org.apache.log4j.Logger;
+
 public class IOThread extends Thread {
 
     private Selector mySelector;
@@ -81,6 +83,7 @@ public class IOThread extends Thread {
     }
     
     public void run() {
+        Logger logger = Logger.getLogger(getClass());
         while (!isAborting()) {
             try {
                 // XXX: Workaround, Selector.select() never returns if
@@ -88,17 +91,18 @@ public class IOThread extends Thread {
                 // call Selector.wakeup() )
                 synchronized (this) {
                     try {
-                        while (mySelector.keys().size() == 0)
+                        while (mySelector.keys().size() == 0) {
                             wait();
+                        }
                     } catch (InterruptedException ie) {
-                        System.out.println("Breaking out of IOThread");
+                        logger.debug("Breaking out of IOThread");
                         break;
                     }
                 }
                 try {
-                    while (mySelector.select() == 0);
+                    while (mySelector.selectNow() == 0);
                 } catch (InterruptedIOException iie) {
-                    System.out.println("Breaking out of IOThread");
+                    logger.debug("Breaking out of IOThread");
                     break;
                 }
                 Set keys = mySelector.selectedKeys();

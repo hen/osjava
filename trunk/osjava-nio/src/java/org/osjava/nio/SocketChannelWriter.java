@@ -88,7 +88,7 @@ public class SocketChannelWriter extends Writer {
      * @param data the Bytebuffer containing the data to be written into 
      *        the writer.
      */
-    public void write(ByteBuffer data) {        
+    public void write(ByteBuffer data) {
         /* if the buffer is null the channel has been closed, and we need to 
          * do nothing */
         if(buffer == null) {
@@ -152,7 +152,6 @@ public class SocketChannelWriter extends Writer {
      */
     public void flush() throws IOException {
         parent.writeToChannel();
-
     }
 
     /** 
