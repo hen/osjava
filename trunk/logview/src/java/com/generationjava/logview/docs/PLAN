@@ -1,0 +1,182 @@
+Plan for World Domination - LogView 2001/09/29
+==============================================
+
+0) Design Log objects and a Log reporting framework.
+   DONE. See LogDesign.pdf and DESIGN
+
+1) Create a simple end to end system. Easy logs, ASCII table output.
+   DONE. See: LogViewScaffold.java test1() for example of end to end.
+
+2) Parse real Apache/Tomcat logs in a generic, definable way.
+   PROTOTYPE. Need to throw it at Common Log Format.
+   DONE. Appears to parse a proper log file fine. More work needed 
+         to make it more useful. Buildable from CLF syntax(cf 17) and XML.
+
+2.5) StreamLog. MemoryLog can't handle a real file due to lack of Mem.
+     Peaks at 60+ Meg and dies.
+     Need a StreamLog which switches us to piping concepts. 
+     This will at least require a StreamLogIterator. Pass a 
+     LogBuilder to the StreamLog's constructor. Also 
+     need to be able to clone a Log and a Builder.
+     DONE
+
+2.5x) Redesign to stream more. Get running end to end.
+      DONE
+      Memory now peaks at 21M and it doesn't fall over. Some 
+      questions to be asked as the design has been whittled 
+      to allow the expected streaming design to fully work.
+
+2.6) Rewrite UniqueLoglet and CountFieldLoglet.  DONE.
+     Modify Loglet structure to fit streaming.  DONE.
+
+2.7) Create new PDFs for current changes.
+
+3) Output to the Web. Output <table> bar-charts and <table> tables.
+   Prototype DONE!
+
+4) Handle the concept of a Visit in a generic way. MergedFieldLoglet.
+   [Merging log entrys into groups based on a particular field and 
+    an epsilon value]
+    Later. Too hard. Going for VisitLoglet atm.
+    VisitLoglet DONE.
+    1 known bug/lacking concerning 1 large visit overlapping 2 
+    1 feature. A visit is weak, is just hits on the same day.
+    smaller visits. the 2 smaller ones get merged.
+    todo: wtf to do with the output. a special reportlet is needed :(
+    Visits have added the idea of a Log which contains Logs, which 
+    is just weird. Maybe a LogContainer interface is needed, much 
+    as a File has a Directory.
+
+5) Sort logs. Hook to existing genjava bean comparator scheme??
+   A Loglet thing or a Reportlet thing?  SortLoglet! DONE
+
+6) Consider meta information about Logs etc. An empty Log should 
+    be able to tell the 'user' what fields it has and what types they are.
+
+7) Figure out Links. How to make an entry of a Report be shown as a 
+   <a> or some other form of connection to a new page. Something 
+   special about the Reportlet, or about the Renderer, or something 
+   you set on the Report before rendering?
+   Basically DONE. Very simple solution.
+
+8) Add type power. Date-specific handling, etc. Some standard 
+   type repository for all builders to use, and then all loglets/reportlets 
+   to act upon. For example, an IP would be stored as InetAddress. 
+
+9) Setup a server with a HTTP Header parser on it. Request hits.
+   PARTWAY. Need to have it save the header info in a Store 
+            static object and return a table of current browser's 
+            seen to the browser.
+   Or just do this in a Servlet? Unlikely that the servlet container 
+   will hide headers, but who knows.  LANCE Doing.
+
+10) Build a BrowserDetectorBean.  LANCE Doing.
+
+11) Write a DNSLoglet. Turns ip addresses into domain-names. Give 
+    it caching. Easy. INetAddress does this. Do we need the loglet, or 
+    just a way to stop INetAddress doing DNS lookup??
+    DnsLoglet. OverlayLogEvent created as a side effect.
+    DONE. Need to consider a DNS cache if performance is terrible, 
+    as it will be :)
+
+12) Output to PDF, WML, Swing. Output pie-graphs as PNGs. Output PNG Bar charts.
+    BMP.
+
+13) ImageMap applet that shows geographical logging.
+    Really this is a separate subproject. An ImageMap which can 
+    take data that determines the colors shown. ie) Map of the world.
+    Pass in the count for each domain-name. Assign each domain name 
+    to a set of co-ords, html_imagemap style. Assign each domain 
+    name to a url. Assign a key of numbers to html-colours.
+    Have the ImageMap draw out the shapes(?). 
+
+14) Email reports out. Hook to MBoxMimeMessage code.
+
+15) Ensure that Log4J and Custom log taglib suffice.
+
+16) Produce a Log that can come from Log4J directly, and/or a 
+    Category for Log4J that goes direct to reporting. This would 
+    probably be the ideal situation, dynamic logging rather than 
+    later action upon a static file.
+
+17) Make a specialised Apache log reader that can convert the apache 
+    custom log formatting syntax into the Logview syntax.
+
+LogFormat "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\"" combined
+LogFormat "%h %l %u %t \"%r\" %>s %b" common
+LogFormat "%{Referer}i -> %U" referer
+LogFormat "%{User-agent}i" agent
+
+    So a ApacheLogBuilder.COMBINED, ApacheLogBuilder.COMMON, REFERER, AGENT
+    and ApacheLogBuilder.getLogBuilder("%h %>s %b") etc.
+
+
+17.5) Read in XML formatted logs.
+
+    See if any pre-existing xml format exists for logs. Would assume it does.
+    Mail log4j?
+
+18) Investigate a Logger that binds directly into Tomcat.
+
+19) Create a system which rotates logs(?), is able to act upon partial 
+    logs, possibly using MemoryLog for speed on the smaller logs. 
+    Needs a way to save a log, and then more essentially, to merge 
+    the latest partial result into the main result.
+
+20) Test on varying size Log files etc.
+
+21) Document.
+
+22) Optimise.
+    SortedLimitedList insertIntoSort can be binaryd to improve speed.
+    Check last and then check middle one. Etc.
+
+23) Add a LoggerFilter Servlet2.3 Servlet Filter spec. Nice way to do 
+    logging of URL stuff.
+
+24) Decide on how StreamingLoglets and SinkLoglets work.
+    A SinkLoglet is one that has to merge all the events into a set of 
+    events in one operation. It needs to provide some standard methods 
+    for the parseEvent. Whereas a StreamingLoglet deals with parse 
+    overloading in a different way.
+    Then change existing loglets to use these. 
+    DONE. I think.
+
+25) Create a SinkLoglet version of SortLoglet.
+    Also create HeadLoglet and TailLoglet. Maybe ReverseLoglet?
+    Head DONE.
+    Tail loglet needs to store each one it gets until a size is 
+    hit, then once its done a full sweep, it stats doling out. So 
+    it's really a SinkLoglet.
+    A reverse Loglet is similar, but far heavier on memory.
+
+26) GrepFilterLoglet and ReplaceFilterLoglet. Create a standard FilterLoglet 
+    which takes a LogFilter object.
+    FilterLoglet and LogFilter DONE.
+
+27) DateFilter. Takes two dates and only says yay if a column is 
+    in between them.
+
+
+
+
+
+Class Todo
+----------
+
+VisitLoglet.   MOSTLY DONE.
+(FilterLoglet)
+  OroRegexFilterLoglet
+  EqualsLoglet
+ChangeLoglet
+  ReplaceLoglet
+  OroSubstituteLoglet
+HeadLoglet
+TailLoglet
+ReverseLoglet
+SortLoget(Sink version)
+
+HtmlRenderer.
+  HtmlTableRenderer
+  HtmlChartRenderer
+PngPieChartRenderer

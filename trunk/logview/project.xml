@@ -1,0 +1,95 @@
+<?xml version="1.0"?>
+<project>
+  
+  <pomVersion>3</pomVersion>
+  <id>genjava-logview</id>
+  <name>genjava-logview</name>
+  <currentVersion>0.5</currentVersion>
+  <organization>
+    <name>GenerationJava</name>
+    <url>http://www.generationjava.com/</url>
+    <logo>/images/logo.jpg</logo>
+  </organization>
+  <inceptionYear>2000</inceptionYear>
+  <package>com.generationjava</package>
+  <logo>/images/logview-logo.jpg</logo>
+  
+  <description>
+    A log reporting and analyser framework.
+  </description>
+  
+  <shortDescription>Store code</shortDescription>
+
+  <url>http://www.generationjava.com/</url>
+  <!--
+  <issueTrackingUrl>http://nagoya.apache.org/scarab/servlet/scarab/</issueTrackingUrl>
+  -->
+  <siteAddress>www.generationjava.com/maven/genjava/genjava-logview</siteAddress>
+  <siteDirectory>/sites/com/generationjava/www/maven/genjava-logview/</siteDirectory>
+  <distributionDirectory>/sites/com/generationjava/www/maven/builds/</distributionDirectory>
+
+  <repository>
+    <connection>scm:cvshen@umbongo.flamefew.net:/var/cvs:genjava-logview</connection>
+    <url>http://www.generationjava.com/view-cvs/viewcvs.cgi/genjava-logview/</url>
+  </repository>
+
+
+  <developers>
+
+    <developer>
+      <name>Henri Yandell</name>
+      <id>bayard</id>
+      <email>bayard@apache.org</email>
+      <organization></organization>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+
+  </developers>
+
+  <dependencies>
+    <dependency>
+      <id>oro</id>
+      <version>2.0.6</version>
+    </dependency> 
+    <dependency>
+      <groupId>genjava-core</groupId>
+      <artifactId>genjava-core</artifactId>
+      <version>1.0</version>
+    </dependency> 
+    <dependency>
+      <id>genjava-j2ee</id>
+      <version>0.2</version>
+    </dependency> 
+    <dependency>
+      <id>servletapi</id>
+      <version>2.3</version>
+    </dependency> 
+    <dependency>
+      <id>commons-lang</id>
+      <version>2.0</version>
+    </dependency> 
+    <dependency>
+      <id>commons-collections</id>
+      <version>3.0</version>
+    </dependency> 
+  </dependencies>
+
+  <build>
+
+    <nagEmailAddress>bayard@www.generationjava.com</nagEmailAddress>
+
+    <sourceDirectory>src/java</sourceDirectory>
+
+    <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
+    <aspectSourceDirectory></aspectSourceDirectory>
+
+    <!-- Unit test classes -->
+    <unitTestPatterns>
+      <unitTestPattern>include = **/*Test.java</unitTestPattern>
+    </unitTestPatterns>
+
+  </build>
+</project>
+
