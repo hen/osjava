@@ -14,6 +14,14 @@ public class ExcelRenderer extends AbstractRenderer {
     public void display(Result result, Report report, OutputStream out) throws IOException {
         ExcelWriter xls = new ExcelWriter(out);
 
+        Column[] columns = result.getHeader();
+        if(columns != null) {
+            for(int i=0; i<columns.length; i++) {
+                xls.writeField(columns[i].getLabel());
+            }
+            xls.endBlock();
+        }
+
         while(result.hasNextRow()) {
             Object[] row = result.nextRow();
             for(int j=0; j<row.length; j++) {
