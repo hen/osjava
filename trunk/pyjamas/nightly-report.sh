@@ -77,13 +77,15 @@ echo '</html></body>' >> $index
 
 for i in $LIST
 do
+    echo "Building report for $i"
 
     # now we create a pretty site
     cd $reportDir/$i
     local_report=report_`echo $i | sed 's/\//_/g'`.html
     report=$reportDir/$local_report
 
-    cat $buildDir/header.inc | sed "s/\${TITLE}/$i Nightly Build/" > $report
+    tmp=`echo $i | sed 's/\//\\\\\//g'` # wtf, this is a lot of escaping. WHY?
+    cat $buildDir/header.inc | sed "s/\${TITLE}/$tmp Nightly Build/" > $report
 
     if [ -e BUILD_TIME ]; 
     then
@@ -141,7 +143,6 @@ do
         echo '<pre>' `cat FAILED` '</pre>' >> $report
         echo '<hr>' >> $report
         echo '<pre>' `cat ERROR.log | sed 's/$/<br>/'` '</pre>' >> $report
-
     else
         echo '<pre>Build successful.</pre>' >> $report
 
