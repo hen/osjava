@@ -7,6 +7,7 @@ use Data::Dumper;
 use Time::Interval;
 use File::Copy;
 use Template;
+use POSIX qw(strftime);
 
 sub usage() {
     print "Usage:\n";
@@ -166,7 +167,7 @@ my @build_list = ();
         my $start = time();
         system("maven -b clean jar 2> ERROR.log > OUTPUT.log");
         my $end = time();
-#        my $duration = getInterval($start, $end, "string");
+        $buildable->{'duration'} = parseInterval(seconds => $end - $start, String => 1);
 
         # see if it was a failure
         my $failure = $? >> 8;
@@ -175,9 +176,9 @@ my @build_list = ();
                 # search the error log to see if it contains certain phrases
                 open(ERROR_FILE, 'ERROR.log');
                 while(<ERROR_FILE>) {
-                    if( /BUILD_FAILED|build cannot continue/ ) {
+                    if( /BUILD FAILED|build cannot continue/ ) {
 # seems to then grep for [ERROR] in OUTPUT.log and put this in ERROR.log
-                        $failure = 1; 
+                        $failure = 1;
                     }
                 }
                 close(ERROR_FILE);
@@ -189,9 +190,8 @@ my @build_list = ();
                 print "Need to mail out a failure. \n";
 #            cat $reportDir/$i/ERROR.log | mail -s "Failed to build $i" bayard@osjava.org
             }
-            $buildable->{'failed'} = "FAILED";
+            $buildable->{'failed'} = "There were errors in building $buildable->{'project'}"; 
         }
-
 
 
 # build the site - maven + ttk
@@ -200,8 +200,11 @@ my @build_list = ();
         # report build-time, build-date, update-reason
 
         my $reportDir = "${previousDirectory}/report/$buildable->{'directory'}";
+
         rmtree($reportDir);
         mkpath($reportDir);
+
+        copy "ERROR.log", "$reportDir/";
 
         # deploy reports
         move "target/docs/apidocs/", "$reportDir/apidocs/";
@@ -246,7 +249,7 @@ my @build_list = ();
         chdir $previousDirectory;
     }
 
-$timestamp = time();
+$timestamp = strftime("%Y/%m/%e %H:%M", localtime());
 
 
 # REPORT SYSTEM
@@ -263,23 +266,23 @@ $timestamp = time();
     foreach $buildable (@build_list) {
         print "Building report for $buildable->{'project'}\n";
 
-        $directory = "report/$buildable->{'directory'}";
+        $directory = "$buildable->{'directory'}";
   
         # create report pages from xml files
         my %reports;
         my @xml_reports = ('checkstyle', 'pmd', 'junit', 'simian', 'jdepend');
   
         foreach $xml_report (@xml_reports) {
-            if( -e "$directory/${xml_report}-report.xml" ) {
-                xdoc2html("$directory/${xml_report}-report.xml", "$directory/${xml_report}-report.html");
+            if( -e "report/$directory/${xml_report}-report.xml" ) {
+                xdoc2html("report/$directory/${xml_report}-report.xml", "report/$directory/${xml_report}-report.html");
                 $reports{$xml_report} = "$directory/${xml_report}-report.html";
             }
         }
   
         my %sub_sites = ('apidocs' => 'javadoc', 'xref' => 'source', 'jcoverage' => 'test coverage', 'builds' => 'builds');
         while( ($key, $value) = each %sub_sites) {
-            if(-e "$directory/$key") {
-                $reports{$key} = "$buildable->{'directory'}/$value";
+            if(-e "report/$directory/$key") {
+                $reports{$value} = "$directory/$key";
             }
         }
   
@@ -292,6 +295,7 @@ $timestamp = time();
             timestamp => $timestamp,
             reports => \%reports,
             build_reason => $action,
+            error_log_filename => "report/".$buildable->{'escapedDirectory'}."/ERROR.log",
         };
         $tt->process($input, $vars, "report/report_".$buildable->{'escapedDirectory'}.".html") || die $tt->error();
     }
