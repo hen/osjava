@@ -216,7 +216,6 @@ public class ExtendedThread extends Thread implements ExtendedRunnable {
      * @see org.osjava.threads.ExtendedRunnable#wakeup()
      */
     public void wakeup() {
-        System.out.println("Testing ExtendedThread");
         if(runnable == this) {
             synchronized(this) {
                 this.notify();
