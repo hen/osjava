@@ -12,11 +12,11 @@ public class ExcelRenderer extends AbstractRenderer {
     }
 
     public void display(Report report, OutputStream out) throws IOException {
-        Object[] data = report.execute();
+        Result data = report.execute();
         ExcelWriter xls = new ExcelWriter(out);
 
-        for(int i=0; i<data.length; i++) {
-            Object[] row = (Object[]) data[i];
+        while(data.hasNextRow()) {
+            Object[] row = data.nextRow();
             for(int j=0; j<row.length; j++) {
                 xls.writeField(""+row[j]);
             }

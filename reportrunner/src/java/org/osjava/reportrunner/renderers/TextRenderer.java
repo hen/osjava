@@ -10,10 +10,10 @@ import org.osjava.reportrunner.*;
 public class TextRenderer extends AbstractRenderer {
 
     public void display(Report report, Writer out) throws IOException {
-        Object[] data = report.execute();
+        Result data = report.execute();
         out.write("Report: "+report.getName()+"\n");
-        for(int i=0; i<data.length; i++) {
-            Object[] row = (Object[]) data[i];
+        while(data.hasNextRow()) {
+            Object[] row = data.nextRow();
             for(int j=0; j<row.length; j++) {
                 out.write(""+row[j]+"\t");
             }

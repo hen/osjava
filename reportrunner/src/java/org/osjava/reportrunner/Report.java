@@ -13,7 +13,7 @@ public interface Report {
     void setLabel(String label);
     Renderer[] getRenderers();
     void setRenderers(String renderers);
-    Object[] execute();
+    Result execute();
     Param[] getParams();
     void addParam(Param param);
     Choice[] getParamChoices(Param param);
