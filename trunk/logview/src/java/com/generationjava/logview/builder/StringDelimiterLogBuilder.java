@@ -2,8 +2,6 @@ package com.generationjava.logview.builder;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.generationjava.logview.Log;
-import com.generationjava.logview.LogBuilder;
 import com.generationjava.logview.LogEvent;
 import com.generationjava.logview.LogSource;
 

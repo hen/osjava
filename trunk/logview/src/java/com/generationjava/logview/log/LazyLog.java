@@ -1,12 +1,10 @@
 package com.generationjava.logview.log;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.apache.commons.collections.IteratorUtils;
 import com.generationjava.logview.Log;
 import com.generationjava.logview.Loglet;
-import com.generationjava.logview.LogEvent;
 import com.generationjava.logview.LogIterator;
 import com.generationjava.logview.LogViewException;
 import com.generationjava.logview.LogViewRuntimeException;

@@ -1,10 +1,5 @@
 package com.generationjava.logview.log;
 
-import java.util.Date;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.HashMap;
-
 import com.generationjava.logview.LogField;
 import com.generationjava.logview.LogType;
 import com.generationjava.logview.LogTypes;

@@ -1,10 +1,7 @@
 package com.generationjava.logview.log;
 
-import java.util.Iterator;
-
 import com.generationjava.logview.LogBuilder;
 import com.generationjava.logview.LogEvent;
-import com.generationjava.logview.LogIterator;
 import com.generationjava.logview.LogViewException;
 
 public class StreamingLogIterator extends AbstractLogIterator {

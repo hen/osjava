@@ -1,15 +1,12 @@
 package com.generationjava.logview.loglet;
 
 import java.util.Iterator;
-import java.util.List;
 
 import java.util.HashMap;
 
 import com.generationjava.math.Average;
 import org.apache.commons.lang.NumberUtils;
 
-import com.generationjava.logview.Log;
-import com.generationjava.logview.Loglet;
 import com.generationjava.logview.LogEvent;
 import com.generationjava.logview.LogField;
 import com.generationjava.logview.LogTypes;
@@ -70,7 +67,6 @@ public class AverageFieldLoglet extends SinkLoglet {
         LogField logfield = null;
         HashMap map = new HashMap();
         HashMap fieldsMap = new HashMap();
-        int sz = 0;
 
         while(logIt.hasNext()) {
             event = logIt.nextLogEvent();

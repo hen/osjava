@@ -7,8 +7,6 @@ import org.apache.commons.collections.MultiMap;
 import org.apache.commons.collections.MultiHashMap;
 import org.apache.commons.collections.SequencedHashMap;
 
-import com.generationjava.logview.Log;
-import com.generationjava.logview.Loglet;
 import com.generationjava.logview.LogEvent;
 import com.generationjava.logview.LogField;
 import com.generationjava.logview.LogTypes;

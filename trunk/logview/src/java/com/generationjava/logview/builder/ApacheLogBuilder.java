@@ -23,7 +23,7 @@ public class ApacheLogBuilder extends FormattedLogBuilder {
         if(format.charAt(0) == '$') {
             super.setFormat(format);
         } else {
-            // parse as an apache and convert on fly to the above
+            ; // TODO: parse as an apache and convert on fly to the above
         }
     }
 
