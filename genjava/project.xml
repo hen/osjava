@@ -15,11 +15,11 @@
   <package>com.generationjava</package>
   <logo>/images/1x1.gif</logo>
 
-  <url>http://www.osjava.org/genjava-core/${pom.id}/</url>
+  <url>http://www.osjava.org/genjava/${pom.id}/</url>
   <issueTrackingUrl>http://www.osjava.org:8080/jira/secure/BrowseProject.jspa?id=10010</issueTrackingUrl>
-  <siteAddress>www.osjava.org/genjava-core</siteAddress>
-  <siteDirectory>/sites/org/osjava/www/releases/official/genjava-core/${pom.id}/</siteDirectory>
-  <distributionDirectory>/sites/org/osjava/www/releases/official/genjava-core/${pom.id}/</distributionDirectory>
+  <siteAddress>www.osjava.org/genjava</siteAddress>
+  <siteDirectory>/sites/org/osjava/www/releases/official/genjava/${pom.id}/</siteDirectory>
+  <distributionDirectory>/sites/org/osjava/www/releases/official/genjava/${pom.id}/</distributionDirectory>
 
   <!-- complains of more than 6 values
   <repository>
