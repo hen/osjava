@@ -34,7 +34,7 @@ public interface ChannelHandler {
      * Close the channel.
      */
     public void close() throws IOException;
-    
+
     /**
      * Register this ChannelHandler with a IOThread.
      *

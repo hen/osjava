@@ -15,43 +15,43 @@ implements SocketStreamListener
     private SocketStreamAcceptor acceptor;
 
     public ServerSocketChannelHandler(
-        ServerSocketChannel chan
-        ) 
-    throws IOException
-    {
-    chan.configureBlocking(false);
-    this.chan = chan;
-    }
+            ServerSocketChannel chan
+            ) 
+        throws IOException
+        {
+            chan.configureBlocking(false);
+            this.chan = chan;
+        }
 
     public void setSocketStreamAcceptor(SocketStreamAcceptor acceptor) {
-    this.acceptor = acceptor;
+        this.acceptor = acceptor;
     }
 
     public void accept() {
-    try {
-        SocketChannel sockChan = chan.accept();
-        if(sockChan != null) {
-        // Create a new SocketChannelHandler
-        SocketChannelHandler sch = 
-        new SocketChannelHandler(sockChan);
+        try {
+            SocketChannel sockChan = chan.accept();
+            if(sockChan != null) {
+                // Create a new SocketChannelHandler
+                SocketChannelHandler sch = 
+                    new SocketChannelHandler(sockChan);
 
-        acceptor.acceptSocketStream(sch);
+                acceptor.acceptSocketChannelHandler(sch);
+            }
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
         }
-    } catch (IOException ioe) {
-        ioe.printStackTrace();
-    }
     }
 
     public void close() throws IOException {
-    chan.close();
-    acceptor = null;
+        chan.close();
+        acceptor = null;
     }
-    
+
     public SelectableChannel getSelectableChannel() {
-    return chan;
+        return chan;
     }
 
     public ServerSocket getServerSocket() {
-    return chan.socket();
+        return chan.socket();
     }
 }

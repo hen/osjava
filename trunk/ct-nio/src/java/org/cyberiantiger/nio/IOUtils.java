@@ -21,23 +21,23 @@ public class IOUtils {
      * and return it.
      */
     public static ServerSocketChannelHandler listen(
-        InetSocketAddress addr,
-        IOThread thread,
-        SocketStreamAcceptor acceptor
-        ) 
-    throws IOException
-    {
-    ServerSocketChannel chan = ServerSocketChannel.open();
-    ServerSocketChannelHandler handler = 
-    new ServerSocketChannelHandler(chan);
+            InetSocketAddress addr,
+            IOThread thread,
+            SocketStreamAcceptor acceptor
+            ) 
+        throws IOException
+        {
+            ServerSocketChannel chan = ServerSocketChannel.open();
+            ServerSocketChannelHandler handler = 
+                new ServerSocketChannelHandler(chan);
 
-    ServerSocket socket = chan.socket();
-    socket.bind(addr);
+            ServerSocket socket = chan.socket();
+            socket.bind(addr);
 
-    handler.setSocketStreamAcceptor(acceptor);
-    handler.register(thread);
-    return handler;
-    }
+            handler.setSocketStreamAcceptor(acceptor);
+            handler.register(thread);
+            return handler;
+        }
 
 
     /**
@@ -51,21 +51,21 @@ public class IOUtils {
      * when .finishConnect() is invoked by the SocketChannelHandler
      */
     public static SocketChannelHandler connect(
-        InetSocketAddress addr,
-        IOThread thread,
-        Stream stream) 
-    throws IOException 
-    {
-    SocketChannel chan = SocketChannel.open();
-    SocketChannelHandler handler = 
-    new SocketChannelHandler(chan);
+            InetSocketAddress addr,
+            IOThread thread,
+            Stream stream) 
+        throws IOException 
+        {
+            SocketChannel chan = SocketChannel.open();
+            SocketChannelHandler handler = 
+                new SocketChannelHandler(chan);
 
-    chan.connect(addr);
+            chan.connect(addr);
 
-    handler.writeTo(stream);
-    stream.writeTo(handler);
+            handler.writeTo(stream);
+            stream.writeTo(handler);
 
-    handler.register(thread);
-    return handler;
-    }
+            handler.register(thread);
+            return handler;
+        }
 }

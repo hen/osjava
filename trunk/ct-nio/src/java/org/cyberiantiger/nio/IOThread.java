@@ -115,7 +115,7 @@ public class IOThread extends Thread {
             ioe.printStackTrace();
         }
     }
-    
+
     /**
      * Method to set the thread to cease execution gracefully.  This method 
      * exists for interoperability with ExtendedRunnable from the TigThrads 
@@ -126,7 +126,7 @@ public class IOThread extends Thread {
     public void setAbort(boolean abort) {
         this.abort=abort;
     }
-    
+
     /**
      * Method returning whether or not the thread is in the process of ceasing
      * to run.  This method exists for interoperability with ExtendedRunnable 
