@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <pg:pergamum xmlns:pg="http://www.osjava.org/pergamum/ns" name="All Categories">
-  <pg:library-list>Open Source Java Books</pg:library-list>
+  <pg:category-list>Categories</pg:category-list>
 </pg:pergamum>

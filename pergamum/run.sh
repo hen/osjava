@@ -1,2 +1,4 @@
-java Style content/listbooks.xml pergamum.xsl
-java Style content/comingsoon.xml pergamum.xsl
+for xml in comingsoon.xml listbooks.xml listcategories.xml listpublishers.xml newbooks.xml newreviews.xml tmpbook.xml
+do
+    java Style content/$xml pergamum.xsl
+done
