@@ -85,4 +85,10 @@
   <book isbn="1932394249" name="Struts Recipes" publisher="man" url="http://www.manning.com/catalog/view.php?book=franciscus" published="2004-07"/>
   <book isbn="1932394230" name="JUnit Recipes" publisher="man" url="http://www.manning.com/catalog/view.php?book=rainsberger" published="2004-07"/>
   <book isbn="0072256591" name="Struts 1.2 Essential Skills" publisher="mgh" url="unknown-site.html" published="2004-08"/>
+
+  <book isbn="0321228472" name="Eclipse: Building Commercial-Quality Plug-Ins" publisher="aw" url="http://www.aw-bc.com/catalog/academic/product?ISBN=0321228472" published="2004-06"/>
+  <book isbn="0596007108" name="Eclipse Cookbook" publisher="ora" url="http://www.oreilly.com/catalog/eclipseckbk/" published="2004-06"/>
+  <book isbn="0321268385" name="Official Eclipse 3.0 FAQ" publisher="aw" url="http://www.aw-bc.com/catalog/academic/product?ISBN=0321268385" published="2004-07"/>
+  <book isbn="0672326108" name="Eclipse Kick Start" publisher="sam" url="http://www.samspublishing.com/title/0672326108" published="2004-07"/>
+  <book isbn="0470020059" name="Beginning Eclipse 3" publisher="wrx" url="unknown-site.html" published=""/>
 </library>
