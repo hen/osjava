@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<project>
+  
+  <preGoal name="xdoc:jelly-transform">
+    <attainGoal name="taglib:tagreference" />
+  </preGoal>
+
+</project>

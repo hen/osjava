@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<document>
+
+  <properties>
+      <author email="bayard@generationjava.com">Henri Yandell</author>
+      <title>News</title>
+  </properties>
+
+  <body>
+    <section name="News">
+    <p>2004-04-14: Version <a href="changes-report.html#0.2">0.2</a> of Trail-Taglib released with tweak to the lookup algorithm. </p>
+<hr />
+    <p>2004-03-09: Version <a href="changes-report.html#0.1">0.1</a> of Trail-Taglib released for early access viewing. </p>
+<hr />
+
+</section>
+</body>
+</document>
