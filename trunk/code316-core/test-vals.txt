@@ -1,0 +1,6 @@
+angle=3
+fails=2
+level=1
+temp=3336
+door_open=1
+    
