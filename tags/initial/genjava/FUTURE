@@ -1,0 +1,61 @@
+Split-off:
+
+gj-csv
+gj-xml
+gj-scrape
+gj-tools
+gj-core
+gj-mail
+gj-beans
+
+REMOVE
+-
+src/java/com/generationjava/security
+
+gj-core 3.0
+-----------
+
+src/java/com/generationjava/compare
+src/java/com/generationjava/random
+
+src/java/com/generationjava/collections
+
+src/java/com/generationjava/io/
+src/java/com/generationjava/io/find
+src/java/com/generationjava/lang
+src/java/com/generationjava/math       - fold back into the old repo. useless
+src/java/com/generationjava/net
+src/java/com/generationjava/util
+
+src/java/com/generationjava/jdbc       - does dbutils replace this?
+
+
+gj-tools 1.0
+------------
+src/java/com/generationjava/tools
+src/java/com/generationjava/net/WGet   - Goes to Tools instance?
+
+gj-scrape 1.0
+-------------
+src/java/com/generationjava/web
+src/java/com/generationjava/scrape
+
+gj-csv 1.0
+----------
+src/java/com/generationjava/io/Csv
+
+gj-xml 1.0
+----------
+src/java/com/generationjava/io/xml
+
+gj-mail 1.0
+-----------
+src/java/com/generationjava/mail
+
+gj-beans 1.0
+------------
+src/java/com/generationjava/beans
+
+gj-j2ee  [ not core, yet ]
+-------
+src/java/com/generationjava/servlet

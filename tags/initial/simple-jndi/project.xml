@@ -1,0 +1,121 @@
+<?xml version="1.0"?>
+<project>
+  
+  <pomVersion>3</pomVersion>
+  <id>simple-jndi</id>
+  <name>simple-jndi</name>
+  <currentVersion>2.0</currentVersion>
+  <organization>
+    <name>GenerationJava</name>
+    <url>http://www.generationjava.com/</url>
+    <logo>/images/initials.jpg</logo>
+  </organization>
+  <inceptionYear>2003</inceptionYear>
+  <package>com.generationjava.jndi</package>
+  <logo>/images/core-logo.jpg</logo>
+  
+  <!-- Gump integration -->
+  <gumpRepositoryId>simple-jndi</gumpRepositoryId>
+
+  <description>
+    A simple implemenntation of JNDI. It is entirely library based, so no server instances are started, and it sits upon Java .properties files, so it is easy and simple to understand.
+  </description>
+  
+  <shortDescription>A JNDI implementation using .properties</shortDescription>
+
+  <url>http://www.generationjava.com/</url>
+  <!--
+  <issueTrackingUrl>http://nagoya.apache.org/scarab/servlet/scarab/</issueTrackingUrl>
+  -->
+  <siteAddress>www.generationjava.com/maven/simple-jndi</siteAddress>
+  <siteDirectory>/sites/com/generationjava/www/maven/genjava/simple-jndi/</siteDirectory>
+  <distributionDirectory>/sites/com/generationjava/www/maven/builds/</distributionDirectory>
+
+  <repository>
+    <connection>scm:cvshen@umbongo.flamefew.net:/var/cvs:simple-jndi</connection>
+    <url>http://www.generationjava.com/view-cvs/viewcvs.cgi/simple-jndi/</url>
+  </repository>
+
+  <versions>
+    <version>
+      <id>1.0</id>
+      <name>1.0</name>
+      <tag>HEAD</tag>
+    </version>
+  </versions>
+
+  <branches>
+  </branches>
+
+  <!--
+  <mailingLists>
+    <mailingList>
+    </mailingList>
+  </mailingLists>
+  -->
+
+  <developers>
+
+    <developer>
+      <name>Henri Yandell</name>
+      <id>hen</id>
+      <email>bayard@generationjava.com</email>
+      <organization>GenerationJava</organization>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+
+  </developers>
+
+  <contributors>
+  </contributors>
+  
+  <!-- Need to mark these as compile-time/run-time -->
+
+  <dependencies>
+    <dependency>
+      <id>jdbc</id>
+      <version>2.0</version>
+    </dependency>
+    <dependency>
+      <id>commons-lang</id>
+      <version>1.0</version>
+      <url>http://jakarta.apache.org/commons/lang.html</url>
+    </dependency>
+  </dependencies>
+
+  <build>
+
+    <nagEmailAddress>bayard@www.generationjava.com</nagEmailAddress>
+
+    <sourceDirectory>src/java</sourceDirectory>
+
+    <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
+    <!--
+
+    <integrationUnitTestSourceDirectory/>
+
+    <aspectSourceDirectory></aspectSourceDirectory>
+
+    <unitTestPatterns>
+      <unitTestPattern>include = **/*Test.java</unitTestPattern>
+    </unitTestPatterns>
+
+    <integrationUnitTestPatterns>
+    </integrationUnitTestPatterns>
+    -->
+
+    <!-- J A R  R E S O U R C E S -->
+    <!-- Resources that are packaged up inside the JAR file -->
+
+    <jarResources>
+        <jarResource>include = *.dtd</jarResource>
+        <jarResource>include = log4j.properties</jarResource>
+    </jarResources>
+
+    <jars>
+    </jars>
+  </build>
+</project>
+
