@@ -15,7 +15,6 @@ class TestUtils {
         props.put(name+"/driver", driver);
         props.put(name+"/user", user);
         props.put(name+"/password", passwd);
-        props.put(name+"/type", "javax.sql.DataSource");
         PropertiesDataSource fake = new PropertiesDataSource(props, new Hashtable(), delimiter);
         fake.setName(name);
         return fake;
