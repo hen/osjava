@@ -18,10 +18,13 @@
 <li><a href="/releases/official/simple-jndi/simple-jndi-0.7.zip">simple-jndi-0.7.zip</a></li>
 </ul>
      <p>
-     Please ensure you have the necessary dependencies:
+     If you require them through usage of optional features, please ensure you have the necessary dependencies:
      <ul>
-      <li><a href="http://www.osjava.org/maven/genjava-core/jars/genjava-core-2.2.jar">genjava-core 2.2</a></li>
+      <li><a href="http://www.osjava.org/maven/genjava/jars/gj-xml-1.0.jar">gj-xml 1.0</a></li>
+      // convert
       <li><a href="http://www.ibiblio.org/maven/commons-lang/jars/commons-lang-1.0.1.jar">commons-lang 1.0.1</a></li>
+      // pool
+      // dbcp
       <li><a href="http://www.ibiblio.org/maven/commons-collections/jars/commons-collections-2.1.jar">commons-collections 2.1</a></li>
      </ul>
      </p>
