@@ -33,11 +33,12 @@
 package org.osjava.jndi;
 
 import java.util.Hashtable;
+import java.util.Set;
+import java.util.Collection;
+import java.util.Map;
 
 /**
  * A hashtable that shares its space with any other instance of StaticHashtable.
- * Every method is blindly synchronized, so not as fast as it probably 
- * could be with more thought.
  */
 class StaticHashtable extends Hashtable {
 
@@ -59,31 +60,31 @@ class StaticHashtable extends Hashtable {
         return SELF.elements();
     }
 
-    public synchronized boolean contains(java.lang.Object obj) {
+    public synchronized boolean contains(Object obj) {
         return SELF.contains(obj);
     }
 
-    public boolean containsValue(java.lang.Object obj) {
+    public boolean containsValue(Object obj) {
         return SELF.containsValue(obj);
     }
 
-    public synchronized boolean containsKey(java.lang.Object obj) {
+    public synchronized boolean containsKey(Object obj) {
         return SELF.containsKey(obj);
     }
 
-    public synchronized java.lang.Object get(java.lang.Object obj) {
+    public synchronized Object get(Object obj) {
         return SELF.get(obj);
     }
 
-    public synchronized java.lang.Object put(java.lang.Object key, java.lang.Object value) {
+    public synchronized Object put(Object key, Object value) {
         return SELF.put(key, value);
     }
 
-    public synchronized java.lang.Object remove(java.lang.Object obj) {
+    public synchronized Object remove(Object obj) {
         return SELF.remove(obj);
     }
 
-    public synchronized void putAll(java.util.Map map) {
+    public synchronized void putAll(Map map) {
         SELF.putAll(map);
     }
 
@@ -91,25 +92,25 @@ class StaticHashtable extends Hashtable {
         SELF.clear();
     }
 
-//    public synchronized java.lang.Object clone()
+//    public synchronized Object clone()
 
-    public synchronized java.lang.String toString() {
+    public synchronized String toString() {
         return SELF.toString();
     }
 
-    public java.util.Set keySet() {
+    public Set keySet() {
         return SELF.keySet();
     }
 
-    public java.util.Set entrySet() {
+    public Set entrySet() {
         return SELF.entrySet();
     }
 
-    public java.util.Collection values() {
+    public Collection values() {
         return SELF.values();
     }
 
-    public synchronized boolean equals(java.lang.Object obj) {
+    public synchronized boolean equals(Object obj) {
         return SELF.equals(obj);
     }
 
