@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<document>
+
+  <properties>
+      <author email="bayard@generationjava.com">Henri Yandell</author>
+      <title>News</title>
+  </properties>
+
+  <body>
+    <section name="News">
+    <p>Initial version, 0.1,  of Norbert, the norobots parser, released. </p>
+<hr />
+
+</section>
+</body>
+</document>
