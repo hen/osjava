@@ -4,7 +4,7 @@
   <pomVersion>3</pomVersion>
   <id>simple-jndi</id>
   <name>simple-jndi</name>
-  <currentVersion>0.8</currentVersion>
+  <currentVersion>0.8.1</currentVersion>
   <organization>
     <name>OSJava</name>
     <url>http://www.osjava.org/</url>
