@@ -89,63 +89,22 @@ public class ThreadContext
      * The map of sub contexts. 
      */
     private Map subContexts = new HashMap();
-    
-    /* 
-     * The root context of this context.  
-     */
-    private Context rootContext = null;
-        
+            
     /* 
      * The NameParser utilized by the Context.
      */
     private NameParser nameParser = null;
 
-    /**
-     * Create a root level ThreadContext.
-     * 
-     * @throws NamingException if a name exception is encountered.
-     */
-    protected ThreadContext() throws NamingException {
-        this(null);
-    }
-    
     /****************
      * Constructors *
      ****************/
-    
-    /** 
-     * Create a Threadcontext with a parent ThreadContext <code>parent</code>
-     * and the Name <code>name</code>.  If <code>root</code> is null, the 
-     * newly created ThreadContext will be a root context, and <code>name
-     * </code> must have a size of exactly 1 or a NamingException is bound. 
-     * 
-     * @param root the Context that is the parent of this ThreadContext.
-     * @param name the Name of the newly created ThreadContext
-     * @throws NamingException when a name exception is encountered.
+    /**
+     * Create a ThreadContext.
      */
-    protected ThreadContext(Context root) throws NamingException {
-        /* 
-         * If root is null, we accept the defaults of all of the variables.
-         */
-        if(root == null) {
-            /* Assign ourself as the root context.  This is how we will 
-             *identify it as root */
-            rootContext = this;
-            nameParser = new ThreadNameParser(this);
-        } else {
-            rootContext = root;
-            nameParser = new ThreadNameParser(this);
-        }
-        
-        /* 
-         * TODO: Not happy with how this looks up the NameParser.  It's based 
-         *       upon the root, but looks it up based upon the name.  For 
-         *       now, it is okay because it's assumed to be the same name 
-         *       parser for the entire hierarchy of Contexts.
-         */
-        nameParser = root.getNameParser("");
+    protected ThreadContext() {
+        /* We're just using the defaults, so we don't need to do anything */
     }
-    
+        
     /* ************************
      * Class Specific Methods *
      * ************************/
@@ -188,11 +147,10 @@ public class ThreadContext
             /* Look in a subcontext. */
             if(subContexts.containsKey(objName)) {
                 return ((Context)subContexts.get(objName)).lookup(name.getSuffix(1));
-            } else {
-                /* TODO: Might need to do a littl emore work here and supply a 
-                 * reasonable message. */
-                throw new NamingException();
-            }
+            } 
+            /* TODO: Might need to do a littl emore work here and supply a 
+             * reasonable message. */
+            throw new NamingException();
         }
         return contextStore.get(objName);
     }
