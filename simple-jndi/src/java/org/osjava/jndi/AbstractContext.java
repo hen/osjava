@@ -61,7 +61,8 @@ import org.osjava.naming.SimpleNameParser;
  * @since Simple-JNDI 0.11
  * @version $Rev$ $Date$
  */
-public abstract class AbstractContext implements Context  {
+public abstract class AbstractContext 
+        implements Cloneable, Context  {
 
     // table is used as a read-write cache which sits 
     // above the file-store
