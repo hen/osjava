@@ -22,7 +22,6 @@ public class ElephantMudClient implements Display, Connection {
 	this.config = config;
 	writer = new ElephantConsoleWriter();
 	connection = new MudConnection(this);
-	setParser(new ANSIParser());
 	control = new ControlWindow(this);
 	control.show();
     }
@@ -34,11 +33,8 @@ public class ElephantMudClient implements Display, Connection {
 	System.exit(0); // Don't like using this method.
     }
 
-    public void setParser(Parser parser) {
-	connection.setParser(parser);
-    }
-
     public void connect() {
+	connection.setParser(new ANSIParser());
 	connection.connect();
     }
     

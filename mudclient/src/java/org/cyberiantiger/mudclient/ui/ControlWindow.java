@@ -99,31 +99,96 @@ public class ControlWindow extends JFrame {
 
 	inputField = new JTextField();
 	inputField.setFont(new Font("monospaced",Font.PLAIN,14));
-	inputField.addKeyListener(
-		new KeyListener() {
-		    public void keyPressed(KeyEvent e) {}
-		    public void keyReleased(KeyEvent e) {}
-		    public void keyTyped(KeyEvent e) {
-			// Hack, should use getKeyCode(), but for some
-			// reason java swallows it.
-			if(e.getKeyChar() == '\n') {
-			    client.command(
-				getCurrentViewName(), 
-				inputField.getText()
-				);
-			    inputField.selectAll();
-			}
-		    }
-		});
+
+	ActionMap actionMap = new ActionMap();
+
+	actionMap.put("sendCommand",new AbstractAction() {
+	    public void actionPerformed(ActionEvent e) {
+		client.command(
+		    getCurrentViewName(), 
+		    inputField.getText()
+		    );
+		if(
+		    client.getConfiguration().
+		    getOutputConfiguration(
+			getCurrentViewName()
+			).keepInput()
+		  )
+		{
+		    inputField.selectAll();
+		} else {
+		    inputField.setText("");
+		}
+
+	    }
+	});
+	actionMap.put("scrollUpLine",new AbstractAction() {
+	    public void actionPerformed(ActionEvent e) {
+		((MudClientUI)getCurrentView()).lineUp();
+	    }
+	});
+	actionMap.put("scrollDownLine",new AbstractAction() {
+	    public void actionPerformed(ActionEvent e) {
+		((MudClientUI)getCurrentView()).lineDown();
+	    }
+	});
+	actionMap.put("scrollUpPage",new AbstractAction() {
+	    public void actionPerformed(ActionEvent e) {
+		((MudClientUI)getCurrentView()).pageUp();
+	    }
+	});
+	actionMap.put("scrollDownPage",new AbstractAction() {
+	    public void actionPerformed(ActionEvent e) {
+		((MudClientUI)getCurrentView()).pageDown();
+	    }
+	});
+	actionMap.put("outputLeft",new AbstractAction() {
+	    public void actionPerformed(ActionEvent e) {
+		int i = tabbedOutputPane.getSelectedIndex();
+		if(i == 0) {
+		    i = tabbedOutputPane.getTabCount();
+		}
+		tabbedOutputPane.setSelectedIndex(i-1);
+	    }
+	});
+	actionMap.put("outputRight",new AbstractAction() {
+	    public void actionPerformed(ActionEvent e) {
+		int i = tabbedOutputPane.getSelectedIndex();
+		i++;
+		if(i == tabbedOutputPane.getTabCount()) {
+		    i = 0;
+		}
+		tabbedOutputPane.setSelectedIndex(i);
+	    }
+	});
+
+	InputMap inputMap = client.getConfiguration().getKeyBindings();
+	inputMap.setParent(inputField.getInputMap());
+
+	inputField.setInputMap(
+	    JComponent.WHEN_FOCUSED, 
+	    inputMap
+	    );
 	
 	getContentPane().add(inputField,BorderLayout.SOUTH);
 
-	// TODO: Get the list of outputs, and create them.
 	java.util.List outputs = client.getConfiguration().getOutputNames();
 	Iterator i = outputs.iterator();
 	while(i.hasNext()) {
-	    createView((String) i.next());
+	    final String outputName = (String) i.next();
+	    createView(outputName);
+	    actionMap.put("output"+outputName,
+		    new AbstractAction() {
+			public void actionPerformed(ActionEvent e) {
+			    int idx = tabbedOutputPane.indexOfTab(outputName);
+			    if(idx != -1) {
+				tabbedOutputPane.setSelectedIndex(idx);
+			    }
+			}
+		    });
 	}
+	actionMap.setParent(inputField.getActionMap());
+	inputField.setActionMap(actionMap);
 
 	defaultView = getView(
 		client.getConfiguration().getDefaultOutputName()
@@ -131,12 +196,13 @@ public class ControlWindow extends JFrame {
 
 	((MudClientUI)defaultView).setConnection(client);
 
+
 	pack();
 
 	enableEvents(AWTEvent.WINDOW_EVENT_MASK);
     }
 
-    public ConsoleWriter createView(String id) {
+    public ConsoleWriter createView(final String id) {
 	ConsoleWriter ui = getView(id);
 	if(ui != null) {
 	    return ui;
@@ -164,6 +230,9 @@ public class ControlWindow extends JFrame {
 	if(we.getID() == WindowEvent.WINDOW_CLOSING) {
 	    client.disconnect();
 	    hide();
+	}
+	if(we.getID() == WindowEvent.WINDOW_ACTIVATED) {
+	    inputField.requestFocus();
 	}
     }
 

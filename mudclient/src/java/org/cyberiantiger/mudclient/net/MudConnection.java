@@ -124,14 +124,16 @@ public class MudConnection extends Thread {
     }
 
     public void command(String text) {
-	Writer out = sock.getWriter();
-	if(out != null) {
-	    try {
-		out.write(text+'\n');
-		out.flush();
-	    } catch (IOException ioe) {
-		ioe.printStackTrace();
-		disconnect();
+	if(sock != null) {
+	    Writer out = sock.getWriter();
+	    if(out != null) {
+		try {
+		    out.write(text+'\n');
+		    out.flush();
+		} catch (IOException ioe) {
+		    ioe.printStackTrace();
+		    disconnect();
+		}
 	    }
 	}
     }

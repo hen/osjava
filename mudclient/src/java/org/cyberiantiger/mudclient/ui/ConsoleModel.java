@@ -187,6 +187,7 @@ public class ConsoleModel implements Console {
 
     public void addAction(ConsoleAction action) {
 	action.apply(this);
+	setLineOffset(getBufferSize());
 	updateViews();
     }
 
@@ -253,6 +254,10 @@ public class ConsoleModel implements Console {
 	} else {
 	    this.lineOffset = lineOffset;
 	}
+    }
+
+    public int getLineOffset() {
+	return lineOffset;
     }
 
     public Line getViewLine(int line) {
