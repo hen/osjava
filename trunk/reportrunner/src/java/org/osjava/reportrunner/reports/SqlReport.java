@@ -28,7 +28,6 @@ public class SqlReport extends AbstractSqlReport {
                     } else {
                         array = new Object[] { value };
                     }
-                    System.out.println("?? MARK HACK "+array.length);
                     String marks = StringUtils.chomp(StringUtils.repeat("?,", array.length), ",");
                     setSql(StringUtils.replaceOnce(getSql(), "??", marks));
                     for(int j=0; j<array.length; j++) {
