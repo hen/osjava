@@ -5,7 +5,7 @@
 
   <body>
     <menu name="Overview">
-      <item name="About"              href="/index.html"/>
+      <item name="Introduction"              href="/index.html"/>
       <item name="Why?"              href="/Why.html"/>
       <item name="How?"              href="/HowTo.html"/>
       <item name="Download" href="http://www.osjava.org/releases/official/scraping-engine/"/>
