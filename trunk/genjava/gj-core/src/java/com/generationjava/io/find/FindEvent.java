@@ -48,21 +48,21 @@ public class FindEvent {
 
     private File directory;
     private Finder finder;
-    private String file;
-    private String[] files;
+    private File file;
+    private File[] files;
 
     public FindEvent(Finder finder, File directory) {
         this.finder = finder;
         this.directory = directory;
     }
     
-    public FindEvent(Finder finder, File directory, String file) {
+    public FindEvent(Finder finder, File directory, File file) {
         this.finder = finder;
         this.directory = directory;
         this.file = file;
     }
     
-    public FindEvent(Finder finder, File directory, String[] files) {
+    public FindEvent(Finder finder, File directory, File[] files) {
         this.finder = finder;
         this.directory = directory;
         this.files = files;
@@ -79,14 +79,14 @@ public class FindEvent {
     /**
      * File found.
      */
-    public String getFile() {
+    public File getFile() {
         return this.file;
     }
     
     /**
      * Files found in a directory.
      */
-    public String[] getFiles() {
+    public File[] getFiles() {
         return this.files;
     }
 

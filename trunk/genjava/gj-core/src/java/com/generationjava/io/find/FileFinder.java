@@ -29,19 +29,13 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-// @file   FileFinder.java
-// @author bayard@generationjava.com
-// @create 2000-11-18
-// @modify 2000-11-18
-// @modify 2001-01-27 FindListener 
-
 package com.generationjava.io.find;
 
 import java.io.File;
 import java.util.List;
 import java.util.LinkedList;
 import java.util.Iterator;
-//import java.util.Date;
+import java.util.Map;
 
 /**
  * Finds Files in a file system.
@@ -52,83 +46,54 @@ import java.util.Iterator;
 public class FileFinder implements Finder {
 
     private List findListeners;
-    private boolean includeDirs = false;
-
-    /**
-     * Find directories, as well as files.
-     */
-    public void setIncludeDirectories(boolean bool) {
-        this.includeDirs = bool;
-    }
-    /**
-     * Will it find directories, as well as files.
-     */
-    public boolean getIncludeDirectories() {
-        return this.includeDirs;
-    }
 
     /**
      * Find all files in the specified directory.
      */
-    public String[] find(File directory) {
-        return find(directory, null);
+    public File[] find(File directory) {
+        return find(directory, new java.util.HashMap());
     }
 
-    /// TODO: Add int maxcount, int mincount, Date lastmodified
-    /**
-     * Find all files in the specified directory with the specified extension.
-     */
-    public String[] find(File directory, String extension) {
-//    public String[] find(File directory, String extension, int maxcount, int mincount, Date lastmodified) {
-        ExtensionFileFilter filter = null;
+    // add maxdepth and mindepth somehow
+    public File[] find(File directory, Map options) {
+        notifyDirectoryStarted(directory);
+        boolean depthFirst = options.containsKey(Finder.DEPTH);
+        return find(directory, new FindingFilter(options), depthFirst);
+    }
 
-        if (extension != null) {
-            // use a FileFilter
-            filter = new ExtensionFileFilter();
-            filter.addExtension(extension);
-        }
+    private File[] find(File directory, FindingFilter filter, boolean depthFirst) {
 
-        String[] list = null;
+        File[] list = null;
         if (filter == null) {
-            list = directory.list();
+            list = directory.listFiles();
         } else {
-            list = directory.list(filter);
+            list = directory.listFiles(filter);
         }
+
         List retlist = new LinkedList();
-        List filelist = null;
-        if(!includeDirs) {
-            filelist = new LinkedList();
-        }
         int sz = list.length;
 
         for (int i = 0; i < sz; i++) {
-            File tmp = new File(directory, list[i]);
-            if (tmp.isDirectory()) {
-                notifyDirectoryStarted(tmp);
-                String[] sublist = find(tmp, extension);
-                int subsz = sublist.length;
-                for (int j = 0; j < subsz; j++) {
-                    retlist.add(list[i] + File.separator + sublist[j]);
-                }
-                if(includeDirs) {
-                    retlist.add(tmp.getName());
-                }
-            } else {
+            File tmp = list[i];
+            if(depthFirst) {
                 retlist.add(list[i]);
                 notifyFileFound(directory,list[i]);
-                if(!includeDirs) {
-                    filelist.add(list[i]);
+            }
+            if (tmp.isDirectory()) {
+                notifyDirectoryStarted(tmp);
+                File[] sublist = find(tmp, filter, depthFirst);
+                int subsz = sublist.length;
+                for (int j = 0; j < subsz; j++) {
+                    retlist.add(sublist[j]);
                 }
             }
+            if(!depthFirst) {
+                retlist.add(list[i]);
+                notifyFileFound(directory,list[i]);
+            }
         }
-        if(includeDirs) {
-//            retlist.add(directory.getName());
-            notifyDirectoryFinished(directory,list);
-        } else {
-            notifyDirectoryFinished(directory,
-                             (String[]) filelist.toArray(new String[0]) );
-        }
-        return (String[]) retlist.toArray(new String[0]);
+        notifyDirectoryFinished(directory, list);
+        return (File[]) retlist.toArray(list);
     }
     
     /**
@@ -142,9 +107,21 @@ public class FileFinder implements Finder {
     }
 
     /**
+     * Remove a FindListener.
+     */
+    public void removeFindListener(FindListener fl) {
+        if(findListeners != null) {
+            findListeners.remove(fl);
+        }
+    }
+
+    /**
      * Notify all FindListeners that a directory is being started.
      */
     public void notifyDirectoryStarted(File directory) {
+        if(!directory.isDirectory()) {
+            return;
+        }
         if(findListeners != null) {
             FindEvent fe = new FindEvent(this,directory);
             Iterator itr = findListeners.iterator();
@@ -159,7 +136,10 @@ public class FileFinder implements Finder {
      * Notify all FindListeners that a directory has been finished.
      * Supplying the filenames that have been found.
      */
-    public void notifyDirectoryFinished(File directory, String[] files) {
+    public void notifyDirectoryFinished(File directory, File[] files) {
+        if(!directory.isDirectory()) {
+            return;
+        }
         if(findListeners != null) {
             FindEvent fe = new FindEvent(this,directory,files);
             Iterator itr = findListeners.iterator();
@@ -173,7 +153,10 @@ public class FileFinder implements Finder {
     /**
      * Notify FindListeners that a file has been found.
      */
-    public void notifyFileFound(File directory, String file) {
+    public void notifyFileFound(File directory, File file) {
+        if(file.isDirectory()) {
+            return;
+        }
         if(findListeners != null) {
             FindEvent fe = new FindEvent(this,directory,file);
             Iterator itr = findListeners.iterator();

@@ -42,6 +42,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Iterator;
 import java.util.Enumeration;
+import java.util.Map;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipEntry;  
 import java.util.zip.ZipException;  
@@ -54,35 +55,16 @@ import java.io.IOException;
 public class ZipFinder implements Finder {
 
     private List findListeners;
-    private boolean includeDirs = false;
 
-    public void setIncludeDirectories(boolean bool) {
-        this.includeDirs = bool;
-    }
-    public boolean getIncludeDirectories() {
-        return this.includeDirs;
+    public File[] find(File zip) {
+        return find(zip, new java.util.HashMap());
     }
 
-    public String[] find(File zip) {
-        return find(zip, null);
-    }
-
-    /// TODO: Add int maxcount, int mincount, Date lastmodified
-    /**
-     * Find all files in this zipfile which have the specified extension.
-     * If extension is null, then all files are returned.
-     * The specified extension should not contain the '.'
-     */
-    public String[] find(File zipfile, String extension) {
-//    public String[] find(File zipfile, String extension, int maxcount, int mincount, Date lastmodified) {
-        ExtensionFileFilter filter = null;
-
-        if (extension != null) {
-            // use a FileFilter
-            filter = new ExtensionFileFilter();
-            filter.addExtension(extension);
+    public File[] find(File zipfile, Map options) {
+        String extension = null;
+        if(options.containsKey(Finder.NAME)) {
+            extension = options.get(Finder.NAME).toString();
         }
-
         List retlist = new ArrayList();
 
         try {
@@ -104,7 +86,7 @@ public class ZipFinder implements Finder {
             throw new FinderException(ioe);
         }
 
-        return (String[]) retlist.toArray(new String[0]);
+        return (File[]) retlist.toArray(new File[0]);
     }
 
     private void addFile(List list, String file) {
@@ -115,9 +97,6 @@ public class ZipFinder implements Finder {
             if(idx != -1) {
                 file = file.substring(idx+1);
             }
-            if(includeDirs) {
-                list.add(file);
-            }
             return;
         }
 
@@ -127,7 +106,7 @@ public class ZipFinder implements Finder {
             directory = file.substring(0,idx);
             file = file.substring(idx+1);
         }
-        notifyFileFound(new File(directory), file);
+        notifyFileFound(new File(directory), new File(directory, file));
         list.add(file);
     }
     
@@ -136,6 +115,12 @@ public class ZipFinder implements Finder {
             findListeners = new LinkedList();
         }
         findListeners.add(fl);
+    }
+
+    public void removeFindListener(FindListener fl) {
+        if(findListeners != null) {
+            findListeners.remove(fl);
+        }
     }
 
     public void notifyDirectoryStarted(File directory) {
@@ -149,7 +134,7 @@ public class ZipFinder implements Finder {
         }
     }
 
-    public void notifyDirectoryFinished(File directory, String[] files) {
+    public void notifyDirectoryFinished(File directory, File[] files) {
         if(findListeners != null) {
             FindEvent fe = new FindEvent(this,directory,files);
             Iterator itr = findListeners.iterator();
@@ -160,7 +145,7 @@ public class ZipFinder implements Finder {
         }
     }
 
-    public void notifyFileFound(File directory, String file) {
+    public void notifyFileFound(File directory, File file) {
         if(findListeners != null) {
             FindEvent fe = new FindEvent(this,directory,file);
             Iterator itr = findListeners.iterator();
