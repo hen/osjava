@@ -4,7 +4,7 @@
   <pomVersion>3</pomVersion>
   <id>mudclient</id>
   <name>mudclient</name>
-  <currentVersion>0.2</currentVersion>
+  <currentVersion>0.5</currentVersion>
   <organization>
     <name>OSJava</name>
     <url>http://www.osjava.org/</url>
@@ -18,9 +18,36 @@
   <gumpRepositoryId>mudclient</gumpRepositoryId>
 
   <description>
-  If you want to connect to any mud other than elephant.org you'll
-  currently have to hack the source code, as there's some elephant specific
-  code in there. [support of their "external client mode"]
+  <![CDATA[
+  <h1>Mudclient</h1>
+  <h2>Description</h2>
+  <p>A mudclient written entirely in java, using the swing UI components,
+  and some of it's own custom components.</p>
+  <h2>Aims</h2>
+  <p>Initially the mud client will only work with 
+  <a href="http://www.elephant.org/">Elephant Mud</a>, however later on in the
+  project it is planned to make specific support and features plugins.</p>
+  <p>The mudclient requires java 1.4 or higher which can be downloaded from 
+  <a href="http://www.java.com/">www.java.com</a>.</p>
+  <h2>Current Status</h2>
+  <h3>Implemented</h3>
+  <ul>
+  <li>Telnet Negotiation</li>
+  <li>Ansi control code support</li>
+  <li>Elephant Mud external client mode support</li>
+  <li>Multiple output windows for one mud</li>
+  <li>Configurable Keybindings</li>
+  </ul>
+  <h3>To Do</h3>
+  <ul>
+  <li>Make the configuration alterable at runtime</li>
+  <li>Make the configuration persistent</li>
+  <li>Aliases, Macros &amp; Triggers</li>
+  <li>Support for using 'ed' whilst in external client mode</li>
+  <li>A pluggin framework</li>
+  <li>Remove specific Elephant Mud stuff and make it into a plugin</li>
+  </ul>
+  ]]>
   </description>
   
   <shortDescription>A mudclient</shortDescription>
