@@ -8,6 +8,7 @@ import com.generationjava.lang.*;
 public abstract class AbstractRenderer implements Renderer {
 
     private String name;
+    private String label;
     private String mimeType;
 
     public String getRendererName() {
@@ -16,6 +17,14 @@ public abstract class AbstractRenderer implements Renderer {
 
     public void setRendererName(String name) {
         this.name = name;
+    }
+
+    public String getRendererLabel() {
+        return this.label;
+    }
+
+    public void setRendererLabel(String label) {
+        this.label = label;
     }
 
     public String getMimeType() {
