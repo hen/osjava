@@ -241,27 +241,39 @@ public class ThreadContext
      */
     public ExtendedThread createThread(Runnable target, Name name)
         throws NameAlreadyBoundException, NamingException, ThreadIsRunningException {
+        NameParser nameParser = getNameParser((Name)null);
         /* Make sure that the target is not already running. */
         if(target instanceof Thread && ((Thread)target).isAlive()) {
             throw new ThreadIsRunningException();
         }
+
+        /* Make up a name for the Thread based upon the context. */        
         if(name.isEmpty()) {
-           /* Make up a name for the Thread based upon the context. */
             Name newName = getNameParser((Name)null).parse(getNameInNamespace());
             newName.add(generateNextThreadName());
-            ExtendedThread newThread = new ExtendedThread(target, newName.toString());
+            name = nameParser.parse(generateNextThreadName());
+        }
+        
+        /* Check to see if the name is already bound to something */
+        Object next = lookup(name.getPrefix(1));
+        /* Not presently bound. */
+        if(next == null) {
+            ExtendedThread newThread = new ExtendedThread(target, name.toString());
             bind(name, newThread);
             return newThread;
         }
-        Object next = lookup(name.getPrefix(1));
+        /* Bound to a subContext */
         if(next instanceof ThreadContext) {
             return ((ThreadContext)next).createThread(target, name.getSuffix(1));
-        } {
+        } else if(next instanceof Context) {
             /* 
              * XXX: Should this be changed to some other exception?  I thought
              *      there was an exception for missing subcontext..
              */
             throw new NamingException("Invalid subcontext.  Subcontext must be a ThreadContext");
+        } else {
+            /* Bound to something else. */
+            throw new NameAlreadyBoundException("Name already bound");
         }
     }
 
@@ -368,13 +380,10 @@ public class ThreadContext
      */
     public void start(Name name) throws NameNotFoundException, NamingException {        
         Object obj = lookup(name);
-        /* 
-         * Take care of the easy case first, pointing at an actual 
-         * thread.
-         */
+        /* Take care of the easy case first, pointing at an actual thread. */
         if(obj instanceof ExtendedThread) {
             synchronized (obj) {
-                obj.notify();
+                ((ExtendedThread)obj).start();
             }
             return;
         }
@@ -528,13 +537,15 @@ public class ThreadContext
          * TODO: If this is a Runnable of any sort, we can wrap an
          * ExtendedThread around it, solving this problem.
          */
-        if(!(obj instanceof ExtendedRunnable)) {
+        if(!(obj instanceof ExtendedRunnable) &&
+           !(obj instanceof ThreadContext)) {
             /*
              * This should be changed back to an InvalidObjectType exception 
              * if it gets incorporated into directory-naming.
              */
             throw new InvalidObjectTypeException("Objects in this context must implement " +
-                    "org.osjava.threads.ExtendedRunnable");
+                    "org.osjava.threads.ExtendedRunnable or ThreadContext.  " + 
+                    "Object is of type '" + obj.getClass() + "'.");
         }
         super.bind(name, obj);
     }
