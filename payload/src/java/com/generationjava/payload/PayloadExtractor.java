@@ -31,7 +31,6 @@
  */
 package com.generationjava.payload;
 
-import java.util.jar.JarOutputStream;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
@@ -60,7 +59,7 @@ public class PayloadExtractor {
             jarFile = null;
             // get the jarFile as a -j argument
         }
-        String jarName = jarFile.substring( 0, jarFile.length() - 4 );
+        String jarName = jarFile.substring( 0, jarFile.length() - ".jar".length() );
         System.out.print(".");
 
         Properties props = null;
@@ -79,7 +78,7 @@ public class PayloadExtractor {
                     try {
                         fin.close();
                     } catch(IOException ioe) {
-                        // ignore
+                        ; // ignore
                     }
                 }
             }
@@ -120,7 +119,7 @@ public class PayloadExtractor {
                     continue;
                 }
                 // remove payload/
-                String inName = entry.getName().substring(8);
+                String inName = entry.getName().substring("payload/".length());
                 String outName = jarName + File.separator + inName;
                 File outFile = new File(outName);
                 if(entry.isDirectory()) {

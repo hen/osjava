@@ -60,7 +60,7 @@ public class PayloadContractor {
             jarFile = null;
             // get the jarFile as a -j argument
         }
-        String jarName = jarFile.substring( 0, jarFile.length() - 4 );
+        String jarName = jarFile.substring( 0, jarFile.length() - ".jar".length() );
         System.out.println(".");
 
         if(args.length == 0) {
@@ -68,7 +68,8 @@ public class PayloadContractor {
             System.exit(1);
         }
         if(!args[0].endsWith(".jar")) {
-            System.err.println("\nRefusing to target a non-jar file. Please use a .jar filename then rename afterwards. ");
+            System.err.println("\nRefusing to target a non-jar file. " +
+                               "Please use a .jar filename then rename afterwards. ");
             System.exit(1);
         }
         String targetJar = args[0];
@@ -96,7 +97,8 @@ public class PayloadContractor {
                 jout.putNextEntry(entry2);
                 if(entry.getName().equals("META-INF/MANIFEST.MF")) {
                     String mf = IOUtils.readToString(in);
-                    mf = mf.replaceAll("Main-Class: com\\.generationjava\\.payload\\.PayloadContractor", "Main-Class: com.generationjava.payload.PayloadExtractor");
+                    mf = mf.replaceAll("Main-Class: com\\.generationjava\\.payload\\.PayloadContractor", 
+                                       "Main-Class: com.generationjava.payload.PayloadExtractor");
                     jout.write(mf.getBytes());
                 } else {
                     IOUtils.pushBytes(in, jout);

@@ -69,7 +69,7 @@ public class IOUtils {
             try {
                 in.close();
             } catch(IOException ioe) {
-                // ignore
+                ; // ignore
             }
         }
     }
@@ -79,7 +79,7 @@ public class IOUtils {
             try {
                 out.close();
             } catch(IOException ioe) {
-                // ignore
+                ; // ignore
             }
         }
     }
