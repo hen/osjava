@@ -20,7 +20,7 @@
       <item href="multiproject/gj-xml/" name="gj-xml"/>
     </menu>
     <links>
-        <item name="Genjava"                 href="/genjava/"/>
+        <item name="Genjava"                 href="../../"/>
     </links>
   </body>
 </project>
