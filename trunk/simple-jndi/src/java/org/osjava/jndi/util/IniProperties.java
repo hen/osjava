@@ -35,7 +35,6 @@ package org.osjava.jndi.util;
 
 import java.io.*;
 import java.util.*;
-import com.generationjava.collections.OrderedSet;
 
 /** 
  * Functionally like the CustomProperties class in that it has 
