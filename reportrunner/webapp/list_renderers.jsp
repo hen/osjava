@@ -42,16 +42,16 @@
     }
 %>
 <p>The report will run against the following resources: </p>
-<ul>
+<table>
 <%
     String[] names = report.getResourceNames();
     for(int i=0; i<names.length; i++) {
         %>
-        <li><span class="chosen-data"><%= report.getReportGroup().getResource(names[i]).getLabel() %></span></li>
+        <tr><td><span class="chosen-data"><%= report.getReportGroup().getResource(names[i]).getLabel() %></span></td></tr>
         <%
     }
 %>
-</ul>
+</table>
 </div>
 
 <div class="input">
