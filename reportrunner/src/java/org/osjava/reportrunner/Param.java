@@ -7,6 +7,7 @@ public class Param implements Nameable {
 
     private String name;
     private String label;
+    private String widget;
     private String description;
     private String defaultValue;
     private Class type = String.class;
@@ -86,6 +87,14 @@ public class Param implements Nameable {
 
     public void setBinding(String binding) {
         this.binding = binding;
+    }
+
+    public String getWidget() {
+        return this.widget;
+    }
+
+    public void setWidget(String widget) {
+        this.widget = widget;
     }
 
     // debug

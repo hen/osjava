@@ -57,6 +57,12 @@
         }
 
         Choice[] choices = report.getParamChoices(params[i]);
+        // HACK: to hide the fact we haven't got a widget plugin system yet
+        if("textfield".equals(params[i].getWidget())) {
+%>
+    <tr><td><label for="<%= params[i].getName() %>"><%= params[i].getLabel() %></label></td><td><input type="text" name="<%= params[i].getName() %>" value="<%= value %>"></td></tr>
+<%
+        } else
         if(choices == null) {
             if(Boolean.class.isAssignableFrom(params[i].getType())) {
 %>
