@@ -12,10 +12,10 @@ public class ChooseReportServlet extends HttpServlet {
         Report report = ReportFactory.getReport(groupName, reportName);
         if(report.getParams().length != 0) {
             // redirect to choose params page
-            response.sendRedirect("enter_params.jsp?"+ReportRunnerServlet.GROUP+"="+groupName+"&"+ReportRunnerServlet.REPORT+"="+reportName);
+            response.sendRedirect("enter_params.jsp?"+request.getQueryString());
         } else {
             // redirect to choose renderer page
-            response.sendRedirect("list_renderers.jsp?"+ReportRunnerServlet.GROUP+"="+groupName+"&"+ReportRunnerServlet.REPORT+"="+reportName);
+            response.sendRedirect("list_renderers.jsp?"+request.getQueryString());
         }
     }
 
