@@ -39,7 +39,6 @@ public class LookupTest extends TestCase {
             props.setProperty("TestDS/driver", "bing");
             props.setProperty("TestDS/user", "Boo");
             props.setProperty("TestDS/password", "bong");
-            props.setProperty("org.osjava.jndi.datasource", "true");
             PropertiesDataSource fake = new PropertiesDataSource(props, new Hashtable(), delimiter);
             fake.setName("TestDS");
             assertEquals( fake, lookup("java:/TestDS") );
@@ -123,7 +122,6 @@ public class LookupTest extends TestCase {
             props.setProperty("driver", "org.gjt.mm.mysql.Driver");
             props.setProperty("user", "nico");
             props.setProperty("password", "bear");
-            props.setProperty("org.osjava.jndi.datasource", "true");
             PropertiesDataSource fake = new PropertiesDataSource(props, new Hashtable(), delimiter);
             fake.setName("");
             assertEquals( fake, genscapeDS );
