@@ -37,6 +37,7 @@ import java.util.LinkedList;
 
 import org.apache.commons.lang.StringUtils;
 import com.generationjava.web.HtmlW;
+import com.generationjava.web.XmlW;
 
 /// simple system in. need to now consider the move methods.
 /// then need to make sure the get method obeys internal 
@@ -48,10 +49,7 @@ import com.generationjava.web.HtmlW;
 
 /// Add a moveback(String tag) method
 /// Add a getContent(int i) method to get untagged blocks of text
-public class HtmlScraper {
-
-    /*
-    static public void main(String[] args) throws IOException {
+    /**
         HtmlScraper scraper = new HtmlScraper();
         scraper.scrape(UrlW.openUrlStream("http://www.yandell.org"));
         System.err.println(scraper.get("TITLE").trim());
@@ -62,17 +60,21 @@ public class HtmlScraper {
             System.err.println(scraper.get("A[HREF]"));
         }
         System.err.println(scraper.get("LI.I"));
-    }
     */
+public class HtmlScraper {
 
-    private String data;
+    // The entire page
     private String page;
+    // Lowercase version of the entire page
+    private String lcPage;
+    // Position at which the string-scraper has reached
+    private int currentIndex;
 
     public HtmlScraper() {
     }
 
     public int getIndex() {
-        return this.page.length() - this.data.length();
+        return this.currentIndex;
     }
 
     public void scrape(String text) {
@@ -80,6 +82,7 @@ public class HtmlScraper {
             throw new RuntimeException("Text starts with http://. This could be bad. ");
         }
         this.page = text;
+        this.lcPage = text.toLowerCase();
         reset();
     }
 
@@ -93,7 +96,7 @@ public class HtmlScraper {
      * Move back to the start of the page.
      */
     public void reset() {
-        this.data = this.page;
+        this.currentIndex = 0;
     }
 
     /**
@@ -101,13 +104,13 @@ public class HtmlScraper {
      */
      // This needs to be case-insensitive
     public boolean move(String tag) {
-        int idx = HtmlW.getIndexOpeningTag(data.substring(1), tag);
+        int idx = XmlW.getIndexOpeningTag(lcPage.substring(1 + this.currentIndex), tag.toLowerCase());
         if(idx == -1) {
             return false;
         } else {
             idx++;
         }
-        this.data = data.substring(idx);
+        this.currentIndex = idx;
         return true;
     }
 
@@ -132,18 +135,18 @@ public class HtmlScraper {
     // Tricky. name needs to be case-insensitive, value needs 
     // to not be.
     public boolean moveToTagWith(String name, String value) {
-        int idx = this.data.indexOf(name+"=\""+value+"\"");
+        int idx = this.page.indexOf(name+"=\""+value+"\"", this.currentIndex);
         if(idx == -1) {
-            idx = this.data.indexOf(name+"="+value);
+            idx = this.page.indexOf(name+"="+value, this.currentIndex);
         }
         if(idx == -1) {
-            idx = this.data.indexOf(name+"='"+value+"'");
+            idx = this.page.indexOf(name+"='"+value+"'", this.currentIndex);
         }
         if(idx == -1) {
             return false;
         } else {
-            idx = this.data.lastIndexOf("<", idx);
-            this.data = data.substring(idx);
+            idx = this.page.lastIndexOf("<", idx);
+            this.currentIndex = idx;
             return true;
         }
     }
@@ -151,7 +154,7 @@ public class HtmlScraper {
     //   moveTo a[href], www.yandell.org
     public boolean moveTo(String get, String value) {
         HtmlScraper scraper = new HtmlScraper();
-        scraper.scrape(this.data);
+        scraper.scrape(this.page.substring(this.currentIndex));
         int count = 1;
         while(true) {
             boolean found = scraper.move(get);
@@ -176,11 +179,11 @@ public class HtmlScraper {
      * Move to a specified piece of text. 
      */
     public boolean moveToText(String text) {
-        int idx = this.data.indexOf(text);
+        int idx = this.page.indexOf(text, this.currentIndex);
         if(idx == -1) {
             return false;
         } else {
-            this.data = data.substring(idx);
+            this.currentIndex = idx;
             return true;
         }
     }
@@ -190,15 +193,15 @@ public class HtmlScraper {
      * not contain the HTML comment syntax.
      */
     public boolean moveToComment(String comment) {
-        int idx = this.data.indexOf(comment);
+        int idx = this.page.indexOf(comment, this.currentIndex);
         if(idx == -1) {
             return false;
         } else {
-            idx = data.lastIndexOf("<!", idx);
+            idx = page.lastIndexOf("<!", idx);
             if(idx == -1) {
                 return false;
             }
-            this.data = data.substring(idx);
+            this.currentIndex = idx;
             return true;
         }
     }
@@ -207,7 +210,7 @@ public class HtmlScraper {
      * Does the piece of text exist in this page?
      */
     public boolean textExists(String text) {
-        int idx = this.data.indexOf(text);
+        int idx = this.page.indexOf(text, this.currentIndex);
         return (idx != -1);
     }
 
@@ -216,11 +219,11 @@ public class HtmlScraper {
      * specified text. 
      */
     public String getContentToText(String text) {
-        int idx = this.data.indexOf(text);
+        int idx = this.page.indexOf(text, this.currentIndex);
         if(idx == -1) {
             return "";
         } else {
-            return this.data.substring(0, idx);
+            return this.page.substring(this.currentIndex, idx);
         }
     }
 
@@ -228,7 +231,7 @@ public class HtmlScraper {
     public String[] getChildren(String parent, String child) {
          LinkedList list = new LinkedList();
          HtmlScraper scraper = new HtmlScraper();
-         String chunk = get(parent, data);
+         String chunk = get(parent);
          scraper.scrape(chunk);
          while(scraper.move(child)) {
              list.add(scraper.get(child));
@@ -241,10 +244,8 @@ public class HtmlScraper {
      * child-tags, while [] notation is used for attributes.
      */
     public String get(String tag) {
-        return get(tag, this.data);
-    }
-    // Needs to be case-insensitive
-    private String get(String tag, String str) {
+        String lcText = this.lcPage.substring(this.currentIndex);
+        String text = this.page.substring(this.currentIndex);
         String[] strs = StringUtils.split(tag, ".");
         for(int i=0; i<strs.length; i++) {
             String attr = null;
@@ -252,20 +253,20 @@ public class HtmlScraper {
             if(idx != -1) {
                 attr = StringUtils.getNestedString(strs[i], "[", "]");
                 strs[i] = strs[i].substring(0, idx);
-                int start = HtmlW.getIndexOpeningTag(str, strs[i]);
-                return HtmlW.getAttribute(str, attr, start);
+                int start = HtmlW.getIndexOpeningTag(lcText, strs[i]);
+                return HtmlW.getAttribute(text, attr, start, lcText);
             } else {
-                str = HtmlW.getContent(str, strs[i]);
+                text = HtmlW.getContent(text, strs[i], lcText);
             }
         }
-        return str;
+        return text;
     }
 
     /**
      * Prints out the current position in the scraper until the end of the page. 
      */
     public String toString() {
-        return this.data;
+        return this.page.substring(this.currentIndex);
     }
 
     // From GenJavaCore's UrlW

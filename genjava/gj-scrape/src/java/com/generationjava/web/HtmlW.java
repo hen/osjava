@@ -152,13 +152,15 @@ public class HtmlW {
 
     // Copy of XmlW at the moment
     static public String getContent(String text, String tag) {
-        int idx = HtmlW.getIndexOpeningTag(text, tag);
+        return getContent(text, tag, text.toLowerCase());
+    }
+    static public String getContent(String text, String tag, String lcText) {
+        int idx = XmlW.getIndexOpeningTag(lcText, tag.toLowerCase());
         if(idx == -1) {
             return "";
         }
-        text = text.substring(idx);
-        int end = HtmlW.getIndexClosingTag(text, tag);
-        idx = text.indexOf('>');
+        int end = XmlW.getIndexClosingTag(lcText, tag.toLowerCase(), idx);
+        idx = text.indexOf('>', idx);
         if(idx == -1) {
             return "";
         }
@@ -170,9 +172,12 @@ public class HtmlW {
         return getAttribute(text, attribute, 0);
     }
     static public String getAttribute(String text, String attribute, int idx) {
+        return getAttribute(text, attribute, idx, text.toLowerCase());
+    }
+    static public String getAttribute(String text, String attribute, int idx, String lcText) {
         int close = text.indexOf(">", idx);
-        int doubleAttrIdx = text.toLowerCase().indexOf(attribute.toLowerCase()+"=\"", idx);
-        int singleAttrIdx = text.toLowerCase().indexOf(attribute.toLowerCase()+"='", idx);
+        int doubleAttrIdx = lcText.indexOf(attribute.toLowerCase()+"=\"", idx);
+        int singleAttrIdx = lcText.indexOf(attribute.toLowerCase()+"='", idx);
 
         int attrIdx = doubleAttrIdx;
         String endQuote = "\"";
