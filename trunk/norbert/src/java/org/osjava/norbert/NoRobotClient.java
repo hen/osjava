@@ -72,30 +72,30 @@ public class NoRobotClient {
      *
      * @param baseUrl of the site
      */
-    public void parse(URL baseUrl) {
+    public void parse(URL baseUrl) throws MalformedURLException, IOException {
 
         this.rules = new RulesEngine();
 
         this.baseUrl = baseUrl;
 
         URL txtUrl = null;
-        try {
+//        try {
             // fetch baseUrl+"robots.txt"
             txtUrl = new URL(baseUrl, "robots.txt");
-        } catch(MalformedURLException murle) {
-            logger.info("MalformedURLException", murle);
-            // we can do what we want
-            return;
-        }
+//        } catch(MalformedURLException murle) {
+//            logger.info("MalformedURLException", murle);
+//            // we can do what we want
+//            return;
+//        }
 
         String txt = null;
-        try {
+//        try {
             txt = ""+UrlW.getContent(txtUrl);
-        } catch(IOException ioe) {
-            logger.warn("IOException", ioe);
+//        } catch(IOException ioe) {
+//            logger.warn("IOException", ioe);
             // we can do what we want
-            return;
-        }
+//            return;
+//        }
 
 
         // Classic basic parser style, read an element at a time, 
@@ -106,7 +106,7 @@ public class NoRobotClient {
         String line = "";
         String value = null;
         boolean checkAllows = false;
-        try {
+//        try {
             while( (line = rdr.readLine()) != null ) {
                 // trim whitespace from either side
                 line = line.trim();
@@ -162,9 +162,9 @@ public class NoRobotClient {
                 }
             }
             logger.debug(this.rules);
-        } catch (IOException ioe) {
-            return;
-        }
+ //       } catch (IOException ioe) {
+ //           return;
+ //       }
     }
 
     /**
