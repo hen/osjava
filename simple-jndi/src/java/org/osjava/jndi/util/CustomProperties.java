@@ -3,9 +3,9 @@ package com.generationjava.jndi.util;
 
 import java.io.*;
 import java.util.*;
-import com.generationjava.util.OrderedProperties;
+import org.apache.commons.collections.IteratorUtils;
 
-public class CustomProperties extends OrderedProperties {
+public class CustomProperties extends Properties {
 
     public synchronized void load(InputStream in) throws IOException {
         try {
@@ -34,6 +34,7 @@ public class CustomProperties extends OrderedProperties {
                 // split equals sign
                 idx = line.indexOf('=');
                 if(idx != -1) {
+//                    System.err.println("Setting: "+line.substring(0,idx)+"="+line.substring(idx+1));
                     this.setProperty(line.substring(0,idx), line.substring(idx+1));
                 } else {
                     // blank line, or just a bad line
@@ -41,10 +42,8 @@ public class CustomProperties extends OrderedProperties {
                 }
             }
             reader.close();
-            return props;
         } catch(IOException ioe) {
             ioe.printStackTrace();
-            return props;
         }
     }
 
@@ -60,8 +59,10 @@ public class CustomProperties extends OrderedProperties {
             value = obj;
         }
         if(!index.contains(key)) {
+//            System.err.println("Updating index for: "+key);
             index.add(key);
         }
+//        System.err.println("Really setting: "+key+"="+value);
         return super.put(key, value);
     }
 
@@ -74,7 +75,7 @@ public class CustomProperties extends OrderedProperties {
 
     // the props attribute is for defaults. These will need to be 
     // remembered for the save/store method.
-    public OrderedProperties(Properties props) {
+    public CustomProperties(Properties props) {
         super(props);
     }
 
