@@ -162,7 +162,7 @@ my @build_list = ();
         }
 
         unlink 'maven.log', 'velocity.log', 'ERROR.log', 'OUTPUT.log', 'DOCS-ERROR.log', 'DOCS-OUTPUT.log';
-        print "Building $buildable->{'project'}\n";
+        print "Building $buildable->{'project'} in $buildable->{'directory'}/\n";
 
 # Build the code
         $buildable->{'build_attempted'} = 1;
