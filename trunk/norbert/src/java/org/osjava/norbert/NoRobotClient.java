@@ -129,7 +129,7 @@ public class NoRobotClient {
                         }
                     }
 
-                    value = line.substring(11).trim();
+                    value = line.substring("User-agent:".length()).trim();
                     if(value.equals("*") || value.equals(this.userAgent)) {
                         checkAllows = true;
                         continue;
@@ -138,12 +138,12 @@ public class NoRobotClient {
                     // if not, then store if we're currently the user agent
                     if(checkAllows) {
                         if(line.startsWith("Allow:")) {
-                            value = line.substring(6).trim();
+                            value = line.substring("Allow:".length()).trim();
                             value = URLDecoder.decode(value);
                             this.rules.allowPath( value );
                         } else 
                         if(line.startsWith("Disallow:")) {
-                            value = line.substring(9).trim();
+                            value = line.substring("Disallow:".length()).trim();
                             value = URLDecoder.decode(value);
                             this.rules.disallowPath( value );
                         } else {
