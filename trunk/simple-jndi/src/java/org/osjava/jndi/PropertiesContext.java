@@ -1024,12 +1024,18 @@ if(DEBUG)       System.err.println("[CTXT]HTTPException? :"+e);
         return createSubcontext(nameParser.parse(name));
     }
     
-    /*
+    /**
      * Set the name of the Context.  This is only used from createSubcontext. 
      * It might get replaced by adding more constructors, but there is really
-     * no reason to expose it publicly anyway
+     * no reason to expose it publicly anyway.
+     * 
+     * @param name the Name of the context.
+     * @throws NamingException if the subContext already has a name.
      */
-    private void setName(Name name) {
+    protected void setName(Name name) throws NamingException {
+        if(nameInNamespace != null) {
+            throw new NamingException("Name already set.");
+        }
         nameInNamespace = name;
     }
 
