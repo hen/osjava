@@ -68,7 +68,7 @@ public class PropertiesDataSource implements DataSource {
      */
     void setName(String name) {
         this.name = name;
-//        System.err.println("Loading: "+name+this.delimiter+get("driver")+" from "+props);
+if(org.osjava.jndi.PropertiesContext.DEBUG)        System.err.println("[DS]Loading driver: "+name+this.delimiter+get("driver")+" from "+props);
 //        DbUtils.ensureLoaded(get("driver"));
         ensureLoaded(get("driver"));
         String type = this.name+this.delimiter+"type";
@@ -91,7 +91,7 @@ public class PropertiesDataSource implements DataSource {
         if(name != null && !name.equals("")) {
             val = name + this.delimiter + val;
         }
-//        System.err.println("Getting: "+val);
+if(org.osjava.jndi.PropertiesContext.DEBUG)        System.err.println("[DS]Getting property: "+val);
         return this.props.getProperty(val);
     }
 
@@ -112,8 +112,7 @@ public class PropertiesDataSource implements DataSource {
             // url is now a pooling link
             url = PoolSetup.getUrl(pool);
         }
-//        System.err.println(this);
-//        System.err.println("url "+url);
+if(org.osjava.jndi.PropertiesContext.DEBUG)        System.err.println("[DS]Getting Connection for url: " + url);
         if(username == null || password == null) {
             return DriverManager.getConnection(url);
         } else {
