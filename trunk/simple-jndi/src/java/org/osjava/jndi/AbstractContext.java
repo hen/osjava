@@ -79,9 +79,6 @@ public abstract class AbstractContext implements Context  {
 
     private boolean closing;
 
-    private boolean isEmpty() {
-        return (table.size() > 0 || subContexts.size() > 0);
-    }
 
     /* **********************************************************************
      * Implementation of methods specified by java.lang.naming.Context      *
@@ -576,6 +573,17 @@ public abstract class AbstractContext implements Context  {
     /* **********************************************************************
      * Implementation other methods used by the Context.                    *
      * **********************************************************************/
+    /**
+     * Determine whether or not the context is empty.  Objects bound directly
+     * to the context or subcontexts are all that is considered.  The 
+     * environment of the context is not considered.
+     *    
+     * @return true of the context is empty, else false.
+     */
+    public boolean isEmpty() {
+        return (table.size() > 0 || subContexts.size() > 0);
+    }
+
     /**
      * Set the name of the Context.  This is only used from createSubcontext. 
      * It might get replaced by adding more constructors, but there is really
