@@ -306,45 +306,45 @@ public abstract class BasicApplication extends Frame implements WindowListener, 
     
     // ActionListener interface
     public void actionPerformed(ActionEvent ae) {
-                String cmd = ae.getActionCommand();
-                if("Exit".equals(cmd)) {
-                    applicationClosed();
-                    this.dispose();
-                } else
-                if("Open".equals(cmd)) {
-                    String filename = getFileName(FileDialog.LOAD);
-                    Object obj = fileOpened(filename);
-                    setCurrent(obj);
-                    selection();
-                    addToOpenList(obj);
-                } else
-                if("About".equals(cmd)) {
-                    String about = getAbout();
-                    String old = this.getTitle();
-                    inform(about,old);
-                } else
-                if("Licence".equals(cmd)) {
-                    String licence = getLicence();
-                    String old = this.getTitle();
-                    inform(licence,old);
-                } else
-                if("QuickHelp".equals(cmd)) {
-                    String help = getQuickHelp();
-                    String old = this.getTitle();
-                    inform(help,old);
-                } else
-                if("Close".equals(cmd)) {
-                    removeFromOpenList(currentObj);
-                    fileClosed(currentObj);
-                    setCurrent( popFromOpenList() );
+        String cmd = ae.getActionCommand();
+        if("Exit".equals(cmd)) {
+            applicationClosed();
+            this.dispose();
+        } else
+        if("Open".equals(cmd)) {
+            String filename = getFileName(FileDialog.LOAD);
+            Object obj = fileOpened(filename);
+            setCurrent(obj);
             selection();
-                } else
-                if( openList.get(cmd) != null) {
-                    setCurrent( openList.get(cmd) );
-                    selection();
-                } else {
-                    menuInvoked(cmd);
-                }
+            addToOpenList(obj);
+        } else
+        if("About".equals(cmd)) {
+            String about = getAbout();
+            String old = this.getTitle();
+            inform(about,old);
+        } else
+        if("Licence".equals(cmd)) {
+            String licence = getLicence();
+            String old = this.getTitle();
+            inform(licence,old);
+        } else
+        if("QuickHelp".equals(cmd)) {
+            String help = getQuickHelp();
+            String old = this.getTitle();
+            inform(help,old);
+        } else
+        if("Close".equals(cmd)) {
+            removeFromOpenList(currentObj);
+            fileClosed(currentObj);
+            setCurrent( popFromOpenList() );
+            selection();
+        } else
+        if( openList.get(cmd) != null) {
+            setCurrent( openList.get(cmd) );
+            selection();
+        } else {
+            menuInvoked(cmd);
+        }
     }
     
     public Object setCurrent(Object obj) {
@@ -362,9 +362,10 @@ public abstract class BasicApplication extends Frame implements WindowListener, 
     }
     
     public void addToOpenList(Object obj) {
-        openList.put( getTitle(obj), obj);
-                openMenu.add( getTitle(obj) );
-//                reset( obj );
+        String title = getTitle(obj);
+        openList.put( title, obj);
+        openMenu.add( title );
+        reset( title );
     }
     
     public void removeFromOpenList(Object obj) {
@@ -397,12 +398,13 @@ public abstract class BasicApplication extends Frame implements WindowListener, 
                 
     }
     
-/*        private void reset(String filename) {
+        private void reset(String filename) {
                 int menusz = openMenu.getItemCount();
                 existsBefore = false;
                 existsAfter = false;
                 for(int i=0;i<menusz;i++) {
                         openMenu.getItem(i).deleteShortcut();
+                        openMenu.getItem(i).addActionListener(this);
                 }
                 for(int i=0;i<menusz;i++) {
                         if(filename.equals(openMenu.getItem(i).getLabel())) {
@@ -417,7 +419,7 @@ public abstract class BasicApplication extends Frame implements WindowListener, 
                                 break;
                         }
                 }
-        }*/
+        }
     
         protected String getFileName(int mode) {
                 String prompt;
