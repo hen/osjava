@@ -453,6 +453,7 @@ public class PropertiesContext implements Context  {
                 dsn = "";
             }
 
+            // TODO: This only handles situations with one word in the Properties, ie) BlahDS.url. What if it's foo.com.BlahDS.url?? 
             pds.setName(dsn);
             return pds;
         }
