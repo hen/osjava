@@ -192,7 +192,7 @@ public class ANSIParser implements Parser {
 	}
     }
 
-    public void flush(MudClient client) {
+    public void flush(ConsoleWriter client) {
 	Iterator i = actions.iterator();
 	while(i.hasNext()) {
 	    ConsoleAction action = (ConsoleAction) i.next();

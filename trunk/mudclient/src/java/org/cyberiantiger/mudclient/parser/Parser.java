@@ -1,7 +1,6 @@
 package org.cyberiantiger.mudclient.parser;
 
-import org.cyberiantiger.mudclient.MudClient;
-
+import org.cyberiantiger.console.ConsoleWriter;
 
 public interface Parser {
 
@@ -16,7 +15,7 @@ public interface Parser {
     /**
      * Tell this parser to flush it's output to client.
      */
-    public void flush(MudClient client);
+    public void flush(ConsoleWriter writer);
 
     /**
      * Get the name of this parser

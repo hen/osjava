@@ -7,21 +7,27 @@ import java.net.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import org.cyberiantiger.console.*;
-import org.cyberiantiger.mudclient.MudClient;
 import org.cyberiantiger.mudclient.net.*;
+import org.cyberiantiger.mudclient.config.*;
 import org.cyberiantiger.mudclient.parser.*;
 
-public class MudClientUI extends JPanel implements ConsoleModelListener {
+public class MudClientUI extends JPanel 
+implements ConsoleModelListener, ConsoleWriter {
 
     private ConsoleModel model;
     private ConsoleView view;
     private JScrollBar scrollBar;
-    private String viewID;
-    private MudClient client;
+    private ControlWindow control;
+    private OutputConfiguration config;
 
-    public MudClientUI(String viewID) {
-	this.viewID = viewID;
-	model = new ConsoleModel(80,25,2000);
+    public MudClientUI(ControlWindow control,OutputConfiguration config) {
+	this.control = control;
+	this.config = config;
+	model = new ConsoleModel(
+		config.getWidth(),
+		config.getHeight(),
+		config.getBuffer()
+		);
 	view = new ConsoleView(model);
 	scrollBar = new JScrollBar(JScrollBar.VERTICAL);
 	
@@ -40,10 +46,6 @@ public class MudClientUI extends JPanel implements ConsoleModelListener {
 	add(BorderLayout.EAST,scrollBar);
     }
 
-    public String getViewID() {
-	return viewID;
-    }
-
     public void consoleChanged() {
 	scrollBar.setBlockIncrement(model.getHeight());
 	scrollBar.setValues(
@@ -52,16 +54,21 @@ public class MudClientUI extends JPanel implements ConsoleModelListener {
 		0,
 		model.getHeight() + model.getBufferSize()
 		);
-	if(client != null) {
-	    client.setWindowSize(model.getWidth(),model.getHeight());
-	}
     }
 
     public void consoleAction(ConsoleAction action) {
 	view.consoleAction(action);
+	if(getParent() == null && config.getVisibleOnOutput()) {
+	    control.makeVisible(this);
+	}
+	control.viewUpdated(this);
     }
 
-    public void sendSizeChangeEvents(MudClient client) {
-	this.client = client;
+    public void setConnection(Connection connection) {
+	view.setConnection(connection);
+    }
+
+    public OutputConfiguration getConfiguration() {
+	return config;
     }
 }

@@ -2,11 +2,11 @@ package org.cyberiantiger.mudclient.parser;
 
 import java.util.*;
 import org.cyberiantiger.console.*;
-import org.cyberiantiger.mudclient.MudClient;
 
 public class ElephantMUDParser implements Parser {
 
     private List actions = new ArrayList();
+    private boolean changeParser = false;
     private boolean haveEscape = false;
 
     StringBuffer temp = new StringBuffer();
@@ -33,6 +33,8 @@ public class ElephantMUDParser implements Parser {
 		actions.add(new ElephantMUDConsoleAction(text));
 	    } else {
 		// The mud isn't sending us stuff in external client mode !
+		temp.append('\033').append(ch);
+		changeParser = true;
 	    }
 	    haveEscape = false;
 	} else {
@@ -44,7 +46,7 @@ public class ElephantMUDParser implements Parser {
 	}
     }
 
-    public void flush(MudClient client) {
+    public void flush(ConsoleWriter client) {
 	Iterator i = actions.iterator();
 	while(i.hasNext()) {
 	    ConsoleAction action = (ConsoleAction) i.next();
@@ -58,10 +60,18 @@ public class ElephantMUDParser implements Parser {
     }
 
     public boolean changeParser() {
-	return false;
+	return changeParser;
     }
 
     public Parser getNewParser() {
-	return this;
+	if(changeParser) {
+	    Parser newParser = new ANSIParser();
+	    for(int i=0;i<temp.length();i++) {
+		newParser.putChar(temp.charAt(i));
+	    }
+	    return newParser;
+	} else {
+	    return this;
+	}
     }
 }

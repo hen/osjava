@@ -3,63 +3,28 @@ package org.cyberiantiger.mudclient;
 import java.util.*;
 import java.io.*;
 import org.cyberiantiger.console.*;
+import org.cyberiantiger.mudclient.config.*;
 import org.cyberiantiger.mudclient.parser.*;
 import org.cyberiantiger.mudclient.net.*;
 import org.cyberiantiger.mudclient.ui.ControlWindow;
-import org.cyberiantiger.mudclient.ui.MudClientUI;
+import org.cyberiantiger.mudclient.ui.Connection;
 
-public class ElephantMudClient implements MudClient {
+public class ElephantMudClient implements Display, Connection {
 
     private boolean echo = true;
     private ControlWindow control;
     private MudConnection connection;
-    private Map customOutputTypes = new HashMap();
-    private Map customOutputNames = new HashMap();
+    private ConsoleWriter writer;
 
-    public ElephantMudClient(Properties config) {
-	connection = 
-	new MudConnection(
-		this,
-		config.getProperty("host"),
-		Integer.parseInt(config.getProperty("port"))
-		);
+    private ClientConfiguration config;
+
+    public ElephantMudClient(ClientConfiguration config) {
+	this.config = config;
+	writer = new ElephantConsoleWriter();
+	connection = new MudConnection(this);
 	setParser(new ANSIParser());
-	//defaultWindow = createOutputWindow("default");
 	control = new ControlWindow(this);
 	control.show();
-
-	Iterator i;
-	
-	i = config.keySet().iterator();
-	while(i.hasNext()) {
-	    String propName = (String) i.next();
-	    if(propName.startsWith("outputs.")) {
-		String outputName = propName.substring("outputs.".length());
-		List tmp = new ArrayList();
-		StringTokenizer msgClasses = new StringTokenizer(
-			config.getProperty(propName),
-			","
-			);
-		while(msgClasses.hasMoreTokens()) {
-		    tmp.add(msgClasses.nextToken());
-		}
-		customOutputTypes.put(outputName, tmp);
-	    }
-	}
-
-	i = customOutputTypes.entrySet().iterator();
-	while(i.hasNext()) {
-	    Map.Entry entry = (Map.Entry) i.next();
-	    String name = (String) entry.getKey();
-	    Iterator j = ((List)entry.getValue()).iterator();
-	    while(j.hasNext()) {
-		customOutputNames.put(j.next(),name);
-	    }
-	}
-    }
-
-    public void consoleAction(ConsoleAction action) {
-	control.consoleAction(action);
     }
 
     public void exit() {
@@ -85,7 +50,7 @@ public class ElephantMudClient implements MudClient {
     public void command(String sourceId, String msg) {
 	connection.command(msg);
 	if(echo) {
-	    MudClientUI ui = control.getView(sourceId);
+	    ConsoleWriter ui = control.getCurrentView();
 	    ui.consoleAction(
 		    new StringConsoleAction(msg.toCharArray(),0,msg.length())
 		    );
@@ -102,14 +67,6 @@ public class ElephantMudClient implements MudClient {
 	connection.setWindowSize(w,h);
     }
 
-    public String getCustomOutputName(String pClass) {
-	return (String)customOutputNames.get(pClass);
-    }
-
-    public List getCustomOutputTypes(String outputName) {
-	return (List)customOutputTypes.get(outputName);
-    }
-
     public void connectionStatusChanged(int newStatus) {
 	control.connectionStatusChanged(newStatus);
     }
@@ -118,22 +75,79 @@ public class ElephantMudClient implements MudClient {
 	this.echo = echo;
     }
 
+    public ClientConfiguration getConfiguration() {
+	return config;
+    }
+
+    public ConsoleWriter getConsoleWriter() {
+	return writer;
+    }
+
+    private class ElephantConsoleWriter implements ConsoleWriter {
+
+	protected ConsoleWriter getView(String name) {
+	    if(name.equals(ClientConfiguration.DEFAULT_VIEW)) {
+		return control.getDefaultView();
+	    } else if(name.equals(ClientConfiguration.CURRENT_VIEW)) {
+		return control.getCurrentView();
+	    } else {
+		return control.getView(name);
+	    }
+	}
+
+	public void consoleAction(ConsoleAction action) {
+	    if(action instanceof ElephantMUDConsoleAction) {
+		ElephantMUDConsoleAction eAction =
+		(ElephantMUDConsoleAction) action;
+
+		String pClass = eAction.getPrimaryClass();
+
+		Set dests = config.getOutputFor(pClass);
+
+
+		if(dests == null) {
+		    control.getDefaultView().consoleAction(action);
+		} else {
+		    Set tmp = new HashSet();
+		    Iterator i = dests.iterator();
+		    while(i.hasNext()) {
+			tmp.add(getView((String)i.next()));
+		    }
+
+		    tmp.remove(null);
+
+		    i = tmp.iterator();
+		    while(i.hasNext()) {
+			((ConsoleWriter)i.next()).consoleAction(action);
+		    }
+		}
+
+	    } else {
+		control.getDefaultView().consoleAction(action);
+	    }
+	}
+    }
+
     public static void main(String[] args) {
 	if(args.length == 1) {
 	    try {
-		Properties props = new Properties();
-		props.load(new FileInputStream(args[0]));
-		new ElephantMudClient(props);
+		ClientConfiguration config = new ClientConfiguration();
+		config.load(new FileInputStream(args[0]));
+		new ElephantMudClient(config);
 	    } catch (IOException ioe) {
-		System.out.println("Failed to load config!");
+		ioe.printStackTrace();
 	    }
 	}  else {
 	    try {
-		Properties config = new Properties();
-		config.load(ElephantMudClient.class.getResourceAsStream("config.properties"));
+		ClientConfiguration config = new ClientConfiguration();
+		config.load(
+			ElephantMudClient.class.getResourceAsStream(
+			    "/org/cyberiantiger/mudclient/config.properties"
+			    )
+			);
 		new ElephantMudClient(config);
 	    } catch (IOException ioe) {
-		System.out.println("Failed to load default config!");
+		ioe.printStackTrace();
 	    }
 	}
     }
