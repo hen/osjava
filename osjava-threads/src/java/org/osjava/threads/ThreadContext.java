@@ -39,6 +39,7 @@
 
 package org.osjava.threads;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -48,6 +49,7 @@ import javax.naming.Context;
 import javax.naming.ContextNotEmptyException;
 import javax.naming.Name;
 import javax.naming.NameAlreadyBoundException;
+import javax.naming.NameClassPair;
 import javax.naming.NameNotFoundException;
 import javax.naming.NameParser;
 import javax.naming.NamingEnumeration;
@@ -118,16 +120,10 @@ public class ThreadContext
     /**
      * Create a new ThreadContext as a root.
      */
-    public ThreadContext() {
-        try {
-            ThreadContext(null);
-        catch(NamingException e) {
-            /* 
-             * This should never really happen here.  We're creating the 
-             * root context.
-             */
-        }        
+    public ThreadContext() throws NamingException {
+        this((Name)null);
     }
+    
     /**
      * Create a ThreadContext with a specific name.  This constructor is 
      * rpivate and only intended to be invoked from this object.  If <code>
@@ -145,6 +141,30 @@ public class ThreadContext
     /* ************************
      * Class Specific Methods *
      * ************************/
+    /**
+     * Generate a name for the thread.
+     *   
+     * @return 
+     * @throws NamingException
+     */
+    private String generateNextThreadName() throws NamingException {
+        int high = -1;
+        ArrayList list = new ArrayList();
+        NamingEnumeration enumeration = list("");
+        while(enumeration.hasMore()) {
+            NameClassPair next = (NameClassPair)enumeration.next();
+            /* Get the last section of the name */
+            String namePart = next.getName();
+            if(!namePart.startsWith("Thread-")) {
+               continue;
+            }
+            int test = Integer.valueOf(namePart.substring(7)).intValue();
+            if(test > high) {
+                high = test;
+            }
+        }
+        return "Thread-" + high + 1;
+    }
     /**
      * Create a new ExtendedThread with the Name <code>name</code>.  The name 
      * is relative to this context and all subcontexts must already be
@@ -200,8 +220,11 @@ public class ThreadContext
      */
     public ExtendedThread createThread(Runnable target, Name name)
         throws NameAlreadyBoundException, NamingException, ThreadIsRunningException {
+
         if(name.isEmpty()) {
-            throw new NamingException("Invalid thread Name");
+           /* Make up a name for the Thread based upon the context. */
+            name = (Name)nameInNamespace.clone();
+            name.add(generateNextThreadName());
         }
         
         /* 
