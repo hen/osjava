@@ -68,6 +68,7 @@ public class HttpsFetcher implements Fetcher {
                 throw new FetchingException("Unable to fetch from "+uri+" due to error code "+result);
             }
             String txt = get.getResponseBodyAsString();
+            get.releaseConnection(); 
             Page page = new MemoryPage(txt);
             String base = url.getProtocol()+"://"+url.getHost();
             if(url.getPort() != 443) {
