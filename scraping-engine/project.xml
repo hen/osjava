@@ -22,7 +22,7 @@
 
   <url>http://www.osjava.org/</url>
   <issueTrackingUrl>http://www.osjava.org:8080/jira/secure/BrowseProject.jspa?id=10021</issueTrackingUrl>
-  <siteAddress>www.generationjava.com/maven/scraping-engine</siteAddress>
+  <siteAddress>www.osjava.org/maven/scraping-engine</siteAddress>
   <siteDirectory>/sites/org/osjava/www/maven/scraping-engine/</siteDirectory>
   <distributionDirectory>/sites/org/osjava/www/releases/official/</distributionDirectory>
 
@@ -54,17 +54,18 @@
     <dependency>
       <id>oscube</id>
       <version>0.1</version>
+      <url>http://www.osjava.org/oscube/</url>
     </dependency>
     <dependency>
       <groupId>genjava</groupId>
       <artifactId>gj-config</artifactId>
       <version>1.1</version>
-      <url>http://www.osjava.org/genjava/</url>
+      <url>http://www.osjava.org/genjava/multiproject/gj-config/</url>
     </dependency>
     <dependency>
       <id>log4j</id>
       <version>1.2.7</version>
-      <url>http://jakarta.apache.org/log4j/</url>
+      <url>http://logging.apache.org/log4j/</url>
     </dependency>
     <dependency>
       <id>commons-lang</id>
@@ -80,13 +81,13 @@
       <groupId>genjava</groupId>
       <artifactId>gj-core</artifactId>
       <version>3.0</version>
-      <url>http://www.generationjava.com/</url>
+      <url>http://www.osjava.org/genjava/multiproject/gj-core/</url>
     </dependency>
     <dependency>
       <groupId>genjava</groupId>
       <artifactId>gj-scrape</artifactId>
       <version>1.0</version>
-      <url>http://www.generationjava.com/</url>
+      <url>http://www.osjava.org/genjava/multiproject/gj-scrape/</url>
     </dependency>
     <dependency>
       <id>norbert</id>
