@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+  <xs:element name="renderers">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="renderer"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="renderer">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="inline"/>
+        <xs:element ref="extension"/>
+        <xs:element minOccurs="0" ref="fieldDelimiter"/>
+        <xs:element ref="mimeType"/>
+      </xs:sequence>
+      <xs:attribute name="class" use="required"/>
+      <xs:attribute name="description" use="required"/>
+      <xs:attribute name="label" use="required"/>
+      <xs:attribute name="name" use="required" type="xs:NCName"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="inline" type="xs:boolean"/>
+  <xs:element name="extension" type="xs:NCName"/>
+  <xs:element name="fieldDelimiter" type="xs:string"/>
+  <xs:element name="mimeType" type="xs:string"/>
+</xs:schema>
