@@ -7,7 +7,7 @@
   </properties>
 
   <body>
-    <release version="0.10" date="2004-04-??">
+    <release version="0.10" date="2004-12-09">
         <action dev="rzigweid" type="add">Added NameParser support.</action>
         <action dev="rzigweid" type="add">Added subcontext support.</action>
         <action dev="rzigweid" type="add">Added additional constructors.  This includes a default constructor, a constructor which allows the system environment to not override the passed in environment and one to supply a NameParser different from the default.</action>
