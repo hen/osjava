@@ -1,7 +1,7 @@
 /* 
  * org.osjava.threads.ThreadManager
  * 
- * $Revision: 1.2 $
+ * $Revision: 1.3 $
  * 
  * Created on Aug 01, 2002
  * 
@@ -44,7 +44,7 @@ import javax.naming.NameAlreadyBoundException;
  * application
  * 
  * @author Robert M. Zigweid
- * @version $Revision: 1.2 $ $Date: 2003/11/30 16:40:24 $
+ * @version $Revision: 1.3 $ $Date: 2003/12/24 22:09:20 $
  */
 public class ThreadManager {
     /* TODO: Something to prevent cloning this object should be added */
@@ -178,7 +178,7 @@ public class ThreadManager {
      * {@link ExtendedRunnable} object.
      *
      * @param name The name of the thread which must be unique.
-     * @param group The name of theExtendedThreadGroup to which
+     * @param group The name of the ExtendedThreadGroup to which
      *              the thread is to be a member.
      * 
      * @return the created ExtendedThread
