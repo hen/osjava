@@ -21,7 +21,8 @@ public class IOThread extends Thread {
      * @throws IOException If there is a problem creating the Selector
      */
     public IOThread() throws IOException {
-        this(null, null);
+       super();
+       mySelector = Selector.open();
     }
     
     /**
@@ -34,14 +35,13 @@ public class IOThread extends Thread {
      */
     public IOThread(ThreadGroup group, String name)
         throws IOException {
-        super(group, null,name);
+        super(group, name);
         mySelector = Selector.open();
     }
     
 
     /**
      * Register a ChannelHandler with this IOThread
-     *
      */
     public SelectionKey register(ChannelHandler handler, int ops) 
     throws IOException {
