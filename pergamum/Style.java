@@ -30,11 +30,18 @@ public class Style {
         }
         TransformerFactory tFactory = TransformerFactory.newInstance();
         Transformer transformer = tFactory.newTransformer(new StreamSource(args[1]));
+
+        int extIdx = args[1].lastIndexOf("-");
+        String ext = ".html";
+        if(extIdx != -1) { 
+            ext = "."+args[1].substring(extIdx+1, args[1].length()-4);
+        }
+
         if(args.length > 2) {
             Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(args[2]);
-            // God, how I hate W3C DOM:   args[3] is xpath? No as it's not in the JDK. Just by second element.
+            // God, how I hate W3C DOM:
             NodeList target = doc.getDocumentElement().getElementsByTagName(args[3]);
-            System.out.print(args[0]+" ");
+            System.out.print(args[0]+" as "+ext+" ");
             for(int i=0; i<target.getLength(); i++) {
                 Node node = target.item(i);
                 String id = node.getAttributes().getNamedItem(args[4]).getNodeValue();
@@ -43,16 +50,16 @@ public class Style {
                 StringReader rdr = new StringReader(txt);
 
                 // Use this in filename. Changing xml to html and content/ to docs/
-                String name = "docs/"+args[0].substring(8, args[0].length()-4)+"-"+id+".html";
+                String name = "docs/"+args[0].substring(8, args[0].length()-4)+"-"+id+ext;
                 transformer.transform(new StreamSource(rdr), new StreamResult(new FileOutputStream(name)));
                 System.out.print(".");
             }
             System.out.println();
         } else {
             // Use this in filename. Changing xml to html and content/ to docs/
-            String name = "docs/"+args[0].substring(8, args[0].length()-4)+".html";
+            String name = "docs/"+args[0].substring(8, args[0].length()-4)+ext;
             transformer.transform(new StreamSource(args[0]), new StreamResult(new FileOutputStream(name)));
-            System.out.println(args[0]+" .");
+            System.out.println(args[0]+" as "+ext+" .");
         }
     }
 
