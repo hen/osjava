@@ -20,7 +20,7 @@ public class PayloadContractor {
             // get the jarFile as a -j argument
         }
         String jarName = jarFile.substring( 0, jarFile.length() - 4 );
-        System.out.print(".");
+        System.out.println(".");
 
         if(args.length == 0) {
             System.err.println("\nUnable to contract a payload as no target jar has been specified. ");
@@ -34,116 +34,62 @@ public class PayloadContractor {
 
         // start writing to targetJar file
         FileInputStream fin = null;
-        FileOutputStream fout = null;
+        JarOutputStream jout = null;
         try {
             System.out.print("Contracting payload header");
             fin = new FileInputStream(new File(jarFile));
-            fout = new FileOutputStream(new File(targetJar));
+            jout = new JarOutputStream(new FileOutputStream(new File(targetJar)));
 
-            // copy class file over
-            System.out.println(".");
-            // copy manifest with changed main-class
-            System.out.println(".");
+            JarFile jar = new JarFile(new File(jarFile));
+            Enumeration enum = jar.entries();
+            while(enum.hasMoreElements()) {
+                JarEntry entry = (JarEntry) enum.nextElement();
+                InputStream in = jar.getInputStream( entry );
+                JarEntry entry2 = new JarEntry(entry.getName());
+                entry2.setTime(entry.getTime());
+                entry2.setSize(entry.getSize());
+                jout.putNextEntry(entry2);
+                if(entry.getName().equals("META-INF/MANIFEST.MF")) {
+                    String mf = IOUtils.readToString(in);
+                    mf = mf.replaceAll("Main-Class: com\\.generationjava\\.payload\\.PayloadContractor", "Main-Class: com.generationjava.payload.PayloadExtractor");
+                    jout.write(mf.getBytes());
+                } else {
+                    IOUtils.pushBytes(in, jout);
+                }
+                jout.closeEntry();
+                System.out.print(".");
+            }
+            System.out.println("");
 
             // loop over every argument, handling recursion, 
             // and pushing into the payload/ directory
             System.out.print("Contracting payload body");
-            System.out.println(".");
+            for(int i=1; i<args.length; i++) {
+                String filename = args[i];
+                File file = new File(filename);
+                if(file.isDirectory()) {
+                    // recurse, ignore as we'll move to FileFinder
+                } else {
+                    FileInputStream fis = new FileInputStream(file);
+                    JarEntry entry = new JarEntry("payload/"+filename);
+                    // read time of file
+                    entry.setTime(System.currentTimeMillis());
+// ???                    entry.setSize();
+                    jout.putNextEntry(entry);
+                    IOUtils.pushBytes(fis, jout);
+                    jout.closeEntry();
+                }
+                System.out.print(".");
+            }
+
+            System.out.println("\nFinished. ");
 
         } catch(IOException ioe) {
             System.err.println("\nIOException in building new jar. ");
             ioe.printStackTrace();
         } finally {
-            closeQuietly(fin);
-            closeQuietly(fout);
-        }
-
-        /*
-        try {
-            JarFile jar = new JarFile(new File(jarFile));
-            Enumeration enum = jar.entries();
-            while(enum.hasMoreElements()) {
-                JarEntry entry = (JarEntry) enum.nextElement();
-                if(!entry.getName().startsWith("payload")) {
-                    continue;
-                }
-                // remove payload/
-                String inName = entry.getName().substring(8);
-                String outName = jarName + File.separator + inName;
-                File outFile = new File(outName);
-                if(entry.isDirectory()) {
-                    outFile.mkdirs();
-                    continue;
-                } else {
-                    outFile.getParentFile().mkdirs();
-                }
-
-                InputStream in = jar.getInputStream( entry );
-
-                // TODO: configurable interpolation targets
-                // trusting that we're not interpolating anything 
-                // that can't fit in memory
-                if( props != null && interpolatable(outName)) {
-                    // interpolate push
-                    String text = readToString(in);
-                    text = interpolate(text, props);
-                    in.close();
-                    in = new ByteArrayInputStream(text.getBytes());
-                }
-
-                OutputStream out = new FileOutputStream( outFile );
-                pushBytes(in, out);
-                out.close();
-                in.close();
-                System.out.print(".");
-            }
-        } catch(IOException ioe) { ioe.printStackTrace(); }
-
-
-        System.out.println("");
-        System.out.println("Payload has arrived. ");
-        */
-    }
-
-    // util methods from here down
-    private static void pushBytes(InputStream in, OutputStream out) throws IOException {
-        byte[] buffer = new byte[1023];
-        while(true) {
-            int size = in.read(buffer);
-            if(size == -1) {
-                break;
-            }
-            out.write(buffer,0,size);
-        }
-    }
-
-    private static String readToString(InputStream in) throws IOException {
-        BufferedReader rdr = new BufferedReader(new InputStreamReader(in));
-        StringBuffer buffer = new StringBuffer();
-        String line = "";
-        while( (line = rdr.readLine()) != null) {
-            buffer.append(line);
-        }
-        return buffer.toString();
-    }
-
-    static void closeQuietly(InputStream in) {
-        if(in != null) {
-            try {
-                in.close();
-            } catch(IOException ioe) {
-                // ignore
-            }
-        }
-    }
-
-    static void closeQuietly(OutputStream out) {
-        if(out != null) {
-            try {
-                out.close();
-            } catch(IOException ioe) {
-                // ignore
-            }
+            IOUtils.closeQuietly(fin);
+            IOUtils.closeQuietly(jout);
         }
     }
 
