@@ -100,6 +100,16 @@ public class ReportFactory {
                 param.setName( node.getAttr("name") );
                 param.setTypeAsString( type );
                 param.setBinding( binding );
+                if(node.getAttr("parser") != null) {
+                    try {
+                        Parser parser = (Parser) Thread.currentThread().getContextClassLoader().loadClass(node.getAttr("parser")).newInstance();
+                        parser.setPattern( node.getAttr("pattern") );
+                        param.setParser(parser);
+                    } catch(ClassNotFoundException cnfe) {
+                    } catch(InstantiationException ie) {
+                    } catch(IllegalAccessException iae) {
+                    }
+                }
                 report.addParam( param );
             }
         }
@@ -110,13 +120,19 @@ public class ReportFactory {
             XMLNode node = (XMLNode) nodes.nextElement();
             String name = node.getName();
             if(name.equals("column")) {
-                String format = node.getAttr("format");
-                String pattern = node.getAttr("pattern");
                 Column column = new Column();
                 column.setName( node.getAttr("name") );
                 column.setLabel( node.getAttr("label") );
-                column.setFormatAsString( format );
-                column.setPattern( pattern );
+                if(node.getAttr("formatter") != null) {
+                    try {
+                        Formatter formatter = (Formatter) Thread.currentThread().getContextClassLoader().loadClass(node.getAttr("formatter")).newInstance();
+                        formatter.setPattern( node.getAttr("pattern") );
+                        column.setFormatter(formatter);
+                    } catch(ClassNotFoundException cnfe) {
+                    } catch(InstantiationException ie) {
+                    } catch(IllegalAccessException iae) {
+                    }
+                }
                 report.addColumn( column );
             }
         }
