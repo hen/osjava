@@ -45,4 +45,8 @@ public class MapConfig extends AbstractConfig {
         return this.map.get(key);
     }
 
+    public String toString() {
+        return ""+this.map;
+    }
+
 }

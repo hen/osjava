@@ -56,4 +56,8 @@ public class JndiConfig extends AbstractConfig {
         }
     }
 
+    public String toString() {
+        return ""+this.ctxt;
+    }
+
 }
