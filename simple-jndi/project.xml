@@ -30,7 +30,7 @@
   <distributionDirectory>/sites/org/osjava/www/maven/builds/</distributionDirectory>
 
   <repository>
-    <connection>scm:cvshen@umbongo.flamefew.net:/var/cvs:simple-jndi</connection>
+    <connection>scm:cvs:ext:hen@umbongo.flamefew.net:/var/publiccvs:simple-jndi</connection>
     <url>http://www.osjava.org/view-cvs/viewcvs.cgi/simple-jndi/</url>
   </repository>
 
