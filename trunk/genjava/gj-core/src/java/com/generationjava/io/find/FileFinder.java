@@ -45,6 +45,37 @@ import java.util.Map;
  */
 public class FileFinder implements Finder {
 
+    // helper methods to handle options in String->whatever
+    private static int toInt(Object obj) {
+        if(obj == null) {
+            return 0;
+        } else
+        if(obj instanceof Number) {
+            return ((Number)obj).intValue();
+        } else {
+            String str = obj.toString();
+            try {
+                return Integer.parseInt(str.toString());
+            } catch(NumberFormatException nfe) {
+                throw new IllegalArgumentException("String argument "+str+" must be parseable as an integer.  ");
+            }
+        }
+    }
+    private static boolean toBoolean(Object obj) {
+        if(obj == null) {
+            return false;
+        } else
+        if(obj instanceof Boolean) {
+            return ((Boolean)obj).booleanValue();
+        } else
+        if(obj instanceof Number) {
+            return ((Number)obj).intValue() != 0;
+        } else {
+            String str = obj.toString();
+            return new Boolean(str).booleanValue();
+        }
+    }
+
     private List findListeners;
 
     /**
@@ -57,7 +88,14 @@ public class FileFinder implements Finder {
     // add maxdepth and mindepth somehow
     public File[] find(File directory, Map options) {
         notifyDirectoryStarted(directory);
-        boolean depthFirst = options.containsKey(Finder.DEPTH);
+
+        boolean depthFirst = toBoolean(options.get(Finder.DEPTH));
+
+        // to implement
+        int maxDepth = toInt(options.get(Finder.MAXDEPTH));
+        int minDepth = toInt(options.get(Finder.MINDEPTH));
+        boolean ignoreHiddenDirs = toBoolean(options.get(Finder.IGNORE_HIDDEN_DIRS));
+
         FindingFilter filter = new FindingFilter(options);
         List list = find(directory, filter, depthFirst);
         if(filter.accept(directory)) {
