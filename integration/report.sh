@@ -88,7 +88,7 @@ do
     report=$reportDir/$local_report
 
     tmp=`echo $i | sed 's/\//\\\\\//g'` # wtf, this is a lot of escaping. WHY?
-    cat $buildDir/header.inc | sed "s/\${TITLE}/$tmp Build/" > $report
+    cat $buildDir/header.inc | sed "s/\${TITLE}/$tmp Build/" | sed "s/\${TIMESTAMP}/$LAST_BUILD_DATE/" > $report
 
     if [ -e BUILD_TIME ]; 
     then
