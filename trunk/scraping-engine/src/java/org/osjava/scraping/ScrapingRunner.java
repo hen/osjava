@@ -45,13 +45,13 @@ import org.osjava.oscube.service.notify.*;
 
 public class ScrapingRunner implements Runner {
 
+    // 'org.osjava.oscube.prefix' needs to equal 'org.osjava.scraper' 
     public static void main(String[] args) {
         Engine engine = new Engine();
         ScrapingRunner runner = new ScrapingRunner();
         engine.run(runner, args);
     }
 
-// From here down is the execution part of a scraper. Runner maybe.
     public void run(Config cfg, Session session) {
 
         try {
