@@ -61,6 +61,7 @@ import java.net.MalformedURLException;
 import org.apache.commons.lang.StringUtils;
 import org.osjava.convert.Convert;
 import org.osjava.jndi.util.CustomProperties;
+import org.osjava.jndi.util.IniProperties;
 import org.osjava.jndi.util.XmlProperties;
 
 public class PropertiesContext implements Context  {
@@ -230,6 +231,9 @@ public class PropertiesContext implements Context  {
             if( ((File)file).getName().endsWith(".xml") ) {
                 properties = new XmlProperties();
                 ((XmlProperties)properties).setDelimiter(this.delimiter);
+            } else 
+            if( ((File)file).getName().endsWith(".ini") ) {
+                properties = new IniProperties();
             } else {
                 properties = new CustomProperties();
             }
@@ -238,6 +242,9 @@ public class PropertiesContext implements Context  {
             if( ((URL)file).getFile().endsWith(".xml") ) {
                 properties = new XmlProperties();
                 ((XmlProperties)properties).setDelimiter(this.separator);
+            } else
+            if( ((URL)file).getFile().endsWith(".ini") ) {
+                properties = new IniProperties();
             } else {
                 properties = new CustomProperties();
             }
