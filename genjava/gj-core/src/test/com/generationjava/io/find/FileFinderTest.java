@@ -63,6 +63,12 @@ public class FileFinderTest extends TestCase {
         assertEquals(1, files.length);
     }
 
+    public void testFindSize() {
+        options.put(Finder.SIZE, "1");
+        File[] files = finder.find(new File(dir, "size"), options);
+        assertEquals(1, files.length);
+    }
+
 }
 
 class DebugListener implements FindListener {
