@@ -60,7 +60,7 @@ import org.apache.commons.lang.StringUtils;
  * rather it leads to a rewrite of most of the methods and the creation.
  * This is that rewrite.
  */
-public class CommentedOrderedProperties extends OrderedProperties implements Commentable {
+public class CommentedOrderedProperties extends OrderedProperties {
 
     static public CommentedOrderedProperties createCommentedOrderedProperties(File file) {
         CommentedOrderedProperties props = new CommentedOrderedProperties();
@@ -165,8 +165,6 @@ public class CommentedOrderedProperties extends OrderedProperties implements Com
         writer.close();
     }
 
-
-    // Commentable interface
 
     // set a comment character. should be an ! or a #
     public void setCommentChar(char ch) {
