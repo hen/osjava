@@ -150,7 +150,7 @@
     <div class="publisher-date"><xsl:value-of select="$published"/></div><br/>
     <div class="books-links"><span class="ext"><a href="http://www.amazon.com/exec/obidos/tg/detail/-/{$isbn}">[amz]</a></span> / <span class="ext"><a href="http://www.bookpool.com/.x/1/sm/{$isbn}">[bkp]</a></span> / <span class="ext"><a href="http://www.javashelf.com/servlet/books/{$isbn}">[jshf]</a></span></div><br/>
     <div class="sub-title">Review</div><br/>
-    <div class="review-text"><xsl:value-of select="$review"/></div>
+    <div class="review-text"><xsl:copy-of select="$review"/></div>
   </xsl:template>
 
   <xsl:template match="pg:include">
