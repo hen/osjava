@@ -71,9 +71,10 @@ try {
                 logger.error("Empty row found. Skipping. ");
                 return;
             }
-            URL url = (URL) row[0];
-            in = url.openStream();
-            StreamW.pushStream(in, fos);
+            in = open(row[0]);
+            if(in != null) {
+                StreamW.pushStream(in, fos);
+            }
         }
 
 } catch(IOException ioe) {
@@ -87,5 +88,23 @@ try {
     public boolean exists(Header header, Config cfg, Session session) throws StoringException {
         // need to write some kind of checking in here
         return false;
+    }
+
+    private InputStream open(Object obj) throws IOException {
+        if(obj instanceof URL) {
+            URL url = (URL) obj;
+            return url.openStream();
+        } else 
+        if(obj instanceof InputStream) {
+            return (InputStream) obj;
+        } else 
+        if(obj instanceof File) {
+            return new java.io.FileInputStream( (File) obj);
+        } else
+        if(obj instance byte[]) {
+            return new java.io.ByteArrayInputStream( (byte[]) obj);
+        } else {
+            return null;
+        }
     }
 }
