@@ -70,13 +70,16 @@ public class HtmlScraperTest extends TestCase {
 
     public void testMove() {
         assertTrue( scraper.move("td") );
+        assertEquals( "FOO", scraper.get("td") );
         assertFalse( scraper.move("td") );
 
         scraper.scrape(TEST_PAGE+TEST_PAGE);
         assertTrue( scraper.move("td") );
+        assertEquals( "FOO", scraper.get("td") );
         assertTrue( scraper.move("td") );
+        assertEquals( "FOO", scraper.get("td") );
         assertFalse( scraper.move("td") );
     }
 
-
 }
+

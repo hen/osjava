@@ -108,7 +108,6 @@ public class HtmlScraper {
         if(idx == -1) {
             return false;
         } else {
-            idx++;
             this.currentIndex = idx;
             return true;
         }
@@ -272,6 +271,7 @@ public class HtmlScraper {
                 int start = HtmlW.getIndexOpeningTag(lcText, strs[i]);
                 return HtmlW.getAttribute(text, attr, start, lcText);
             } else {
+//                System.out.println("HS: "+strs[i]+" --- "+text);
                 text = HtmlW.getContent(text, strs[i], lcText);
             }
         }
