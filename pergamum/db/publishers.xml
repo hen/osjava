@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+
+<publishers>
+ <publisher id="ora" name="O'Reilly" url="http://www.oreilly.com/"/>
+ <publisher id="apr" name="Apress" url="http://www.apress.com/"/>
+ <publisher id="man" name="Manning" url="http://www.manning.com/"/>
+ <publisher id="mk" name="Morgan-Kaufmann" url="http://www.mkp.com/"/>
+ <publisher id="wil" name="Wiley" url="http://www.wiley.com/"/>
+ <publisher id="sam" name="Sams" url="http://www.sams.com/"/>
+ <publisher id="obj" name="ObjectSource" url="http://www.objectsource.com/"/>
+ <publisher id="wrx" name="Wrox" url="http://www.wrox.com/"/>
+ <publisher id="chr" name="Charles River" url="http://www.charlesriver.com/"/>
+ <publisher id="aw" name="Addison-Wesley" url="http://www.addisonwesley.com/"/>
+ <publisher id="mc" name="MC Press" url="http://www.mcpressonline.com/"/>
+ <publisher id="ptr" name="Prentice Hall" url="http://www.prenticehall.com/"/>
+</publishers>
