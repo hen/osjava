@@ -1,4 +1,4 @@
-package org.osjava.jndi;
+package org.osjava.sj;
 
 import org.osjava.naming.DelegatingContext;
 
