@@ -35,7 +35,6 @@ package org.osjava.jndi.util;
 
 import java.io.*;
 import java.util.*;
-import org.apache.commons.collections.IteratorUtils;
 import com.generationjava.collections.OrderedSet;
 
 public class CustomProperties extends Properties {
@@ -123,7 +122,7 @@ public class CustomProperties extends Properties {
     
     // simple implementation that depends on keySet.
     public synchronized Enumeration propertyNames() {
-        return IteratorUtils.asEnumeration(keySet().iterator());
+        return Collections.enumeration( keySet() );
     }
     public synchronized Enumeration keys() {
         return propertyNames();
