@@ -164,9 +164,11 @@ public class PrettyPrinterXmlWriter extends DelegatingXmlWriter {
      * @param String of CDATA text.
      */
     public XmlWriter writeCData(String cdata) throws IOException {
-        indentChunk();
+//        indentChunk();
         super.writeCData(cdata);
-        getWriter().write(newline); 
+//        getWriter().write(newline); 
+        this.empty = false;
+        this.wroteText = true;
         return this;
     }
 

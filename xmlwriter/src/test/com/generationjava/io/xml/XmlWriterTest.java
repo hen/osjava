@@ -77,4 +77,32 @@ public class XmlWriterTest extends TestCase {
                "</unit>";
     }
 
+    public void testPrettyPrinter() throws IOException {
+        StringWriter sw = new StringWriter();
+        XmlWriter xw = new PrettyPrinterXmlWriter(new SimpleXmlWriter(sw));
+        xw.writeEntity("a");
+        xw.writeEntity("unit");
+        xw.writeText("test");
+        xw.endEntity();
+        xw.endEntity();
+        xw.close();
+        assertEquals("PrettyPrinterXmlWriter not outputting test correctly ",
+                     sw.toString(),
+                     "<a>\n  <unit>test</unit>\n</a>\n");
+    }
+
+    public void testPrettyPrinterWithCData() throws IOException {
+        StringWriter sw = new StringWriter();
+        XmlWriter xw = new PrettyPrinterXmlWriter(new SimpleXmlWriter(sw));
+        xw.writeEntity("a");
+        xw.writeEntity("unit");
+        xw.writeCData("test");
+        xw.endEntity();
+        xw.endEntity();
+        xw.close();
+        assertEquals("PrettyPrinterXmlWriter not outputting test correctly ",
+                     sw.toString(),
+                     "<a>\n  <unit><![CDATA[ test ]]></unit>\n</a>\n");
+    }
+
 }
