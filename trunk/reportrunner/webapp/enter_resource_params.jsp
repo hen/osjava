@@ -17,6 +17,8 @@
 
 <div class="feedback">
 <p>You have chosen the <span class="chosen-data"><%= report.getLabel() %></span> report from the <span class="chosen-data"><%= report.getReportGroup().getLabel() %></span> report group. </p>
+<p>"<%= report.getReportGroup().getDescription() %>"</p>
+<p>"<%= report.getDescription() %>"</p>
 </div>
 
 <div class="input">

@@ -11,6 +11,7 @@
 
 <div class="feedback">
 <p>You have chosen to run from the <span class="chosen-data"><%= group.getLabel() %></span> report group. </p>
+<p>"<%= group.getDescription() %>"</p>
 </div>
 
 <div class="input">
