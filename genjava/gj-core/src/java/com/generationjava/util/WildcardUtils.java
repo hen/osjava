@@ -12,6 +12,12 @@ public class WildcardUtils {
         int textIdx = 0;
         for(int i=0; i<wcs.length; i++) {
             if(textIdx == text.length()) {
+                if("*".equals(wcs[i])) {
+                    return true;
+                }
+                if("?".equals(wcs[i])) {
+                    return true;
+                }
                 return wcs[i].length() == 0;
             }
 
