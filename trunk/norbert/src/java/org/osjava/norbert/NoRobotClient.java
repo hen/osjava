@@ -83,7 +83,7 @@ public class NoRobotClient {
             // fetch baseUrl+"robots.txt"
             txtUrl = new URL(baseUrl, "robots.txt");
         } catch(MalformedURLException murle) {
-            logger.error("MalformedURLExcepption", murle);
+            logger.error("MalformedURLException", murle);
             // we can do what we want
             return;
         }
