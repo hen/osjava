@@ -26,6 +26,17 @@
     </div>
     <div id="advertising">an Integration-built site</div>
 
+<!-- the green bar -->
+<center><table width="80%"><tr>
+[% FOREACH project IN projects -%]
+  [% IF project.failed %]
+    <td bgcolor="#FF0000">&nbsp;</td>
+  [% ELSE %]
+    <td bgcolor="#00FF00">&nbsp;</td>
+  [% END %]
+[% END -%]
+</tr></table></center>
+
 <ul id="project_list">
 
 [% FOREACH project IN projects -%]

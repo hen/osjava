@@ -49,7 +49,7 @@ sub update {
     chdir $directory;
     if($repository =~ /svn:/) {
         $repository = substr( $repository, 4 );
-        $update_info = `svn update`;
+        $update_info = `svn -q update`;
     } 
     elsif($repository =~ /cvs:/) {
         $repository = substr( $repository, 3 );
@@ -113,18 +113,20 @@ my @build_list = ();
 
         # is component there?
         if(-e $directory) {
-            # yes: do update check. 
-            print "Updating $directory\n";
-            $updated = update($repository, $directory);
+            if($action eq 'all' or $action eq 'update') {
+                # yes: do update check. 
+                print "Updating $directory\n";
+                $updated = update($repository, $directory);
 
-            # if all:
-            if($action eq 'all') {
-                # put in list of ones to build - build-list
-                push @build_list, $buildable;
-            }
-            elsif($updated) {
-                # put in list of ones to build - build-list
-                push @build_list, $buildable;
+                # if all:
+                if($action eq 'all') {
+                    # put in list of ones to build - build-list
+                    push @build_list, $buildable;
+                }
+                elsif($action eq 'update' and $updated) {
+                    # put in list of ones to build - build-list
+                    push @build_list, $buildable;
+                }
             }
         } else {
             print "Checking out $directory\n";
@@ -141,6 +143,8 @@ my @build_list = ();
     unlink('SCM_UPDATE');
     unlink('REASON');
     mkpath('report');
+
+    my $failure = 0;
 
     # loop over each component in build-list
     foreach $buildable (@build_list) {
@@ -169,29 +173,8 @@ my @build_list = ();
         my $end = time();
         $buildable->{'duration'} = parseInterval(seconds => $end - $start, String => 1);
 
-        # see if it was a failure
-        my $failure = $? >> 8;
-        if(not $failure) {
-            if(-e 'ERROR.log') {
-                # search the error log to see if it contains certain phrases
-                open(ERROR_FILE, 'ERROR.log');
-                while(<ERROR_FILE>) {
-                    if( /BUILD FAILED|build cannot continue/ ) {
-# seems to then grep for [ERROR] in OUTPUT.log and put this in ERROR.log
-                        $failure = 1;
-                    }
-                }
-                close(ERROR_FILE);
-            }
-        }
-        if($failure) {
-            print "Failed to build $buildable->{'project'}\n";
-            if($action eq 'update') {
-                print "Need to mail out a failure. \n";
-#            cat $reportDir/$i/ERROR.log | mail -s "Failed to build $i" bayard@osjava.org
-            }
-            $buildable->{'failed'} = "There were errors in building $buildable->{'project'}"; 
-        }
+        $failure = $? >> 8;
+        $buildable->{'failed'} = $failure;
 
 
 # build the site - maven + ttk
@@ -247,6 +230,32 @@ my @build_list = ();
 #done
 
         chdir $previousDirectory;
+    }
+
+    foreach $buildable (@projects) {
+        # see if it was a failure
+        my $failure = $buildable->{'failed'};
+        if(not $failure) {
+            if(-e "$buildable->{'directory'}/ERROR.log") {
+                # search the error log to see if it contains certain phrases
+                open(ERROR_FILE, "$buildable->{'directory'}/ERROR.log");
+                while(<ERROR_FILE>) {
+                    if( /BUILD FAILED|build cannot continue/ ) {
+# seems to then grep for [ERROR] in OUTPUT.log and put this in ERROR.log
+                        $failure = 1;
+                    }
+                }
+                close(ERROR_FILE);
+            }
+        }
+        if($failure) {
+            print "Failed to build $buildable->{'project'}\n";
+            if($action eq 'update') {
+                print "Need to mail out a failure. \n";
+#            cat $reportDir/$i/ERROR.log | mail -s "Failed to build $i" bayard@osjava.org
+            }
+            $buildable->{'failed'} = "There were errors in building $buildable->{'project'}"; 
+        }
     }
 
 $timestamp = strftime("%Y/%m/%e %H:%M", localtime());
