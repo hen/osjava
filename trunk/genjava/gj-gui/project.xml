@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<project>
+  <extend>../project.xml</extend>
+  <id>gj-gui</id>
+  <name>GenJava-GUI</name>
+  <currentVersion>1.0</currentVersion>
+  <inceptionYear>2002</inceptionYear>
+  
+  <description>
+    AWT/Swing Components
+  </description>
+  
+  <shortDescription>AWT/Swing Components</shortDescription>
+
+  <dependencies>
+    <dependency>
+      <id>commons-lang</id>
+      <version>2.0</version>
+      <url>http://jakarta.apache.org/commons/lang.html</url>
+    </dependency>
+    <dependency>
+      <id>commons-collections</id>
+      <version>2.1</version>
+      <url>http://jakarta.apache.org/commons/collections.html</url>
+    </dependency>
+    <dependency>
+      <id>gj-core</id>
+      <version>3.0</version>
+    </dependency>
+    <dependency>
+      <id>gj-beans</id>
+      <version>1.0</version>
+    </dependency>
+  </dependencies>
+
+</project>
+
