@@ -8,13 +8,21 @@ use Time::Interval;
 use File::Copy;
 use Template;
 use POSIX qw(strftime);
+use IO::Handle;
+use POSIX qw(O_CREAT);
+
+# TODO NOTES
+#   Wrap configuration behind an object?
+#   It should be able to generate out an email report too. 
+#   Or is this just a text version of the front page?
+# config needs an email address in it for broken builds and nightly reports.
+# warning system. Or should this use PMD/Checkstyle?
 
 sub usage() {
     print "Usage:\n";
-    print " ./integrate-builds.pl foo-integration.xml all            -  Will build every component specified in the given xml file. \n";
-    print " ./integrate-builds.pl foo-integration.xml update         -  Will build only components that have had a changed file since the last update. \n";
-    print " ./integrate-builds.pl foo-integration.xml report         -  Will regenerate the frontpage. \n";
-    print " ./integrate-builds.pl foo-integration.xml xxx <projects> -  Applies the action to only those projects. \n";
+    print " ./integrate-builds.pl foo-integration.xml all               -  Will build every component specified in the given xml file. \n";
+    print " ./integrate-builds.pl foo-integration.xml update            -  Will build only components that have had a changed file since the last update. \n";
+    print " ./integrate-builds.pl foo-integration.xml update <projects> -  Will build only the component specified. \n";
     exit 1;
 }
 
@@ -96,6 +104,7 @@ close(CONF_FILE);
 
 my $conf = XMLin($conf_filename, forcearray=>1);
 #NOT YET#$global_repository = $conf->{'buildables'}->{'repository'};
+$reportDirectory = $conf->{'site'}[0]->{'target'};
 @projects = @{$conf->{'buildables'}[0]->{'buildable'}};
 
 my @build_list = ();
@@ -129,6 +138,7 @@ my @build_list = ();
                 # yes: do update check. 
                 print "Updating $directory\n";
                 $updated = update($repository, $directory);
+                $buildable->{'updated'} = $updated;
 
                 # if all:
                 if($action eq 'all') {
@@ -154,7 +164,7 @@ my @build_list = ();
     unlink('LAST_BUILD');
     unlink('SCM_UPDATE');
     unlink('REASON');
-    mkpath('report');
+    mkpath($reportDirectory);
 
     my $failure = 0;
 
@@ -192,10 +202,14 @@ my @build_list = ();
 
 # build the site - maven + ttk
         print "Building documentation\n";
+        if( not -e 'LICENSE.txt' ) {
+            sysopen(FH, "LICENSE.txt", O_CREAT);
+            close(FH);
+        }
         system("maven -b maven-simian-plugin maven-jdepend-plugin:report maven-jcoverage-plugin:report checkstyle maven-junit-report-plugin:report maven-jxr-plugin:report pmd javadoc 2> DOCS-ERROR.log > DOCS-OUTPUT.log");
         # report build-time, build-date, update-reason
 
-        my $reportDir = "${previousDirectory}/report/$buildable->{'directory'}";
+        my $reportDir = "${previousDirectory}/${reportDirectory}/$buildable->{'directory'}";
 
         rmtree($reportDir);
         mkpath($reportDir);
@@ -265,7 +279,7 @@ my @build_list = ();
             if($buildable->{'build_attempted'}) {
                 print "Failed to build $buildable->{'project'}\n";
                 if($action eq 'update') {
-                    `cat $buildable->{'directory'}/ERROR.log | mail -s 'Failed to build $buildable->{'project'}' bayard\@osjava.org`;
+                    `cat $buildable->{'directory'}/ERROR.log | mail -s 'Failed to build $buildable->{'project'}' bayard\@osjava.org
                 }
             }
             $buildable->{'failed'} = "There were errors in building $buildable->{'project'}"; 
@@ -278,13 +292,13 @@ $timestamp = strftime("%Y/%m/%e %H:%M", localtime());
 # REPORT SYSTEM
     print "Building front page\n";
     my $tt = Template->new();
-    my $input = 'templates/frontpage.tt';
+    my $input = 'templates/group.tt';
     my $vars = {
         projects => \@projects,
         site => $conf->{'site'}[0],
         timestamp => $timestamp,
     };
-    $tt->process($input, $vars, "report/index.html") || die $tt->error();
+    $tt->process($input, $vars, "$reportDirectory/index.html") || die $tt->error();
 
     foreach $buildable (@build_list) {
         print "Building report for $buildable->{'project'}\n";
@@ -296,15 +310,15 @@ $timestamp = strftime("%Y/%m/%e %H:%M", localtime());
         my @xml_reports = ('checkstyle', 'pmd', 'junit', 'simian', 'jdepend');
   
         foreach $xml_report (@xml_reports) {
-            if( -e "report/$directory/${xml_report}-report.xml" ) {
-                xdoc2html("report/$directory/${xml_report}-report.xml", "report/$directory/${xml_report}-report.html");
+            if( -e "$reportDirectory/$directory/${xml_report}-report.xml" ) {
+                xdoc2html("$reportDirectory/$directory/${xml_report}-report.xml", "$reportDirectory/$directory/${xml_report}-report.html");
                 $reports{$xml_report} = "$directory/${xml_report}-report.html";
             }
         }
   
         my %sub_sites = ('apidocs' => 'javadoc', 'xref' => 'source', 'jcoverage' => 'test coverage', 'builds' => 'builds');
         while( ($key, $value) = each %sub_sites) {
-            if(-e "report/$directory/$key") {
+            if(-e "$reportDirectory/$directory/$key") {
                 $reports{$value} = "$directory/$key";
             }
         }
@@ -318,9 +332,9 @@ $timestamp = strftime("%Y/%m/%e %H:%M", localtime());
             timestamp => $timestamp,
             reports => \%reports,
             build_reason => $action,
-            error_log_filename => "report/".$buildable->{'escapedDirectory'}."/ERROR.log",
+            error_log_filename => "$reportDirectory/".$buildable->{'escapedDirectory'}."/ERROR.log",
         };
-        $tt->process($input, $vars, "report/report_".$buildable->{'escapedDirectory'}.".html") || die $tt->error();
+        $tt->process($input, $vars, "$reportDirectory/report_".$buildable->{'escapedDirectory'}.".html") || die $tt->error();
     }
 
 exit (scalar @build_list != 0);

@@ -27,35 +27,11 @@
 <div class="integration-body">    
     <div id="advertising">an Integration-built site</div>
 
-<!-- the green bar -->
-<p><table width="100%"><tr><td>
-<table width="95%" border="0" cellpadding="0" cellspacing="0"><tr>
-[% good_count = 0 %]
-[% FOREACH project IN projects -%]
-  [% IF project.failed %]
-    <td bgcolor="#CC0000">
-  [% ELSE %]
-    [% good_count = good_count + 1 %]
-    <td bgcolor="#009900">
-  [% END %]
-    <a href="report_[% project.escapedDirectory %].html"><img border="0" height="10" width="10" title="[% project.label %]" src="http://www.osjava.org/images/1x1.gif"></a></td>
+<table id="project_list" width="90%">
+[% FOREACH group IN groups -%]
+     <tr><td class='project_line'><a class='success_link' href='[% group.target %]/'>[% group.title %]</a></td><td>[% group.bar %]</td></tr>
 [% END -%]
-</tr></table>
-</td><td> [% good_count %]/[% projects.size %]</td>
-</tr></table>
-</p>
+</table>
 
-<ul id="project_list">
-
-[% FOREACH project IN projects -%]
-
-  [% IF project.failed %]
-     <li class='project_line'><img class='failed_image' src='images/failed.gif'> <a class='failed_link' href='report_[% project.escapedDirectory %].html'>[% project.project %]</a></li>
-  [% ELSE %]
-     <li class='project_line'><img class='success_image' src='images/success.gif'> <a class='success_link' href='report_[% project.escapedDirectory %].html'>[% project.project %]</a></li>
-  [% END %]
-[% END -%]
-
-</ul>
 </div>
 </html></body>
