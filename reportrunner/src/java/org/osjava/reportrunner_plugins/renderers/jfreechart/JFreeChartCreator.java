@@ -1,4 +1,4 @@
-package com.genscape.reportrunner.util;
+package org.osjava.reportrunner_plugins.renderers.jfreechart;
 
 import org.osjava.reportrunner.Report;
 import org.osjava.reportrunner.Result;
