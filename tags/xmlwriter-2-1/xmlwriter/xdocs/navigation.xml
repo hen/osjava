@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="genjava-xmlwriter">
+
+  <title>genjava-xmlwriter</title>
+
+  <body>
+    <links>
+      <item name="Commons-Lang"                 href="http://jakarta.apache.org/commons/lang.html"/>
+    </links>
+    <menu name="Overview">
+      <item name="News"              href="/News.html"/>
+      <item name="Builder.com article"              href="http://builder.com.com/article.jhtml?id=u00220020318yan01.htm&amp;page=1&amp;vf=tt"/>
+      <item name="Design"              href="/Design.html"/>
+      <item name="How to use"              href="/Using.html"/>
+      <item name="Benchmarks"              href="/Benchmarks.html"/>
+      <item name="Java-Channel entry"              href="http://pharos.inria.fr/Java/display.jsp?id=c_10342"/>
+      <item name="Download"              href="http://www.osjava.org/releases/official/xmlwriter/"/>
+    </menu>
+  </body>
+</project>
