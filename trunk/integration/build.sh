@@ -173,11 +173,21 @@ do
     then
         mv target/generated-xdocs/junit-report.xml $reportDir/$i
     fi
-    if [ -f target/$i*.jar ];
+
+# Needs to get smarter...
+    if [ -f target/*.?ar ];
     then
-        rm -f $reportDir/$i/*.jar
-        mv target/$i*.jar $reportDir/$i/$i-`date +%Y%m%d`.jar
+#        rm -f $reportDir/$i/builds/*.jar
+        mkdir -p $reportDir/$i/builds/
+        DT=`date +%Y%m%d`
+        for t in target/*.?ar
+        do
+            file_name=`echo $t | sed 's/target\///' | sed 's/\.[^\.]*ar//'`
+            file_ext=`echo $t | sed 's/target\///' | sed 's/.*\.//g'`
+            mv $t $reportDir/$i/builds/${file_name}-$DT.${file_ext}
+        done
     fi
+
     date +"%Y/%m/%d %k:%M" > $reportDir/$i/BUILD_TIME
     if [ -e $buildDir/SCM_UPDATE ];
     then
