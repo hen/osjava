@@ -111,7 +111,12 @@ do
 
     if [ -d apidocs/ ];
     then
-        echo "<li><a href='$i/apidocs/'>apidocs</a></li>" >> $report
+        echo "<li><a href='$i/apidocs/'>javadoc</a></li>" >> $report
+    fi
+
+    if [ -d xref/ ];
+    then
+        echo "<li><a href='$i/xref/'>source</a></li>" >> $report
     fi
 
     if [ -f jcoverage/index.html ];
