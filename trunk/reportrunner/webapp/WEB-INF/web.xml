@@ -33,6 +33,10 @@
      <url-pattern>/checkparameters</url-pattern>    
  </servlet-mapping>
 
+ <welcome-file-list>
+   <welcome-file>list_groups.jsp</welcome-file>
+ </welcome-file-list>
+
 <resource-ref>
   <description>
     Roller Report DS
