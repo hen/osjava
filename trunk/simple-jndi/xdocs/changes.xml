@@ -7,6 +7,8 @@
   </properties>
 
   <body>
+    <release version="0.10" date="2004-04-??">
+    </release>
     <release version="0.9.1" date="2004-02-10">
         <action dev="hen" type="add">Fixed #SJN-49, a problem in loading DataSources from particular .properties files. </action>
     </release>
