@@ -41,12 +41,12 @@ then
         if [ $SCM = 'SVN' ];
         then
             LIST=`svn -u status | grep -v '^\?' | grep -v '^A' | grep -v '^M' | grep -v 'Status against revision' | awk '{print $3}' | grep -o -f tmp.NIGHTLY.txt  | sort -u`
-            svn update | grep -v '^?' > REASON
+            svn update | grep -v '^?' > SVN_UPDATE
         fi
         if [ $SCM = 'CVS' ];
         then
             LIST=`cvs -nq update 2>/dev/null | grep -v '^\?' | grep -v '^A' | grep -v '^M' | grep -v 'Status against revision' | awk '{print $2}' | grep -o -f tmp.NIGHTLY.txt  | sort -u`
-            cvs -q update 2>/dev/null | grep -v '^?' > REASON
+            cvs -q update 2>/dev/null | grep -v '^?' > SVN_UPDATE
         fi
         rm tmp.NIGHTLY.txt
     else
@@ -148,7 +148,7 @@ do
     date +"%Y/%m/%d %k:%M" > $reportDir/$i/BUILD_TIME
     if [ -e $buildDir/SVN_UPDATE ];
     then
-        cat $buildDir/SVN_UPDATE | grep ^$i > $reportDir/$i/REASON
+        cat $buildDir/SVN_UPDATE | grep $i > $reportDir/$i/REASON
     fi
     if [ -e $buildDir/REASON ];
     then
