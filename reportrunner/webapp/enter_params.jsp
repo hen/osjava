@@ -9,7 +9,7 @@
 %>
 
 <div class="feedback">
-<p>You have chosen the <%= report.getLabel() %> report from the <%= report.getReportGroup().getLabel() %> report group. </p>
+<p>You have chosen the <span class="chosen-data"><%= report.getLabel() %></span> report from the <spam class="chosen-data"><%= report.getReportGroup().getLabel() %></span> report group. </p>
 </div>
 
 <div class="input">

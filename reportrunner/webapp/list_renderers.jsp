@@ -9,17 +9,17 @@
 %>
 
 <div class="feedback">
-<p>You have chosen the <%= report.getLabel() %> report from the <%= report.getReportGroup().getLabel() %> report group. </p>
+<p>You have chosen the <span class="chosen-data"><%= report.getLabel() %></span> report from the <span class="chosen-data"><%= report.getReportGroup().getLabel() %></span> report group. </p>
 <%
     Param[] params = report.getParams();
     if(params != null && params.length != 0) {
 %>
 <p>The report will run with the following user-supplied information: </p>
-<table class="chosen_parameters">
+<table>
 <%
         for(int i=0; i<params.length; i++) {
             %>
-            <tr><td><%= params[i].getName() %></td><td><%= request.getParameter(params[i].getName()) %></td></tr>
+            <tr><td class="chosen-data"><%= params[i].getName() %></td><td class="chosen-data"><%= request.getParameter(params[i].getName()) %></td></tr>
             <%
         }
 %>
@@ -33,7 +33,7 @@
     String[] names = report.getResourceNames();
     for(int i=0; i<names.length; i++) {
         %>
-        <li><%= report.getReportGroup().getResource(names[i]).getLabel() %></li>
+        <li><span class="chosen-data"><%= report.getReportGroup().getResource(names[i]).getLabel() %></span></li>
         <%
     }
 %>

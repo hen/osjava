@@ -8,7 +8,7 @@
 %>
 
 <div class="feedback">
-<p>You have chosen to run from the <%= group.getLabel() %> report group. </p>
+<p>You have chosen to run from the <span class="chosen-data"><%= group.getLabel() %></span> report group. </p>
 </div>
 
 <div class="input">
