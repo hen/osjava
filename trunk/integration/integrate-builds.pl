@@ -310,3 +310,5 @@ $timestamp = strftime("%Y/%m/%e %H:%M", localtime());
         };
         $tt->process($input, $vars, "report/report_".$buildable->{'escapedDirectory'}.".html") || die $tt->error();
     }
+
+exit (scalar @build_list != 0);
