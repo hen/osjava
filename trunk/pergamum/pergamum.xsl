@@ -110,7 +110,7 @@
       <xsl:value-of select="document('db/publishers.xml')/publishers/publisher[@id=$pub]/@name"/>
     </xsl:variable>
     <li><div class="book-name"><a href="book-{$isbn}.html"><xsl:value-of select="$name"/></a></div> 
-    <div class="book-links"><span class="publisher-name">(<a href="{$pubUri}"><xsl:value-of select="$pubName"/></a>)</span> - <span class="ext"><a href="http://www.amazon.com/exec/obidos/tg/detail/-/{$isbn}">[amz]</a></span> - <span class="ext"><a href="http://www.bookpool.com/.x/1/sm/{$isbn}">[bkp]</a></span> - <span class="ext"><a href="http://www.javashelf.com/servlet/books/{$isbn}">[jshf]</a></span></div></li>
+    <div class="book-links"><span class="publisher-name">(<a href="{$pubUri}"><xsl:value-of select="$pubName"/></a>)</span> - <span class="ext"><a href="http://www.amazon.com/exec/obidos/tg/detail/-/{$isbn}">[amz]</a></span> / <span class="ext"><a href="http://www.bookpool.com/.x/1/sm/{$isbn}">[bkp]</a></span> / <span class="ext"><a href="http://www.javashelf.com/servlet/books/{$isbn}">[jshf]</a></span></div></li>
   </xsl:template>
 
   <!-- turns a book.isbn into a full table -->
@@ -143,7 +143,7 @@
     <div class="book-url">Visit the book&apos;s site: <a href="{$url}"><xsl:value-of select="$url"/></a></div><br/>
     <div class="publisher-name">(<a href="{$pubUri}"><xsl:value-of select="$pubName"/></a>)</div><br/>
     <div class="publisher-date"><xsl:value-of select="$published"/></div><br/>
-    <div class="books-links"><span class="ext"><a href="http://www.amazon.com/exec/obidos/tg/detail/-/{$isbn}">[amz]</a></span> - <span class="ext"><a href="http://www.bookpool.com/.x/1/sm/{$isbn}">[bkp]</a></span> - <span class="ext"><a href="http://www.javashelf.com/servlet/books/{$isbn}">[jshf]</a></span></div><br/>
+    <div class="books-links"><span class="ext"><a href="http://www.amazon.com/exec/obidos/tg/detail/-/{$isbn}">[amz]</a></span> / <span class="ext"><a href="http://www.bookpool.com/.x/1/sm/{$isbn}">[bkp]</a></span> / <span class="ext"><a href="http://www.javashelf.com/servlet/books/{$isbn}">[jshf]</a></span></div><br/>
     <div class="sub-title">Review</div><br/>
     <div class="review-text"><xsl:value-of select="$review"/></div>
   </xsl:template>
