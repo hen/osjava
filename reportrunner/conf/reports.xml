@@ -6,7 +6,7 @@
   <renderers>txt</renderers>
  </report>
  <report name="hardcode" label="Dummy" class="org.osjava.reportrunner.reports.DummyReport">
-  <renderers>txt,htmltable</renderers>
+  <renderers>txt,html</renderers>
  </report>
  <report name="paramsql" label="ParamSql" class="org.osjava.reportrunner.reports.SqlReport">
   <sql>select * from userrole where rolename=? and username=?</sql>
