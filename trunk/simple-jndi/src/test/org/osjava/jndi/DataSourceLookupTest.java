@@ -71,7 +71,7 @@ public class DataSourceLookupTest extends TestCase {
             
     public void testDS3Lookup() {
         try {
-            DataSource genscapeDS = (DataSource) lookup("GenscapeDS");
+            DataSource genscapeDS = (DataSource) lookup("TestDS");
             Properties props = new Properties();
             props.setProperty("url", "jdbc:mysql://192.168.133.2/bikehell");
             props.setProperty("driver", "org.gjt.mm.mysql.Driver");
