@@ -56,12 +56,12 @@
 </resource-ref>
 
  <error-page>
-   <exception-type>org.osjava.reportrunner.ReportException</exception-type>
-   <location>report_exception.jsp</location>
- </error-page>
- <error-page>
    <exception-type>org.osjava.reportrunner.EmptyReportException</exception-type>
    <location>empty_report_exception.jsp</location>
+ </error-page>
+ <error-page>
+   <exception-type>org.osjava.reportrunner.ReportException</exception-type>
+   <location>report_exception.jsp</location>
  </error-page>
 
 
