@@ -226,7 +226,7 @@ public class PropertiesContext implements Context  {
     }
 
     private Properties loadProperties(Object file) throws NamingException {
-        System.err.println("Considering: "+file);
+//        System.err.println("Considering: "+file);
         Properties properties = null;
         if(file instanceof File) {
 //            System.err.println( "FILE "+((File)file).getName() );
