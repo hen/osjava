@@ -15,3 +15,5 @@
       </div>
       <div id="copyright" align="right">&copy;2003,2004</div>
     </div>
+    <div id="advertising">an Integration-built site</div>
+

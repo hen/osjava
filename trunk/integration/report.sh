@@ -73,7 +73,7 @@ do
 done
 
 echo '</div></ul>' >> $index
-echo '<div align="right">an Integration-built site</div></html></body>' >> $index
+echo '</html></body>' >> $index
 
 for i in $LIST
 do
@@ -153,7 +153,7 @@ do
         echo "<hr><h2>Built because:</h2><pre>`cat REASON`</pre>" >> $report
     fi
 
-    echo '<div align="right">an Integration-built site</div></body></html>' >> $report
+    echo '</body></html>' >> $report
 
     cd -
 done
