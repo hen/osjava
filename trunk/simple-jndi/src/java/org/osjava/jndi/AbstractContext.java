@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, Henri Yandell
+ * Copyright (c) 2003 - 2005, Henri Yandell, Robert M. Zigweid
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or 
@@ -43,7 +43,6 @@ import javax.naming.NameNotFoundException;
 import javax.naming.NamingEnumeration;
 import javax.naming.Name;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
