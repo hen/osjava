@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<document>
+
+ <properties>
+     <author email="bayard@generationjava.com">Henri Yandell</author>
+     <title>How to use the Trail-Taglib</title>
+ </properties>
+
+ <body>
+
+  <section name="How to use the Trail-Taglib">
+   <p>The trail taglib mainly comes down to two tags. The first is used to add a page into the trail, and the other is used to .... </p>
+  </section>
+
+ </body>
+</document>
