@@ -448,7 +448,11 @@ public class PropertiesContext implements Context  {
 //        System.err.println("DS? : "+properties.get("org.osjava.jndi.datasource"));
 
         // TODO: Rewrite this block. Not enough grokk.
-        if("true".equals(properties.get("org.osjava.jndi.datasource"))) {
+//        System.err.println("REM-DS? : " + properties.getProperty(remaining+this.delimiter+"type"));
+//        System.err.println("PROPS? : " + properties);
+        if( "true".equals(properties.get("org.osjava.jndi.datasource")) ||
+            "javax.sql.DataSource".equals(properties.getProperty(remaining+this.delimiter+"type")) ) 
+        {
 //            System.err.println("Datasource!");
             PropertiesDataSource pds = new PropertiesDataSource(properties, env, this.delimiter);
             String dsName = null;   // never remaining???;
@@ -499,8 +503,8 @@ public class PropertiesContext implements Context  {
         if(answer == null) {
             throw new InvalidNameException(""+name+" not found. ");
         } else {
-            if(properties.containsKey(remaining+".type")) {
-                String type = properties.getProperty(remaining+".type");
+            if(properties.containsKey(remaining+this.delimiter+"type")) {
+                String type = properties.getProperty(remaining+this.delimiter+"type");
                 if(answer instanceof List) {
                     List list = (List)answer;
                     for(int i=0; i<list.size(); i++) {
