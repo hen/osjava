@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="simple-jndi">
+
+  <title>simple-jndi</title>
+
+  <body>
+    <links>
+      <item name="Maven"                 href="http://maven.apache.org/"/>
+    </links>
+    <menu name="Overview">
+      <item name="News"              href="/News.html"/>
+      <item name="Introduction"              href="/Intro.html"/>
+      <item name="Examples"              href="/Examples.html"/>
+      <item name="Task list"              href="/Tasks.html"/>
+      <item name="FAQ"              href="/FAQ.html"/>
+      <item name="Download"              href="/Download.html"/>
+      <item name="Clover Report"              href="/clover/"/>
+      <item name="Site archives" href="/Archives.html">
+        <item name="Simple-JNDI v0.5"   href="http://www.osjava.org/archived/simple-jndi/docs-0.5/"/>
+        <item name="Simple-JNDI v0.4"   href="http://www.generationjava.com/docs/simple-jndi-docs/docs-0.4/"/>
+        <item name="Simple-JNDI v0.3"   href="http://www.generationjava.com/docs/simple-jndi-docs/docs-0.3/"/>
+        <item name="Simple-JNDI v0.2"   href="http://www.generationjava.com/docs/simple-jndi-docs/docs-0.2/"/>
+      </item>
+    </menu>
+  </body>
+</project>
