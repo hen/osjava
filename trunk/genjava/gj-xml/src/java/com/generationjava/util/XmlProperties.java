@@ -13,7 +13,7 @@
  *   this list of conditions and the following disclaimer in the documentation 
  *   and/or other materials provided with the distribution.
  * 
- * + Neither the name of Genjava-Core nor the names of its contributors 
+ * + Neither the name of GenJava nor the names of its contributors 
  *   may be used to endorse or promote products derived from this software 
  *   without specific prior written permission.
  * 
@@ -29,6 +29,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 // XmlProperties.java
 package com.generationjava.util;
 
@@ -50,10 +51,7 @@ import com.generationjava.io.xml.XMLNode;
  */
 public class XmlProperties extends Properties {
 
-    static public XmlProperties load(File file) {
-        XmlProperties props = new XmlProperties();
-        return props;
-    }
+    private String delimiter = ".";
 
     public XmlProperties() {
         super();
@@ -63,12 +61,21 @@ public class XmlProperties extends Properties {
         super(props);
     }
 
+    public void setDelimiter(String delimiter) {
+        this.delimiter = delimiter;
+    }
+
+    public String getDelimiter() {
+        return this.delimiter;
+    }
+
     public void load(InputStream in) throws IOException {
         InputStreamReader reader = new InputStreamReader(in);
         this.load( reader );
         reader.close();
     }
 
+    // TODO: Decide if load could just throw the root at add.
     public void load(Reader reader) throws IOException {
         XMLParser parser = new XMLParser();
         XMLNode root = parser.parseXML(reader);
@@ -76,39 +83,51 @@ public class XmlProperties extends Properties {
         while(enum.hasMoreElements()) {
             XMLNode node = (XMLNode)enum.nextElement();
             if(!node.isTag()) { continue; }
-            add("", node);
+//            add("", node);
+//            System.err.println("Adding: "+root.getName()+getDelimiter()+" to "+node);
+            add(root.getName(), node);
         }
         Enumeration attrs = root.enumerateAttr();
         if(attrs != null) {
             while(attrs.hasMoreElements()) {
                 String attr = (String)attrs.nextElement();
-                setProperty( root.getName()+"."+attr, root.getAttr(attr));
+                setProperty( root.getName()+getDelimiter()+attr, root.getAttr(attr));
+//                System.err.println("Attr: "+(root.getName()+getDelimiter()+attr) +":"+root.getAttr(attr));
             }
         }
     }
     
     public void add(String level, XMLNode node) {
+//        System.err.println("Adding: "+level);
         if( node.getValue() != null ) {
-            setProperty( level+node.getName(), node.getValue());
+            setProperty( level+getDelimiter()+node.getName(), node.getValue());
         }
         Enumeration attrs = node.enumerateAttr();
         if(attrs != null) {
             while(attrs.hasMoreElements()) {
                 String attr = (String)attrs.nextElement();
-                setProperty( level+node.getName()+"."+attr, node.getAttr(attr));
+                setProperty( level+getDelimiter()+node.getName()+getDelimiter()+attr, node.getAttr(attr));
+//                System.err.println("Attr: "+(level+getDelimiter()+node.getName()+getDelimiter()+attr) +":"+node.getAttr(attr));
             }
         }
         Enumeration nodes = node.enumerateNode();
         if(nodes != null) {
+            level = level+getDelimiter()+node.getName();
             while(nodes.hasMoreElements()) {
                 XMLNode subnode = (XMLNode)nodes.nextElement();
                 if(!subnode.isTag()) { continue; }
-                add(level+subnode.getName()+".", subnode);
+                // temporary pending research into XMLNode parsing:
+                if(!"".equals(subnode.getName())) {
+//                    System.err.println("Walking children: "+node.getName());
+//                    System.err.println("on: "+level);
+                    add(level, subnode);
+                }
             }
         }
     }
     
     public Object setProperty(String key, String value) {
+//        System.err.println("Setting property: "+key+" to "+value);
         return put( key, value );
     }
  
