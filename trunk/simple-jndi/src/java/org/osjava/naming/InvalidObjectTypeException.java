@@ -1,10 +1,10 @@
 /*
  * org.osjava.naming.InvalidObjectTypeException
  * 
- * $Id:$
+ * $Id$
  * $URL:$
- * $Rev:$
- * $Date:$
+ * $Rev$
+ * $Date$
  * $Author:$
  * 
  * Created on Sep 24, 2004.
@@ -47,9 +47,6 @@ import javax.naming.NamingException;
  * @author Robert M. Zigweid
  * @version $Rev$ $Date$
  * @since  0.9.2 XXX: Henri confirm this
- *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
  */
 public class InvalidObjectTypeException extends NamingException {
 
