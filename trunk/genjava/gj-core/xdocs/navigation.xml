@@ -30,12 +30,8 @@
     <menu name="Resources">
       <item name="Mailing List"              href="/mail-lists.html"/>
       <item name="Jar Dependencies"              href="/dependencies.html"/>
-      <item name="CVS Repository"              href="/cvs-usage.html"/>
+      <item name="SVN Repository"     href="http://www.osjava.org/svn.php?project=genjava/gj-core"/>
       <item name="Bug Tracking"              href="/issue-tracking.html"/>
-    </menu>
-    <menu name="CVS reports">
-      <item name="CVS History"              href="/changelog-report.html"/>
-      <item name="CVS Statistics"              href="/statcvs/"/>
     </menu>
     <links>
         <item name="Genjava"                 href="../../"/>
