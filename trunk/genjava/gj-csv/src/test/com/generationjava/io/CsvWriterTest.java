@@ -66,8 +66,8 @@ public class CsvWriterTest extends TestCase {
             csv.writeLine(strs);
             csv.close();
             assertEquals("Does not write simple csv file out correctly. ", 
-                         "\"That's \"\"Mr. Monkey\"\" to you\",Fool\n" +
-                         "Not \"\"Monkey\",Fool\n",
+                         "\"That's \"\"Mr. Monkey\"\", to you\",Fool\n" +
+                         "Not \"Monkey\",Fool\n",
                          sw.toString() );
         } catch(IOException ioe) {
             fail("IOException should not have been thrown. ");
