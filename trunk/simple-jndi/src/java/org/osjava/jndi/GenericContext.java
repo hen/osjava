@@ -161,7 +161,7 @@ public class GenericContext extends AbstractContext {
             .parse(getNameInNamespace());
         contextName.addAll(name);
         newContext = new GenericContext(this);
-        ((AbstractContext)newContext).setName(contextName);
+        ((AbstractContext)newContext).setNameInNamespace(contextName);
         subContexts.put(name, newContext);
         return newContext;
     }
