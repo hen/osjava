@@ -61,8 +61,13 @@
 
   <dependencies>
     <dependency>
-      <id>genjava-core</id>
-      <version>2.2</version>
+      <id>gj-core</id>
+      <version>3.0</version>
+      <url>http://www.osjava.org/</url>
+    </dependency>
+    <dependency>
+      <id>gj-xml</id>
+      <version>1.0</version>
       <url>http://www.osjava.org/</url>
     </dependency>
     <dependency>
@@ -74,6 +79,11 @@
       <id>commons-collections</id>
       <version>2.1</version>
       <url>http://jakarta.apache.org/commons/collections.html</url>
+    </dependency>
+    <dependency>
+      <id>commons-convert</id>
+      <version>0.1</version>
+      <url>http://jakarta.apache.org/commons/</url>
     </dependency>
   </dependencies>
 
