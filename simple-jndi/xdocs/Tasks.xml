@@ -28,6 +28,7 @@
 <li>Write maven.xml to do the test-config copy to target/test-classes. <b>DONE. v0.6</b>: Changed project.xml to handle this. </li>
 <li>Put the standard configuration options into the JNDI scope itself and pay attention for when they are changed. Thus allowing the system to change at runtime. <b>DONE. v0.6</b></li>
 <li><b>-0.6 released-</b></li>
+<li>Provide a .ini back-end support. <b>DONE. v0.7</b></li>
 <li>Implement Type in such a way that the object to create may be specified, say JDOPersistenceFactory, and that sub-properties may be set as bean properties.</li>
 <li>Implement binding so that values may be stored in the system, making it Read/Write. </li>
 <li>Implementing the list methods so you can see the values in a particular directory/properties file. </li>
@@ -51,7 +52,6 @@
 <li>Implement DataSource creation as a part of the converter. </li>
 <li>Test DataSources in various situations. Given a lookup of java:/TestDS and a delimiter of /, a directory of java: and a file of TestDS.properties, it appears to still look for TestDS/url and not url. Basically the PropertiesDataSource is buggy in its lookup. </li>
 <li>Static back end to the binding, so that different contexts can share values. </li>
-<li>Provide a .ini back-end support. </li>
 <li>Implement satisfactory unit testing. </li>
 </ul>
 

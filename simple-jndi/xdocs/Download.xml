@@ -7,7 +7,10 @@
   </properties>
 
   <body>
-    <section name="Download Latest">
+    <section name="Download Latest Code">
+      <p>The next version of will be 0.7. To get the current version of this you need to check the code out from CVS and build it yourself using Maven. More info on CVS is available on the <a href="http://www.osjava.org/simple-jndi/cvs-usage.html">cvs-usage</a> page. </p>
+    </section>
+    <section name="Download Latest Stable">
 <ul>
 <li><a href="/releases/official/simple-jndi/simple-jndi-0.6-src.tar.gz">simple-jndi-0.6-src.tar.gz</a></li>
 <li><a href="/releases/official/simple-jndi/simple-jndi-0.6-src.zip">simple-jndi-0.6-src.zip</a></li>
