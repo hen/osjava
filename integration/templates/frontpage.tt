@@ -15,7 +15,7 @@
 
 </head>
 
-<body class="[% site.label %]">
+<body bgcolor="white" class="[% site.label %]">
 
     <div id="banner"><table width="100%"><tr><td><a href="[% site.url %]"><img border="0" alt="[% site.label %]" src="[% site.logo %]" align="left"></a></td></tr></table></div>
     <div id="breadcrumbs">
