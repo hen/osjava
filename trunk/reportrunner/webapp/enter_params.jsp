@@ -10,7 +10,7 @@
 
 <p>It requires the following information: </p>
 
-<form action="list_renderers.jsp">
+<form action="_check_params.jsp">
 <input type="hidden" name="_report" value="<%= reportName %>">
 <%
     Report report = ReportFactory.getReport(reportName);
