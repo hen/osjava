@@ -35,13 +35,7 @@ public class ReportFactory {
             XMLNode groupNode = (XMLNode) groupNodes.nextElement();
             ReportGroup group = new ReportGroup();
             applyAttrs(group, groupNode, new String[] { "resources" } );
-            applyResourceParamTag( group, groupNode.enumerateNode("resource-param") );
-
-            Enumeration useNodes = groupNode.enumerateNode("use");
-            while(useNodes.hasMoreElements()) {
-                XMLNode useNode = (XMLNode) useNodes.nextElement();
-                group.putResource( useNode.getAttr("name"), (Resource) resourcesMap.get(useNode.getAttr("resource")) );
-            }
+            applyResourceParamTag( group, groupNode.enumerateNode("resource-param"), resourcesMap );
             groups.add(group);
         }
         return (ReportGroup[]) groups.toArray( new ReportGroup[0] );
@@ -189,12 +183,17 @@ LABEL:  while(nodes.hasMoreElements()) {
         }
     }
 
-    private static void applyResourceParamTag( ReportGroup group, Enumeration nodes ) {
+    private static void applyResourceParamTag( ReportGroup group, Enumeration nodes, Map resourcesMap ) {
         while(nodes.hasMoreElements()) {
             XMLNode node = (XMLNode) nodes.nextElement();
             String name = node.getName();
             if(name.equals("resource-param")) {
-                group.addResourceParam( createParam(node) );
+                // HACK: Same xml is modeled differently currently
+                if(node.getAttr("value") != null) {
+                    group.putResource( node.getAttr("name"), (Resource) resourcesMap.get(node.getAttr("value")) );
+                } else {
+                    group.addResourceParam( createParam(node) );
+                }
             }
         }
     }
