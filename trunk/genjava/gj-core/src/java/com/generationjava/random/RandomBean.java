@@ -48,11 +48,9 @@ public class RandomBean implements RandomMaker {
     public Object makeInstance(Class clss) {
         Object instance = null;
         if(clss.isInterface()) {
-            System.err.println("IS INTERFACE. ");
             return RandomBeanProxy.newInstance(clss);
         }
 
-        System.err.println("ISNT INTERFACE. ");
         instance = ClassW.createObject(clss);
         if(instance == null) {
             return null;

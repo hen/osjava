@@ -84,9 +84,6 @@ public class DelegatingIncrementalComboBox extends IncrementalComboBox implement
             } catch(IOException ioe) {
                 ioe.printStackTrace();
             }
-//        } else {
-//            System.err.println("Didn't get capacity back from server last time.");
-//        }
 
         return super.find(model, str);
     }

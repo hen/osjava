@@ -46,7 +46,6 @@ public class BeansW {
     static private java.text.DateFormat format = new java.text.SimpleDateFormat();
 
     static public Object convert(Object value, Class toClass) {
-        System.err.println("ASKED TO CONVERT: "+value+" which is a "+value.getClass()+" to "+toClass);
         if(toClass.equals(value.getClass())) {
             return value;
         } else

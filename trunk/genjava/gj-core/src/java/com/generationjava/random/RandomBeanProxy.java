@@ -65,7 +65,6 @@ public class RandomBeanProxy implements InvocationHandler {
     }
 
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        System.err.println("ME CALLED");
         // we have to come up with a random reply to any method.
         // we can try to be cute and handle set and get properly....
         // but it's probably not worth it. maybe.

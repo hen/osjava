@@ -172,20 +172,14 @@ public class GJTableModel extends AbstractTableModel {
             // ensure sortIndex matches the size
             int size = this.rows.size();
             if(this.sortIndex.size() < size) {
-//                System.err.println("INcreasing size: "+this.sortIndex.size()+"->"+size);
                 for(int i=this.sortIndex.size(); i<size; i++) {
-//                    System.err.print("*");
                     this.sortIndex.add( new GJTableSortIndex() );
                 }
-//                System.err.println("");
             } else
             if(this.sortIndex.size() > size) {
-//                System.err.println("Decreasing size: "+this.sortIndex.size()+"->"+size);
                 for(int i=this.sortIndex.size(); i>=size; i--) {
-//                    System.err.print("*");
                     this.sortIndex.remove(i);
                 }
-//                System.err.println("");
             }
 
             // sortIndex is now the same size as this.rows, copy data in.
@@ -203,7 +197,6 @@ public class GJTableModel extends AbstractTableModel {
             }
 
             Collections.sort(sortIndex, cmp);
-//            System.err.println("SORTED: "+sortIndex);
         }
         Comparator cmp = BeanComparator.getInstance("["+column+"]");
         ((BeanComparator)cmp).setComparator(new NumericStringComparator());
@@ -213,9 +206,6 @@ public class GJTableModel extends AbstractTableModel {
         } else {
             lastColumn = column;
         }
-//        for(int i=0;i<rows.size();i++) {
-//            System.err.println("SORTING: "+((List)rows.get(i)).get(column));
-//        }
         Collections.sort(rows, cmp);
 
         if(!this.sortListeners.isEmpty()) {

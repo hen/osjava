@@ -36,11 +36,9 @@ public class Zoomer implements ImageSource, InformationListener {
         } else if ("zoom-out".equals(re.getName())) {
             magnify(magnification * 2);
         }
-        System.err.println("Report: "+re + ", m:"+magnification);
     }
 
     public Object request(RequestEvent re) {
-        System.err.println("Request: "+re + ", m:"+magnification);
         return null;
     }
 
@@ -56,7 +54,6 @@ public class Zoomer implements ImageSource, InformationListener {
     }
 
     public void magnify(double x, Point p) {
-        System.err.println("magnifying with: "+x + ", "+p);
         Image img = null;
         if (x > 1.0) {
             img = source.getImage();
@@ -64,22 +61,18 @@ public class Zoomer implements ImageSource, InformationListener {
             viewport.y = (int)(viewport.y);
             viewport.width = (int)(getImage().getWidth(null));
             viewport.height = (int)(getImage().getHeight(null));
-            System.err.println("vport: "+viewport);
         } else {
             img = source.getImage();
-            System.err.println("img: "+x + ".."+img.getWidth(null) + ", "+
                     img.getHeight(null));
             viewport.width = (int)(img.getWidth(null) * x);
             viewport.height = (int)(img.getHeight(null) * x);
             viewport.x = (int)(p.x - viewport.width / x);
             viewport.y = (int)(p.y - viewport.height / x);
-            System.err.println("vpor2: "+viewport);
         }
         magnification = x;
 
         // crop image
         int[] pixels = new int[viewport.width * viewport.height];
-        System.err.println("vp: "+viewport.width + ", "+viewport.height);
         PixelGrabber pg = new PixelGrabber(img, viewport.x, viewport.y,
                 viewport.width, viewport.height, pixels, 0, viewport.width);
         try {

@@ -67,7 +67,6 @@ public final class JdbcW {
         String[] names = new String[sz];
         for(int i=0; i<sz; i++) {
             names[i] = rsmd.getColumnName(i+1);
-//            System.err.println(names[i]);
         }
         return names;
     }
@@ -93,7 +92,6 @@ public final class JdbcW {
             table = args[0];
             columnName = args[1];
         }
-//        System.err.println("Getting from: "+catalog+";"+schema+";"+table);
         ResultSet rs = meta.getColumns(catalog, schema, table, columnName);
         if(rs.next()) {
             return rs.getInt(5);
@@ -119,7 +117,6 @@ public final class JdbcW {
         } else {
             table = args[0];
         }
-//        System.err.println("Getting from: "+catalog+";"+schema+";"+table);
         ResultSet rs = meta.getPrimaryKeys(catalog, schema, table);
         ArrayList list = new ArrayList();
         while(rs.next()) {
@@ -156,12 +153,7 @@ public final class JdbcW {
             ResultSetMetaData rsmd = rs.getMetaData();
             HashMap map = new HashMap();
             while(rs.next()) {
-                System.err.println(rs.getObject(1));
-                System.err.println(rs.getObject(2));
-                System.err.println(rs.getObject(3));
-                System.err.println(rs.getObject(4));
                 map.put(rs.getObject(4), rs.getObject(5));
-                System.err.println(rs.getObject(6));
             }
             return map;
         } catch(SQLException sqle) {

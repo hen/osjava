@@ -121,16 +121,12 @@ final public class XmlW {
     static public int getIndexClosingTag(String tag, String text, int start) {
         String open = "<"+tag;
         String close = "</"+tag+">";
-//        System.err.println("OPEN: "+open);
-//        System.err.println("CLOSE: "+close);
         int closeSz = close.length();
         int nextCloseIdx = text.indexOf(close, start);
-//        System.err.println("first close: "+nextCloseIdx);
         if(nextCloseIdx == -1) {
             return -1;
         }
         int count = StringUtils.countMatches(text.substring(start, nextCloseIdx), open);
-//        System.err.println("count: "+count);
         if(count == 0) {
             return -1;  // tag is never opened
         }
