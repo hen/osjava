@@ -19,9 +19,9 @@ public class NamedSqlReport extends AbstractSqlReport {
     private static int[] indexesOf(String target, String search) {
         int[] ret = new int[StringUtils.countMatches(target, search)];
 
-        int i=0;
+        int i = 0;
         int idx = -1;
-        while( (idx = target.indexOf(search)) != -1 ) {
+        while( (idx = target.indexOf(search, idx + 1)) != -1 ) {
             ret[i] = idx;
             i++;
         }
@@ -44,7 +44,7 @@ public class NamedSqlReport extends AbstractSqlReport {
                 String named = variableToNamed(params[i].getName());
                 int[] idxs = indexesOf( sql, named );
                 for(int j=0; j<idxs.length; j++) {
-                    idxsMap.put( new Integer(j), named );
+                    idxsMap.put( new Integer( idxs[j] ), named );
                 }
                 paramsMap.put(named, params[i]);
 
@@ -57,10 +57,10 @@ public class NamedSqlReport extends AbstractSqlReport {
 
             Map markMap = new HashMap();
 
-            // Step 3: Walk backwards through these, storing up the values to be used later 
+            // Step 3: Walk through these, storing up the values to be used later 
             //         and the question marks to put in the sql in place of the named params
-            for(int j = list.size() - 1; j >= 0; j--) {
-                String named = (String) idxsMap.get( list.get(j) );
+            for(int i = 0; i < list.size(); i++) {
+                String named = (String) idxsMap.get( list.get(i) );
                 Param param = (Param) paramsMap.get( named );
 
                 if(Object[].class.isAssignableFrom(param.getType())) {
@@ -73,16 +73,16 @@ public class NamedSqlReport extends AbstractSqlReport {
                     }
                     String marks = StringUtils.chomp(StringUtils.repeat("?,", array.length), ",");
                     markMap.put(named, marks);
-                    for(int k=0; k<array.length; k++) {
-                        values.add( k, array[k] );
+                    for(int j=0; j<array.length; j++) {
+                        values.add( array[j] );
                     }
                 } else {
-                    values.add( 0, params[j].getValue() );
+                    values.add( param.getValue() );
                     markMap.put(named, "?");
                 }
             }
 
-            // Step 4: Convert the sql from named paramters to question mark parameters
+            // Step 4: Convert the sql from named paramaters to question mark parameters
             Collection keys = markMap.keySet();
             Iterator iterator = keys.iterator();
             while(iterator.hasNext()) {
