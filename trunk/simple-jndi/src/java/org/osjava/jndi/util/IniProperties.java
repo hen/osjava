@@ -33,8 +33,10 @@
 /// TODO: Refactor this out
 package org.osjava.jndi.util;
 
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.IOException;
 
 /** 
  * Functionally like the CustomProperties class in that it has 
