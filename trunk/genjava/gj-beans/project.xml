@@ -3,7 +3,7 @@
   <extend>../project.xml</extend>
   <id>gj-beans</id>
   <name>GenJava-Beans</name>
-  <currentVersion>1.0</currentVersion>
+  <currentVersion>1.0.1</currentVersion>
   <inceptionYear>2002</inceptionYear>
   
   <description>
