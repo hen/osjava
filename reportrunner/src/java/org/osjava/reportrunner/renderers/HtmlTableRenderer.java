@@ -14,7 +14,15 @@ public class HtmlTableRenderer extends AbstractRenderer {
             out.write("There is no result. ");
             return;
         }
-        out.write("<table border='1'>\n");
+        out.write("<script src='renderers/htmltable/sorttable.js'></script>\n");
+        out.write("<script src='renderers/htmltable/zebra.js'></script>\n");
+        out.write("<script src='renderers/htmltable/invertBgColor.js'></script>\n");
+        out.write("<script src='renderers/htmltable/colourPicker.js'></script>\n");
+        out.write("<script>var picker = new ColorPicker();</script>\n");
+        out.write("<span id='swatch'><a href='#' onClick=\"picker.select(document.getElementById('swatch'),'pick');return false;\" name='pick' id='pick'><img src='images/1x1.gif' height='10' width='10' style='border-color: #000000'></a></span>\n");
+        out.write("<script>picker.writeDiv()</script>\n");
+
+        out.write("<table border='1' class='sortable' id='report'>\n");
         Column[] columns = report.getColumns();
         if(columns != null) {
             out.write("<tr>\n");
@@ -35,7 +43,8 @@ public class HtmlTableRenderer extends AbstractRenderer {
             }
             out.write("</tr>\n");
         }
-        out.write("<table>\n");
+        out.write("</table>\n");
+        out.write("<script>stripe('report', '#fff', '#edf3fe'); initInvertBgColor('report');</script>\n");
     }
 
 }

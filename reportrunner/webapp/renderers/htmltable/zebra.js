@@ -54,13 +54,15 @@
 
             // avoid cells that have a class attribute
             // or backgroundColor style
-            if (! hasClass(mytd) &&
-                ! mytd.style.backgroundColor) {
+//            if (! hasClass(mytd) &&
+//                ! mytd.style.backgroundColor) {
         
+            if(mytd.parentNode.getAttribute('unselected') == null) {
               mytd.style.backgroundColor =
                 even ? evenColor : oddColor;
-            
-            }
+            } else {
+	      mytd.parentNode.setAttribute('unselected', even ? evenColor : oddColor);
+	    }
           }
         }
         // flip from odd to even, or vice-versa
