@@ -12,20 +12,53 @@ import java.util.HashMap;
 
 public class FileFinderTest extends TestCase {
 
+    private HashMap options;
+    private FileFinder finder;
+    private String dirStr = "src/test/find-data/";
+    private File dir = new File(dirStr);
+
     public FileFinderTest(String name) {
         super(name);
+    }
+
+    public void setUp() {
+        finder = new FileFinder();
+        options = new HashMap();
+//        finder.addFindListener( new DebugListener() );
     }
 
     //-----------------------------------------------------------------------
     // To test: 
     // find(File, Map)
 
-    public void testFind() {
-        FileFinder finder = new FileFinder();
-        HashMap options = new HashMap();
-        options.put(Finder.NAME, "project.xml");
-        File[] files = finder.find(new File("."), options);
+    public void testFindName() {
+        options.put(Finder.NAME, "file");
+        File[] files = finder.find(new File(dir, "name"), options);
         assertEquals(1, files.length);
     }
 
+    public void testFindPath() {
+        options.put(Finder.PATH, dirStr+"path/dir/file");
+        File[] files = finder.find(new File(dir, "path"), options);
+        assertEquals(1, files.length);
+    }
+
+    public void testFindRegex() {
+        options.put(Finder.REGEX, dirStr+"regex/f.*");
+        File[] files = finder.find(new File(dir, "regex"), options);
+        assertEquals(3, files.length);
+    }
+
+}
+
+class DebugListener implements FindListener {
+    public void fileFound(FindEvent fe) {
+        System.out.println("EVENT: "+fe);
+    }
+    public void directoryStarted(FindEvent fe) {
+        System.out.println("EVENT: "+fe);
+    }
+    public void directoryFinished(FindEvent fe) {
+        System.out.println("EVENT: "+fe);
+    }
 }
