@@ -226,7 +226,7 @@ public class PropertiesContext implements Context  {
     }
 
     private Properties loadProperties(Object file) throws NamingException {
-//        System.err.println("Considering: "+file);
+        System.err.println("Considering: "+file);
         Properties properties = null;
         if(file instanceof File) {
 //            System.err.println( "FILE "+((File)file).getName() );
@@ -236,6 +236,7 @@ public class PropertiesContext implements Context  {
             } else 
             if( ((File)file).getName().endsWith(".ini") ) {
                 properties = new IniProperties();
+                ((IniProperties)properties).setDelimiter(this.delimiter);
             } else {
                 properties = new CustomProperties();
             }
@@ -245,14 +246,16 @@ public class PropertiesContext implements Context  {
             if( ((URL)file).getFile().endsWith(".xml") ) {
 //                System.err.println("Found xml url: "+file);
                 properties = new XmlProperties();
-                ((XmlProperties)properties).setDelimiter(this.separator);
+                ((XmlProperties)properties).setDelimiter(this.delimiter);
             } else
             if( ((URL)file).getFile().endsWith(".ini") ) {
                 properties = new IniProperties();
+                ((IniProperties)properties).setDelimiter(this.delimiter);
             } else {
                 properties = new CustomProperties();
             }
         } else {
+            System.out.println("Warning: Located file was not a File or a URL. ");
             properties = new CustomProperties();
         }
 
@@ -391,6 +394,9 @@ public class PropertiesContext implements Context  {
             if(file == null) {
                 file = getElement(path+this.separator+element+".xml");
             }
+            if(file == null) {
+                file = getElement(path+this.separator+element+".ini");
+            }
 //            System.err.println("Into file? "+file);
             if(file != null) {
                 path = path+this.separator+element;
@@ -427,6 +433,9 @@ public class PropertiesContext implements Context  {
             Object file = getElement(path+this.separator+"default.properties");
             if(file == null) {
                 file = getElement(path+this.separator+"default.xml");
+            }
+            if(file == null) {
+                file = getElement(path+this.separator+"default.ini");
             }
             if(file != null) {
                 properties = loadProperties(file);

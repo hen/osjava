@@ -47,6 +47,16 @@ import com.generationjava.collections.OrderedSet;
  */
 public class IniProperties extends CustomProperties {
 
+    private String delimiter = "";
+
+    public void setDelimiter(String delimiter) {
+        this.delimiter = delimiter;
+    }
+
+    public String getDelimiter() {
+        return this.delimiter;
+    }
+
     /**
      * Load in a .ini file. 
      * semi-colons are comments. blocks are denoted with square brackets.
@@ -63,7 +73,7 @@ public class IniProperties extends CustomProperties {
 
                 // handle blocks
                 if(line.startsWith("[") && line.endsWith("]")) {
-                    block = line.substring(1, line.length()-1)+".";
+                    block = line.substring(1, line.length()-1);
                 }
 
                 int idx = line.indexOf(';');
@@ -76,7 +86,7 @@ public class IniProperties extends CustomProperties {
                 idx = line.indexOf('=');
                 if(idx != -1) {
 //                    System.err.println("Setting: "+line.substring(0,idx)+"="+line.substring(idx+1));
-                    this.setProperty(block+line.substring(0,idx), line.substring(idx+1));
+                    this.setProperty(block+this.delimiter+line.substring(0,idx), line.substring(idx+1));
                 } else {
                     // blank line, or just a bad line
                     // we ignore it
