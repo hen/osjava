@@ -6,6 +6,11 @@
 
 <web-app>
 
+  <context-param>
+     <param-name>ReportRunnerDS</param-name>
+     <param-value>EuroDev2DS</param-value>
+  </context-param>
+
  <servlet>   
      <servlet-name>ReportRunnerServlet</servlet-name>      
      <servlet-class>org.osjava.reportrunner.ReportRunnerServlet</servlet-class>      

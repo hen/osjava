@@ -15,7 +15,8 @@
 <%
     Report report = ReportFactory.getReport(reportName);
     if(report instanceof org.osjava.reportrunner.reports.SqlReport) {
-        ((org.osjava.reportrunner.reports.SqlReport)report).setDataSource("jdbc/rollerdb");
+        String dsName = getServletContext().getInitParameter(ReportRunnerServlet.DS_NAME);
+        ((org.osjava.reportrunner.reports.SqlReport)report).setDataSource(dsName);
     }
     Param[] params = report.getParams();
     for(int i=0; i<params.length; i++) {

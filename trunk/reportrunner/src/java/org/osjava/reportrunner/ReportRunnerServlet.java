@@ -7,6 +7,7 @@ public class ReportRunnerServlet extends HttpServlet {
 
     public static final String REPORT = "_report";
     public static final String RENDERER = "_renderer";
+    public static final String DS_NAME = "ReportRunnerDS";
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
@@ -18,7 +19,8 @@ public class ReportRunnerServlet extends HttpServlet {
 
         // HACK
         if(report instanceof org.osjava.reportrunner.reports.SqlReport) {
-            ((org.osjava.reportrunner.reports.SqlReport)report).setDataSource("jdbc/rollerdb");
+            String dsName = getServletContext().getInitParameter(ReportRunnerServlet.DS_NAME);
+            ((org.osjava.reportrunner.reports.SqlReport)report).setDataSource(dsName);
         }
 
         // does report require parameters?
