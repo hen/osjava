@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<document>
+
+  <properties>
+      <author email="bayard@generationjava.com">Henri Yandell</author>
+      <title>Changes</title>
+  </properties>
+
+  <body>
+    <release version="0.1" date="2004-07-14" description="Initial Mavenised version">
+    </release>
+</body>
+</document>

@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<document>
+
+  <properties>
+      <author email="bayard@generationjava.com">Henri Yandell</author>
+      <title>How to use Multidoc</title>
+  </properties>
+
+  <body>
+  <section name="Using Multidoc">
+   <p>Using Multidoc is currently done by copying the examples in SVN. </p>
+   <p>Assuming a unix-like shell, the following will multidoc Jakarta Commons:<br/>
+     <code>./run.sh commons-release.cfg commons-multidoc/</code><br/>
+     The first argument is the configuration file, the second is the target directory 
+     to put values in. Note that the run.sh script copies everything from docs/ into 
+     the target directory as well, though this is increasingly getting smaller. </p>
+   <p>To multidoc your own system, just copy one of the included configuration files and 
+   customise it to fit your needs. It is hopefully quite obvious in use. </p>
+  </section>
+
+ </body>
+</document>
