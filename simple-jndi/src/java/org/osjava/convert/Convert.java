@@ -32,12 +32,14 @@
 
 package org.osjava.convert;
 
-import org.apache.commons.convert.Converter;
 import org.apache.commons.convert.ConvertRegistry;
 import org.apache.commons.convert.ConvertUtils;
 
 /**
- * This should move to using Jakarta Convert I believe. 
+ * Wrapper so that the dependency on Commons Convert is optional. 
+ * Bear in mind that this uses a version of commons-convert which 
+ * appears to not be very alive now. Needs to migrate to using 
+ * gj-convert or something. 
  */
 public class Convert {
 
