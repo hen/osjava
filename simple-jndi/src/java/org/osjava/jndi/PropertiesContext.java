@@ -41,14 +41,11 @@ import javax.naming.NameAlreadyBoundException;
 import javax.naming.NotContextException;
 import javax.naming.NameNotFoundException;
 import javax.naming.NamingEnumeration;
-import javax.naming.OperationNotSupportedException;
 import javax.naming.Name;
-import javax.naming.CompositeName;
 import javax.naming.NameClassPair;
 
 import java.util.HashMap;
 import java.util.Hashtable;
-import java.util.Properties;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
@@ -62,7 +59,6 @@ import java.net.MalformedURLException;
 
 import org.osjava.naming.ContextBindings;
 import org.osjava.naming.ContextNames;
-import org.osjava.naming.InvalidObjectTypeException;
 import org.osjava.naming.SimpleNameParser;
 
 import org.osjava.jndi.util.Parser;
@@ -76,6 +72,11 @@ import org.osjava.jndi.util.HierarchicalMap;
  */
 public class PropertiesContext implements Context  {
 
+    /**
+     * Constant indicating whether or not the PropertiesContext is in debug
+     * mode or not.  This is determined by the System Property SJ.DEBUG when 
+     * the PropertiesContext is instantiated.
+     */
     public static final boolean DEBUG = (System.getProperty("SJ.DEBUG")!=null);
 
     private static final Object FILE = new String("FILE");
@@ -103,35 +104,82 @@ public class PropertiesContext implements Context  {
 
     private boolean closing;
 
+    /**
+     * Creates a PropertiesContext.
+     */
     public PropertiesContext() {
         this((Hashtable)null);
     }
     
+    /**
+     * Creates a PropertiesContext.
+     * 
+     * @param env a Hashtable containing the Context's environemnt.
+     */
     public PropertiesContext(Hashtable env) {
         /* By default allow system properties to override. */
         this(env, true, null);
     }
     
+    /**
+     * Creates a PropertiesContext.
+     * 
+     * @param env a Hashtable containing the Context's environment.
+     * @param systemOverride allow System Parameters to override the
+     *        environment that is passed in.
+     */
     public PropertiesContext(Hashtable env, boolean systemOverride) {
         this(env, systemOverride, null);
     }
 
+    /**
+     * Creates a PropertiesContext.
+     * 
+     * @param env a Hashtable containing the Context's environment.
+     * @param parser the NameParser being used by the Context.
+     */
     public PropertiesContext(Hashtable env, NameParser parser) {
         this(env, true, parser);
     }
 
+    /**
+     * Creates a PropertiesContext.
+     * 
+     * @param systemOverride allow System Parameters to override the
+     *        environment that is passed in.
+     */
     public PropertiesContext(boolean systemOverride) {
         this(null, systemOverride, null);
     }
 
+    /**
+     * Creates a PropertiesContext.
+     * 
+     * @param systemOverride allow System Parameters to override the
+     *        environment that is passed in.
+     * @param parser the NameParser being used by the Context.
+     */
     public PropertiesContext(boolean systemOverride, NameParser parser) {
         this(null, systemOverride, parser);
     }
 
+    /**
+     * Creates a PropertiesContext.
+     * 
+     * @param parser the NameParser being used by the Context.
+     */
     public PropertiesContext(NameParser parser) {
         this(null, true, parser);
     }
 
+    /**
+     * Creates a PropertiesContext.
+     * 
+     * @param env a Hashtable containing the Context's environment.
+     * @param systemOverride allow System Parameters to override the
+     *        environment that is passed in.
+     * @param parser the NameParser being used by the Context.
+     */
     public PropertiesContext(Hashtable env, boolean systemOverride, NameParser parser) {
         String shared = null;
         
@@ -231,6 +279,9 @@ if(DEBUG)            System.err.println("[CTXT]separator is: "+this.separator);
     // need to add classpath://. 
     // need to add http://.
     // Use VFS???
+    /** 
+     * @see javax.naming.Context#lookup(javax.naming.Name)
+     */
     public Object lookup(Name name) throws NamingException {
         /* 
          * The string form of the name will be used in several places below 
@@ -435,6 +486,9 @@ if(DEBUG)            System.err.println("[CTXT]separator is: "+this.separator);
         }
     }
 
+    /**
+     * @see javax.naming.Context#lookup(java.lang.String)
+     */
     public Object lookup(String name) throws NamingException {
         return lookup(nameParser.parse(name));
     }
@@ -477,7 +531,7 @@ if(DEBUG)            System.err.println("[CTXT]separator is: "+this.separator);
         throw new NamingException("Simple-JNDI incorrectly believes "+key+" is special. ");
     }
 
-    /**
+    /*
      * java:/ is impossible to deal with on a Windows box.
      * Complete utter pain. Solution is to remove the :
      */
@@ -674,6 +728,9 @@ if(DEBUG)       System.err.println("[CTXT]HTTPException? :"+e);
     }
 
     /* Start of Write-functionality */
+    /**
+     * @see javax.naming.Context#bind(javax.naming.Name, java.lang.Object)
+     */
     public void bind(Name name, Object object) throws NamingException {
         /* 
          * If the name of obj doesn't start with the name of this context, 
@@ -697,6 +754,9 @@ if(DEBUG)       System.err.println("[CTXT]HTTPException? :"+e);
         put(name, object);
     }
 
+    /**
+     * @see javax.naming.Context#bind(java.lang.String, java.lang.Object)
+     */
     public void bind(String name, Object object) throws NamingException {
         bind(nameParser.parse(name), object);
     }
@@ -709,6 +769,9 @@ if(DEBUG)       System.err.println("[CTXT]HTTPException? :"+e);
         }
     }
 
+    /**
+     * @see javax.naming.Context#rebind(javax.naming.Name, java.lang.Object)
+     */
     public void rebind(Name name, Object object) throws NamingException {
         if(name.isEmpty()) {
             throw new InvalidNameException("Cannot bind to empty name");
@@ -722,10 +785,16 @@ if(DEBUG)       System.err.println("[CTXT]HTTPException? :"+e);
         bind(name, object);
     }
 
+    /**
+     * @see javax.naming.Context#rebind(java.lang.String, java.lang.Object)
+     */
     public void rebind(String name, Object object) throws NamingException {
         rebind(nameParser.parse(name), object);
     }
 
+    /**
+     * @see javax.naming.Context#unbind(javax.naming.Name)
+     */
     public void unbind(Name name) throws NamingException {
         String stringName = name.toString();
         if(name.isEmpty()) {
@@ -752,10 +821,16 @@ if(DEBUG)       System.err.println("[CTXT]HTTPException? :"+e);
         ((Context)targetContext).unbind(name.getSuffix(name.size() - 1));
     }
 
+    /**
+     * @see javax.naming.Context#unbind(java.lang.String)
+     */
     public void unbind(String name) throws NamingException {
         unbind(nameParser.parse(name));
     }
 
+    /**
+     * @see javax.naming.Context#rename(javax.naming.Name, javax.naming.Name)
+     */
     public void rename(Name oldName, Name newName) throws NamingException {
         /* Confirm that this works.  We might have to catch the exception */
         Object old = lookup(oldName);
@@ -784,12 +859,18 @@ if(DEBUG)       System.err.println("[CTXT]HTTPException? :"+e);
         }
     }
 
+    /**
+     * @see javax.naming.Context#rename(java.lang.String, java.lang.String)
+     */
     public void rename(String oldName, String newName) throws NamingException {
         rename(nameParser.parse(oldName), nameParser.parse(newName));
     }
     /* End of Write-functionality */
 
     /* Start of List functionality */
+    /**
+     * @see javax.naming.Context#list(javax.naming.Name)
+     */
     public NamingEnumeration list(Name name) throws NamingException {
 //      if name is a directory, we should do the same as we do above
 //      if name is a properties file, we should return the keys (?)
@@ -825,10 +906,16 @@ if(DEBUG)       System.err.println("[CTXT]HTTPException? :"+e);
     }
 
 
+    /**
+     * @see javax.naming.Context#list(java.lang.String)
+     */
     public NamingEnumeration list(String name) throws NamingException {
         return list(nameParser.parse(name));
     }
 
+    /**
+     * @see javax.naming.Context#listBindings(javax.naming.Name)
+     */
     public NamingEnumeration listBindings(Name name) throws NamingException {
         if("".equals(name)) {
             /* 
@@ -858,11 +945,17 @@ if(DEBUG)       System.err.println("[CTXT]HTTPException? :"+e);
         throw new NamingException();
     }
 
+    /**
+     * @see javax.naming.Context#listBindings(java.lang.String)
+     */
     public NamingEnumeration listBindings(String name) throws NamingException {
         return listBindings(nameParser.parse(name));
     }
     /* End of List functionality */
 
+    /**
+     * @see javax.naming.Context#destroySubcontext(javax.naming.Name)
+     */
     public void destroySubcontext(Name name) throws NamingException {
         if(name.size() > 1) {
             if(subContexts.containsKey(name.getPrefix(1))) {
@@ -891,10 +984,16 @@ if(DEBUG)       System.err.println("[CTXT]HTTPException? :"+e);
         subContexts.remove(name);
     }
 
+    /**
+     * @see javax.naming.Context#destroySubcontext(java.lang.String)
+     */
     public void destroySubcontext(String name) throws NamingException {
         destroySubcontext(nameParser.parse(name));
     }
 
+    /**
+     * @see javax.naming.Context#createSubcontext(javax.naming.Name)
+     */
     public Context createSubcontext(Name name) throws NamingException {
         Context newContext;
         if(name.size() > 1) {
@@ -918,12 +1017,15 @@ if(DEBUG)       System.err.println("[CTXT]HTTPException? :"+e);
         return newContext;
     }
 
+    /**
+     * @see javax.naming.Context#createSubcontext(java.lang.String)
+     */
     public Context createSubcontext(String name) throws NamingException {
         return createSubcontext(nameParser.parse(name));
     }
     
     /*
-     *  Set the name of the Context.  This is only used from createSubcontext. 
+     * Set the name of the Context.  This is only used from createSubcontext. 
      * It might get replaced by adding more constructors, but there is really
      * no reason to expose it publicly anyway
      */
@@ -931,14 +1033,23 @@ if(DEBUG)       System.err.println("[CTXT]HTTPException? :"+e);
         nameInNamespace = name;
     }
 
+    /**
+     * @see javax.naming.Context#lookupLink(javax.naming.Name)
+     */
     public Object lookupLink(Name name) throws NamingException {
         return lookup(name);
     }
 
+    /**
+     * @see javax.naming.Context#lookupLink(java.lang.String)
+     */
     public Object lookupLink(String name) throws NamingException {
         return lookup(nameParser.parse(name));
     }
 
+    /**
+     * @see javax.naming.Context#getNameParser(javax.naming.Name)
+     */
     public NameParser getNameParser(Name name) throws NamingException {
         if(name.isEmpty() ) {
             return nameParser;
@@ -950,10 +1061,16 @@ if(DEBUG)       System.err.println("[CTXT]HTTPException? :"+e);
         throw new NotContextException();    
     }
 
+    /**
+     * @see javax.naming.Context#getNameParser(java.lang.String)
+     */
     public NameParser getNameParser(String name) throws NamingException {
         return getNameParser(nameParser.parse(name));
     }
 
+    /**
+     * @see javax.naming.Context#composeName(javax.naming.Name, javax.naming.Name)
+     */
     public Name composeName(Name name, Name prefix) throws NamingException {
         // NO IDEA IF THIS IS RIGHT
         if(name == null || prefix == null) {
@@ -964,12 +1081,18 @@ if(DEBUG)       System.err.println("[CTXT]HTTPException? :"+e);
         return retName;
     }
 
+    /**
+     * @see javax.naming.Context#composeName(java.lang.String, java.lang.String)
+     */
     public String composeName(String name, String prefix) throws NamingException {
         Name retName = composeName(nameParser.parse(name), nameParser.parse(prefix));
         /* toString pretty much is guaranteed to exist */
         return retName.toString();
     }
 
+    /**
+     * @see javax.naming.Context#addToEnvironment(java.lang.String, java.lang.Object)
+     */
     public Object addToEnvironment(String name, Object object) throws NamingException {
         if(this.env == null) {
             return null;
@@ -978,6 +1101,9 @@ if(DEBUG)       System.err.println("[CTXT]HTTPException? :"+e);
         }
     }
 
+    /**
+     * @see javax.naming.Context#removeFromEnvironment(java.lang.String)
+     */
     public Object removeFromEnvironment(String name) throws NamingException {
         if(this.env == null) {
             return null;
@@ -986,6 +1112,9 @@ if(DEBUG)       System.err.println("[CTXT]HTTPException? :"+e);
         }
     }
 
+    /**
+     * @see javax.naming.Context#getEnvironment()
+     */
     public Hashtable getEnvironment() throws NamingException {
         if(this.env == null) {
             return new Hashtable();
@@ -994,6 +1123,9 @@ if(DEBUG)       System.err.println("[CTXT]HTTPException? :"+e);
         }
     }
 
+    /**
+     * @see javax.naming.Context#close()
+     */
     public void close() throws NamingException {
         /* Don't try anything if we're already in the process of closing */
         if(closing) {
@@ -1025,6 +1157,9 @@ if(DEBUG)       System.err.println("[CTXT]HTTPException? :"+e);
         this.table = null;
     }
 
+    /**
+     * @see javax.naming.Context#getNameInNamespace()
+     */
     public String getNameInNamespace() throws NamingException {
         return "";
     }
