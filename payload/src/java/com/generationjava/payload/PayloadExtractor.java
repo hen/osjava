@@ -31,12 +31,24 @@
  */
 package com.generationjava.payload;
 
-import java.util.jar.*;
+import java.util.jar.JarOutputStream;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
-import java.util.*;
+import java.util.Enumeration;
+import java.util.Properties;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileInputStream;
+import java.io.OutputStream;
+import java.io.InputStream;
 
+/**
+ * Extracts itself from the jar it is in, assuming it is run with java -jar.
+ */
 public class PayloadExtractor {
 
     public static void main(String[] args) {
