@@ -1,6 +1,6 @@
 package org.osjava.reportrunner;
 
-public class Column {
+public class Column implements Nameable {
 
     private String name;
     private Formatter formatter;

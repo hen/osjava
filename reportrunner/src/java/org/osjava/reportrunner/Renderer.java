@@ -5,7 +5,7 @@ import java.util.*;
 import com.generationjava.io.xml.*;
 import com.generationjava.lang.*;
 
-public interface Renderer {
+public interface Renderer extends Nameable {
 
     String getName();
     void setName(String name);

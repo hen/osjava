@@ -85,10 +85,11 @@ public class ReportFactory {
             String className = reportNode.getAttr("class");
             Report report = (Report) ClassW.createObject(className);
             applyAttrs( report, reportNode, new String[] { "class" } );
-            applyNodes( report, reportNode.enumerateNode(), new String[] { "param", "column", "renderer", "columns", "renderers" } );
+            applyNodes( report, reportNode.enumerateNode(), new String[] { "param", "column", "renderer", "columns", "renderers", "variant" } );
             applyParamTag( report, reportNode.enumerateNode("param") );
-            applyColumnTags( report, reportNode );
-            applyRendererTags( report, reportNode );
+            applyVariantTag( report, reportNode.enumerateNode("variant") );
+            applyColumnTags( report, reportNode );    // "column" and "columns"
+            applyRendererTags( report, reportNode );  // "renderer" and "renderers"
             report.setReportGroup(group);
             reports.add(report);
         }
@@ -181,6 +182,32 @@ LABEL:  while(nodes.hasMoreElements()) {
             String name = node.getName();
             if(name.equals("param")) {
                 report.addParam( createParam(node) );
+            }
+        }
+    }
+
+    private static void applyVariantTag( Report report, Enumeration nodes ) {
+        while(nodes.hasMoreElements()) {
+            XMLNode node = (XMLNode) nodes.nextElement();
+            String name = node.getName();
+            if(name.equals("variant")) {
+                Variant variant = new Variant();
+                variant.setName( node.getAttr("name") );
+                variant.setLabel( node.getAttr("label") );
+                Enumeration options = node.enumerateNode("option");
+                while(options.hasMoreElements()) {
+                    XMLNode optionNode = (XMLNode) options.nextElement();
+                    VariantOption option = new VariantOption();
+                    option.setName( optionNode.getAttr("name") );
+                    option.setLabel( optionNode.getAttr("label") );
+                    option.setValue( optionNode.getAttr("value") );
+                    Enumeration params = optionNode.enumerateNode("param");
+                    while(params.hasMoreElements()) {
+                        option.addParam( createParam( (XMLNode) params.nextElement() ) );
+                    }
+                    variant.addOption(option);
+                }
+                report.addVariant(variant);
             }
         }
     }

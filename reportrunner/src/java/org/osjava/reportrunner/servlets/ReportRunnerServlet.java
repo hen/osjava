@@ -20,6 +20,7 @@ public class ReportRunnerServlet extends HttpServlet {
         // which report they want
         Report report = ReportFactory.getReport(groupName, reportName);
         applyResources(report, request);
+        ChooseReportServlet.applyVariantParams(report, request);
 
         // does report require parameters?
         Param[] params = report.getParams();
@@ -130,5 +131,22 @@ public class ReportRunnerServlet extends HttpServlet {
                 report.setResource(required[i], request.getParameter(required[i]));
             }
         }
+    }
+
+    public static String parametersToHiddens(HttpServletRequest request, Nameable[] ignore) {
+        StringBuffer buffer = new StringBuffer();
+        // pull this into a Util
+        java.util.Enumeration pms = request.getParameterNames();
+LABEL:  while(pms.hasMoreElements()) {
+            String name = (String) pms.nextElement(); 
+            for(int i=0; i<ignore.length; i++) {
+                if(ignore[i].getName().equals(name)) {
+                    continue LABEL;
+                }
+            }
+            String value = (String) request.getParameter(name);
+            buffer.append("<input type=\"hidden\" name=\""+ name + "\" value=\"" + value +"\">\n");
+        }
+        return buffer.toString();
     }
 }

@@ -8,6 +8,7 @@
     String reportName = request.getParameter(ReportRunnerServlet.REPORT);
     Report report = ReportFactory.getReport(groupName, reportName);
     ReportRunnerServlet.applyResources(report, request);
+    ChooseReportServlet.applyVariantParams(report, request);
     Param[] params = report.getParams();
 %>
 
@@ -22,6 +23,21 @@
 <s>choose resource</s>
 <% 
   }
+%>
+-&gt;
+<%
+  if(report.getVariants() != null) {
+%>
+<a href="enter_variants.jsp?<%= request.getQueryString() %>">choose variants</a>
+<% 
+  } else {
+%>
+<s>choose variants</s>
+<% 
+  }
+%>
+-&gt;
+<%
   if(params != null && params.length != 0) {
 %>
 <a href="enter_params.jsp?<%= request.getQueryString() %>">enter information</a>

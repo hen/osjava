@@ -5,7 +5,7 @@ import java.util.*;
 import com.generationjava.io.xml.*;
 import com.generationjava.lang.*;
 
-public interface Report {
+public interface Report extends Nameable {
 
     String getName();
     void setName(String name);
@@ -21,6 +21,8 @@ public interface Report {
     Choice[] getParamChoices(Param param);
     Column[] getColumns();
     void addColumn(Column column);
+    Variant[] getVariants();
+    void addVariant(Variant variant);
     void setReportGroup(ReportGroup group);
     ReportGroup getReportGroup();
     String[] getResourceNames();
