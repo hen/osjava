@@ -7,6 +7,8 @@
     ReportGroup group = ReportFactory.getReportGroup(groupName);
 %>
 
+<div class="stages"><a href="list_groups.jsp">choose-group</a></div>
+
 <div class="feedback">
 <p>You have chosen to run from the <span class="chosen-data"><%= group.getLabel() %></span> report group. </p>
 </div>
