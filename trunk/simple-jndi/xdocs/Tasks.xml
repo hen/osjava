@@ -26,7 +26,7 @@
 <li>Test if ProductionDS.org.osjava.jndi.datasource is obtainable [from examples page] <b>DONE. v0.6</b>: Confirmed</li>
 <li>Handle java:/ on a Windows platform. Filenames are unable to contain colons. <b>DONE. v0.6</b>: java: resolves to java on all platforms </li>
 <li>Write maven.xml to do the test-config copy to target/test-classes. <b>DONE. v0.6</b>: Changed project.xml to handle this. </li>
-<li><b>-0.6 release??-</b></li>
+<li><b>-0.6 releasd-</b></li>
 <li>Put the standard configuration options into the JNDI scope itself and pay attention for when they are changed. Thus allowing the system to change at runtime. </li>
 <li>Implement Type in such a way that the object to create may be specified, say JDOPersistenceFactory, and that sub-properties may be set as bean properties.</li>
 <li>Implement binding so that values may be stored in the system, making it Read/Write. </li>
