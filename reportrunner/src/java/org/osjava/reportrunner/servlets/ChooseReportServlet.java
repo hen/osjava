@@ -18,7 +18,7 @@ public class ChooseReportServlet extends HttpServlet {
             return;
         } 
 
-        if( (report.getVariants().length != 0) && (request.getParameter("y") == null || request.getParameter("z").equals("") ) ) {
+        if( (report.getVariants().length != 0) && (request.getParameter("y") == null || request.getParameter("y").equals("") ) ) {
             // redirect to choose variants page
             response.sendRedirect("enter_variants.jsp?"+request.getQueryString());
             return;
