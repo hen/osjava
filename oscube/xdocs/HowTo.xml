@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<document>
+
+  <properties>
+      <author email="bayard@generationjava.com">Henri Yandell</author>
+      <title>How to use OSCube</title>
+  </properties>
+
+  <body>
+  <section name="Using OSCube">
+    <p>This will grow into a full example of how to use OSCube, but the initial release, primarily to get a jar rubber-stamped, works in the following way. </p>
+    <p>The following properties need to be specified in Simple-JNDI, <code>org.osjava.oscube.runner=org.osjava.scraping.ScrapingRunner</code> and <code>org.osjava.oscube.prefix=org.osjava.scrapers</code>. The values specified are examples from Scraping-Engine. The first value points to the implementation of the <code>org.osjava.oscube.container.Runner</code> interface that has been written, and the second sets the namespace in which the instances of said Runner implementation will run. </p>
+    <p>It is crucial therefore to have an implementation of <code>org.osjava.oscube.container.Runner</code>. This simply means implementing the <code>void run(Config cfg, Session session)</code> method. </p>
+    <p>OSCube also provides standard services. All jobs have scheduling, but the default is to just go ahead and run them once. Still, scheduling is one such service, and this is implemented by adding variable values to the Runner instance's namespace. So to setup a repeating scrape of the Slashdot site, you might do: 
+      <code>
+        Slashdot.scheduler=Quartz<br/>
+        Slashdot.schedule=Simple<br/>
+        Slashdot.schedule.interval=6000<br/>
+        Slashdot.schedule.repeat=5<br/>
+      </code>
+    </p>
+    <p>In addition, a storage service is available, as is an error and success notification service. By default, the storage chosen is Console Storage, ie) printing to STDOUT, error notification prints to STDERR and success notification is quiet. </p>
+  </section>
+
+ </body>
+</document>

@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<document>
+
+  <properties>
+      <author email="bayard@generationjava.com">Henri Yandell</author>
+      <title>Changes</title>
+  </properties>
+
+  <body>
+    <release version="0.1" date="2004-04-14">
+      <action dev="hen" type="add">Used by the next version of scraping-engine, 0.2, and the unreleased simulchron. </action>
+    </release>
+</body>
+</document>

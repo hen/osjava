@@ -15,13 +15,13 @@
   <logo>http://www.osjava.org/images/1x1.gif</logo>
   
   <description>
-      A container engine.
+      OSCube is a framework of sorts. I find myself writing a particular type of application, some kind of job engine, repeatedly and OSCube is the generic version there-of. It uses Simple-JNDI, and therefore really just basic JNDI, as its configuration system, and the Quartz scheduler for Cron-work. 
   </description>
   
   <shortDescription>A container engine</shortDescription>
 
   <url>http://www.osjava.org/oscube/</url>
-  <issueTrackingUrl>http://www.osjava.org:8080/jira/secure/BrowseProject.jspa?id=10021</issueTrackingUrl>
+  <issueTrackingUrl>http://www.osjava.org:8080/jira/secure/BrowseProject.jspa?id=10042</issueTrackingUrl>
   <siteAddress>www.generationjava.com/maven/oscube</siteAddress>
   <siteDirectory>/sites/org/osjava/www/maven/oscube/</siteDirectory>
   <distributionDirectory>/sites/org/osjava/www/releases/official/</distributionDirectory>
