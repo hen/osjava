@@ -49,6 +49,7 @@
   </category>
   <category id="5" name="Jakarta Commons">
     <book>1590592832</book>
+    <book>059600706X</book>
     <book>1584502460</book>
     <book>sbt-4</book>
   </category>
@@ -66,6 +67,7 @@
     <book>0672326361</book>
   </category>
   <category id="7" name="JUnit">
+    <book>0596007434</book>
     <book>1930110995</book>
     <book>0596005822</book>
     <book>0131413597</book>
@@ -107,6 +109,7 @@
     <book>0321268385</book>
     <book>0672326108</book>
     <book>0470020059</book>
+    <book>0596008384</book>
   </category>
   <category id="11" name="Hibernate">
     <book>193239415X</book>
@@ -121,6 +124,7 @@
   </category>
   <category id="14" name="AspectJ">
     <book>1930110936</book>
+    <book>0596006543</book>
     <book>0471431044</book>
     <book>0672324105</book>
   </category>

@@ -36,7 +36,7 @@
   <book isbn="0471444359" name="J2EE Open Source Toolkit" publisher="wil" url="http://www.wiley.com/WileyCDA/WileyTitle/productCd-0471444359.html" published="2003-09"/>
   <book isbn="047120708X" name="Java Tools for eXtreme Programming" publisher="wil" url="http://www.wiley.com/WileyCDA/WileyTitle/productCd-047120708X.html" published="2001-12"/>
   <book isbn="0596003870" name="Java Extreme Programming Cookbook" publisher="ora" url="http://www.oreilly.com/catalog/jextprockbk" published="2003-03"/>
-  <book isbn="1932394192" name="Explorer's Guide to Open Source Java Tools" publisher="man" url="http://www.manning.com/nash" published="2004/09"/>
+  <book isbn="1932394192" name="Explorer's Guide to Open Source Java Tools" publisher="man" url="http://www.manning.com/nash" published="2004/11"/>
   <book isbn="1932394060" name="Art of Java Web Development" publisher="man" url="http://www.manning.com/ford" published="2003-11"/>
   <book isbn="1930110960" name="Eclipse in Action: A Guide for the Java Developer" publisher="man" url="http://www.manning.com/gallardo" published="2003-05"/>
   <book isbn="0321159640" name="Java Developer's Guide to Eclipse" publisher="aw" url="http://www.aw-bc.com/catalog/academic/product?ISBN=0321159640" published="2003-05"/>
@@ -77,12 +77,12 @@
   <book isbn="0470869054" name="Eclipse 2 for Java Developers" publisher="wil" url="http://www.wiley.com/WileyCDA/WileyTitle/productCd-0470869054.html" published="2003-12"/>
   <book isbn="0764559575" name="Jakarta Struts for Dummies" publisher="wil" url="http://www.wiley.com/WileyCDA/WileyTitle/productCd-0764559575.html" published="2004-03"/>
   <book isbn="0596006969" name="Hibernate: A Developer's Notebook" publisher="ora" url="http://www.oreilly.com/catalog/0596006969/" published="2004-05"/>
-  <book isbn="1932394281" name="Lucene in Action" publisher="man" url="http://www.manning.com/hatcher2/" published="2004-10"/>
+  <book isbn="1932394281" name="Lucene in Action" publisher="man" url="http://www.manning.com/hatcher2/" published="2004-11"/>
   <book isbn="0596006764" name="Better, Faster, Lighter Java" publisher="ora" url="http://www.oreilly.com/catalog/0596006764/" published="2004-06"/>
-  <book isbn="0672326361" name="Tomcat Unleashed" publisher="sam" url="http://www.samspublishing.com/title/0672326361" published="2004-08"/>
+  <book isbn="0672326361" name="Tomcat 5 Unleashed" publisher="sam" url="http://www.samspublishing.com/title/0672326361" published="2004-08"/>
   <book isbn="0131413597" name="Core Java Tools : Programming with Ant, JUnit, and Cactus" publisher="ptr" url="unknown-site.html" published="2004-05"/>
   <book isbn="0596006519" name="Programming Jakarta Struts" publisher="ora" url="http://www.oreilly.com/catalog/0596006519/" published="2004-06"/>
-  <book isbn="1932394249" name="Struts Recipes" publisher="man" url="http://www.manning.com/catalog/view.php?book=franciscus" published="2004-09"/>
+  <book isbn="1932394249" name="Struts Recipes" publisher="man" url="http://www.manning.com/catalog/view.php?book=franciscus" published="2004-11"/>
   <book isbn="1932394230" name="JUnit Recipes" publisher="man" url="http://www.manning.com/catalog/view.php?book=rainsberger" published="2004-07"/>
   <book isbn="0072256591" name="Struts 1.2 Essential Skills" publisher="mgh" url="unknown-site.html" published="2004-08"/>
 
@@ -96,4 +96,8 @@
   <book isbn="0764576771" name="Professional Hibernate" publisher="wrx" url="http://www.wrox.com/WileyCDA/WroxTitle/productCd-0764576771.html" published="2004-09"/>
   <book isbn="0974514012" name="Pragmatic Unit Testing" publisher="pra" url="http://www.pragmaticprogrammer.com/starter_kit/utj/" published="2003-09"/>
   <book isbn="0974514039" name="Pragmatic Project Automation" publisher="pra" url="http://www.pragmaticprogrammer.com/starter_kit/auto/" published="2004-07"/>
+  <book isbn="0596008384" name="SWT: A Developer's Notebook" publisher="ora" url="http://www.oreilly.com/catalog/swtadn/" published="2004-10"/>
+  <book isbn="0596007434" name="JUnit Pocket Guide" publisher="ora" url="http://www.oreilly.com/catalog/junitpg/" published="2004-10"/>
+  <book isbn="059600706X" name="Jakarta Commons Cookbook" publisher="ora" url="http://www.oreilly.com/catalog/jakartackbk/" published="2004-11"/>
+  <book isbn="0596006543" name="AspectJ Cookbook" publisher="ora" url="http://www.oreilly.com/catalog/aspectjckbk/" published="2004-12"/>
 </library>

@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <pg:pergamum xmlns:pg="http://www.osjava.org/pergamum/ns" name="New Releases">
-  <div class="sub-title">New Releases - 2004/06:2004/08 - <pg:rss-link>newbooks</pg:rss-link></div>
+  <div class="sub-title">New Releases - 2004/06:2004/09 - <pg:rss-link>newbooks</pg:rss-link></div>
   <div class="body-block">
   <ul>
-    <pg:book>sbt-7</pg:book>
-    <pg:book>0596006764</pg:book>
-    <pg:book>0596006519</pg:book>
-    <pg:book>0321268385</pg:book>
-    <pg:book>0596007108</pg:book>
-    <pg:book>0974514039</pg:book>
+    <pg:book>0764576771</pg:book>
+    <pg:book>0672326108</pg:book>
+    <pg:book>0596008384</pg:book>
+    <pg:book>0596007434</pg:book>
   </ul>
   </div>
 </pg:pergamum>
