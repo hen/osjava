@@ -53,8 +53,13 @@ public class ReportRunnerServlet extends HttpServlet {
         // render results
         if(renderer != null && report != null) {
             Result result = report.execute();
+            if(result == null) {
+                throw new RuntimeException("Result is null. ");
+            }
             result = new FormattingResult(result, report);
             renderer.display( result, report, response.getOutputStream() );
+        } else {
+            throw new RuntimeException("Renderer or Report is null. ");
         }
 
         response.getOutputStream().flush();

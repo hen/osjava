@@ -75,7 +75,7 @@ public class SqlReport extends AbstractReport {
         } catch(SQLException sqle) {
             sqle.printStackTrace();
         }
-        return null;
+        return new NullResult();
     }
 
     // returns a Choice[]
