@@ -65,7 +65,7 @@
       <groupId>genjava</groupId>
       <artifactId>gj-xml</artifactId>
       <version>1.0</version>
-      <url>http://www.osjava.org/</url>
+      <url>http://www.osjava.org/genjava/multiproject/gj-xml/</url>
     </dependency>
     <!-- used if you turn on dbcp usage -->
     <dependency>
