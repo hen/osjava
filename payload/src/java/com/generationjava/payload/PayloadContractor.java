@@ -57,6 +57,10 @@ public class PayloadContractor {
             System.err.println("\nUnable to contract a payload as no target jar has been specified. ");
             System.exit(1);
         }
+        if(!args[0].endsWith(".jar")) {
+            System.err.println("\nRefusing to target a non-jar file. Please use a .jar filename then rename afterwards. ");
+            System.exit(1);
+        }
         String targetJar = args[0];
         if(args.length == 1) {
             System.err.println("\nUnable to contract a payload as no target files have been specified. ");
@@ -95,11 +99,31 @@ public class PayloadContractor {
             // TODO: Look for args[1] being a .properties file 
             //       with the org.osjava.payload=true property set.
             // If so, store at the top level.
+            int start = 1;
+            if(args[1].endsWith(".properties")) {
+                FileInputStream propsFin = null;
+                try {
+                    File propsFile = new File(args[1]);
+                    propsFin = new FileInputStream(propsFile);
+                    Properties tmp = new Properties();
+                    tmp.load(propsFin);
+                    if("true".equals(tmp.getProperty("org.osjava.payload"))) {
+                        System.out.print("Inlining "+args[1]+" as payload.properties");
+                        storeFile(jout, propsFile, "payload.properties");
+                        System.out.println("");
+                        start = 2;
+                    }
+                } catch(IOException ioe) {
+                    ioe.printStackTrace();   //  reasons?
+                } finally {
+                    IOUtils.closeQuietly(propsFin);
+                }
+            }
 
             // loop over every argument, handling recursion, 
             // and pushing into the payload/ directory
             System.out.print("Contracting payload body");
-            for(int i=1; i<args.length; i++) {
+            for(int i=start; i<args.length; i++) {
                 String filename = args[i];
                 File file = new File(filename);
                 storeFile(jout, file);
@@ -116,7 +140,11 @@ public class PayloadContractor {
         }
     }
 
+    // overloaded so that payload.properties may be written to the top level
     private static void storeFile(JarOutputStream jout, File file) throws IOException {
+        storeFile(jout, file, "payload/"+file.toString());
+    }
+    private static void storeFile(JarOutputStream jout, File file, String targetName) throws IOException {
         if(file.isDirectory()) {
             // recurse
             File[] children = file.listFiles();
@@ -126,7 +154,7 @@ public class PayloadContractor {
             }
         } else {
             FileInputStream fis = new FileInputStream(file);
-            JarEntry entry = new JarEntry("payload/"+file.toString());
+            JarEntry entry = new JarEntry(targetName);
             // read time of file
             entry.setTime(System.currentTimeMillis());
             entry.setSize( file.length() );
