@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<document>
+
+  <properties>
+      <author email="bayard@generationjava.com">Henri Yandell</author>
+      <title>Changes</title>
+  </properties>
+
+  <body>
+    <release version="1.1" date="2004-11-22">
+        <action dev="hen" type="fix" issue="GJC-25">Character entities now escaped. </action>
+        <action dev="hen" type="fix" issue="GJC-22">Node was returning EMPTY when it had a single value. </action>
+    </release>
+    <release version="1.0" date="2003-12-07">
+        <action dev="hen" type="fix" issue="GJC-5">XMLProperties does not add root's attributes as properties. </action>
+    </release>
+</body>
+</document>
