@@ -13,7 +13,7 @@
  *   this list of conditions and the following disclaimer in the documentation 
  *   and/or other materials provided with the distribution.
  * 
- * + Neither the name of Simple-JNDI nor the names of its contributors 
+ * + Neither the name of Scabies nor the names of its contributors 
  *   may be used to endorse or promote products derived from this software 
  *   without specific prior written permission.
  * 
@@ -51,11 +51,23 @@ public abstract class AbstractPage implements Page {
     public abstract Reader read() throws IOException;
 
     public Page fetch(String uri, Config cfg, Session session) throws FetchingException {
+
+        // TODO: This knows about HTTP PROTOCOL urls. Fix.
         int idx = uri.indexOf("://");
         if(idx == -1) {
             // TODO: also check it is less than 15 or something??
-            uri = this.documentBase + "/" + uri;
+            if(uri.startsWith("/")) {
+                // Here we need to work backwards to the 'root' of the 
+                // protocol. How do we define that??
+                int idx2 = this.documentBase.indexOf("://");
+                idx2 = this.documentBase.indexOf("/", idx2 + 3);
+                uri = this.documentBase.substring(0, idx2) + "/" + uri;
+            } else {
+                uri = this.documentBase + "/" + uri;
+            }
         }
+
+        
         logger.debug("Fetching: "+uri);
         Fetcher fetcher = FetchingFactory.getFetcher(cfg, session);
         Page page = fetcher.fetch(uri, cfg, session);
