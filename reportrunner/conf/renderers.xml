@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
 <renderers>
- <renderer name="Text" class="com.genscape.reports.renderers.TextRenderer">
+ <renderer name="Text" class="org.osjava.reportrunner.renderers.TextRenderer">
    <mimeType>text/plain</mimeType>
  </renderer>
- <renderer name="HtmlTable" class="com.genscape.reports.renderers.HtmlTableRenderer">
+ <renderer name="HtmlTable" class="org.osjava.reportrunner.renderers.HtmlTableRenderer">
    <mimeType>text/html</mimeType>
  </renderer>
- <renderer name="Tab delimited" class="com.genscape.reports.renderers.CsvRenderer">
+ <renderer name="Tab delimited" class="org.osjava.reportrunner.renderers.CsvRenderer">
    <fieldDelimiter>	</fieldDelimiter>
    <mimeType>text/csv</mimeType>
  </renderer>
- <renderer name="Comma delimited" class="com.genscape.reports.renderers.CsvRenderer">
+ <renderer name="Comma delimited" class="org.osjava.reportrunner.renderers.CsvRenderer">
    <fieldDelimiter>,</fieldDelimiter>
    <mimeType>text/csv</mimeType>
  </renderer>
- <renderer name="Excel file" class="com.genscape.reports.renderers.ExcelRenderer">
+ <renderer name="Excel file" class="org.osjava.reportrunner.renderers.ExcelRenderer">
    <mimeType>application/excel</mimeType>
  </renderer>
 </renderers>
