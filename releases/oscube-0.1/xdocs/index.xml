@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<document>
+
+  <properties>
+      <author email="bayard@generationjava.com">Henri Yandell</author>
+      <title>OSCube</title>
+  </properties>
+
+  <body>
+    <section name="OSCube">
+       <p>OSCube is a framework of sorts. I find myself writing a particular type of application, some kind of job engine, repeatedly and OSCube is the generic version there-of. It uses Simple-JNDI, and therefore really just basic JNDI, as its configuration system, and the Quartz scheduler for Cron-work. </p>
+       <p>Much of the code is refactored out of scraping-engine, whose next version will depend on OSCube, while an unreleased project named Simuchron (real-time value simulator), also uses it. </p>
+    </section>
+  </body>
+</document>
