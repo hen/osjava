@@ -23,7 +23,7 @@ having to implement the same code again and again. This pays back in development
     </section>
     <section name="Why 'Scabies'?">
 
-<p>Scraping-engine is part of a larger project that will be called Scabies. Thus the JIRA project name. Scabies because that involves itching, I think. I felt there were not enough open source projects named after medical problems. Incidentally, Scabies comes from the latin 'scabere', which means 'scratch'. Also known as 'the itch', and for some reason aka 'the seven year itch'. </p>
+<p>Scraping-engine is part of a larger project that will be called Scabies. Thus the JIRA project name. Scabies because that involves itching and this project is more than just a web-scraper, as things like 'link-check' will show when I release it. I felt there were not enough open source projects named after medical problems. Incidentally, Scabies comes from the latin 'scabere', which means 'scratch'. Also known as 'the itch', and for some reason aka 'the seven year itch'. </p>
 
 
 </section>
