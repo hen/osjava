@@ -82,6 +82,7 @@ public class XmlProperties extends Properties {
         Enumeration enum = root.enumerateNode();
         while(enum.hasMoreElements()) {
             XMLNode node = (XMLNode)enum.nextElement();
+            if(!node.isTag()) { continue; }
 //            add("", node);
 //            System.err.println("Adding: "+root.getName()+getDelimiter()+" to "+node);
             add(root.getName(), node);
@@ -114,6 +115,7 @@ public class XmlProperties extends Properties {
             level = level+getDelimiter()+node.getName();
             while(nodes.hasMoreElements()) {
                 XMLNode subnode = (XMLNode)nodes.nextElement();
+                if(!subnode.isTag()) { continue; }
                 // temporary pending research into XMLNode parsing:
                 if(!"".equals(subnode.getName())) {
 //                    System.err.println("Walking children: "+node.getName());
