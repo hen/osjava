@@ -20,4 +20,9 @@
   <param name="before date" type="java.sql.Timestamp"/>
   <renderers>HtmlTable</renderers>
  </report>
+ <report name="Bookmarks" class="org.osjava.reportrunner.reports.SqlReport">
+  <sql>select name, url from bookmark where priority = ?</sql>
+  <param name="Priority" type="java.lang.Integer"/>
+  <renderers>HtmlTable</renderers>
+ </report>
 </reports>
