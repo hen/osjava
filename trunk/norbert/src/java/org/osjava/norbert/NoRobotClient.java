@@ -34,11 +34,11 @@ package org.osjava.norbert;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.InputStream;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.net.MalformedURLException;
-
-import com.generationjava.net.UrlW;
 
 /**
  * A Client which may be used to decide which urls on a website 
@@ -84,7 +84,10 @@ public class NoRobotClient {
 
         String txt = null;
         try {
-            txt = ""+UrlW.getContent(txtUrl);
+            txt = loadContent(txtUrl);
+            if(txt == null) {
+                throw new NoRobotException("No content found for: "+txtUrl);
+            }
         } catch(IOException ioe) {
             throw new NoRobotException("Unable to get content for: "+txtUrl, ioe);
         }
@@ -188,6 +191,21 @@ public class NoRobotClient {
         }
         urlStr = URLDecoder.decode( urlStr );
         return this.rules.isAllowed( urlStr );
+    }
+
+    // INLINE: as such from genjava/gj-core's net package. Simple method 
+    // stolen from Payload too.
+    private static String loadContent(URL url) throws IOException {
+        InputStream in = url.openStream();
+        BufferedReader rdr = new BufferedReader(new InputStreamReader(in));
+        StringBuffer buffer = new StringBuffer();
+        String line = "";
+        while( (line = rdr.readLine()) != null) {
+            buffer.append(line);
+            buffer.append("\n");
+        }
+        in.close();
+        return buffer.toString();
     }
 
 }
