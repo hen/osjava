@@ -75,7 +75,15 @@ public class XmlProperties extends Properties {
         Enumeration enum = root.enumerateNode();
         while(enum.hasMoreElements()) {
             XMLNode node = (XMLNode)enum.nextElement();
+            if(!node.isTag()) { continue; }
             add("", node);
+        }
+        Enumeration attrs = root.enumerateAttr();
+        if(attrs != null) {
+            while(attrs.hasMoreElements()) {
+                String attr = (String)attrs.nextElement();
+                setProperty( root.getName()+"."+attr, root.getAttr(attr));
+            }
         }
     }
     
@@ -94,6 +102,7 @@ public class XmlProperties extends Properties {
         if(nodes != null) {
             while(nodes.hasMoreElements()) {
                 XMLNode subnode = (XMLNode)nodes.nextElement();
+                if(!subnode.isTag()) { continue; }
                 add(level+subnode.getName()+".", subnode);
             }
         }
