@@ -59,7 +59,7 @@
   <distributionDirectory>/sites/org/osjava/www/maven/builds/</distributionDirectory>
 
   <repository>
-    <connection>scm:cvs:pserver:anonymous@cvs.osjava.org:/var/cvs/:mudclient</connection>
+    <connection>scm:svn:http://svn.osjava.org/svn/osjava/trunk/mudclient</connection>
     <url>http://svn.osjava.org/cgi-bin/viewcvs.cgi/trunk/mudclient/</url>
   </repository>
 

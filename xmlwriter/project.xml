@@ -31,7 +31,7 @@
   <distributionDirectory></distributionDirectory>
 
   <repository>
-    <connection>scm:cvs:pserver:anonymous@cvs.osjava.org:/var/cvs:xmlwriter</connection>
+    <connection>scm:svn:http://svn.osjava.org/svn/osjava/trunk/xmlwriter</connection>
     <url>http://svn.osjava.org/cgi-bin/viewcvs.cgi/trunk/xmlwriter/</url>
   </repository>
 
