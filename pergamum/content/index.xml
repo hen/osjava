@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<pg:pergamum xmlns:pg="http://www.osjava.org/pergamum/ns" name="Pergamum: Open Source Java Books">
+<pg:pergamum xmlns:pg="http://www.osjava.org/pergamum/ns" name="Pergamum: Books on Open Source Java">
 
 <!-- nav -->
 <div class="nav">
@@ -10,9 +10,9 @@
 
 <!-- body -->
 <div class="index-body">
-<pg:include src="../docs/newbooks.html"/><br/>
-<pg:include src="../docs/newreviews.html"/><br/>
-<pg:include src="../docs/comingsoon.html"/><br/>
+<pg:include src="../docs/newbooks.html"/>
+<pg:include src="../docs/newreviews.html"/>
+<pg:include src="../docs/comingsoon.html"/>
 </div>
 
 </pg:pergamum>
