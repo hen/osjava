@@ -1,6 +1,5 @@
 package org.osjava.jndi;
 
-import org.apache.commons.lang.StringUtils;
 import javax.naming.*;
 import javax.sql.*;
 import java.util.*;
@@ -178,6 +177,6 @@ public class LookupTest extends TestCase {
     }
 
     private Object lookup(String key) throws NamingException {
-        return this.ctxt.lookup( StringUtils.replace(key, ".", this.delimiter) );
+        return this.ctxt.lookup( key.replaceAll("\\.", this.delimiter) );
     }
 }
