@@ -14,7 +14,7 @@ public class HtmlTableRenderer extends AbstractRenderer {
             out.write("There is no result. ");
             return;
         }
-        out.write("<table>\n");
+        out.write("<table border='1'>\n");
         Column[] columns = report.getColumns();
         if(columns != null) {
             out.write("<tr>\n");
