@@ -9,7 +9,7 @@
   <body>
     <section name="Using XmlWriter">
     <p>A great way to output Xml. Far easier to code with than painful DOM or 
-    SAX like solutions and much nicer in terms of speed and memory usage [see <a href="Benchmarks.html">benchmarks</a>]. </p>
+    SAX like solutions and much nicer in terms of speed and memory usage [see <a href="Benchmarks.html">benchmarks</a>]. <br/>
     Example code:
     <ul>
     <li>
