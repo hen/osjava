@@ -69,8 +69,10 @@ public class PropertiesParser implements Parser {
                 // split equals sign
                 idx = line.indexOf('=');
                 if(idx != -1) {
-if(org.osjava.jndi.PropertiesContext.DEBUG) System.err.println("[PROPERTIES]Loading property: "+line.substring(0,idx)+"="+line.substring(idx+1));
-                    map.put(line.substring(0,idx), line.substring(idx+1));
+                    String key = line.substring(0, idx);
+                    String value = line.substring(idx+1);
+if(org.osjava.jndi.PropertiesContext.DEBUG) System.err.println("[PROPERTIES]Loading property: "+key+"="+value);
+                    map.put(key, value);
                 } else {
                     // blank line, or just a bad line
                     // we ignore it
