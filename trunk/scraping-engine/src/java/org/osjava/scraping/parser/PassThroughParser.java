@@ -32,7 +32,6 @@
 package org.osjava.scraping.parser;
 
 import java.io.IOException;
-import java.io.BufferedReader;
 import java.util.ArrayList;
 import org.osjava.scraping.*;
 
