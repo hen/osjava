@@ -44,6 +44,11 @@
                 InvalidThreadGroupParentException, 
                 InvalidThreadParentException.
             </action>
+            <action dev="rzigweid" type="update">
+                Removed the requirement of an ExtendedThread's target to be 
+                an ExtendedRunnable.  An ordinary Runnable is now allowed,
+                making the package more flexible.
+            </action>
         </release>
     </body>
 </document>
