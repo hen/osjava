@@ -11,7 +11,9 @@ import javax.naming.*;
 
 public class SqlReport extends AbstractReport {
 
-    private String dsName = "SqlReportDS";
+    private static String DEFAULT_RESOURCE = "SqlReportDS";
+
+    private String dsName = DEFAULT_RESOURCE;
     private String sql;
     private String params;
 
@@ -23,17 +25,15 @@ public class SqlReport extends AbstractReport {
         return this.sql;
     }
 
-    public void setDataSource(String dsName) {
-        this.dsName = dsName;
-    }
-
-    public String getDataSource() {
-        return this.dsName;
+    public void setResource(String name, String resourceName) {
+        if(DEFAULT_RESOURCE.equals(name)) {
+            this.dsName = resourceName;
+        }
     }
 
     public Result execute() {
         ReportGroup group = super.getReportGroup();
-        Resource resource = group.getResource(dsName);
+        Resource resource = group.getResource(this.dsName);
         DataSource ds = (DataSource) resource.accessResource();
 
         try {
@@ -89,6 +89,9 @@ public class SqlReport extends AbstractReport {
         
         ReportGroup group = super.getReportGroup();
         Resource resource = group.getResource(this.dsName);
+        if(resource == null) {
+            throw new RuntimeException("Unable to obtain resource named "+this.dsName+" from the "+group.getName()+" group. ");
+        }
         DataSource ds = (DataSource) resource.accessResource();
 
         try {
@@ -108,7 +111,7 @@ public class SqlReport extends AbstractReport {
     }
 
     public String[] getResourceNames() {
-        return new String[] { this.dsName };
+        return new String[] { DEFAULT_RESOURCE };
     }
 
     private class ReportArrayListHandler extends ArrayListHandler {

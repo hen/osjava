@@ -24,5 +24,6 @@ public interface Report {
     void setReportGroup(ReportGroup group);
     ReportGroup getReportGroup();
     String[] getResourceNames();
+    void setResource(String name, String resourceName);
 
 }

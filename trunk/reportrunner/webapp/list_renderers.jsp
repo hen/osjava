@@ -6,6 +6,7 @@
     String groupName = request.getParameter(ReportRunnerServlet.GROUP);
     String reportName = request.getParameter(ReportRunnerServlet.REPORT);
     Report report = ReportFactory.getReport(groupName, reportName);
+    ReportRunnerServlet.applyResources(report, request);
     Param[] params = report.getParams();
 %>
 
@@ -46,8 +47,12 @@
 <%
     String[] names = report.getResourceNames();
     for(int i=0; i<names.length; i++) {
+        String value = request.getParameter(names[i]);
+        if(value == null) {
+            value = names[i];
+        }
         %>
-        <tr><td><span class="chosen-data"><%= report.getReportGroup().getResource(names[i]).getLabel() %></span></td></tr>
+        <tr><td><span class="chosen-data"><%= report.getReportGroup().getResource(value).getLabel() %></span></td></tr>
         <%
     }
 %>

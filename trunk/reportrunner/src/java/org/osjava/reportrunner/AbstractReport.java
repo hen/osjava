@@ -81,6 +81,10 @@ public abstract class AbstractReport implements Report {
         return new String[0];
     }
 
+    public void setResource(String name, String resourceName) {
+        ; // do nothing
+    }
+
     public abstract Result execute();
     public abstract Choice[] getParamChoices(Param param);
 
