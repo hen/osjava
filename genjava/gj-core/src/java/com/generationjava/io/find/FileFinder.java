@@ -96,7 +96,7 @@ public class FileFinder implements Finder {
             }
         }
 
-        return (File[]) retlist.toArray(list);
+        return (File[]) retlist.toArray(new File[0]);
     }
     
     /**
