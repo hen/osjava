@@ -158,5 +158,9 @@ if(org.osjava.jndi.PropertiesContext.DEBUG)        System.err.println("[DS]Getti
                other.props.equals(this.props);
     }
 
+    public int hashCode() {
+        return this.name.hashCode();
+    }
+
 }
 
