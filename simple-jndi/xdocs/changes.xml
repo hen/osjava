@@ -7,6 +7,9 @@
   </properties>
 
   <body>
+    <release version="0.8.1" date="2004-01-18">
+        <action dev="hen" type="add">Added feature #SJN-48, in which the simple-jndi is configurable from system properties as well as jndi.properties and a Hashtable. The system property takes precedence. </action>
+    </release>
     <release version="0.8" date="2004-01-03">
         <action dev="hen" type="fix">Fixed bug #SJN-45, in which the XML property loader did not correctly handle multiple tags with the same name forming a List object. </action>
         <action dev="hen" type="fix">Fixed a bug in which 'type' did not work in a DataSource file in which you had the DS name as the filename and not delimited in the file. </action>
