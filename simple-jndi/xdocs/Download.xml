@@ -8,14 +8,14 @@
 
   <body>
     <section name="Download Latest Code">
-      <p>The next version of will be 0.7. To get the current version of this you need to check the code out from CVS and build it yourself using Maven. More info on CVS is available on the <a href="http://www.osjava.org/simple-jndi/cvs-usage.html">cvs-usage</a> page. </p>
+      <p>The next version of will be 0.8. To get the current version of this you need to check the code out from CVS and build it yourself using Maven. More info on CVS is available on the <a href="http://www.osjava.org/simple-jndi/cvs-usage.html">cvs-usage</a> page and Maven can be obtained from <a href="http://maven.apache.org/">maven.apache.org</a>. </p>
     </section>
     <section name="Download Latest Stable">
 <ul>
-<li><a href="/releases/official/simple-jndi/simple-jndi-0.6-src.tar.gz">simple-jndi-0.6-src.tar.gz</a></li>
-<li><a href="/releases/official/simple-jndi/simple-jndi-0.6-src.zip">simple-jndi-0.6-src.zip</a></li>
-<li><a href="/releases/official/simple-jndi/simple-jndi-0.6.tar.gz">simple-jndi-0.6.tar.gz</a></li>
-<li><a href="/releases/official/simple-jndi/simple-jndi-0.6.zip">simple-jndi-0.6.zip</a></li>
+<li><a href="/releases/official/simple-jndi/simple-jndi-0.7-src.tar.gz">simple-jndi-0.7-src.tar.gz</a></li>
+<li><a href="/releases/official/simple-jndi/simple-jndi-0.7-src.zip">simple-jndi-0.7-src.zip</a></li>
+<li><a href="/releases/official/simple-jndi/simple-jndi-0.7.tar.gz">simple-jndi-0.7.tar.gz</a></li>
+<li><a href="/releases/official/simple-jndi/simple-jndi-0.7.zip">simple-jndi-0.7.zip</a></li>
 </ul>
      <p>
      Please ensure you have the necessary dependencies:
@@ -27,6 +27,12 @@
      </p>
 </section>
 <section name="Archives">
+<ul>
+<li><a href="/releases/official/simple-jndi/simple-jndi-0.6-src.tar.gz">simple-jndi-0.6-src.tar.gz</a></li>
+<li><a href="/releases/official/simple-jndi/simple-jndi-0.6-src.zip">simple-jndi-0.6-src.zip</a></li>
+<li><a href="/releases/official/simple-jndi/simple-jndi-0.6.tar.gz">simple-jndi-0.6.tar.gz</a></li>
+<li><a href="/releases/official/simple-jndi/simple-jndi-0.6.zip">simple-jndi-0.6.zip</a></li>
+</ul>
 <ul>
 <li><a href="/releases/official/simple-jndi/simple-jndi-0.5-src.tar.gz">simple-jndi-0.5-src.tar.gz</a></li>
 <li><a href="/releases/official/simple-jndi/simple-jndi-0.5-src.zip">simple-jndi-0.5-src.zip</a></li>
