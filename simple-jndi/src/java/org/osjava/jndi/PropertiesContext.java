@@ -468,8 +468,6 @@ if(DEBUG)                System.err.println("[CTXT]Remaining2: "+remaining);
             throw new InvalidNameException("Properties for "+name+" not found. ");
         }
 
-if(DEBUG)        System.err.println("[CTXT]DS-property? : "+properties.get("org.osjava.jndi.datasource"));
-
         // TODO: Rewrite this block. Not enough grokk.
         String typeLookup = "type";
         if( remaining != null && !remaining.equals("")) {
@@ -477,8 +475,7 @@ if(DEBUG)        System.err.println("[CTXT]DS-property? : "+properties.get("org.
         }
 if(DEBUG)        System.err.println("[CTXT]DS-type? : " + properties.getProperty(typeLookup));
 if(DEBUG)        System.err.println("[CTXT]DS-properties : " + properties);
-        if( "true".equals(properties.get("org.osjava.jndi.datasource")) ||
-            "javax.sql.DataSource".equals(properties.getProperty(typeLookup)) ) 
+        if( "javax.sql.DataSource".equals(properties.getProperty(typeLookup)) ) 
         {
 if(DEBUG)            System.err.println("[CTXT]Found Datasource!");
             PropertiesDataSource pds = new PropertiesDataSource(properties, env, this.delimiter);
