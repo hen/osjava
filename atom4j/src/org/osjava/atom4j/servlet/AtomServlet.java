@@ -162,7 +162,6 @@ public abstract class AtomServlet extends HttpServlet
         output.write(XML_HEADER);
         output.write(result);
         output.flush();
-
     }
     
     /**
@@ -170,7 +169,7 @@ public abstract class AtomServlet extends HttpServlet
      *  
      * @see javax.servlet.http.HttpServlet#doDelete(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
      */
-    protected void doDelete(HttpServletRequest request, HttpServletResponse response)
+    public void doDelete(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException
     {
         String[] pathInfo = getPathInfo(request);
@@ -203,7 +202,7 @@ public abstract class AtomServlet extends HttpServlet
     /* (non-Javadoc)
      * @see javax.servlet.http.HttpServlet#doGet(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
      */
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    public void doGet(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException
     {
         String[] pathInfo = getPathInfo(request);
@@ -256,7 +255,7 @@ public abstract class AtomServlet extends HttpServlet
     /* (non-Javadoc)
      * @see javax.servlet.http.HttpServlet#doPost(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
      */
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    public void doPost(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException
     {
         String[] pathInfo = getPathInfo(request);
@@ -285,11 +284,11 @@ public abstract class AtomServlet extends HttpServlet
     /* (non-Javadoc)
      * @see javax.servlet.http.HttpServlet#doPut(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
      */
-    protected void doPut(HttpServletRequest request, HttpServletResponse response)
+    public void doPut(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException
     {
         String[] pathInfo = getPathInfo(request);
-        if (pathInfo.length < 2 || !authorized())
+        if (pathInfo.length < 2)
         {
             error(request, response, "Invalid Request.", "Insufficient Information to Process Request."); 
             return;
@@ -459,12 +458,13 @@ public abstract class AtomServlet extends HttpServlet
             entry = (Entry)iter.next();
             try
             {
-                saveNewEntry(entry);
-                
+                saveNewEntry(entry);                
             }
             catch (Exception e)
             {
-                throw new ServletException(e);
+                ServletException se = new ServletException(e);
+                se.fillInStackTrace();
+                throw se;
             }
         }
         
