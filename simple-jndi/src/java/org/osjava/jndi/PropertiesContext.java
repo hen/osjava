@@ -79,6 +79,10 @@ public class PropertiesContext implements Context  {
     private String separator;
     private String delimiter;
 
+    // original values
+    private String _root;
+    private String _delimiter;
+
     public PropertiesContext(Hashtable env) {
         if(env != null) {
             this.env = (Hashtable)env.clone();
@@ -87,6 +91,8 @@ public class PropertiesContext implements Context  {
             if(this.delimiter == null) {
                 this.delimiter = ".";
             }
+            this._root = this.root;
+            this._delimiter = this.delimiter;
 
             // Work out the protocol of the root
             // No root means we're using a classpath protocol,
@@ -147,6 +153,15 @@ public class PropertiesContext implements Context  {
         }
         if("org.osjava.jndi.delimiter".equals(key)) {
             this.delimiter = (String) value;
+        }
+    }
+
+    private void resetSpecial(String key) {
+        if("org.osjava.jndi.root".equals(key)) {
+            this.root = this._root;
+        }
+        if("org.osjava.jndi.delimiter".equals(key)) {
+            this.delimiter = this._delimiter;
         }
     }
 
@@ -528,6 +543,9 @@ public class PropertiesContext implements Context  {
             throw new InvalidNameException("Cannot bind to empty name");
         } 
         this.table.remove(name);
+        if(isSpecialKey(name)) {
+            resetSpecial(name);
+        }
     }
 
     public void rename(Name name, Name newname) throws NamingException {
@@ -538,6 +556,9 @@ public class PropertiesContext implements Context  {
         if("".equals(oldname) || "".equals(newname)) {
             throw new InvalidNameException("Cannot bind to empty name");
         } 
+        if(isSpecialKey(oldname)) {
+            throw new NamingException("You may not rename: "+oldname);
+        }
         if(this.table.get(newname) != null) {
             throw new NameAlreadyBoundException(""+newname+" is already bound");
         }
