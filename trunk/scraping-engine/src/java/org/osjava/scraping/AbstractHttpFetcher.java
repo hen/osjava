@@ -119,7 +119,7 @@ public abstract class AbstractHttpFetcher implements Fetcher {
                 type = hdr.toExternalForm();
                 type = type.toLowerCase();
                 if(!type.startsWith("content-type: text") && !type.startsWith("content-type: plain")) {
-                    throw new FetchingException("Not going to fetch a non-text file. Type is: "+type);
+                    throw new FetchingException("Not going to fetch a non-text file from "+uri+". Type is: "+type);
                 }
             }
 
@@ -138,7 +138,7 @@ public abstract class AbstractHttpFetcher implements Fetcher {
             page.setDocumentBase(base);
             return page;
         } catch(IOException ioe) {
-            throw new FetchingException("Error. "+ioe.getMessage(), ioe);
+            throw new FetchingException("Error fetching from "+uri+". "+ioe.getMessage(), ioe);
         }
     }
 
