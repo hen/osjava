@@ -1,0 +1,26 @@
+/* Javadoc style sheet to make it look osjava-like */
+
+.NavBarCell1    { background-color:#f4f8d8; }
+.NavBarCell1Rev { background-color:#006;}
+
+.NavBarFont1    { font-family: Arial, Helvetica, sans-serif; color:#000000;}
+.NavBarFont1Rev { font-family: Arial, Helvetica, sans-serif; color:#FFFFFF;}
+
+
+/* Table colors */
+.TableHeadingColor     { background: #006; color:#FFFFFF } 
+.TableSubHeadingColor  { background: #f4f8d8; color:#000 } 
+.TableRowColor         { background: #f4f8d8 } 
+
+/* taken from normal javadoc */
+a:link, a:visited {
+ color: blue;
+}
+
+a:active, a:hover, #leftcol a:active, #leftcol a:hover {
+ color: #f30 !important;
+}
+
+a:link.selfref, a:visited.selfref {
+ color: #555 !important;
+}
