@@ -93,8 +93,6 @@ do
         echo "<li><a href='$i/javadoc/'>javadoc</a></li>" >> $report
     fi
 
-    echo '<hr>' >> $report
-
     if [ -f junit-report.xml ];
     then
         echo "<li><a href='$i/junit-report.html'>junit</a></li>" >> $report
@@ -116,9 +114,9 @@ do
 
     fi
 
-    if [ -e $buildDir/SVN_UPDATE ];
+    if [ -e REASON ];
     then
-        echo "<hr><h2>Built because:</h2><pre>`cat $buildDir/SVN_UPDATE`</pre>" >> $report
+        echo "<hr><h2>Built because:</h2><pre>`cat REASON`</pre>" >> $report
     fi
 
     echo '</body></html>' >> $report
