@@ -66,6 +66,8 @@ public class QuartzScheduler implements Scheduler {
     }
 
     public void schedule(Config cfg, Session session, Runner runner) {
+        // TODO: Should this clone, or the driver of this?
+        cfg = cfg.cloneConfig();
         String schedule = cfg.getString("schedule");
 
         // set default
@@ -83,8 +85,13 @@ public class QuartzScheduler implements Scheduler {
         } else {
             // assume it's a cron statement
             try {
-                JobDetail detail = new JobDetail(cfg.getContext()+"job",
-                    quartz.DEFAULT_GROUP, QuartzJob.class);
+                String ctxt = cfg.getContext();
+                String jobName = ctxt+"job";
+                // TODO: Make this 'Scraper' or some such. Maybe 
+                // a name that links to the current engine's instance
+                // Engine: +engine.toString()
+                String jobgroup = ctxt+"group"; 
+                JobDetail detail = new JobDetail(jobName, jobgroup, QuartzJob.class);
                 JobDataMap map = detail.getJobDataMap();
                 map.put("cfg", cfg);
                 map.put("session", session);
@@ -93,9 +100,8 @@ public class QuartzScheduler implements Scheduler {
                 Trigger trigger = null;
                 if("cron".equalsIgnoreCase(schedule)) {
                     String cronTxt = cfg.getString("schedule.cron");
-                    logger.debug("Creating cron trigger: "+cronTxt);
-                    CronTrigger cron = new CronTrigger(cfg.getContext()+"trigger", quartz.DEFAULT_GROUP, cfg.getContext()+"job", quartz.DEFAULT_GROUP, cronTxt);
-//                    cron.setCronExpression(cronTxt);
+                    logger.debug("Creating cron trigger: "+cronTxt+" for "+ctxt);
+                    CronTrigger cron = new CronTrigger(ctxt+"crontrigger", jobgroup, jobName, jobgroup, cronTxt);
                     trigger = cron;
                 } else {
                     // TODO: ie) "simple" in this case. need to make this explicit
@@ -106,10 +112,8 @@ public class QuartzScheduler implements Scheduler {
                         repeat = SimpleTrigger.REPEAT_INDEFINITELY;
                     }
                     int interval = cfg.getInt("schedule.interval");
-                    logger.debug("Re:"+repeat);
-                    logger.debug("In:"+interval);
-                    SimpleTrigger simp = new SimpleTrigger(cfg.getContext()+"trigger",
-                    quartz.DEFAULT_GROUP, new Date(), null, repeat, interval);
+                    logger.debug("Creating simple trigger: "+interval+":"+repeat+" for "+ctxt);
+                    SimpleTrigger simp = new SimpleTrigger(ctxt+"simpletrigger", jobgroup, repeat, interval);
                     trigger = simp;
                 }
 
