@@ -9,7 +9,8 @@
   <body>
     <release version="0.2" date="2004-04-13">
       <action dev="hen" type="add">An application level exception added, NoRobotException. </action>
-      <action dev="hen" type="remove">Log4j dependency removed. </action>
+      <action dev="hen" type="remove">Log4j dependency removed. Throwing Exceptions means no logging needed. </action>
+      <action dev="hen" type="remove">Genjava-core and commons-lang dependencies removed by inlining a method. </action>
     </release>
 
     <release version="0.1.1" date="2003-12-08">
