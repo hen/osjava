@@ -3,7 +3,7 @@
 <%@ page import="org.osjava.reportrunner.servlets.*" %>
 
 <div class="input">
-<p>Select a group: </p>
+<p>What kind of report would you like to run? </p>
 
 <table>
 <%

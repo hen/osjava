@@ -7,11 +7,11 @@
 %>
 
 <div class="feedback">
-<p>You have chosen the <%= groupName %> group. </p>
+<p>You have chosen to run a <%= groupName %> kind of report. </p>
 </div>
 
 <div class="input">
-<p>Select a report: </p>
+<p>Which particular report would you like to run? </p>
 
 <table>
 <%
