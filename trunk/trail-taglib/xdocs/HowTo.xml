@@ -11,16 +11,21 @@
   <section name="How to use the Trail-Taglib">
    <p>The trail taglib mainly comes down to two tags. The first is used to add a page into the trail, and the other is used to to list the current trail. </p>
    <p>For example: 
-    <pre>
-     <%@ taglib prefix="trail" uri="http://www.osjava.org/taglibs/trail-1.0" %>
+    <code>
+     &lt;%@ taglib prefix="trail" uri="http://www.osjava.org/taglibs/trail-1.0" %&gt;<br/>
 
-     <trail:push label="List Categories"/>
-     <trail:list delimiter=" -&gt; "/><br/>
-    </pre>
+     &lt;trail:push label="List Categories"/&gt;<br/>
+     &lt;trail:list delimiter=" -&gt; "/&gt;<br/>
+    </code>
   </p>
   <p>The <code>push</code> tag has an optional attribute named <code>url</code> which will override the url stored in the trail, but hopefully this will rarely be needed. </p>
   <p>The <code>list</code> tag has an optional attribute named <code>type</code> which specifies the type of list to create. By default the list will be <code>normalized</code>, but you can specify <code>full</code> to see the user&apos;s entire trail. </p>
   </section>
+
+  <section name="Advanced usage">
+    <p>The trail is stored in an <code>org.osjava.taglib.trail.BreadCrumbs</code> object under the session variable <code>org.osjava.taglib.breadcrumbs</code>. </p>
+  </section>
+  
 
  </body>
 </document>
