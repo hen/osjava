@@ -145,7 +145,7 @@ public class SocketChannelWriter extends Writer {
 
     /** 
      * The parent is closing.  The buffer is no longer valid.  Clean it.
-     * @param parentCalled If false, nothing is done.  If true, the parent is 
+     * @param parentClosed If false, nothing is done.  If true, the parent is 
      *        closing too.
      */
     public void close(boolean parentClosed) {

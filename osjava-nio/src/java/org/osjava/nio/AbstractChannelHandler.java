@@ -8,7 +8,7 @@ import java.io.IOException;
  * Abstract implementation of a ChannelHandler.  
  * 
  * @author Antony Riley
- * @version $Revision: 1.5 $
+ * @version $Revision$
  */
 public abstract class AbstractChannelHandler implements ChannelHandler {
     /**
@@ -43,30 +43,30 @@ public abstract class AbstractChannelHandler implements ChannelHandler {
     }
 
     /**
-     * @see org.cyberiantiger.nio.ChannelHandler#accept()
+     * @see org.osjava.nio.ChannelHandler#accept()
      */
     abstract public void accept();
 
     /**
-     * @see org.cyberiantiger.nio.ChannelHandler#connect()
+     * @see org.osjava.nio.ChannelHandler#connect()
      * @throws IOException when the connection cannot be made.
      */
     abstract public void connect() throws IOException;
 
     /**
-     * @see org.cyberiantiger.nio.ChannelHandler#readFromChannel()
+     * @see org.osjava.nio.ChannelHandler#readFromChannel()
      */
     abstract public void readFromChannel();
 
     /**
-     * @see org.cyberiantiger.nio.ChannelHandler#writeToChannel().
+     * @see org.osjava.nio.ChannelHandler#writeToChannel()
      * @throws IOException if something prevents the data from being written to
      *         the SelectableChannel
      */
     abstract public void writeToChannel() throws IOException;
 
     /**
-     * @see org.cyberiantiger.nio.ChannelHandler#close()
+     * @see org.osjava.nio.ChannelHandler#close()
      * @throws IOException if something stops the channel from closing.
      */
     public void close() throws IOException {
@@ -77,7 +77,7 @@ public abstract class AbstractChannelHandler implements ChannelHandler {
     }
 
     /**
-     * @see org.cyberiantiger.nio.ChannelHandler#getSelectableChannel().
+     * @see org.osjava.nio.ChannelHandler#getSelectableChannel()
      * @return the SelectableChannel that the handler is handling.
      */
     public SelectableChannel getSelectableChannel() {
