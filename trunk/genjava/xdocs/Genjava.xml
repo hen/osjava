@@ -14,10 +14,13 @@
       <p>A couple of questions in 1 letter here. First, my name is Henri Yandell and secondly, yes this is mainly a non-community project for various personal uses. By open-sourcing my own generic code, I believe this lets me use it at work more easily. It also provides me with a way to educate myself about library management and the creation of a product site. </p>
     </section>
     <section name="Jakarta Commons is crappy">
-      <p>Some don't like the style of Jakarta Commons, but I've yet to see them provide any better solution. </p>
+      <p>Some don't like the style of Jakarta Commons, but I've yet to see them provide any better solution. I expect to use lessons learnt at Jakarta Commons in the management of this code and vice versa. </p>
     </section>
     <section name="Dependencies?">
       <p>I enjoy working on Jakarta Commons projects and so you can expect to see my code depend on those projects whenever I feel the need. I also will happily depend on any of the Genjava code and of course, I'll depend on other jars if that is the role of the utility. So expect to see gj-mail depend on Sun's mail.jar etc... </p>
+    </section>
+    <section name="OSJava?">
+      <p>OSJava.org is a small community of Java coders, mostly working on their own individual projects. Various of my projects form a part of this community. </p>
     </section>
 </body>
 </document>
