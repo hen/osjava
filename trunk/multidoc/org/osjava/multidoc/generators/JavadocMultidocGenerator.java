@@ -88,11 +88,11 @@ public class JavadocMultidocGenerator implements MultidocGenerator {
     }
 
     public void writeOverviewFrame(Writer writer, DocumentSite site, Document document) throws IOException {
-        writer.write("<HTML><HEAD><TITLE>Overview (MultiJavadoc)</TITLE>\n");
+        writer.write("<HTML><HEAD><TITLE>Overview (Multidoc)</TITLE>\n");
         writer.write("<LINK REL ='stylesheet' TYPE='text/css' HREF='stylesheet.css' TITLE='Style'>\n");
         writer.write("<SCRIPT type='text/javascript'>\n");
         writer.write("function windowTitle() {\n");
-        writer.write("    parent.document.title='Overview (MultiJavadoc)';\n");
+        writer.write("    parent.document.title='Overview (Multidoc)';\n");
         writer.write("}\n");
         writer.write("</SCRIPT></HEAD>\n");
         writer.write("<BODY BGCOLOR='white' onload='windowTitle();'>\n");
@@ -142,7 +142,8 @@ public class JavadocMultidocGenerator implements MultidocGenerator {
         }
         writer.write("</TABLE>\n");
 
-        writer.write("<P><HR>Copyright &copy; 2000-2004 The Apache Software Foundation. All Rights Reserved. </BODY></HTML>\n");
+//        writer.write("<P><HR>Copyright &copy; 2000-2004 The Apache Software Foundation. All Rights Reserved. </P>");
+        writer.write("</BODY></HTML>\n");
     }
 
 }
