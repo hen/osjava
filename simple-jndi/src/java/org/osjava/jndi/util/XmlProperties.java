@@ -49,8 +49,9 @@ import com.generationjava.io.xml.XMLNode;
 
 /**
  */
-public class XmlProperties extends Properties {
+public class XmlProperties extends AbstractProperties {
 
+    // TODO: Move this up to AbstractProperties
     private String delimiter = ".";
 
     public XmlProperties() {
@@ -126,17 +127,4 @@ if(org.osjava.jndi.PropertiesContext.DEBUG)                    System.err.printl
         }
     }
     
-    public Object setProperty(String key, String value) {
-if(org.osjava.jndi.PropertiesContext.DEBUG)        System.err.println("[XML]Setting property: "+key+" to "+value);
-        return put( key, value );
-    }
- 
-    // has to make sure not to write out any defaults
-    public void save(OutputStream outstrm, String header) {
-        super.save(outstrm,header);
-    }
-    // has to make sure not to write out any defaults
-    public void store(OutputStream outstrm, String header) throws IOException {
-        super.store(outstrm,header);
-    }
 }

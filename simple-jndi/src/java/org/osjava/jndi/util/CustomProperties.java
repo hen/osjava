@@ -37,7 +37,7 @@ import java.io.*;
 import java.util.*;
 //import com.generationjava.collections.OrderedSet;
 
-public class CustomProperties extends Properties {
+public class CustomProperties extends AbstractProperties {
 
     public synchronized void load(InputStream in) throws IOException {
         try {
@@ -77,74 +77,6 @@ if(org.osjava.jndi.PropertiesContext.DEBUG)                    System.err.printl
         } catch(IOException ioe) {
             ioe.printStackTrace();
         }
-    }
-
-    public synchronized Object put(Object key, Object value) {
-        if(index.contains(key)) {
-            Object obj = get(key);
-            if( !(obj instanceof List)) {
-                List list = new LinkedList();
-                list.add(obj);
-                obj = list;
-            } 
-            ((List)obj).add(value);
-            value = obj;
-        }
-        if(!index.contains(key)) {
-if(org.osjava.jndi.PropertiesContext.DEBUG)            System.err.println("[CUSTOM]Updating index for: "+key);
-            index.add(key);
-        }
-if(org.osjava.jndi.PropertiesContext.DEBUG)        System.err.println("[CUSTOM]Setting: "+key+"="+value);
-        return super.put(key, value);
-    }
-
-    // our index for the ordering
-    protected ArrayList index = new ArrayList();
-
-    public CustomProperties() {
-        super();
-    }
-
-    // the props attribute is for defaults. These will need to be 
-    // remembered for the save/store method.
-    public CustomProperties(Properties props) {
-        super(props);
-    }
-
-    public synchronized Object setProperty(String key, String value) {
-        return put(key,value);
-    }
-    
-    public synchronized Object remove(Object key) {
-        index.remove(key);
-        return super.remove(key);
-    }
-    
-    // simple implementation that depends on keySet.
-    public synchronized Enumeration propertyNames() {
-        return Collections.enumeration( keySet() );
-    }
-    public synchronized Enumeration keys() {
-        return propertyNames();
-    }
-    
-    public synchronized Set keySet() {
-        return new OrderedSet(index);
-    }
- 
-    /**
-     * Currently will write out defaults as well, which is not 
-     * in the specification.
-     */
-    public void save(OutputStream outstrm, String header) {
-        super.save(outstrm,header);
-    }
-    /**
-     * Currently will write out defaults as well, which is not 
-     * in the specification.
-     */
-    public void store(OutputStream outstrm, String header) throws IOException {
-        super.store(outstrm,header);
     }
 
 }

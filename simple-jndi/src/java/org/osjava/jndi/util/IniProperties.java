@@ -43,8 +43,9 @@ import java.util.*;
  * not in the two level are treated as simple one levels. 
  * Comments are a semi-colon. 
  */
-public class IniProperties extends CustomProperties {
+public class IniProperties extends AbstractProperties {
 
+    // TODO: Move this up to AbstractProperties
     private String delimiter = "";
 
     public void setDelimiter(String delimiter) {
