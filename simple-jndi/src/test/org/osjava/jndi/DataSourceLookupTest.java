@@ -3,6 +3,7 @@ package org.osjava.jndi;
 import javax.naming.*;
 import javax.sql.*;
 import java.util.*;
+import org.osjava.jndi.util.HierarchicalMap;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -34,11 +35,11 @@ public class DataSourceLookupTest extends TestCase {
 
     public void testDSLookup() {
         try {
-            Properties props = new Properties();
-            props.setProperty("TestDS/url", "foofoo");
-            props.setProperty("TestDS/driver", "bing");
-            props.setProperty("TestDS/user", "Boo");
-            props.setProperty("TestDS/password", "bong");
+            HierarchicalMap props = new HierarchicalMap("/");
+            props.put("TestDS/url", "foofoo");
+            props.put("TestDS/driver", "bing");
+            props.put("TestDS/user", "Boo");
+            props.put("TestDS/password", "bong");
             PropertiesDataSource fake = new PropertiesDataSource(props, new Hashtable(), delimiter);
             fake.setName("TestDS");
             assertEquals( fake, lookup("java:/TestDS") );
@@ -72,11 +73,11 @@ public class DataSourceLookupTest extends TestCase {
     public void testDS3Lookup() {
         try {
             DataSource genscapeDS = (DataSource) lookup("TestDS");
-            Properties props = new Properties();
-            props.setProperty("url", "jdbc:mysql://192.168.133.2/bikehell");
-            props.setProperty("driver", "org.gjt.mm.mysql.Driver");
-            props.setProperty("user", "nico");
-            props.setProperty("password", "bear");
+            HierarchicalMap props = new HierarchicalMap("/");
+            props.put("url", "jdbc:mysql://192.168.133.2/bikehell");
+            props.put("driver", "org.gjt.mm.mysql.Driver");
+            props.put("user", "nico");
+            props.put("password", "bear");
             PropertiesDataSource fake = new PropertiesDataSource(props, new Hashtable(), delimiter);
             fake.setName("");
             assertEquals( fake, genscapeDS );

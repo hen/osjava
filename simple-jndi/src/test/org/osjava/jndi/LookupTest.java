@@ -3,6 +3,7 @@ package org.osjava.jndi;
 import javax.naming.*;
 import javax.sql.*;
 import java.util.*;
+import org.osjava.jndi.util.HierarchicalMap;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
