@@ -33,12 +33,12 @@ public class HierarchicalMapTest extends TestCase {
     }
 
     public void testContainsKey() {
-        assertTrue( "Failed to contained prepared 'one' key from Map. ", this.hmap.containsKey("one") );
+        assertTrue( "Failed to contain prepared 'one' key from Map. ", this.hmap.containsKey("one") );
         assertFalse( "Should not have contained a 'two' key in the Map. ", this.hmap.containsKey("two") );
-        assertTrue( "Failed to contained delimited '1.2.3' key from Map. ", this.hmap.containsKey("1.2.3") );
-        assertTrue( "Failed to contained delimited '1.2.3' key from Map. ", ( (Map) ( (Map) this.hmap.get("1") ).get("2")).containsKey("3") );
-        assertTrue( "Failed to contained 'multiple' List from Map. ", this.hmap.containsKey("multiple") );
-        assertTrue( "Failed to contained 'delimited.multiple.pair' List from Map. ", this.hmap.containsKey("delimited.multiple.pair") );
+        assertTrue( "Failed to contain delimited '1.2.3' key from Map. ", this.hmap.containsKey("1.2.3") );
+        assertTrue( "Failed to contain delimited '1.2.3' key from Map. ", ( (Map) ( (Map) this.hmap.get("1") ).get("2")).containsKey("3") );
+        assertTrue( "Failed to contain 'multiple' List from Map. ", this.hmap.containsKey("multiple") );
+        assertTrue( "Failed to contain 'delimited.multiple.pair' List from Map. ", this.hmap.containsKey("delimited.multiple.pair") );
     }
 
     public void testGet() {
