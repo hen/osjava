@@ -7,7 +7,6 @@
 package org.osjava.nio;
 
 import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
 
 /**
  * @author rzigweid
