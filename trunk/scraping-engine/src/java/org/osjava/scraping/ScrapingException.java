@@ -31,13 +31,13 @@
  */
 package org.osjava.scraping;
 
-public class StoringException extends ScrapingException {
+public class ScrapingException extends org.apache.commons.lang.exception.NestableException {
 
-    public StoringException(String msg) {
+    public ScrapingException(String msg) {
         super(msg);
     }
 
-    public StoringException(String msg, Throwable t) {
+    public ScrapingException(String msg, Throwable t) {
         super(msg, t);
     }
 }

@@ -31,7 +31,7 @@
  */
 package org.osjava.scraping;
 
-public class ParsingException extends Exception {
+public class ParsingException extends ScrapingException {
 
     public ParsingException(String msg) {
         super(msg);
