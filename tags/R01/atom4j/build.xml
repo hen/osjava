@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <!--
+  **************************************************************************
+  BUILD ASSUMPTIONS
+  **************************************************************************
+  1. ./ refers to the project root directory.  
+  2. All jar files must already be located in ./lib.
+  3. All web files must already be located in ./webapp/*.
+  4. This build.xml file must already be located in ./ (project root).
+  5. The build_xml.properties file must already be located in ./ (project root).  
+  -->
+  
+<project name="atom4j" default="build" basedir=".">	
+	<property name="build.compiler" value="modern" />
+
+	<!-- define workspaces -->
+	<property file="./build_xml.properties" />
+	<property name="src" 		   value="${basedir}/src" />
+	<property name="test" 		   value="${basedir}/tests" />
+	<property name="lib" 		   value="${basedir}/lib" />
+	<property name="webapp" 	   value="${basedir}/webapp" />
+	<property name="build_root"    value="${basedir}/build" />
+	<property name="build" 		   value="${build_root}/atom4j" />
+	<property name="build_classes" value="${build}/classes" /> 
+	<property name="dist" 		   value="${build_root}/dist" />
+	<property name="package.path"  value="/com/brainopolis/atom4j" />
+	<property name="init.prop" 	   value="${build_classes}${package.path}" />
+	<property name="jar.name"      value="atom4j.jar" />
+	<property name="jar.src.name"  value="atom4j-src.jar" />
+
+	<path id="atom4j.classpath">
+	    <fileset dir="${lib}">
+	        <include name="*.jar"/>
+	    </fileset>
+	</path>
+
+	<target name="view">
+    	<echo>CLASSPATH:${atom4j.classpath}</echo>
+    </target>
+    
+    <target name="test" depends="build">
+		<copy overwrite="true"
+			file="log4j.properties"
+			tofile="${build_classes}/log4j.properties"
+			/>
+		<replace file="${build_classes}/log4j.properties" 
+			token="LEVEL" 
+			value="ERROR" 
+			/>
+		<java fork="yes" classname="org.osjava.atom4j.reader.EntryReader">
+			<classpath>
+	            <path refid="atom4j.classpath"/> 
+	            <path location="${build_classes}" /> 
+			</classpath>
+		</java>
+    </target>
+
+	<target name="junit" depends="build-test" >
+		<copy overwrite="true"
+			file="log4j.properties"
+			tofile="${build_classes}/log4j.properties"
+			/>
+		<replace file="${build_classes}/log4j.properties" 
+			token="LEVEL" 
+			value="ERROR" 
+			/>
+
+		<java classname="junit.textui.TestRunner" fork="yes" failonerror="false">
+			<arg value="org.osjava.atom4j.reader.TestAll"/>
+			<classpath>
+	            <path refid="atom4j.classpath"/> 
+	            <path location="${build_classes}" /> 
+			</classpath>
+		</java>	
+	
+	</target>    
+	
+	<!-- make sure the destinations exist -->
+	<target name="prepare">
+		<mkdir dir="${build_classes}" />
+		<mkdir dir="${dist}" />
+	</target>
+	
+	<!-- compile classes -->
+	<target name="build" depends="prepare">
+		<javac 
+			srcdir="${src}" 
+			destdir="${build_classes}" 
+			includeantruntime="false" 
+			debug="true" 
+			optimize="false" 
+			verbose="false" 
+			deprecation="false">
+			<include name="com/**" />
+			<include name="org/**" />
+			<classpath>
+	            <path refid="atom4j.classpath"/>
+	        </classpath>
+		</javac>
+	</target>
+
+	<target name="build-test" depends="build">
+		<javac 
+			srcdir="${test}" 
+			destdir="${build_classes}" 
+			includeantruntime="false" 
+			debug="true" 
+			optimize="false" 
+			verbose="false" 
+			deprecation="false">
+			<include name="com/**" />
+			<include name="org/**" />
+			<classpath>
+	            <path refid="atom4j.classpath"/>
+	        </classpath>
+		</javac>
+	</target>
+	
+	<!-- zip up war files from contents -->
+	<target name="dist" depends="build">
+
+		<echo>BUILDING CLASS JAR FILE</echo>
+		
+		<delete file="${dist}/${jar.name}" />
+
+		<copy overwrite="true"
+			file="README.txt"
+			tofile="${build_classes}/README.txt"
+			/>
+
+		<zip zipfile="${dist}/${jar.name}">
+			<zipfileset dir="${build_classes}" includes="**" />
+		</zip>	
+		
+	</target>
+	
+	<!-- zip up war files with bin & src contents -->
+	<target name="dist-src" depends="dist">
+
+		<echo>BUILDING SRC-JAR FILE</echo>
+		
+		<delete file="${dist}/${jar.src.name}" />
+
+		<zip zipfile="${dist}/${jar.src.name}">
+			<zipfileset dir="${build_classes}" includes="**" />
+			<zipfileset dir="${src}" includes="**" />
+		</zip>	
+			
+	</target>	
+
+	<!-- delete the build byproducts -->
+	<target name="clean">
+		<delete dir="${build}" />
+		<delete dir="${dist}" />
+	</target>
+</project>
+
