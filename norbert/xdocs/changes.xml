@@ -7,17 +7,21 @@
   </properties>
 
   <body>
-    <release version="0.2" date="2004-04-13">
+    <release version="0.3" date="2004-08-01" description="User-Agent fix">
+      <action dev="hen" type="add">Now sends the User Agent in the request. </action>
+    </release>
+
+    <release version="0.2" date="2004-04-13" description="No dependencies">
       <action dev="hen" type="add">An application level exception added, NoRobotException. </action>
       <action dev="hen" type="remove">Log4j dependency removed. Throwing Exceptions means no logging needed. </action>
       <action dev="hen" type="remove">Genjava-core and commons-lang dependencies removed by inlining a method. </action>
     </release>
 
-    <release version="0.1.1" date="2003-12-08">
+    <release version="0.1.1" date="2003-12-08" description="Bug fix">
       <action dev="hen" type="fix">No longer fails when the url being tested does not contain a trailing slash, but the base url does. </action>
     </release>
 
-    <release version="0.1" date="2003-08-23">
+    <release version="0.1" date="2003-08-23" description="Initial release">
     </release>
 </body>
 </document>
