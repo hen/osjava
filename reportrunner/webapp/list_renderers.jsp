@@ -2,7 +2,7 @@
 <%@ page import="org.apache.commons.lang.StringUtils" %>
 
 <%
-    String reportName = request.getParameter("report");
+    String reportName = request.getParameter("_report");
 
 %>
 
@@ -16,7 +16,7 @@
     String[] renderers = StringUtils.split(report.getRenderers(), ",");
     for(int i=0; i<renderers.length; i++) {
 %>
-    <tr><td><a href="reportrunner.jsp?<%= request.getQueryString() %>&renderer=<%= renderers[i]%>"><%= renderers[i] %></a></td></tr>
+    <tr><td><a href="reportrunner?<%= request.getQueryString() %>&_renderer=<%= renderers[i]%>"><%= renderers[i] %></a></td></tr>
 <%
     }
 %>

@@ -1,7 +1,7 @@
 <%@ page import="org.osjava.reportrunner.*" %>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
 <%
-    String reportName = request.getParameter("report");
+    String reportName = request.getParameter("_report");
     Report report = ReportFactory.getReport(reportName);
     if(report.getParams().length != 0) {
         // redirect to choose params page
