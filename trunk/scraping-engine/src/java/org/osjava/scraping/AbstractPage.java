@@ -65,10 +65,6 @@ public abstract class AbstractPage implements Page {
     public abstract Reader read() throws IOException;
 
     public Page fetch(String uri, Config cfg, Session session) throws FetchingException {
-        return fetch(uri, null, cfg, session);
-    }
-    public Page fetch(String uri, Map values, Config cfg, Session session) throws FetchingException {
-
         // TODO: This knows about HTTP PROTOCOL urls. Fix.
         int idx = uri.indexOf("://");
         if(idx == -1) {
@@ -87,7 +83,7 @@ public abstract class AbstractPage implements Page {
         
         logger.debug("Fetching: "+uri);
         Fetcher fetcher = FetchingFactory.getFetcher(cfg, session);
-        Page page = fetcher.fetch(uri, values, cfg, session);
+        Page page = fetcher.fetch(uri, cfg, session);
         return page;
     }
 

@@ -60,23 +60,7 @@ public class ScrapingRunner implements Runner {
                 
             // throws FetchingException
             String uri = cfg.getString("uri");
-            String post = cfg.getString("post");
-            Map values = null;
-            if(post != null) {
-                values = new HashMap();
-                // split on the &
-                String[] elements = StringUtils.split(post, "&");
-                for(int i=0; i<elements.length; i++) {
-                    // split on the =
-                    String[] keyValue = StringUtils.split(elements[i], "=");
-                    if(keyValue.length == 2) {
-                        values.put( keyValue[0], keyValue[1] );
-                    } else {
-                        System.err.println("Bad post pair: "+elements[i]);
-                    }
-                }
-            }
-            Page page = fetcher.fetch(uri, values, cfg, session);
+            Page page = fetcher.fetch(uri, cfg, session);
 
             // parse the data
             Parser parser = ParserFactory.getParser(cfg, session);
