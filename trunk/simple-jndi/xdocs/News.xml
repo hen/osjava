@@ -8,6 +8,8 @@
 
   <body>
     <section name="News">
+    <p>2004-01-03: Version <a href="changes-report.html#0.8">0.8</a> has been released. </p>
+<hr />
     <p>2003-12-06: Version <a href="changes-report.html#0.7">0.7</a> has been released. </p>
 <hr />
         <p>2003-12-06: More work on the website to get away from the default Maven output and to something a bit more usable. </p>
