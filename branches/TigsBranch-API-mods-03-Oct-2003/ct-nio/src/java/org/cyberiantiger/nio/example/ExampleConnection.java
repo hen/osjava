@@ -19,7 +19,7 @@ public class ExampleConnection {
                                       iot);
             BufferedWriter chanWriter = 
                 new BufferedWriter(handler.getChannelWriter());
-            chanWriter.write("Testing Connection to Server!");
+            chanWriter.write("hello");
             chanWriter.flush();
             handler.close();
 

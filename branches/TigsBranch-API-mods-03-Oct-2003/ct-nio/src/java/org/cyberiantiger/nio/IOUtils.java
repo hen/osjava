@@ -33,6 +33,7 @@ public class IOUtils {
             SelectionKey key=null;
 
             ServerSocket socket = chan.socket();
+            System.out.println("Address is -- " + addr);
             socket.bind(addr);
 
             // Feckski Offski, I hate the way *everything* throws IOException
