@@ -19,12 +19,8 @@
     <menu name="Resources">
       <item name="Mailing List"              href="/mail-lists.html"/>
       <item name="Jar Dependencies"              href="/dependencies.html"/>
-      <item name="SVN Repository"              href="/cvs-usage.html"/>
+      <item name="SVN Repository"              href="http://www.osjava.org/svn.php?project=scraping-engine"/>
       <item name="Bug Tracking"              href="/issue-tracking.html"/>
-    </menu>
-    <menu name="SVN reports">
-      <item name="SVN History"              href="/changelog-report.html"/>
-      <item name="SVN Statistics"              href="/statcvs/"/>
     </menu>
   </body>
 </project>
