@@ -94,12 +94,11 @@ public class ReportFactory {
             XMLNode node = (XMLNode) nodes.nextElement();
             String name = node.getName();
             if(name.equals("param")) {
-                String type = node.getAttr("type");
-                String binding = node.getAttr("binding");
                 Param param = new Param();
                 param.setName( node.getAttr("name") );
-                param.setTypeAsString( type );
-                param.setBinding( binding );
+                param.setLabel( node.getAttr("label") );
+                param.setType( node.getAttr("type") );
+                param.setBinding( node.getAttr("binding") );
                 if(node.getAttr("parser") != null) {
                     try {
                         Parser parser = (Parser) Thread.currentThread().getContextClassLoader().loadClass(node.getAttr("parser")).newInstance();
