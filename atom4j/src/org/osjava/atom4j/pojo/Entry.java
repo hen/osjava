@@ -6,6 +6,7 @@ package org.osjava.atom4j.pojo;
 import java.text.ParseException;
 import java.util.Date;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.osjava.atom4j.Atom4J;
@@ -247,9 +248,12 @@ public class Entry
         //buf.append("    <subtitle>" + this.getSummary()+ "</subtitle>\n");
      
         buf.append("    <author>\n");
-        buf.append("      <name>" + noNull( getAuthor().getName() ) + "</name>\n");
-        buf.append("      <homepage>" + noNull( getAuthor().getUrl() ) + "</homepage>\n");
-        buf.append("      <weblog>" + noNull( getAuthor().getEmail() ) + "</weblog>\n");
+        if (StringUtils.isNotEmpty(getAuthor().getName()))  
+            buf.append("      <name>" + getAuthor().getName() + "</name>\n");
+        if (StringUtils.isNotEmpty(getAuthor().getUrl()))   
+            buf.append("      <homepage>" + getAuthor().getUrl() + "</homepage>\n");
+        if (StringUtils.isNotEmpty(getAuthor().getEmail())) 
+            buf.append("      <email>" + getAuthor().getEmail() + "</weblog>\n");
         buf.append("    </author>\n");
     
         buf.append("    <issued>" + EntryReader.formatIso8601(this.getIssued()) + "</issued>\n");

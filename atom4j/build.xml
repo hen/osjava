@@ -16,6 +16,7 @@
 	<!-- define workspaces -->
 	<property file="./build_xml.properties" />
 	<property name="src" 		   value="${basedir}/src" />
+	<property name="test" 		   value="${basedir}/tests" />
 	<property name="lib" 		   value="${basedir}/lib" />
 	<property name="webapp" 	   value="${basedir}/webapp" />
 	<property name="build_root"    value="${basedir}/build" />
@@ -25,6 +26,7 @@
 	<property name="package.path"  value="/com/brainopolis/atom4j" />
 	<property name="init.prop" 	   value="${build_classes}${package.path}" />
 	<property name="jar.name"      value="atom4j.jar" />
+	<property name="jar.src.name"  value="atom4j-src.jar" />
 
 	<path id="atom4j.classpath">
 	    <fileset dir="${lib}">
@@ -45,7 +47,7 @@
 			token="LEVEL" 
 			value="ERROR" 
 			/>
-		<java fork="yes" classname="com.brainopolis.atom4j.reader.EntryReader">
+		<java fork="yes" classname="org.osjava.atom4j.reader.EntryReader">
 			<classpath>
 	            <path refid="atom4j.classpath"/> 
 	            <path location="${build_classes}" /> 
@@ -53,13 +55,21 @@
 		</java>
     </target>
 
-	<target name="junit" depends="dist" >
+	<target name="junit" depends="build-test" >
+		<copy overwrite="true"
+			file="log4j.properties"
+			tofile="${build_classes}/log4j.properties"
+			/>
+		<replace file="${build_classes}/log4j.properties" 
+			token="LEVEL" 
+			value="ERROR" 
+			/>
 
 		<java classname="junit.textui.TestRunner" fork="yes" failonerror="false">
-			<arg value="org.roller.presentation.TestAll"/>
+			<arg value="org.osjava.atom4j.reader.TestAll"/>
 			<classpath>
 	            <path refid="atom4j.classpath"/> 
-	            <path location="${dist}/dev/${jar.name}" /> 
+	            <path location="${build_classes}" /> 
 			</classpath>
 		</java>	
 	
@@ -91,7 +101,24 @@
 		</javac>
 	</target>
 
-	<!-- zip up war files from webapp contents -->
+	<target name="build-test" depends="build">
+		<javac 
+			srcdir="${test}" 
+			destdir="${build_classes}" 
+			includeantruntime="false" 
+			debug="true" 
+			optimize="false" 
+			verbose="false" 
+			deprecation="false">
+			<include name="com/**" />
+			<include name="org/**" />
+			<classpath>
+	            <path refid="atom4j.classpath"/>
+	        </classpath>
+		</javac>
+	</target>
+	
+	<!-- zip up war files from contents -->
 	<target name="dist" depends="build">
 
 		<!-- "dev" war -->
@@ -114,11 +141,39 @@
 		
 	</target>
 	
+	<!-- zip up war files with bin & src contents -->
+	<target name="dist-src" depends="build">
+
+		<!-- "dev" war -->
+		<antcall target="dist-src-jar" >
+			<param name="dist-ver"			 value="dev" />
+			<param name="log4j.level"        value="${log4j.level.dev}" />
+		</antcall>
+
+		<!-- "test" war -->
+		<antcall target="dist-src-jar" >
+			<param name="dist-ver"			 value="test" />
+			<param name="log4j.level"        value="${log4j.level.test}" />
+		</antcall>
+
+		<!-- "prod" war -->
+		<antcall target="dist-src-jar" >
+			<param name="dist-ver"			 value="prod" />
+			<param name="log4j.level"        value="${log4j.level.prod}" />
+		</antcall>
+			
+	</target>	
+	
 	<target name="dist-jar">
 		<echo>BUILDING "${dist-ver}" JAR FILE</echo>
 		
 		<delete file="${dist}/${dist-ver}/${jar.name}" />
 
+		<copy overwrite="true"
+			file="README.txt"
+			tofile="${build_classes}/README.txt"
+			/>
+			
 		<copy overwrite="true"
 			file="log4j.properties"
 			tofile="${build_classes}/log4j.properties"
@@ -130,6 +185,31 @@
 	
 		<zip zipfile="${dist}/${dist-ver}/${jar.name}">
 			<zipfileset dir="${build_classes}" includes="**" />
+		</zip>	
+	</target>
+	
+	<target name="dist-src-jar">
+		<echo>BUILDING "${dist-ver}" SRC-JAR FILE</echo>
+		
+		<delete file="${dist}/${dist-ver}/${jar.src.name}" />
+
+		<copy overwrite="true"
+			file="README.txt"
+			tofile="${build_classes}/README.txt"
+			/>
+
+		<copy overwrite="true"
+			file="log4j.properties"
+			tofile="${build_classes}/log4j.properties"
+			/>
+		<replace file="${build_classes}/log4j.properties" 
+			token="LEVEL" 
+			value="${log4j.level}" 
+			/>
+	
+		<zip zipfile="${dist}/${dist-ver}/${jar.src.name}">
+			<zipfileset dir="${build_classes}" includes="**" />
+			<zipfileset dir="${src}" includes="**" />
 		</zip>	
 	</target>
 

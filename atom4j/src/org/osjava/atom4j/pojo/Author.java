@@ -9,8 +9,8 @@ package org.osjava.atom4j.pojo;
 public class Author
 {
     private String name;
-    private String url;
-    private String email;
+    private String url = null;
+    private String email = null;
     /**
      * @return
      */

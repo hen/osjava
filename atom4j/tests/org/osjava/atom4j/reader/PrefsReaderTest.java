@@ -6,6 +6,8 @@ package org.osjava.atom4j.reader;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
+import org.osjava.atom4j.Atom4J;
+
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -16,7 +18,7 @@ import junit.framework.TestSuite;
 public class PrefsReaderTest extends TestCase
 {
     String inputXML = 
-        "<userprefs xmlns=\"http://example.com/newformat#\">\n" +
+        "<userprefs xmlns=\"" + Atom4J.xmlns + "\">\n" +
         "    <name>Reilly</name>\n" +
         "    <id>1234</id>\n" +
         "    <email>reilly@example.org</email>\n" +
