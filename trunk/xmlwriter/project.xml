@@ -4,7 +4,7 @@
   <pomVersion>3</pomVersion>
   <id>xmlwriter</id>
   <name>xmlwriter</name>
-  <currentVersion>2.2</currentVersion>
+  <currentVersion>2.1</currentVersion>
   <organization>
     <name>OSJava</name>
     <url>http://www.osjava.org/</url>
@@ -20,7 +20,7 @@
     Note, xmlwriter is dependent on the Jakarta Commons Lang project found at &lt;a href="http://jakarta.apache.org/commons/lang.html"&gt;http://jakarta.apache.org/commons/lang.html&lt;/a&gt;.
     &lt;br/&gt;
     &lt;br/&gt;
-   While XmlWriter contains its own xml outputter, it has the ability to sit on top of other core Xml writing products, such as XmlEnc. In addition, the user may layer other functionalities on top of the core writing, such as on the fly schema checking, date/number formatting, specific empty-element handling and pretty-printing. 
+   While XmlWriter contains its own xml outputter, it has the ability to sit on top of other core Xml writing products, such as &lt;a href="http://xmlenc.sf.net/"&gt;XmlEnc&lt;/a&gt;. In addition, the user may layer other functionalities on top of the core writing, such as on the fly schema checking, date/number formatting, specific empty-element handling and pretty-printing. 
  </description>
   
   <shortDescription>XmlWriter</shortDescription>
