@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project>
+  <pomVersion>3</pomVersion>
+  <id>genjava</id>
+  <groupId>genjava</groupId>
+  <name>GenJava</name>
+  <currentVersion>1.0</currentVersion>
+
+  <organization>
+    <name>OSJava</name>
+    <url>http://www.osjava.org/</url>
+    <logo>/images/osjava.gif</logo>
+  </organization>
+  <inceptionYear>2000</inceptionYear>
+  <package>com.generationjava</package>
+  <logo>/images/1x1.gif</logo>
+
+  <url>http://www.osjava.org/genjava/</url>
+  <issueTrackingUrl>http://issues.osjava.org:8080/jira/secure/BrowseProject.jspa?id=10010</issueTrackingUrl>
+  <siteAddress>www.osjava.org/genjava</siteAddress>
+  <siteDirectory>/sites/org/osjava/www/releases/official/genjava/${pom.artifactId}/</siteDirectory>
+  <distributionDirectory>/sites/org/osjava/www/releases/official/genjava/${pom.artifactId}/</distributionDirectory>
+
+  <mailingLists>
+    <mailingList>
+      <name>osjava-users</name>
+      <subscribe>http://lists.osjava.org/mailman/listinfo/osjava-users</subscribe>
+      <unsubscribe>http://lists.osjava.org/mailman/listinfo/osjava-users</unsubscribe>
+      <archive>http://lists.osjava.org/mailman/private/osjava-users/</archive>
+    </mailingList>
+  </mailingLists>
+
+  <developers>
+    <developer>
+      <name>Henri Yandell</name>
+      <id>hen</id>
+      <email>bayard@generationjava.com</email>
+      <organization>GenerationJava</organization>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+
+  </developers>
+
+  <contributors>
+    <contributor>
+      <name>Steve Heath</name>
+      <email>steve@smallcogs.com</email>
+    </contributor>
+  </contributors>
+    
+  <build>
+    <nagEmailAddress>bayard@www.generationjava.com</nagEmailAddress>
+    <sourceDirectory>src/java</sourceDirectory>
+    <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
+
+    <!-- Unit test classes -->
+    <unitTest>
+      <includes>
+        <include>**/*Test.java</include>
+      </includes>
+    </unitTest>
+
+    <resources>
+      <includes>
+        <include>**/*.properties</include>
+      </includes>
+    </resources>
+    
+    <jars></jars>
+  </build>
+
+    <reports>
+        <report>maven-jxr-plugin</report>
+        <report>maven-javadoc-plugin</report>
+        <report>maven-license-plugin</report>
+        <report>maven-changes-plugin</report>
+    </reports>
+
+</project>
