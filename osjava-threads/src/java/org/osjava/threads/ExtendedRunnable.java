@@ -45,7 +45,7 @@ package org.osjava.threads;
  * {@link #setAbort(boolean)} to {@link ExtendedThread}s and or their Runnables.
  * 
  * @author Robert M. Zigweid
- * @version $Revision: 1.3 $ $Date$
+ * @version $Revision$ $Date$
  */
 
 public interface ExtendedRunnable extends Runnable {
@@ -67,5 +67,10 @@ public interface ExtendedRunnable extends Runnable {
      *         is to cease execution.
      */
     boolean isAborting();
+
+    /**
+     * 
+     */
+    void wakeup();
     
 }

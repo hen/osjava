@@ -54,6 +54,7 @@ import javax.naming.NameParser;
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 
+import org.apache.log4j.Logger;
 import org.osjava.jndi.AbstractContext;
 import org.osjava.naming.InvalidObjectTypeException;
 
@@ -355,25 +356,17 @@ public class ThreadContext
      * @throws NamingException if a naming exception is encountered.
      */
     public void notifyThread(Name name) throws NameNotFoundException, NamingException {
-        Object obj = lookup(name);
-        /* 
-         * Take care of the easy case first, pointing at an actual 
-         * thread.
-         */
-        if(obj instanceof ExtendedThread) {
-            synchronized (obj) {
-                obj.notify();
-            }
-            return;
-        }
-        
-        if(name.isEmpty()) {
+        Logger logger = Logger.getLogger(this.getClass());
+        logger.debug("Notifying Thread -- " + name.toString());
+        if(name == null || name.isEmpty()) {
+            logger.debug("Empty name, Notifying everything in context.");
             NamingEnumeration list = list(name);
             while(list.hasMore()) {
                 Object next = list.next();
                 if(next instanceof ExtendedThread) {
                     synchronized(next) {
-                        obj.notify();
+                        logger.debug("uhh..pinging! " + next);
+                        ((ExtendedRunnable)next).wakeup();
                         continue;
                     }
                 }
@@ -385,10 +378,16 @@ public class ThreadContext
             return;
         }
         
-        Object next = lookup(name.getPrefix(1));
-        if(next instanceof ThreadContext) {
-            ((ThreadContext)next).notifyThread(name.getSuffix(name.size()));
+        Object obj = lookup(name);
+        if(obj instanceof Thread) {
+            synchronized (obj) {
+                ((ExtendedRunnable)obj).wakeup();
+            }
             return;
+        }
+
+        if(obj instanceof ThreadContext) {
+            ((ThreadContext)obj).notifyThread((Name)null);
         }
         
         /* 
