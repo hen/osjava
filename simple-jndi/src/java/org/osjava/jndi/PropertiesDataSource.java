@@ -51,6 +51,9 @@ public class PropertiesDataSource implements DataSource {
     // make delimiter a beanproperty?
     public PropertiesDataSource(Properties props, Hashtable env, String delimiter) {
         this.props = props;
+        if(!props.containsKey("org.osjava.jndi.datasource")) {
+            props.setProperty("org.osjava.jndi.datasource", "true");
+        }
 //        this.env = env;
         this.pw = new PrintWriter(System.err);
         this.delimiter = delimiter;
@@ -65,6 +68,10 @@ public class PropertiesDataSource implements DataSource {
 //        System.err.println("Loading: "+name+this.delimiter+get("driver")+" from "+props);
 //        DbUtils.ensureLoaded(get("driver"));
         ensureLoaded(get("driver"));
+        String type = this.name+this.delimiter+"type";
+        if(!props.containsKey(type)) {
+            this.props.setProperty(type, "javax.sql.DataSource");
+        }
     }
 
     // nicked from DbUtils
