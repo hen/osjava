@@ -31,6 +31,11 @@ public class ReportRunnerServlet extends HttpServlet {
                 if(parser != null) {
                     value = parser.parse(parameter, params[i].getType());
                 } 
+
+                // else use the params type to call a stock parser; numbers, booleans etc.
+                // the stock parsers need to be configurable; so parsers.xml will exist
+                // for the moment, hard code
+
                 params[i].setValue(value);
             }
         }
@@ -52,6 +57,9 @@ public class ReportRunnerServlet extends HttpServlet {
             
             if(result == null) {
                 throw new RuntimeException("Result is null. ");
+            }
+            if(result.hasNextRow() == false) {
+                throw new EmptyReportException();
             }
             result = new FormattingResult(result, report);
 
