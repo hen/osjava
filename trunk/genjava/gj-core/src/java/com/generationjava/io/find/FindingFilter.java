@@ -42,6 +42,8 @@ import java.util.LinkedList;
 import java.util.Collection;
 import java.util.Iterator;
 
+import com.generationjava.util.WildcardUtils;
+
 /**
  * This is where most of the find functionality occurs. Nearly every option 
  * to find is mapped to a FileFilter, which are then chained together inside 
@@ -224,9 +226,9 @@ class NameFilter implements FileFilter {
     }
     public boolean accept(File file) {
         if(this.ignoreCase) {
-            return file.getName().toLowerCase().equals(this.argument.toString().toLowerCase());
+            return WildcardUtils.match(file.getName().toLowerCase(), this.argument.toString().toLowerCase());
         } else {
-            return file.getName().equals(this.argument.toString());
+            return WildcardUtils.match(file.getName(), this.argument.toString());
         }
     }
 }
@@ -242,9 +244,9 @@ class PathFilter implements FileFilter {
     }
     public boolean accept(File file) {
         if(this.ignoreCase) {
-            return file.getPath().toLowerCase().equals(this.argument.toString().toLowerCase());
+            return WildcardUtils.match(file.getPath().toLowerCase(), this.argument.toString().toLowerCase());
         } else {
-            return file.getPath().equals(this.argument.toString());
+            return WildcardUtils.match(file.getPath(), this.argument.toString());
         }
     }
 }
