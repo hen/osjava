@@ -35,7 +35,7 @@
     Payload is a jar which self-extracts a payload and performs search and replace on some of the files as they leave based on an extraction-time specified properties file.
   </description>
   
-  <shortDescription><yload, the self-extracting jar</shortDescription>
+  <shortDescription>Payload, the self-extracting jar</shortDescription>
 
   <!-- This stuff contains OSJava linked bits. Only change the capitals -->
   <url>http://www.osjava.org/payload/</url>
