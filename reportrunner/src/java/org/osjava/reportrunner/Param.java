@@ -26,6 +26,9 @@ public class Param {
     }
 
     public void setTypeAsString(String typeName) {
+        if(typeName == null) {
+            return;
+        }
         try {
             this.type = Thread.currentThread().getContextClassLoader().loadClass(typeName);
         } catch(ClassNotFoundException cnfe) {
