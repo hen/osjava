@@ -35,6 +35,7 @@ import java.io.File;
 import java.io.IOException;
 
 import java.util.Collection;
+import java.util.HashMap;
 
 import com.generationjava.collections.FQMap;
 
@@ -79,7 +80,9 @@ public class ClassIndex implements FindListener {
                 finder = new ZipFinder();
             }
             finder.addFindListener(this);
-            finder.find(file, "class");
+            HashMap options = new HashMap();
+            options.put(Finder.NAME, "class");
+            finder.find(file, options);
 
             idx++;
             current = idx;
@@ -127,16 +130,17 @@ public class ClassIndex implements FindListener {
     }
 
     public void fileFound(FindEvent findEvent) {
-        String file = findEvent.getFile();
+        File file = findEvent.getFile();
+        String filename = file.getName();
 
         // ignore inner classes
-        if(file.indexOf("$") != -1) {
+        if(filename.indexOf("$") != -1) {
             return;
         }
 
-        file = file.substring(0,file.length()-6);
+        filename = filename.substring(0,filename.length()-6);
 
-        if(map.get(file) != null) {
+        if(map.get(filename) != null) {
             // simulate the import method of getting the first one
             return;
         }
@@ -147,7 +151,7 @@ public class ClassIndex implements FindListener {
             pck = pck.substring(1);
         }
 
-        map.put(file, pck);
+        map.put(filename, pck);
     }
 
 }
