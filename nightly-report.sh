@@ -33,10 +33,9 @@ reportDir=`pwd`/report
 
 index=$reportDir/index.html
 
-echo '<html><body>' > $index
-echo '<h1>OSJava Nightly build</h1>' >> $index
+cat header.inc > $index
 
-echo '<ul>' >> $index
+echo '<ul id="project_list">' >> $index
 
 for i in `cat NIGHTLY.txt`
 do
@@ -46,9 +45,9 @@ do
 
     if [ -f FAILED ];
     then
-        echo "<li><font color='#FF0000'>failed</font>&nbsp;&nbsp;- <a href='$local_report'>$i</a></li>" >> $index
+        echo "<li class='project_line'><img class='failed_image' src='images/failed.gif'> <a class='failed_link' href='$local_report'>$i</a></li>" >> $index
     else
-        echo "<li><font color='#00FF00'>success</font>&nbsp;- <a href='$local_report'>$i</a></li>" >> $index
+        echo "<li class='project_line'><img class='success_image' src='images/success.gif'> <a class='success_link' href='$local_report'>$i</a></li>" >> $index
     fi
 
     cd -
@@ -71,7 +70,7 @@ do
 
     if [ -e BUILD_TIME ]; 
     then
-        echo "<table><tr><td>Last built:</td><td>`cat BUILD_TIME`</td></tr><tr><td>Build took:</td><td>`cat BUILD_DURATION`</td></tr></table>" >> $report
+        echo "Last built: `cat BUILD_TIME`<br/>Build took: `cat BUILD_DURATION`<br/>" >> $report
     fi
 
     echo '<ul>' >> $report
