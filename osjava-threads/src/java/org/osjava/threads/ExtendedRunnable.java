@@ -69,7 +69,9 @@ public interface ExtendedRunnable extends Runnable {
     boolean isAborting();
 
     /**
-     * 
+     * Send a notify() to the Thread.  This is done in such a way that if 
+     * the Thread wraps a Runnable object, that is notified instead.  This 
+     * method takes care of all synchronization issues.
      */
     void wakeup();
     

@@ -208,7 +208,11 @@ public class ExtendedThread extends Thread implements ExtendedRunnable {
         throw new  CloneNotSupportedException("ExtendedThread cannot be cloned.");
     }
 
-    /* (non-Javadoc)
+    /**
+     * Send a notify() to the Thread.  This is done in such a way that if 
+     * the Thread wraps a Runnable object, that is notified instead.  This 
+     * method takes care of all synchronization issues.
+     * 
      * @see org.osjava.threads.ExtendedRunnable#wakeup()
      */
     public void wakeup() {

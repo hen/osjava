@@ -40,8 +40,6 @@
 
 package org.osjava.threads;
 
-import org.apache.log4j.Logger;
-
 /**
  * Abstract implementation of {@link ExtendedRunnable} which handles the default
  * methods.
@@ -109,8 +107,15 @@ public abstract class AbstractExtendedRunnable
             "An AbstractExtendedRunnable should not be cloned.");
     }
 
+    
+    /**
+     * Send a notify() to the Thread.  This is done in such a way that if 
+     * the Thread wraps a Runnable object, that is notified instead.  This 
+     * method takes care of all synchronization issues.
+     * 
+     * @see org.osjava.threads.ExtendedRunnable#wakeup()
+     */
     public void wakeup() {
-        System.out.println("Testing -- AbstractRunnable");
         synchronized(this) {
             this.notify();
         }
