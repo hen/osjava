@@ -7,6 +7,8 @@ function usage() {
     echo ' ./nightly-build.sh <project> -  Will build only the component specified. '
 }
 
+rm -f LAST_BUILD SVN_UPDATE REASON
+
 if [ "x$1x" != "xx" ];
 then
     if [ $1 = 'all' ];
@@ -32,8 +34,6 @@ then
 fi
 buildDir=`pwd`
 reportDir=`pwd`/report
-
-rm -f LAST_BUILD SVN_UPDATE REASON
 
 for i in $LIST
 do
