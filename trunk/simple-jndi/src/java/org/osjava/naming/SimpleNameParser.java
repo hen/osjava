@@ -21,7 +21,7 @@ import javax.naming.NameParser;
 import javax.naming.NamingException;
 
 /**
- * The NameParser for the Simple-JMDO.  
+ * The NameParser for the Simple-JNDI.  
  * 
  * @author Robert M. Zigweid
  * @version $LastChangedRevision $ $LastChangedDate$
