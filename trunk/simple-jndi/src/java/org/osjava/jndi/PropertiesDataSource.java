@@ -40,13 +40,15 @@ import java.io.PrintWriter;
 import java.util.Hashtable;
 import java.util.Properties;
 
+import org.osjava.jndi.util.HierarchicalMap;
+
 /**
  * A basic implementation of a DataSource. 
  */
 public class PropertiesDataSource implements DataSource {
 
 //    private Hashtable env;
-    private Properties props;
+    private HierarchicalMap hmap;
     private PrintWriter pw;
     private String name;
     private String delimiter;
@@ -55,8 +57,8 @@ public class PropertiesDataSource implements DataSource {
     private boolean poolSetup;
 
     // make delimiter a beanproperty?
-    public PropertiesDataSource(Properties props, Hashtable env, String delimiter) {
-        this.props = props;
+    public PropertiesDataSource(HierarchicalMap hmap, Hashtable env, String delimiter) {
+        this.hmap = hmap;
 //        this.env = env;
         this.pw = new PrintWriter(System.err);
         this.delimiter = delimiter;
@@ -64,19 +66,19 @@ public class PropertiesDataSource implements DataSource {
 
     /**
      * setName is set by the PropertiesContext when it realises that the 
-     * name of the DataSource is in the Properties object.
+     * name of the DataSource is in the HierarchicalMap object.
      */
     void setName(String name) {
         this.name = name;
-if(org.osjava.jndi.PropertiesContext.DEBUG)        System.err.println("[DS]Loading driver: "+name+this.delimiter+get("driver")+" from "+props);
+if(org.osjava.jndi.PropertiesContext.DEBUG)        System.err.println("[DS]Loading driver: "+name+this.delimiter+get("driver")+" from "+hmap);
 //        DbUtils.ensureLoaded(get("driver"));
         ensureLoaded(get("driver"));
         String type = "type";
         if(this.name != null && !this.name.equals("")) {
             type = this.name+this.delimiter+type;
         }
-        if(!props.containsKey(type)) {
-            this.props.setProperty(type, "javax.sql.DataSource");
+        if(!hmap.containsKey(type)) {
+            this.hmap.put(type, "javax.sql.DataSource");
         }
     }
 
@@ -95,7 +97,7 @@ if(org.osjava.jndi.PropertiesContext.DEBUG)        System.err.println("[DS]Loadi
             val = name + this.delimiter + val;
         }
 if(org.osjava.jndi.PropertiesContext.DEBUG)        System.err.println("[DS]Getting property: "+val);
-        return this.props.getProperty(val);
+        return (String) this.hmap.get(val);
     }
 
     public Connection getConnection() throws SQLException {
@@ -141,7 +143,7 @@ if(org.osjava.jndi.PropertiesContext.DEBUG)        System.err.println("[DS]Getti
     }
 
     public String toString() {
-        return this.name+"///"+this.props.toString()+" delim="+this.delimiter;
+        return this.name+"///"+this.hmap.toString()+" delim="+this.delimiter;
     }
 
     public boolean equals(Object obj) {
@@ -155,7 +157,7 @@ if(org.osjava.jndi.PropertiesContext.DEBUG)        System.err.println("[DS]Getti
 
         return other.name.equals(this.name) &&
                other.delimiter.equals(this.delimiter) &&
-               other.props.equals(this.props);
+               other.hmap.equals(this.hmap);
     }
 
     public int hashCode() {

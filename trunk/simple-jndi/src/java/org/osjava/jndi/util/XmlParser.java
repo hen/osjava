@@ -40,23 +40,20 @@ import java.io.InputStreamReader;
 import java.util.Properties;
 import java.util.Enumeration;
 
+import java.util.Map;
+
 import com.generationjava.io.xml.XMLParser;
 import com.generationjava.io.xml.XMLNode;
 
 /**
- * Wraps the Genjava gj-xml parser behind a Properties facade.
+ * Wraps the Genjava gj-xml parser behind a Parser facade.
  */
-public class XmlProperties extends AbstractProperties {
+public class XmlParser implements Parser {
 
-    // TODO: Move this up to AbstractProperties
     private String delimiter = ".";
 
-    public XmlProperties() {
+    public XmlParser() {
         super();
-    }
-
-    public XmlProperties(Properties props) {
-        super(props);
     }
 
     public void setDelimiter(String delimiter) {
@@ -67,14 +64,14 @@ public class XmlProperties extends AbstractProperties {
         return this.delimiter;
     }
 
-    public void load(InputStream in) throws IOException {
+    public void parse(InputStream in, Map map) throws IOException {
         InputStreamReader reader = new InputStreamReader(in);
-        this.load( reader );
+        this.parse( reader, map );
         reader.close();
     }
 
-    // TODO: Decide if load could just throw the root at add.
-    public void load(Reader reader) throws IOException {
+    // TODO: Decide if parse could just throw the root at add.
+    private void parse(Reader reader, Map map) throws IOException {
         XMLParser parser = new XMLParser();
         XMLNode root = parser.parseXML(reader);
         Enumeration enum = root.enumerateNode();
@@ -83,28 +80,28 @@ public class XmlProperties extends AbstractProperties {
             if(!node.isTag()) { continue; }
 //            add("", node);
 if(org.osjava.jndi.PropertiesContext.DEBUG)            System.err.println("[XML]Adding: "+root.getName()+getDelimiter()+" to "+node);
-            add(root.getName(), node);
+            add(root.getName(), node, map);
         }
         Enumeration attrs = root.enumerateAttr();
         if(attrs != null) {
             while(attrs.hasMoreElements()) {
                 String attr = (String)attrs.nextElement();
-                setProperty( root.getName()+getDelimiter()+attr, root.getAttr(attr));
+                map.put( root.getName()+getDelimiter()+attr, root.getAttr(attr));
 if(org.osjava.jndi.PropertiesContext.DEBUG)                System.err.println("[XML]Attr: "+(root.getName()+getDelimiter()+attr) +":"+root.getAttr(attr));
             }
         }
     }
     
-    public void add(String level, XMLNode node) {
+    private void add(String level, XMLNode node, Map map) {
 if(org.osjava.jndi.PropertiesContext.DEBUG)        System.err.println("[XML]Adding: "+level);
         if( node.getValue() != null ) {
-            setProperty( level+getDelimiter()+node.getName(), node.getValue());
+            map.put( level+getDelimiter()+node.getName(), node.getValue());
         }
         Enumeration attrs = node.enumerateAttr();
         if(attrs != null) {
             while(attrs.hasMoreElements()) {
                 String attr = (String)attrs.nextElement();
-                setProperty( level+getDelimiter()+node.getName()+getDelimiter()+attr, node.getAttr(attr));
+                map.put( level+getDelimiter()+node.getName()+getDelimiter()+attr, node.getAttr(attr));
 if(org.osjava.jndi.PropertiesContext.DEBUG)                System.err.println("[XML]Attr: "+(level+getDelimiter()+node.getName()+getDelimiter()+attr) +":"+node.getAttr(attr));
             }
         }
@@ -118,7 +115,7 @@ if(org.osjava.jndi.PropertiesContext.DEBUG)                System.err.println("[
                 if(!"".equals(subnode.getName())) {
 if(org.osjava.jndi.PropertiesContext.DEBUG)                    System.err.println("[XML]Walking children: "+node.getName());
 if(org.osjava.jndi.PropertiesContext.DEBUG)                    System.err.println("[XML]on: "+level);
-                    add(level, subnode);
+                    add(level, subnode, map);
                 }
             }
         }
