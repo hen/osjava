@@ -101,12 +101,25 @@
     <nagEmailAddress>bayard@www.osjava.org</nagEmailAddress>
 
     <sourceDirectory>src/java</sourceDirectory>
-
     <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
 
-    <unitTestPatterns>
-      <unitTestPattern>include = **/*Test.java</unitTestPattern>
-    </unitTestPatterns>
+    <unitTest>
+      <resources>
+        <resource>
+          <directory>src/test/config</directory>
+          <targetPath>config</targetPath>
+        </resource>
+        <resource>
+          <directory>src/test</directory>
+          <includes>
+            <include>jndi.properties</include>
+          </includes>
+        </resource>
+      </resources>
+      <includes>
+        <include>**/*Test.java</include>
+      </includes>
+    </unitTest>
 
     <!--
 
