@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 
+import org.osjava.convert.Convert;
+
 // @date    2000-05-13
 
 // There is a potential bug, but it is rare, and a fix is 
@@ -120,13 +122,14 @@ public class HierarchicalMap implements Map {
 
     //  Returns the value to which this map maps the specified key. 
     public Object get(Object key) {
+        Object obj = null;
 
         if(key instanceof String) { 
             String keyStr = (String)key;
             int idx = keyStr.indexOf(delimiter);
             if(idx == -1 || idx == keyStr.length() - 1) {
                 // it's top level.
-                return nodeMap.get(key);
+                obj = nodeMap.get(key);
             } else {
                 String first = keyStr.substring(0,idx);
                 Object ob = nodeMap.get(first);
@@ -134,7 +137,7 @@ public class HierarchicalMap implements Map {
                 if(ob != null) {
                     if(ob instanceof Map) {
                             subMap = (Map)ob;
-                        return subMap.get(keyStr.substring(idx+1));
+                        obj = subMap.get(keyStr.substring(idx+1));
                     } else {
                         return null;
                     }                
@@ -143,7 +146,40 @@ public class HierarchicalMap implements Map {
                 }
             }
         } else {  // handle non-string keys
-            return nodeMap.get(key);
+            obj = nodeMap.get(key);
+        }
+
+        if(obj instanceof List) {
+            List list = (List) obj;
+            int sz = list.size();
+            String type = null;
+
+            // find type
+            for(int i=0; i<sz; i++) {
+                Object value = list.get(i);
+                if(value instanceof HierarchicalMap) {
+                    // handle converting
+                    HierarchicalMap hmap = (HierarchicalMap) value;
+                    if(hmap.containsKey("type")) {
+                        type = (String) hmap.get("type");
+                        break;
+                    }
+                }
+            }
+            if(type == null) {
+                return list;
+            }
+
+            List cloneList = new LinkedList();
+            for(int i=0; i<sz; i++) {
+                Object value = list.get(i);
+                if( !(value instanceof HierarchicalMap) ) {
+                    cloneList.add(Convert.convert((String)value, type));
+                }
+            }
+            return cloneList;
+        } else {
+            return obj;
         }
     }
 
