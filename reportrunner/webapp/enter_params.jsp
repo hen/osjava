@@ -12,7 +12,7 @@
 </div>
 
 <div class="input">
-<p>It requires the following information: </p>
+<p>This report requires user input; would you please fill out the following information: </p>
 
 <form action="checkparameters">
 <input type="hidden" name="<%= ReportRunnerServlet.REPORT %>" value="<%= reportName %>">

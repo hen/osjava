@@ -15,7 +15,7 @@
     Param[] params = report.getParams();
     if(params != null && params.length != 0) {
 %>
-<p>For this report, you chose the following parameters: </p>
+<p>The report will run with the following user-supplied information: </p>
 <table class="chosen_parameters">
 <%
         for(int i=0; i<params.length; i++) {
@@ -32,7 +32,7 @@
 
 <div class="input">
 
-<p>Select a renderer: </p>
+<p>How would you like to view the results of the report? </p>
 
 <table>
 <%
