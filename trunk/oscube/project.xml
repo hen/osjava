@@ -68,7 +68,7 @@
     </dependency>
     <dependency>
       <id>commons-dbutils</id>
-      <version>SNAPSHOT</version>
+      <version>1.0</version>
       <url>http://jakarta.apache.org/commons/</url>
     </dependency>
     <dependency>
