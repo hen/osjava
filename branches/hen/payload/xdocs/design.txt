@@ -1,0 +1,14 @@
+Payload is an bash/ant/jelly script that takes a 'technology' tree and a 
+build tree and merges them together to create an executable jar that contains 
+the merged tree. It includes PayloadExtractor, which deploys the payload and 
+performs search and replace using a supplied properties file.
+
+For optimisation, PayloadExtractor can know the files it should search 
+and replace on.
+
+A payload'd jar looks like:
+
+META-INF/MANIFEST.MF
+com/generationjava/payload/PayloadExtractor.class
+payload/<payload>
+interpolate.properties
