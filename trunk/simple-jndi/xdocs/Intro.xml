@@ -14,7 +14,7 @@ Using Simple-JNDI is the same as using JNDI itself. So this is not covered here,
 </section>
 <section name="Installing Simple-JNDI">
 <p>
-After download, installing Simple-JNDI is as simple as adding the simple-jndi jar, genjava-core jar, commons-collections 2.1 jar and the commons-lang jar to your classpath. All are downloadable from the <a href="/Download.html">Download</a> page.
+After download, installing Simple-JNDI is as simple as adding the simple-jndi jar, genjava-core jar, commons-collections 2.1 jar and the commons-lang jar to your classpath. All are downloadable from the <a href="Download.html">Download</a> page.
 </p>
 </section>
 <section name="Setting up Simple-JNDI">
