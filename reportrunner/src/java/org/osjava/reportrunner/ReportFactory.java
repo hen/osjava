@@ -88,8 +88,7 @@ public class ReportFactory {
             XMLNode reportNode = (XMLNode) reportNodes.nextElement();
             String className = reportNode.getAttr("class");
             Report report = (Report) ClassW.createObject(className);
-            report.setName(reportNode.getAttr("name"));
-            report.setLabel(reportNode.getAttr("label"));
+            applyAttrs( report, reportNode, new String[] { "class" } );
             applyNodes( report, reportNode.enumerateNode(), new String[] { "param", "column" } );
             applyParamTag( report, reportNode.enumerateNode("param") );
             applyColumnTag( report, reportNode.enumerateNode("column") );
