@@ -24,6 +24,30 @@ public class EncodingTest extends TestCase {
         return new Encoding(new ByteArrayInputStream(ENCODING.getBytes()));        
     }
     
+    public void testUnpackValues() throws Exception {
+        Encoding e = getTestEncoding();
+        BigInteger bits = new BigInteger("10101101011101111000000101", 2);
+        
+        Value []vals = e.unpackValues(bits);
+        
+        assertEquals(6, vals.length);
+        
+        // check values
+        assertEquals(21, vals[0].getRaw());
+        assertEquals(2, vals[1].getRaw());
+        assertEquals(1, vals[2].getRaw());
+        assertEquals(3824, vals[3].getRaw());
+        assertEquals(0, vals[4].getRaw());
+        assertEquals(5, vals[5].getRaw());
+        
+        assertEquals(1.896, vals[0].getExpanded(), .001);
+        assertEquals(775.562, vals[1].getExpanded(), .001);
+        assertEquals(1, vals[2].getExpanded(), .001);
+        assertEquals(36.414, vals[3].getExpanded(), .001);
+        assertEquals(0, vals[4].getExpanded(), .001);
+        assertEquals(78, vals[5].getExpanded(), .001);
+    }
+    
     
     public void testExtractAllValues() throws Exception {
         Encoding e = getTestEncoding();
