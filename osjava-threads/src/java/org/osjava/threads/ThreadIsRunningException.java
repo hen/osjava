@@ -1,10 +1,10 @@
 /*
  * org.osjava.threads.ThreadIsRunningException
  * 
- * $Id:$
+ * $Id$
  * $URL:$
- * $Rev:$
- * $Date:$
+ * $Rev$
+ * $Date$
  * $Author:$
  * 
  * Created on Sep 28, 2004.
@@ -52,6 +52,11 @@ import javax.naming.NamingException;
  * Window - Preferences - Java - Code Style - Code Templates
  */
 public class ThreadIsRunningException extends NamingException {
+
+    /**
+     * Comment for <code>serialVersionUID</code>
+     */
+    private static final long serialVersionUID = 1L;
 
     /**
      * Create a new ThreadIsRunningException with the default reason.
