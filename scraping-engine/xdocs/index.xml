@@ -7,7 +7,7 @@
   </properties>
 
   <body>
-    <section name="So what is it?">
+    <section name="Scraping-engine - So what is it?">
       <p>I've been playing for a while with an engine to make web-site scraping nice and easy, without trying to suggest that it is simple to do the scrape. This scraping-engine is aimed to be a framework to improve the speed of development and provide stability. </p>
       <p>It's intended to not just be a scraper, but to be able to do other robot-like things. One tool I plan to release is a link-checker. </p>
     </section>
