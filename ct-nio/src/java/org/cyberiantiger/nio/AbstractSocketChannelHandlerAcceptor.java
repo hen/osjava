@@ -15,8 +15,8 @@ implements SocketChannelHandlerAcceptor
 
     public void acceptSocketChannelHandler(SocketChannelHandler sch) {
         if(acceptConnection(sch.getSocket())) {
-            setupSocketStream(sch);
             sch.register(myThread);
+            setupSocketStream(sch);
         } else {
             try {
                 sch.close();
