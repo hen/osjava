@@ -418,10 +418,12 @@ public class ThreadContext
         return listBindings(nameParser.parse(name));
     }
 
-    /*
-     * (non-Javadoc)
+    /**
+     * Destroy the named subcontext from this context.  The name must be 
+     * relative to this context. 
      * 
-     * @see javax.naming.Context#destroySubcontext(javax.naming.Name)
+     * @param name the name of the context to be destroyed.
+     * @throws NamingException if a naming exception is encountered.
      */
     public void destroySubcontext(Name name) throws NamingException {        
         if(name.size() > 1) {
@@ -450,10 +452,12 @@ public class ThreadContext
         subContexts.remove(name);
     }
 
-    /*
-     * (non-Javadoc)
+    /**
+     * Destroy the named subcontext from this context.  The name must be 
+     * relative to this context. 
      * 
-     * @see javax.naming.Context#destroySubcontext(java.lang.String)
+     * @param name the name of the context to be destroyed.
+     * @throws NamingException if a naming exception is encountered.
      */
     public void destroySubcontext(String name) throws NamingException {
         destroySubcontext(nameParser.parse(name));
