@@ -30,6 +30,7 @@ public class ReportRunnerServlet extends HttpServlet {
                 Object value = null;
                 if( Object[].class.isAssignableFrom( params[i].getType() ) ) {
                     String[] parameters = request.getParameterValues(params[i].getName());
+                    params[i].setOriginalValue(parameters);
                     if(parser != null) {
                         if(parameters.length == 1) {
                             value = parser.parse(parameters[0], params[i].getType());
@@ -45,6 +46,8 @@ public class ReportRunnerServlet extends HttpServlet {
                     } 
                 } else {
                     String parameter = request.getParameter(params[i].getName());
+                    params[i].setOriginalValue(parameter);
+
                     if(parser != null) {
                         value = parser.parse(parameter, params[i].getType());
                     } else {
