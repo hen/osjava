@@ -15,6 +15,7 @@
       <item href="../gj-core/" name="gj-core"/>
       <item href="../gj-config/" name="gj-config"/>
       <item href="../gj-csv/" name="gj-csv"/>
+      <item href="../gj-find/" name="gj-find"/>
       <item href="../gj-gui/" name="gj-gui"/>
       <item href="../gj-mail/" name="gj-mail"/>
       <item href="../gj-scrape/" name="gj-scrape"/>
