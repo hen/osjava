@@ -46,9 +46,9 @@ public class RRTool {
         "    </comment>" +
         "" +
         "<script language=\"JavaScript\" type=\"text/javascript\"><!--" +
-        "    if (_ie == true) document.writeln('<object classid=\"clsid:8AD9C840-044E-11D1-B3E9-00805F499D93\" WIDTH = \"100\" HEIGHT = \"100\"  codebase=\"http://java.sun.com/update/1.5.0/jinstall-1_5-windows-i586.cab#Version=1,5,0,0\"><noembed><xmp>');" +
+        "    if (_ie == true) document.writeln('<object classid=\"clsid:8AD9C840-044E-11D1-B3E9-00805F499D93\" WIDTH = \"100\" HEIGHT = \"100\"  codebase=\"http://java.sun.com/update/1.4.2/jinstall-1_4-windows-i586.cab#Version=1,4,0,0\"><noembed><xmp>');" +
         "    else if (_ns == true && _ns6 == false) document.writeln('<embed ' +" +
-        "	    'type=\"application/x-java-applet;version=1.5\" \\" +
+        "	    'type=\"application/x-java-applet;version=1.4\" \\" +
         "            CODE = \"org.osjava.reportrunner_plugins.renderers.jfreechart.JFreeChartApplet.class\" \\" +
         "            ARCHIVE = \"jfreechart/commons-codec-1.3.jar,jfreechart/commons-io-1.0.jar,jfreechart/commons-lang-2.0.jar,jfreechart/reportrunner-SNAPSHOT.jar,jfreechart/jfreechart-0.9.21.jar,jfreechart/jcommon-0.9.6.jar\" \\" +
         "            WIDTH = \""+width+"\" \\" +
@@ -60,7 +60,7 @@ public class RRTool {
         "<applet  CODE = \"org.osjava.reportrunner_plugins.renderers.jfreechart.JFreeChartApplet.class\" ARCHIVE = \"jfreechart/commons-codec-1.3.jar,jfreechart/commons-io-1.0.jar,jfreechart/commons-lang-2.0.jar,jfreechart/reportrunner-SNAPSHOT.jar,jfreechart/jfreechart-0.9.21.jar,jfreechart/jcommon-0.9.6.jar\" WIDTH = \""+width+"\" HEIGHT = \""+height+"\"></xmp>" +
         "    <PARAM NAME = CODE VALUE = \"org.osjava.reportrunner_plugins.renderers.jfreechart.JFreeChartApplet.class\" >" +
         "    <PARAM NAME = ARCHIVE VALUE = \"jfreechart/commons-codec-1.3.jar,jfreechart/commons-io-1.0.jar,jfreechart/commons-lang-2.0.jar,jfreechart/reportrunner-SNAPSHOT.jar,jfreechart/jfreechart-0.9.21.jar,jfreechart/jcommon-0.9.6.jar\" >" +
-        "    <param name=\"type\" value=\"application/x-java-applet;version=1.5\">" +
+        "    <param name=\"type\" value=\"application/x-java-applet;version=1.4\">" +
         "    <param name=\"scriptable\" value=\"false\">" +
         "" + paramIE +
         "" +
