@@ -18,7 +18,7 @@
   <gumpRepositoryId>norbert</gumpRepositoryId>
 
   <description>
-  A handler for robots.txt, as described in &lt;a href="http://www.robotstxt.org/wc/norobots-rfc.html"&gt;http://www.robotstxt.org/wc/norobots-rfc.html&lt;/a&gt;.
+  A handler for robots.txt, as described in http://www.robotstxt.org/wc/norobots-rfc.html.
   </description>
   
   <shortDescription>A handler for robots.txt</shortDescription>
