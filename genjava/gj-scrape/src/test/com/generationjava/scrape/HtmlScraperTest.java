@@ -53,4 +53,11 @@ public class HtmlScraperTest extends TestCase {
         assertEquals( "center", scraper.get("td[align]") );
     }
 
+    public void testScrapeTag() {
+        HtmlScraper scraper = new HtmlScraper();
+        scraper.scrape(TEST_PAGE);
+        HtmlScraper scraper2 = scraper.scrapeTag("table");
+        assertEquals( "<tr><td align='center'>FOO</td></tr>", scraper2.toString() );
+    }
+
 }

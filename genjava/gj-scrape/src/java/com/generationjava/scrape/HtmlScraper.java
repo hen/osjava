@@ -75,24 +75,18 @@ public class HtmlScraper {
         return this.page.length() - this.data.length();
     }
 
-    /**
-     * @deprecated Do the work yourself and get the String
-     */
-    public void scrape(InputStream in) {
-        try {
-            page = ""+getContent(in);
-            reset();
-        } catch(IOException ioe) {
-            ioe.printStackTrace();
-        }
-    }
-
     public void scrape(String text) {
         if(text.startsWith("http://")) {
             throw new RuntimeException("Text starts with http://. This could be bad. ");
         }
         this.page = text;
         reset();
+    }
+
+    public HtmlScraper scrapeTag(String tag) {
+        HtmlScraper scraper = new HtmlScraper();
+        scraper.scrape(get(tag));
+        return scraper;
     }
 
     /**
@@ -265,6 +259,13 @@ public class HtmlScraper {
             }
         }
         return str;
+    }
+
+    /**
+     * Prints out the current position in the scraper until the end of the page. 
+     */
+    public String toString() {
+        return this.data;
     }
 
     // From GenJavaCore's UrlW
