@@ -36,6 +36,7 @@ public class Multidoc {
                 DocumentProject project = creator.create(uri);
                 if(project == null) {
                     System.err.println("WARN: null project found: "+uri);
+                    continue;
                 }
                 document.addProject(project);
             }
@@ -70,7 +71,7 @@ public class Multidoc {
             return new org.osjava.multidoc.creators.XRefCreator();
         }
         if("JCoverage".equals(type)) {
-            return new org.osjava.multidoc.creators.JavadocCreator();
+            return new org.osjava.multidoc.creators.JCoverageCreator();
         }
         return null;
     }
@@ -112,7 +113,12 @@ public class Multidoc {
             fw.write(name);
             fw.write("</b></FONT></a> - \n");
         }
-        fw.write("<a href='help-doc.html' target='classFrame'><FONT CLASS='NavBarFont1'><b>Help</b></FONT></a>\n");
+        fw.write("<a href='help-doc.html' target='classFrame'><FONT CLASS='NavBarFont1'><b>Help</b></FONT></a></td>\n");
+        fw.write("<td align='right'><a href='");
+        fw.write(site.getUrl());
+        fw.write("' target='classFrame'><FONT CLASS='NavBarFont1'><b>");
+        fw.write(site.getUrl());
+        fw.write("</b></FONT></a>\n");
         fw.write("</td></tr></table>\n");
         fw.write("</body></html>\n");
         fw.close();
