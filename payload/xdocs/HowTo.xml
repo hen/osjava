@@ -11,9 +11,9 @@
    <p>Utilising Payload is very simple. </p>
    <ol>
     <li>Download the payload jar or distribution. </li>
-    <li>Run:  java -jar payload-0.2.jar <new-jar>.jar <files, ...> </li>
+    <li>Run:  java -jar payload-0.2.jar [new-jar.jar] {files...} </li>
     <li>Take the jar to the desired unpacking location. </li>
-    <li>Run:  java -jar <new-jar>.jar [optional-properties file] </li>
+    <li>Run:  java -jar [new-jar.jar] {optional-properties file} </li>
    </ol>
   </section>
 
