@@ -52,8 +52,6 @@
   <contributors>
   </contributors>
   
-  <!-- Need to mark these as compile-time/run-time -->
-
   <dependencies>
     <!-- only used if you use .xml files -->
     <dependency>
@@ -91,6 +89,9 @@
     <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
 
     <unitTest>
+      <includes>
+        <include>**/*Test.java</include>
+      </includes>
       <resources>
         <resource>
           <directory>src/test/config</directory>
@@ -103,9 +104,6 @@
           </includes>
         </resource>
       </resources>
-      <includes>
-        <include>**/*Test.java</include>
-      </includes>
     </unitTest>
 
   </build>
