@@ -24,9 +24,7 @@
   <shortDescription>A JNDI implementation using .properties</shortDescription>
 
   <url>http://www.osjava.org/simple-jndi/</url>
-  <!--
-  <issueTrackingUrl>http://nagoya.apache.org/scarab/servlet/scarab/</issueTrackingUrl>
-  -->
+  <issueTrackingUrl>http://www.osjava.org:8180/</issueTrackingUrl>
   <siteAddress>www.osjava.org/maven/simple-jndi</siteAddress>
   <siteDirectory>/sites/org/osjava/www/maven/genjava/simple-jndi/</siteDirectory>
   <distributionDirectory>/sites/org/osjava/www/maven/builds/</distributionDirectory>
