@@ -34,6 +34,9 @@ public class Multidoc {
                 String uri = urinode.getValue();
                 System.out.println("Loading: "+uri);
                 DocumentProject project = creator.create(uri);
+                if(project == null) {
+                    System.err.println("WARN: null project found: "+uri);
+                }
                 document.addProject(project);
             }
         }
@@ -50,8 +53,8 @@ public class Multidoc {
             MultidocGenerator generator = getGenerator(document.getType());
             File subtarget = new File(target, name);
             subtarget.mkdirs();
-            generator.generate( subtarget, site, document );
             System.out.println("Generating for: "+name);
+            generator.generate( subtarget, site, document );
         }
 
         System.out.println("Generating menu");
