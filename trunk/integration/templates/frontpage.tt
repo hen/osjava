@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<title>[% site.label %] Integration</title>
+
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+
+    <link href="[% site.css %]" rel="stylesheet" type="text/css">
+    <link href="css/pyjamas.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="[% site.label %]">
+
+    <div id="banner"><table width="100%"><tr><td><a href="/"><img border="0" alt="[% site.label %]" src="[% site.logo %]" align="left"></a></td></tr></table></div>
+    <div id="breadcrumbs">
+      <div id="tagline">
+        [% site.label %] - [% timestamp %]
+      </div>
+      <div id="copyright" align="right">&copy;2004</div>
+    </div>
+    <div id="advertising">an Integration-built site</div>
+
+<ul id="project_list">
+
+[% FOREACH project IN projects -%]
+
+  [% IF project.failed %]
+     <li class='project_line'><img class='failed_image' src='images/failed.gif'> <a class='failed_link' href='report_[% project.escapedDirectory %].html'>[% project.project %]</a></li>
+  [% ELSE %]
+     <li class='project_line'><img class='success_image' src='images/success.gif'> <a class='success_link' href='report_[% project.escapedDirectory %].html'>[% project.project %]</a></li>
+  [% END %]
+[% END -%]
+
+</ul>
+</html></body>

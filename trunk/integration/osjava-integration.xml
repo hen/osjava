@@ -24,7 +24,7 @@
     <buildable project="trail-taglib" repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
     <buildable project="scraping-engine" repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
     <buildable project="jpe" repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
-    <buildable project="atom4j" repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
+<!--    <buildable project="atom4j" repository="svn:http://svn.osjava.org/svn/osjava/trunk" /> -->
     <buildable project="charlotte" repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
     <buildable project="mudclient" repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
     <buildable project="osjava-nio" repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
