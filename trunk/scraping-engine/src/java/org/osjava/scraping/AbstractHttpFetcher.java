@@ -37,6 +37,8 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import org.osjava.norbert.NoRobotClient;
+
 /**
  * Fetches a piece of content for a url
  */
@@ -49,6 +51,13 @@ public abstract class AbstractHttpFetcher implements Fetcher {
     public Page fetch(String uri, Config cfg, Session session) throws FetchingException {
         try {
             URL url = new URL(uri);
+
+            if(!cfg.has("norobots.override")) {
+                if(checkIllegal(url)) {
+                    throw new FetchingException("Not allowed to fetch url: "+uri+" due to the NoRobots RFQ. ");
+                }
+            }
+
             HttpClient client = new HttpClient();
             GetMethod get = new GetMethod(url.getFile());
 
@@ -95,6 +104,21 @@ public abstract class AbstractHttpFetcher implements Fetcher {
         } catch(IOException ioe) {
             throw new FetchingException("Error. "+ioe.getMessage(), ioe);
         }
+    }
+
+    private boolean checkIllegal(URL url) throws MalformedURLException {
+        NoRobotClient nrc = new NoRobotClient("osjava-scraping-engine");
+
+        // only parse the root, not the whole url
+        nrc.parse( toBase(url) );
+        return !nrc.isUrlAllowed(url);
+    }
+
+    private URL toBase(URL url) throws MalformedURLException {
+        return new URL(url.getProtocol() + "://" + url.getHost() + 
+           (
+              url.getPort() == -1 ? "" : ":" + url.getPort()
+           ) + "/");
     }
 
 }
