@@ -12,7 +12,7 @@
   </organization>
   <inceptionYear>2000</inceptionYear>
   <package>com.generationjava.io.xml</package>
-  <logo>images/xmlwriter-logo2.png</logo>
+  <logo>/images/xmlwriter-logo2.png</logo>
   
   <description>
     A great way to output Xml. Far easier to code with than painful DOM or 
