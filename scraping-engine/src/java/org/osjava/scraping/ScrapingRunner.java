@@ -31,7 +31,6 @@
  */
 package org.osjava.scraping;
 
-import java.util.List;
 import java.io.Reader;
 
 import org.osjava.oscube.container.Runner;
