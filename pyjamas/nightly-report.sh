@@ -33,7 +33,7 @@ reportDir=`pwd`/report
 
 index=$reportDir/index.html
 
-cat header.inc > $index
+cat header.inc | sed 's/\${TITLE}/Nightly Build/' > $index
 
 echo '<ul id="project_list">' >> $index
 
@@ -64,9 +64,8 @@ do
     local_report=report_`echo $i | sed 's/\//_/g'`.html
     report=$reportDir/$local_report
 
-
-    echo '<html><body>' > $report
     echo "<h1>$i Report</h1>" >> $report
+    cat header.inc | sed "s/\${TITLE}/$i Nightly Build/' > $report
 
     if [ -e BUILD_TIME ]; 
     then
