@@ -3,15 +3,15 @@
   
   <pomVersion>2</pomVersion>
   <id>TigThreads</id>
-  <name>TigranSoft TigThreads</name>
+  <name>OSJava TigThreads</name>
   <currentVersion>1.1</currentVersion>
   <organization>
-    <name>TigranSoft</name>
-    <url>http://www.tigransoft.org/</url>
+    <name>OSJava</name>
+    <url>http://www.osjava.org/</url>
     <!-- <logo>/images/initials.jpg</logo> -->
   </organization>
   <inceptionYear>2002</inceptionYear>
-  <package>org.tigransoft.threads</package>
+  <package>org.osjava.threads</package>
   
   <description>
   	An extention of the threading implementation that accompanies the Java-SDK designed to make the use of threads and thread groups simpler without sacrificing features.
@@ -20,42 +20,18 @@
   <shortDescription>An extention to Java Threading</shortDescription>
 
   <url>http://www.tigransoft.org/projects/TigThreads/</url>
-  <issueTrackingUrl>http://www.osjava.org:8180/secure/BrowseProject.jspa?id=10010</issueTrackingUrl>
-  <siteAddress>www.tigransoft.org</siteAddress>
-  <siteDirectory>/home/tigran/tigransoft.org/projects/TigThreads</siteDirectory>
-  <distributionDirectory>/home/tigran/tigransoft.org/projects/TigThreads/builds/</distributionDirectory>
-
-<!--
-  <repository>
-    <connection>scm:cvshen@umbongo.flamefew.net:/var/cvs:simple-jndi</connection>
-    <url>http://www.generationjava.com/view-cvs/viewcvs.cgi/simple-jndi/</url>
-  </repository>
-  
-  <versions>
-    <version>
-      <id>1.0</id>
-      <name>1.0</name>
-      <tag>HEAD</tag>
-    </version>
-  </versions>
-
-  <branches>
-  </branches>
--->
-  <!--
-  <mailingLists>
-    <mailingList>
-    </mailingList>
-  </mailingLists>
-  -->
+  <issueTrackingUrl>http://www.osjava.org:8080/jira/secure/BrowseProject.jspa?id=10001</issueTrackingUrl>
+  <siteAddress>www.osjava.org</siteAddress>
+  <siteDirectory>/home/tigran/Sites/tigransoft.org/html/projects/TigThreads</siteDirectory>
+  <distributionDirectory>/home/tigran/Sites/tigransoft.org/html/projects/TigThreads/builds/</distributionDirectory>
 
   <developers>
 
     <developer>
       <name>Robert M. Zigweid</name>
       <id>rzigweid</id>
-      <email>rzigweid@tigransoft.org</email>
-      <organization>TigranSoft</organization>
+      <email>tigran@osjava.org</email>
+      <organization>OSJava</organization>
       <roles>
         <role>Developer</role>
       </roles>
@@ -71,7 +47,7 @@
   
   <build>
 
-    <nagEmailAddress>rzigweid@tigransoft.org</nagEmailAddress>
+    <nagEmailAddress>tigran@osjava.org</nagEmailAddress>
 
     <sourceDirectory>src</sourceDirectory>
 
