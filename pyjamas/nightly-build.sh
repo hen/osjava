@@ -13,6 +13,7 @@ then
 fi
 
 rm -f LAST_BUILD SVN_UPDATE REASON
+buildDir=`pwd`
 
 if [ "x$1x" != "xx" ];
 then
@@ -37,18 +38,30 @@ then
         done
     elif [ $1 = 'update' ];
     then
-        cat NIGHTLY.txt | awk '{print $2}' > tmp.NIGHTLY.txt
         if [ $SCM = 'SVN' ];
         then
-            LIST=`svn -u status | grep -v '^\?' | grep -v '^A' | grep -v '^M' | grep -v 'Status against revision' | awk '{print $3}' | grep -o -f tmp.NIGHTLY.txt  | sort -u`
-            svn update | grep -v '^?' > SVN_UPDATE
+            for i in `cat NIGHTLY.txt | awk '{print $2}'`
+            do
+                if [ -d $i ];
+                then
+                    cd $i
+                    UPDATES=`svn -u status | grep -v '^\?' | grep -v '^A' | grep -v '^M' | grep -v 'Status against revision' | awk '{print $3}'`
+                    if [ "x${UPDATES}x" != "xx" ];
+                    then
+                        LIST="$LIST $i"
+                        svn update | grep -v '^?' >> $buildDir/SVN_UPDATE
+                    fi
+                    cd -
+                fi
+            done
         fi
         if [ $SCM = 'CVS' ];
         then
+            cat NIGHTLY.txt | awk '{print $2}' > tmp.NIGHTLY.txt
             LIST=`cvs -nq update 2>/dev/null | grep -v '^\?' | grep -v '^A' | grep -v '^M' | grep -v 'Status against revision' | awk '{print $2}' | grep -o -f tmp.NIGHTLY.txt  | sort -u`
             cvs -q update 2>/dev/null | grep -v '^?' > SVN_UPDATE
+            rm tmp.NIGHTLY.txt
         fi
-        rm tmp.NIGHTLY.txt
     else
 # needs to handle doing the checkout if it's not there?
         LIST=$1   # $* ?
@@ -63,7 +76,6 @@ if [ ! -d report/ ];
 then
     mkdir report/
 fi
-buildDir=`pwd`
 reportDir=`pwd`/report
 
 for i in $LIST
