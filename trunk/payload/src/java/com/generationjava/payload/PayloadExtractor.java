@@ -69,21 +69,25 @@ if(DEBUG) System.out.println("DEBUG turned on. ");
         if(args.length == 0) {
             System.err.println("\nNo properties file specified, will output without interpolation. ");
         } else {
-            FileInputStream fin = null;
-            try {
-                fin = new FileInputStream(new File(args[0]));
-                props = new Properties();
-                props.load(fin);
-if(DEBUG) System.out.println("\n"+args[0]+" being used as interpolation values. ");
+            for(int i=0; i<args.length; i++) {
+                FileInputStream fin = null;
+                try {
+                    fin = new FileInputStream(new File(args[i]));
+                    if(props == null) {
+                        props = new Properties();
+                    }
+                    props.load(fin);
+if(DEBUG) System.out.println("\n"+args[i]+" being used as interpolation values. ");
 if(DEBUG) System.out.println(props.toString());
-            } catch(IOException ioe) {
-                System.err.println("\nUnable to find properties file, will output without interpolation. ");
-            } finally {
-                if(fin != null) {
-                    try {
-                        fin.close();
-                    } catch(IOException ioe) {
-                        ; // ignore
+                } catch(IOException ioe) {
+                    System.err.println("\nUnable to find properties file, will skip it. ");
+                } finally {
+                    if(fin != null) {
+                        try {
+                            fin.close();
+                        } catch(IOException ioe) {
+                            ; // ignore
+                        }
                     }
                 }
             }
