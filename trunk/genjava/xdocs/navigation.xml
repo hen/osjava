@@ -26,9 +26,9 @@
       <item name="Mailing list"       href="/mail-lists.html"/>
       <item name="Bug tracking"       href="/issue-tracking.html"/>
     </menu>
-    <menu name="CVS reports">
-      <item name="CVS History"       href="/changelog-report.html"/>
-      <item name="CVS Statistics"       href="/statcvs/index.html"/>
+    <menu name="SVN reports">
+      <item name="SVN History"       href="/changelog-report.html"/>
+      <item name="SVN Statistics"       href="/statcvs/index.html"/>
     </menu>
   </body>
 </project>
