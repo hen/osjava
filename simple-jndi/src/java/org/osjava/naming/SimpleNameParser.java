@@ -68,6 +68,9 @@ public class SimpleNameParser implements NameParser {
      */
     public Name parse(String name) 
         throws InvalidNameException, NamingException {
+        if(name == null) {
+            name = "";
+        }
         Name ret = new CompoundName(name, props);
         return ret;
     }
