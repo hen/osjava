@@ -12,6 +12,7 @@
 <%
     String reportName = request.getParameter(ReportRunnerServlet.REPORT);
     Report report = ReportFactory.getReport(groupName, reportName);
+    Param[] params = report.getReportGroup().getResourceParams();
 %>
 
 <div class="feedback">
@@ -22,13 +23,11 @@
 <p>This report may be run against the following resources; would you please select from the following: </p>
 
 <form action="choosereport">
-<input type="hidden" name="<%= ReportRunnerServlet.REPORT %>" value="<%= reportName %>">
-<input type="hidden" name="<%= ReportRunnerServlet.GROUP %>" value="<%= groupName %>">
+<%= ReportRunnerServlet.parametersToHiddens(request, params) %>
 <input type="hidden" name="z" value="1">
 <table>
 <%
     List list = Arrays.asList(report.getResourceNames());
-    Param[] params = report.getReportGroup().getResourceParams();
     for(int i=0; i<params.length; i++) {
         if(!list.contains(params[i].getName())) {
             continue;

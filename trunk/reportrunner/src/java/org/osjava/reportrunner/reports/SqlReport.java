@@ -45,6 +45,13 @@ public class SqlReport extends AbstractReport {
         try {
             QueryRunner runner = new QueryRunner(ds);
 
+            // build sql from variants
+            Variant[] variants = getVariants();
+            for(int i=0; i<variants.length; i++) {
+                String snippet = variants[i].getSelected().getValue();
+                this.sql = StringUtils.replace( this.sql, "?"+variants[i].getName(), snippet);
+            }
+
             Param[] params = getParams();
             ArrayList values = new ArrayList();
             for(int i=0; i<params.length; i++) {

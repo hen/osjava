@@ -7,6 +7,8 @@
     String reportName = request.getParameter(ReportRunnerServlet.REPORT);
     Report report = ReportFactory.getReport(groupName, reportName);
     ReportRunnerServlet.applyResources(report, request);
+    ChooseReportServlet.applyVariantParams(report, request);
+    Param[] params = report.getParams();
 %>
 
 <div class="stages"><a href="list_groups.jsp">choose-group</a> -&gt; <a href="list_reports.jsp?<%= ReportRunnerServlet.GROUP %>=<%= groupName %>">choose-report</a> -&gt;
@@ -21,6 +23,18 @@
 <% 
   }
 %>
+-&gt;
+<%
+  if(report.getVariants() != null) {
+%>
+<a href="enter_variants.jsp?<%= request.getQueryString() %>">choose variants</a>
+<% 
+  } else {
+%>
+<s>choose variants</s>
+<% 
+  }
+%>
 </div>
 
 <div class="feedback">
@@ -31,21 +45,9 @@
 <p>This report requires user input; would you please fill out the following information: </p>
 
 <form action="checkparameters">
-<%
-// pull this into a Util
-java.util.Enumeration pms = request.getParameterNames();
-while(pms.hasMoreElements()) {
-    String name = (String) pms.nextElement();
-    String value = (String) request.getParameter(name);
-    if(name.equals("q")) { continue; }
-%>
-<input type="hidden" name="<%= name %>" value="<%= value %>">
-<%
-}
-%>
+<%= ReportRunnerServlet.parametersToHiddens(request, params) %>
 <table>
 <%
-    Param[] params = report.getParams();
     for(int i=0; i<params.length; i++) {
         Object value = params[i].getDefault();
         if(value == null) {

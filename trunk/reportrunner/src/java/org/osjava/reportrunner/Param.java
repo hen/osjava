@@ -1,8 +1,9 @@
 package org.osjava.reportrunner;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 
-public class Param {
+public class Param implements Nameable {
 
     private String name;
     private String label;
@@ -89,7 +90,7 @@ public class Param {
 
     // debug
     public String toString() { 
-        return "Param { name="+name+", type="+type+", value="+value+"/"+((value!=null)?value.getClass().getName():"NULL")+", binding="+binding+", parser="+parser+", options="+java.util.Arrays.asList(this.options)+" }";
+        return ReflectionToStringBuilder.toString( this );
     }
 
     public void setOptions(String options) {

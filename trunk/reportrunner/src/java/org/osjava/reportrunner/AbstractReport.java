@@ -14,6 +14,7 @@ public abstract class AbstractReport implements Report {
     private List params = new ArrayList();
     private List columns = new ArrayList();
     private List renderers = new ArrayList();
+    private List variants = new ArrayList();
     private ReportGroup reportGroup;
 
     public String getName() {
@@ -57,6 +58,14 @@ public abstract class AbstractReport implements Report {
 
     public void addColumn(Column column) {
         this.columns.add(column);
+    }
+
+    public Variant[] getVariants() {
+        return (Variant[]) this.variants.toArray(new Variant[0]);
+    }
+
+    public void addVariant(Variant variant) {
+        this.variants.add(variant);
     }
 
     public ReportGroup getReportGroup() {

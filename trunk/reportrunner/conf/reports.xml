@@ -10,7 +10,7 @@
  </report>
  <report name="paramsql" label="ParamSql" class="org.osjava.reportrunner.reports.SqlReport" description="This shows the usage of parameters, and binding of a parameter to a list of options. It prints out the user roles for a particular rolename and username. ">
   <sql>select * from userrole where rolename=? and username=?</sql>
-  <param name="rolename" type="java.lang.String" description="The role name of the user role; most likely author. " default="hen"/>
+  <param name="rolename" type="java.lang.String" description="The role name of the user role; most likely author. " default="author"/>
   <param name="username" type="java.lang.String" binding="select username, username from userrole"/>
   <renderer name="html"/>
   <renderer name="csv"/>
@@ -32,5 +32,18 @@
   <renderer name="html"/>
   <column name="name" label="Name" pattern="?" format="org.osjava.reportrunner.StringFormat"/>
   <column name="url" label="Web address"/>
+ </report>
+ <report author="hen" name="variant" label="Variant example" class="org.osjava.reportrunner.reports.SqlReport" description="Shows a use of variants">
+  <sql>select * from userrole</sql>
+  <variant name="where-role" label="Where">
+   <option name="all-roles" values="" label="All roles"/>
+   <option name="by-role" value="where rolename=?" label="Specific rolename">
+    <param name="rolename" type="java.lang.String" description="The role name of the user role; most likely author. " default="author"/>
+   </option>
+  </variant>
+  <variant name="order-by" label="Order by">
+   <option name="nothing" value="" label="Natural ordering"/>
+   <option name="username" value="order by username" label="By username"/>
+  </variant>
  </report>
 </reports>
