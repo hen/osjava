@@ -33,9 +33,10 @@
 /// TODO: Refactor this out
 package org.osjava.jndi.util;
 
-import java.io.*;
-import java.util.*;
-//import com.generationjava.collections.OrderedSet;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.IOException;
 
 public class CustomProperties extends AbstractProperties {
 
