@@ -532,27 +532,59 @@ public class ThreadContext
         destroySubcontext(nameParser.parse(name));
     }
 
-    /*
-     * (non-Javadoc)
+    /**
+     * Creates and binds a new threading context.  The context is bound to  
+     * <code>name</code>.  All intermediate contexts and the target context
+     * must already exist.
      * 
+     * @param name The name of the new context.
+     * @return the newly created ThreadContext
+     * @throws NameAlreadyBoundException if <code>name</code is already bound.
+     * @throws NameNotFoundException if the target or intermediate context 
+     *         does not already exist.
+     * @throws NamingException if another naming exception occurs.
      * @see javax.naming.Context#createSubcontext(javax.naming.Name)
      */
     public Context createSubcontext(Name name) throws NamingException {
-        throw new OperationNotSupportedException("createSubcontext() not supported.");
+        ThreadContext newContext;
+        if(name.size() > 1) {
+            if(subContexts.containsKey(name.getPrefix(1))) {
+                Context subContext = (Context)subContexts.get(name.getPrefix(1));
+                newContext = (ThreadContext)subContext.createSubcontext(name.getSuffix(1));
+                return newContext;
+            } 
+            throw new NameNotFoundException("The subcontext " + name.getPrefix(1) + " was not found.");
+        }
+        
+        if(contextStore.containsKey(name) || subContexts.containsKey(name)) {
+            throw new NameAlreadyBoundException();
+        }
+
+        newContext = new ThreadContext();
+        subContexts.put(name, newContext);
+        return newContext;
     }
 
-    /*
-     * (non-Javadoc)
+    /**
+     * Creates and binds a new threading context.  The context is bound to  
+     * <code>name</code>.  All intermediate contexts and the target context
+     * must already exist.
      * 
+     * @param name The name of the new context.
+     * @return the newly created ThreadContext
+     * @throws NameAlreadyBoundException if <code>name</code is already bound.
+     * @throws NameNotFoundException if the target or intermediate context 
+     *         does not already exist.
+     * @throws NamingException if another naming exception occurs.
      * @see javax.naming.Context#createSubcontext(java.lang.String)
      */
     public Context createSubcontext(String name) throws NamingException {
-        throw new OperationNotSupportedException("createSubcontext() not supported.");
+        return createSubcontext(nameParser.parse(name));
     }
 
     /**
      * Retrieve the named object following links.  The <code>name</code> must
-     * not be empty.  This essentialy calls {@link lookup(javax.naming.Name}.
+     * not be empty.  This essentialy calls {@link #lookup(javax.naming.Name)}.
      * 
      * @param name The name to be looked up.
      * @see javax.naming.Context#lookupLink(javax.naming.Name)
@@ -563,7 +595,7 @@ public class ThreadContext
 
     /**
      * Retrieve the named object following links.  The <code>name</code> must
-     * not be empty.  This essentialy calls {@link lookup(javax.naming.Name}.
+     * not be empty.  This essentialy calls {@link #lookup(javax.naming.Name)}.
      * 
      * @param name The name to be looked up.
      * @see javax.naming.Context#lookupLink(javax.naming.Name)
