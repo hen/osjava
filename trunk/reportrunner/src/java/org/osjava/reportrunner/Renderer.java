@@ -19,6 +19,8 @@ public interface Renderer {
     void setExtension(String extension);
     boolean isInline();
     void setInline(String yesno);
+    void setVariable(String name, String value);
+    Map getVariables();
 
     void display(Result result, Report report, OutputStream out) throws IOException;
     void display(Result result, Report report, Writer out) throws IOException;

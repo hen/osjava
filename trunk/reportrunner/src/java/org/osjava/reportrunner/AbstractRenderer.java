@@ -15,6 +15,7 @@ public abstract class AbstractRenderer implements Renderer {
     private String mimeType;
     private String extension;
     private boolean inline;
+    private Properties variables = new Properties();;
 
     public String getName() {
         return this.name;
@@ -57,6 +58,14 @@ public abstract class AbstractRenderer implements Renderer {
 
     public void setInline(String yesno) {
         this.inline = BooleanUtils.toBoolean(yesno);
+    }
+
+    public void setVariable(String name, String value) {
+        this.variables.setProperty(name, value);
+    }
+
+    public Map getVariables() {
+        return this.variables;
     }
 
     public void display(Result result, Report report, OutputStream out) throws IOException {
