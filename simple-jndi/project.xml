@@ -1,5 +1,6 @@
-<?xml version="1.0"?>
-<project>
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:noNamespaceSchemaLocation="http://maven.apache.org/xsd/maven-project-3.0.0.xsd" 
+         xmlns:xsi="http://www.w3c.org/2001/XMLSchema-instance">
   
   <pomVersion>3</pomVersion>
   <id>simple-jndi</id>
