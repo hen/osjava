@@ -5,42 +5,33 @@ import java.util.ArrayList;
 
 public class Document {
 
-    private String url;
-    private String title;
-    private List packages = new ArrayList();
-    private boolean singlePackage;
+    private String type;
+    private String name;
+    private List projects = new ArrayList();
 
-    public Document(String url, String title) {
-        this.url = url;
-        this.title = title;
+    public Document(String type, String name) {
+        this.type = type;
+        this.name = name;
     }
 
-    public String getUrl() {
-        return this.url;
+    public String getType() {
+        return this.type;
     }
 
-    public String getTitle() {
-        return this.title;
+    public String getName() {
+        return this.name;
     }
 
-    public List getPackages() {
-        return this.packages;
+    public List getProjects() {
+        return this.projects;
     }
 
-    public void addPackage(DocumentPackage pckge) {
-        this.packages.add(pckge);
-    }
-
-    public boolean isSinglePackage() {
-        return this.singlePackage;
-    }
-
-    public void setSinglePackage(boolean b) {
-        this.singlePackage = b;
+    public void addProject(DocumentProject project) {
+        this.projects.add(project);
     }
 
     public String toString() {
-        return "["+title+" "+url+(singlePackage?"/single":"")+"];"+packages;
+        return "["+type+" "+name+"];"+projects;
     }
 
 }

@@ -1,14 +1,15 @@
 package org.osjava.multidoc;
 
-import java.util.List;
-import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Map;
+import java.util.HashMap;
 
 public class DocumentSite {
 
     private String url;
     private String title;
     private String stylesheet;
-    private List documents = new ArrayList();
+    private Map documents = new HashMap();
 
     public DocumentSite(String url, String title, String stylesheet) {
         this.url = url;
@@ -28,12 +29,16 @@ public class DocumentSite {
         return this.stylesheet;
     }
 
-    public List getDocuments() {
-        return this.documents;
+    public Document getDocument(String name) {
+        return (Document) this.documents.get(name);
     }
 
-    public void addDocument(Document document) {
-        this.documents.add(document);
+    public Collection getNames() {
+        return this.documents.keySet();
+    }
+
+    public void addDocument(String name, Document document) {
+        this.documents.put(name, document);
     }
 
     public String toString() {
