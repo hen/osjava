@@ -36,6 +36,7 @@
 package com.generationjava.io.find;
 
 import java.io.File;
+import java.util.Map;
 
 /**
  * A Finder of Files. Though the structure the files are in is 
@@ -43,10 +44,40 @@ import java.io.File;
  */
 public interface Finder {
 
-    public void addFindListener(FindListener fl);
-//    public void removeFindListener(FindListener fl);
+    // OPTIONS
+    public static final Object DAYSTART = "DAYSTART";
+    public static final Object DEPTH = "DEPTH";
+    public static final Object MAXDEPTH = "MAXDEPTH";
+    public static final Object MINDEPTH = "MINDEPTH";
 
-    public String[] find(File root);
-    public String[] find(File root, String ext);
+    // Time based tests
+    public static final Object MIN = "MIN";
+    public static final Object NEWER = "NEWER";
+    public static final Object TIME = "TIME";
+
+    // size based tests
+    public static final Object EMPTY = "EMPTY";
+    public static final Object SIZE = "SIZE";
+
+    // name based tests
+    public static final Object NAME = "NAME";
+    public static final Object INAME = "INAME";
+    public static final Object PATH = "PATH";
+    public static final Object IPATH = "IPATH";
+    public static final Object REGEX = "REGEX";
+    public static final Object IREGEX = "IREGEX";
+
+    // type of file
+    public static final Object TYPE = "TYPE";      // supports 'd' and 'f'
+
+    // permission replacements
+    public static final Object CAN_READ = "CAN_READ";
+    public static final Object CAN_WRITE = "CAN_WRITE";
+
+    public void addFindListener(FindListener fl);
+    public void removeFindListener(FindListener fl);
+
+    public File[] find(File root);
+    public File[] find(File root, Map options);
 
 }
