@@ -35,6 +35,11 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 
+/**
+ * An in memory representation of a page. 
+ * An alternative to this would be to have a Page that sits on 
+ * top of a reader, but currently nothing bothers. 
+ */
 public class MemoryPage extends AbstractPage {
 
     private String page;
