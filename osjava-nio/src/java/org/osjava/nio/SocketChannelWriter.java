@@ -14,6 +14,8 @@ import java.nio.ByteBuffer;
 
 import java.nio.channels.SelectionKey;
 
+import org.apache.log4j.Logger;
+
 /**
  * @author rzigweid
  *
@@ -91,6 +93,7 @@ public class SocketChannelWriter extends Writer {
      *        the writer.
      */
     public void write(ByteBuffer data) {
+        Logger logger = Logger.getLogger(getClass());
         /* if the buffer is null the channel has been closed, and we need to 
          * do nothing */
         if(buffer == null) {
@@ -146,6 +149,13 @@ public class SocketChannelWriter extends Writer {
         
         /* Let the selector know that we are ready to write. */
         SelectionKey key = parent.getSelectionKey();
+        /* Make sure tha tthe Selector isn't blocked.*/
+        /* 
+         * XXX: This isn't a perfect solution. There's a race condition 
+         *      here on multi-threaded implementations
+         *      (which is expected).
+         */
+        key.selector().wakeup();
         key.interestOps( key.interestOps() | SelectionKey.OP_WRITE);
     }
 
