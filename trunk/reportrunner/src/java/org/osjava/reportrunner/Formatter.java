@@ -2,7 +2,7 @@ package org.osjava.reportrunner;
 
 public interface Formatter {
 
-    String format(Object input);
+    Object format(Object input);
     void setPattern(String pattern);
 
 }

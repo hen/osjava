@@ -29,6 +29,6 @@ public abstract class AbstractFormatter implements Formatter {
         return this.type;
     }
 
-    public abstract String format(Object input);
+    public abstract Object format(Object input);
 
 }
