@@ -12,9 +12,12 @@ All must be pluggable
 Implement a 'REPLACE' statement style Store, which tries an update, then 
 an insert. or vice-versa.
 
-Different threads for db than io??
+Different threads for db than io??  Is this automatic when using Quartz?
 
 ClassLoader for parsers
+  Need to be able to redeploy a parser without having to restart
+  Use JMX for this???
+
 Scheduler needs to check config to figure out if it should reschedule
 
 Schedulers need to understand:
