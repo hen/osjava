@@ -8,7 +8,7 @@
     </links>
     <menu name="Overview">
       <item name="Intro to Simple-Jndi"              href="/Intro.html"/>
-      <item name="Download"              href="/download/"/>
+      <item name="Download"              href="http://www.generationjava.com/download/simple-jndi/"/>
     </menu>
   </body>
 </project>
