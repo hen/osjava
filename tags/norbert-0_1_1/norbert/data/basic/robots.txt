@@ -1,0 +1,5 @@
+User-agent: Scooter-W3.1.2
+Disallow: /
+User-agent: *
+Disallow: /download/
+Disallow: /view-cvs/
