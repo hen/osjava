@@ -38,9 +38,9 @@
 <script type="text/javascript">
   Calendar.setup(
     {
-      inputField  : "<%= params[i].getName() %>",     // ID of the input field
-      ifFormat    : "%m/%d/%Y", // the date format
-      button      : "trigger_<%= params[i].getName() %>",  // trigger for the calendar (button ID)
+      inputField  : "<%= params[i].getName() %>",
+      ifFormat    : "%m/%d/%Y",
+      button      : "trigger_<%= params[i].getName() %>"
     }
   );
 </script>
