@@ -5,6 +5,7 @@ import java.util.*;
 import java.lang.reflect.*;
 import com.generationjava.io.xml.*;
 import com.generationjava.lang.*;
+import org.apache.commons.lang.StringUtils;
 
 public class ReportFactory {
 
@@ -86,7 +87,7 @@ public class ReportFactory {
             applyAttrs( report, reportNode, new String[] { "class" } );
             applyNodes( report, reportNode.enumerateNode(), new String[] { "param", "column" } );
             applyParamTag( report, reportNode.enumerateNode("param") );
-            applyColumnTag( report, reportNode.enumerateNode("column") );
+            applyColumnTags( report, reportNode );
             report.setReportGroup(group);
             reports.add(report);
         }
@@ -217,10 +218,21 @@ LABEL:  while(nodes.hasMoreElements()) {
         return param;
     }
 
-    private static void applyColumnTag( Report report, Enumeration nodes ) {
+    // Can either be <column> or <columns>
+    private static void applyColumnTags( Report report, XMLNode reportNode ) {
+        Enumeration nodes = reportNode.enumerateNode();
         while(nodes.hasMoreElements()) {
             XMLNode node = (XMLNode) nodes.nextElement();
             String name = node.getName();
+            if(name.equals("columns")) {
+                String[] columns = StringUtils.split(node.getValue(), ",");
+                for(int i=0; i<columns.length; i++) {
+                    Column column = new Column();
+                    column.setName( columns[i] );
+                    column.setLabel( columns[i] );
+                    report.addColumn(column);
+                }
+            } else
             if(name.equals("column")) {
                 Column column = new Column();
                 column.setName( node.getAttr("name") );
