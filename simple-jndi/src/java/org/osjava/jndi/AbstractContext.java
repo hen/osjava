@@ -447,7 +447,7 @@ public abstract class AbstractContext
 //      if name is a directory, we should do the same as we do above
 //      if name is a properties file, we should return the keys (?)
 //      issues: default.properties ?
-        if(name.isEmpty()) {
+        if(name == null || name.isEmpty()) {
             /* 
              * Because there are two mappings that need to be used here, 
              * create a new mapping and add the two maps to it.  This also 
@@ -490,7 +490,7 @@ public abstract class AbstractContext
      * @see javax.naming.Context#listBindings(javax.naming.Name)
      */
     public NamingEnumeration listBindings(Name name) throws NamingException {
-        if(name.isEmpty()) {
+        if(name == null || name.isEmpty()) {
             /* 
              * Because there are two mappings that need to be used here, 
              * create a new mapping and add the two maps to it.  This also 
