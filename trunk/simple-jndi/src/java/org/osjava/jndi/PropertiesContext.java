@@ -226,8 +226,10 @@ public class PropertiesContext implements Context  {
     }
 
     private Properties loadProperties(Object file) throws NamingException {
+//        System.err.println("Considering: "+file);
         Properties properties = null;
         if(file instanceof File) {
+//            System.err.println( "FILE "+((File)file).getName() );
             if( ((File)file).getName().endsWith(".xml") ) {
                 properties = new XmlProperties();
                 ((XmlProperties)properties).setDelimiter(this.delimiter);
@@ -239,7 +241,9 @@ public class PropertiesContext implements Context  {
             }
         } else
         if(file instanceof URL) {
+//            System.err.println( "URL "+((URL)file).getFile() );
             if( ((URL)file).getFile().endsWith(".xml") ) {
+//                System.err.println("Found xml url: "+file);
                 properties = new XmlProperties();
                 ((XmlProperties)properties).setDelimiter(this.separator);
             } else
@@ -254,6 +258,7 @@ public class PropertiesContext implements Context  {
 
         if(this.protocol == FILE) {
             try {
+//                System.err.println("Loading FILE");
                 FileInputStream fis = new FileInputStream((File)file);
                 properties.load(fis);
                 fis.close();
@@ -264,6 +269,7 @@ public class PropertiesContext implements Context  {
         } else
         if(this.protocol == CLASSPATH) {
             try {
+//                System.err.println("Loading CLASSPATH");
                 InputStream fis = ((URL)file).openStream();
                 properties.load(fis);
                 fis.close();
@@ -274,6 +280,7 @@ public class PropertiesContext implements Context  {
         } else
         if(this.protocol == HTTP) {
             try {
+//                System.err.println("Loading HTTP");
                 InputStream fis = ((URL)file).openStream();
                 properties.load(fis);
                 fis.close();
