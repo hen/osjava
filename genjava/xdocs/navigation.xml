@@ -7,7 +7,7 @@
     <menu name="Genjava">
       <item href="index.html" name="Component list"/>
       <item href="Genjava.html" name="What is Genjava?"/>
-      <item name="Downloads"   href="http://www.osjava.org/releases/official/genjava/"/>
+      <item name="Downloads"   href="http://dist.osjava.org/releases/official/genjava/"/>
       <item name="License"       href="/license.html"/>
     </menu>
     <menu name="Genjava Projects">

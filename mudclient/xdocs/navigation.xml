@@ -8,7 +8,7 @@
       <item name="Maven"                 href="http://maven.apache.org/"/>
     </links>
     <menu name="Overview">
-      <item name="Download" href="http://www.osjava.org/releases/official/mudclient/"/>
+      <item name="Download" href="http://dist.osjava.org/releases/official/mudclient/"/>
     </menu>
   </body>
 </project>

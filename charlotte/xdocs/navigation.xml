@@ -7,7 +7,7 @@
     <menu name="Overview">
       <item name="Introduction"              href="/index.html"/>
       <item name="Tutorial"              href="/tutorial.html"/>
-      <item name="Download" href="http://www.osjava.org/releases/official/charlotte/"/>
+      <item name="Download" href="http://dist.osjava.org/releases/official/charlotte/"/>
       <item name="Changes"              href="/changes-report.html"/>
       <item name="License"              href="/license.html"/>
     </menu>
