@@ -17,7 +17,7 @@ public class ExcelRenderer extends AbstractRenderer {
         while(result.hasNextRow()) {
             Object[] row = result.nextRow();
             for(int j=0; j<row.length; j++) {
-                xls.writeField(""+row[j]);
+                xls.writeField(row[j]);
             }
             xls.endBlock();
         }
