@@ -4,4 +4,12 @@
   <p>This site is designed to provide information on open-source Java books. </p>
   <div class="sub-title">What's with the name?</div>
   <p>Pergamum was a city in southern Turkey which was a competitor to the Great Library in Alexandria. The Egyptians put an export embargo on papyrus to protect themselves from a brain drain and so Pergamum invented the art of writing on animal skins. This is where we get the name parchment. </p>
+  <div class="sub-title">What are the [amz] parts?</div>
+  <p>These are links to external sites:
+    <ul>
+      <li>[amz] is amazon.com</li>
+      <li>[bkp] is bookpool.com</li>
+      <li>[jshf] is javashelf.com</li>
+    </ul></p>
+        
 </pg:pergamum>
