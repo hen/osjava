@@ -1,4 +1,7 @@
-    body{font-family:verdana,tahoma;}
+/**** LINK-tag style sheet style.css ****/
+
+    body{
+          font-family:verdana,tahoma;     }
     td{font-family:verdana,tahoma;}
     dt{font-weight:bold;}
     code{background:#eeeeee;}
@@ -6,25 +9,102 @@
     a:link { color: black; }
     a:active { color: white; background: black; }
 
-    .sub-title { font-size: 120%; background: #00bb99; padding-left: 0.5em; }
+    .sub-title {
+          font-size: 120%; 
+          padding-left: 0.5em;
+          padding-bottom: 2px;
+          border-left: 1px;
+          border-right: 2px;
+          border-bottom: 2px;
+          border-top: 1px;
+          border-color: black;
+          border-style: solid;
+          background-color: #bebebe; 
+    }
+
+    .nav .sub-title {
+         background-color: #AAC; 
+    }
+
+    .index-body .sub-title {
+          background-color: #CC9;
+    }
+
     .sub-title a:visited { color: black; }
-    .banner, .help { font-size: 150%; background: #00bb99; }
+    .banner, .help { 
+          font-size: 150%; 
+          background-color: black; 
+          color:white;
+          padding: 0.2em;
+          font-weight: bold;
+ }
+
     .banner { margin-left: 0.5em; float: left; text-align: left; }
-    .help { margin-right: 0.5em; text-align: right; }
-    .help a:visited { color:black; }
+
+    .help {
+         margin-right: 0.5em;          
+         text-align: right;
+    }
+
+    .help a:link{
+          color:yellow;
+        text-decoration:none;
+   }
+
+    .help a:visited { 
+        color:white;
+        text-decoration:none;
+    }
+
     .logo { background: #ff2244; }
-    .publisher-name { ; }
-    .category-name { ; }
-    .book-name { background:#eee;}
+    .publisher-name { 
+          margin-top: 0.1em; 
+    }
+    .category-name { 
+          margin-top: 0.1em; 
+    }
+    .book-name {;  }
     .book-url { ; }
     .ext { font-size: 80%; }
-    .review-text { background:#eeeeee;}
-    .library-list, .category-list, .publisher-list { font-size: 100%; list-style-type: none; background:#eee; padding-left: 1em; }
+    .review-text { 
+        background:#efefef;
+        border-color: #666;
+        border-style: solid;
+        border-width: 1px;
+        padding: 8px;
+        font-size: 90%;
+    }
+
+    .library-list, .category-list, .publisher-list {
+         font-size: 100%;
+         list-style-type: none; 
+         background:#DDF; 
+         padding-left: 1em;
+         padding-bottom: 0.5em;
+         border-width: 1px;
+         border-style: solid;
+         border-color: #66A;
+         margin-left: 0;
+         margin-top: 2px;
+}
     .category-list, .publisher-list { }
     .book-links { padding: 0 0.5em 1; }
     .nav { padding: 0 0 0 1em; width: 11em; float: left;}
-    .index-body { padding: 0 0 0 10em; margin-left: 6em; margin-right: 15em; }
+    .index-body { padding: 0 0 0 10em; margin-left: 6em; margin-right:
+10%; }
+
     .page { padding: 1em 0 0 0; }
-    .body-block { background: #eee; }
+    .body-block {
+         margin-top: 2px;
+         background: #ffd;
+         border-width: 1px;
+         border-style: solid;
+         border-color: #550;
+   }
+
     .body-block ul { list-style-type: none; }
+
+    .body-block li { 
+          margin-top: 0.75em; 
+    }
 
