@@ -42,7 +42,7 @@ import java.util.Properties;
 
 public class PropertiesDataSource implements DataSource {
 
-    private Hashtable env;
+//    private Hashtable env;
     private Properties props;
     private PrintWriter pw;
     private String name;
@@ -51,7 +51,7 @@ public class PropertiesDataSource implements DataSource {
     // make delimiter a beanproperty?
     public PropertiesDataSource(Properties props, Hashtable env, String delimiter) {
         this.props = props;
-        this.env = env;
+//        this.env = env;
         this.pw = new PrintWriter(System.err);
         this.delimiter = delimiter;
     }
@@ -116,7 +116,21 @@ public class PropertiesDataSource implements DataSource {
 
     // temporary
     public String toString() {
-        return this.props.toString();
+        return this.name+"///"+this.props.toString()+" delim="+this.delimiter;
+    }
+
+    public boolean equals(Object obj) {
+        if(obj == null) { 
+            return false;
+        }
+        if(obj.getClass() != this.getClass()) {
+            return false;
+        }
+        PropertiesDataSource other = (PropertiesDataSource) obj;
+
+        return other.name.equals(this.name) &&
+               other.delimiter.equals(this.delimiter) &&
+               other.props.equals(this.props);
     }
 
 }
