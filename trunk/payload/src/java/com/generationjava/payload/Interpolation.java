@@ -49,10 +49,10 @@ import java.util.Properties;
  */
 class Interpolation {
 
-    static private String ENDS_WITH = "org.osjava.payload.interpolate.endsWith";
-    static private String MATCHES = "org.osjava.payload.interpolate.matches";
+    private static String ENDS_WITH = "org.osjava.payload.interpolate.endsWith";
+    private static String MATCHES = "org.osjava.payload.interpolate.matches";
 
-    static public Interpolation DEFAULT = new Interpolation(
+    static public final Interpolation DEFAULT = new Interpolation(
         "org.osjava.payload=true\n" +
         "org.osjava.payload.interpolate.endsWith=xml\n" +
         "org.osjava.payload.interpolate.endsWith=jcml\n" +
@@ -60,8 +60,8 @@ class Interpolation {
         "org.osjava.payload.interpolate.endsWith=txt\n" +
         "org.osjava.payload.interpolate.endsWith=conf\n");
 
-    public List fileMatches;
-    public List fileEndsWith;
+    private List fileMatches;
+    private List fileEndsWith;
 
     public Interpolation(String txt) {
         try {
