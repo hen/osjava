@@ -1,3 +1,35 @@
+/*
+ * Copyright (c) 2003, Henri Yandell
+ * All rights reserved.
+ * 
+ * Redistribution and use in source and binary forms, with or 
+ * without modification, are permitted provided that the 
+ * following conditions are met:
+ * 
+ * + Redistributions of source code must retain the above copyright notice, 
+ *   this list of conditions and the following disclaimer.
+ * 
+ * + Redistributions in binary form must reproduce the above copyright notice, 
+ *   this list of conditions and the following disclaimer in the documentation 
+ *   and/or other materials provided with the distribution.
+ * 
+ * + Neither the name of Simple-JNDI nor the names of its contributors 
+ *   may be used to endorse or promote products derived from this software 
+ *   without specific prior written permission.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" 
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE 
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE 
+ * ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE 
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR 
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF 
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS 
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN 
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
+ * POSSIBILITY OF SUCH DAMAGE.
+ */
+
 package com.generationjava.jndi;
 
 import javax.naming.Context;
@@ -17,22 +49,74 @@ import javax.naming.NameClassPair;
 import java.util.Hashtable;
 import java.util.Properties;
 import java.util.Enumeration;
+import java.util.Iterator;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.InputStream;
 import java.io.IOException;
+import java.net.URL;
+import java.net.MalformedURLException;
 
 import org.apache.commons.lang.StringUtils;
 
 public class PropertiesContext implements Context  {
 
-    private Hashtable env;
+    private static Object FILE = new String("FILE");
+    private static Object CLASSPATH = new String("CLASSPATH");
+    private static Object HTTP = new String("HTTP");
+
+    // table is used simply to provide an implementation. 
+    // it does not read the underlying store at all.
+    // over time, usage of table should vanish
     private Hashtable table = new Hashtable();
+
+    private Hashtable env;
     private String root;
+    private Object protocol;
+    private String separator;
+    private String delimiter;
 
     public PropertiesContext(Hashtable env) {
         if(env != null) {
             this.env = (Hashtable)env.clone();
-            root = (String)this.env.get("com.generationjava.jndi.root");
+            this.root = (String)this.env.get("com.generationjava.jndi.root");
+            this.delimiter = (String)this.env.get("com.generationjava.jndi.delimiter");
+            if(this.delimiter == null) {
+                this.delimiter = ".";
+            }
+
+            // Work out the protocol of the root
+            // No root means we're using a classpath protocol,
+            // no protocol means we're using file protocol [legacy]
+            if(root != null) {
+                if(root.indexOf("://") != -1) {
+                    String proto = StringUtils.chomp(root, "://");
+                    this.root = StringUtils.prechomp(root, "://");
+                    if("file".equals(proto)) {
+                        this.protocol = FILE;
+                        this.separator = ""+File.separatorChar;
+                    } else
+                    if("http".equals(proto)) {
+                        this.protocol = HTTP;
+                        this.separator = ""+File.separatorChar;
+                    } else 
+                    if("classpath".equals(proto)) {
+                        this.protocol = CLASSPATH;
+                        this.separator = "/";
+                    }
+                } else {
+                    this.protocol = FILE;
+                    this.separator = ""+File.separatorChar;
+                }
+            } else {
+                this.protocol = CLASSPATH;
+                this.separator = "/";
+                this.root = "";
+            }
+
+//            System.err.println("proto: "+this.protocol);
+//            System.err.println("root: "+this.root);
+//            System.err.println("sepChar: "+this.separator);
         }
     }
 
@@ -44,39 +128,158 @@ public class PropertiesContext implements Context  {
         return lookup(name.toString());
     }
 
+    private Object getElement(String key) throws NamingException {
+//        System.err.println("Asked for: "+key+" via "+this.protocol);
+        if(this.protocol == FILE) {
+            File file = new File(key);
+            if(!file.exists()) {
+                file = null;
+            }
+            return file;
+        } else
+        if(this.protocol == CLASSPATH) {
+            if(key.startsWith(this.separator)) {
+                key = key.substring(1);
+            }
+//            System.err.println("KEY: "+key);
+            URL url = this.getClass().getClassLoader().getResource(key);
+            return url;
+        } else
+        if(this.protocol == HTTP) {
+            try {
+                URL url = new URL(key);
+                return url;
+            } catch(MalformedURLException murle) {
+                throw new NamingException("Unable to open http url: "+key);
+            }
+        } else {
+            throw new NamingException("Unsupported protocol: "+this.protocol);
+        }
+    }
+
+    private Properties loadProperties(Object file) throws NamingException {
+        if(this.protocol == FILE) {
+            try {
+                FileInputStream fis = new FileInputStream((File)file);
+                Properties properties = new Properties();
+                properties.load(fis);
+                fis.close();
+                return properties;
+            } catch(IOException ioe) {
+                throw new NamingException("Failure to open: "+file);
+            }
+        } else
+        if(this.protocol == CLASSPATH) {
+            try {
+                InputStream fis = ((URL)file).openStream();
+                Properties properties = new Properties();
+                properties.load(fis);
+                fis.close();
+                return properties;
+            } catch(IOException ioe) {
+                throw new NamingException("Failure to open: "+file);
+            }
+        } else
+        if(this.protocol == HTTP) {
+            try {
+                InputStream fis = ((URL)file).openStream();
+                Properties properties = new Properties();
+                properties.load(fis);
+                fis.close();
+                return properties;
+            } catch(IOException ioe) {
+                throw new NamingException("Failure to open: "+file);
+            }
+        } else {
+            throw new NamingException("Unsupported protocol: "+this.protocol);
+        }
+    }
+
+    private boolean isDirectory(Object file) throws NamingException {
+//        System.err.println("Is dir: "+file);
+        if(this.protocol == FILE) {
+            return ((File)file).isDirectory();
+        } else
+        if(this.protocol == CLASSPATH) {
+            // how to figure out if this is a directory?
+            // could use reflection, currently we'll copy the http solution
+            try { 
+                Properties props = loadProperties(file);
+//                System.err.println("P:"+props);
+                if(props == null) {
+                    return true;
+                } else {
+//                    System.err.println("P#:"+props.size());
+                    // This is shit. Somehow I am getting an index back
+                    // and I assume it is a directory as every key 
+                    // starts with <, ie html markup.
+                    // replace with reflection??
+                    Iterator iterator = props.keySet().iterator();
+                    while(iterator.hasNext()) {
+                        String key = (String)iterator.next();
+                        if(!key.startsWith("<")) {
+//                            System.err.println("bing: "+key);
+                            return false;
+                        }
+                    }
+                    return true;
+                }
+            } catch(Exception e) {
+                // we assume this just means a failure to load,
+                // therefore it must be a directory
+//                System.err.println("Unknown e: "+e);
+                return true;
+            }
+        } else
+        if(this.protocol == HTTP) {
+            // how the hell do we know a directory online???
+            try { 
+                Properties props = loadProperties(file);
+                return (props == null);
+            } catch(Exception e) {
+                // we assume this just means a failure to load,
+                // therefore it must be a directory
+                return true;
+            }
+        } else {
+            throw new NamingException("Unsupported protocol: "+this.protocol);
+        }
+    }
+
+    // to add:
+    // need to add file://, although this is default
+    // need to add classpath://. 
+    // need to add http://.
+    // Use VFS???
     public Object lookup(String name) throws NamingException {
         if("".equals(name)) {
             return new PropertiesContext(this);
         }
-//        Object answer = table.get(name);
-        // name is a dotted convention. Each element is 
-        // either a directory, file, or element in a file.
-        String[] elements = StringUtils.split(name, ".");
+
+
+        // name is a delimited notation, each element is either a 
+        // directory, file or part of a key.
+        String[] elements = StringUtils.split(name, this.delimiter);
         String path = root;
         Properties properties = null;
         int sz = elements.length;
         String remaining = null;
+
         for(int i=0; i<sz; i++) {
             String element = elements[i];
 
-            File file = new File(path+File.separatorChar+element);
+            Object file = getElement(path+this.separator+element);
 //            System.err.println("Into directory? "+file);
-            if(file.exists() && file.isDirectory()) {
-                path = path+File.separatorChar+element;
+            if( (file != null) && isDirectory(file) ) { 
+//                System.err.println("Was directory. ");
+                path = path+this.separator+element;
                 continue;
             }
 
-            file = new File(path+File.separatorChar+element+".properties");
+            file = getElement(path+this.separator+element+".properties");
 //            System.err.println("Into file? "+file);
-            if(file.exists()) {
-                try {
-                    FileInputStream fis = new FileInputStream(file);
-                    properties = new Properties();
-                    properties.load(fis);
-                    fis.close();
-                } catch(IOException ioe) {
-                    throw new NamingException("Failure to open: "+file);
-                }
+            if(file != null) {
+                properties = loadProperties(file);
 
                 // build the rest of the list
                 java.util.ArrayList list = new java.util.ArrayList();
@@ -84,7 +287,7 @@ public class PropertiesContext implements Context  {
                     list.add(elements[j]);
                 }
                 if(list.size() > 0) {
-                    remaining = StringUtils.join(list.iterator(), ".");
+                    remaining = StringUtils.join(list.iterator(), this.delimiter);
                 }
                 break;
             } else {
@@ -93,31 +296,21 @@ public class PropertiesContext implements Context  {
                     list.add(elements[j]);
                 }
                 if(list.size() > 0) {
-                    remaining = StringUtils.join(list.iterator(), ".");
+                    remaining = StringUtils.join(list.iterator(), this.delimiter);
                 }
+//                System.err.println("Rem: "+remaining);
             }
         }
-
-//        if(properties == null && remaining == null) {
-//            remaining = path;
-//        }
 
         if(properties == null) {
             //  if properties is null, then we look for default.properties
-            File file = new File(path+File.separatorChar+"default.properties");
-//            System.err.println("Looking for: "+file);
-            if(file.exists()) {
-                try {
-//                    System.err.println("Loading default..");
-                    FileInputStream fis = new FileInputStream(file);
-                    properties = new Properties();
-                    properties.load(fis);
-                    fis.close();
-                } catch(IOException ioe) {
-                    throw new NamingException("Failure to open: "+file);
-                }
+            Object file = getElement(path+this.separator+"default.properties");
+            if(file != null) {
+                properties = loadProperties(file);
             }
         }
+
+       // We have a Properties object by now, or should.
 
         if(properties == null) {
             // unable to find default
@@ -127,7 +320,7 @@ public class PropertiesContext implements Context  {
         if("true".equals(properties.get("com.generationjava.jndi.datasource"))) {
 //            System.err.println("Datasource!");
             PropertiesDataSource pds = new PropertiesDataSource(properties, env);
-            pds.setName(StringUtils.prechomp(StringUtils.getChomp(name,"."),"."));
+            pds.setName(StringUtils.prechomp(StringUtils.getChomp(name,this.delimiter),this.delimiter));
             return pds;
         }
 
@@ -149,6 +342,7 @@ public class PropertiesContext implements Context  {
         }
     }
 
+    /* Start of Write-functionality */
     public void bind(Name name, Object object) throws NamingException {
         bind(name.toString(), object);
     }
@@ -201,7 +395,9 @@ public class PropertiesContext implements Context  {
             throw new NameNotFoundException(""+oldname+" not bound");
         }
     }
+    /* End of Write-functionality */
 
+    /* Start of List functionality */
     public NamingEnumeration list(Name name) throws NamingException {
         return list(name.toString());
     }
@@ -239,6 +435,7 @@ public class PropertiesContext implements Context  {
         }
         throw new NotContextException(name+" cannot be listed");
     }
+    /* End of List functionality */
 
     public void destroySubcontext(Name name) throws NamingException {
         destroySubcontext(name.toString());
