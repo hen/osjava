@@ -1,15 +1,16 @@
 package org.osjava.multidoc;
 
 import java.util.Collection;
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
+import org.apache.commons.collections.map.ListOrderedMap;
 
 public class DocumentSite {
 
     private String url;
     private String title;
     private String stylesheet;
-    private Map documents = new HashMap();
+    private Map documents = ListOrderedMap.decorate(new HashMap());
 
     public DocumentSite(String url, String title, String stylesheet) {
         this.url = url;
