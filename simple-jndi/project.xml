@@ -4,41 +4,55 @@
   <pomVersion>3</pomVersion>
   <id>simple-jndi</id>
   <name>simple-jndi</name>
-  <currentVersion>0.9.1</currentVersion>
+  <currentVersion>2.0</currentVersion>
   <organization>
-    <name>OSJava</name>
-    <url>http://www.osjava.org/</url>
-    <logo>/images/osjava.gif</logo>
+    <name>GenerationJava</name>
+    <url>http://www.generationjava.com/</url>
+    <logo>/images/initials.jpg</logo>
   </organization>
   <inceptionYear>2003</inceptionYear>
-  <package>org.osjava</package>
-  <logo>/images/simple-jndi-logo.png</logo>
+  <package>com.generationjava.jndi</package>
+  <logo>/images/core-logo.jpg</logo>
   
+  <!-- Gump integration -->
+  <gumpRepositoryId>simple-jndi</gumpRepositoryId>
+
   <description>
-    A simple implementation of JNDI. It is entirely library based, so no server instances are started, and it sits upon Java .properties files or XML files, so it is easy to use and simple to understand. The .properties/.xml files may be either on the file system or in the classpath. 
+    A simple implemenntation of JNDI. It is entirely library based, so no server instances are started, and it sits upon Java .properties files, so it is easy and simple to understand.
   </description>
   
   <shortDescription>A JNDI implementation using .properties</shortDescription>
 
-  <url>http://www.osjava.org/simple-jndi/</url>
-  <issueTrackingUrl>http://www.osjava.org:8080/jira/secure/BrowseProject.jspa?id=10000</issueTrackingUrl>
-  <siteAddress>www.osjava.org/maven/simple-jndi</siteAddress>
-  <siteDirectory>/sites/org/osjava/www/maven/genjava/simple-jndi/</siteDirectory>
-  <distributionDirectory>/sites/org/osjava/www/maven/builds/</distributionDirectory>
+  <url>http://www.generationjava.com/</url>
+  <!--
+  <issueTrackingUrl>http://nagoya.apache.org/scarab/servlet/scarab/</issueTrackingUrl>
+  -->
+  <siteAddress>www.generationjava.com/maven/simple-jndi</siteAddress>
+  <siteDirectory>/sites/com/generationjava/www/maven/genjava/simple-jndi/</siteDirectory>
+  <distributionDirectory>/sites/com/generationjava/www/maven/builds/</distributionDirectory>
 
   <repository>
-    <connection>scm:cvs:pserver:anonymous@cvs.osjava.org:/var/cvs:simple-jndi</connection>
-    <url>http://www.osjava.org/view-cvs/viewcvs.cgi/simple-jndi/</url>
+    <connection>scm:cvshen@umbongo.flamefew.net:/var/cvs:simple-jndi</connection>
+    <url>http://www.generationjava.com/view-cvs/viewcvs.cgi/simple-jndi/</url>
   </repository>
 
+  <versions>
+    <version>
+      <id>1.0</id>
+      <name>1.0</name>
+      <tag>HEAD</tag>
+    </version>
+  </versions>
+
+  <branches>
+  </branches>
+
+  <!--
   <mailingLists>
     <mailingList>
-      <name>osjava-users</name>
-      <subscribe>http://lists.flamefew.net/mailman/listinfo/osjava-users</subscribe>
-      <unsubscribe>http://lists.flamefew.net/mailman/listinfo/osjava-users</unsubscribe>
-      <archive>http://lists.flamefew.net/mailman/private/osjava-users/</archive>
     </mailingList>
   </mailingLists>
+  -->
 
   <developers>
 
@@ -60,70 +74,48 @@
   <!-- Need to mark these as compile-time/run-time -->
 
   <dependencies>
-    <!-- only used if you use .xml files -->
     <dependency>
-      <groupId>genjava</groupId>
-      <artifactId>gj-xml</artifactId>
+      <id>jdbc</id>
+      <version>2.0</version>
+    </dependency>
+    <dependency>
+      <id>commons-lang</id>
       <version>1.0</version>
-      <url>http://www.osjava.org/genjava/multiproject/gj-xml/</url>
-    </dependency>
-    <!-- used if you turn on dbcp usage -->
-    <dependency>
-      <id>commons-dbcp</id>
-      <version>1.1</version>
-      <url>http://jakarta.apache.org/commons/</url>
-    </dependency>
-    <!-- used if you turn on dbcp usage -->
-    <dependency>
-      <id>commons-pool</id>
-      <version>1.1</version>
-      <url>http://jakarta.apache.org/commons/</url>
-    </dependency>
-    <!-- if you do some kind of converting, you'll need this -->
-    <!-- this is only if you use .type, though not DataSource -->
-    <dependency>
-      <id>commons-convert</id>
-      <version>SNAPSHOT</version>
-      <url>http://jakarta.apache.org/commons/sandbox/convert/</url>
+      <url>http://jakarta.apache.org/commons/lang.html</url>
     </dependency>
   </dependencies>
 
   <build>
 
-    <nagEmailAddress>bayard@www.osjava.org</nagEmailAddress>
+    <nagEmailAddress>bayard@www.generationjava.com</nagEmailAddress>
 
     <sourceDirectory>src/java</sourceDirectory>
+
     <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
+    <!--
 
-    <unitTest>
-      <resources>
-        <resource>
-          <directory>src/test/config</directory>
-          <targetPath>config</targetPath>
-        </resource>
-        <resource>
-          <directory>src/test</directory>
-          <includes>
-            <include>jndi.properties</include>
-          </includes>
-        </resource>
-      </resources>
-      <includes>
-        <include>**/*Test.java</include>
-      </includes>
-    </unitTest>
+    <integrationUnitTestSourceDirectory/>
 
+    <aspectSourceDirectory></aspectSourceDirectory>
+
+    <unitTestPatterns>
+      <unitTestPattern>include = **/*Test.java</unitTestPattern>
+    </unitTestPatterns>
+
+    <integrationUnitTestPatterns>
+    </integrationUnitTestPatterns>
+    -->
+
+    <!-- J A R  R E S O U R C E S -->
+    <!-- Resources that are packaged up inside the JAR file -->
+
+    <jarResources>
+        <jarResource>include = *.dtd</jarResource>
+        <jarResource>include = log4j.properties</jarResource>
+    </jarResources>
+
+    <jars>
+    </jars>
   </build>
-
-    <reports>
-        <report>maven-jxr-plugin</report>
-        <report>maven-javadoc-plugin</report>
-        <report>maven-license-plugin</report>
-        <report>maven-changes-plugin</report>           
-        <report>maven-changelog-plugin</report>        
-        <report>maven-statcvs-plugin</report>          
-    </reports>
-
-
 </project>
 

@@ -1,34 +1,15 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<project name="genjava">
+<project name="genjava-core">
 
-  <title>genjava</title>
+  <title>genjava-core</title>
 
   <body>
-    <menu name="Genjava">
-      <item href="index.html" name="Component list"/>
-      <item href="Genjava.html" name="What is Genjava?"/>
-      <item name="Downloads"   href="http://www.osjava.org/releases/official/genjava/"/>
-      <item name="License"       href="/license.html"/>
-    </menu>
-    <menu name="Genjava Projects">
-      <item href="multiproject/gj-beans/" name="gj-beans"/>
-      <item href="multiproject/gj-core/" name="gj-core"/>
-      <item href="multiproject/gj-config/" name="gj-config"/>
-      <item href="multiproject/gj-csv/" name="gj-csv"/>
-      <item href="multiproject/gj-gui/" name="gj-gui"/>
-      <item href="multiproject/gj-mail/" name="gj-mail"/>
-      <item href="multiproject/gj-scrape/" name="gj-scrape"/>
-      <item href="multiproject/gj-servlet/" name="gj-servlet"/>
-      <item href="multiproject/gj-tools/" name="gj-tools"/>
-      <item href="multiproject/gj-xml/" name="gj-xml"/>
-    </menu>
-    <menu name="Resources">
-      <item name="Mailing list"       href="/mail-lists.html"/>
-      <item name="Bug tracking"       href="/issue-tracking.html"/>
-    </menu>
-    <menu name="CVS reports">
-      <item name="CVS History"       href="/changelog-report.html"/>
-      <item name="CVS Statistics"       href="/statcvs/index.html"/>
+    <menu name="Projects">
+      <item href="multiproject/core/" name="core"/>
+      <item href="multiproject/csv/" name="csv"/>
+      <item href="multiproject/scrape/" name="scrape"/>
+      <item href="multiproject/tools/" name="tools"/>
+      <item href="multiproject/xml/" name="xml"/>
     </menu>
   </body>
 </project>

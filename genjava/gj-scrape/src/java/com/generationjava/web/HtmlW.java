@@ -35,7 +35,6 @@ import org.apache.commons.lang.StringUtils;
 
 /**
  * HTML helping static methods.
- * Due to case insensitivity, these methods can't match the XML ones.
  */
 public class HtmlW {
 
@@ -137,8 +136,6 @@ public class HtmlW {
 
         return str;
     }
-
-    // add unescape for the html entities
 
     /**
      * Remove any html tags from a String.

@@ -31,6 +31,8 @@
  */
 package com.generationjava.io.xml;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
  * XML helping static methods.
  *
@@ -40,20 +42,20 @@ package com.generationjava.io.xml;
 final public class XmlUtils {
 
     static public String escapeXml(String str) {
-        str = str.replaceAll("&","&amp;");
-        str = str.replaceAll("<","&lt;");
-        str = str.replaceAll(">","&gt;");
-        str = str.replaceAll("\"","&quot;");
-        str = str.replaceAll("'","&apos;");
+        str = StringUtils.replace(str,"&","&amp;");
+        str = StringUtils.replace(str,"<","&lt;");
+        str = StringUtils.replace(str,">","&gt;");
+        str = StringUtils.replace(str,"\"","&quot;");
+        str = StringUtils.replace(str,"'","&apos;");
         return str;
     }
 
     static public String unescapeXml(String str) {
-        str = str.replaceAll("&amp;","&");
-        str = str.replaceAll("&lt;","<");
-        str = str.replaceAll("&gt;",">");
-        str = str.replaceAll("&quot;","\"");
-        str = str.replaceAll("&apos;","'");
+        str = StringUtils.replace(str,"&amp;","&");
+        str = StringUtils.replace(str,"&lt;","<");
+        str = StringUtils.replace(str,"&gt;",">");
+        str = StringUtils.replace(str,"&quot;","\"");
+        str = StringUtils.replace(str,"&apos;","'");
         return str;
     }
 
@@ -130,7 +132,7 @@ final public class XmlUtils {
         if(nextCloseIdx == -1) {
             return -1;
         }
-        int count = XmlUtils.countMatches(text.substring(start, nextCloseIdx), open);
+        int count = StringUtils.countMatches(text.substring(start, nextCloseIdx), open);
 //        System.err.println("count: "+count);
         if(count == 0) {
             return -1;  // tag is never opened
@@ -141,7 +143,7 @@ final public class XmlUtils {
             if(nextCloseIdx == -1) {
                 return -1;
             }
-            count = XmlUtils.countMatches(text.substring(start, nextCloseIdx), open);
+            count = StringUtils.countMatches(text.substring(start, nextCloseIdx), open);
             expected++;
         }
         return nextCloseIdx;
@@ -166,20 +168,5 @@ final public class XmlUtils {
          }
          return unescapeXml(text.substring(attrStartIdx, attrCloseIdx));
     }
-
-    // Taken from Commons Lang StringUtils 2.x
-    private static int countMatches(String str, String sub) {
-        if (str == null || str.length() == 0 || sub == null || sub.length() == 0) {
-            return 0;
-        }
-        int count = 0;
-        int idx = 0;
-        while ((idx = str.indexOf(sub, idx)) != -1) {
-            count++;
-            idx += sub.length();
-        }
-        return count;
-    }
-
 
 }

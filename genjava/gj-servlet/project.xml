@@ -23,8 +23,7 @@
       <url>http://jakarta.apache.org/commons/collections.html</url>
     </dependency>
     <dependency>
-      <artifactId>gj-core</artifactId>
-      <groupId>genjava</groupId>
+      <id>gj-core</id>
       <version>3.0</version>
     </dependency>
   </dependencies>

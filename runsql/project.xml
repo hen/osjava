@@ -30,6 +30,24 @@
     <url>http://www.generationjava.com/view-cvs/viewcvs.cgi/runsql/</url>
   </repository>
 
+  <versions>
+    <version>
+      <id>0.1</id>
+      <name>0.1</name>
+      <tag>HEAD</tag>
+    </version>
+  </versions>
+
+  <branches>
+  </branches>
+
+  <!--
+  <mailingLists>
+    <mailingList>
+    </mailingList>
+  </mailingLists>
+  -->
+
   <developers>
 
     <developer>
@@ -47,24 +65,28 @@
   <dependencies>
     <dependency>
       <id>commons-dbutils</id>
-      <version>1.0</version>
+      <version>SNAPSHOT</version>
     </dependency>
     <dependency>
-      <groupId>genjava</groupId>
-      <artifactId>gj-core</artifactId>
-      <version>3.0</version>
+      <id>genjava-core</id>
+      <version>2.0</version>
+      <url>http://www.generationjava.com/projects/GenJavaCore.shtml</url>
     </dependency>
     <dependency>
       <id>commons-lang</id>
-      <version>2.0</version>
+      <version>1.0</version>
       <url>http://jakarta.apache.org/commons/lang.html</url>
     </dependency>
   </dependencies>
 
   <build>
+
     <nagEmailAddress>bayard@www.generationjava.com</nagEmailAddress>
 
     <sourceDirectory>src/java</sourceDirectory>
+
+    <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
+
   </build>
 </project>
 

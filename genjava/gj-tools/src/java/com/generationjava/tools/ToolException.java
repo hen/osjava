@@ -31,7 +31,9 @@
  */
 package com.generationjava.tools;
 
-public class ToolException extends Exception {
+import org.apache.commons.lang.exception.NestableException;
+
+public class ToolException extends NestableException {
 
     public ToolException() {
         super();

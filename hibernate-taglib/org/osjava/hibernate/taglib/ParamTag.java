@@ -10,6 +10,11 @@ import javax.servlet.jsp.JspTagException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.BodyTagSupport;
 
+import net.sf.hibernate.SessionFactory;
+import net.sf.hibernate.Session;
+import net.sf.hibernate.cfg.Configuration;
+import net.sf.hibernate.HibernateException;
+
 public class ParamTag extends BodyTagSupport {
 
     private String value;

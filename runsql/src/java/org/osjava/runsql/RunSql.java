@@ -15,7 +15,6 @@ public class RunSql {
         InitialContext ctxt = new InitialContext();
         DataSource ds = (DataSource)ctxt.lookup(dsname);
         Connection conn = ds.getConnection();
-        long start = System.currentTimeMillis();
         try {
             runScript(conn, System.in);
         } catch(SQLException sqle) {
@@ -24,8 +23,6 @@ public class RunSql {
         } finally {
             DbUtils.closeQuietly(conn);
         }
-        long duration = System.currentTimeMillis() - start;
-        System.err.println("Script executed in : " + duration);
     }
 
     static public void runScript(Connection conn, InputStream in) throws SQLException {
@@ -37,7 +34,6 @@ public class RunSql {
         String[] stmts = StringUtils.split(script, ";");
         Statement stmt = conn.createStatement();
         try {
-            long start = System.currentTimeMillis();
             for(int i=0; i<stmts.length; i++) {
                 boolean resultset = stmt.execute(stmts[i]);
 //                System.err.println("Executing: "+stmts[i]);
@@ -63,8 +59,6 @@ public class RunSql {
 //                    System.err.println("Rows changed: "+stmt.getUpdateCount());
                 }
             }
-            long duration = System.currentTimeMillis() - start;
-            System.err.println("Statement executed in : " + duration);
         } finally {
             DbUtils.closeQuietly(stmt);
         }

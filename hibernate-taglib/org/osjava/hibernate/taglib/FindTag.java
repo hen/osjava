@@ -12,11 +12,14 @@ import javax.servlet.jsp.JspTagException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.BodyTagSupport;
 
-import net.sf.hibernate.Hibernate;
-import net.sf.hibernate.HibernateException;
+import net.sf.hibernate.SessionFactory;
 import net.sf.hibernate.Session;
+import net.sf.hibernate.cfg.Configuration;
+import net.sf.hibernate.HibernateException;
+import net.sf.hibernate.Hibernate;
 import net.sf.hibernate.type.Type;
 
+// Make this need a DataSource
 public class FindTag extends BodyTagSupport {
 
     private String var;
@@ -42,8 +45,10 @@ public class FindTag extends BodyTagSupport {
 
         String query = JspUtils.getBody(bodyContent);
         System.out.println("QUERY: "+query);
+        Session hSession = null;
         try {
-            Session hSession = JspUtils.getHibernateSession(pageContext);
+            SessionFactory hSf = new Configuration().configure().buildSessionFactory();
+            hSession = hSf.openSession();
             List categories = null;
             if(this.types.size() == 0 &&
                this.parameters.size() == 0)
@@ -70,6 +75,13 @@ public class FindTag extends BodyTagSupport {
         } finally {
             this.types.clear();
             this.parameters.clear();
+            if(hSession != null) {
+                try {
+                    hSession.close();
+                } catch(HibernateException he) {
+                    // ignore
+                }
+            }
         }
 
         return EVAL_PAGE;

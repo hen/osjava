@@ -9,13 +9,14 @@
   <body>
     <section name="Using XmlWriter">
     <p>A great way to output Xml. Far easier to code with than painful DOM or 
-    SAX like solutions and much nicer in terms of speed and memory usage [see <a href="Benchmarks.html">benchmarks</a>]. <br/>
+    SAX like solutions and much nicer in terms of speed and memory usage [see <a href="/Benchmarks.html">benchmarks</a>]. 
+    Note, xmlwriter is dependent on the Jakarta Commons <a href="http://jakarta.apache.org/commons/lang.html">Lang</a> project.<br />
     Example code:
     <ul>
     <li>
     <pre>
         Writer writer = new java.io.StringWriter();
-        XmlWriter xmlwriter = new SimpleXmlWriter(writer);
+        XmlWriter xmlwriter = new XmlWriter(writer);
         xmlwriter.writeXmlVersion();
         xmlwriter.writeComment("Example of XmlWriter running");
         xmlwriter.writeEntity("person");
@@ -25,6 +26,7 @@
         xmlwriter.writeText("4254343");
         xmlwriter.endEntity();
         xmlwriter.writeComment("Examples of empty tags");
+        xmlwriter.setDefaultNamespace("test");
         xmlwriter.writeEntity("friends");
         xmlwriter.writeEmptyEntity("bob");
         xmlwriter.writeEmptyEntity("jim");
@@ -38,7 +40,7 @@
     <li>
     <pre>
         Writer writer = new java.io.StringWriter();
-        XmlWriter xmlwriter = new SimpleXmlWriter(writer);
+        XmlWriter xmlwriter = new XmlWriter(writer);
         xmlwriter.writeEntity("person").writeAttribute("name", "fred")
                                        .writeAttribute("age", "12")
                       .writeEntity("phone").writeText("4254343").endEntity()

@@ -4,33 +4,17 @@
   <title>genjava-xmlwriter</title>
 
   <body>
+    <links>
+      <item name="Commons-Lang"                 href="http://jakarta.apache.org/commons/lang.html"/>
+      <item name="Sourceforge"                 href="http://www.sourceforge.net/xmlwriter/"/>
+    </links>
     <menu name="Overview">
-      <item name="Introduction"              href="/index.html"/>
-      <item name="News"              href="/News.html"/>
       <item name="Builder.com article"              href="http://builder.com.com/article.jhtml?id=u00220020318yan01.htm&amp;page=1&amp;vf=tt"/>
-      <item name="Design"              href="/Design.html"/>
-      <item name="How to use"              href="/Using.html"/>
-      <item name="Optional usages"              href="/Optional.html"/>
+      <item name="Using"              href="/Using.html"/>
       <item name="Benchmarks"              href="/Benchmarks.html"/>
       <item name="Java-Channel entry"              href="http://pharos.inria.fr/Java/display.jsp?id=c_10342"/>
-      <item name="Download"              href="http://www.osjava.org/releases/official/xmlwriter/"/>
-      <item name="Changes"              href="/changes-report.html"/>
-      <item name="License"              href="/license.html"/>
-    </menu>
-    <menu name="Code docs">
-      <item name="JavaDocs"              href="/apidocs/index.html"/>
-      <item name="Source XReference"              href="/xref/index.html"/>
-      <item name="Test XReference"              href="/xref-test/index.html"/>
-    </menu>
-    <menu name="Resources">
-      <item name="Mailing List"              href="/mail-lists.html"/>
-      <item name="Jar Dependencies"              href="/dependencies.html"/>
-      <item name="CVS Repository"              href="/cvs-usage.html"/>
-      <item name="Bug Tracking"              href="/issue-tracking.html"/>
-    </menu>
-    <menu name="CVS reports">
-      <item name="CVS History"              href="/changelog-report.html"/>
-      <item name="CVS Statistics"              href="/statcvs/"/>
+      <item name="Download Release"              href="http://sourceforge.net/project/showfiles.php?group_id=62905"/>
+      <item name="Nightly Build"              href="http://www.generationjava.com/nightly/builds/xmlwriter/"/>
     </menu>
   </body>
 </project>

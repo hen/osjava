@@ -4,7 +4,7 @@ import java.util.Iterator;
 
 import com.generationjava.lang.StringW;
 
-import com.generationjava.config.Config;
+import org.osjava.oscube.container.Config;
 import org.osjava.oscube.container.Session;
 import org.osjava.oscube.container.Header;
 import org.osjava.oscube.container.Result;

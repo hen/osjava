@@ -18,14 +18,17 @@
       <version>1.2</version>
     </dependency>
     <dependency>
-      <artifactId>gj-core</artifactId>
-      <groupId>genjava</groupId>
+      <id>gj-core</id>
       <version>3.0</version>
     </dependency>
     <dependency>
       <id>commons-lang</id>
       <version>2.0</version>
       <url>http://jakarta.apache.org/commons/lang.html</url>
+    </dependency>
+    <dependency>
+      <id>junit</id>
+      <version>3.7</version>
     </dependency>
   </dependencies>
 

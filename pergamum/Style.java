@@ -32,8 +32,8 @@ public class Style {
         // Generate the book pages
         TransformerFactory tFactory = TransformerFactory.newInstance();
         Transformer transformer = tFactory.newTransformer(new StreamSource(args[1]));
-        // Use this in filename. Changing xml to html and content/ to docs/
-        String name = "docs/"+args[0].substring(8, args[0].length()-4)+".html";
+        // Use this in filename
+        String name = "docs/"+args[0].substring(0, args[0].length()-4)+".html";
 
         transformer.transform(new StreamSource(args[0]), new StreamResult(new FileOutputStream(name)));
         System.out.println(". "+name);

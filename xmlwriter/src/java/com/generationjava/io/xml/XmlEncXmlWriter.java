@@ -52,15 +52,13 @@ public class XmlEncXmlWriter extends AbstractXmlWriter {
 
 
     public XmlEncXmlWriter(Writer writer) {
-        this(writer, "UTF-8");
-    }
-    public XmlEncXmlWriter(Writer writer, String encoding) {
         this.writer = writer;
-        try {
-            this.xmlenc = new XMLOutputter(writer, encoding);
-        } catch(UnsupportedEncodingException uee) {
-            throw new RuntimeException("UnsupportedEncodingException occurred in XmlEnc: "+uee.getMessage());
-        }
+//        super(writer);
+//        try {
+            this.xmlenc = XMLOutputter.getInstance(writer);
+//        } catch(UnsupportedEncodingException uee) {
+//            uee.printStackTrace();
+//        }
         this.closed = true;
     }
 

@@ -3,8 +3,7 @@
 <project>
   <pomVersion>3</pomVersion>
   <id>genjava</id>
-  <groupId>genjava</groupId>
-  <name>GenJava</name>
+  <name>GenJava Master Maven POM</name>
   <currentVersion>1.0</currentVersion>
 
   <organization>
@@ -16,18 +15,18 @@
   <package>com.generationjava</package>
   <logo>/images/1x1.gif</logo>
 
-  <url>http://www.osjava.org/genjava/</url>
+  <url>http://www.osjava.org/genjava-core/${pom.id}/</url>
   <issueTrackingUrl>http://www.osjava.org:8080/jira/secure/BrowseProject.jspa?id=10010</issueTrackingUrl>
-  <siteAddress>www.osjava.org/genjava</siteAddress>
-  <siteDirectory>/sites/org/osjava/www/releases/official/genjava/${pom.artifactId}/</siteDirectory>
-  <distributionDirectory>/sites/org/osjava/www/releases/official/genjava/${pom.artifactId}/</distributionDirectory>
+  <siteAddress>www.osjava.org/genjava-core</siteAddress>
+  <siteDirectory>/sites/org/osjava/www/releases/official/genjava-core/${pom.id}/</siteDirectory>
+  <distributionDirectory>/sites/org/osjava/www/releases/official/genjava-core/${pom.id}/</distributionDirectory>
 
-  <!-- complains of more than 6 values -->
+  <!-- Complains of more than 6 elements
   <repository>
-    <connection>scm:cvs:pserver:anonymous@cvs.osjava.org:/var/cvs:genjava/${pom.artifactId}/</connection>
-    <url>http://www.osjava.org/view-cvs/viewcvs.cgi/genjava/${pom.artifactId}/</url>
+    <connection>scm:cvs:ext:hen@orinoco.flamefew.net:/var/cvs:genjava-core/${pom.id}/</connection>
+    <url>http://www.generationjava.com/view-cvs/viewcvs.cgi/genjava-core/${pom.id}/</url>
   </repository>
-<!--  -->
+  -->
   
   <mailingLists>
     <mailingList>
@@ -78,14 +77,5 @@
     
     <jars></jars>
   </build>
-
-    <reports>
-        <report>maven-jxr-plugin</report>
-        <report>maven-javadoc-plugin</report>
-        <report>maven-license-plugin</report>
-        <report>maven-changes-plugin</report>
-        <report>maven-statcvs-plugin</report>
-        <report>maven-changelog-plugin</report>
-    </reports>
 
 </project>

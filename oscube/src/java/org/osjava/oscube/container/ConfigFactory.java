@@ -13,7 +13,7 @@
  *   this list of conditions and the following disclaimer in the documentation 
  *   and/or other materials provided with the distribution.
  * 
- * + Neither the name of OSJava nor the names of its contributors 
+ * + Neither the name of Scabies nor the names of its contributors 
  *   may be used to endorse or promote products derived from this software 
  *   without specific prior written permission.
  * 
@@ -31,21 +31,10 @@
  */
 package org.osjava.oscube.container;
 
-import javax.naming.NamingException;
-
-import com.generationjava.config.Config;
-import com.generationjava.config.JndiConfig;
-import com.generationjava.config.MapConfig;
-
 public class ConfigFactory {
 
     static public Config getConfig(String[] args) {
-        try {
-            return new JndiConfig();
-        } catch(NamingException ne) {
-            ne.printStackTrace();
-            return new MapConfig( new java.util.HashMap() );
-        }
+        return new JndiConfig();
     }
 
 }

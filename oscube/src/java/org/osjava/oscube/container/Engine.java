@@ -13,7 +13,7 @@
  *   this list of conditions and the following disclaimer in the documentation 
  *   and/or other materials provided with the distribution.
  * 
- * + Neither the name of OSJava nor the names of its contributors 
+ * + Neither the name of Scabies nor the names of its contributors 
  *   may be used to endorse or promote products derived from this software 
  *   without specific prior written permission.
  * 
@@ -33,7 +33,6 @@ package org.osjava.oscube.container;
 
 import java.util.List;
 import java.io.Reader;
-import com.generationjava.config.Config;
 
 public class Engine {
 
@@ -68,6 +67,8 @@ public class Engine {
             session.put(prefix, key);
             cfg.setContext(key+".");
 
+//            String scheduler = cfg.getString("scheduler");
+
             // schedule the times to run parsers
             // TODO: allow this to be pluggable.
             Scheduler scheduler = SchedulerFactory.getScheduler(cfg, session);
@@ -75,6 +76,9 @@ public class Engine {
             // Possibly the run(Config, Session) needs to 
             // move into an interface
             scheduler.schedule(cfg, session, runner);
+
+            // temporary running
+            runner.run(cfg, session);
         }
     }
 

@@ -58,7 +58,7 @@ final public class XmlW {
 
     /**
      * Remove any xml tags from a String.
-     * Remove any xml tags from a String.
+     * Same as HtmlW's method.
      */
     static public String removeXml(String str) {
         int sz = str.length();
@@ -164,11 +164,7 @@ final public class XmlW {
      */
     static public String getAttribute(String attribute, String text, int idx) {
          int close = text.indexOf(">", idx);
-         int doubleAttrIdx = text.indexOf(attribute+"=\"", idx);
-         int singleAttrIdx = text.indexOf(attribute+"='", idx);
-         int attrIdx = doubleAttrIdx;
-//         if(doubleAttrIdx > singleAttrIdx) {
-//         }
+         int attrIdx = text.indexOf(attribute+"=\"", idx);
          if(attrIdx == -1) {
              return null;
          }
@@ -177,7 +173,6 @@ final public class XmlW {
          }
          int attrStartIdx = attrIdx + attribute.length() + 2;
          int attrCloseIdx = text.indexOf("\"", attrStartIdx);
-         if(attrCloseIdx = 
          if(attrCloseIdx > close) {
              return null;
          }

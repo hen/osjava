@@ -13,7 +13,7 @@
  *   this list of conditions and the following disclaimer in the documentation 
  *   and/or other materials provided with the distribution.
  * 
- * + Neither the name of OSJava nor the names of its contributors 
+ * + Neither the name of Scabies nor the names of its contributors 
  *   may be used to endorse or promote products derived from this software 
  *   without specific prior written permission.
  * 
@@ -31,7 +31,7 @@
  */
 package org.osjava.oscube.service.notify;
 
-import com.generationjava.config.Config;
+import org.osjava.oscube.container.Config;
 import org.osjava.oscube.container.Session;
 
 // so currently it's doing the job of a default notifier
