@@ -25,6 +25,21 @@
   <section name="Advanced usage">
     <p>The trail is stored in an <code>org.osjava.taglib.trail.BreadCrumbs</code> object under the session variable <code>org.osjava.taglib.breadcrumbs</code>.</p>
   </section>
+
+  <section name="Pre-Servlet 2.4">
+    <p>I have been using this taglib in a 2.4 container and make use of new features to know when forwarding has occured. However the following filter, if filters are available in your container, will emulate these forwarding features: </p>
+    <code>
+&lt;filter&gt;<br/>
+  &lt;filter-name&gt;trailFilter&lt;filter-name&gt;<br/>
+  &lt;filter-class&gt;org.osjava.taglib.trail.OriginalRequestFilter&lt;filter-class&gt;<br/>
+&lt;filter&gt;<br/>
+
+&lt;filter-mapping&gt;<br/>
+  &lt;filter-name&gt;trailFilter&lt;filter-name&gt;<br/>
+  &lt;url-pattern&gt;*.do&lt;url-pattern&gt;<br/>
+&lt;filter-mapping&gt;<br/>
+    </code>
+  </section>
   
 
  </body>

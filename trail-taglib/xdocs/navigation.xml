@@ -7,7 +7,7 @@
     <menu name="Overview">
       <item name="How To"              href="/HowTo.html"/>
       <item name="News"              href="/News.html"/>
-     <!-- <item name="Clover Report"              href="/clover/"/> -->
+      <item name="Future Plans"              href="/Tasks.html"/>
       <item name="Download" href="http://www.osjava.org/releases/official/trail-taglib/"/>
       <item name="Changes"              href="/changes-report.html"/>
       <item name="License"              href="/license.html"/>
