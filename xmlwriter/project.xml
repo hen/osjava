@@ -19,7 +19,7 @@
     SAX like solutions and much nicer in terms of speed and memory usage. 
     &lt;br/&gt;
     &lt;br/&gt;
-   While XmlWriter contains its own xml outputter, it has the ability to sit on top of other core Xml writing products, such as &lt;a href="http://xmlenc.sf.net/"&gt;XmlEnc&lt;/a&gt;. In addition, the user may layer other functionalities on top of the core writing, such as on the fly schema checking, date/number formatting, specific empty-element handling and pretty-printing. 
+   While XmlWriter contains its own xml outputter, it has the ability to sit on top of other core Xml writing products, such as &lt;a href="http://xmlenc.sf.net/"&gt;XmlEnc&lt;/a&gt;. In addition, the user may layer &lt;a href="Optional.html"&gt;other functionalities&lt;/a&gt; on top of the core writing, such as on the fly schema checking, date/number formatting, specific empty-element handling and pretty-printing. 
  </description>
   
   <shortDescription>XmlWriter</shortDescription>
@@ -125,10 +125,10 @@
     <reports>
         <report>maven-jxr-plugin</report>
         <report>maven-javadoc-plugin</report>
+        <report>maven-statcvs-plugin</report>          
+        <report>maven-changelog-plugin</report>        
         <report>maven-license-plugin</report>
         <report>maven-changes-plugin</report>           
-        <report>maven-changelog-plugin</report>        
-        <report>maven-statcvs-plugin</report>          
     </reports>
 
 </project>
