@@ -7,6 +7,9 @@
   </properties>
 
   <body>
+    <release version="0.8.1" date="2004-??-??">
+        <action dev="hen" type="add">Feature #SJN-30, to have a static memory behind the contexts and not a per-instance memory. It is turned on via the org.osjava.jndi.shared=true jndi.properties parameter. </action>
+    </release>
     <release version="0.8.1" date="2004-01-18">
         <action dev="hen" type="add">Added feature #SJN-48, in which the simple-jndi is configurable from system properties as well as jndi.properties and a Hashtable. The system property takes precedence. </action>
     </release>
