@@ -69,21 +69,19 @@
        need to be used, http://www.osjava.org/maven -->
   <dependencies>
     <dependency>
-      <id>code316-core</id>
-      <type>required</type>
+      <groupId>code316</groupId>
+      <artifactId>code316-core</artifactId>
       <version>0.8</version>
       <url>http://www.code316.com/</url>
     </dependency>
 
     <dependency>
       <id>jep</id>
-      <type>required</type>
       <version>2.24</version>
     </dependency>
 
     <dependency>
       <id>junit</id>
-      <type>required</type>
       <version>3.8.1</version>
     </dependency>
   </dependencies>
