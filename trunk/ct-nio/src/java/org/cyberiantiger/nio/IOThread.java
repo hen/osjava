@@ -29,7 +29,7 @@ public class IOThread extends Thread {
      * Register a ChannelHandler with this IOThread
      *
      */
-    SelectionKey register(ChannelHandler handler, int ops) throws IOException {
+    public SelectionKey register(ChannelHandler handler, int ops) throws IOException {
         SelectableChannel chan = handler.getSelectableChannel();
 
         if (chan.isBlocking()) {
