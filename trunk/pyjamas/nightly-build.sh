@@ -105,6 +105,10 @@ do
     then
         mv target/docs/xref $reportDir/$i
     fi
+    if [ -d target/docs/xref-test/ ];
+    then
+        mv target/docs/xref-test $reportDir/$i
+    fi
     if [ -f target/generated-xdocs/checkstyle-report.xml ];
     then
         mv target/generated-xdocs/checkstyle-report.xml $reportDir/$i
