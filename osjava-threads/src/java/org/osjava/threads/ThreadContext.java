@@ -96,6 +96,11 @@ public class ThreadContext
      */
     private ThreadNameParser nameParser = null;
 
+    /*
+     * The environmental properties of the context
+     */
+    private Hashtable environment = new Hashtable();
+    
     /****************
      * Constructors *
      ****************/
@@ -682,36 +687,63 @@ public class ThreadContext
         return nameParser.nameToString(retName);
     }
 
-    /*
-     * (non-Javadoc)
+    /**
+     * Add a property, <code>propVal</code>, of name, <code>propName</code>,
+     * to the environment of the context.  If a property is already stored
+     * under the name <code>propVal</code>, it is overwritten and the previous
+     * value is returned. 
      * 
+     * @param propName the name of the property
+     * @param propVal the property value
+     * @return the previous value if it already existed, else null
+     * @throws NamingException if a naming exception is encountered.
      * @see javax.naming.Context#addToEnvironment(java.lang.String,
      *      java.lang.Object)
      */
     public Object addToEnvironment(String propName, Object propVal)
         throws NamingException {
-        // TODO Auto-generated method stub
-        return null;
+        Object ret = null;
+        if(environment.containsKey(propName)) {
+            ret = environment.get(propName);
+        }
+        environment.put(propName,propVal);
+        return ret;
     }
 
-    /*
-     * (non-Javadoc)
+    /**
+     * Remove an environment property from the environment of this context.
      * 
+     * @param propName the name of the property to remove
+     * @return the previous value of the property
+     * @throws NamingException if a naming exception is encountered.
      * @see javax.naming.Context#removeFromEnvironment(java.lang.String)
      */
     public Object removeFromEnvironment(String propName) throws NamingException {
-        // TODO Auto-generated method stub
-        return null;
+        Object ret = null;
+        if(environment.containsKey(propName)) {
+            ret = environment.get(propName);
+        }
+        environment.remove(propName);
+        return ret;
     }
 
-    /*
-     * (non-Javadoc)
+    /**
+     * Return a copy of the environment used by the context.  This is a 
+     * departure from what the documentation for {@link javax.naming.Context}
+     * suggests, but it is safer and doesn't put the context into an undefined
+     * state.
      * 
+     * @return a copy of the environment of this context.
+     * @throws NamingException if a naming exceptino is encountered.
      * @see javax.naming.Context#getEnvironment()
      */
     public Hashtable getEnvironment() throws NamingException {
         // TODO Auto-generated method stub
-        return null;
+        /*
+         * Even though the docs say that nothing is supposed to be done to the
+         * environment that is returned, I don't trust people to do the 
+         * right thing.  Returning a clone is safer. */
+        return (Hashtable)environment.clone();
     }
 
     /*
