@@ -8,6 +8,7 @@
 
   <body>
     <release version="1.0-rc5" date="2004-04-23">
+      <action dev="reassembler" type="add">First release of Charlotte. </action>
     </release>
 </body>
 </document>
