@@ -63,6 +63,7 @@ import org.osjava.convert.Convert;
 import org.osjava.jndi.util.CustomProperties;
 import org.osjava.jndi.util.IniProperties;
 import org.osjava.jndi.util.ContextBindings;
+import org.osjava.jndi.util.ContextNames;
 import org.osjava.jndi.util.XmlProperties;
 
 public class PropertiesContext implements Context  {
@@ -655,7 +656,7 @@ if(DEBUG)        System.err.println("[CTXT]remaining: "+remaining);
         if("".equals(name)) {
             // here we should return a list of the directories and prop files 
             // minus the .properties that are in the root directory
-            return new PropertiesNames(this.table.keys());
+            return new ContextNames((Map)table.clone());
         }
 
 // if name is a directory, we should do the same as we do above
