@@ -58,7 +58,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.net.MalformedURLException;
 
-import org.apache.commons.lang.StringUtils;
 import org.osjava.convert.Convert;
 import org.osjava.jndi.util.CustomProperties;
 import org.osjava.jndi.util.IniProperties;
@@ -374,7 +373,7 @@ public class PropertiesContext implements Context  {
 
         // name is a delimited notation, each element is either a 
         // directory, file or part of a key.
-        String[] elements = StringUtils.split(name, this.delimiter);
+        String[] elements = PropertiesContext.split(name, this.delimiter);
         String path = root;
         Properties properties = null;
         int sz = elements.length;
@@ -409,7 +408,7 @@ public class PropertiesContext implements Context  {
                     list.add(elements[j]);
                 }
                 if(list.size() > 0) {
-                    remaining = StringUtils.join(list.iterator(), this.delimiter);
+                    remaining = PropertiesContext.join(list.iterator(), this.delimiter);
                 }
 //                System.err.println("FILE FOUND: "+file);
 //                System.err.println("Remaining: "+remaining);
@@ -422,7 +421,7 @@ public class PropertiesContext implements Context  {
                     list.add(elements[j]);
                 }
                 if(list.size() > 0) {
-                    remaining = StringUtils.join(list.iterator(), this.delimiter);
+                    remaining = PropertiesContext.join(list.iterator(), this.delimiter);
                 }
 //                System.err.println("Rem: "+remaining);
                 break;  // TODO: Is this right?
@@ -775,6 +774,106 @@ public class PropertiesContext implements Context  {
         }
 
     }
+
+
+
+    /* START OF StringUtils copy */
+    private static String[] split(String str, String separatorChars) {
+        return split(str,separatorChars,-1);
+    }
+    private static String[] split(String str, String separatorChars, int max) {
+        // Performance tuned for 2.0 (JDK1.4)
+        // Direct code is quicker than StringTokenizer.
+        // Also, StringTokenizer uses isSpace() not isWhitespace()
+        
+        if (str == null) {
+            return null;
+        }
+        int len = str.length();
+        if (len == 0) {
+            return new String[0];
+        }
+        List list = new java.util.ArrayList();
+        int sizePlus1 = 1;
+        int i =0, start = 0;
+        boolean match = false;
+        if (separatorChars == null) {
+            // Null separator means use whitespace
+            while (i < len) {
+                if (Character.isWhitespace(str.charAt(i))) {
+                    if (match) {
+                        if (sizePlus1++ == max) {
+                            i = len;
+                        }
+                        list.add(str.substring(start, i));
+                        match = false;
+                    }
+                    start = ++i;
+                    continue;
+                }
+                match = true;
+                i++;
+            }
+        } else if (separatorChars.length() == 1) {
+            // Optimise 1 character case
+            char sep = separatorChars.charAt(0);
+            while (i < len) {
+                if (str.charAt(i) == sep) {
+                    if (match) {
+                        if (sizePlus1++ == max) {
+                            i = len;
+                        }
+                        list.add(str.substring(start, i));
+                        match = false;
+                    }
+                    start = ++i;
+                    continue;
+                }
+                match = true;
+                i++;
+            }
+        } else {
+            // standard case
+            while (i < len) {
+                if (separatorChars.indexOf(str.charAt(i)) >= 0) {
+                    if (match) {
+                        if (sizePlus1++ == max) {
+                            i = len;
+                        }
+                        list.add(str.substring(start, i));
+                        match = false;
+                    }
+                    start = ++i;
+                    continue;
+                }
+                match = true;
+                i++;
+            }
+        }
+        if (match) {
+            list.add(str.substring(start, i));
+        }
+        return (String[]) list.toArray(new String[list.size()]);
+    }
+
+    private static String join(Iterator iterator, String separator) {
+        if (iterator == null) {
+            return null;
+        }
+        StringBuffer buf = new StringBuffer(256);  // Java default is 16, probably too small
+        while (iterator.hasNext()) {
+            Object obj = iterator.next();
+            if (obj != null) {
+                buf.append(obj);
+            }
+            if ((separator != null) && iterator.hasNext()) {
+                buf.append(separator);
+            }
+         }
+        return buf.toString();
+    }
+    /* END OF StringUtils copy */
+
 }
 
 
