@@ -12,12 +12,9 @@
 </td>
 <!-- body -->
 <td class="index-body">
-<div class="sub-title">Coming Soon</div>
-<pg:include src="../docs/comingsoon.html"/><br/>
-<div class="sub-title">New Books</div>
-<pg:include src="../docs/newbooks.html"/><br/>
-<div class="sub-title">New Reviews</div>
 <pg:include src="../docs/newreviews.html"/><br/>
+<pg:include src="../docs/newbooks.html"/><br/>
+<pg:include src="../docs/comingsoon.html"/><br/>
 </td>
 </tr>
 </table>

@@ -1,7 +1,16 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <pg:pergamum xmlns:pg="http://www.osjava.org/pergamum/ns" name="Coming Soon">
+  <div class="sub-title">Coming Soon</div>
   <ul>
-    <pg:book>0596004079</pg:book>
+    <pg:book>0596005822</pg:book>
+    <pg:book>1932394192</pg:book>
+    <pg:book>1583470441</pg:book>
+    <pg:book>193239415X</pg:book>
+    <pg:book>013112594X</pg:book>
     <pg:book>1590593340</pg:book>
+    <pg:book>0596004079</pg:book>
+    <pg:book>0672324105</pg:book>
+    <pg:book>0672323095</pg:book>
+    <pg:book>0735711119</pg:book>
   </ul>
 </pg:pergamum>
