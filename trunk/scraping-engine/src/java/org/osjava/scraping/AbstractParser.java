@@ -31,6 +31,10 @@
  */
 package org.osjava.scraping;
 
+import org.osjava.oscube.container.Config;
+import org.osjava.oscube.container.Session;
+import org.osjava.oscube.container.Result;
+
 public abstract class AbstractParser implements Parser {
 
     abstract public Result parse(Page page, Config cfg, Session session) throws ParsingException;

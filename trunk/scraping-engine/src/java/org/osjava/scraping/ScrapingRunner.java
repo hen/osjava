@@ -34,44 +34,21 @@ package org.osjava.scraping;
 import java.util.List;
 import java.io.Reader;
 
-public class Engine implements Runner {
+import org.osjava.oscube.container.Runner;
+import org.osjava.oscube.container.Engine;
+import org.osjava.oscube.container.Config;
+import org.osjava.oscube.container.Session;
+import org.osjava.oscube.container.Result;
+
+import org.osjava.oscube.service.store.*;
+import org.osjava.oscube.service.notify.*;
+
+public class ScrapingRunner implements Runner {
 
     public static void main(String[] args) {
         Engine engine = new Engine();
-        engine.run(args);
-    }
-
-/// TODO: Implement the Scheduler aspect
-///  The Scheduler notifies only this class. It is 
-///  then up to this Engine to run the parsers.
-/// TODO: Put the scraping and db in a different thread
-    public void run(String[] args) {
-        // load the config
-        Config cfg = ConfigFactory.getConfig(args);
-
-
-        // test and how schedule=startup will be handled
-        List list = cfg.getList("org.osjava.scrapers");
-        for(int i=0; i<list.size(); i++) {
-            String key = (String)list.get(i);
-
-            Session session = new NamespaceSession();
-            session.put("org.osjava.scraper", key);
-            cfg.setContext(key+".");
-
-//            String scheduler = cfg.getString("scheduler");
-
-            // schedule the times to run parsers
-            // TODO: allow this to be pluggable.
-            Scheduler scheduler = SchedulerFactory.getScheduler(cfg, session);
-            // Engine suddenly becomes a part of the system. 
-            // Possibly the run(Config, Session) needs to 
-            // move into an interface
-            scheduler.schedule(cfg, session, this);
-
-            // temporary running
-//            run(cfg, session);
-        }
+        ScrapingRunner runner = new ScrapingRunner();
+        engine.run(runner, args);
     }
 
 // From here down is the execution part of a scraper. Runner maybe.

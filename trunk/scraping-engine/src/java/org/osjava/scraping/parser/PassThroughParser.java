@@ -37,6 +37,11 @@ import java.io.BufferedReader;
 import java.util.ArrayList;
 import org.osjava.scraping.*;
 
+import org.osjava.oscube.container.Config;
+import org.osjava.oscube.container.Session;
+import org.osjava.oscube.container.Result;
+import org.osjava.oscube.container.TabularResult;
+
 public class PassThroughParser extends AbstractParser {
 
     public Result parse(Page page, Config cfg, Session session) throws ParsingException {

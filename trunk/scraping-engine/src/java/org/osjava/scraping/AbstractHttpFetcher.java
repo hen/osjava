@@ -38,6 +38,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.osjava.norbert.NoRobotClient;
+import org.osjava.oscube.container.Config;
+import org.osjava.oscube.container.Session;
 
 /**
  * Fetches a piece of content for a url

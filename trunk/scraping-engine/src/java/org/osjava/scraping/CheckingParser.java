@@ -31,6 +31,14 @@
  */
 package org.osjava.scraping;
 
+import org.osjava.oscube.container.Config;
+import org.osjava.oscube.container.Session;
+import org.osjava.oscube.container.Result;
+import org.osjava.oscube.container.NullResult;
+
+import org.osjava.oscube.container.Header;
+import org.osjava.oscube.service.store.*;
+
 public abstract class CheckingParser extends AbstractParser {
 
     public Result parse(Page page, Config cfg, Session session) throws ParsingException {

@@ -31,6 +31,9 @@
  */
 package org.osjava.scraping;
 
+import org.osjava.oscube.container.Config;
+import org.osjava.oscube.container.Session;
+
 public class NullFetcher implements Fetcher {
 
     public Page fetch(String uri, Config cfg, Session session) throws FetchingException {

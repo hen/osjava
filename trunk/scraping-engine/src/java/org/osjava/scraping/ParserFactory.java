@@ -33,6 +33,9 @@ package org.osjava.scraping;
 
 import com.generationjava.lang.ClassW;
 
+import org.osjava.oscube.container.Config;
+import org.osjava.oscube.container.Session;
+
 public class ParserFactory {
 
     static public Parser getParser(Config cfg, Session session) {
