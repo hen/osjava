@@ -161,10 +161,12 @@ public class XmlEncXmlWriter extends AbstractXmlWriter {
 
     /**
      * Close this.xmlenc. It does not close the underlying 
-     * writer, but does throw an exception if there are 
+     * writer, but does flush the underlying writer and 
+     * throw an exception if there are 
      * as yet unclosed tags.
      */
     public void close() throws IOException {
+        this.writer.flush();
         this.xmlenc.close();
     }
 
