@@ -18,7 +18,7 @@
   <gumpRepositoryId>simple-jndi</gumpRepositoryId>
 
   <description>
-    A simple implementation of JNDI. It is entirely library based, so no server instances are started, and it sits upon Java .properties files, so it is easy to use and simple to understand. The .properties files may be either on the file system or in the classpath. 
+    A simple implementation of JNDI. It is entirely library based, so no server instances are started, and it sits upon Java .properties files or XML files, so it is easy to use and simple to understand. The .properties/.xml files may be either on the file system or in the classpath. 
   </description>
   
   <shortDescription>A JNDI implementation using .properties</shortDescription>
