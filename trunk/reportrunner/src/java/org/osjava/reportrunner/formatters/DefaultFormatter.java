@@ -2,7 +2,7 @@ package org.osjava.reportrunner.formatters;
 
 import org.osjava.reportrunner.*;
 
-public class NullFormatter extends AbstractFormatter {
+public class DefaultFormatter extends AbstractFormatter {
 
     public Object format(Object input) {
         if(input == null) {
