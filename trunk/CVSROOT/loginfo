@@ -27,7 +27,7 @@
 ^CVSROOT mail -s "[OSJAVA-CVSROOT] checkin of `echo %s` by `whoami`" tigran@osjava.org
 ^atom4j mail -s "[ATOM4J] checkin of `echo %s` by `whoami` " lance@brainopolis.com,tigran@osjava.org
 ^ct-nio mail -s "[CT-NIO] checkin of `echo %s` by `whoami`" antony@cyberiantiger.org, tigran@osjava.org
-^genjava-core -s "[GENJAVA-CORE] checkin of `echo %s` by `whoami`" bayard@generationjava.com, tigran@osjava.org
+^genjava-core mail -s "[GENJAVA-CORE] checkin of `echo %s` by `whoami`" bayard@generationjava.com, tigran@osjava.org
 ^jpe mail -s "[JPE] checkin of `echo %s` by `whoami`" bayard@generationjava.com
 ^mudclient mail -s "[MUDCLIENT] checkin of `echo %s` by `whoami`" antony@cyberiantiger.org, tigran@osjava.org
 ^norbert mail -s "[NORBERT] checkin of `echo %s` by `whoami`" bayard@generationjava.com, tigran@osjava.org
