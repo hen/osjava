@@ -17,18 +17,36 @@ do
     local_report=report_`echo $i | sed 's/\//_/g'`.html
     report=$reportDir/$local_report
 
-    cat pmd-report.xml | sed 's/document>/html>/' | sed 's/properties>/head>/' | sed 's/<\/section>//' | sed 's/<\/subsection>//' | sed 's/<section name="\([^"]*\)"/<h1>\1<\/h1/' | sed 's/<subsection name="\([^"]*\)"/<h2>\1<\/h2/' > pmd-report.html
-    cat checkstyle-report.xml | sed 's/document>/html>/' | sed 's/properties>/head>/' | sed 's/<\/section>//' | sed 's/<\/subsection>//' | sed 's/<section name="\([^"]*\)"/<h1>\1<\/h1/' | sed 's/<subsection name="\([^"]*\)"/<h2>\1<\/h2/' > checkstyle-report.html
-    cat junit-report.xml | sed 's/document>/html>/' | sed 's/properties>/head>/' | sed 's/<\/section>//' | sed 's/<\/subsection>//' | sed 's/<section name="\([^"]*\)"/<h1>\1<\/h1/' | sed 's/<subsection name="\([^"]*\)"/<h2>\1<\/h2/' > junit-report.html
 
     echo '<html><body>' > $report
     echo "<h1>$i Report</h1>" >> $report
 
     echo '<ul>' >> $report
-    echo "<li><a href='$i/checkstyle-report.html'>checkstyle</a></li>" >> $report
-    echo "<li><a href='$i/pmd-report.html'>pmd</a></li>" >> $report
-    echo "<li><a href='$i/junit-report.html'>junit</a></li>" >> $report
-    echo "<li><a href='$i/javadoc/'>javadoc</a></li>" >> $report
+
+   
+    if [ -f checkstyle-report.xml ];
+    then
+        echo "<li><a href='$i/checkstyle-report.html'>checkstyle</a></li>" >> $report
+        cat checkstyle-report.xml | sed 's/document>/html>/' | sed 's/properties>/head>/' | sed 's/<\/section>//' | sed 's/<\/subsection>//' | sed 's/<section name="\([^"]*\)"/<h1>\1<\/h1/' | sed 's/<subsection name="\([^"]*\)"/<h2>\1<\/h2/' > checkstyle-report.html
+    fi
+
+    if [ -f pmd-report.xml ];
+    then
+        echo "<li><a href='$i/pmd-report.html'>pmd</a></li>" >> $report
+        cat pmd-report.xml | sed 's/document>/html>/' | sed 's/properties>/head>/' | sed 's/<\/section>//' | sed 's/<\/subsection>//' | sed 's/<section name="\([^"]*\)"/<h1>\1<\/h1/' | sed 's/<subsection name="\([^"]*\)"/<h2>\1<\/h2/' > pmd-report.html
+    fi
+
+    if [ -f junit-report.xml ];
+    then
+        echo "<li><a href='$i/junit-report.html'>junit</a></li>" >> $report
+        cat junit-report.xml | sed 's/document>/html>/' | sed 's/properties>/head>/' | sed 's/<\/section>//' | sed 's/<\/subsection>//' | sed 's/<section name="\([^"]*\)"/<h1>\1<\/h1/' | sed 's/<subsection name="\([^"]*\)"/<h2>\1<\/h2/' > junit-report.html
+    fi
+
+    if [ -d javadoc/ ];
+    then
+        echo "<li><a href='$i/javadoc/'>javadoc</a></li>" >> $report
+    fi
+
     echo '</ul>' >> $report
 
     echo '<hr>' >> $report
