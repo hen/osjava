@@ -10,6 +10,7 @@
     <book>0764544373</book>
     <book>0974848808</book>
     <book>0471213020</book>
+    <book>159059228X</book>
   </category>
   <category id="2" name="Apache Jakarta Tapestry">
     <book>1932394117</book>
@@ -23,6 +24,7 @@
   </category>
   <category id="4" name="Apache Jakarta General">
     <book>0471449156</book>
+    <book>1590590996</book>
   </category>
   <category id="5" name="Apache Jakarta Commons">
     <book>1590592832</book>
@@ -34,6 +36,7 @@
     <book>0764526065</book>
     <book>0471237647</book>
     <book>1861008309</book>
+    <book>1893115364</book>
   </category>
   <category id="7" name="JUnit">
     <book>1930110995</book>
@@ -49,6 +52,7 @@
     <book>0596003870</book>
     <book>1932394192</book>
     <book>1932394060</book>
+    <book>1590591259</book>
   </category>
   <category id="10" name="Eclipse">
     <book>1930110960</book>
