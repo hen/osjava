@@ -1,7 +1,6 @@
 package com.generationjava.apps.jpe;
 
-import java.io.*;
-import java.util.*;
+import java.io.FileDescriptor;
 import java.security.Permission;
 
 public class SecManager extends SecurityManager

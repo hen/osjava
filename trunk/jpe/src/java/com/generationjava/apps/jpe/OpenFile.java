@@ -1,7 +1,11 @@
 package com.generationjava.apps.jpe;
 
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 
 /**
 * OpenFile defines a opened file within JPE, it handles its buffers

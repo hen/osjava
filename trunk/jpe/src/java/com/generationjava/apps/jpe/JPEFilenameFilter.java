@@ -1,7 +1,7 @@
 package com.generationjava.apps.jpe;
 
-import java.io.FilenameFilter;
 import java.io.File;
+import java.io.FilenameFilter;
 
 public class JPEFilenameFilter implements FilenameFilter {
 

@@ -1,15 +1,24 @@
 package com.generationjava.apps.jpe;
 
-import java.awt.*;
-import java.io.*;
-import java.lang.reflect.*;
-import java.util.*;
-import java.awt.event.*;
+import java.awt.Menu;
+import java.awt.MenuBar;
+import java.awt.MenuShortcut;
+import java.awt.event.ActionEvent;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.StringTokenizer;
+import java.util.Vector;
+
+import jstyle.JSBeautifier;
+import jstyle.JSFormatter;
 
 import com.generationjava.apps.jpe.compiler.CommandLineCompiler;
 import com.generationjava.apps.jpe.compiler.ToolsCompiler;
-
-import jstyle.*;
 
 /**
 * Extra handler handles all the request from the extra menu

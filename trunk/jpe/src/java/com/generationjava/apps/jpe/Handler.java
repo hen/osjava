@@ -1,6 +1,5 @@
 package com.generationjava.apps.jpe;
 
-import java.awt.Menu;
 import java.awt.MenuBar;
 
 /**

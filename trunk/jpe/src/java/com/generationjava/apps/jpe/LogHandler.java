@@ -1,9 +1,11 @@
 package com.generationjava.apps.jpe;
 
-import java.awt.*;
-import java.io.*;
-import java.util.*;
-import java.awt.event.*;
+import java.awt.Menu;
+import java.awt.MenuBar;
+import java.awt.MenuShortcut;
+import java.awt.event.ActionEvent;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 
 /**
 * Log handler handles all the request from the log menu

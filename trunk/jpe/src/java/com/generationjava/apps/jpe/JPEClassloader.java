@@ -1,7 +1,8 @@
 package com.generationjava.apps.jpe;
 
-import java.util.*;
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.util.Hashtable;
 
 public class JPEClassloader extends ClassLoader {
         private Hashtable cache = new Hashtable();

@@ -1,6 +1,5 @@
 package com.generationjava.apps.jpe;
 
-import java.io.*;
 
 public class TitleBarHandler extends AbstractHandler {
         Editor editor;

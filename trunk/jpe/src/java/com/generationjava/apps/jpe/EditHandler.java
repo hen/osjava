@@ -1,19 +1,17 @@
 package com.generationjava.apps.jpe;
 
 import java.awt.Menu;
-import java.awt.MenuShortcut;
-import java.awt.MenuItem;
 import java.awt.MenuBar;
+import java.awt.MenuShortcut;
 import java.awt.Toolkit;
-import java.io.IOException;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.ClipboardOwner;
 import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
-import java.awt.datatransfer.ClipboardOwner;
-import java.awt.datatransfer.StringSelection;
+import java.awt.event.ActionEvent;
+import java.io.IOException;
 
 /**
 * File handler handles all the request from the file menu

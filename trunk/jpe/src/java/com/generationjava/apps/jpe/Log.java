@@ -2,7 +2,7 @@ package com.generationjava.apps.jpe;
 
 // Log.java
 
-import java.io.*;
+import java.io.PrintStream;
 import java.util.Date;
 
 public class Log extends Object {

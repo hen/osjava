@@ -1,8 +1,8 @@
 package com.generationjava.apps.jpe;
 
-import java.util.ResourceBundle;
-import java.util.MissingResourceException;
 import java.text.MessageFormat;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 
 public class TextController {
 
