@@ -255,14 +255,7 @@ public class Encoding implements EncodingDefinition {
         return this.fieldNames.size();
     }
     
-    /**
-     * 
-     * @deprecated Use getLength
-     * 
-     */
-    public int getBitCount() {
-        return getLength();
-    }
+
     
     public int getLength() {
         return this.bitCount;
@@ -314,7 +307,7 @@ public class Encoding implements EncodingDefinition {
     }
     
     public BigInteger getMaxValue() {
-        return Encoding.getMaxValue(getBitCount());            
+        return Encoding.getMaxValue(getLength());            
     }
     
     public static BigInteger getMaxValue(int numBits) {
@@ -407,7 +400,7 @@ public class Encoding implements EncodingDefinition {
             return null;
         }
         
-        return (SimpleDefinition) this.fieldDefinitions.get(index);
+        return (FieldDefinition) this.fieldDefinitions.get(index);
     }
 
     public double expandFieldValue(String name, BigInteger integer) {        
@@ -515,5 +508,20 @@ public class Encoding implements EncodingDefinition {
         Encoding.this.fieldNames.add(def.getName());
         Encoding.this.fieldDefinitions.add(def);
     }
-    
+
+    public Value[] unpackValues(BigInteger bits) {
+        int count = getValueCount();
+        Value []vals = new Value[count];
+        
+        for (int i = 0; i < vals.length; i++) {
+            FieldDefinition fd = getField(i);
+            vals[i] = new Value();
+                      
+            vals[i].setFieldDefinition(fd);
+            vals[i].setRaw(extractFieldValue(i, bits).longValue());
+            vals[i].setExpanded(expandFieldValue(fd.getName(), bits));            
+        }
+        
+        return vals;
+    }    
 }
