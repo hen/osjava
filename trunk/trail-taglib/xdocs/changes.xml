@@ -7,6 +7,9 @@
   </properties>
 
   <body>
+    <release version="0.3" date="2004-??-??">
+      <action dev="hen" type="fix" issue="TRA-2">Trails no longer end with the delimiter. A new attribute, showFinalDelimiter, exists and may be set to "true" to get the previous style. </action>
+    </release>
     <release version="0.2" date="2004-04-14">
       <action dev="hen" type="add">Normalized trails consider the query string to not be important in equality. This was found to be the most desirable behaviour for an automatic bookmark. </action>
     </release>
