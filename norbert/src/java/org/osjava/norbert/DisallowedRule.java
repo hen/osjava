@@ -31,12 +31,16 @@
  */
 package org.osjava.norbert;
 
+import org.apache.log4j.Logger;
+
 /**
  * A norobots Disallow: rule. 
  * Any path which begins with the rule's path is 
  * not allowed. 
  */
 class DisallowedRule extends AbstractRule {
+
+    private static Logger logger = Logger.getLogger(DisallowedRule.class);
 
     public DisallowedRule(String path) {
         super(path);
@@ -47,7 +51,7 @@ class DisallowedRule extends AbstractRule {
             return null;
         }
         boolean test = query.startsWith( super.getPath() );
-//        System.err.println("DIS: "+query+" vs "+super.getPath());
+        logger.debug("DIS: "+query+" vs "+super.getPath());
         if(!test) {
             return null;
         } else {

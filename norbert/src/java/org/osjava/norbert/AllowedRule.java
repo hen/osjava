@@ -31,12 +31,16 @@
  */
 package org.osjava.norbert;
 
+import org.apache.log4j.Logger;
+
 /**
  * A norobots Allow: rule. 
  * Any path which begins with the rule's path is 
  * allowed. 
  */
 class AllowedRule extends AbstractRule {
+
+    private static Logger logger = Logger.getLogger(AllowedRule.class);
 
     public AllowedRule(String path) {
         super(path);
@@ -50,7 +54,7 @@ class AllowedRule extends AbstractRule {
             return null;
         }
         boolean test = query.startsWith( super.getPath() );
-//        System.err.println("ALL: "+query+" vs "+super.getPath());
+        logger.debug("ALL: "+query+" vs "+super.getPath());
         if(!test) {
             return null;
         } else {

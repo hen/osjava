@@ -38,6 +38,8 @@ import java.net.URL;
 import java.net.URLDecoder;
 import java.net.MalformedURLException;
 
+import org.apache.log4j.Logger;
+
 import com.generationjava.net.UrlW;
 
 /**
@@ -47,6 +49,8 @@ import com.generationjava.net.UrlW;
  * http://www.robotstxt.org/wc/norobots-rfc.html
  */
 public class NoRobotClient {
+
+    private static Logger logger = Logger.getLogger(NoRobotClient.class);
 
     private String userAgent;
     private RulesEngine rules;
@@ -79,7 +83,7 @@ public class NoRobotClient {
             // fetch baseUrl+"robots.txt"
             txtUrl = new URL(baseUrl, "robots.txt");
         } catch(MalformedURLException murle) {
-            System.err.println("MURLE: "+murle.getMessage());
+            logger.error("MalformedURLExcepption", murle);
             // we can do what we want
             return;
         }
@@ -88,7 +92,7 @@ public class NoRobotClient {
         try {
             txt = ""+UrlW.getContent(txtUrl);
         } catch(IOException ioe) {
-            System.err.println("IOE: "+ioe.getMessage());
+            logger.error("IOException", ioe);
             // we can do what we want
             return;
         }
@@ -157,7 +161,7 @@ public class NoRobotClient {
                     }
                 }
             }
-//            System.err.println(this.rules);
+            logger.debug(this.rules);
         } catch (IOException ioe) {
             return;
         }
@@ -189,7 +193,7 @@ public class NoRobotClient {
             return true;
         }
         urlStr = URLDecoder.decode( urlStr );
-//        System.err.println("Considering: "+urlStr);
+        logger.debug("Considering: "+urlStr);
         return this.rules.isAllowed( urlStr );
     }
 
