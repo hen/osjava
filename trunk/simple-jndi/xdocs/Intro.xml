@@ -44,14 +44,16 @@ Simple-JNDI stores values in multiple .properties files and are looked up using 
 <h4>Examples</h4>
 <p>
 Imagine a file-structure looking like,
+</p>
 <code>
-config/
-config/debug.properties
-config/ProductionDS.properties
-config/application1/default.properties
-config/application1/ds.properties
-config/application1/users.properties
+config/<br />
+config/debug.properties<br />
+config/ProductionDS.properties<br />
+config/application1/default.properties<br />
+config/application1/ds.properties<br />
+config/application1/users.properties<br />
 </code>
+<p>
 in which the files look like;
 <dl>
 <dt>default.properties</dt>
@@ -116,10 +118,19 @@ Note that the ProductionDS and TestDS return types are objects of type javax.sql
 <h4>Todo</h4>
 <ul>
 <li>Types. com.foo.Value can have a partner key of com.foo.Value.type which specifies the type of object to use for the key. </li>
+<li>Implement Type in such a way that the object to create may be specified, say JDOPersistenceFactory, and that sub-properties may be set as bean properties.</li>
 <li>Implement binding so that values may be stored in the system, making it Read/Write. </li>
 <li>Implementing the list methods so you can see the values in a particular directory/properties file. </li>
 <li>Searches. Consider implementing DirContext. </li>
-<li>Switch to using Names in the system, with the String argument being turned to a Name based on delimiters specified in the jndi.properties. </li>
+<li>Switch to using Names in the system, with the String argument being turned to a Name based on delimiters specified in the jndi.properties. Allow more than one delimiter.</li>
+<li>Other DataSource like things? JDO?</li>
+<li>XML underneath as well as .properties</li>
+<li>If root is unspecified, then use the classpath</li>
+<li>Allow the root to be a classpath root, ie) com.generationjava</li>
+<li>Allow the root to be a url, so properties can be found online</li>
+<li>Hook up DBCP or some other connection pool.</li>
+<li>Make it nice to hook up Enhanced drivers from DbUtils??</li>
+<li>Use OrderedProperties to order the underlying .properties files. </li>
 </ul>
 
 </section>
