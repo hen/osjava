@@ -2,6 +2,12 @@ package org.osjava.reportrunner_plugins;
 
 import java.util.*;
 
+import java.net.URLEncoder;
+
+import org.osjava.reportrunner.Report;
+import org.osjava.reportrunner.Variant;
+import org.osjava.reportrunner.Param;
+
 // partly for use by Velocity
 public class RRTool {
 
@@ -77,6 +83,42 @@ public class RRTool {
             e.printStackTrace();
             return "EXCEPTION";
         }
+    }
+
+    /**
+     * Does not include the _report, _group or _renderer parts of a 
+     * Report's query string.
+     */
+    public static String generateQueryString(Report report) {
+        StringBuffer url = new StringBuffer();
+
+        // Variants
+        Variant[] variant = report.getVariants();
+        for (int i=0;i<variant.length;i++) {
+            String name = variant[i].getName();
+            String selectedName = variant[i].getSelected().getName();
+            url.append("&" + URLEncoder.encode(name) + "=" + URLEncoder.encode(selectedName));
+        }
+
+        // Params
+        Param[] param = report.getParams();
+        for (int i=0;i<param.length;i++) {
+            String name = param[i].getName();
+            Object value = param[i].getOriginalValue();
+            url.append("&" + URLEncoder.encode(name) + "=");
+            if (value instanceof Object[]) {
+                Object[] values = (Object[]) value;
+                for (int j=0;j<values.length;j++) {
+                    String valueString = URLEncoder.encode(values[j].toString());
+                    url.append("&" + URLEncoder.encode(name) + "=" + valueString);
+                }
+            } else {
+                String valueString = URLEncoder.encode(value.toString());
+                url.append(valueString);
+            }
+        }
+
+        return url.toString();
     }
 
 }

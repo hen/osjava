@@ -12,6 +12,7 @@ public class Param implements Nameable {
     private String defaultValue;
     private Class type = String.class;
     private Object value;
+    private Object originalValue;
     private String binding;
     private Parser parser;
     private String[] options;
@@ -79,6 +80,14 @@ public class Param implements Nameable {
 
     public void setValue(Object value) {
         this.value = value;
+    }
+
+    public Object getOriginalValue() {
+        return this.originalValue;
+    }
+
+    public void setOriginalValue(Object originalValue) {
+        this.originalValue = originalValue;
     }
 
     public String getBinding() {
