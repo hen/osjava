@@ -18,7 +18,7 @@
 <li>Add multiple-line format for .properties files. ie) if there are equal keys, they should create a collection. Note, with the OrderedProperties this becomes a list and not a collection. <b>DONE v0.4</b></li>
 <li>XML underneath as well as .properties: <b>DONE v0.4</b></li>
 <li>&nbsp;</li>
-<li>Allow converters to be configured/plugged in somehow. Add new converters. [URL/Boolean converters added in v0.5. Dependency on Lang 2.0] </li>
+<li>Allow converters to be configured/plugged in somehow. Add new converters. [<b>URL/Boolean converters added in v0.5</b>] </li>
 <li>Allow users to bind their own variables on top of the properties. <b>DONE v0.5</b>. This would only be for a single instance of the context, though the factory could return the same instance every time. </li>
 <li>Place the System properties before the simple-jndi layer so that -D may override it. <b>DONE v0.5</b>.</li>
 <li>&nbsp;</li>
