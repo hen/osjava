@@ -22,23 +22,25 @@ public class Introspection
 
     public String toString()
     {
-        StringBuffer buf = new StringBuffer("<introspection xmlns=\"" + Atom4J.xmlns + "\" > ");
+        StringBuffer buf = new StringBuffer("<introspection xmlns=\"" + Atom4J.xmlns + "\" >\n");
         if (createEntry)
-            buf.append("  <create-entry>" + baseURL + "/atom/USER/entry/</create-entry>");
+            buf.append("  <create-entry>" + baseURL + "/atom/USER/entry/</create-entry>\n");
+        /* No longer part of spec?
         if (deleteEntry)
-            buf.append("  <delete-entry>" + baseURL + "/atom/USER/entry/id</delete-entry>");
+            buf.append("  <delete-entry>" + baseURL + "/atom/USER/entry/</delete-entry>\n");
         if (editEntry)
-            buf.append("  <edit-entry>" + baseURL + "/atom/USER/entry/id</edit-entry>");
-        if (userPrefs)
-            buf.append("  <user-prefs>" + baseURL + "/atom/USER/prefs</user-prefs>");
-        if (searchEntries)
-            buf.append("  <search-entries>" + baseURL + "/atom/USER/search</search-entries>");
-        if (editTemplate)
-            buf.append("  <edit-template>" + baseURL + "/atom/USER/findTemplates</edit-template>");
-        if (categories)
-            buf.append("  <categories>" + baseURL + "/atom/USER/categories</categories>");
+            buf.append("  <edit-entry>" + baseURL + "/atom/USER/entry/</edit-entry>\n");
         if (comment)
-            buf.append("  <comment>" + baseURL + "/atom/USER/comment/id</comment>");
+            buf.append("  <comment>" + baseURL + "/atom/USER/comment/</comment>\n");
+        */
+        if (userPrefs)
+            buf.append("  <user-prefs>" + baseURL + "/atom/USER/prefs</user-prefs>\n");
+        if (searchEntries)
+            buf.append("  <search-entries>" + baseURL + "/atom/USER/search</search-entries>\n");
+        if (editTemplate)
+            buf.append("  <edit-template>" + baseURL + "/atom/USER/findTemplates</edit-template>\n");
+        if (categories)
+            buf.append("  <categories>" + baseURL + "/atom/USER/categories</categories>\n");
         buf.append("</introspection>");
         return buf.toString();
     }

@@ -40,7 +40,7 @@ import org.osjava.atom4j.reader.PrefsReader;
  * @author llavandowska
  * 
  * @web.servlet name="AtomServlet"
- * @web.servlet-mapping url-pattern="/atom"
+ * @web.servlet-mapping url-pattern="/atom/*"
  */
 public abstract class AtomServlet extends HttpServlet
 {
@@ -53,14 +53,15 @@ public abstract class AtomServlet extends HttpServlet
         "<?xml version=\"1.0\" encoding='iso-8859-1'?>".getBytes();
     
     private String introspectionXML = null;
-
+    
     /* (non-Javadoc)
      * @see javax.servlet.GenericServlet#init()
      */
     public void init() throws ServletException
     {
         super.init();
-    }   
+        baseURL = "/" + getServletContext().getServletContextName();
+    }
     
     /**
      * Implementor can/should override this method to 
@@ -72,7 +73,7 @@ public abstract class AtomServlet extends HttpServlet
     protected String getIntrospectionXML()
     {
         if (introspectionXML != null) return introspectionXML;
-        else if (baseURL != null)
+        else
         {
             Introspection intro = new Introspection();
             intro.setBaseURL( baseURL );
@@ -81,8 +82,8 @@ public abstract class AtomServlet extends HttpServlet
             intro.setEditEntry( true );
             intro.setSearchEntries( true );
             intro.setUserPrefs( true );
-            //intro.setComment( true );
-            //intro.setCategories( true );
+            intro.setComment( true );
+            intro.setCategories( true );
             
             introspectionXML = intro.toString(); 
         }
