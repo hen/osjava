@@ -1,10 +1,10 @@
 /*
  * org.osjava.threads.ThreadNameParser
  *
+ * $URL$
  * $Id$
- * $LastChangedRevision$
- * $LastChangedDate$
- * $LastChangedBy$
+ * $Rev$
+ * $Date$
  * $Author$
  *
  * Created on Mar 24, 2004
@@ -56,19 +56,30 @@ import javax.naming.NamingException;
  */
 public class ThreadNameParser implements NameParser {
     
-    /**
+    /*
      * The parent Context.  This is necessary for aquiring relevant data, like 
      * Properties that are used.
      */
     private ThreadContext parent = null;
     
+    /*
+     * The properties utilized by the ThreadNameParser when constructing new
+     * names.
+     */
+    private Properties props = new Properties();
+    
     /**
      * Creates a ThreadNameParser.  Any relevant information that is needed, 
      * such as the environment that is passed to {@link CompoundName CompundName}
      * objects that are created.
+     * 
+     * @param parent ThreadContext that utilizes the name parser.
+     * @throws NamingException if a naming exception is found.
      */
-    public ThreadNameParser(ThreadContext parent) {
+    public ThreadNameParser(ThreadContext parent) throws NamingException {
         this.parent = parent;
+        /* Properties from the parent context are in a HashTable. */
+        props.putAll(this.parent.getEnvironment());
     }
 
     /** 
@@ -84,11 +95,26 @@ public class ThreadNameParser implements NameParser {
      */
     public Name parse(String name) 
         throws InvalidNameException, NamingException {
-        /* Properties from the parent context are in a HashTable. */
-        Properties props = new Properties();
-        props.putAll(parent.getEnvironment());
         Name ret = new CompoundName(name, props);
         return ret;
     }
-
+    
+    /**
+     * Determine whether or not <code>ob</code> is equal to this object.
+     * If the ob is an instance of ThreadNameParser, it is considered to be 
+     * equal.
+     * <br/><br/>
+     * <b>NOTE:</b> The above assumption may actually be false under two
+     * circomstances.   Firstly, if the properties utilized by the contexts
+     * are different.  Secondly, if the ThreadNameParser is subclassed.
+     * 
+     * @param ob the objct which is being compared to this one.
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    public boolean equals(Object ob) {
+        if(ob instanceof ThreadNameParser) {
+            return true;
+        }
+        return false;
+    }
 }
