@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <pg:pergamum xmlns:pg="http://www.osjava.org/pergamum/ns" name="Pergamum: Open Source Java Books">
 
-<div class="banner">Pergamum: Open Source Java Books</div>
 <!-- nav -->
 <div class="nav">
 <pg:include src="../docs/listcategories.html"/><br/>
