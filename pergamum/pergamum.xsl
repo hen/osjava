@@ -26,6 +26,7 @@
     <div class="sub-title"><xsl:value-of select="."/></div>
     <ul class="publisher-list">
         <xsl:for-each select="document('db/publishers.xml')/publishers/publisher">
+            <xsl:sort select="@name"/>
             <xsl:variable name="id">
               <xsl:value-of select="@id"/>
             </xsl:variable>
@@ -41,9 +42,11 @@
     </xsl:variable>
     <div class="sub-title"><xsl:value-of select="$name"/></div>
     <xsl:for-each select="document('db/categories.xml')/category-list/category">
+      <xsl:sort select="@name"/>
       <div class="category-title"><xsl:value-of select="@name"/></div>
       <ul class="library-list">
         <xsl:for-each select="book">
+          <xsl:sort select="."/>
           <xsl:call-template name="pg:book"/>
         </xsl:for-each>
       </ul>
@@ -54,6 +57,7 @@
     <div class="sub-title"><xsl:value-of select="."/></div>
     <ul class="category-list">
         <xsl:for-each select="document('db/categories.xml')/category-list/category">
+            <xsl:sort select="@name"/>
             <xsl:variable name="id">
               <xsl:value-of select="@id"/>
             </xsl:variable>
@@ -72,6 +76,7 @@
     <div class="sub-title"><xsl:value-of select="$name"/></div>
     <ul>
       <xsl:for-each select="document('db/books.xml')/library/book[@publisher=$id]">
+        <xsl:sort select="@name"/>
         <xsl:variable name="isbn">
           <xsl:value-of select="@isbn"/>
         </xsl:variable>
@@ -87,6 +92,7 @@
     <div class="sub-title"><xsl:value-of select="document('db/categories.xml')/category-list/category[@id=$id]/@name"/></div>
     <ul>
       <xsl:for-each select="document('db/categories.xml')/category-list/category[@id=$id]/book">
+        <xsl:sort select="@name"/>
         <xsl:call-template name="pg:book"/>
       </xsl:for-each>
     </ul>
