@@ -57,14 +57,18 @@
   
   <dependencies>
     <dependency>
+      <id>oscube</id>
+      <version>SNAPSHOT</version>
+    </dependency>
+    <dependency>
       <id>log4j</id>
       <version>1.2.7</version>
       <url>http://jakarta.apache.org/log4j/</url>
     </dependency>
     <dependency>
       <id>commons-lang</id>
-      <version>1.0</version>
-      <url>http://jakarta.apache.org/commons/lang.html</url>
+      <version>2.0</version>
+      <url>http://jakarta.apache.org/commons/</url>
     </dependency>
     <dependency>
       <id>commons-httpclient</id>
@@ -72,34 +76,21 @@
       <url>http://jakarta.apache.org/commons/</url>
     </dependency>
     <dependency>
-      <id>commons-collections</id>
-      <version>2.1</version>
-      <url>http://jakarta.apache.org/commons/</url>
-    </dependency>
-    <dependency>
-      <id>commons-dbutils</id>
-      <version>SNAPSHOT</version>
-      <url>http://jakarta.apache.org/commons/</url>
-    </dependency>
-    <dependency>
-      <id>genjava-core</id>
-      <version>2.2</version>
+      <groupId>genjava</groupId>
+      <artifactId>gj-core</artifactId>
+      <version>3.0</version>
       <url>http://www.generationjava.com/</url>
     </dependency>
     <dependency>
-      <id>simple-jndi</id>
-      <version>0.7</version>
+      <groupId>genjava</groupId>
+      <artifactId>gj-scrape</artifactId>
+      <version>1.0</version>
       <url>http://www.generationjava.com/</url>
     </dependency>
     <dependency>
       <id>norbert</id>
       <version>0.1.1</version>
       <url>http://www.osjava.org/norbert/</url>
-    </dependency>
-    <dependency>
-      <id>quartz</id>
-      <version>1.0.7</version>
-      <url>http://www.part.net/quartz.html</url>
     </dependency>
   </dependencies>
 
