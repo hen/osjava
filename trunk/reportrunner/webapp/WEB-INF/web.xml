@@ -46,11 +46,6 @@
    <welcome-file>list_groups.jsp</welcome-file>
  </welcome-file-list>
 
- <error-page>
-   <exception-type>org.osjava.reportrunner.ReportException</exception-type>
-   <location>report_exception.jsp</location>
- </error-page>
-
 <resource-ref>
   <description>
     Roller Report DS
@@ -59,6 +54,15 @@
   <res-type>javax.sql.DataSource</res-type>
   <res-auth>Container</res-auth>
 </resource-ref>
+
+ <error-page>
+   <exception-type>org.osjava.reportrunner.ReportException</exception-type>
+   <location>report_exception.jsp</location>
+ </error-page>
+ <error-page>
+   <exception-type>org.osjava.reportrunner.EmptyReportException</exception-type>
+   <location>empty_report_exception.jsp</location>
+ </error-page>
 
 
 </web-app>
