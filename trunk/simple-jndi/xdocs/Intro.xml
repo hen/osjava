@@ -63,5 +63,12 @@ org.osjava.jndi.delimiter=/<br />
 If no org.osjava.jndi.delimiter is specified, then a '.' (dot) is chosen. 
 </p>
 </section>
+<section name="Additional JNDI parameters">
+ <p>In addition to the parameters mentioned above, shared-memory may be turned on with the following parameter.</p>
+  <code>
+   # jndi contexts share the same back-end<br />
+   org.osjava.jndi.shared=true<br />
+  </code>
+</section>
 </body>
 </document>
