@@ -31,4 +31,8 @@ public class FormattingResult implements Result {
 
         return row;
     }
+
+    public void reset() {
+        this.result.reset();
+    }
 }
