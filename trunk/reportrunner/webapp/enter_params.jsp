@@ -12,11 +12,13 @@
 
 <form action="/checkparameters">
 <input type="hidden" name="<%= ReportRunnerServlet.REPORT %>" value="<%= reportName %>">
-<input type="hidden" name="<%= ReportRunnerServlet.GROUP %>" value="<%= grouptName %>">
+<input type="hidden" name="<%= ReportRunnerServlet.GROUP %>" value="<%= groupName %>">
 <%
     Report report = ReportFactory.getReport(groupName, reportName);
     if(report instanceof org.osjava.reportrunner.reports.SqlReport) {
-        String dsName = getServletContext().getInitParameter(ReportRunnerServlet.DS_NAME);
+        ReportGroup group = ReportFactory.getReportGroup(groupName);
+//            String dsName = getServletContext().getInitParameter(ReportRunnerServlet.DS_NAME);
+        String dsName = group.getDatasource();
         ((org.osjava.reportrunner.reports.SqlReport)report).setDataSource(dsName);
     }
     Param[] params = report.getParams();

@@ -1,7 +1,7 @@
 <%@ page import="org.osjava.reportrunner.*" %>
 <%@ page import="org.osjava.reportrunner.servlets.*" %>
 
-<p>Select a report: </p>
+<p>Select a group: </p>
 
 <table>
 <%

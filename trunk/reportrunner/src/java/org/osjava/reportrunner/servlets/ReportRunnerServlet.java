@@ -22,7 +22,9 @@ public class ReportRunnerServlet extends HttpServlet {
 
         // HACK
         if(report instanceof org.osjava.reportrunner.reports.SqlReport) {
-            String dsName = getServletContext().getInitParameter(ReportRunnerServlet.DS_NAME);
+            ReportGroup group = ReportFactory.getReportGroup(groupName);
+//            String dsName = getServletContext().getInitParameter(ReportRunnerServlet.DS_NAME);
+            String dsName = group.getDatasource();
             ((org.osjava.reportrunner.reports.SqlReport)report).setDataSource(dsName);
         }
 
