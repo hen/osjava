@@ -40,6 +40,9 @@ import java.io.PrintWriter;
 import java.util.Hashtable;
 import java.util.Properties;
 
+/**
+ * A basic implementation of a DataSource. 
+ */
 public class PropertiesDataSource implements DataSource {
 
 //    private Hashtable env;
@@ -137,7 +140,6 @@ if(org.osjava.jndi.PropertiesContext.DEBUG)        System.err.println("[DS]Getti
         // ignored
     }
 
-    // temporary
     public String toString() {
         return this.name+"///"+this.props.toString()+" delim="+this.delimiter;
     }
