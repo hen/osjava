@@ -49,7 +49,9 @@
 <li>Test DataSources in various situations. Given a lookup of java:/TestDS and a delimiter of /, a directory of java: and a file of TestDS.properties, it appears to still look for TestDS/url and not url. Basically the PropertiesDataSource is buggy in its lookup. </li>
 <li>Static back end to the binding, so that different contexts can share values. </li>
 <li>Provide a .ini back-end support. </li>
-<li>Handle java:/ on a Windows platform. Filenames are unable to contain colons. </li>
+<li>Handle java:/ on a Windows platform. Filenames are unable to contain colons. [DONE] </li>
+<li>Implement satisfactory unit testing. </li>
+<li>Write maven.xml to do the test-config copy to target/test-classes. </li>
 </ul>
 
 </section>
