@@ -34,6 +34,7 @@ package org.osjava.scraping;
 import org.apache.commons.httpclient.*;
 import org.apache.commons.httpclient.methods.*;
 import java.io.IOException;
+import java.io.FileNotFoundException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -114,7 +115,12 @@ public abstract class AbstractHttpFetcher implements Fetcher {
         NoRobotClient nrc = new NoRobotClient("osjava-scraping-engine");
 
         // only parse the root, not the whole url
-        nrc.parse( toBase(url) );
+        try {
+            nrc.parse( toBase(url) );
+        } catch(FileNotFoundException fnfe) {
+            // no robots.txt, so who cares :)
+            return false;
+        }
         return !nrc.isUrlAllowed(url);
     }
 
