@@ -65,7 +65,7 @@ public class ThreadContextFactory implements InitialContextFactory {
      * @see javax.naming.spi.InitialContextFactory#getInitialContext(java.util.Hashtable)
      */
     public Context getInitialContext(Hashtable environment) throws NamingException {
-        return new ThreadContext(environment, "");
+        return new ThreadContext(environment, "thread:/");
     }
 
 }
