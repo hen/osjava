@@ -74,6 +74,14 @@ public abstract class AbstractConfig implements Config {
         }
     }
 
+    public double getDouble(String key) {
+        try {
+            return Double.parseDouble( getString(key) );
+        } catch(NumberFormatException nfe) {
+            return 0.0;
+        }
+    }
+
     public List getList(String key) {
         Object obj = get(key);
         if(!(obj instanceof List)) {
