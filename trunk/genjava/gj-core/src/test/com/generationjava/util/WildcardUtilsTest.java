@@ -29,6 +29,12 @@ public class WildcardUtilsTest extends TestCase {
 
     public void testSplitOnTokens() {
         assertArrayEquals( new String[] { "Ad", "*", "er" }, WildcardUtils.splitOnTokens("Ad*er") );
+        assertArrayEquals( new String[] { "Ad", "?", "er" }, WildcardUtils.splitOnTokens("Ad?er") );
+        assertArrayEquals( new String[] { "Test", "*", "?", "One" }, WildcardUtils.splitOnTokens("Test*?One") );
+        assertArrayEquals( new String[] { "*", "*", "*", "*" }, WildcardUtils.splitOnTokens("****") );
+        assertArrayEquals( new String[] { "*", "?", "?", "*" }, WildcardUtils.splitOnTokens("*??*") );
+        assertArrayEquals( new String[] { "*", "?", "?", "*" }, WildcardUtils.splitOnTokens("*??*") );
+        assertArrayEquals( new String[] { "h", "?", "?", "*" }, WildcardUtils.splitOnTokens("h??*") );
         assertArrayEquals( new String[] { "" }, WildcardUtils.splitOnTokens("") );
     }
 
