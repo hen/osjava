@@ -35,10 +35,15 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 
-import java.util.Stack;
-
 import org.znerd.xmlenc.XMLOutputter;
 
+/**
+ * An XmlWriter implementation, meaning it actually does output,  
+ * that sits on top of the znerd.ord XmlEnc library. 
+ *
+ * This should allow for faster speed with some additional features, 
+ * though the design of this API blocks these features from the user.
+ */
 public class XmlEncXmlWriter extends AbstractXmlWriter {
 
     private XMLOutputter xmlenc;      // underlying writer
