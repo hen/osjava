@@ -62,10 +62,11 @@ public class IOUtils {
 
             chan.connect(addr);
 
+            handler.register(thread);
+
             handler.writeTo(stream);
             stream.writeTo(handler);
 
-            handler.register(thread);
             return handler;
         }
 }

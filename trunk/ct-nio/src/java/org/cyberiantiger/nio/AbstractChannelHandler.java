@@ -1,6 +1,7 @@
 package org.cyberiantiger.nio;
 
 import java.nio.channels.SelectableChannel;
+import java.nio.channels.SocketChannel;
 import java.nio.channels.SelectionKey;
 import java.io.IOException;
 
@@ -32,8 +33,13 @@ public abstract class AbstractChannelHandler implements ChannelHandler {
         int ops = chan.validOps();
         // If we're already connected, we're not interested in the 
         // connect op.
-        if(chan.isOpen()) {
-            ops &= ~ SelectionKey.OP_CONNECT;
+        if(chan instanceof SocketChannel) {
+            SocketChannel sockChan = (SocketChannel) chan;
+            if(sockChan.isConnected()) {
+                ops &= ~ SelectionKey.OP_CONNECT;
+            } else {
+                ops = SelectionKey.OP_CONNECT;
+            }
         }
         // Feckski Offski, I hate the way *everything* throws IOException
         // It is *NOT* an IOException if you try and register a closed 

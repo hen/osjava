@@ -85,10 +85,11 @@ implements SocketStream
     public void connect() {
         try {
             if(chan.isConnectionPending()) {
-                chan.finishConnect();
-            }
-            if(chan.isConnected()) {
-                key.interestOps(SelectionKey.OP_READ);
+                if(chan.finishConnect()) {
+                    key.interestOps(chan.validOps() & ~SelectionKey.OP_CONNECT);
+                } else {
+                    close();
+                }
             }
         } catch (IOException ioe) {
             ioe.printStackTrace();
@@ -101,7 +102,7 @@ implements SocketStream
     }
 
     public void close() throws IOException {
-        key.cancel();
+        deregister();
         if(chan.isOpen()) {
             chan.close();
         }
@@ -134,6 +135,10 @@ implements SocketStream
     }
 
     public void write(ByteBuffer buffer) {
+        if(key == null) {
+            throw new IllegalStateException("ChannelHandler has not been " + 
+                    "registered");
+        }
         // Fill our buffer, and ensure we're interested in write ops.
         if( buffer.remaining() > writeBuffer.remaining() ) {
             resizeBuffer(buffer.remaining()+writeBuffer.position());
