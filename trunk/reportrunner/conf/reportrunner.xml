@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
 <reportrunner>
- <reports name="roll" label="Roller" filename="reports.xml" datasource="jdbc/ReportsRollerDS"/>
- <reports name="jira" label="Jira" filename="jirareports.xml" datasource="jdbc/ReportsJiraDS"/>
+ <reports name="roll" label="Roller" filename="reports.xml">
+   <use name="SqlReportDS" resource="roller"/>
+   <use name="JiraDS" resource="jira"/>
+ </reports>
+ <reports name="jira" label="Jira" filename="jirareports.xml">
+   <use name="SqlReportDS" resource="jira"/>
+ </reports>
 </reportrunner>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<resources>
+ <resource name="roller" label="Roller Database" uri="jdbc/ReportsRollerDS" type="javax.sql.DataSource"/>
+ <resource name="jira" label="Jira Database" uri="jdbc/ReportsJiraDS" type="javax.sql.DataSource"/>
+ <resource name="logfile" label="Fake log file" uri="/home/hen/reports/fake.log" type="java.io.File"/>
+</resources>

@@ -20,12 +20,6 @@
 <table>
 <%
     Report report = ReportFactory.getReport(groupName, reportName);
-    if(report instanceof org.osjava.reportrunner.reports.SqlReport) {
-        ReportGroup group = ReportFactory.getReportGroup(groupName);
-//            String dsName = getServletContext().getInitParameter(ReportRunnerServlet.DS_NAME);
-        String dsName = group.getDatasource();
-        ((org.osjava.reportrunner.reports.SqlReport)report).setDataSource(dsName);
-    }
     Param[] params = report.getParams();
     for(int i=0; i<params.length; i++) {
         Choice[] choices = report.getParamChoices(params[i]);
