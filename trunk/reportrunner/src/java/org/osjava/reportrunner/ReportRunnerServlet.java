@@ -38,6 +38,8 @@ public class ReportRunnerServlet extends HttpServlet {
 
         System.out.println("["+renderer.getMimeType()+"]");
 
+        response.setContentType( renderer.getMimeType() );
+
         // bang
         if(renderer != null && report != null) {
             renderer.display( report, response.getOutputStream() );
