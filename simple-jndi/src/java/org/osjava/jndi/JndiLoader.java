@@ -3,6 +3,9 @@ package org.osjava.jndi;
 import java.util.*;
 import javax.naming.*;
 
+/**
+ * Loads a .properties file into a JNDI server.
+ */
 public class JndiLoader {
 
     private Hashtable table = new Hashtable();
@@ -26,7 +29,7 @@ public class JndiLoader {
         return (String) table.get(key);
     }
 
-    public void load() throws NamingException {
+    public void load(Properties properties) throws NamingException {
 
         // find all .xxx files from a given root; 
         // add their contents into the jndi system
