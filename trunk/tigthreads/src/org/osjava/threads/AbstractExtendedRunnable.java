@@ -1,7 +1,7 @@
 /* 
  * org.osjava.threads.AbstractExtendedRunnable
  * 
- * $Revision: 1.3 $
+ * $Revision: 1.4 $
  * 
  * Created on Aug 01, 2002
  * 
@@ -42,7 +42,7 @@ package org.osjava.threads;
  * methods.
  *
  * @author Robert M. Zigweid
- * @version $Revision: 1.3 $ $Date: 2003/11/30 16:40:24 $
+ * @version $Revision: 1.4 $ $Date: 2004/02/12 01:28:46 $
  *
  */
 public abstract class AbstractExtendedRunnable implements ExtendedRunnable {
@@ -104,5 +104,4 @@ public abstract class AbstractExtendedRunnable implements ExtendedRunnable {
             CloneNotSupportedException("An AbstractExtendedRunnable should " +
                     "be cloned.");
     }
-
 }

@@ -1,7 +1,7 @@
 /* 
  * org.osjava.threads.ExtendedThread
  * 
- * $Revision: 1.3 $
+ * $Revision: 1.4 $
  * 
  * Created on Aug 01, 2002
  * 
@@ -47,7 +47,7 @@ package org.osjava.threads;
  * This class is designed to only be instantiated by the {@link ThreadManager}.
  *
  * @author Robert M. Zigweid
- * @version $Revision: 1.3 $ $Date: 2003/11/30 16:40:24 $
+ * @version $Revision: 1.4 $ $Date: 2004/02/12 01:28:46 $
  */
 public class ExtendedThread extends Thread implements ExtendedRunnable {
     /** 
@@ -214,7 +214,7 @@ public class ExtendedThread extends Thread implements ExtendedRunnable {
     public ExtendedRunnable getRunnable() {
         return runnable;
     }
-
+    
     /**
      * Indicates whether or not the thread has at any time been
      * tarted.  Returning true indicates that the ExtendedThread has at some 

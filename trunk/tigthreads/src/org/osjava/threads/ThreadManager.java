@@ -1,7 +1,7 @@
 /* 
  * org.osjava.threads.ThreadManager
  * 
- * $Revision: 1.4 $
+ * $Revision: 1.5 $
  * 
  * Created on Aug 01, 2002
  * 
@@ -44,7 +44,7 @@ import javax.naming.NameAlreadyBoundException;
  * application
  * 
  * @author Robert M. Zigweid
- * @version $Revision: 1.4 $ $Date: 2003/12/26 16:24:54 $
+ * @version $Revision: 1.5 $ $Date: 2004/02/12 01:28:46 $
  */
 public class ThreadManager {
     /* TODO: Something to prevent cloning this object should be added */
@@ -92,7 +92,7 @@ public class ThreadManager {
      * thread group that is an ancestor to all threads and thread groups 
      * that the ThreadManager knows about.
      * 
-     * @return an {@link ExtendedThradGroup} representing the 'master' thread 
+     * @return an {@link ExtendedThreadGroup} representing the 'master' thread 
      *         group.
      */
     public static ExtendedThreadGroup getMasterThreadGroup() {
