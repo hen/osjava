@@ -117,6 +117,7 @@ public class ReportRunnerServlet extends HttpServlet {
             buffer.append(render_time);
             buffer.append(",");
             buffer.append(report.getName());
+            bugger.append("\n");
             writer.write(buffer.toString());
             writer.flush();
             writer.close();
