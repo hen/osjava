@@ -1,2 +1,2 @@
-.1 - 1.0 26dec2003
+.1 - 1.0 
 - first release
