@@ -61,7 +61,7 @@ then
                     fi
                     if [ $SCM = 'CVS' ];
                     then
-                        cvs -q update 2>/dev/null | grep -v '^?' > $buildDir/SCM_UPDATE
+                        cvs -q update 2>/dev/null | grep -v '^?' >> $buildDir/SCM_UPDATE
                     fi
                 fi
                 cd -
