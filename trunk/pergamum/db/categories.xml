@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 
-<categories>
+<category-list name="Open Source Java Books">
   <category name="Apache Struts">
     <book>0596003285</book>
     <book>0596005199</book>
@@ -67,4 +67,4 @@
     <book>1590593340</book>
     <book>0596004079</book>
   </category>
-</categories>
+</category-list>
