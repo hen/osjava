@@ -182,7 +182,7 @@ public class ThreadContext
             if(subContexts.containsKey(name.getPrefix(1))) {
                 return createThread(target, name.getSuffix(1));
             }
-            throw new NotContextException("Invalid subcontext.");
+            throw new NameNotFoundException("Invalid subcontext.");
         }
 
         /* 
@@ -223,7 +223,58 @@ public class ThreadContext
     public ExtendedThread createThread(Runnable target, String name)
         throws NameAlreadyBoundException, NamingException, ThreadIsRunningException {
         return this.createThread(target, nameParser.parse(name));
-}
+    }
+    
+    /** 
+     * Notify an {@link ExtendedThread}.  This method handles
+     * synchronizatio issues, and allows a Thread managed by the this object
+     * to be have <code>notify()</code> called in it.  The name specified 
+     * is relative to this context. 
+     * 
+     * @param name the name of the ExtendedThread. 
+     * @throws NameNotFoundException if the subcontext specified is not found.
+     */
+    public void notifyThreads(Name name) throws NameNotFoundException {
+        /* 
+         * This context's threads and the threads of all the decendent 
+         * context's threads will be notivied.
+         */ 
+        if(name.isEmpty()) {
+            Iterator it = contextStore.keySet().iterator();
+            while(it.hasNext()) {
+                ExtendedThread next = (ExtendedThread)contextStore.get(it.next());
+                synchronized(next) {
+                    next.notify();
+                }
+            }
+            it = subContexts.keySet().iterator();
+            while(it.hasNext()) {
+                ThreadContext next = (ThreadContext)subContexts.get(it.next());
+                next.notifyThreads(name.getSuffix(1));
+            }
+        }
+
+        if(!subContexts.containsKey(name.getPrefix(1))) {
+            throw new NameNotFoundException("Invalid subcontext");
+        }
+        
+        ((ThreadContext)subContexts.get(name.getPrefix(1))).notifyThreads(name.getSuffix(1));
+    }
+    
+    /** 
+     * Notify an {@link ExtendedThread}.  This method handles
+     * synchronizatio issues, and allows a Thread managed by the this object
+     * to be have <code>notify()</code> called in it.  The name specified 
+     * is relative to this context. 
+     * 
+     * @param name the name of the ExtendedThread.
+     * @throws NameNotFoundException if the subcontext specified is not found.
+     * @throws NamingException if another naming exception is encountered.
+     */
+    public void notifyThreads(String name) 
+        throws NamingException, NameNotFoundException {
+        notifyThreads(nameParser.parse(name));
+    }
     
     /**
      * Invokes <code>start()</code> on all of the {@link ExtendedThread
