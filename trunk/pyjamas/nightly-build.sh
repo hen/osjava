@@ -78,7 +78,7 @@ do
     fi
     # run checkstyle, pmd, junit report, javadoc, xref
     echo "Building documentation"
-    maven -b maven-jcoverage-plugin:report checkstyle maven-junit-report-plugin:report maven-jxr-plugin:report pmd javadoc 2> DOCS-ERROR.log > DOCS-OUTPUT.log
+    maven -b maven-simian-plugin maven-jdepend-plugin:report maven-jcoverage-plugin:report checkstyle maven-junit-report-plugin:report maven-jxr-plugin:report pmd javadoc 2> DOCS-ERROR.log > DOCS-OUTPUT.log
     
     # somehow create a site from these reports
     if [ -d target/docs/apidocs/ ];
@@ -88,6 +88,14 @@ do
     if [ -d target/docs/jcoverage/ ];
     then
         mv target/docs/jcoverage/ $reportDir/$i/jcoverage
+    fi
+    if [ -f target/generated-xdocs/simian-report.xml ];
+    then
+        mv target/generated-xdocs/simian-report.xml $reportDir/$i
+    fi
+    if [ -f target/generated-xdocs/jdepend-report.xml ];
+    then
+        mv target/generated-xdocs/jdepend-report.xml $reportDir/$i
     fi
     if [ -f target/generated-xdocs/pmd-report.xml ];
     then
