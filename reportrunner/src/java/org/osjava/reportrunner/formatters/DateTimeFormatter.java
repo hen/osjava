@@ -7,11 +7,12 @@ import java.text.*;
 public class DateTimeFormatter extends AbstractFormatter {
 
     public Object format(Object input) {
-        if( ! (input instanceof java.util.Date) ) {
-            throw new IllegalArgumentException("Type must be java.util.Date or a subclass. ");
+        if(input instanceof java.util.Date) {
+            SimpleDateFormat sdf = new SimpleDateFormat( getPattern() );
+            return sdf.format( (java.util.Date) input);
+        } else {
+            return input;
         }
-        SimpleDateFormat sdf = new SimpleDateFormat( getPattern() );
-        return sdf.format( (java.util.Date) input);
     }
 
 }
