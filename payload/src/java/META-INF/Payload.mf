@@ -1,3 +1,0 @@
-Manifest-Version: 1.0
-Main-Class: com.generationjava.payload.PayloadExtractor
-Created-By: 1.3.0 (Apple Computer, Inc.)
