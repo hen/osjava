@@ -54,7 +54,7 @@ public class NoRobotClient {
 
     private String userAgent;
     private RulesEngine rules;
-    private String base;
+    private URL baseUrl;
 
     /**
      * Create a Client for a particular user-agent name. 
@@ -76,7 +76,7 @@ public class NoRobotClient {
 
         this.rules = new RulesEngine();
 
-        this.base = baseUrl.toExternalForm();
+        this.baseUrl = baseUrl;
 
         URL txtUrl = null;
         try {
@@ -184,11 +184,13 @@ public class NoRobotClient {
             throw new IllegalStateException("You must call parse before you call this method.  ");
         }
 
-        String urlStr = url.toExternalForm();
-        if(!urlStr.startsWith(this.base)) {
-            throw new IllegalArgumentException("Illegal to use a different url, " + urlStr + ",  for this robots.txt: "+this.base);
+       if( !baseUrl.getHost().equals(url.getHost()) ||
+           baseUrl.getPort() != url.getPort() ||
+           !baseUrl.getProtocol().equals(url.getProtocol()) )
+       {
+            throw new IllegalArgumentException("Illegal to use a different url, " + url.toExternalForm() + ",  for this robots.txt: "+this.baseUrl.toExternalForm());
         }
-        urlStr = urlStr.substring( this.base.length() - 1);
+        String urlStr = url.toExternalForm().substring( this.baseUrl.toExternalForm().length() - 1);
         if("/robots.txt".equals(urlStr)) {
             return true;
         }
