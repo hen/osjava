@@ -13,8 +13,16 @@ if [ "x$1x" != "xx" ];
 then
     if [ $1 = 'all' ];
     then
-        LIST=`cat NIGHTLY.txt | grep -v '^#'`
+        LIST=`cat NIGHTLY.txt | awk '{print $2}' | grep -v '^#'`
 	echo 'No updates: Built because all components were built. ' > REASON
+        for i in `cat NIGHTLY.txt | sed 's/ /::::/'`
+        do
+            checkoutDir=`echo $i | sed 's/.*:::://'`
+            if [ ! -e $checkoutDir ];
+            then
+                svn co `echo $i | sed 's/::::/\//'` $checkoutDir
+            fi
+        done
     elif [ $1 = 'update' ];
     then
         LIST=`svn -u status | grep -v '^\?' | grep -v '^A' | grep -v '^M' | grep -v 'Status against revision' | awk '{print $3}' | grep -o -f NIGHTLY.txt  | sort -u`
