@@ -3,7 +3,7 @@
   <extend>../project.xml</extend>
   <id>gj-gui</id>
   <name>GenJava-GUI</name>
-  <currentVersion>0.1</currentVersion>
+  <currentVersion>0.1.1</currentVersion>
   <inceptionYear>2002</inceptionYear>
   
   <description>
