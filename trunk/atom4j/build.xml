@@ -19,12 +19,12 @@
     <property name="test"          value="${basedir}/tests" />
     <property name="lib"           value="${basedir}/lib" />
     <property name="webapp"        value="${basedir}/webapp" />
-    <property name="build_root"    value="${basedir}/build" />
-    <property name="build"         value="${build_root}/atom4j" />
-    <property name="build_classes" value="${build}/classes" />
-    <property name="dist"          value="${build_root}/dist" />
+    <property name="build.root"    value="${basedir}/build/atom4j" />
+    <property name="build.classes" value="${build.root}/classes" />
+    <property name="build.reports" value="${build.root}/reports" />
+    <property name="dist"          value="${build.root}/dist" />
     <property name="package.path"  value="/com/brainopolis/atom4j" />
-    <property name="init.prop"     value="${build_classes}${package.path}" />
+    <property name="init.prop"     value="${build.classes}${package.path}" />
     <property name="jar.name"      value="atom4j.jar" />
     <property name="jar.src.name"  value="atom4j-src.jar" />
 
@@ -38,41 +38,42 @@
         <echo>CLASSPATH:${atom4j.classpath}</echo>
     </target>
 
-    <target name="test" depends="build">
-        <copy file="log4j.properties"
-            tofile="${build_classes}/log4j.properties" />
-
-        <java fork="yes" classname="org.osjava.atom4j.reader.EntryReader">
-            <classpath>
-                <path refid="atom4j.classpath"/>
-                <path location="${build_classes}" />
-            </classpath>
-        </java>
-
-        <delete file="${build_classes}/log4j.properties" />
+    <target name="test">
+	    <antcall target="junit" />
     </target>
 
     <target name="junit" depends="build-test" >
+    
+	    <mkdir dir="${build.reports}/xml"/>
+	    <mkdir dir="${build.reports}/html"/>
         <copy file="log4j.properties"
-            tofile="${build_classes}/log4j.properties" />
-        <copy todir="${build_classes}">
+            tofile="${build.classes}/log4j.properties" />
+        <copy todir="${build.classes}">
             <fileset dir="${basedir}/docs/feed" includes="Atom03_*.xml"/>
         </copy>
 
-        <java classname="junit.textui.TestRunner" fork="yes" failonerror="false">
-            <arg value="org.osjava.atom4j.reader.TestAll"/>
-            <classpath>
+	    <junit fork="true">
+        	<test name="org.osjava.atom4j.reader.TestAll" 
+        		  toDir="${build.reports}/xml" />
+	        <formatter type="xml"/>
+	        <classpath>
                 <path refid="atom4j.classpath"/>
-                <path location="${build_classes}" />
-            </classpath>
-        </java>
+                <path location="${build.classes}" />
+	        </classpath>
+	    </junit>
+	    <junitreport>
+	      <fileset dir="${build.reports}/xml">
+	        <include name="TEST-*.xml"/>
+	      </fileset>
+	      <report format="noframes" toDir="${build.reports}/html"/>
+	    </junitreport>
 
-        <delete file="${build_classes}/log4j.properties" />
+        <delete file="${build.classes}/log4j.properties" />
     </target>
 
     <!-- make sure the destinations exist -->
     <target name="prepare">
-        <mkdir dir="${build_classes}" />
+        <mkdir dir="${build.classes}" />
         <mkdir dir="${dist}" />
     </target>
 
@@ -80,7 +81,7 @@
     <target name="build" depends="prepare">
         <javac
             srcdir="${src}"
-            destdir="${build_classes}"
+            destdir="${build.classes}"
             includeantruntime="false"
             debug="true"
             optimize="false"
@@ -97,7 +98,7 @@
     <target name="build-test" depends="build">
         <javac
             srcdir="${test}"
-            destdir="${build_classes}"
+            destdir="${build.classes}"
             includeantruntime="false"
             debug="true"
             optimize="false"
@@ -120,7 +121,7 @@
 
         <zip zipfile="${dist}/${jar.name}">
             <zipfileset dir="${basedir}" includes="*.txt"/>
-            <zipfileset dir="${build_classes}" >
+            <zipfileset dir="${build.classes}" >
                 <include name="**" />
                 <exclude name="**/*Test.class" />
                 <exclude name="**/log4j.properties" />
@@ -138,7 +139,7 @@
 
         <zip zipfile="${dist}/${jar.src.name}">
             <zipfileset dir="${basedir}" includes="*.txt" />
-            <zipfileset dir="${build_classes}" includes="**" />
+            <zipfileset dir="${build.classes}" includes="**" />
             <zipfileset dir="${src}" includes="**" />
             <zipfileset dir="${test}" includes="**" />
         </zip>

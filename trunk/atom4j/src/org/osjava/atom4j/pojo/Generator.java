@@ -21,13 +21,13 @@ package org.osjava.atom4j.pojo;
  */
 public class Generator
 {
-    private String content;
+    private String text;
     private String url;
     private String version;
 
-    public String getContent()
+    public String getText()
     {
-        return content;
+        return text;
     }
 
     public String getUrl()
@@ -40,9 +40,9 @@ public class Generator
         return version;
     }
 
-    public void setContent(String string)
+    public void setText(String string)
     {
-        content = string;
+        text = string;
     }
 
     public void setUrl(String string)
@@ -61,7 +61,7 @@ public class Generator
         if (version != null) buf.append(" version=\"").append(version).append("\"");
         if (url != null) buf.append(" url=\"").append(url).append("\"");
         buf.append(">");
-        if (content != null) buf.append(content);
+        if (text != null) buf.append(text);
         buf.append("</generator>\n");
         return buf.toString();
     }
