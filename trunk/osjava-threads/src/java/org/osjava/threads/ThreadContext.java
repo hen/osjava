@@ -179,13 +179,12 @@ public class ThreadContext
     
     /**
      * Return a {@link Thread} implementing {@link ExtendedRunnable}
-     * {@link Runnable},{@link ExtendedThread} or {@link ExtendedThreadGroup}
-     * associated with the {@link Name}<code>name</code>.  The Name passed is
-     * relative to this context.
+     * {@link Runnable},{@link ExtendedThread} associated with the 
+     * {@link Name}<code>name</code>.  The Name passed isrelative to this
+     * context.
      * 
      * @param name the Name to lookup.
-     * @return a Thread with an ExtendedRunnable Runnable, ExtendedThread, or
-     *          ExtendedThreadGroup
+     * @return a Thread with an ExtendedRunnable Runnable, ExtendedThread.
      * @throws NamingException when a name exception is encountered.
      * @see javax.naming.Context#lookup(javax.naming.Name)
      */
@@ -220,14 +219,12 @@ public class ThreadContext
     }
 
     /**
-     * Return a {@link Thread} implmenting {@link ExtendedRunnable}
-     * {@link Runnable},{@link ExtendedThread} or {@link ExtendedThreadGroup}
-     * associated with the {@link String}<code>name</code>.  The name is
-     * relative to this context.
+     * Return a {@link Thread} implmenting {@link ExtendedRunnable} or 
+     * {@link ExtendedThread} associated with the {@link String} 
+     * <code>name</code>.  The name is relative to this context.
      * 
      * @param name the Name to lookup.
-     * @return a Thread with an ExtendedRunnable Runnable, ExtendedThread, or
-     *          ExtendedThreadGroup
+     * @return a Thread with an ExtendedRunnable, or ExtendedThread.
      * @see javax.naming.Context#lookup(java.lang.String)
      */
     public Object lookup(String name) throws NamingException {
@@ -236,16 +233,13 @@ public class ThreadContext
 
     /**
      * Bind the Object <code>obj</code> to the Name <code>name</code>.  The 
-     * object must be an {@link ExtendedRunnable}, or {@link ThreadContext}.
-     * The Name <code>name</code> is relative to this context.  
+     * object must be an {@link ExtendedRunnable}.  The Name <code>name</code>
+     * is relative to this context.  
      * 
      * @param name The name to bind the Object to.
      * @param obj The object that is being bound in the ThreadContext.
      * @throws NamingException if the object cannot be bound to the name.
      * @see javax.naming.Context#bind(javax.naming.Name, java.lang.Object)
-     */
-    /* ThreadGroups and ExtendedThreadGroups are no longer allowed to be added
-     * to the ThreadContext.
      */
     public void bind(Name name, Object obj) throws NamingException {
         /* 
