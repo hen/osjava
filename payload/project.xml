@@ -44,7 +44,7 @@
   <issueTrackingUrl>http://www.osjava.org:8080/jira/secure/BrowseProject.jspa?id=10040</issueTrackingUrl>
 
   <repository>
-    <connection>scm:cvs:pserver:anonymous@cvs.osjava.org:/var/cvs/:payload</connection>
+    <connection>scm:cvs:pserver:anonymous@cvs.osjava.org:/var/cvs:payload</connection>
     <url>http://cvs.osjava.org/view-cvs/viewcvs.cgi/payload/</url>
   </repository>
 
