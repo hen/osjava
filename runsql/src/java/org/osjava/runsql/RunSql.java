@@ -28,11 +28,11 @@ public class RunSql {
         System.err.println("Script executed in : " + duration);
     }
 
-    static public void runScript(Connection conn, InputStream in) throws SQLException {
+    public static void runScript(Connection conn, InputStream in) throws SQLException {
         runScript(conn, FileW.loadFile(in));
     }
 
-    static public void runScript(Connection conn, String script) throws SQLException {
+    public static void runScript(Connection conn, String script) throws SQLException {
         // TODO: Improve so a ; inside a string is ignored.
         String[] stmts = StringUtils.split(script, ";");
         Statement stmt = conn.createStatement();
