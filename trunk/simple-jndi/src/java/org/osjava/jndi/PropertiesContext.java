@@ -43,7 +43,6 @@ import javax.naming.NamingEnumeration;
 import javax.naming.OperationNotSupportedException;
 import javax.naming.Name;
 import javax.naming.CompositeName;
-import javax.naming.Binding;
 import javax.naming.NameClassPair;
 
 import java.util.Hashtable;
@@ -66,13 +65,16 @@ import org.osjava.jndi.util.ContextBindings;
 import org.osjava.jndi.util.ContextNames;
 import org.osjava.jndi.util.XmlProperties;
 
+/**
+ * The heart of the system, the Context for simple-jndi. 
+ */
 public class PropertiesContext implements Context  {
 
     public static final boolean DEBUG = (System.getProperty("SJ.DEBUG")!=null);
 
-    private static Object FILE = new String("FILE");
-    private static Object CLASSPATH = new String("CLASSPATH");
-    private static Object HTTP = new String("HTTP");
+    private static final Object FILE = new String("FILE");
+    private static final Object CLASSPATH = new String("CLASSPATH");
+    private static final Object HTTP = new String("HTTP");
 
     // table is used as a read-write cache which sits 
     // above the file-store
@@ -85,8 +87,8 @@ public class PropertiesContext implements Context  {
     private String delimiter;
 
     // original values
-    private String _root;
-    private String _delimiter;
+    private String originalRoot;
+    private String originalDelimiter;
 
     public PropertiesContext(Hashtable env) {
         String shared = null;
@@ -116,8 +118,8 @@ public class PropertiesContext implements Context  {
         if(this.delimiter == null) {
             this.delimiter = ".";
         }
-        this._root = this.root;
-        this._delimiter = this.delimiter;
+        this.originalRoot = this.root;
+        this.originalDelimiter = this.delimiter;
 
         // Work out the protocol of the root
         // No root means we're using a classpath protocol,
@@ -126,7 +128,7 @@ public class PropertiesContext implements Context  {
             int idx = root.indexOf("://");
             if(idx != -1) {
                 String proto = root.substring(0,idx);
-                this.root = root.substring(idx + 3);
+                this.root = root.substring(idx + "://".length());
                 if("file".equals(proto)) {
                     this.protocol = FILE;
                     this.separator = ""+File.separatorChar;
@@ -185,10 +187,10 @@ if(DEBUG)            System.err.println("[CTXT]separator is: "+this.separator);
 
     private void resetSpecial(String key) {
         if("org.osjava.jndi.root".equals(key)) {
-            this.root = this._root;
+            this.root = this.originalRoot;
         }
         if("org.osjava.jndi.delimiter".equals(key)) {
-            this.delimiter = this._delimiter;
+            this.delimiter = this.originalDelimiter;
         }
     }
 
@@ -215,7 +217,7 @@ if(DEBUG)            System.err.println("[CTXT]separator is: "+this.separator);
                 return "java/";
             }
             if(key.startsWith("java:/")) {
-                return "java/"+key.substring(6);
+                return "java/"+key.substring("java:/".length());
             }
         }
         return key;
