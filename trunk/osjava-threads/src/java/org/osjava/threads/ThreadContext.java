@@ -54,7 +54,6 @@ import javax.naming.NameParser;
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 
-import org.apache.log4j.Logger;
 import org.osjava.jndi.AbstractContext;
 import org.osjava.naming.InvalidObjectTypeException;
 
@@ -202,7 +201,7 @@ public class ThreadContext
      * @throws ThreadIsRunningException if the target is a running thread.
      * @throws NamingException if another naming exception is encountered.
      */
-    public ExtendedThread createThread(Name name)
+    public Thread createThread(Name name)
         throws NameAlreadyBoundException, NamingException, ThreadIsRunningException {
         return this.createThread(null, name);
     }
@@ -221,7 +220,7 @@ public class ThreadContext
      * @throws ThreadIsRunningException if the target is a running thread.
      * @throws NamingException if another naming exception is encountered.
      */
-    public ExtendedThread createThread(String name)
+    public Thread createThread(String name)
         throws NameAlreadyBoundException, NamingException, ThreadIsRunningException {
         NameParser nameParser = getNameParser((Name)null);
         return this.createThread(null, nameParser.parse(name));
@@ -242,36 +241,81 @@ public class ThreadContext
      * @throws ThreadIsRunningException if the target is a running thread.
      * @throws NamingException if another naming exception is encountered.
      */
-    public ExtendedThread createThread(Runnable target, Name name)
+    public Thread createThread(Runnable target, Name name)
         throws NameAlreadyBoundException, NamingException, ThreadIsRunningException {
-        NameParser nameParser = getNameParser((Name)null);
         /* Make sure that the target is not already running. */
-        if(target instanceof Thread && ((Thread)target).isAlive()) {
-            throw new ThreadIsRunningException();
-        }
-
-        /* Make up a name for the Thread based upon the context. */        
-        if(name.isEmpty()) {
-            Name newName = getNameParser((Name)null).parse(getNameInNamespace());
-            newName.add(generateNextThreadName());
-            name = nameParser.parse(generateNextThreadName());
+        if(target instanceof Thread) {
+             if(((Thread)target).isAlive()) {
+                 throw new ThreadIsRunningException();
+             }
+             
+             /* 
+              * The thread must implement ExtendedRunnable.  If it isn't,
+              * wrap it in an ExtendedThread
+              */
+             if(!(target instanceof ExtendedRunnable)) {
+                 /*
+                  * Wrapping target in ExtendedThread because it's not 
+                  * ExtendedRunnable 
+                  */
+                 Thread newTarget = new ExtendedThread(target);
+                 newTarget.setName(((Thread)target).getName());
+                 /* Reset the target variable to the new thread. */
+                 target = newTarget;
+             }
+             
+             /* 
+              * If no name is supplied, make up a name for the Thread based upon 
+              * the context. 
+              */        
+             if(name.isEmpty()) {
+                 /* Generate a new name for the thread */
+                 Name newName = getNameParser((Name)null).parse(getNameInNamespace());
+                 String add = generateNextThreadName();
+                 newName.add(add);
+                 name = getNameParser(getNameInNamespace()).parse(add);
+                 ((Thread)target).setName(add);
+             } else {
+                 /* Use the supplied name to name the thread */
+                 /* XXX: Might want to move this to using the whole name */
+                 ((Thread)target).setName(name.getSuffix(name.size() - 1).toString());
+             }
+        } else if(target instanceof ExtendedRunnable) {
+            String threadName = null;
+            if(name.isEmpty()) {
+                /* Generate a new name for the thread */
+                Name newName = getNameParser((Name)null).parse(getNameInNamespace());
+                threadName = generateNextThreadName();
+                newName.add(threadName);
+                name = getNameParser(getNameInNamespace()).parse(threadName);
+            } else {
+                /* Use the supplied name to name the thread */
+                /* XXX: Might want to move this to using the whole name */
+                threadName = name.getSuffix(name.size() - 1).toString();
+            }
+            target = new ExtendedThread(target, threadName);
         }
         
         /* Check to see if the name is already bound to something */
         Object next = lookup(name.getPrefix(1));
         /* Not presently bound. */
         if(next == null) {
-            ExtendedThread newThread = new ExtendedThread(target, name.toString());
-            bind(name, newThread);
-            return newThread;
+            /* The subcontext doesn't exist if the name > 1 */
+            if(name.size() > 1) {
+                throw new NameNotFoundException();
+            }
+            
+            bind(name, target);
+            return (Thread)target;
         }
+        
         /* Bound to a subContext */
         if(next instanceof ThreadContext) {
             return ((ThreadContext)next).createThread(target, name.getSuffix(1));
         } else if(next instanceof Context) {
             /* 
              * XXX: Should this be changed to some other exception?  I thought
-             *      there was an exception for missing subcontext..
+             *      there was an exception for missing subcontext.
              */
             throw new NamingException("Invalid subcontext.  Subcontext must be a ThreadContext");
         } else {
@@ -295,7 +339,7 @@ public class ThreadContext
      * @throws ThreadIsRunningException if the target is a running thread.
      * @throws NamingException if another naming exception is encountered.
      */
-    public ExtendedThread createThread(Runnable target, String name)
+    public Thread createThread(Runnable target, String name)
         throws NameAlreadyBoundException, NamingException, ThreadIsRunningException {
         NameParser nameParser = getNameParser((Name)null);
         return this.createThread(target, nameParser.parse(name));
@@ -382,24 +426,18 @@ public class ThreadContext
      * @throws NamingException if a naming exception is encountered.
      */
     public void start(Name name) throws NameNotFoundException, NamingException {
-        Logger logger = Logger.getLogger(this.getClass());
-        logger.debug("Name --" + name);
         /* 
          * If the name is empty, we don't need to look anything up.  We know 
          * that the target is this context.
          */
         if(name.isEmpty()) {
-            logger.debug("Empty name");
             NamingEnumeration list = listBindings(name);
             while(list.hasMore()) {
-                logger.debug("Looking for item");
                 Binding next = (Binding)list.next();
                 Object item = next.getObject();
-                logger.debug("Found item --" + next + " class -- " + next.getClass());
-                if(item instanceof ExtendedThread) {
-                    logger.debug("It's a Thread!");
+                if(item instanceof Thread) {
                     synchronized(item) {
-                        ((ExtendedThread)item).start();
+                        ((Thread)item).start();
                         continue;
                     }
                 }
@@ -412,7 +450,6 @@ public class ThreadContext
         }
 
         Object obj = lookup(name);
-        logger.debug("Found looked up object -- " + obj);
         if(obj instanceof ExtendedThread) {
             synchronized (obj) {
                 ((ExtendedThread)obj).start();
