@@ -96,7 +96,7 @@ public abstract class AbstractConfig implements Config {
         if("".equals(this.context)) {
             this.context = context;
         } else {
-            this.context = this.context + "." + context;
+            this.context = this.context + context;
         }
     }
 
