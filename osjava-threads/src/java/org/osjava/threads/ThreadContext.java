@@ -171,7 +171,6 @@ public class ThreadContext
      */
     private String generateNextThreadName() throws NamingException {
         int high = -1;
-        ArrayList list = new ArrayList();
         NamingEnumeration enumeration = list("");
         while(enumeration.hasMore()) {
             NameClassPair next = (NameClassPair)enumeration.next();
