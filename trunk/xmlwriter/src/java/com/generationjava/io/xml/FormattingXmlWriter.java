@@ -44,7 +44,7 @@ public class FormattingXmlWriter extends DelegatingXmlWriter {
     private DateFormat dateFormat;
     private NumberFormat numberFormat;
     
-    public FormattingXmlWriter(XmlWriter writer) throws IOException {
+    public FormattingXmlWriter(XmlWriter writer) {
         super(writer);
     }
 
