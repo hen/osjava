@@ -8,4 +8,9 @@ do
     java Style content/$xml pergamum-html.xsl
 done
 
+for xml in comingsoon.xml newbooks.xml newreviews.xml
+do
+    java Style content/$xml pergamum-rss.xsl
+done
+
 java Style content/index.xml pergamum-html.xsl
