@@ -4,9 +4,6 @@
   <title>simple-jndi</title>
 
   <body>
-    <links>
-      <item name="Maven"                 href="http://maven.apache.org/"/>
-    </links>
     <menu name="Overview">
       <item name="News"              href="/News.html"/>
       <item name="Introduction"              href="/Intro.html"/>
