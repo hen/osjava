@@ -71,7 +71,7 @@
         <dependency>
             <groupId>simple-jndi</groupId>
             <artifactId>simple-jndi</artifactId>
-            <version>0.10</version>
+            <version>0.11</version>
             <url>http://www.osjava.org/simple-jndi</url>
         </dependency>
     </dependencies>
@@ -87,4 +87,3 @@
         <report>maven-changes-plugin</report>           
     </reports>
 </project>
-

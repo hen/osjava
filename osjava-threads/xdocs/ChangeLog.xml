@@ -6,7 +6,7 @@
         <title>ChangeLog</title>
     </properties>
     <body>
-        <release version="2.0" date="2004-10-??">
+        <release version="2.0" date="2005-02-12">
             <action dev="rzigweid" type="update" issue="TGT-2">
                 COMPAT BUSTER:Refactored the package from org.tigransoft to
                 org.osjava, and renamed the package from TigThreads to 

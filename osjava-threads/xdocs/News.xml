@@ -2,13 +2,13 @@
 <document>
 
   <properties>
-      <author email="rzigweid@tigransoft.org">Robert M. Zigweidl</author>
+      <author email="rzigweid@osjava.org">Robert M. Zigweid</author>
       <title>News</title>
   </properties>
 
   <body>
     <section name="OSJava-Threads 2.0">
-        <p>Version 2.0 was released on 2004-10-??.  This is a significant
+        <p>Version 2.0 was released on 2005-02-12.  This is a significant
             version upgrade and there are several combat busters.  It is 
             recommended, however, that you upgrade because versions previous.
             to this one will not be supported, in large part, due to the 
