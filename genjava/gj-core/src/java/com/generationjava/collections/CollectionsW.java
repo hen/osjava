@@ -35,12 +35,15 @@ package com.generationjava.collections;
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import com.generationjava.lang.ClassW;
+
+import org.apache.commons.collections.comparators.ComparableComparator;
 
 /**
  * A wrapper around the Collections. Provides functionality above and 
@@ -105,5 +108,6 @@ final public class CollectionsW {
             }
         }
         return -1; // ?
+    }
 
 }
