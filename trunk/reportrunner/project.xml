@@ -86,11 +86,6 @@
     </dependency>
     <dependency>
       <groupId>genjava</groupId>
-      <artifactId>gj-csv</artifactId>
-      <version>1.0</version>
-    </dependency>
-    <dependency>
-      <groupId>genjava</groupId>
       <artifactId>gj-xml</artifactId>
       <version>1.0</version>
     </dependency>
@@ -99,16 +94,31 @@
       <artifactId>commons-lang</artifactId>
       <version>2.0</version>
     </dependency>
+    <!-- for the csv renderer -->
+    <dependency>
+      <groupId>genjava</groupId>
+      <artifactId>gj-csv</artifactId>
+      <version>1.0</version>
+    </dependency>
+    <!-- for sqlreport -->
     <dependency>
       <groupId>commons-dbutils</groupId>
       <artifactId>commons-dbutils</artifactId>
       <version>1.0</version>
     </dependency>
+    <!-- for the excel renderer -->
     <dependency>
       <groupId>poi</groupId>
       <artifactId>poi</artifactId>
       <version>2.0-final-20040126</version>
     </dependency>
+    <!-- xml renderer -->
+    <dependency>
+      <groupId>xmlwriter</groupId>
+      <artifactId>xmlwriter</artifactId>
+      <version>2.2</version>
+    </dependency>
+    <!-- servlet compilation -->
     <dependency>
       <groupId>servletapi</groupId>
       <artifactId>servletapi</artifactId>
