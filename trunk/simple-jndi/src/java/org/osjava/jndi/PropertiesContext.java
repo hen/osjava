@@ -1167,7 +1167,7 @@ if(DEBUG)       System.err.println("[CTXT]HTTPException? :"+e);
      * @see javax.naming.Context#getNameInNamespace()
      */
     public String getNameInNamespace() throws NamingException {
-        return "";
+        return nameInNamespace.toString();
     }
 
     class PropertiesNames implements NamingEnumeration {
