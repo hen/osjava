@@ -26,11 +26,26 @@ public class ReportRunnerServlet extends HttpServlet {
         if(params != null) {
             for(int i=0; i<params.length; i++) {
                 Parser parser = params[i].getParser();
-                String parameter = request.getParameter(params[i].getName());
-                Object value = parameter;
-                if(parser != null) {
-                    value = parser.parse(parameter, params[i].getType());
-                } 
+                Object value = null;
+                if( Object[].class.isAssignableFrom( params[i].getType() ) ) {
+                    String[] parameters = request.getParameterValues(params[i].getName());
+                    if(parser != null) {
+                        Object[] array = new Object[parameters.length];
+                        for(int j=0; j<array.length; j++) {
+                            array[j] = parser.parse(parameters[j], params[i].getType());
+                        }
+                        value = array;
+                    } else {
+                        value = parameters;
+                    } 
+                } else {
+                    String parameter = request.getParameter(params[i].getName());
+                    if(parser != null) {
+                        value = parser.parse(parameter, params[i].getType());
+                    } else {
+                        value = parameter;
+                    }
+                }
 
                 // else use the params type to call a stock parser; numbers, booleans etc.
                 // the stock parsers need to be configurable; so parsers.xml will exist
