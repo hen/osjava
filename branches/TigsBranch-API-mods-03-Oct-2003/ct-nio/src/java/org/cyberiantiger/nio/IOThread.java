@@ -21,8 +21,23 @@ public class IOThread extends Thread {
      * @throws IOException If there is a problem creating the Selector
      */
     public IOThread() throws IOException {
+        this(null, null);
+    }
+    
+    /**
+     * Create a new IOThread.
+     *
+     * @param group the Threadgroup which the created Thread is a member
+     * @param name The name of the thread.
+     * 
+     * @throws IOException If there is a problem creating the Selector
+     */
+    public IOThread(ThreadGroup group, String name)
+        throws IOException {
+        super(group, null,name);
         mySelector = Selector.open();
     }
+    
 
     /**
      * Register a ChannelHandler with this IOThread
