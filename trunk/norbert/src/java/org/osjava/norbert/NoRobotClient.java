@@ -92,7 +92,7 @@ public class NoRobotClient {
         try {
             txt = ""+UrlW.getContent(txtUrl);
         } catch(IOException ioe) {
-            logger.error("IOException", ioe);
+            logger.warn("IOException", ioe);
             // we can do what we want
             return;
         }
