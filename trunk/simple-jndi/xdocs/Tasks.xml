@@ -26,7 +26,6 @@
 <li>When a value is unbound, don't return to the default but instead make it so it throws an exception when you try to obtain that value [unless bound again]. </li>
 <li>Allow a map-delimiter so that something like  bob.foo.thing#bah=fred uses bah as the key, and fred as the value. </li>
 <li>Is there a way to specify the type of a List or Map, or must ArrayList and HashMap always be used?</li>
-<li>Create a Config class. Base it on previous written ones. Allow it to have a context stack, basic conversion methods and a root context concept [starts with a '.', or whatever that value is].</li>
 <li>Write a simple-jndi server/client setup. Maybe use beep4j</li>
 <li>Enable BlahDS.url so you can see the url of a datasource. Block passwords. </li>
 <li>Implement DataSource creation as a part of the converter. </li>
