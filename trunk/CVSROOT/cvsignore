@@ -1,0 +1,6 @@
+*.class
+.project
+.classpath
+maven.log
+target
+velocity.log
