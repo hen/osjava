@@ -33,6 +33,7 @@
 <li>Allow the underlying Properties class to use [when applicable] to be specified. </li>
 <li>multiple domains. ie) Configure com.generationjava to use .properties over http, and org.osjava to use xml over classpath. </li>
 <li>Implement a Name class which finds the lookup key separator and injects that inside the name values [a string array]</li>
+<li>Allow users to bind their own variables on top of the properties. <b>DONE v0.5</b>. This would only be for a single instance of the context, though the factory could return the same instance every time. Need to decide if unbinding sets the value to null or just replaces with the default. </li>
 </ul>
 
 </section>

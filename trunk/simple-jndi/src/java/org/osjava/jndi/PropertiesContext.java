@@ -69,9 +69,8 @@ public class PropertiesContext implements Context  {
     private static Object CLASSPATH = new String("CLASSPATH");
     private static Object HTTP = new String("HTTP");
 
-    // table is used simply to provide an implementation. 
-    // it does not read the underlying store at all.
-    // over time, usage of table should vanish
+    // table is used as a read-write cache which sits 
+    // above the file-store
     private Hashtable table = new Hashtable();
 
     private Hashtable env;
@@ -277,6 +276,9 @@ public class PropertiesContext implements Context  {
             return new PropertiesContext(this);
         }
 
+        if(this.table.containsKey(name)) {
+            return this.table.get(name);
+        }
 
         // name is a delimited notation, each element is either a 
         // directory, file or part of a key.
