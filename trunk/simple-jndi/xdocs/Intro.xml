@@ -71,8 +71,8 @@ If no org.osjava.jndi.delimiter is specified, then a '.' (dot) is chosen.
  </code>
  <p>Also, an org.osjava.jndi.root may be a http url.</p>
  <code>
-  # Grab values from a web server
-  org.osjava.jndi.root=http://www.osjava.org/simple-jndi/db/
+  # Grab values from a web server<br />
+  org.osjava.jndi.root=http://www.osjava.org/simple-jndi/db/<br />
  </code>
 </section>
 </body>
