@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<integration version="1.0">
+  <site label="OSJava" url="http://www.osjava.org/" css="http://www.osjava.org/style.css" logo="http://www.osjava.org/images/logo.png"/>
+  <buildables>
+    <buildable project="xmlwriter" repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
+  </buildables>
+</integration>
