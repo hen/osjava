@@ -1,0 +1,41 @@
+a) Create configuration:
+     URL to Javadoc
+
+b) Scrape overview-summary and get Name, Description, Packages(?). Generate Overview.
+
+b.2) Scrape all-packages. Generate package-list.
+
+b.3) Scrape all-classes. Generate classes-list.
+
+c) Scrape index. Merge into uber-index. 1 page per letter.
+
+d) Create dynamic searcher. ( :( ).  Perl CGI.  Uses uber-index?
+
+e) Maintain separate versions of data so they can be rejoined later on. ie) When Lang 2.1 replaces 2.0.
+
+f) Write Help by hand.
+
+g) Write JavaScript to load more than one frame at a time.
+
+h) Mode to replace an existing one, rather than rebuild the entire system.
+
+
+====
+
+Design:
+
+mdoc-load 'Commons Lang' <url>
+mdoc-unload 'Commons Lang' <url>
+mdoc-reload 'Commons Lang' <url>  (calls remove then add)
+mdoc-generate
+
+Store:
+
+store/Commons_Lang/index/a.dbhtml
+                   packages.dbhtml
+                   classes.dbhtml
+                   meta.dbhtml
+
+
+DBHTML is a HTML viewable DB file. Basically a Table I suspect, ordered by the first column. Column-headers DO exist.
+
