@@ -4,7 +4,7 @@
   <pomVersion>3</pomVersion>
   <id>simple-jndi</id>
   <name>simple-jndi</name>
-  <currentVersion>2.0</currentVersion>
+  <currentVersion>0.2</currentVersion>
   <organization>
     <name>GenerationJava</name>
     <url>http://www.generationjava.com/</url>
