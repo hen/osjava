@@ -82,8 +82,14 @@
         } else
         if(choices == null) {
             if(Boolean.class.isAssignableFrom(params[i].getType())) {
+                // want it to be null if it is
+                value = params[i].getDefault();
+                String checked = "";
+                if(value != null) {
+                    checked = " checked=\""+value+"\"";
+                }
 %>
-    <tr><td><label for="<%= params[i].getName() %>"><%= params[i].getLabel() %></label></td><td><input type="checkbox" name="<%= params[i].getName() %>" value="<%= value %>"></td></tr>
+    <tr><td><label for="<%= params[i].getName() %>"><%= params[i].getLabel() %></label></td><td><input type="checkbox" name="<%= params[i].getName() %>" value="true"<%= checked %>></td></tr>
 <%
             } else
             if(java.util.Date.class.isAssignableFrom(params[i].getType())) {
