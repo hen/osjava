@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="simple-jndi">
+
+  <title>simple-jndi</title>
+
+  <body>
+    <links>
+    </links>
+    <menu name="Overview">
+      <item name="Intro to Simple-Jndi"              href="/Intro.html"/>
+      <item name="Download"              href="/download.html"/>
+    </menu>
+  </body>
+</project>
