@@ -61,6 +61,8 @@ public class ImageCanvas extends Canvas implements ImageSource {
     public void setImage(Image image) {
         this.image = image;
         this.source = null;
+        this.invalidate();
+        this.repaint();
     }
     
     public Image getImage() {
