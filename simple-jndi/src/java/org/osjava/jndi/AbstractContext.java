@@ -48,6 +48,7 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.osjava.naming.ContextBindings;
 import org.osjava.naming.ContextNames;
 import org.osjava.naming.SimpleNameParser;
@@ -439,6 +440,8 @@ public abstract class AbstractContext
      * @see javax.naming.Context#list(javax.naming.Name)
      */
     public NamingEnumeration list(Name name) throws NamingException {
+        Logger logger = Logger.getLogger(this.getClass());
+        logger.debug("From AbstractContext.list() Name --" + name);
 //      if name is a directory, we should do the same as we do above
 //      if name is a properties file, we should return the keys (?)
 //      issues: default.properties ?
@@ -452,6 +455,7 @@ public abstract class AbstractContext
             Map enumStore = new HashMap();
             enumStore.putAll(table);
             enumStore.putAll(subContexts);
+            logger.debug(enumStore);
             NamingEnumeration enumerator = new ContextNames(enumStore);
             return enumerator;
         }
@@ -484,7 +488,7 @@ public abstract class AbstractContext
      * @see javax.naming.Context#listBindings(javax.naming.Name)
      */
     public NamingEnumeration listBindings(Name name) throws NamingException {
-        if("".equals(name)) {
+        if(name.isEmpty()) {
             /* 
              * Because there are two mappings that need to be used here, 
              * create a new mapping and add the two maps to it.  This also 
