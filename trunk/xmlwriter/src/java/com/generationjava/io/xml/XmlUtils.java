@@ -37,7 +37,7 @@ package com.generationjava.io.xml;
  * @author <a href="mailto:bayard@apache.org">Henri Yandell</a>
  * @version 1.0
  */
-final public class XmlUtils {
+public final class XmlUtils {
 
     public static String escapeXml(String str) {
         str = str.replaceAll("&","&amp;");
