@@ -43,8 +43,10 @@ import java.util.Hashtable;
 import java.util.Map;
 
 import javax.naming.Context;
+import javax.naming.ContextNotEmptyException;
 import javax.naming.Name;
 import javax.naming.NameAlreadyBoundException;
+import javax.naming.NameNotFoundException;
 import javax.naming.NameParser;
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
@@ -83,17 +85,16 @@ public class ThreadContext
      */
     private Map contextStore = new HashMap();
 
+    /*
+     * The map of sub contexts. 
+     */
+    private Map subContexts = new HashMap();
+    
     /* 
      * The root context of this context.  
      */
     private Context rootContext = null;
-    
-    /* 
-     * The name of this context.  There are potential synchronization issues
-     * here. The topmost context has no name.  "" will match it, however.
-     */
-    private Name myName = null;
-    
+        
     /* 
      * The NameParser utilized by the Context.
      */
@@ -105,8 +106,7 @@ public class ThreadContext
      * @throws NamingException if a name exception is encountered.
      */
     protected ThreadContext() throws NamingException {
-        nameParser = new ThreadNameParser(this);
-        rootContext = this;
+        this(null);
     }
     
     /****************
@@ -123,18 +123,15 @@ public class ThreadContext
      * @param name the Name of the newly created ThreadContext
      * @throws NamingException when a name exception is encountered.
      */
-    protected ThreadContext(Context root, Name name) throws NamingException {
-        /* A context without a name is disallowed. */
-        if(name == null || name.size() == 0) {
-            throw new NamingException("ThreadContext names must not be null or empty");
-        }
+    protected ThreadContext(Context root) throws NamingException {
         /* 
          * If root is null, we accept the defaults of all of the variables.
          */
         if(root == null) {
-            if(name.size() != 1) {
-                throw new NamingException("Invalid name '" + name.toString() + "' for root ThreadContext.");
-            }
+            /* Assign ourself as the root context.  This is how we will 
+             *identify it as root */
+            rootContext = this;
+            nameParser = new ThreadNameParser(this);
         } else {
             rootContext = root;
             nameParser = new ThreadNameParser(this);
@@ -146,41 +143,22 @@ public class ThreadContext
          *       now, it is okay because it's assumed to be the same name 
          *       parser for the entire hierarchy of Contexts.
          */
-        nameParser = root.getNameParser(name);
-        myName = name;
+        nameParser = root.getNameParser("");
     }
     
     /* ************************
      * Class Specific Methods *
      * ************************/
-    
-    /**
-     * Set the name of the ThreadContext.  This method is a point at which
-     * the Context hierarchy can be thrown out of sync.  It is assumed that
-     * such checks will be made when calling this method.
-     * 
-     * @param name the new Name of the ThreadContext.
-     */
-    protected void setName(Name name) {
-        myName = name;
-    }
-
-    /**
-     * Get the name of the ThreadContext
-     * @return the Name of the context.
-     */
-    public Name getName() {
-        return myName;
-    }
-        
-    /*********************************************
+            
+    /* *******************************************
      * Methods required by implementing Context. *
-     *********************************************/
+     * *******************************************/
     
     /**
      * Return a {@link Thread} implementing {@link ExtendedRunnable}
      * {@link Runnable},{@link ExtendedThread} or {@link ExtendedThreadGroup}
-     * associated with the {@link Name}<code>name</code>.
+     * associated with the {@link Name}<code>name</code>.  The Name passed is
+     * relative to this context.
      * 
      * @param name the Name to lookup.
      * @return a Thread with an ExtendedRunnable Runnable, ExtendedThread, or
@@ -205,55 +183,25 @@ public class ThreadContext
             }
         }
         
-        /* Try looking in this context first.*/
-        if(name.startsWith(myName)) {
-            Name item = name.getSuffix(myName.size());
-            /* Look for the name as it would exist in the context store */
-            if(contextStore.containsKey(item)) {
-                return contextStore.get(item);
-            }       
-            /* 
-             * Look for a sub context that might have the name.  We only need to 
-             * look one level deeper than our name, because it is enforced that
-             * subcontexts must be named in a hierarchial fashion. If we don't 
-             * have a match, return null. 
-             */ 
-            Name subContext = item.getPrefix(1);
-            if(!contextStore.containsKey(subContext)) {
-                return null;
+        Name objName = name.getPrefix(1);
+        if(name.size() > 1) {
+            /* Look in a subcontext. */
+            if(subContexts.containsKey(objName)) {
+                return ((Context)subContexts.get(objName)).lookup(name.getSuffix(1));
+            } else {
+                /* TODO: Might need to do a littl emore work here and supply a 
+                 * reasonable message. */
+                throw new NamingException();
             }
-            Object context = (Context)contextStore.get(subContext);
-            if(!(context instanceof Context)) {
-                throw new NamingException("Could not find '" + name.toString() + "' from ThreadContext '" 
-                                + myName.toString() + "'.");
-            }
-            
-            /* Pass it to the context to lookup */
-            return ((Context)context).lookup(name);
         }
-        
-        /* 
-         * If the name being looked up doesn't start with the same thing as 
-         * the name of this context, try to look for the root context.
-         */
-        if(rootContext != null) {
-            Object ret = rootContext.lookup(name);
-            if(ret == null) {
-                throw new NamingException("Could not find '" + name.toString() + "' from ThreadContext '"                                 
-                                + myName.toString() + "'.");
-            }
-            return ret;
-        }
-        /* Throw an exception because we couldn't find the name here. */
-        throw new NamingException("Could not find '" + name.toString() + "' from ThreadContext '" 
-  
-                        + myName.toString() + "'.");
+        return contextStore.get(objName);
     }
 
     /**
      * Return a {@link Thread} implmenting {@link ExtendedRunnable}
      * {@link Runnable},{@link ExtendedThread} or {@link ExtendedThreadGroup}
-     * associated with the {@link String}<code>name</code>.
+     * associated with the {@link String}<code>name</code>.  The name is
+     * relative to this context.
      * 
      * @param name the Name to lookup.
      * @return a Thread with an ExtendedRunnable Runnable, ExtendedThread, or
@@ -265,8 +213,9 @@ public class ThreadContext
     }
 
     /**
-     * Bind the Object <code>obj</code> to the Name <code>name</code>.  The object
-     * must be an {@link ExtendedRunnable}, or {@link ThreadContext}. 
+     * Bind the Object <code>obj</code> to the Name <code>name</code>.  The 
+     * object must be an {@link ExtendedRunnable}, or {@link ThreadContext}.
+     * The Name <code>name</code> is relative to this context.  
      * 
      * @param name The name to bind the Object to.
      * @param obj The object that is being bound in the ThreadContext.
@@ -277,31 +226,23 @@ public class ThreadContext
      * to the ThreadContext.
      */
     public void bind(Name name, Object obj) throws NamingException {
-        /* Determine first if the name is already bound */
-        if(contextStore.containsKey(name)) {
-            throw new NameAlreadyBoundException("Name " + name.toString()
-                + " already bound");
-        }
-        
         /* 
          * If the name of obj doesn't start with the name of this context, 
          * it is an error, throw a NamingException
          */
-        if(!name.startsWith(myName)) {
-            /* I'm pretty unhappy with this exception message */
-            throw new NamingException("Cannot bind name '" + name + "' to ThreadContext '" + myName + "'.");
+        if(name.size() > 1) {
+            Name prefix = name.getPrefix(1);
+            if(subContexts.containsKey(prefix)) {
+                ((Context)subContexts.get(prefix)).bind(name.getSuffix(1), obj);
+                return;
+            }
         }
-        /*
-         * Determine if the context that the object is going to already
-         * exists and return.  This is determined by the first n-1 elements
-         * of the name.
-         */
-        Object context = lookup(name.getPrefix(name.size() - 1));
-        if(context instanceof Context) {
-            ((Context)context).bind(name, obj);
-            return;
+
+        /* Determine if the name is already bound */
+        if(contextStore.containsKey(name)) {
+            throw new NameAlreadyBoundException("Name " + name.toString()
+                + " already bound");
         }
-        
         /*
          * Only the following types are allowed to be bound through this 
          * method: 
@@ -410,7 +351,7 @@ public class ThreadContext
         /* Confirm that this works.  We might have to catch the exception */
         Object old = lookup(oldName);
         if(old == null) {
-            throw new NamingException("Name '" + oldName + "' not found in ThreadContext '" + myName + "'.");
+            throw new NamingException("Name '" + oldName + "' not found.");
         }
         
         /* If the new name is bound throw a NameAlreadyBoundException */
@@ -427,8 +368,6 @@ public class ThreadContext
          */
         if(old instanceof Thread) {
             ((Thread)old).setName(newName.toString());
-        } else if(old instanceof ThreadContext) {
-            ((ThreadContext)old).setName(newName);
         }
         bind(newName, old);
     }
@@ -442,15 +381,6 @@ public class ThreadContext
      * @throws NamingException if a naming exception is encountered.
      * @throws NameAlreadyBoundException if the name is already used. 
      * @see javax.naming.Context#rename(java.lang.String, java.lang.String)
-     */
-    /*
-     * TODO: Implement me!  It will not be possible to create an 
-     *       implementation that renames ExtendedThreadGroups.  to implement
-     *       this a new ExtendedThreadGroup will have to be created and the
-     *       Threads and ThreadGroups that are part of it will have to be 
-     *       reassigned.  I'm not entirely sure that Threads can be moved
-     *       to new ThreadGroups.  
-     *       Threads can be easily renamed so are not an issue.
      */
     public void rename(String oldName, String newName) throws NamingException {
         rename(nameParser.parse(oldName), nameParser.parse(newName));
@@ -535,9 +465,31 @@ public class ThreadContext
      * 
      * @see javax.naming.Context#destroySubcontext(javax.naming.Name)
      */
-    public void destroySubcontext(Name name) throws NamingException {
-        throw new OperationNotSupportedException("destroySubcontext() not supported.");
-
+    public void destroySubcontext(Name name) throws NamingException {        
+        if(name.size() > 1) {
+            if(subContexts.containsKey(name.getPrefix(1))) {
+                Context subContext = (Context)subContexts.get(name.getPrefix(1));
+                subContext.destroySubcontext(name.getSuffix(1));
+                return;
+            } 
+            /* TODO: Better message might be necessary */
+            throw new NameNotFoundException();
+        }
+        /* Look at the contextStore to see if the name is bound there */
+        if(contextStore.containsKey(name)) {
+            throw new NotContextException();
+        }
+        /* Look for the subcontext */
+        if(!subContexts.containsKey(name)) {
+            throw new NameNotFoundException();
+        }
+        Context subContext = (Context)subContexts.get(name); 
+        /* Look to see if the context is empty */
+        NamingEnumeration names = subContext.list("");
+        if(names.hasMore()) {
+            throw new ContextNotEmptyException();
+        }
+        subContexts.remove(name);
     }
 
     /*
@@ -546,7 +498,7 @@ public class ThreadContext
      * @see javax.naming.Context#destroySubcontext(java.lang.String)
      */
     public void destroySubcontext(String name) throws NamingException {
-        throw new OperationNotSupportedException("destroySubcontext() not supported.");
+        destroySubcontext(nameParser.parse(name));
     }
 
     /*
