@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<reportrunner>
+ <reports id="roll" name="Roller" file="reports.xml" datasource="ReportsRollerDS"/>
+ <reports id="jira" name="Jira" file="jirareports.xml" datasource="ReportsJiraDS"/>
+</reportrunner>
