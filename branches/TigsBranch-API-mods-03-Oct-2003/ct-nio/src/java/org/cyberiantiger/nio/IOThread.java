@@ -1,7 +1,6 @@
 package org.cyberiantiger.nio;
 
 import java.io.*;
-import java.net.*;
 import java.nio.channels.*;
 import java.util.*;
 
@@ -29,22 +28,32 @@ public class IOThread extends Thread {
      * Register a ChannelHandler with this IOThread
      *
      */
-    public SelectionKey register(ChannelHandler handler, int ops) throws IOException {
+    public SelectionKey register(ChannelHandler handler, int ops) 
+    throws IOException {
         SelectableChannel chan = handler.getSelectableChannel();
 
         if (chan.isBlocking()) {
             throw new IllegalArgumentException("SelectableChannel is blocking");
         }
 
-        SelectionKey ret = chan.register(mySelector, ops, handler);
+        SelectionKey key = chan.register(mySelector, ops, handler);
+        handler.setSelectionKey(key);
 
         // XXX: Workaround, Selector hangs when it has nothing registered.
         synchronized (this) {
             notify();
         }
-        return ret;
+        return key;
     }
-
+    
+    public void deregister(ChannelHandler handler) {
+        SelectionKey key=handler.getSelectableChannel().keyFor(mySelector);
+        
+        if(key!=null) {
+            key.cancel();
+        }
+    }
+    
     public void run() {
         while (!isAborting()) {
             try {
@@ -80,10 +89,10 @@ public class IOThread extends Thread {
                             handler.connect();
                         }
                         if ((ops & SelectionKey.OP_READ) != 0) {
-                            handler.read();
+                            handler.readFromChannel();
                         }
                         if ((ops & SelectionKey.OP_WRITE) != 0) {
-                            handler.write();
+                            handler.writeToChannel();
                         }
                     }
                     i.remove();
@@ -103,7 +112,7 @@ public class IOThread extends Thread {
             if (key.isValid()) {
                 try {
                     handler.close();
-                    handler.deregister();
+                    deregister(handler);
                 } catch (IOException ioe) {
                     ioe.printStackTrace();
                 }
