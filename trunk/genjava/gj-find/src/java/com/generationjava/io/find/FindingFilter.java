@@ -32,14 +32,12 @@
 
 package com.generationjava.io.find;
 
-import java.util.HashSet;
 import java.util.Collection;
 import java.io.File;
 import java.io.FileFilter;
 import java.util.Map;
 import java.util.List;
 import java.util.LinkedList;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
