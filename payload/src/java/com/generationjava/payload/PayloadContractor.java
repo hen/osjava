@@ -49,6 +49,8 @@ import java.io.InputStream;
  */
 public class PayloadContractor {
 
+    public static final boolean DEBUG = (System.getProperty("PAYLOAD.DEBUG")!=null);
+
 // Allow payload/ to be specified as a system property
 
     public static void main(String[] args) {
@@ -61,6 +63,7 @@ public class PayloadContractor {
             // get the jarFile as a -j argument
         }
         System.out.println(".");
+if(DEBUG) System.out.println("DEBUG turned on. ");
 
         if(args.length == 0) {
             System.err.println("\nUnable to contract a payload as no target jar has been specified. ");

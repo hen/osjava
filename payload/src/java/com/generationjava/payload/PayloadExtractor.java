@@ -50,6 +50,8 @@ import java.io.InputStream;
  */
 public class PayloadExtractor {
 
+    public static final boolean DEBUG = (System.getProperty("PAYLOAD.DEBUG")!=null);
+
     public static void main(String[] args) {
         System.out.print("Payload extraction setup");
 
@@ -61,6 +63,7 @@ public class PayloadExtractor {
         }
         String jarName = jarFile.substring( 0, jarFile.length() - ".jar".length() );
         System.out.print(".");
+if(DEBUG) System.out.println("DEBUG turned on. ");
 
         Properties props = null;
         if(args.length == 0) {
@@ -85,7 +88,6 @@ public class PayloadExtractor {
         }
         System.out.println(".");
 
-        System.out.print("Payload extracting");
         // loop....
         try {
             JarFile jar = new JarFile(new File(jarFile));
@@ -98,6 +100,7 @@ public class PayloadExtractor {
             while(enum.hasMoreElements()) {
                 JarEntry entry = (JarEntry) enum.nextElement();
                 if(entry.getName().equals("payload.properties")) {
+if(DEBUG) System.out.println("Custom interpolation being used. ");
                     InputStream in = jar.getInputStream( entry );
                     String text = IOUtils.readToString(in);
                     interpolation = new Interpolation(text);
@@ -106,8 +109,11 @@ public class PayloadExtractor {
             }
 
             if(interpolation == null) {
+if(DEBUG) System.out.println("Default interpolation being used. ");
                 interpolation = Interpolation.DEFAULT;
             }
+
+            System.out.print("Payload extracting");
 
             enum = jar.entries();
             while(enum.hasMoreElements()) {
@@ -136,6 +142,7 @@ public class PayloadExtractor {
                 // that can't fit in memory
                 if( props != null && interpolation.interpolatable(outName)) {
                     // interpolate push
+if(DEBUG) System.out.println("Interpolating "+outName);
                     String text = IOUtils.readToString(in);
                     text = interpolation.interpolate(text, props);
                     in.close();

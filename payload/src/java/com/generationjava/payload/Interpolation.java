@@ -74,13 +74,15 @@ class Interpolation {
                 if(line.startsWith(ENDS_WITH)) {
                     int idx = line.indexOf("=");
                     if(idx != -1) {
-                        fileEndsWith.add(line.substring(idx+1));
+if(PayloadExtractor.DEBUG) System.out.println("Adding endsWith rule: "+line.substring(idx+1));
+                        this.fileEndsWith.add(line.substring(idx+1));
                     }
                 } else 
                 if(line.startsWith(MATCHES)) {
                     int idx = line.indexOf("=");
                     if(idx != -1) {
-                        fileMatches.add(line.substring(idx+1));
+if(PayloadExtractor.DEBUG) System.out.println("Adding matches rule: "+line.substring(idx+1));
+                        this.fileMatches.add(line.substring(idx+1));
                     }
                 }
             }
@@ -112,8 +114,29 @@ class Interpolation {
         Iterator itr = props.keySet().iterator();
         while(itr.hasNext()) {
             String key = (String) itr.next();
-            str = str.replaceAll( "\\$\\{"+key+"\\}", props.getProperty(key) );
+//            str = str.replaceAll( "\\$\\{"+key+"\\}", props.getProperty(key) );
+            str = replace(str, "${"+key+"}", props.getProperty(key), -1 );
         }
         return str;
+    }
+    
+    // From Jakarta Commons Lang's StringUtils
+    private static String replace(String text, String repl, String with, int max) {
+        if (text == null || repl == null || repl.equals("") || with == null || max == 0) {
+            return text;
+        }
+
+        StringBuffer buf = new StringBuffer(text.length());
+        int start = 0, end = 0;
+        while ((end = text.indexOf(repl, start)) != -1) {
+            buf.append(text.substring(start, end)).append(with);
+            start = end + repl.length();
+
+            if (--max == 0) {
+                break;
+            }
+        }
+        buf.append(text.substring(start));
+        return buf.toString();
     }
 }
