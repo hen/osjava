@@ -64,7 +64,7 @@ public abstract class AbstractReport implements Report {
         this.columns.add(column);
     }
 
-    public abstract Object[] execute();
+    public abstract Result execute();
     public abstract Choice[] getParamChoices(Param param);
 
 }

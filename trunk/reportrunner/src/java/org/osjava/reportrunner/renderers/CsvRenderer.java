@@ -15,14 +15,14 @@ public class CsvRenderer extends AbstractRenderer {
     public String getFieldDelimiter() { return this.fieldDelimiter; }
 
     public void display(Report report, Writer out) throws IOException {
-        Object[] data = report.execute();
+        Result data = report.execute();
         CsvWriter csv = new CsvWriter( out );
         if(this.fieldDelimiter != null) {
             csv.setFieldDelimiter(this.fieldDelimiter.charAt(0));
         }
 
-        for(int i=0; i<data.length; i++) {
-            Object[] row = (Object[]) data[i];
+        while(data.hasNextRow()) {
+            Object[] row = data.nextRow();
             for(int j=0; j<row.length; j++) {
                 csv.writeField(""+row[j]);
             }

@@ -10,7 +10,7 @@ import org.osjava.reportrunner.*;
 public class HtmlTableRenderer extends AbstractRenderer {
 
     public void display(Report report, Writer out) throws IOException {
-        Object[] data = report.execute();
+        Result data = report.execute();
         if(data == null) {
             out.write("There is no data. ");
             return;
@@ -26,8 +26,8 @@ public class HtmlTableRenderer extends AbstractRenderer {
             }
             out.write("</tr>\n");
         }
-        for(int i=0; i<data.length; i++) {
-            Object[] row = (Object[]) data[i];
+        while(data.hasNextRow()) {
+            Object[] row = data.nextRow();
             out.write("<tr>\n");
             for(int j=0; j<row.length; j++) {
                 out.write("<td>");

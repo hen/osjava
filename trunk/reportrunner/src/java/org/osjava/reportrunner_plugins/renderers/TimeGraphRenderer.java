@@ -15,13 +15,13 @@ public class TimeGraphRenderer extends AbstractRenderer {
     }
 
     public void display(Report report, OutputStream out) throws IOException {
-        Object[] data = report.execute();
+        Result data = report.execute();
         Column[] columns = report.getColumns();
 
         List list = new ArrayList();
 
-        for(int i=0; i<data.length; i++) {
-            Object[] row = (Object[]) data[i];
+        while(data.hasNextRow()) {
+            Object[] row = data.nextRow();
             Date date = (Date) row[0];
 
             for(int j=1; j<row.length; j++) {

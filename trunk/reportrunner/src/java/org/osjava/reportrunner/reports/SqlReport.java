@@ -27,7 +27,7 @@ public class SqlReport extends AbstractReport {
         this.dsName = dsName;
     }
 
-    public Object[] execute() {
+    public Result execute() {
         // how do we choose the datasource?
         // how do we get the sql?
         DataSource ds = null;
@@ -56,19 +56,19 @@ public class SqlReport extends AbstractReport {
             Object[] array = list.toArray(new Object[0]);
 
             if(array == null) {
-                return new Object[0];
+                return new NullResult();
             }
             if(array.length == 0) {
-                return new Object[0];
+                return new NullResult();
             }
             if(array[0] == null) {
-                return new Object[0];
+                return new NullResult();
             }
             if(!(array[0] instanceof Object[])) {
                 throw new RuntimeException("The array consists of "+array[0].getClass() );
             }
 
-            return array;
+            return new ArrayResult(array);
         } catch(SQLException sqle) {
             sqle.printStackTrace();
         }
