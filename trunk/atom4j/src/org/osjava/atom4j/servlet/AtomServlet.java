@@ -43,7 +43,7 @@ import javax.servlet.http.HttpServletResponse;
  * All requests should have a URL format
  * /atom/username/ACTION[/args]
  * 
- * GET    Feed  PathInfo: /USER/feed/id
+ * GET    Feed  PathInfo: /USER/feed[/id] - include id for multiple feeds per user
  * GET    Entry PathInfo: /USER/entry/id
  * DELETE Entry PathInfo: /USER/delete/id
  * CREATE Entry PathInfo: /USER/entry
@@ -213,6 +213,7 @@ public abstract class AtomServlet extends HttpServlet
         } 
 
         // first the options that don't require authorization
+        boolean authorized = authorized();
         if ("entry".equals(pathInfo[1]))
         {
             getEntry(pathInfo, request, response);
@@ -228,7 +229,7 @@ public abstract class AtomServlet extends HttpServlet
         }
         */
         // now check for those that do require authorization
-        else if (authorized())
+        else if (authorized)
         {
             if ("delete".equals(pathInfo[1]))
             {
@@ -245,10 +246,13 @@ public abstract class AtomServlet extends HttpServlet
             }
             */
         }
+        else if (!authorized)
+        {
+            error(request, response, "Authorization Failure.", "You are not authorized for this Action.");   
+        }
         else
         {
-            error(request, response, "No Action was requested.", "Your request did not contain an Action, or you are not authorized."); 
-            return;
+            error(request, response, "No Action was requested.", "Your request did not contain an Action."); 
         }
     }
 
@@ -264,8 +268,9 @@ public abstract class AtomServlet extends HttpServlet
             error(request, response, "Invalid Request.", "Insufficient Information to Process Request."); 
             return;
         } 
-        
-        if (authorized() && "entry".equals(pathInfo[1]))
+
+        boolean authorized = authorized();
+        if (authorized && "entry".equals(pathInfo[1]))
         {
             postEntry(pathInfo, request, response);
         }
@@ -273,10 +278,13 @@ public abstract class AtomServlet extends HttpServlet
         {
             postComment(pathInfo, request, response);
         }
+        else if (!authorized)
+        {
+            error(request, response, "Authorization Failure.", "You are not authorized for this Action.");   
+        }
         else
         {
-            error(request, response, "No Action was requested.", "Your request did not contain an Action or you are not authorized.");
-            return;
+            error(request, response, "No Action was requested.", "Your request did not contain an Action."); 
         }
     }
 
@@ -329,16 +337,26 @@ public abstract class AtomServlet extends HttpServlet
     private void getFeed(String[] pathInfo, HttpServletRequest request, HttpServletResponse response) 
         throws IOException, ServletException
     {
-        if (pathInfo.length > 2)
+        if (pathInfo.length > 0)
         {
+            Feed feed = null;
             try
             {
-                Feed feed = getFeed(pathInfo);
-                writeResults(response, feed.toString().getBytes());
+                feed = getFeed(pathInfo);
             }
             catch (Exception e)
             {
+                logger.error(e);
                 throw new ServletException(e);
+            }
+            
+            if (feed != null)
+            {    
+                writeResults(response, feed.toString().getBytes());
+            }
+            else
+            {
+                error(request, response, "No Feed Found", "No Feed Found for " + pathInfo[0]);
             }
         }
         else
