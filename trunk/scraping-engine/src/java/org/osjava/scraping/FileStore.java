@@ -101,7 +101,7 @@ try {
         if(obj instanceof File) {
             return new java.io.FileInputStream( (File) obj);
         } else
-        if(obj instance byte[]) {
+        if(obj instanceof byte[]) {
             return new java.io.ByteArrayInputStream( (byte[]) obj);
         } else {
             return null;
