@@ -9,10 +9,10 @@
       <item name="News"              href="/News.html"/>
       <item name="Description"              href="/Intro.html"/>
       <item name="Examples"              href="/Examples.html"/>
-      <item name="Task list"              href="/Tasks.html"/>
       <item name="FAQ"              href="/FAQ.html"/>
       <item name="Download"              href="/Download.html"/>
       <item name="Changes"              href="/changes-report.html"/>
+      <item name="Task list"              href="/Tasks.html"/>
       <item name="License"              href="/license.html"/>
     </menu>
     <menu name="Code docs">
