@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<document>
+   <properties>
+    <author email="rzigweid@osjava.org">Robert M. Zigweid</author>
+    <title>Introduction</title>
+  </properties>
+
+  <body>
+    <section name="Introduction">
+      <p>
+        OSJava-Threads is an extention of the Threading API that comes with a
+        standard Java SDK. The project started from the inability, under the
+        standard implementation, to access specific Threads in a ThreadGroup,
+        and it grew from there.
+      </p>
+      <p>
+      	This is the initial release of this package under the OSJava-Threads,
+        name. Much has changed from that which it derived, TigThreads.
+        Firstly, the concept of a ThreadGroup is something that should never
+        be used. Instead context objects are used to create, control, and
+        eventaully destroy threads. This context can be implemented as a
+        subcontext of another context, if that's allowed by the parent
+        context. Just bind it in.
+     </p>
+     <p>
+       Is the OSJava-Threads package done? Hardly. There are still more
+       features that need to be added. See the Pending Tasks (or the Roadmap
+       in the bug pages) for details.
+     </p>
+    </section>
+  </body>
+</document>
+
