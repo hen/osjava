@@ -12,6 +12,7 @@ public class Resource {
 
     private String name;
     private String label;
+    private String description;
     private String uri;
     private String type;
 
@@ -20,6 +21,9 @@ public class Resource {
 
     public String getLabel() { return this.label; }
     public void setLabel(String label) { this.label = label; }
+
+    public String getDescription() { return this.description; }
+    public void setDescription(String description) { this.description = description; }
 
     public String getUri() { return this.uri; }
     public void setUri(String uri) { this.uri = uri; }

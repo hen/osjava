@@ -11,6 +11,7 @@ public abstract class AbstractRenderer implements Renderer {
 
     private String name;
     private String label;
+    private String description;
     private String mimeType;
     private String extension;
     private boolean inline;
@@ -30,6 +31,9 @@ public abstract class AbstractRenderer implements Renderer {
     public void setLabel(String label) {
         this.label = label;
     }
+
+    public String getDescription() { return this.description; }
+    public void setDescription(String description) { this.description = description; }
 
     public String getMimeType() {
         return this.mimeType;

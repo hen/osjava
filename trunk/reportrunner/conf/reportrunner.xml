@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
 <reportrunner>
- <reports name="roll" label="Roller" filename="reports.xml">
+ <reports name="roll" label="Roller" filename="reports.xml" description="Reports for the database behind the Roller weblog engine. ">
    <use name="SqlReportDS" resource="roller"/>
    <use name="JiraDS" resource="jira"/>
  </reports>
- <reports name="jira" label="Jira" filename="jirareports.xml">
+ <reports name="jira" label="Jira" filename="jirareports.xml" description="Reports for the database behind the Jira issue tracker. ">
    <use name="SqlReportDS" resource="jira"/>
  </reports>
 </reportrunner>
