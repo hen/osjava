@@ -12,16 +12,16 @@
 <li>Allow the delimiter in the search values to be configurable, so people can more easily mimic LDAP etc: <b>DONE v0.3</b></li>
 <li>If root is unspecified, then use the classpath: <b>DONE v0.3</b></li>
 <li>Allow the root to be a classpath root, ie) org.osjava: <b>DONE v0.3</b></li>
-<li>&nbsp;</li>
+<li><b>-0.3 released-</b></li>
 <li>Use OrderedProperties to order the underlying .properties files. <b>DONE v0.4</b></li>
 <li>Types. com.foo.Value can have a partner key of com.foo.Value.type which specifies the type of object to use for the key. <b>DONE v0.4</b></li>
 <li>Add multiple-line format for .properties files. ie) if there are equal keys, they should create a collection. Note, with the OrderedProperties this becomes a list and not a collection. <b>DONE v0.4</b></li>
 <li>XML underneath as well as .properties: <b>DONE v0.4</b></li>
-<li>&nbsp;</li>
+<li><b>-0.4 released-</b></li>
 <li>Allow converters to be configured/plugged in somehow. Add new converters. [<b>URL/Boolean converters added in v0.5</b>] </li>
 <li>Allow users to bind their own variables on top of the properties. <b>DONE v0.5</b>. This would only be for a single instance of the context, though the factory could return the same instance every time. </li>
 <li>Place the System properties before the simple-jndi layer so that -D may override it. <b>DONE v0.5</b>.</li>
-<li>&nbsp;</li>
+<li><b>-0.5 released-</b></li>
 <li>Implement Type in such a way that the object to create may be specified, say JDOPersistenceFactory, and that sub-properties may be set as bean properties.</li>
 <li>Implement binding so that values may be stored in the system, making it Read/Write. </li>
 <li>Implementing the list methods so you can see the values in a particular directory/properties file. </li>
