@@ -45,6 +45,7 @@ import javax.naming.Name;
 import javax.naming.CompositeName;
 import javax.naming.NameClassPair;
 
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Properties;
 import java.util.Enumeration;
@@ -60,6 +61,7 @@ import java.net.MalformedURLException;
 
 import org.osjava.naming.ContextBindings;
 import org.osjava.naming.ContextNames;
+import org.osjava.naming.InvalidObjectTypeException;
 import org.osjava.naming.SimpleNameParser;
 
 import org.osjava.jndi.util.Parser;
@@ -82,9 +84,8 @@ public class PropertiesContext implements Context  {
     // table is used as a read-write cache which sits 
     // above the file-store
     private Hashtable table = new Hashtable();
-
-    private Hashtable env;
-    private Hashtable subContexts;
+    private Hashtable subContexts = new Hashtable();
+    private Hashtable env = new Hashtable();
     private String root;
     private Object protocol;
     private String separator;
@@ -101,13 +102,29 @@ public class PropertiesContext implements Context  {
     
     public PropertiesContext(Hashtable env) {
         /* By default allow system properties to override. */
-        this(env, true);
-    }
-    
-    public PropertiesContext(Hashtable env, boolean systemOverride) {
         this(env, true, null);
     }
     
+    public PropertiesContext(Hashtable env, boolean systemOverride) {
+        this(env, systemOverride, null);
+    }
+
+    public PropertiesContext(Hashtable env, NameParser parser) {
+        this(env, true, parser);
+    }
+
+    public PropertiesContext(boolean systemOverride) {
+        this(null, systemOverride, null);
+    }
+
+    public PropertiesContext(boolean systemOverride, NameParser parser) {
+        this(null, systemOverride, parser);
+    }
+
+    public PropertiesContext(NameParser parser) {
+        this(null, true, parser);
+    }
+
     public PropertiesContext(Hashtable env, boolean systemOverride, NameParser parser) {
         String shared = null;
         
@@ -198,8 +215,217 @@ if(DEBUG)            System.err.println("[CTXT]separator is: "+this.separator);
         this(that.env);
     }
 
+    // to add:
+    // need to add file://, although this is default
+    // need to add classpath://. 
+    // need to add http://.
+    // Use VFS???
     public Object lookup(Name name) throws NamingException {
-        return lookup(name.toString());
+        /* 
+         * The string form of the name will be used in several places below 
+         * if not matched in the hashtable.
+         */
+        String stringName = name.toString();
+        /*
+         * If name is empty then this context is to be cloned.  This is 
+         * required based upon the javadoc of Context.  UGH!
+         */
+        if(name.size() == 0) {
+            Object ret = null;
+            try {
+                ret = (PropertiesContext)this.clone();
+            } catch(CloneNotSupportedException e) {
+                /* 
+                 * TODO: Improve error handling.  I'm not quite sure yet what 
+                 *       should be done, but this almost certainly isn't it.
+                 */
+                e.printStackTrace();
+            }
+            if(ret != null) {
+                return ret;
+            }
+        }
+
+        /* Lookup system properties */
+        /* NOTE: I'm not entirely sure that I like this approach.  
+         * 1.) reconverting back to strings if a string was originally 
+         *     passed.
+         * 2.) I'm not sure I like system properties interfering.
+         * -RMZ */
+        if(System.getProperty(stringName) != null) {
+            return System.getProperty(stringName);
+        }
+
+        /* Lookup the few special keys next. */
+        if(isSpecialKey(stringName)) {
+            return getSpecial(stringName);
+        }
+
+        Name objName = name.getPrefix(1);
+        if(name.size() > 1) {
+            /* Look in a subcontext. */
+            if(subContexts.containsKey(objName)) {
+                return ((Context)subContexts.get(objName)).lookup(name.getSuffix(1));
+            } 
+            /* TODO: Might need to do a little more work here and supply a 
+             * reasonable message. */
+            throw new NamingException();
+        }
+        
+        /* Lookup the object in this context */
+        if(table.containsKey(name)) {
+            return table.get(objName);
+        }
+        
+        stringName = handleJavaStandard(stringName);
+        
+        // name is a delimited notation, each element is either a 
+        // directory, file or part of a key.
+        String[] elements = PropertiesContext.split(stringName, this.delimiter);
+        String path = root;
+        HierarchicalMap hmap = null;
+        int sz = elements.length;
+        String remaining = null;
+        
+        for(int i=0; i<sz; i++) {
+            String element = elements[i];
+            
+            Object file = getElement(path+this.separator+element);
+            if( (file != null) && isDirectory(file) ) { 
+    if(DEBUG)                System.err.println("[CTXT]Found directory. ");
+                path = path+this.separator+element;
+                continue;
+            }
+            
+            file = getElement(path+this.separator+element+".properties");
+            if(file == null) {
+                file = getElement(path+this.separator+element+".xml");
+            }
+            if(file == null) {
+                file = getElement(path+this.separator+element+".ini");
+            }
+            if(file != null) {
+                path = path+this.separator+element;
+                hmap = loadHierarchicalMap(file);
+                
+                // build the rest of the list
+                java.util.ArrayList list = new java.util.ArrayList();
+                for(int j=i+1; j<sz; j++) {
+                    list.add(elements[j]);
+                }
+                if(list.size() > 0) {
+                    remaining = PropertiesContext.join(list.iterator(), this.delimiter);
+                }
+    if(DEBUG)                System.err.println("[CTXT]FILE FOUND: "+file);
+    if(DEBUG)                System.err.println("[CTXT]Remaining: "+remaining);
+    if(DEBUG)                System.err.println("[CTXT]element: "+element);
+    if(DEBUG)                System.err.println("[CTXT]path: "+path);
+                break;
+            } else {
+                java.util.ArrayList list = new java.util.ArrayList();
+                for(int j=i; j<sz; j++) {
+                    list.add(elements[j]);
+                }
+                if(list.size() > 0) {
+                    remaining = PropertiesContext.join(list.iterator(), this.delimiter);
+                }
+    if(DEBUG)                System.err.println("[CTXT]Remaining2: "+remaining);
+                break;  // TODO: Is this right?
+            }
+        }
+        
+        if(hmap == null) {
+            //  if hmap is null, then we look for default.properties
+            Object file = getElement(path+this.separator+"default.properties");
+            if(file == null) {
+                file = getElement(path+this.separator+"default.xml");
+            }
+            if(file == null) {
+                file = getElement(path+this.separator+"default.ini");
+            }
+            if(file != null) {
+                hmap = loadHierarchicalMap(file);
+            }
+        }
+        
+        // We have a HierarchicalMap object by now, or should.
+        
+        // TODO: If not, should we attempt to search up the tree?
+        // For example, in classpath, com.genjava, com is a directory. 
+        // if genjava doesn't exist, it should look for com.genjava as a 
+        // key in the parent directory, ad infinitum
+        
+        if(hmap == null) {
+            // unable to find default
+            throw new InvalidNameException("HierarchicalMap for "+name+" not found. ");
+        }
+        
+        // TODO: Rewrite this block. Not enough grokk. Very badly grokked.
+        String typeLookup = "type";
+        if( remaining != null && !remaining.equals("")) {
+            typeLookup = remaining + this.delimiter + typeLookup;
+        }
+    if(DEBUG)        System.err.println("[CTXT]Type-lookup: " + typeLookup);
+    if(DEBUG)        System.err.println("[CTXT]DS-type? : " + hmap.get(typeLookup));
+    if(DEBUG)        System.err.println("[CTXT]DS-hmap : " + hmap);
+        if( "javax.sql.DataSource".equals(hmap.get(typeLookup)) ) 
+        {
+    if(DEBUG)            System.err.println("[CTXT]Found Datasource!");
+            PropertiesDataSource pds = new PropertiesDataSource(hmap, env, this.delimiter);
+            String dsName = null;   // never remaining???;
+            if(dsName == null) {
+                // wants to be the path without the root
+    if(DEBUG)                System.err.println("[CTXT]root: "+root);
+    if(DEBUG)                System.err.println("[CTXT]path: "+path);
+                int ln = root.length() + this.separator.length();
+    if(DEBUG)                System.err.println("[CTXT]length of root+separator: "+ln);
+                if(path.equals(root)) {
+                    dsName = remaining;
+                } else {
+                    dsName = path.substring(ln);
+                }
+            }
+            
+    if(DEBUG)            System.err.println("[CTXT]Remaining: "+remaining);
+    if(DEBUG)            System.err.println("[CTXT]DsName: '"+dsName+"'");
+    if(DEBUG)            System.err.println("[CTXT]Name: '"+name+"'");
+            
+            // get the last element in 'name'
+            String dsn = stringName;
+            if(!dsn.equals(dsName)) {
+                int edx = stringName.lastIndexOf(this.separator);
+                if(edx != -1) {
+                    // TODO: Needs a little safety
+                    dsn = stringName.substring(edx+1);
+                }
+            }
+    if(DEBUG)            System.err.println("[CTXT]DataSource name: "+dsn);
+    if(dsn.equals(dsName)) {
+    if(DEBUG)            System.err.println("[CTXT]Blanking datasource name. ");
+                dsn = "";
+            }
+            
+            // TODO: This only handles situations with one word in the Properties, ie) BlahDS.url. What if it's foo.com.BlahDS.url?? 
+            pds.setName(dsn);
+            return pds;
+        }
+        
+    if(DEBUG)        System.err.println("[CTXT]remaining: "+remaining);
+        if(remaining == null) {
+            return hmap;
+        }
+        
+        Object answer = hmap.get(remaining);
+        
+        if(answer == null) {
+            throw new InvalidNameException(""+name+" not found. ");
+        } else {
+            return answer;
+        }
+    }
+
+    public Object lookup(String name) throws NamingException {
+        return lookup(nameParser.parse(name));
     }
 
     private boolean isSpecialKey(String key) {
@@ -221,7 +447,7 @@ if(DEBUG)            System.err.println("[CTXT]separator is: "+this.separator);
         }
     }
 
-    private void resetSpecial(String key) {
+    private void resetSpecial(String key) throws NamingException {
         if("org.osjava.jndi.root".equals(key)) {
             this.root = this.originalRoot;
         }
@@ -436,281 +662,193 @@ if(DEBUG)       System.err.println("[CTXT]HTTPException? :"+e);
         }
     }
 
-    // to add:
-    // need to add file://, although this is default
-    // need to add classpath://. 
-    // need to add http://.
-    // Use VFS???
-    public Object lookup(String name) throws NamingException {
-        if("".equals(name)) {
-            return new PropertiesContext(this);
-        }
-
-        if(this.table.containsKey(name)) {
-            return this.table.get(name);
-        }
-
-        if(System.getProperty(name) != null) {
-            return System.getProperty(name);
-        }
-
-        if(isSpecialKey(name)) {
-            return getSpecial(name);
-        }
-
-        name = handleJavaStandard(name);
-
-        // name is a delimited notation, each element is either a 
-        // directory, file or part of a key.
-        String[] elements = PropertiesContext.split(name, this.delimiter);
-        String path = root;
-        HierarchicalMap hmap = null;
-        int sz = elements.length;
-        String remaining = null;
-
-        for(int i=0; i<sz; i++) {
-            String element = elements[i];
-
-            Object file = getElement(path+this.separator+element);
-            if( (file != null) && isDirectory(file) ) { 
-if(DEBUG)                System.err.println("[CTXT]Found directory. ");
-                path = path+this.separator+element;
-                continue;
-            }
-
-            file = getElement(path+this.separator+element+".properties");
-            if(file == null) {
-                file = getElement(path+this.separator+element+".xml");
-            }
-            if(file == null) {
-                file = getElement(path+this.separator+element+".ini");
-            }
-            if(file != null) {
-                path = path+this.separator+element;
-                hmap = loadHierarchicalMap(file);
-
-                // build the rest of the list
-                java.util.ArrayList list = new java.util.ArrayList();
-                for(int j=i+1; j<sz; j++) {
-                    list.add(elements[j]);
-                }
-                if(list.size() > 0) {
-                    remaining = PropertiesContext.join(list.iterator(), this.delimiter);
-                }
-if(DEBUG)                System.err.println("[CTXT]FILE FOUND: "+file);
-if(DEBUG)                System.err.println("[CTXT]Remaining: "+remaining);
-if(DEBUG)                System.err.println("[CTXT]element: "+element);
-if(DEBUG)                System.err.println("[CTXT]path: "+path);
-                break;
-            } else {
-                java.util.ArrayList list = new java.util.ArrayList();
-                for(int j=i; j<sz; j++) {
-                    list.add(elements[j]);
-                }
-                if(list.size() > 0) {
-                    remaining = PropertiesContext.join(list.iterator(), this.delimiter);
-                }
-if(DEBUG)                System.err.println("[CTXT]Remaining2: "+remaining);
-                break;  // TODO: Is this right?
-            }
-        }
-
-        if(hmap == null) {
-            //  if hmap is null, then we look for default.properties
-            Object file = getElement(path+this.separator+"default.properties");
-            if(file == null) {
-                file = getElement(path+this.separator+"default.xml");
-            }
-            if(file == null) {
-                file = getElement(path+this.separator+"default.ini");
-            }
-            if(file != null) {
-                hmap = loadHierarchicalMap(file);
-            }
-        }
-
-       // We have a HierarchicalMap object by now, or should.
-
-       // TODO: If not, should we attempt to search up the tree?
-       // For example, in classpath, com.genjava, com is a directory. 
-       // if genjava doesn't exist, it should look for com.genjava as a 
-       // key in the parent directory, ad infinitum
-
-        if(hmap == null) {
-            // unable to find default
-            throw new InvalidNameException("HierarchicalMap for "+name+" not found. ");
-        }
-
-        // TODO: Rewrite this block. Not enough grokk. Very badly grokked.
-        String typeLookup = "type";
-        if( remaining != null && !remaining.equals("")) {
-            typeLookup = remaining + this.delimiter + typeLookup;
-        }
-if(DEBUG)        System.err.println("[CTXT]Type-lookup: " + typeLookup);
-if(DEBUG)        System.err.println("[CTXT]DS-type? : " + hmap.get(typeLookup));
-if(DEBUG)        System.err.println("[CTXT]DS-hmap : " + hmap);
-        if( "javax.sql.DataSource".equals(hmap.get(typeLookup)) ) 
-        {
-if(DEBUG)            System.err.println("[CTXT]Found Datasource!");
-            PropertiesDataSource pds = new PropertiesDataSource(hmap, env, this.delimiter);
-            String dsName = null;   // never remaining???;
-            if(dsName == null) {
-                // wants to be the path without the root
-if(DEBUG)                System.err.println("[CTXT]root: "+root);
-if(DEBUG)                System.err.println("[CTXT]path: "+path);
-                int ln = root.length() + this.separator.length();
-if(DEBUG)                System.err.println("[CTXT]length of root+separator: "+ln);
-                if(path.equals(root)) {
-                    dsName = remaining;
-                } else {
-                    dsName = path.substring(ln);
-                }
-            }
-
-if(DEBUG)            System.err.println("[CTXT]Remaining: "+remaining);
-if(DEBUG)            System.err.println("[CTXT]DsName: '"+dsName+"'");
-if(DEBUG)            System.err.println("[CTXT]Name: '"+name+"'");
-
-            // get the last element in 'name'
-            String dsn = name;
-            if(!dsn.equals(dsName)) {
-                int edx = name.lastIndexOf(this.separator);
-                if(edx != -1) {
-                    // TODO: Needs a little safety
-                    dsn = name.substring(edx+1);
-                }
-            }
-if(DEBUG)            System.err.println("[CTXT]DataSource name: "+dsn);
-            if(dsn.equals(dsName)) {
-if(DEBUG)            System.err.println("[CTXT]Blanking datasource name. ");
-                dsn = "";
-            }
-
-            // TODO: This only handles situations with one word in the Properties, ie) BlahDS.url. What if it's foo.com.BlahDS.url?? 
-            pds.setName(dsn);
-            return pds;
-        }
-
-if(DEBUG)        System.err.println("[CTXT]remaining: "+remaining);
-        if(remaining == null) {
-            return hmap;
-        }
-
-        Object answer = hmap.get(remaining);
-
-        if(answer == null) {
-            throw new InvalidNameException(""+name+" not found. ");
-        } else {
-            return answer;
-        }
-    }
-
     /* Start of Write-functionality */
     public void bind(Name name, Object object) throws NamingException {
-        bind(name.toString(), object);
-    }
-
-    public void bind(String name, Object object) throws NamingException {
-        if("".equals(name)) {
-            throw new InvalidNameException("Cannot bind to empty name");
-        } 
-        if(this.table.get(name) != null) {
-            throw new NameAlreadyBoundException("Use rebind to override");
+        /* 
+         * If the name of obj doesn't start with the name of this context, 
+         * it is an error, throw a NamingException
+         */
+        if(name.size() > 1) {
+            Name prefix = name.getPrefix(1);
+            if(subContexts.containsKey(prefix)) {
+                ((Context)subContexts.get(prefix)).bind(name.getSuffix(1), object);
+                return;
+            }
+        }
+        if(name.size() == 0) {
+            throw new InvalidNameException("Cannot bind to an empty name");
+        }
+        /* Determine if the name is already bound */
+        if(env.containsKey(name)) {
+            throw new NameAlreadyBoundException("Name " + name.toString()
+                + " already bound.  Use rebind() to override");
         }
         put(name, object);
     }
 
-    private void put(String name, Object object) {
-        if(isSpecialKey(name)) {
-            setSpecial(name, object);
+    public void bind(String name, Object object) throws NamingException {
+        bind(nameParser.parse(name), object);
+    }
+
+    private void put(Name name, Object object) {
+        if(isSpecialKey(name.toString())) {
+            setSpecial(name.toString(), object);
         } else {
             this.table.put(name, object);
         }
     }
 
     public void rebind(Name name, Object object) throws NamingException {
-        rebind(name.toString(), object);
+        if(name.isEmpty()) {
+            throw new InvalidNameException("Cannot bind to empty name");
+        }
+        /* Look up the target context first. */
+        Object targetContext = lookup(name.getPrefix(name.size() - 1));
+        if(targetContext == null || !(targetContext instanceof Context)) {
+            throw new NamingException("Cannot bind object.  Target context does not exist.");
+        }
+        unbind(name);
+        bind(name, object);
     }
 
     public void rebind(String name, Object object) throws NamingException {
-        if("".equals(name)) {
-            throw new InvalidNameException("Cannot bind to empty name");
-        } 
-        put(name, object);
+        rebind(nameParser.parse(name), object);
     }
 
     public void unbind(Name name) throws NamingException {
-        unbind(name.toString());
+        String stringName = name.toString();
+        if(name.isEmpty()) {
+            throw new InvalidNameException("Cannot unbind to empty name");
+        }
+
+        if(isSpecialKey(stringName)) {
+            resetSpecial(stringName);
+        }
+
+        Object obj = null;
+        if(name.size() == 1) {
+            if(table.containsKey(name)) {
+                table.remove(name);
+            }
+            return;
+        }
+        
+        /* Look up the target context first. */
+        Object targetContext = lookup(name.getPrefix(name.size() - 1));
+        if(targetContext == null || !(targetContext instanceof Context)) {
+            throw new NamingException("Cannot unbind object.  Target context does not exist.");
+        }
+        ((Context)targetContext).unbind(name.getSuffix(name.size() - 1));
     }
 
     public void unbind(String name) throws NamingException {
-        if("".equals(name)) {
-            throw new InvalidNameException("Cannot bind to empty name");
-        } 
-        this.table.remove(name);
-        if(isSpecialKey(name)) {
-            resetSpecial(name);
-        }
+        unbind(nameParser.parse(name));
     }
 
-    public void rename(Name name, Name newname) throws NamingException {
-        rename(name.toString(), newname.toString());
-    }
-
-    public void rename(String oldname, String newname) throws NamingException {
-        if("".equals(oldname) || "".equals(newname)) {
+    public void rename(Name oldName, Name newName) throws NamingException {
+        /* Confirm that this works.  We might have to catch the exception */
+        Object old = lookup(oldName);
+        if(newName.isEmpty()) {
             throw new InvalidNameException("Cannot bind to empty name");
-        } 
-        if(isSpecialKey(oldname)) {
-            throw new NamingException("You may not rename: "+oldname);
         }
-        if(this.table.get(newname) != null) {
-            throw new NameAlreadyBoundException(""+newname+" is already bound");
-        }
-        Object old = this.table.remove(oldname);
+        
         if(old == null) {
-            throw new NameNotFoundException(""+oldname+" not bound");
+            throw new NamingException("Name '" + oldName + "' not found.");
         }
+
+        /* If the new name is bound throw a NameAlreadyBoundException */
+        if(lookup(newName) != null) {
+            throw new NameAlreadyBoundException("Name '" + newName + "' already bound");
+        }
+
+        unbind(oldName);
+        unbind(newName);
+        bind(newName, old);
+        /* 
+         * If the object is a Thread, or a ThreadContext, give it the new 
+         * name.
+         */
+        if(old instanceof Thread) {
+            ((Thread)old).setName(newName.toString());
+        }
+    }
+
+    public void rename(String oldName, String newName) throws NamingException {
+        rename(nameParser.parse(oldName), nameParser.parse(newName));
     }
     /* End of Write-functionality */
 
     /* Start of List functionality */
     public NamingEnumeration list(Name name) throws NamingException {
-        return list(name.toString());
+//      if name is a directory, we should do the same as we do above
+//      if name is a properties file, we should return the keys (?)
+//      issues: default.properties ?
+        if(name.isEmpty()) {
+            /* 
+             * Because there are two mappings that need to be used here, 
+             * create a new mapping and add the two maps to it.  This also 
+             * adds the safety of cloning the two maps so the original is
+             * unharmed.
+             */
+            Map enumStore = new HashMap();
+            enumStore.putAll(table);
+            enumStore.putAll(subContexts);
+            NamingEnumeration enumerator = new ContextNames(enumStore);
+            return enumerator;
+        }
+        /* Look for a subcontext */
+        Name subName = name.getPrefix(1);
+        if(table.containsKey(subName)) {
+            /* Nope, actual object */
+            throw new NotContextException(name + " cannot be listed");
+        }
+        if(subContexts.containsKey(subName)) {
+            return ((Context)subContexts.get(subName)).list(name.getSuffix(1));
+        }
+        /* 
+         * Couldn't find the subcontext and it wasn't pointing at us, throw
+         * an exception.
+         */
+        /* TODO: Give this a better message */
+        throw new NamingException();
     }
 
+
     public NamingEnumeration list(String name) throws NamingException {
-        if("".equals(name)) {
-            // here we should return a list of the directories and prop files 
-            // minus the .properties that are in the root directory
-            return new ContextNames((Map)table.clone());
-        }
-
-// if name is a directory, we should do the same as we do above
-// if name is a properties file, we should return the keys (?)
-// issues: default.properties ?
-
-        Object target = lookup(name);
-        if(target instanceof Context) {
-            return ((Context)target).list("");
-        }
-        throw new NotContextException(name+" cannot be listed");
+        return list(nameParser.parse(name));
     }
 
     public NamingEnumeration listBindings(Name name) throws NamingException {
-        return listBindings(name.toString());
+        if("".equals(name)) {
+            /* 
+             * Because there are two mappings that need to be used here, 
+             * create a new mapping and add the two maps to it.  This also 
+             * adds the safety of cloning the two maps so the original is
+             * unharmed.
+             */
+            Map enumStore = new HashMap();
+            enumStore.putAll(table);
+            enumStore.putAll(subContexts);
+            return new ContextBindings(enumStore);
+        }
+        /* Look for a subcontext */
+        Name subName = name.getPrefix(1);
+        if(table.containsKey(subName)) {
+            /* Nope, actual object */
+            throw new NotContextException(name + " cannot be listed");
+        }
+        if(subContexts.containsKey(subName)) {
+            return ((Context)subContexts.get(subName)).listBindings(name.getSuffix(1));
+        }
+        /* 
+         * Couldn't find the subcontext and it wasn't pointing at us, throw
+         * an exception.
+         */
+        throw new NamingException();
     }
 
     public NamingEnumeration listBindings(String name) throws NamingException {
-        if("".equals(name)) {
-            return new ContextBindings((Map)((Hashtable)table).clone());
-        }
-
-        Object target = lookup(name);
-        if(target instanceof Context) {
-            return ((Context)target).listBindings("");
-        }
-        throw new NotContextException(name+" cannot be listed");
+        return listBindings(nameParser.parse(name));
     }
     /* End of List functionality */
 
