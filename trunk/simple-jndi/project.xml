@@ -74,11 +74,13 @@
   <!-- Need to mark these as compile-time/run-time -->
 
   <dependencies>
+    <!--
     <dependency>
       <id>jdbc</id>
       <version>2.0</version>
       <url>http://www.ibiblio.org/maven/jdbc/jars/</url>
     </dependency>
+    -->
     <dependency>
       <id>commons-lang</id>
       <version>1.0</version>
