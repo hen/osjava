@@ -338,7 +338,12 @@ public class ThreadContext
         if(old == null) {
             throw new NamingException("Name '" + oldName + "' not found.");
         }
-        
+
+        /* If the new name is bound throw a NameAlreadyBoundException */
+        if(lookup(newName) != null) {
+            throw new NameAlreadyBoundException("Name '" + newName + "' already bound");
+        }
+
         unbind(oldName);
         unbind(newName);
         bind(newName, old);
