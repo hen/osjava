@@ -56,6 +56,10 @@ public class PropertiesDataSource implements DataSource {
         this.delimiter = delimiter;
     }
 
+    /**
+     * setName is set by the PropertiesContext when it realises that the 
+     * name of the DataSource is in the Properties object.
+     */
     void setName(String name) {
         this.name = name;
 //        System.err.println("Loading: "+name+this.delimiter+get("driver")+" from "+props);
