@@ -37,6 +37,8 @@ cat header.inc | sed 's/\${TITLE}/Nightly Build/' > $index
 
 echo '<ul id="project_list">' >> $index
 
+row_count=10
+entry_count=$row_count
 for i in `cat NIGHTLY.txt | awk '{print $2}' | grep -v '^#'`
 do
     if [ ! -d $reportDir/$i ];
@@ -44,9 +46,13 @@ do
         continue
     fi
 
-    cd $reportDir/$i
     local_report=report_`echo $i | sed 's/\//_/g'`.html
-    report=$reportDir/$local_report
+
+    if [ "$entry_count" = "$row_count" ];
+    then
+        echo "<div class='project_block'>" >> $index
+    fi
+    entry_count=`echo $entry_count - 1 | bc`
 
     if [ -f FAILED ];
     then
@@ -55,10 +61,15 @@ do
         echo "<li class='project_line'><img class='success_image' src='images/success.gif'> <a class='success_link' href='$local_report'>$i</a></li>" >> $index
     fi
 
-    cd -
+    if [ $entry_count = '0' ];
+    then
+        echo "</div><div class='project_block'>" >> $index
+	entry_count='9';
+    fi
+
 done
 
-echo '</ul>' >> $index
+echo '</div></ul>' >> $index
 echo '</html></body>' >> $index
 
 for i in $LIST
