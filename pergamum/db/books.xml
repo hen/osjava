@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 
 <library>
-  <book isbn="0596003285" name="Programming Jakarta Struts" publisher="ora" url="YY"/>
-  <book isbn="0596005199" name="Jakarta Struts Pocket Reference" publisher="ora" url="YY"/>
+  <book isbn="0596003285" name="Programming Jakarta Struts" publisher="ora" url="http://www.oreilly.com/catalog/jakarta"/>
+  <book isbn="0596005199" name="Jakarta Struts Pocket Reference" publisher="ora" url="http://www.oreilly.com/catalog/jakartapr"/>
   <book isbn="0672324725" name="Struts: Kick Start" publisher="sam" url="YY"/>
   <book isbn="1558608621" name="The Struts Framework: Practical Guide for Java Programmers" publisher="mk" url="YY"/>
   <book isbn="1930110502" name="Struts in Action" publisher="man" url="YY"/>
@@ -13,23 +13,23 @@
   <book isbn="1930110588" name="Java Development with Ant" publisher="man" url="YY"/>
   <book isbn="0672324261" name="Ant Developer's Handbook" publisher="sam" url="YY"/>
   <book isbn="1584502487" name="Ant: The Java Build Tool in Practice" publisher="chr" url="YY"/>
-  <book isbn="0596001843" name="Ant: The Definitive Guide" publisher="ora" url="YY"/>
+  <book isbn="0596001843" name="Ant: The Definitive Guide" publisher="ora" url="http://www.oreilly.com/catalog/anttdg"/>
   <book isbn="0672325624" name="Extreme Programming with Ant" publisher="sam" url="YY"/>
   <book isbn="0471449156" name="Jakarta Pitfalls" publisher="wil" url="YY"/>
   <book isbn="1590592832" name="Pro Jakarta Commons" publisher="apr" url="YY"/>
   <book isbn="1584502460" name="Applied Software Engineering Using Apache Jakarta Commons" publisher="chr" url="YY"/>
   <book isbn="0764543725" name="Professional Apache Tomcat" publisher="wrx" url="YY"/>
-  <book isbn="0596003188" name="Tomcat: The Definitive Guide" publisher="ora" url="YY"/>
+  <book isbn="0596003188" name="Tomcat: The Definitive Guide" publisher="ora" url="http://www.oreilly.com/catalog/tomcat"/>
   <book isbn="0764526065" name="Apache Tomcat Bible" publisher="wil" url="YY"/>
   <book isbn="0471237647" name="Mastering Tomcat Development" publisher="wil" url="YY"/>
   <book isbn="1861008309" name="Apache Tomcat Security Handbook" publisher="wrx" url="YY"/>
   <book isbn="1930110995" name="JUnit in Action" publisher="man" url="YY"/>
-  <book isbn="0596005822" name="JUnit: The Definitive Guide" publisher="ora" url="YY"/>
+  <book isbn="0596005822" name="JUnit: The Definitive Guide" publisher="ora" url="#"/>
   <book isbn="1932394052" name="XDoclet in Action" publisher="man" url="YY"/>
   <book isbn="0471463620" name="Java Open Source Programming" publisher="wil" url="YY"/>
   <book isbn="0471444359" name="J2EE Open Source Toolkit" publisher="wil" url="YY"/>
   <book isbn="047120708X" name="Java Tools for eXtreme Programming" publisher="wil" url="YY"/>
-  <book isbn="0596003870" name="Java Extreme Programming Cookbook" publisher="ora" url="YY"/>
+  <book isbn="0596003870" name="Java Extreme Programming Cookbook" publisher="ora" url="http://www.oreilly.com/catalog/jextprockbk"/>
   <book isbn="1932394192" name="Explorer's Guide to Open Source Java Tools" publisher="man" url="YY"/>
   <book isbn="1932394060" name="Art of Java Web Development" publisher="man" url="YY"/>
   <book isbn="1930110960" name="Eclipse in Action: A Guide for the Java Developer" publisher="man" url="YY"/>
@@ -42,5 +42,5 @@
   <book isbn="0672323478" name="JBoss Administration and Development" publisher="sam" url="YY"/>
   <book isbn="013112594X" name="Core JBoss 3.X: J2EE Application Development and Deployment" publisher="ptr" url="YY"/>
   <book isbn="1590593340" name="The Definitive Guide to JBoss 4" publisher="apr" url="YY"/>
-  <book isbn="0596004079" name="Using JBoss" publisher="ora" url="YY"/>
+  <book isbn="0596004079" name="Using JBoss" publisher="ora" url="#"/>
 </library>
