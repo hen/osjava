@@ -33,6 +33,7 @@
 package org.osjava.jndi;
 
 import javax.naming.Context;
+import javax.naming.ContextNotEmptyException;
 import javax.naming.NamingException;
 import javax.naming.NameParser;
 import javax.naming.InvalidNameException;
@@ -91,6 +92,10 @@ public class PropertiesContext implements Context  {
     private String separator;
     private String delimiter;
     private NameParser nameParser;
+    /* 
+     * The name full name of this context. 
+     */
+    private Name nameInNamespace = null;
 
     // original values
     private String originalRoot;
@@ -853,19 +858,71 @@ if(DEBUG)       System.err.println("[CTXT]HTTPException? :"+e);
     /* End of List functionality */
 
     public void destroySubcontext(Name name) throws NamingException {
-        destroySubcontext(name.toString());
+        if(name.size() > 1) {
+            if(subContexts.containsKey(name.getPrefix(1))) {
+                Context subContext = (Context)subContexts.get(name.getPrefix(1));
+                subContext.destroySubcontext(name.getSuffix(1));
+                return;
+            } 
+            /* TODO: Better message might be necessary */
+            throw new NameNotFoundException();
+        }
+        /* Look at the contextStore to see if the name is bound there */
+        if(table.containsKey(name)) {
+            throw new NotContextException();
+        }
+        /* Look for the subcontext */
+        if(!subContexts.containsKey(name)) {
+            throw new NameNotFoundException();
+        }
+        Context subContext = (Context)subContexts.get(name); 
+        /* Look to see if the context is empty */
+        NamingEnumeration names = subContext.list("");
+        if(names.hasMore()) {
+            throw new ContextNotEmptyException();
+        }
+        ((Context)subContexts.get(name)).close();
+        subContexts.remove(name);
     }
 
     public void destroySubcontext(String name) throws NamingException {
-        throw new OperationNotSupportedException("Unsupported");
+        destroySubcontext(nameParser.parse(name));
     }
 
     public Context createSubcontext(Name name) throws NamingException {
-        return createSubcontext(name.toString());
+        Context newContext;
+        if(name.size() > 1) {
+            if(subContexts.containsKey(name.getPrefix(1))) {
+                Context subContext = (Context)subContexts.get(name.getPrefix(1));
+                newContext = subContext.createSubcontext(name.getSuffix(1));
+                return newContext;
+            } 
+            throw new NameNotFoundException("The subcontext " + name.getPrefix(1) + " was not found.");
+        }
+        
+        if(table.containsKey(name) || subContexts.containsKey(name)) {
+            throw new NameAlreadyBoundException();
+        }
+
+        Name contextName = (Name)nameInNamespace.clone();
+        contextName.addAll(name);
+        newContext = new PropertiesContext(env);
+        ((PropertiesContext)newContext).setName(contextName);
+        subContexts.put(name, newContext);
+        return newContext;
     }
 
     public Context createSubcontext(String name) throws NamingException {
-        throw new OperationNotSupportedException("Unsupported");
+        return createSubcontext(nameParser.parse(name));
+    }
+    
+    /*
+     *  Set the name of the Context.  This is only used from createSubcontext. 
+     * It might get replaced by adding more constructors, but there is really
+     * no reason to expose it publicly anyway
+     */
+    private void setName(Name name) {
+        nameInNamespace = name;
     }
 
     public Object lookupLink(Name name) throws NamingException {
