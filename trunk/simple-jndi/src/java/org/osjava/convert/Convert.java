@@ -32,8 +32,8 @@
 
 package org.osjava.convert;
 
-import org.apache.commons.convert.ConvertRegistry;
-import org.apache.commons.convert.ConvertUtils;
+import org.apache.commons.convert1.ConvertRegistry;
+import org.apache.commons.convert1.ConvertUtils;
 
 /**
  * Wrapper so that the dependency on Commons Convert is optional. 
