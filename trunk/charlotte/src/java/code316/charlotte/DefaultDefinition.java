@@ -1,9 +1,8 @@
 package code316.charlotte;
-public class SimpleDefinition implements FieldDefinition {    
+public class DefaultDefinition implements FieldDefinition {    
     private String name;
-    private String operands;
+    private String operands = "";
     private int offset;
-    private FieldType type;
     private int length;
 
     public String getName() {
@@ -22,7 +21,7 @@ public class SimpleDefinition implements FieldDefinition {
         operands = string;
     }
     
-    public int getLength() {
+    public int getWidth() {
         return this.length;
     }
     
@@ -34,15 +33,7 @@ public class SimpleDefinition implements FieldDefinition {
         offset = i;
     }
     
-    public FieldType getType() {
-        return type;
-    }
-
-    public void setType(FieldType type) {
-        this.type = type;
-    }
-
-    public void setLength(int length) {
+    public void setWidth(int length) {
         this.length = length;
     }
 }

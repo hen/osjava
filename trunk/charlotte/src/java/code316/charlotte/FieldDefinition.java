@@ -5,8 +5,8 @@ public interface FieldDefinition {
     String getName();
     void setName(String name);
     
-    int getLength();
-    void setLength(int length);
+    int getWidth();
+    void setWidth(int width);
     
     
     String getOperands();
