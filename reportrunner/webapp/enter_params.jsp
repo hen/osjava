@@ -11,6 +11,8 @@
 <%
     String reportName = request.getParameter(ReportRunnerServlet.REPORT);
     Report report = ReportFactory.getReport(groupName, reportName);
+
+    ReportRunnerServlet.applyResources(report, request);
 %>
 
 <div class="feedback">
@@ -21,8 +23,18 @@
 <p>This report requires user input; would you please fill out the following information: </p>
 
 <form action="checkparameters">
-<input type="hidden" name="<%= ReportRunnerServlet.REPORT %>" value="<%= reportName %>">
-<input type="hidden" name="<%= ReportRunnerServlet.GROUP %>" value="<%= groupName %>">
+<%
+// pull this into a Util
+java.util.Enumeration pms = request.getParameterNames();
+while(pms.hasMoreElements()) {
+    String name = (String) pms.nextElement();
+    String value = (String) request.getParameter(name);
+    if(name.equals("q")) { continue; }
+%>
+<input type="hidden" name="<%= name %>" value="<%= value %>">
+<%
+}
+%>
 <table>
 <%
     Param[] params = report.getParams();

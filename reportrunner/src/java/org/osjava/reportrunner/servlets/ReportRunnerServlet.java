@@ -18,6 +18,7 @@ public class ReportRunnerServlet extends HttpServlet {
 
         // which report they want
         Report report = ReportFactory.getReport(groupName, reportName);
+        applyResources(report, request);
 
         // does report require parameters?
         Param[] params = report.getParams();
@@ -55,5 +56,15 @@ public class ReportRunnerServlet extends HttpServlet {
 
         response.getOutputStream().flush();
 
+    }
+
+    public static void applyResources(Report report, HttpServletRequest request) {
+        String[] required = report.getResourceNames();
+        for(int i=0; i<required.length; i++) {
+            String value = request.getParameter(required[i]);
+            if(value != null && !value.equals("")) {
+                report.setResource(required[i], request.getParameter(required[i]));
+            }
+        }
     }
 }

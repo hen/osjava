@@ -1,5 +1,7 @@
 package org.osjava.reportrunner;
 
+import org.apache.commons.lang.StringUtils;
+
 public class Param {
 
     private String name;
@@ -9,6 +11,7 @@ public class Param {
     private Object value;
     private String binding;
     private Parser parser;
+    private String[] options;
 
     public String getName() {
         return this.name;
@@ -74,8 +77,15 @@ public class Param {
 
     // debug
     public String toString() { 
-        return "Param { name="+name+", type="+type+", value="+value+"/"+((value!=null)?value.getClass().getName():"NULL")+", binding="+binding+", "+parser+" }";
+        return "Param { name="+name+", type="+type+", value="+value+"/"+((value!=null)?value.getClass().getName():"NULL")+", binding="+binding+", parser="+parser+", options="+java.util.Arrays.asList(this.options)+" }";
     }
 
+    public void setOptions(String options) {
+        this.options = StringUtils.split(options, ",");
+    }
+
+    public String[] getOptions() {
+        return this.options;
+    }
 
 }

@@ -35,6 +35,7 @@ public class ReportFactory {
             XMLNode groupNode = (XMLNode) groupNodes.nextElement();
             ReportGroup group = new ReportGroup();
             applyAttrs(group, groupNode, new String[] { "resources" } );
+            applyResourceParamTag( group, groupNode.enumerateNode("resource-param") );
 
             Enumeration useNodes = groupNode.enumerateNode("use");
             while(useNodes.hasMoreElements()) {
@@ -183,24 +184,35 @@ LABEL:  while(nodes.hasMoreElements()) {
             XMLNode node = (XMLNode) nodes.nextElement();
             String name = node.getName();
             if(name.equals("param")) {
-                Param param = new Param();
-                param.setName( node.getAttr("name") );
-                param.setLabel( node.getAttr("label") );
-                param.setType( node.getAttr("type") );
-                param.setBinding( node.getAttr("binding") );
-                if(node.getAttr("parser") != null) {
-                    try {
-                        Parser parser = (Parser) Thread.currentThread().getContextClassLoader().loadClass(node.getAttr("parser")).newInstance();
-                        parser.setPattern( node.getAttr("pattern") );
-                        param.setParser(parser);
-                    } catch(ClassNotFoundException cnfe) {
-                    } catch(InstantiationException ie) {
-                    } catch(IllegalAccessException iae) {
-                    }
-                }
-                report.addParam( param );
+                report.addParam( createParam(node) );
             }
         }
+    }
+
+    private static void applyResourceParamTag( ReportGroup group, Enumeration nodes ) {
+        while(nodes.hasMoreElements()) {
+            XMLNode node = (XMLNode) nodes.nextElement();
+            String name = node.getName();
+            if(name.equals("resource-param")) {
+                group.addResourceParam( createParam(node) );
+            }
+        }
+    }
+
+    private static Param createParam( XMLNode node ) {
+        Param param = new Param();
+        applyAttrs( param, node, new String[] { "parser", "pattern" } );
+        if(node.getAttr("parser") != null) {
+            try {
+                Parser parser = (Parser) Thread.currentThread().getContextClassLoader().loadClass(node.getAttr("parser")).newInstance();
+                parser.setPattern( node.getAttr("pattern") );
+                param.setParser(parser);
+            } catch(ClassNotFoundException cnfe) {
+            } catch(InstantiationException ie) {
+            } catch(IllegalAccessException iae) {
+            }
+        }
+        return param;
     }
 
     private static void applyColumnTag( Report report, Enumeration nodes ) {

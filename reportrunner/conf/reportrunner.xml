@@ -2,8 +2,9 @@
 
 <reportrunner>
  <reports name="roll" label="Roller" filename="reports.xml" description="Reports for the database behind the Roller weblog engine. ">
-   <use name="SqlReportDS" resource="roller"/>
-   <use name="JiraDS" resource="jira"/>
+   <use name="roller" resource="roller"/>
+   <use name="jira" resource="jira"/>
+   <resource-param name="SqlReportDS" label="Database" options="roller,jira"/>
  </reports>
  <reports name="jira" label="Jira" filename="jirareports.xml" description="Reports for the database behind the Jira issue tracker. ">
    <use name="SqlReportDS" resource="jira"/>
