@@ -101,6 +101,8 @@ public class PropertiesContext implements Context  {
     private String originalRoot;
     private String originalDelimiter;
 
+    private boolean closing;
+
     public PropertiesContext() {
         this((Hashtable)null);
     }
@@ -218,6 +220,10 @@ if(DEBUG)            System.err.println("[CTXT]separator is: "+this.separator);
 
     private PropertiesContext(PropertiesContext that) {
         this(that.env);
+    }
+
+    private boolean isEmpty() {
+        return (table.size() > 0 || subContexts.size() > 0);
     }
 
     // to add:
@@ -926,30 +932,42 @@ if(DEBUG)       System.err.println("[CTXT]HTTPException? :"+e);
     }
 
     public Object lookupLink(Name name) throws NamingException {
-        return lookupLink(name.toString());
-    }
-
-    public Object lookupLink(String name) throws NamingException {
         return lookup(name);
     }
 
+    public Object lookupLink(String name) throws NamingException {
+        return lookup(nameParser.parse(name));
+    }
+
     public NameParser getNameParser(Name name) throws NamingException {
-        return getNameParser(name.toString());
+        if(name.isEmpty() ) {
+            return nameParser;
+        }
+        Name subName = name.getPrefix(1); 
+        if(subContexts.containsKey(subName)) {
+            return ((Context)subContexts.get(subName)).getNameParser(name.getSuffix(1));
+        }
+        throw new NotContextException();    
     }
 
     public NameParser getNameParser(String name) throws NamingException {
-        // WTF DO I GET ONE OF THESE!
-        return null; // implement
+        return getNameParser(nameParser.parse(name));
     }
 
-    public Name composeName(Name name, Name name2) throws NamingException {
+    public Name composeName(Name name, Name prefix) throws NamingException {
         // NO IDEA IF THIS IS RIGHT
-        return getNameParser(name.toString()).parse(name2.toString());
+        if(name == null || prefix == null) {
+            throw new NamingException("Arguments must not be null");
+        }
+        Name retName = (Name)prefix.clone();
+        retName.addAll(name);
+        return retName;
     }
 
     public String composeName(String name, String prefix) throws NamingException {
-        Name result = composeName(new CompositeName(name), new CompositeName(prefix));
-        return result.toString();
+        Name retName = composeName(nameParser.parse(name), nameParser.parse(prefix));
+        /* toString pretty much is guaranteed to exist */
+        return retName.toString();
     }
 
     public Object addToEnvironment(String name, Object object) throws NamingException {
@@ -977,6 +995,32 @@ if(DEBUG)       System.err.println("[CTXT]HTTPException? :"+e);
     }
 
     public void close() throws NamingException {
+        /* Don't try anything if we're already in the process of closing */
+        if(closing) {
+            return;
+        }
+        Iterator it = subContexts.keySet().iterator();
+        while(it.hasNext()) {
+            destroySubcontext((Name)it.next());
+        }
+        
+        while(table.size() > 0 || subContexts.size() > 0) {
+            it = table.keySet().iterator();
+            while(it.hasNext()) {
+                Name name = (Name)it.next();
+                if(!((Thread)table.get(name)).isAlive()) {
+                    table.remove(name);
+                }
+            }
+            it = subContexts.keySet().iterator();
+            while(it.hasNext()) {
+                Name name = (Name)it.next();
+                PropertiesContext context = (PropertiesContext)subContexts.get(name);
+                if(context.isEmpty()) {
+                    subContexts.remove(name);
+                }
+            }
+        }
         this.env = null;
         this.table = null;
     }
