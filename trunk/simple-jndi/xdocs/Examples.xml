@@ -9,7 +9,7 @@
   <body>
 <section name="Simple-JNDI's values">
 <p>
-Simple-JNDI stores values in multiple .properties files and are looked up using a specified name convention, such as dot or slash delimited. There is also a special flag to specify whether a .properties file is a DataSource or not. Following are some examples.
+Simple-JNDI stores values in multiple .properties, xml or ini files and are looked up using a specified name convention, such as dot or slash delimited. It is also possible to set the type of object a property represents. Following are some examples.
 </p>
 </section>
 <section name="Examples">
