@@ -40,7 +40,7 @@ public class Parser {
             FieldDefinition def = parseDefinition(line);
             
             if ( def == null ) {
-                throw new IllegalStateException("invalid value definition on line: " + lineNumber);
+                throw new IllegalStateException("invalid field definition on line: " + lineNumber);
             }
             
             bitPos += def.getWidth();
@@ -132,7 +132,7 @@ public class Parser {
         String name = typeAndName.substring(pos + 1).trim();
         
         if ( indexOfAny(Encoding.WHITE_SPACE, name) != -1 ) {
-            throw new IllegalStateException("white space found where none was expected.  line: " 
+            throw new IllegalStateException("white space found where none expected.  line: " 
                         + this.lineNumber);
         }
         
