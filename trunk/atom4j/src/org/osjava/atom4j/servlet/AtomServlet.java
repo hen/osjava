@@ -78,12 +78,12 @@ public abstract class AtomServlet extends HttpServlet
             Introspection intro = new Introspection();
             intro.setBaseURL( baseURL );
             intro.setCreateEntry( true );
-            intro.setDeleteEntry( true );
-            intro.setEditEntry( true );
+            intro.setDeleteEntry( true ); // not part of spec?
+            intro.setEditEntry( true );   // not part of spec?
             intro.setSearchEntries( true );
             intro.setUserPrefs( true );
-            intro.setComment( true );
-            intro.setCategories( true );
+            intro.setComment( true );    // not part of spec?
+            intro.setCategories( false ); // not specified fully
             
             introspectionXML = intro.toString(); 
         }

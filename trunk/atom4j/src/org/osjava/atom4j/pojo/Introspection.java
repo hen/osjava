@@ -39,8 +39,10 @@ public class Introspection
             buf.append("  <search-entries>" + baseURL + "/atom/USER/search</search-entries>\n");
         if (editTemplate)
             buf.append("  <edit-template>" + baseURL + "/atom/USER/findTemplates</edit-template>\n");
+        /* Behaviour isn't fully specified yet 
         if (categories)
             buf.append("  <categories>" + baseURL + "/atom/USER/categories</categories>\n");
+        */
         buf.append("</introspection>");
         return buf.toString();
     }
