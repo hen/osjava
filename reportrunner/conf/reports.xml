@@ -3,27 +3,27 @@
 <reports>
  <report name="basicsql" label="BasicSql" class="org.osjava.reportrunner.reports.SqlReport">
   <sql>select * from userrole</sql>
-  <renderers>Text</renderers>
+  <renderers>txt</renderers>
  </report>
  <report name="hardcode" label="Dummy" class="org.osjava.reportrunner.reports.DummyReport">
-  <renderers>Text,HtmlTable</renderers>
+  <renderers>txt,htmltable</renderers>
  </report>
  <report name="paramsql" label="ParamSql" class="org.osjava.reportrunner.reports.SqlReport">
   <sql>select * from userrole where rolename=? and username=?</sql>
   <param name="rolename" type="java.lang.String"/>
   <param name="username" type="java.lang.String" binding="select username, username from userrole"/>
-  <renderers>HtmlTable,Comma delimited,Excel file</renderers>
+  <renderers>html,csv,excel</renderers>
  </report>
  <report name="datesql" label="DateSql" class="org.osjava.reportrunner.reports.SqlReport">
   <sql>select * from weblogentry where pubtime between ? and ?</sql>
   <param name="after date" type="java.sql.Timestamp"/>
   <param name="before date" type="java.sql.Timestamp"/>
-  <renderers>HtmlTable</renderers>
+  <renderers>html</renderers>
  </report>
  <report name="bookmarks" label="Bookmarks" class="org.osjava.reportrunner.reports.SqlReport">
   <sql>select name, url from bookmark where priority = ?</sql>
   <param name="Priority" type="java.lang.Integer"/>
-  <renderers>HtmlTable</renderers>
+  <renderers>html</renderers>
   <column name="name" label="Name" pattern="?" format="org.osjava.reportrunner.StringFormat"/>
   <column name="url" label="Web address"/>
   <!-- will need sub-renderers per renderer for a column so that urls can be turned into <a href..> etc -->
