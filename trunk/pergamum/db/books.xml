@@ -27,10 +27,10 @@
   <book isbn="0596003188" name="Tomcat: The Definitive Guide" publisher="ora" url="http://www.oreilly.com/catalog/tomcat" published="2003-06"/>
   <book isbn="0764526065" name="Apache Tomcat Bible" publisher="wil" url="http://www.wiley.com/WileyCDA/WileyTitle/productCd-0764526065.html" published="2003-07"/>
   <book isbn="0471237647" name="Mastering Tomcat Development" publisher="wil" url="http://www.wiley.com/WileyCDA/WileyTitle/productCd-0471237647.html" published="2002-10"/>
-  <book isbn="1861008309" name="Apache Tomcat Security Handbook" publisher="wrx" url="#" published="2003-02"/>
+  <book isbn="1861008309" name="Apache Tomcat Security Handbook" publisher="wrx" url="unknown-site.html" published="2003-02"/>
   <book isbn="0672324393" name="Tomcat Kick Start" publisher="sam" url="http://www.sams.com/isapi/product_id~{DF0C742F-121B-4E03-B2B0-0442336A1D5B}/catalog/product.asp" published="2002-11"/>
   <book isbn="1930110995" name="JUnit in Action" publisher="man" url="http://www.manning.com/massol" published="2003-10"/>
-  <book isbn="0596005822" name="JUnit: The Definitive Guide" publisher="ora" url="#" published=""/>
+  <book isbn="0596005822" name="JUnit: The Definitive Guide" publisher="ora" url="unknown-site.html" published=""/>
   <book isbn="1932394052" name="XDoclet in Action" publisher="man" url="http://www.manning.com/walls" published="2003-12"/>
   <book isbn="0471463620" name="Java Open Source Programming" publisher="wil" url="http://www.wiley.com/WileyCDA/WileyTitle/productCd-0471463620.html" published="2003-11"/>
   <book isbn="0471444359" name="J2EE Open Source Toolkit" publisher="wil" url="http://www.wiley.com/WileyCDA/WileyTitle/productCd-0471444359.html" published="2003-09"/>
@@ -46,9 +46,9 @@
   <book isbn="193239415X" name="Hibernate in Action" publisher="man" url="http://www.manning.com/catalog/view.php?book=bauer" published="2004-08"/>
   <book isbn="1590592816" name="JBoss 3.2 Deployment and Administration" publisher="apr" url="http://apress.com/book/bookDisplay.html?bID=245" published="2003-11"/>
   <book isbn="0672323478" name="JBoss Administration and Development" publisher="sam" url="http://www.sams.com/isapi/product_id~{4B73CCDC-9D30-429F-A8A4-E73F14730DC8}/catalog/product.asp" published="2002-03"/>
-  <book isbn="013112594X" name="Core JBoss 3.X: J2EE Application Development and Deployment" publisher="ptr" url="#" published=""/>
-  <book isbn="1590593340" name="The Definitive Guide to JBoss 4" publisher="apr" url="#" published=""/>
-  <book isbn="0596004079" name="Using JBoss" publisher="ora" url="#" published=""/>
+  <book isbn="013112594X" name="Core JBoss 3.X: J2EE Application Development and Deployment" publisher="ptr" url="unknown-site.html" published=""/>
+  <book isbn="1590593340" name="The Definitive Guide to JBoss 4" publisher="apr" url="unknown-site.html" published=""/>
+  <book isbn="0596004079" name="Using JBoss" publisher="ora" url="unknown-site.html" published=""/>
   <book isbn="0672324105" name="Aspect-Oriented Programming with AspectJ" publisher="sam" url="http://www.sams.com/isapi/product_id~{681277AC-6106-4C7D-B71A-59D04871EE89}/catalog/product.asp" published="2002-07"/>
   <book isbn="0672323095" name="Data-Driven Programming Using Tomcat and MySQL" publisher="sam" url="http://www.sams.com/isapi/product_id~{F140CAB5-9F88-4A49-8C0F-0CD6595574C0}/catalog/product.asp" published="2002-03"/>
   <book isbn="0735711119" name="Jython for Java Programmers" publisher="sam" url="http://www.sams.com/isapi/product_id~{5BD98ADC-6DE5-43F8-B95C-7E83BF84067A}/catalog/product.asp" published=""/>
@@ -79,4 +79,10 @@
   <book isbn="0596006969" name="Hibernate: A Developer's Notebook" publisher="ora" url="http://www.oreilly.com/catalog/0596006969/" published="2004-05"/>
   <book isbn="1932394281" name="Lucene in Action" publisher="man" url="http://www.manning.com/hatcher2/" published="2004-08"/>
   <book isbn="0596006764" name="Better, Faster, Lighter Java" publisher="ora" url="http://www.oreilly.com/catalog/0596006764/" published="2004-06"/>
+  <book isbn="0672326361" name="Tomcat Unleashed" publisher="sams" url="http://www.samspublishing.com/title/0672326361" published="2004-07"/>
+  <book isbn="0131413597" name="Core Java Tools : Programming with Ant, JUnit, and Cactus" publisher="ptr" url="unknown-site.html" published="2004-05"/>
+  <book isbn="0596006519" name="Programming Jakarta Struts" publisher="ora" url="http://www.oreilly.com/catalog/0596006519/" published="2004-06"/>
+  <book isbn="1932394249" name="Struts Recipes" publisher="man" url="http://www.manning.com/catalog/view.php?book=franciscus" published="2004-07"/>
+  <book isbn="1932394230" name="JUnit Recipes" publisher="man" url="http://www.manning.com/catalog/view.php?book=rainsberger" published="2004-07"/>
+  <book isbn="0072256591" name="Struts 1.2 Essential Skills" publisher="mgh" url="unknown-site.html" published="2004-08"/>
 </library>
