@@ -42,20 +42,20 @@ import java.util.Stack;
 public class XMLParser {
 
     // various states in which the parser may be.
-    static final private int VACUUM = 1;
-    static final private int IN_TAG = 2;
-    static final private int IN_TAG_NAME = 3;
-    static final private int CLOSING_TAG = 9;
-    static final private int SLASH = 4;
-    static final private int ATTR_NAME = 5;
-    static final private int END_ATTR_NAME = 6;
-    static final private int ATTR_VALUE = 7;
-    static final private int END_ATTR_VALUE = 8;
-    static final private int START_COMMENT = 10;
-    static final private int IN_COMMENT = 11;
+    private static final int VACUUM = 1;
+    private static final int IN_TAG = 2;
+    private static final int IN_TAG_NAME = 3;
+    private static final int CLOSING_TAG = 9;
+    private static final int SLASH = 4;
+    private static final int ATTR_NAME = 5;
+    private static final int END_ATTR_NAME = 6;
+    private static final int ATTR_VALUE = 7;
+    private static final int END_ATTR_VALUE = 8;
+    private static final int START_COMMENT = 10;
+    private static final int IN_COMMENT = 11;
     // special state to handle the DOCTYPE 'tag'
-    static final private int IN_DOCTYPE = 12;
-    static final private int IN_DTD = 13;
+    private static final int IN_DOCTYPE = 12;
+    private static final int IN_DTD = 13;
 
     public XMLParser() {
     }

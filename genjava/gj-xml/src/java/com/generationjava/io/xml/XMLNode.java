@@ -43,7 +43,7 @@ import java.util.Vector;
  */
 public class XMLNode {
 
-    static private Enumeration EMPTY = new NullEnumeration();
+    private private final Enumeration EMPTY = new NullEnumeration();
 
     private Hashtable myAttrs;
     private Hashtable myNodes;  // allows quick lookup
@@ -404,6 +404,9 @@ public class XMLNode {
         
 }
 
+/**
+ * An empty enumeration. Nicer to return than just plain null. 
+ */
 class NullEnumeration implements Enumeration {
     public Object nextElement() {
         return null;
