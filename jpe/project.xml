@@ -30,8 +30,8 @@
   <distributionDirectory>/sites/org/osjava/www/releases/official/jpe/</distributionDirectory>
 
   <repository>
-    <connection>scm:cvs:ext:hen@umbongo.flamefew.net:/var/publiccvs:jpe</connection>
-    <url>http://www.generationjava.com/view-cvs/viewcvs.cgi/jpe/</url>
+    <connection>scm:cvs:pserver:anonymous@cvs.osjava.org:/var/cvs/:jpe</connection>
+    <url>http://cvs.osjava.org/view-cvs/viewcvs.cgi/jpe/</url>
   </repository>
 
   <developers>
