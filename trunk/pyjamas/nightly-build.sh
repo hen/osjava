@@ -20,7 +20,7 @@ then
     if [ $1 = 'all' ];
     then
         LIST=`cat NIGHTLY.txt | awk '{print $2}' | grep -v '^#'`
-        echo 'No updates: Built because all components were built. ' > REASON
+        echo 'Forced build of all components. ' > REASON
         for i in `cat NIGHTLY.txt | sed 's/ /::::/'`
         do
             checkoutDir=`echo $i | sed 's/.*:::://'`
@@ -66,7 +66,7 @@ then
     else
 # needs to handle doing the checkout if it's not there?
         LIST=$1   # $* ?
-        echo 'No updates: Built because someone specifically chose to build it. ' > REASON
+        echo 'Forcd update: Built because someone specifically chose to build it. ' > REASON
     fi
 else
     usage
