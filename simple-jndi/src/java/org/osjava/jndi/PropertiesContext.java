@@ -131,7 +131,30 @@ public class PropertiesContext implements Context  {
         return lookup(name.toString());
     }
 
+    private boolean isSpecialKey(String key) {
+        if("org.osjava.jndi.root".equals(key)) {
+            return true;
+        }
+        if("org.osjava.jndi.delimiter".equals(key)) {
+            return true;
+        }
+        return false;
+    }
+
+    private Object getSpecial(String key) throws NamingException {
+        if("org.osjava.jndi.root".equals(key)) {
+            return this.root;
+        }
+        if("org.osjava.jndi.delimiter".equals(key)) {
+            return this.delimiter;
+        }
+        throw new NamingException("Simple-JNDI incorrectly believes "+key+" is special. ");
+    }
+
     private Object getElement(String key) throws NamingException {
+        if(isSpecialKey(key)) {
+            return getSpecial(key);
+        }
 //        System.err.println("Asked for: "+key+" via "+this.protocol);
         if(this.protocol == FILE) {
             File file = new File(key);
