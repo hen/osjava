@@ -22,8 +22,8 @@
      <p>
      If you require them through usage of optional features, please ensure you have the necessary dependencies:
      <ul>
-      <li><a href="http://dist.osjava.org/maven/genjava/jars/gj-xml-1.0.jar">gj-xml 1.0</a></li>
-      <li><a href="http://dist.osjava.org/maven/commons-convert/jars/commons-convert-SNAPSHOT.jar">commons-convert CVS HEAD build</a></li>
+      <li><a href="http://www.ibiblio.org/maven/genjava/jars/gj-xml-1.0.jar">gj-xml 1.0</a></li>
+      <li><a href="http://dist.osjava.org/maven2/commons-convert/jars/commons-convert-SNAPSHOT.jar">commons-convert CVS HEAD build</a></li>
       <li><a href="http://www.ibiblio.org/maven/commons-pool/jars/commons-pool-1.1.jar">commons-pool 1.1</a></li>
       <li><a href="http://www.ibiblio.org/maven/commons-dbcp/jars/commons-dbcp-1.1.jar">commons-dbcp 1.1</a></li>
       <li><a href="http://www.ibiblio.org/maven/commons-collections/jars/commons-collections-2.1.jar">commons-collections 2.1</a></li>
