@@ -17,7 +17,6 @@ import net.sf.hibernate.HibernateException;
 import net.sf.hibernate.Session;
 import net.sf.hibernate.type.Type;
 
-// Make this need a DataSource
 public class FindTag extends BodyTagSupport {
 
     private String var;

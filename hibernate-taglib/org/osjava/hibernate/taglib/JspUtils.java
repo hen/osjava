@@ -17,6 +17,7 @@ class JspUtils {
     static String HIBERNATE_SESSION = "HibernateSession";
 
     static Session getHibernateSession(PageContext ctxt) {
+// Make this need a DataSource
         Session hSession = (Session) ctxt.getAttribute(HIBERNATE_SESSION);
         if(hSession == null) {
             try {
