@@ -34,7 +34,12 @@ package org.osjava.jndi;
 
 import java.util.Hashtable;
 
-class PropertiesStaticStore extends Hashtable {
+/**
+ * A hashtable that shares its space with any other instance of StaticHashtable.
+ * Every method is blindly synchronized, so not as fast as it probably 
+ * could be with more thought.
+ */
+class StaticHashtable extends Hashtable {
 
     private static final Hashtable SELF = new Hashtable();
 
