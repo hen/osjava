@@ -33,11 +33,6 @@
   <!-- You'll need to log into JIRA and find out what your ID is -->
   <issueTrackingUrl>http://www.osjava.org:8080/jira/secure/BrowseProject.jspa?id=CHR</issueTrackingUrl>
 
-  <repository>
-    <connection>scm:svn:http://svn.osjava.org/svn/osjava/trunk/charlotte</connection>
-    <url>http://svn.osjava.org/cgi-bin/viewcvs.cgi/trunk/charlotte/</url>
-  </repository>
-
   <mailingLists>
     <mailingList>
         <name>osjava-users</name>
@@ -114,8 +109,6 @@
     <report>maven-javadoc-plugin</report>
     <report>maven-license-plugin</report>
     <report>maven-changes-plugin</report>
-    <report>maven-statcvs-plugin</report>
-    <report>maven-changelog-plugin</report>
   </reports>
 </project>
 

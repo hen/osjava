@@ -58,11 +58,6 @@
   <siteDirectory>/sites/org/osjava/www/maven/genjava/mudclient/</siteDirectory>
   <distributionDirectory>/sites/org/osjava/www/maven/builds/</distributionDirectory>
 
-  <repository>
-    <connection>scm:svn:http://svn.osjava.org/svn/osjava/trunk/mudclient</connection>
-    <url>http://svn.osjava.org/cgi-bin/viewcvs.cgi/trunk/mudclient/</url>
-  </repository>
-
   <versions>
     <version>
       <id>1.0</id>

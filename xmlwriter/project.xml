@@ -30,12 +30,6 @@
   <siteDirectory>/</siteDirectory>
   <distributionDirectory></distributionDirectory>
 
-  <repository>
-    <connection>scm:svn:http://svn.osjava.org/svn/osjava/trunk/xmlwriter</connection>
-    <url>http://svn.osjava.org/cgi-bin/viewcvs.cgi/trunk/xmlwriter/</url>
-  </repository>
-
-
   <mailingLists>
     <mailingList>
       <name>osjava-users</name>
@@ -125,8 +119,6 @@
     <reports>
         <report>maven-jxr-plugin</report>
         <report>maven-javadoc-plugin</report>
-        <report>maven-statcvs-plugin</report>          
-        <report>maven-changelog-plugin</report>        
         <report>maven-license-plugin</report>
         <report>maven-changes-plugin</report>           
     </reports>
