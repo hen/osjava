@@ -1,9 +1,6 @@
 make dependent on jakarta sandbox convert
 also on gj-xml and gj-core [though would be nice to remove gj-core]
 possibly remove commons-lang dep, as I only use a handful of StringUtils meths
-commons-collections can go whenever commons-convert is moved to
-genjava-core can goto gj-xml whenever it's ready, gj-core unneeded as long as 
-commons-convert moved to
 
 package as a zip with all jars needed in it
 
