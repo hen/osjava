@@ -60,6 +60,7 @@ import java.net.MalformedURLException;
 
 import org.osjava.naming.ContextBindings;
 import org.osjava.naming.ContextNames;
+import org.osjava.naming.SimpleNameParser;
 
 import org.osjava.jndi.util.Parser;
 import org.osjava.jndi.util.PropertiesParser;
@@ -83,18 +84,33 @@ public class PropertiesContext implements Context  {
     private Hashtable table = new Hashtable();
 
     private Hashtable env;
+    private Hashtable subContexts;
     private String root;
     private Object protocol;
     private String separator;
     private String delimiter;
+    private NameParser nameParser;
 
     // original values
     private String originalRoot;
     private String originalDelimiter;
 
+    public PropertiesContext() {
+        this((Hashtable)null);
+    }
+    
     public PropertiesContext(Hashtable env) {
+        /* By default allow system properties to override. */
+        this(env, true);
+    }
+    
+    public PropertiesContext(Hashtable env, boolean systemOverride) {
+        this(env, true, null);
+    }
+    
+    public PropertiesContext(Hashtable env, boolean systemOverride, NameParser parser) {
         String shared = null;
-
+        
         if(env != null) {
             this.env = (Hashtable)env.clone();
             this.root = (String)this.env.get("org.osjava.jndi.root");
@@ -102,17 +118,20 @@ public class PropertiesContext implements Context  {
             shared = (String)this.env.get("org.osjava.jndi.shared");
         }
 
-        // let System properties override the jndi.properties file
-        if(System.getProperty("org.osjava.jndi.root") != null) {
-            this.root = System.getProperty("org.osjava.jndi.root");
+        /* let System properties override the jndi.properties file, if
+         * systemOverride is true */
+        if(systemOverride) {
+            if(System.getProperty("org.osjava.jndi.root") != null) {
+                this.root = System.getProperty("org.osjava.jndi.root");
+            }
+            if(System.getProperty("org.osjava.jndi.delimiter") != null) {
+                this.delimiter = System.getProperty("org.osjava.jndi.delimiter");
+            }
+            if(System.getProperty("org.osjava.jndi.shared") != null) {
+                shared = System.getProperty("org.osjava.jndi.shared");
+            }
         }
-        if(System.getProperty("org.osjava.jndi.delimiter") != null) {
-            this.delimiter = System.getProperty("org.osjava.jndi.delimiter");
-        }
-        if(System.getProperty("org.osjava.jndi.shared") != null) {
-            shared = System.getProperty("org.osjava.jndi.shared");
-        }
-
+        
         if("true".equals(shared)) {
             this.table = new StaticHashtable();
         }
@@ -152,6 +171,21 @@ public class PropertiesContext implements Context  {
             this.protocol = CLASSPATH;
             this.separator = "/";
             this.root = "";
+        }
+        
+        if(parser == null) {
+            try {
+                nameParser = new SimpleNameParser(this);
+            } catch (NamingException e) {
+                /* 
+                 * XXX: This should never really occur.  If it does, there is 
+                 * a severe problem.  I also don't want to throw the exception
+                 * right now because that would break compatability, even 
+                 * though it is probably the right thing to do.  This might
+                 * get upgraded to a fixme.
+                 */
+                e.printStackTrace();
+            }
         }
 
 if(DEBUG)            System.err.println("[CTXT]Protocol  is: "+this.protocol);
