@@ -1,0 +1,135 @@
+<?xml version="1.0"?>
+<project>
+  
+  <pomVersion>3</pomVersion>
+  
+  <!-- This is the unique id of your project. It should be the same 
+       as the CVS module name -->
+  <id>trail-taglib</id>
+
+  <!-- The name of your project. Doesn't have to be unique, but life is 
+       easy if you keep it the same as your id -->
+  <name>Trail Taglib</name>
+
+  <!-- The version of your software. Life is easy if you use 
+       major.minor.bugfix, but you can also use RC's, alpha, -dev or anything 
+       you want. SNAPSHOT is a special version which is never cached by the 
+       dependency downloader. -->
+  <currentVersion>1.0.0</currentVersion>
+
+  <organization>
+    <name>OSJava</name>
+    <url>http://www.osjava.org</url>
+    <logo>http://www.osjava.org/images/osjava.gif</logo>
+  </organization>
+  <!-- When you started the project. Appears as copyright start in the site -->
+  <inceptionYear>2004</inceptionYear>
+
+  <!-- The Java package. Javadoc will not build without this. -->
+  <package>org.osjava.taglib.trail</package>
+
+  <!-- Or provide your own if you have a logo -->
+  <logo>http://www.osjava.org/images/1x1.gif</logo>
+  
+  <description>
+    The trail taglib provides a dynamic breadcrumbs system for a website.
+  </description>
+  
+  <shortDescription>Dynamic breadcrumb trail taglib</shortDescription>
+
+  <!-- This stuff contains OSJava linked bits. Only change the capitals -->
+  <url>http://www.osjava.org/trail-taglib/</url>
+
+  <!-- You'll need to log into JIRA and find out what your ID is -->
+  <issueTrackingUrl>http://www.osjava.org:8080/jira/secure/BrowseProject.jspa?id=YOUR_ID</issueTrackingUrl>
+
+  <repository>
+    <connection>scm:cvs:pserver:anonymous@cvs.osjava.org:/var/cvs:trail-taglib</connection>
+    <url>http://cvs.osjava.org/view-cvs/viewcvs.cgi/trail-taglib/</url>
+  </repository>
+
+  <mailingLists>
+    <mailingList>
+        <name>osjava-users</name>
+	<subscribe>http://lists.flamefew.net/mailman/listinfo/osjava-users</subscribe>
+        <unsubscribe>http://lists.flamefew.net/mailman/listinfo/osjava-users</unsubscribe>
+        <archive>http://lists.flamefew.net/mailman/private/osjava-users/</archive>
+    </mailingList>
+  </mailingLists>
+
+
+  <!-- Put your name in here -->
+  <developers>
+
+    <developer>
+      <name>Henri Yandell</name>
+      <id>hen</id>
+      <email>bayard at generationjava dot com</email>
+      <organization>GenerationJava</organization>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+
+  </developers>
+
+  <!-- Same as above. Use this to recognise important users/ideasmiths -->
+  <contributors>
+    <contributor>
+    </contributor>
+  </contributors>
+  
+  <!-- One of the major parts of Maven. Record your dependencies here. 
+       Look in http://www.ibiblio.org/maven for public copies of your 
+       dependencies. There is an OSJava specific one which may 
+       need to be used, http://www.osjava.org/maven -->
+  <dependencies>
+    <dependency>
+      <groupId>osj-tmp</groupId>
+      <artifactId>servlet-api</artifactId>
+      <version>2.4.osjava</version>
+    </dependency>
+    <dependency>
+      <groupId>osj-tmp</groupId>
+      <artifactId>jsp-api</artifactId>
+      <version>2.0.osjava</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+
+    <!-- This is usually a good default -->
+    <sourceDirectory>src/java</sourceDirectory>
+
+    <!-- Also, usually a good default -->
+    <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
+
+    <unitTest>
+      <includes>
+        <include>**/*Test.java</include>
+      </includes>
+    </unitTest>
+
+    <!-- You might want to build properties into the jar -->
+    <resources>
+      <resource>
+        <targetPath>META-INF</targetPath>
+        <includes>
+          <include>taglib.tld</include>
+        </includes>
+      </resource>
+    </resources>
+
+  </build>
+
+  <reports>
+    <report>maven-jxr-plugin</report>
+    <report>maven-javadoc-plugin</report>
+    <report>maven-license-plugin</report>
+    <report>maven-changes-plugin</report>
+    <report>maven-statcvs-plugin</report>
+    <report>maven-changelog-plugin</report>
+  </reports>
+  
+</project>
+
