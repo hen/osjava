@@ -1,6 +1,6 @@
 package org.osjava.jndi;
 
-import org.apache.commons.lang.*;
+import org.apache.commons.lang.StringUtils;
 import javax.naming.*;
 import javax.sql.*;
 import java.util.*;
