@@ -1,4 +1,5 @@
 <%@ include file="header.inc" %>
+<%@ page import="org.apache.commons.lang.*" %>
 <%@ page import="org.osjava.reportrunner.*" %>
 <%@ page import="org.osjava.reportrunner.servlets.*" %>
 
@@ -43,7 +44,7 @@
 <%
         for(int i=0; i<params.length; i++) {
             %>
-            <tr><td class="chosen-data"><%= params[i].getName() %></td><td class="chosen-data"><%= request.getParameter(params[i].getName()) %></td></tr>
+            <tr><td class="chosen-data"><%= params[i].getName() %></td><td class="chosen-data"><%= StringUtils.join(request.getParameterValues(params[i].getName()), ",") %></td></tr>
             <%
         }
 %>
