@@ -63,7 +63,7 @@ public class Zoomer implements ImageSource, InformationListener {
             viewport.height = (int)(getImage().getHeight(null));
         } else {
             img = source.getImage();
-                    img.getHeight(null));
+            img.getHeight(null);
             viewport.width = (int)(img.getWidth(null) * x);
             viewport.height = (int)(img.getHeight(null) * x);
             viewport.x = (int)(p.x - viewport.width / x);
