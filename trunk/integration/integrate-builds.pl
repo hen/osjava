@@ -1,12 +1,16 @@
 #!/usr/bin/perl -w
 
-#function usage() {
-#    echo 'Usage:'
-#    echo ' ./nightly-build.sh all       -  Will build every component specified in NIGHTLY.txt. '
-#    echo ' ./nightly-build.sh update    -  Will build only components that have had a changed file since the last update. '
-#    echo ' ./nightly-build.sh <project> -  Will build only the component specified. '
-#}
-#
+use XML::Simple;
+
+usage();
+
+sub usage() {
+    print "Usage:\n";
+    print " ./integrate-builds.pl foo-integration.xml all       -  Will build every component specified in the given xml file. \n";
+    print " ./integrate-builds.pl foo-integration.xml update    -  Will build only components that have had a changed file since the last update. \n";
+    print " ./integrate-builds.pl foo-integration.xml <project> -  Will build only the component specified. \n";
+}
+
 #if [ "x${SCM}x" = "xx" ];
 #then
 #    export SCM=SVN
