@@ -113,26 +113,6 @@
       </includes>
     </unitTest>
 
-    <!--
-
-    <integrationUnitTestSourceDirectory/>
-
-    <aspectSourceDirectory></aspectSourceDirectory>
-
-    <integrationUnitTestPatterns>
-    </integrationUnitTestPatterns>
-    -->
-
-    <!-- J A R  R E S O U R C E S -->
-    <!-- Resources that are packaged up inside the JAR file -->
-
-    <jarResources>
-        <jarResource>include = *.dtd</jarResource>
-        <jarResource>include = log4j.properties</jarResource>
-    </jarResources>
-
-    <jars>
-    </jars>
   </build>
 
     <reports>
