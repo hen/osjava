@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="Charlotte">
+
+  <title>Charlotte</title>
+
+  <body>
+    <menu name="Overview">
+      <item name="Introduction"              href="/index.html"/>
+      <item name="Tutorial"              href="/tutorial.rtf"/>
+      <item name="Download" href="http://www.osjava.org/releases/official/charlotte/"/>
+      <item name="Changes"              href="/changes-report.html"/>
+      <item name="License"              href="/license.html"/>
+    </menu>
+    <menu name="Code docs">              
+      <item name="JavaDocs"              href="/apidocs/index.html"/>
+      <item name="Source XReference"              href="/xref/index.html"/>
+      <item name="Test XReference"              href="/xref-test/index.html"/>
+    </menu>
+    <menu name="Resources">
+      <item name="Mailing List"              href="/mail-lists.html"/>
+      <item name="Jar Dependencies"              href="/dependencies.html"/>
+      <item name="SVN Repository"              href="http://www.osjava.org/svn.php?project=charlotte"/>
+      <item name="Bug Tracking"              href="/issue-tracking.html"/>
+    </menu>
+  </body>
+</project>
