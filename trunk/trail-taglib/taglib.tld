@@ -51,5 +51,11 @@
       <rtexprvalue>true</rtexprvalue>
       <description>Usually the url in question will be figured out by the taglib, however you may override it with this attribute. </description>
     </attribute>
+    <attribute>
+      <name>query</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>The query-string should not affect the trail. </description>
+    </attribute>
   </tag>
 </taglib>

@@ -51,6 +51,7 @@ public class PushTag extends TagSupport {
 
     private String url;
     private String label;
+    private String query;
 
     public PushTag() {
     }
@@ -60,6 +61,9 @@ public class PushTag extends TagSupport {
 
     public String getUrl() { return this.url; }
     public void setUrl(String url) { this.url = url; }
+
+    public String getQuery() { return this.query; }
+    public void setQuery(String query) { this.query = query; }
 
     public int doEndTag() throws JspException {
         BreadCrumbs breadcrumbs = JspUtils.getBreadCrumbs(pageContext);
@@ -71,12 +75,12 @@ public class PushTag extends TagSupport {
             if(requestUri != null) {
                 uri = ""+requestUri;
                 Object queryString = request.getAttribute("javax.servlet.forward.query_string");
-                if(queryString != null) {
+                if(this.query != null && queryString != null) {
                     uri += "?" + queryString;
                 }
             } else {
                 uri = request.getRequestURI();
-                if(request.getQueryString() != null) {
+                if(this.query != null && request.getQueryString() != null) {
                     uri += "?" + request.getQueryString();
                 }
             }
