@@ -34,7 +34,6 @@ package com.generationjava.io;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
-import java.io.StringReader;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.NumberUtils;

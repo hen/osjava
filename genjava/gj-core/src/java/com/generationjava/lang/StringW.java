@@ -31,20 +31,8 @@
  */
 package com.generationjava.lang;
 
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Random;
-
-import com.generationjava.collections.CollectionsW;
-import org.apache.commons.collections.IteratorUtils;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.NumberUtils;
-
-import com.generationjava.util.Interpolator;
-import com.generationjava.namespace.SimpleNamespace;
 
 /**
  * A set of String library static methods. While extending String or 

@@ -32,10 +32,6 @@
 package com.generationjava.io;
 
 import java.util.Collection;
-import java.util.Iterator;
-import java.util.Arrays;
-import java.util.List;
-import java.util.ArrayList;
 
 /*
    TableHandler. Give it a data structure. Should have either Array of Array or 
@@ -66,7 +62,6 @@ public class Tablifier {
         
     public String tablify(Table table) {    
         
-        boolean firstrow = true;
         StringBuffer buffer = new StringBuffer();
         
         int[] columnwidths = table.getColumnWidths();

@@ -47,9 +47,6 @@ import org.apache.commons.collections.IteratorUtils;
 
 import com.generationjava.collections.OrderedSet;
 
-import org.apache.commons.lang.StringUtils;
-
-
 /**
  * java.util.Properties stores keys and values, but it does not store them in 
  * an ordered way. Annoyingly, there is no easy way to splice this feature in, 
