@@ -31,7 +31,7 @@ public class EncodingTest extends TestCase {
         Encoding e = getTestEncoding();
         BigInteger bits = new BigInteger("10101101011101111000000101101101", 2);
         
-        Value []vals = e.unpackFields(bits);
+        Value []vals = EncodingUtil.expandFieldsToArray(e, bits);
         
         assertEquals(7, vals.length);
         
@@ -44,13 +44,13 @@ public class EncodingTest extends TestCase {
         assertEquals(5, vals[5].getRaw());
         assertEquals(45, vals[6].getRaw());
         
-        assertEquals(1.896, vals[0].getExpanded(), .001);
-        assertEquals(775.562, vals[1].getExpanded(), .001);
-        assertEquals(1, vals[2].getExpanded(), 0);
-        assertEquals(36.414, vals[3].getExpanded(), .001);
-        assertEquals(0, vals[4].getExpanded(), 0);
-        assertEquals(78, vals[5].getExpanded(), 0);
-        assertEquals(1.1816, vals[6].getExpanded(), .001);
+        assertEquals(1.896, vals[0].getExpandedAsDouble(), .001);
+        assertEquals(775.562, vals[1].getExpandedAsDouble(), .001);
+        assertEquals(1, vals[2].getExpandedAsDouble(), 0);
+        assertEquals(36.414, vals[3].getExpandedAsDouble(), .001);
+        assertEquals(0, vals[4].getExpandedAsDouble(), 0);
+        assertEquals(78, vals[5].getExpandedAsDouble(), 0);
+        assertEquals(1.1816, vals[6].getExpandedAsDouble(), .001);
     }
     
     
@@ -64,7 +64,7 @@ public class EncodingTest extends TestCase {
         assertEquals(VALUE_COUNT, e.getFieldCount());
         
         
-        System.out.println(DefaultEncoding.encodingToString(e));
+        System.out.println(EncodingUtil.encodingToString(e));
     }    
     
     
