@@ -1,12 +1,17 @@
-Currently has a couple of bugs:
+Trail Taglib is now written. It allows a dynamic breadcrumbs trail to be built 
+up and records a user's movements for the entire session, while providing a 
+normalized version to display to the user.
 
-1) Pages which do server-side redirecting/forwarding do not have 
-   their urls correctly figured out.
+It uses http-referer headers to guess when the user has hit the back button 
+and correctly understands when a server-side forward has happened under 
+servlet 2.4 containers. A filter is provided which emulates the servlet 2.4 
+functionality in pre 2.4 containers.
 
-   Solution is:
-     i) Spec allows a parameter to be obtained to get the real thing
-    ii) Use a filter
-   iii) Hack a way into Struts [not good]
+Todo:
 
-2) Referrer's need to be checked to see if someone has hit 
-   back and then a page. 
+Create a session report object that turns the trail into a report. Or just 
+have the developer write a JSP page?
+Create a session listener which evaluates a JSP page(?) and mails it to the 
+user on session expiry.
+
+
