@@ -83,8 +83,12 @@ public class IniProperties extends CustomProperties {
                 // split equals sign
                 idx = line.indexOf('=');
                 if(idx != -1) {
-//                    System.err.println("Setting: "+line.substring(0,idx)+"="+line.substring(idx+1));
-                    this.setProperty(block+this.delimiter+line.substring(0,idx), line.substring(idx+1));
+if(org.osjava.jndi.PropertiesContext.DEBUG)                    System.err.println("[INI] Loading property: "+line.substring(0,idx)+"="+line.substring(idx+1));
+                    if("".equals(block)) {
+                        this.setProperty(line.substring(0,idx), line.substring(idx+1));
+                    } else {
+                        this.setProperty(block+this.delimiter+line.substring(0,idx), line.substring(idx+1));
+                    }
                 } else {
                     // blank line, or just a bad line
                     // we ignore it
