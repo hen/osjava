@@ -40,7 +40,7 @@ public class ReportFactory {
         }
         return (ReportGroup[]) groups.toArray( new ReportGroup[0] );
     }
-    private static Map getResources() {
+    public static Map getResources() {
         HashMap map = new HashMap();
         XMLNode node = parseXml("resources.xml").getNode("resources");
         Enumeration resourceNodes = node.enumerateNode("resource");
@@ -207,8 +207,11 @@ LABEL:  while(nodes.hasMoreElements()) {
                 parser.setPattern( node.getAttr("pattern") );
                 param.setParser(parser);
             } catch(ClassNotFoundException cnfe) {
+                cnfe.printStackTrace();
             } catch(InstantiationException ie) {
+                ie.printStackTrace();
             } catch(IllegalAccessException iae) {
+                iae.printStackTrace();
             }
         }
         return param;
@@ -228,8 +231,11 @@ LABEL:  while(nodes.hasMoreElements()) {
                         formatter.setPattern( node.getAttr("pattern") );
                         column.setFormatter(formatter);
                     } catch(ClassNotFoundException cnfe) {
+                        cnfe.printStackTrace();
                     } catch(InstantiationException ie) {
+                        ie.printStackTrace();
                     } catch(IllegalAccessException iae) {
+                        iae.printStackTrace();
                     }
                 }
                 report.addColumn( column );
