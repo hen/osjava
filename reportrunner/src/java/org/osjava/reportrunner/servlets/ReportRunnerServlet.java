@@ -107,7 +107,7 @@ public class ReportRunnerServlet extends HttpServlet {
     private static synchronized void logReport(Report report, HttpServletRequest request, long report_time, long render_time) {
         FileWriter writer = null;
         try {
-            writer = new FileWriter( new File("rrr.log") );
+            writer = new FileWriter( new File("rrr.log"), true );
             // add more to this
             StringBuffer buffer = new StringBuffer();
             buffer.append(new Date());
