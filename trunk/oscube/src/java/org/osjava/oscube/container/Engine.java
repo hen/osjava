@@ -74,9 +74,6 @@ public class Engine {
             // Possibly the run(Config, Session) needs to 
             // move into an interface
             scheduler.schedule(cfg, session, runner);
-
-            // temporary running
-            runner.run(cfg, session);
         }
     }
 
