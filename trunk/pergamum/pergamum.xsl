@@ -133,7 +133,7 @@
       <xsl:value-of select="document('db/reviews.xml')/reviews/review[@isbn=$isbn]"/>
     </xsl:variable>
     <div class="sub-title"><xsl:value-of select="$name"/></div><br/>
-    <div class="book-url"><a href="{$url}">url</a></div><br/>
+    <div class="book-url">Visit the book&apos;s site: <a href="{$url}"><xsl:value-of select="$url"/></a></div><br/>
     <div class="publisher-name">(<a href="{$pubUri}"><xsl:value-of select="$pubName"/></a>)</div><br/>
     <div class="books-links"><span class="amz"><a href="http://www.amazon.com/exec/obidos/tg/detail/-/{$isbn}">[amz]</a></span> - <span class="bkp"><a href="http://www.bookpool.com/.x/1/sm/{$isbn}">[bkp]</a></span></div><br/>
     <div class="sub-title">Review</div><br/>
