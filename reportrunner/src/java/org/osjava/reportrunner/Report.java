@@ -19,5 +19,8 @@ public interface Report {
     Choice[] getParamChoices(Param param);
     Column[] getColumns();
     void addColumn(Column column);
+    void setReportGroup(ReportGroup group);
+    ReportGroup getReportGroup();
+    String[] getResourceNames();
 
 }

@@ -12,6 +12,7 @@ public abstract class AbstractReport implements Report {
     private String renderers;
     private List params = new ArrayList();
     private List columns = new ArrayList();
+    private ReportGroup reportGroup;
 
     public String getName() {
         return this.name;
@@ -62,6 +63,18 @@ public abstract class AbstractReport implements Report {
 
     public void addColumn(Column column) {
         this.columns.add(column);
+    }
+
+    public ReportGroup getReportGroup() {
+        return this.reportGroup;
+    }
+
+    public void setReportGroup(ReportGroup reportGroup) {
+        this.reportGroup = reportGroup;
+    }
+
+    public String[] getResourceNames() {
+        return new String[0];
     }
 
     public abstract Result execute();

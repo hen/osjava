@@ -11,7 +11,7 @@ import javax.naming.*;
 
 public class SqlReport extends AbstractReport {
 
-    private String dsName;
+    private String dsName = "SqlReportDS";
     private String sql;
     private String params;
 
@@ -27,17 +27,15 @@ public class SqlReport extends AbstractReport {
         this.dsName = dsName;
     }
 
+    public String getDataSource() {
+        return this.dsName;
+    }
+
     public Result execute() {
-        // how do we choose the datasource?
-        // how do we get the sql?
-        DataSource ds = null;
-        try {
-            Context ctxt = new InitialContext();
-            Context envCtxt = (Context) ctxt.lookup("java:comp/env");
-            ds = (DataSource) envCtxt.lookup(dsName);
-        } catch(NamingException ne) {
-            ne.printStackTrace();
-        }
+        ReportGroup group = super.getReportGroup();
+        Resource resource = group.getResource(dsName);
+        DataSource ds = (DataSource) resource.accessResource();
+
         try {
             QueryRunner runner = new QueryRunner(ds);
 
@@ -89,14 +87,10 @@ public class SqlReport extends AbstractReport {
         // assume binding is an SQL statement that returns 
         // 2 columns. The first is key, the second is value.
         
-        DataSource ds = null;
-        try {
-            Context ctxt = new InitialContext();
-            Context envCtxt = (Context) ctxt.lookup("java:comp/env");
-            ds = (DataSource) envCtxt.lookup(dsName);
-        } catch(NamingException ne) {
-            ne.printStackTrace();
-        }
+        ReportGroup group = super.getReportGroup();
+        Resource resource = group.getResource(this.dsName);
+        DataSource ds = (DataSource) resource.accessResource();
+
         try {
             QueryRunner runner = new QueryRunner(ds);
             List list = (List) runner.query(binding, new ArrayListHandler());
@@ -111,6 +105,10 @@ public class SqlReport extends AbstractReport {
             sqle.printStackTrace();
         }
         return null;
+    }
+
+    public String[] getResourceNames() {
+        return new String[] { this.dsName };
     }
 
     private class ReportArrayListHandler extends ArrayListHandler {

@@ -27,6 +27,7 @@ public class ReportFactory {
         return null;
     }
     public static ReportGroup[] getReportGroups() {
+        Map resourcesMap = getResources();
         List groups = new ArrayList();
         XMLNode node = parseXml("reportrunner.xml").getNode("reportrunner");
         Enumeration groupNodes = node.enumerateNode("reports");
@@ -34,9 +35,27 @@ public class ReportFactory {
             XMLNode groupNode = (XMLNode) groupNodes.nextElement();
             ReportGroup group = new ReportGroup();
             applyAttrs(group, groupNode, new String[] { "resources" } );
+
+            Enumeration useNodes = groupNode.enumerateNode("use");
+            while(useNodes.hasMoreElements()) {
+                XMLNode useNode = (XMLNode) useNodes.nextElement();
+                group.putResource( useNode.getAttr("name"), (Resource) resourcesMap.get(useNode.getAttr("resource")) );
+            }
             groups.add(group);
         }
         return (ReportGroup[]) groups.toArray( new ReportGroup[0] );
+    }
+    private static Map getResources() {
+        HashMap map = new HashMap();
+        XMLNode node = parseXml("resources.xml").getNode("resources");
+        Enumeration resourceNodes = node.enumerateNode("resource");
+        while(resourceNodes.hasMoreElements()) {
+            XMLNode resourceNode = (XMLNode) resourceNodes.nextElement();
+            Resource resource = new Resource();
+            applyAttrs(resource, resourceNode, new String[0]);
+            map.put(resource.getName(), resource);
+        }
+        return map;
     }
     public static Report[] getReports(String groupName) {
         ReportGroup group = getReportGroup(groupName);
@@ -57,6 +76,7 @@ public class ReportFactory {
             applyNodes( report, reportNode.enumerateNode(), new String[] { "param", "column" } );
             applyParamTag( report, reportNode.enumerateNode("param") );
             applyColumnTag( report, reportNode.enumerateNode("column") );
+            report.setReportGroup(group);
             reports.add(report);
         }
         return (Report[]) reports.toArray( new Report[0] );
@@ -89,11 +109,11 @@ public class ReportFactory {
 
     private static void applyAttrs( Object obj, XMLNode node, String[] ignore ) {
         Enumeration attrs = node.enumerateAttr();
-        while(attrs.hasMoreElements()) {
+LABEL:  while(attrs.hasMoreElements()) {
             String name = (String) attrs.nextElement();
             for(int i=0; i<ignore.length; i++) {
                 if(name.equals(ignore[i])) {
-                    continue;
+                    continue LABEL;
                 }
             }
             String value = node.getAttr(name);
@@ -113,7 +133,7 @@ public class ReportFactory {
         }
     }
     private static void applyNodes( Object obj, Enumeration nodes, String[] ignore ) {
-        while(nodes.hasMoreElements()) {
+LABEL:  while(nodes.hasMoreElements()) {
             XMLNode node = (XMLNode) nodes.nextElement();
             if(!node.isTag()) {
                 continue;
@@ -121,7 +141,7 @@ public class ReportFactory {
             String name = node.getName();
             for(int i=0; i<ignore.length; i++) {
                 if(name.equals(ignore[i])) {
-                    continue;
+                    continue LABEL;
                 }
             }
             // needs code to ignore comments
