@@ -40,14 +40,6 @@ import java.io.PrintWriter;
 import java.util.Hashtable;
 import java.util.Properties;
 
-// gives us pooling
-import org.apache.commons.pool.ObjectPool;
-import org.apache.commons.pool.impl.GenericObjectPool;
-import org.apache.commons.dbcp.ConnectionFactory;
-import org.apache.commons.dbcp.PoolingDriver;
-import org.apache.commons.dbcp.PoolableConnectionFactory;
-import org.apache.commons.dbcp.DriverManagerConnectionFactory;
-
 public class PropertiesDataSource implements DataSource {
 
 //    private Hashtable env;
@@ -56,7 +48,7 @@ public class PropertiesDataSource implements DataSource {
     private String name;
     private String delimiter;
 
-    // for dbcp
+    // for pooling
     private boolean poolSetup;
 
     // make delimiter a beanproperty?
@@ -114,29 +106,11 @@ public class PropertiesDataSource implements DataSource {
         String pool = get("pool");
         if(pool != null) {
             if(!poolSetup) {
-                // we have a pool-name to setup using dbcp
-                ObjectPool connectionPool = new GenericObjectPool(null);
-                ConnectionFactory connectionFactory = null;
-                if(username == null || password == null) {
-                    connectionFactory = new DriverManagerConnectionFactory(url, null);
-                } else {
-                    connectionFactory = new DriverManagerConnectionFactory(url, username, password);
-                }
-                PoolableConnectionFactory poolableConnectionFactory = new PoolableConnectionFactory(connectionFactory, connectionPool, null, null, false, true);
-                try {
-                    Class.forName("org.apache.commons.dbcp.PoolingDriver");
-                } catch(ClassNotFoundException cnfe) {
-                    // not too good
-                    System.err.println("WARNING: DBCP needed but no in the classpath. ");
-                }
-                PoolingDriver driver = (PoolingDriver) DriverManager.getDriver("jdbc:apache:commons:dbcp:");
-                driver.registerPool(pool, connectionPool);
-
-    //            Runtime.getRuntime().addShutdownHook( new ShutdownDbcpThread(pool) );
+                PoolSetup.setupConnection(pool, url, username, password);
                 this.poolSetup = true;
             }
-            // url is now a dbcp link
-            url = "jdbc:apache:commons:dbcp:"+pool;
+            // url is now a pooling link
+            url = PoolSetup.getUrl(pool);
         }
 //        System.err.println(this);
 //        System.err.println("url "+url);
@@ -183,26 +157,4 @@ public class PropertiesDataSource implements DataSource {
     }
 
 }
-
-/*
-class ShutdownDbcpThread extends Thread {
-    
-    private String pool;
-
-    public ShutdownDbcpThread(String pool) {
-        this.pool = pool;
-    }
-
-    public void run() {
-        try {
-            PoolingDriver driver = (PoolingDriver) DriverManager.getDriver("jdbc:apache:commons:dbcp:");
-            driver.closePool(this.pool);
-        } catch(SQLException sqle) {
-            // failed to close
-        } catch(ClassNotFoundException cnfe) {
-            // oops, unable to close pools, sorry DBA
-        }
-    }
-}
-*/
 
