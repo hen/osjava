@@ -31,7 +31,7 @@ then
 		fi
 		if [ $SCM = 'CVS' ];
 		then
-		    cvs -d `echo $i | sed 's/::::/\//'` $checkoutDir
+		    cvs -d `echo $i | sed 's/:::://'` co $checkoutDir
 		fi
             fi
         done
@@ -88,7 +88,7 @@ do
     fi
     if [ -e ERROR.log ];
     then
-        count=`cat ERROR.log | grep -v 'deprecat' | wc -l | sed 's/ //g'`
+        count=`cat ERROR.log | grep -v 'deprecat' | grep -v WARN | wc -l | sed 's/ //g'`
         if [ $count != '0' ];
         then
             # errors in report
