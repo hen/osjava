@@ -9,16 +9,13 @@ import java.util.StringTokenizer;
 
 import org.nfunk.jep.JEP;
 
-
 import code316.core.PropertiesUtil;
 
-
 public class DefaultEncoding implements Encoding {
-    private static final BigInteger NEGATIVE_ONE = new BigInteger("-1");
     private ArrayList fieldNames = new ArrayList();
     private int bitCount;
     private ArrayList fieldDefinitions = new ArrayList();
-    private String name = "UNNAMED";
+    private String encodingName = "UNNAMED";
     
     public DefaultEncoding() {}
     
@@ -48,18 +45,14 @@ public class DefaultEncoding implements Encoding {
         throw new IllegalArgumentException("field named: '" + name + "' not found");
     }
     
-    private BigInteger extractFieldValue(int i, BigInteger bi) {
+    public BigInteger extractFieldValue(int i, BigInteger bi) {
         DefaultDefinition fd = (DefaultDefinition) this.fieldDefinitions.get(i);
-        return bi.shiftRight(fd.getOffset()).and(getMaxValue(fd.getWidth()));
+        return bi.shiftRight(fd.getOffset()).and(EncodingUtil.getMaxValue(fd.getWidth()));
     }
     
     
     public BigInteger getMaxValue() {
-        return DefaultEncoding.getMaxValue(getLength());            
-    }
-    
-    public static BigInteger getMaxValue(int numBits) {
-        return new BigInteger("1").shiftLeft(numBits).add(NEGATIVE_ONE);        
+        return EncodingUtil.getMaxValue(getLength());            
     }
     
     private String dumpValues(BigInteger bi) {
@@ -110,7 +103,7 @@ public class DefaultEncoding implements Encoding {
                 val = new BigInteger(String.valueOf(o));                
             }
 
-            if ( val.longValue() > getMaxValue(fd.getWidth()).longValue()) {
+            if ( val.longValue() > EncodingUtil.getMaxValue(fd.getWidth()).longValue()) {
                 throw new IllegalArgumentException("value to large for field width: " + val);            
             }
             
@@ -141,9 +134,9 @@ public class DefaultEncoding implements Encoding {
         return (FieldDefinition) this.fieldDefinitions.get(index);
     }
 
-    private double expandFieldValue(String name, BigInteger bits) {        
-        FieldDefinition fd = getField(name);
-        BigInteger raw = extractFieldValue(name, bits);
+    public double expandFieldValue(int index, BigInteger bits) {        
+        FieldDefinition fd = getField(index);
+        BigInteger raw = extractFieldValue(fd.getName(), bits);
         String expression = fd.getOperands();
         JEP expressionParser = new JEP();
         
@@ -178,13 +171,13 @@ public class DefaultEncoding implements Encoding {
                     throw new IllegalStateException("cannot access downstream field: " + idName);
                 }
                 
-                expressionParser.addVariable(idName, expandFieldValue(idName, bits));                
+                expressionParser.addVariable(idName, expandFieldValue(fieldDefinition.getIndex(), bits));                
             }
         }
         
         expressionParser.addVariable("x", raw.floatValue());
         expressionParser.addVariable("fieldWidth", fd.getWidth());
-        expressionParser.addVariable("maxValue", DefaultEncoding.getMaxValue(fd.getWidth()).floatValue());
+        expressionParser.addVariable("maxValue", EncodingUtil.getMaxValue(fd.getWidth()).floatValue());
         expressionParser.parseExpression(expression);
         
          
@@ -211,8 +204,11 @@ public class DefaultEncoding implements Encoding {
         
         while (begin != -1) {
             int end = expression.indexOf("}", begin + 2);
-            String name = expression.substring(begin + 2, end); 
-            ids.add(name);
+            String name = expression.substring(begin + 2, end);
+            
+            if ( !ids.contains(name) ) {
+                ids.add(name);
+            }
             
             begin = expression.indexOf("${",  end);            
         }
@@ -246,76 +242,12 @@ public class DefaultEncoding implements Encoding {
         return vals;
     }
 
-    public static String encodingToString(Encoding ed) {
-        StringBuffer me = new StringBuffer();
-        StringBuffer legend = new StringBuffer();
-        StringBuffer map = new StringBuffer();
-        
-        me.append("encoding name: ")
-        .append(ed.getName())
-        .append("\n")
-        .append("length: ")
-        .append(ed.getLength())
-        .append(" bits\n");
-        
-        
-        me.append("\nmap: \n");
-        char marker = 'A';
-        
-        Iterator tor = ed.getFieldDefinitions().iterator();
-        while (tor.hasNext()) {
-            FieldDefinition td = (FieldDefinition) tor.next();
-            
-            int length = td.getWidth();
-            for (int i = 0; i < length; i++) {
-                map.append(marker);                
-            }
-            
-            legend.append(marker)
-            .append(" - ")
-            .append(td.getName())
-            .append(": ")
-            .append(length)
-            .append(" bits,")
-            .append(" mutator expression: ")
-            .append(td.getOperands())
-            .append("\n");
-            
-            marker++;
-            map.append("|");
-        }
-        
-        int count = map.length();
-        StringBuffer temp = new StringBuffer((count * 3) + 2);
-        temp.append(" ");
-        for (int i = 0; i < (count - 1); i++) {
-            temp.append("-");
-        }
-        
-        temp.append("\n|")
-            .append(map)
-            .append("\n");
-        
-        temp.append(" ");
-        for (int i = 0; i < (count - 1); i++) {
-            temp.append("-");
-        }
-        
-        me.append(temp);
-
-        me.append("\n\nlegend: \n").append(legend);
-        
-        return me.toString();
-    }
-
-   
-
     public String getName() {
-        return name;
+        return encodingName;
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.encodingName = name;
     }
 
     public void addFieldDefinition(FieldDefinition def) {
@@ -324,21 +256,7 @@ public class DefaultEncoding implements Encoding {
         this.bitCount += def.getWidth();
     }
 
-    public Value[] unpackFields(BigInteger bits) {
-        int count = getFieldCount();
-        Value []vals = new Value[count];
-        
-        for (int i = 0; i < vals.length; i++) {
-            FieldDefinition fd = getField(i);
-            vals[i] = new Value();
-                      
-            vals[i].setFieldDefinition(fd);
-            vals[i].setRaw(extractFieldValue(i, bits).longValue());
-            vals[i].setExpanded(expandFieldValue(fd.getName(), bits));            
-        }
-        
-        return vals;
-    }
+    
 
     public FieldDefinition getFieldDefinition(int index) {
         return (FieldDefinition) this.fieldDefinitions.get(index);
@@ -346,5 +264,5 @@ public class DefaultEncoding implements Encoding {
 
     public int getFieldCount() {
         return this.fieldDefinitions.size();
-    }    
+    }        
 }
