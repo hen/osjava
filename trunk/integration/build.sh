@@ -111,8 +111,12 @@ do
     rm -fr target/ maven.log velocity.log ERROR.log OUTPUT.log
     # building
     TIME_START=`date +%s`
+    # snapshot build so that things may depend on things correctly
     maven -b clean jar:install-snapshot clean jar 2> ERROR.log > OUTPUT.log
-    maven -b clean jar 2> ERROR.log > OUTPUT.log
+
+#    mv target/$i-*.jar target/$i-SNAPSHOT.jar
+
+    maven -b jar 2> ERROR.log > OUTPUT.log
     TIME_END=`date +%s`
     BUILD_DURATION=`echo $TIME_END - $TIME_START | bc`
     BUILD_DURATION=`date -d "1970-01-01 UTC $BUILD_DURATION seconds" +"%M minutes %S seconds"`
@@ -200,6 +204,8 @@ do
         file_ext=`echo $t | sed 's/target\///' | sed 's/.*\.//g'`
         mv $t $reportDir/$i/builds/${file_name}-$DT.${file_ext}
     done
+
+# Deploy any built jars up to the osjava repository as a SNAPSHOT
 
     date +"%Y/%m/%d %k:%M" > $reportDir/$i/BUILD_TIME
     if [ -e $buildDir/SCM_UPDATE ];
