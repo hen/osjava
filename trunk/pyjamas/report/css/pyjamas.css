@@ -4,6 +4,10 @@ LI { list-style-type: none }
 
 .success_link, .failed_link { font-size: larger }
 
+.failed_link { background: red; padding: 2px }
+.failed_link:link { color: white; }
+.failed_link:visited { color: #ddd; }
+
 .project_block { float: left; padding-right: 3em }
 
 .build_info { padding-top: 1em; }
