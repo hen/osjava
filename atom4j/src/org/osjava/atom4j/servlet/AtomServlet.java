@@ -1,29 +1,7 @@
 /*
- *   Copyright 2003-2004 Lance Lavandowska
- *
- *   Licensed under the Apache License, Version 2.0 (the "License");
- *   you may not use this file except in compliance with the License.
- *   You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- *   Unless required by applicable law or agreed to in writing, software
- *   distributed under the License is distributed on an "AS IS" BASIS,
- *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *   See the License for the specific language governing permissions and
- *   limitations under the License.
+ * Created on Aug 21, 2003
  */
 package org.osjava.atom4j.servlet;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.osjava.atom4j.Atom4J;
-import org.osjava.atom4j.pojo.Entry;
-import org.osjava.atom4j.pojo.Feed;
-import org.osjava.atom4j.pojo.Template;
-import org.osjava.atom4j.reader.EntryReader;
-import org.osjava.atom4j.reader.FeedReader;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -36,39 +14,33 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.osjava.atom4j.Atom4J;
+import org.osjava.atom4j.pojo.Entry;
+import org.osjava.atom4j.pojo.Introspection;
+import org.osjava.atom4j.pojo.Template;
+import org.osjava.atom4j.pojo.UserPreferences;
+import org.osjava.atom4j.reader.EntryReader;
+import org.osjava.atom4j.reader.PrefsReader;
+
 /**
- * http://bitworking.org/news/AtomAPI_Quick_Reference
- * http://atomenabled.org/developers/api/atom-api-spec.php
+ * http://bitworking.org/news/AtomAPI_URIs
+ * http://bitworking.org/rfc/draft-gregorio-07.html
  *  
  * All requests should have a URL format
  * /atom/username/ACTION[/args]
  * 
- * GET    Feed  PathInfo: /USER/feed[/id] - include id for multiple feeds per user
- * GET    Entry PathInfo: /USER/entry/id
- * DELETE Entry PathInfo: /USER/delete/id
- * CREATE Entry PathInfo: /USER/entry
- * UPDATE Entry PathInfo: /USER/entry/id
+ * Valid ACTIONs are: introspection, create, prefs, 
+ * entry, search, comment, findTemplates, template
  * 
- * -- No Longer Specified --
- * CREATE Comment PathInfo: /USER/comment/entry-id
+ * NOTE: Update getIntrospectionXML() as ACTIONs are implemented.
  * 
- * -- No Longer Specified --
- * GET    Template PathInfo: /USER/template/id
- * UPDATE Template PathInfo: /USER/template/id
- * DELETE Template PathInfo: /USER/template/id
- * GET    Templates PathInfo: /USER/findTemplates
- * 
- * -- No Longer Specified --
- * SEARCH PathInfo: /USER/search/??
- *        Queries: ?atom-last=20
- *                 ?atom-all=y
- *                 ?atom-start-range=0&atom-end-range=10
- *  
- * Created on Aug 21, 2003
  * @author llavandowska
  * 
- * @ web.servlet name="AtomServlet"
- * @ web.servlet-mapping url-pattern="/atom"
+ * @web.servlet name="AtomServlet"
+ * @web.servlet-mapping url-pattern="/atom"
  */
 public abstract class AtomServlet extends HttpServlet
 {
@@ -78,7 +50,7 @@ public abstract class AtomServlet extends HttpServlet
     protected static String baseURL = null;
     
     private static final byte[] XML_HEADER = 
-        "<?xml version=\"1.0\" encoding='utf-8'?>".getBytes();
+        "<?xml version=\"1.0\" encoding='iso-8859-1'?>".getBytes();
     
     private String introspectionXML = null;
 
@@ -89,7 +61,34 @@ public abstract class AtomServlet extends HttpServlet
     {
         super.init();
     }   
-        
+    
+    /**
+     * Implementor can/should override this method to 
+     * specify which Actions they support.
+     * 
+     * Valid ACTIONs are: introspection, create, prefs, 
+     * entry, search, comment, findTemplates, template
+     */
+    protected String getIntrospectionXML()
+    {
+        if (introspectionXML != null) return introspectionXML;
+        else if (baseURL != null)
+        {
+            Introspection intro = new Introspection();
+            intro.setBaseURL( baseURL );
+            intro.setCreateEntry( true );
+            intro.setDeleteEntry( true );
+            intro.setEditEntry( true );
+            intro.setSearchEntries( true );
+            intro.setUserPrefs( true );
+            //intro.setComment( true );
+            //intro.setCategories( true );
+            
+            introspectionXML = intro.toString(); 
+        }
+        return introspectionXML;
+    }
+    
     /**
      * Return the PathInfo from the request.  Convenience method.
      * 
@@ -113,11 +112,11 @@ public abstract class AtomServlet extends HttpServlet
     private void writeResults(HttpServletResponse response, byte[] result)
         throws IOException
     {
-        response.setStatus( HttpServletResponse.SC_OK ); 
-        response.setContentType("application/x.atom+xml");    
+        response.setStatus( HttpServletResponse.SC_OK );     
         
         if (result.length > 0)
         {
+            response.setContentType("application/x.atom+xml");
             response.setContentLength(XML_HEADER.length + result.length);
             OutputStream output = response.getOutputStream();
             output.write(XML_HEADER);
@@ -142,26 +141,17 @@ public abstract class AtomServlet extends HttpServlet
 
     /**
      * Invalid request, return error message.
+     * TODO : What is an appropriate error message/value/format?
      * 
      * @param request
      * @param response
      */
     private void error(HttpServletRequest request, HttpServletResponse response,
-        String errorTitle, String errorBody) throws IOException
+        String customMessage) throws IOException
     {
-        if (errorTitle == null) errorTitle = "Something Bad Happened";
-        if (errorBody == null) errorBody = "Something bad happened";
-        String title = "<title>" + errorTitle + "</title>\n";
-        String description = "<description>" + errorBody + "</description>\n";
-        byte[] result = ("<error>\n"+title+description+"</error>").getBytes();
-        response.setStatus( HttpServletResponse.SC_BAD_REQUEST ); 
-        response.setContentType("application/x.atom+xml");    
-        
-        response.setContentLength(XML_HEADER.length + result.length);
-        OutputStream output = response.getOutputStream();
-        output.write(XML_HEADER);
-        output.write(result);
-        output.flush();
+        if (customMessage == null) customMessage = "Something bad happened";
+        byte[] result = ("<error>"+customMessage+"</error>").getBytes();
+        writeResults(response, result);
     }
     
     /**
@@ -169,13 +159,13 @@ public abstract class AtomServlet extends HttpServlet
      *  
      * @see javax.servlet.http.HttpServlet#doDelete(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
      */
-    public void doDelete(HttpServletRequest request, HttpServletResponse response)
+    protected void doDelete(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException
     {
         String[] pathInfo = getPathInfo(request);
         if (pathInfo.length < 2) 
         {
-            error(request, response, "Invalid Request", "Insufficient Information to Process Request."); 
+            error(request, response, "Invalid Request."); 
             return;
         } 
 
@@ -184,17 +174,15 @@ public abstract class AtomServlet extends HttpServlet
             if ("entry".equals(pathInfo[1]))
             {
                 deleteEntry(pathInfo, request, response);
-            }
-            /*
+            } 
             else if ("template".equals(pathInfo[1]))
             {
                 deleteTemplate(pathInfo, request, response);
             }
-            */
         }
         else
         {
-            error(request, response, "Unauthorized", "You are not authorized for this Action."); 
+            error(request, response, "You are not authorized for this Action."); 
             return;
         } 
     }
@@ -202,75 +190,70 @@ public abstract class AtomServlet extends HttpServlet
     /* (non-Javadoc)
      * @see javax.servlet.http.HttpServlet#doGet(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
      */
-    public void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException
     {
         String[] pathInfo = getPathInfo(request);
         if (pathInfo.length < 2) 
         {
-            error(request, response, "Invalid Request.", "Insufficient Information to Process Request."); 
+            error(request, response, "Invalid Request."); 
             return;
         } 
 
         // first the options that don't require authorization
-        boolean authorized = authorized();
         if ("entry".equals(pathInfo[1]))
         {
             getEntry(pathInfo, request, response);
         }
-        else if ("feed".equals(pathInfo[1]))
+        else if ("introspection".equals(pathInfo[1]))
         {
-            getFeed(pathInfo, request, response);
+            getIntrospection(pathInfo, request, response);
         }
-        /*
         else if ("search".equals(pathInfo[1]))
         {
             search(pathInfo, request, response);
         }
-        */
         // now check for those that do require authorization
-        else if (authorized)
+        else if (authorized())
         {
             if ("delete".equals(pathInfo[1]))
             {
                 deleteEntry(pathInfo, request, response);
             }
-            /*
             else if ("findTemplates".equals(pathInfo[1]))
             {
                 findTemplates(pathInfo, request, response);
+            }
+            else if ("prefs".equals(pathInfo[1]))
+            {
+                getPrefs(pathInfo, request, response);
             }
             else if ("template".equals(pathInfo[1]))
             {
                 getTemplate(pathInfo, request, response);
             }
-            */
-        }
-        else if (!authorized)
-        {
-            error(request, response, "Authorization Failure.", "You are not authorized for this Action.");   
         }
         else
         {
-            error(request, response, "No Action was requested.", "Your request did not contain an Action."); 
+            error(request, response, "No Action was requested."); 
+            return;
         }
     }
 
     /* (non-Javadoc)
      * @see javax.servlet.http.HttpServlet#doPost(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
      */
-    public void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException
     {
         String[] pathInfo = getPathInfo(request);
         if (pathInfo.length < 2)
         {
-            error(request, response, "Invalid Request.", "Insufficient Information to Process Request."); 
+            error(request, response, "Invalid Request."); 
             return;
         } 
-
-        boolean authorized = authorized();
-        if (authorized && "entry".equals(pathInfo[1]))
+        
+        if (authorized() && "create".equals(pathInfo[1]))
         {
             postEntry(pathInfo, request, response);
         }
@@ -278,13 +261,10 @@ public abstract class AtomServlet extends HttpServlet
         {
             postComment(pathInfo, request, response);
         }
-        else if (!authorized)
-        {
-            error(request, response, "Authorization Failure.", "You are not authorized for this Action.");   
-        }
         else
         {
-            error(request, response, "No Action was requested.", "Your request did not contain an Action."); 
+            error(request, response, "No Action was requested.");
+            return;
         }
     }
 
@@ -292,84 +272,42 @@ public abstract class AtomServlet extends HttpServlet
     /* (non-Javadoc)
      * @see javax.servlet.http.HttpServlet#doPut(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
      */
-    public void doPut(HttpServletRequest request, HttpServletResponse response)
+    protected void doPut(HttpServletRequest request, HttpServletResponse response)
         throws ServletException, IOException
     {
         String[] pathInfo = getPathInfo(request);
-        if (pathInfo.length < 2)
+        if (pathInfo.length < 2 || !authorized())
         {
-            error(request, response, "Invalid Request.", "Insufficient Information to Process Request."); 
+            error(request, response, "Invalid Request."); 
             return;
         } 
         
         if (authorized())
         {
-            if ("entry".equals(pathInfo[1]))
+            if ("prefs".equals(pathInfo[1]))
+            {
+                updatePrefs(pathInfo, request, response);
+            }
+            else if ("entry".equals(pathInfo[1]))
             {
                 updateEntry(pathInfo, request, response);
             }
-            /*
             else if ("template".equals(pathInfo[1]))
             {
                 updateTemplate(pathInfo, request, response);
             }
-            */
             else
             {
-                error(request, response, "No Action was requested.", "Your request did not contain an Action.");
+                error(request, response, "No Action was requested.");
                 return;
             }
         }
         else
         {
-            error(request, response, "Unauthorized", "You are not authorized for the requested Action."); 
+            error(request, response, "You are not authorized for the requested Action."); 
             return;
         }
     }
-
-    /**
-     * PathInfo: /USER/feed/id
-     * 
-     * @param pathInfo
-     * @param request
-     * @param response
-     */
-    private void getFeed(String[] pathInfo, HttpServletRequest request, HttpServletResponse response) 
-        throws IOException, ServletException
-    {
-        if (pathInfo.length > 0)
-        {
-            Feed feed = null;
-            try
-            {
-                feed = getFeed(pathInfo);
-            }
-            catch (Exception e)
-            {
-                logger.error(e);
-                throw new ServletException(e);
-            }
-            
-            if (feed != null)
-            {    
-                writeResults(response, feed.toString().getBytes());
-            }
-            else
-            {
-                error(request, response, "No Feed Found", "No Feed Found for " + pathInfo[0]);
-            }
-        }
-        else
-        {
-            error(request, response, "Invalid Request.", "Insufficient Information to Process Request.");
-        }      
-    }
-
-    /**
-     * @param pathInfo
-     * @return
-     */
-    protected abstract Feed getFeed(String[] pathInfo) throws Exception;
 
     /**
      * PathInfo: /USER/entry/id
@@ -395,7 +333,7 @@ public abstract class AtomServlet extends HttpServlet
         }
         else
         {
-            error(request, response, "Invalid Request.", "Insufficient Information to Process Request.");
+            error(request, response, "Invalid Request.");
         }
     }
 
@@ -427,7 +365,7 @@ public abstract class AtomServlet extends HttpServlet
         }
         else
         {
-            error(request, response, "Invalid Request.", "Insufficient Information to Process Request.");
+            error(request, response, "Invalid Request.");
         }
     }
 
@@ -440,8 +378,7 @@ public abstract class AtomServlet extends HttpServlet
      * Create a new Entry.  The jury is still out on whether AtomAPI will
      * support the creation of more than one Entry at a time.  The API
      * does specify, however, that creating an Entry will return a 
-     * Location header containing the Atom URL to that Entry.  For now
-     * Atom4J is returning the address of the <b>last</b> Entry created.
+     * Location header containing the Atom URL to that Entry.
      * 
      * PathInfo: /USER/entry
      * 
@@ -450,51 +387,33 @@ public abstract class AtomServlet extends HttpServlet
     protected void postEntry(String[] pathInfo, HttpServletRequest request, HttpServletResponse response) 
         throws IOException, ServletException
     {
-        Collection entries = null;
-        // is this a <feed> wrapped around several <entry>'s ?
-        FeedReader feedReader = new FeedReader( request.getInputStream() );
-        if (feedReader.getFeed() != null)
-        {
-            entries = feedReader.getFeed().getEntries();
-        }
-        else
-        {    
-            // or is it really just one Entry?
-            EntryReader reader = new EntryReader( request.getInputStream() );
-            entries = reader.getEntries();
-        }
+        EntryReader reader = new EntryReader( request.getInputStream() );
+        Collection entries = reader.getEntries();
         if (entries == null || entries.size() < 1)
         { 
-            error(request, response, "No Entry Found", "No entry was found in the supplied information."); 
+            error(request, response, "Invalid Request"); 
             return; 
         }
 
-        Entry entry = null;
         Iterator iter = entries.iterator();
         while (iter.hasNext())
         {
-            entry = (Entry)iter.next();
+            Entry entry = (Entry)iter.next();
             try
             {
-                saveNewEntry(entry);                
+                saveNewEntry(entry);
+                
+                String entryLoc = new StringBuffer(baseURL).append("/atom/")
+                    .append(pathInfo[0])
+                    .append("/entry/")
+                    .append(entry.getId()).toString();
+                response.setHeader("Location", entryLoc);
+                response.setStatus( HttpServletResponse.SC_CREATED ); 
             }
             catch (Exception e)
             {
-                ServletException se = new ServletException(e);
-                se.fillInStackTrace();
-                throw se;
+                throw new ServletException(e);
             }
-        }
-        
-        if (entry != null)
-        {
-            String entryLoc = new StringBuffer(baseURL).append("/atom/")
-            .append(pathInfo[0])
-            .append("/entry/")
-            .append(entry.getId()).toString();
-            response.setHeader("Location", entryLoc);
-            //response.setStatus( HttpServletResponse.SC_CREATED ); 
-            response.setStatus( HttpServletResponse.SC_SEE_OTHER );
         }
     }
 
@@ -504,7 +423,7 @@ public abstract class AtomServlet extends HttpServlet
     protected abstract void saveNewEntry(Entry entry) throws Exception;
 
     /**
-     * Update the Entry (save changes).
+     * Update the Entry (save changes)
      * 
      * PathInfo: /USER/entry/id
      * 
@@ -517,13 +436,13 @@ public abstract class AtomServlet extends HttpServlet
         List entries = (List)reader.getEntries();
         if (entries == null || entries.size() < 1)
         { 
-            error(request, response, "No Entry Found For Update.", "Unable to locate entry submitted for update."); 
+            error(request, response, "No Entry Found For Update."); 
             return; 
         }
         
         if (pathInfo.length > 2)
         {
-            // find the Entry to be edited
+            // find the WeblogEntryData to be edited
             Entry entry = (Entry)entries.get(0);
             
             if (entry != null)
@@ -542,7 +461,7 @@ public abstract class AtomServlet extends HttpServlet
         }
         else
         {
-            error(request, response, "Invalid request.", "Insufficient Information to Process Request.");
+            error(request, response, "Invalid request.");
         }
     }
 
@@ -552,52 +471,7 @@ public abstract class AtomServlet extends HttpServlet
     protected abstract void updateEntry(Entry entry, String[] pathInfo) throws Exception;
 
     /**
-     * Create a new comment.
-     * The spec no longer defines Commenting, except to say that
-     * Comments are Entries.  No relationship between an Entry and
-     * its Comments is described.
-     * 
-     * PathInfo: /USER/comment/id
-     * id = entry's id
-     * 
-     * @param request
-     */
-    protected void postComment(String[] pathInfo, HttpServletRequest request, HttpServletResponse response)
-    throws IOException, ServletException
-    {
-        try
-        {
-            Entry entry = getEntry(pathInfo);
-            if (entry != null)
-            {
-                Iterator iter = new EntryReader(request.getInputStream()).getEntries().iterator();
-                Entry comment = (Entry)iter.next();
-                if (comment != null)
-                    postComment(entry, comment, pathInfo);
-            }
-        }
-        catch (Exception e)
-        {
-            throw new ServletException(e);
-        }
-    }
-
-
-    /**
-     * The spec no longer defines Commenting, except to say that
-     * Comments are Entries.  No relationship between an Entry and
-     * its Comments is described.
-     * 
-     * @param entry
-     * @param comment
-     * @param pathInfo
-     */
-    protected abstract void postComment(Entry entry, Entry comment, String[] pathInfo) throws Exception;
-    
-    /**
-     * Return the Search Results.
-     * This is no longer a part of the Atom spec, but I'm leaving it
-     * in anticipation of future spec changes.
+     * Return the Search Results
      * 
      * PathInfo: /USER/search/??
      * Queries: ?atom-last=20
@@ -605,7 +479,6 @@ public abstract class AtomServlet extends HttpServlet
      *          ?atom-start-range=0&atom-end-range=10
      *  
      * @param request
-     * @deprecated
      */
     protected void search(String[] pathInfo, HttpServletRequest request, HttpServletResponse response) 
         throws IOException, ServletException
@@ -678,7 +551,7 @@ public abstract class AtomServlet extends HttpServlet
         while (iter.hasNext())
         {
             Entry entry = (Entry)iter.next();
-            // T O D O : Improve generation of "search results"
+            // TODO : Improve generation of "search results"
             buf.append("<entry><title>").append(entry.getTitle())
                 .append("</title><id>").append(baseURL).append("/atom/")
                 .append(pathInfo[0]).append("/entry/")
@@ -691,48 +564,90 @@ public abstract class AtomServlet extends HttpServlet
     }
 
     /**
-     * Search is no longer a part of the Atom spec, but I'm leaving it
-     * in anticipation of future spec changes.
      * @param pathInfo
-     * @deprecated
+     * @return
      */
     protected abstract List allEntries(String[] pathInfo) throws Exception;
 
     /**
-     * Search is no longer a part of the Atom spec, but I'm leaving it
-     * in anticipation of future spec changes.
      * @param startRange
      * @param endRange
      * @param pathInfo
-     * @deprecated
+     * @return
      */
     protected abstract List getEntryRange(int startRange, int endRange, String[] pathInfo) throws Exception;
 
     /**
-     * Search is no longer a part of the Atom spec, but I'm leaving it
-     * in anticipation of future spec changes.
      * @param pathInfo
-     * @deprecated
+     * @return
      */
     protected abstract List entryKeywordSearch(String[] pathInfo) throws Exception;
 
     /**
-     * Helper method.
      * @param maxEntries
-     * @deprecated
+     * @return
      */
     protected abstract List getLatestEntries(String username, int maxEntries) 
         throws Exception;
 
     /**
-     * Return list of Templates.
-     * This is no longer a part of the Atom spec, but I'm leaving it
-     * in anticipation of future spec changes.
+     * Return the Introspection response XML.
+     * 
+     * PathInfo: /USER/introspection
+     * 
+     * @param request
+     */
+    protected void getIntrospection(String[] pathInfo, HttpServletRequest request, HttpServletResponse response) 
+        throws IOException
+    {
+        String introspectionXML = getIntrospectionXML();
+        if (introspectionXML == null)
+        {
+            error(request, response, "Error getting Introspection data."); 
+            return;
+        } 
+        
+        byte[] result = introspectionXML.replaceAll("USER", pathInfo[0]).getBytes();
+
+        writeResults(response, result);
+    }
+
+    /**
+     * Return the User "Preferences"
+     * 
+     * PathInfo: /USER/prefs
+     * 
+     * @param request
+     */
+    protected void getPrefs(String[] pathInfo, HttpServletRequest request, HttpServletResponse response)
+        throws IOException, ServletException
+    {
+        UserPreferences userPrefs;
+        try
+        {
+            userPrefs= getUserPreferences(pathInfo);
+        }
+        catch (Exception e)
+        {
+            throw new ServletException(e);
+        }
+        
+        writeResults(response, userPrefs.toString().getBytes());       
+    }
+
+
+    /**
+     * @param pathInfo
+     * @return
+     */
+    protected abstract UserPreferences getUserPreferences(String[] pathInfo) throws Exception;
+
+    /**
+     * Return ??
      * 
      * PathInfo: /USER/findTemplates
      * 
      * @param request
-     * @deprecated
      */
     protected void findTemplates(String[] pathInfo, HttpServletRequest request, HttpServletResponse response)
         throws IOException, ServletException
@@ -759,23 +674,18 @@ public abstract class AtomServlet extends HttpServlet
 
     /**
      * This must return a List of Template objects.
-     * This is no longer a part of the Atom spec, but I'm leaving it
-     * in anticipation of future spec changes.
      * 
      * @param pathInfo
-     * @deprecated
+     * @return
      */
     protected abstract List findTemplates(String[] pathInfo) throws Exception;
 
     /**
-     * Return the requested template.
-     * This is no longer a part of the Atom spec, but I'm leaving it
-     * in anticipation of future spec changes.
+     * Return the page template ??
      * 
      * PathInfo: /USER/template/id
      * 
      * @param request
-     * @deprecated
      */
     protected void getTemplate(String[] pathInfo, HttpServletRequest request, HttpServletResponse response)
         throws IOException, ServletException
@@ -794,30 +704,25 @@ public abstract class AtomServlet extends HttpServlet
         }
         else
         {
-            error(request, response, "Invalid Request.", "Insufficient Information to Process Request.");
+            error(request, response, "Invalid Request.");
         }
     }
 
     /**
      * Return the contents of the template (HTML or what-have-you)
      * as a byte array.
-     * This is no longer a part of the Atom spec, but I'm leaving it
-     * in anticipation of future spec changes.
      * 
      * @param pathInfo
-     * @deprecated
+     * @return
      */
     protected abstract byte[] getTemplate(String[] pathInfo) throws Exception;
 
     /**
-     * Update the template (save changes).
-     * This is no longer a part of the Atom spec, but I'm leaving it
-     * in anticipation of future spec changes.
+     * Update the template (save changes)
      * 
-     * PathInfo: /USER/template/id
+     * PathInfo: /USER/template
      * 
      * @param request
-     * @deprecated
      */
     protected void updateTemplate(String[] pathInfo, HttpServletRequest request, HttpServletResponse response)
         throws IOException, ServletException
@@ -846,25 +751,19 @@ public abstract class AtomServlet extends HttpServlet
     }
     
     /**
-     * This is no longer a part of the Atom spec, but I'm leaving it
-     * in anticipation of future spec changes.
      * @param stream
      * @param pathInfo
-     * @deprecated
      */
     protected abstract void updateTemplate(String template, String[] pathInfo) throws Exception;
 
     /**
      * Delete the template.
-     * This is no longer a part of the Atom spec, but I'm leaving it
-     * in anticipation of future spec changes.
      * 
      * PathInfo: /USER/template/id
      * 
      * @param pathInfo
      * @param request
      * @param response
-     * @deprecated
      */
     protected void deleteTemplate(String[] pathInfo, HttpServletRequest request, HttpServletResponse response)
         throws IOException, ServletException
@@ -882,10 +781,73 @@ public abstract class AtomServlet extends HttpServlet
 
 
     /**
-     * This is no longer a part of the Atom spec, but I'm leaving it
-     * in anticipation of future spec changes.
      * @param pathInfo
-     * @deprecated
+     * @return
      */
     protected abstract byte[] deleteTemplate(String[] pathInfo) throws Exception;
+
+    /**
+     * Create a new comment
+     * 
+     * PathInfo: /USER/comment/id
+     * id = entry's id
+     * 
+     * @param request
+     */
+    protected void postComment(String[] pathInfo, HttpServletRequest request, HttpServletResponse response)
+        throws IOException, ServletException
+    {
+        try
+        {
+            Entry entry = getEntry(pathInfo);
+            if (entry != null)
+            {
+                Iterator iter = new EntryReader(request.getInputStream()).getEntries().iterator();
+                Entry comment = (Entry)iter.next();
+                if (comment != null)
+                    postComment(entry, comment, pathInfo);
+            }
+        }
+        catch (Exception e)
+        {
+            throw new ServletException(e);
+        }
+    }
+
+
+    /**
+     * @param entry
+     * @param comment
+     * @param pathInfo
+     */
+    protected abstract void postComment(Entry entry, Entry comment, String[] pathInfo) throws Exception;
+
+    /**
+     * Save the User "Preferences"
+     * 
+     * PathInfo: /USER/prefs
+     * 
+     * @param request
+     */
+    protected void updatePrefs(String[] pathInfo, HttpServletRequest request, HttpServletResponse response)
+        throws IOException, ServletException
+    {
+        try
+        {
+            UserPreferences userPrefs = new PrefsReader( 
+                request.getInputStream() ).getUserPrefs();
+            updatePrefs(userPrefs, pathInfo);  
+        }
+        catch (Exception e)
+        {
+            throw new ServletException(e);
+        }      
+    }
+
+
+    /**
+     * @param userPrefs
+     * @param pathInfo
+     */
+    protected abstract void updatePrefs(UserPreferences userPrefs, String[] pathInfo) throws Exception;
 }

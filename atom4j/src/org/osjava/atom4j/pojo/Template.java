@@ -1,22 +1,9 @@
 /*
- *   Copyright 2003-2004 Lance Lavandowska
- *
- *   Licensed under the Apache License, Version 2.0 (the "License");
- *   you may not use this file except in compliance with the License.
- *   You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- *   Unless required by applicable law or agreed to in writing, software
- *   distributed under the License is distributed on an "AS IS" BASIS,
- *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *   See the License for the specific language governing permissions and
- *   limitations under the License.
+ * Created on Aug 29, 2003
  */
 package org.osjava.atom4j.pojo;
 
 /**
- * Created on Aug 29, 2003
  * @author llavandowska
  */
 public class Template
@@ -31,7 +18,8 @@ public class Template
     
     /**
      * Uniquely identifies this Template for your application.
-     * This will be used to return the contents of the template.
+     * This will be used by /atom/USER/template/id in order
+     * to return the contents of the template.
      */
     private String id;
 
