@@ -7,7 +7,7 @@
   <book isbn="1558608621" name="The Struts Framework: Practical Guide for Java Programmers" publisher="mk" url="http://books.elsevier.com/us/mk/us/subindex.asp?isbn=1558608621&amp;country=United+States&amp;community=mk"/>
   <book isbn="1930110502" name="Struts in Action" publisher="man" url="http://www.manning.com/husted"/>
   <book isbn="0764544373" name="Professional Jakarta Struts" publisher="wrx" url="http://www.wrox.com/books/0764544373.shtml"/>
-  <book isbn="0974848808" name="Struts Survival Guide: Basics to Best Practices" publisher="obj" url="YY"/>
+  <book isbn="0974848808" name="Struts Survival Guide: Basics to Best Practices" publisher="obj" url="http://www.objectsource.com/index.html"/>
   <book isbn="0471213020" name="Mastering Jakarta Struts" publisher="wil" url="http://www.wiley.com/WileyCDA/WileyTitle/productCd-0471213020.html"/>
   <book isbn="1932394117" name="Tapestry in Action" publisher="man" url="http://www.manning.com/lewisship"/>
   <book isbn="1930110588" name="Java Development with Ant" publisher="man" url="http://www.manning.com/hatcher"/>
@@ -43,11 +43,11 @@
   <book isbn="0321159640" name="Java Developer's Guide to Eclipse" publisher="aw" url="http://www.aw-bc.com/catalog/academic/product?ISBN=0321159640"/>
   <book isbn="0131425420" name="Eclipse Modeling Framework" publisher="aw" url="http://www.aw-bc.com/catalog/academic/product?ISBN=0131425420"/>
   <book isbn="0321205758" name="Contributing to Eclipse: Principles, Patterns, and Plugins" publisher="aw" url="http://www.aw-bc.com/catalog/academic/product?ISBN=0321205758"/>
-  <book isbn="1583470441" name="Eclipse: Step by Step" publisher="mc" url="YY"/>
+  <book isbn="1583470441" name="Eclipse: Step by Step" publisher="mc" url="http://www.mc-store.com/5059.html"/>
   <book isbn="193239415X" name="Hibernate in Action" publisher="man" url="#"/>
   <book isbn="1590592816" name="JBoss 3.2 Deployment and Administration" publisher="apr" url="http://apress.com/book/bookDisplay.html?bID=245"/>
   <book isbn="0672323478" name="JBoss Administration and Development" publisher="sam" url="http://www.sams.com/isapi/product_id~{4B73CCDC-9D30-429F-A8A4-E73F14730DC8}/catalog/product.asp"/>
-  <book isbn="013112594X" name="Core JBoss 3.X: J2EE Application Development and Deployment" publisher="ptr" url="YY"/>
+  <book isbn="013112594X" name="Core JBoss 3.X: J2EE Application Development and Deployment" publisher="ptr" url="#"/>
   <book isbn="1590593340" name="The Definitive Guide to JBoss 4" publisher="apr" url="#"/>
   <book isbn="0596004079" name="Using JBoss" publisher="ora" url="#"/>
   <book isbn="0672324105" name="Aspect-Oriented Programming with AspectJ" publisher="sam" url="http://www.sams.com/isapi/product_id~{681277AC-6106-4C7D-B71A-59D04871EE89}/catalog/product.asp"/>
