@@ -218,7 +218,7 @@ class NameFilter implements FileFilter {
     private Object option;
     private Object argument;
     private boolean ignoreCase;
-    public NameFilter(Object option, Object argument, boolean ignoreCaset) {
+    public NameFilter(Object option, Object argument, boolean ignoreCase) {
         this.option = option;
         this.argument = argument;
         this.ignoreCase = ignoreCase;
@@ -236,7 +236,7 @@ class PathFilter implements FileFilter {
     private Object option;
     private Object argument;
     private boolean ignoreCase;
-    public PathFilter(Object option, Object argument, boolean ignoreCaset) {
+    public PathFilter(Object option, Object argument, boolean ignoreCase) {
         this.option = option;
         this.argument = argument;
         this.ignoreCase = ignoreCase;
