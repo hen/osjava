@@ -45,7 +45,7 @@ import com.generationjava.io.StreamW;
 
 import org.apache.log4j.Logger;
 
-import org.osjava.oscube.container.Config;
+import com.generationjava.config.Config;
 import org.osjava.oscube.container.Session;
 import org.osjava.oscube.container.Header;
 import org.osjava.oscube.container.Result;

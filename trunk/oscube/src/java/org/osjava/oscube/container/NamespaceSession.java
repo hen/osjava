@@ -34,6 +34,7 @@ package org.osjava.oscube.container;
 import java.util.List;
 import com.generationjava.namespace.Namespace;
 import com.generationjava.namespace.SimpleNamespace;
+import com.generationjava.config.AbstractConfig;
 
 public class NamespaceSession extends AbstractConfig implements Session {
 

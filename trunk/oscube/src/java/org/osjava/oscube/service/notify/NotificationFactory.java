@@ -33,7 +33,7 @@ package org.osjava.oscube.service.notify;
 
 import org.osjava.oscube.util.FactoryUtils;
 import org.osjava.oscube.container.Session;
-import org.osjava.oscube.container.Config;
+import com.generationjava.config.Config;
 
 public class NotificationFactory {
 

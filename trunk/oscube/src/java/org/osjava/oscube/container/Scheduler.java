@@ -31,6 +31,8 @@
  */
 package org.osjava.oscube.container;
 
+import com.generationjava.config.Config;
+
 public interface Scheduler {
 
     public void schedule(Config cfg, Session session, Runner runner);

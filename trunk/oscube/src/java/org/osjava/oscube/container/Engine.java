@@ -33,6 +33,7 @@ package org.osjava.oscube.container;
 
 import java.util.List;
 import java.io.Reader;
+import com.generationjava.config.Config;
 
 public class Engine {
 

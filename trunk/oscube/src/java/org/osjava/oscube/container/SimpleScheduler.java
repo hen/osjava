@@ -33,6 +33,8 @@ package org.osjava.oscube.container;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.generationjava.config.Config;
+
 public class SimpleScheduler implements Scheduler {
 
     public void schedule(Config cfg, Session session, Runner runner) {

@@ -32,7 +32,7 @@
 package org.osjava.oscube.service.notify;
 
 import org.osjava.oscube.container.Session;
-import org.osjava.oscube.container.Config;
+import com.generationjava.config.Config;
 
 // can notify success and error. How to separate?
 // have a Formatter for formatting the thing? Opposite of a 

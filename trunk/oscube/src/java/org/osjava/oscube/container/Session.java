@@ -33,6 +33,8 @@ package org.osjava.oscube.container;
 
 import java.util.List;
 
+import com.generationjava.config.Config;
+
 public interface Session extends Config {
 
     public Object remove(String key);
