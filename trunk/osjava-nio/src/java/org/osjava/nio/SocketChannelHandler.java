@@ -121,7 +121,7 @@ public class SocketChannelHandler extends AbstractChannelHandler {
         } catch(IOException e) {
             e.printStackTrace();
         }
-        
+                
         /* Done writing, tell the key that we're no longer interested in 
          * writing to the channel.  This is essential so that we don't endlessly
          * loop over this and do NOTHING */
@@ -130,7 +130,7 @@ public class SocketChannelHandler extends AbstractChannelHandler {
         // Check to see if we have any data left to write, if so,
         // don't listen to anymore write operations because something has
         // happened that we couldn't write to the channel.  
-        if (outData.position() == 0) {
+        if (outData.position() < outData.limit()) {
             if (doClose) {
                 try {
                     close();

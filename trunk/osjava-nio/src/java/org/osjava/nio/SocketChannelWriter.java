@@ -25,22 +25,34 @@ public class SocketChannelWriter extends Writer {
     
     public SocketChannelWriter(ChannelHandler parent) {
         this.parent = parent;
+        /* 
+         * Fix the buffer's limit to be 0 initially.  It gets reset when it
+         * needs to be.
+         */
+        buffer.limit(0);
     }
 
     public ByteBuffer readByteBuffer() {
         /* If there isn't a valid buffer, then we need to abort. */
-        /* NOTE: I'm not sure that i like this not throwing an IO exception here
-         * the method that calls it certainly does --Tig */
+        /* NOTE: I'm not sure that i like this not throwing an IO exception 
+         *       here the method that calls it certainly does --Tig */
         if(buffer == null) {
             return null;
         }
 
-        /* Return a copy of the stored information so that we can reset this 
+        /* Make a copy of the stored information so that we can reset this 
          * buffer */
         buffer.rewind();
         ByteBuffer ret = ByteBuffer.allocateDirect(buffer.remaining());
         ret.put(buffer);
-        ret.flip();        
+        ret.flip();
+        
+        /* 
+         * Rewind the buffer again so that it does not reuse the previous
+         * data.
+         */
+        buffer.rewind();
+        buffer.limit(0);
         return ret;
     }
     
@@ -63,7 +75,6 @@ public class SocketChannelWriter extends Writer {
         for(int i = off;i < len; i++) {
             newBuf.putChar(cbuf[i]);
         }
-        
         newBuf.flip();
         write(newBuf);
     }
@@ -77,13 +88,13 @@ public class SocketChannelWriter extends Writer {
      * @param data the Bytebuffer containing the data to be written into 
      *        the writer.
      */
-    public void write(ByteBuffer data) {
+    public void write(ByteBuffer data) {        
         /* if the buffer is null the channel has been closed, and we need to 
          * do nothing */
         if(buffer == null) {
             return;
         }
-        
+
         /* Set the position mark so that we can return to it. */
         buffer.mark();
         
@@ -93,7 +104,7 @@ public class SocketChannelWriter extends Writer {
         
         /* Make sure the limit is properly set at the end of the buffer */
         buffer.limit(buffer.capacity());
-        
+
         /* Cheat and use the BufferOverflowException to our advantage to 
          * determine if there is room */
         try {
@@ -141,6 +152,7 @@ public class SocketChannelWriter extends Writer {
      */
     public void flush() throws IOException {
         parent.writeToChannel();
+
     }
 
     /** 
@@ -152,7 +164,6 @@ public class SocketChannelWriter extends Writer {
         if(!parentClosed) {
             return;
         }
-        
         buffer = null;
     }
     
@@ -161,7 +172,5 @@ public class SocketChannelWriter extends Writer {
      */
     public void close() throws IOException {
         parent.close();
-
     }
-
 }
