@@ -36,7 +36,7 @@ package com.generationjava.lang;
  *
  * @author <a href="mailto:bayard@apache.org">Henri Yandell</a>
  * @since 2.0
- * @version $Id: NotifierException.java,v 1.2 2003/11/30 20:43:58 hen Exp $
+ * @version $Id$
  */
 public class NotifierException extends Exception {
 
