@@ -53,6 +53,7 @@ public class PayloadExtractor {
     public static final boolean DEBUG = (System.getProperty("PAYLOAD.DEBUG")!=null);
 
     public static void main(String[] args) {
+if(DEBUG) System.out.println("DEBUG turned on. ");
         System.out.print("Payload extraction setup");
 
         // when run with -jar, the class path is the jar file
@@ -63,7 +64,6 @@ public class PayloadExtractor {
         }
         String jarName = jarFile.substring( 0, jarFile.length() - ".jar".length() );
         System.out.print(".");
-if(DEBUG) System.out.println("DEBUG turned on. ");
 
         Properties props = null;
         if(args.length == 0) {
@@ -74,6 +74,8 @@ if(DEBUG) System.out.println("DEBUG turned on. ");
                 fin = new FileInputStream(new File(args[0]));
                 props = new Properties();
                 props.load(fin);
+if(DEBUG) System.out.println("\n"+args[0]+" being used as interpolation values. ");
+if(DEBUG) System.out.println(props.toString());
             } catch(IOException ioe) {
                 System.err.println("\nUnable to find properties file, will output without interpolation. ");
             } finally {
