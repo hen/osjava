@@ -97,6 +97,7 @@ public class PropertiesContext implements Context  {
      * The name full name of this context. 
      */
     private Name nameInNamespace = null;
+    private boolean nameLock = false;
 
     // original values
     private String originalRoot;
@@ -182,7 +183,6 @@ public class PropertiesContext implements Context  {
      */
     public PropertiesContext(Hashtable env, boolean systemOverride, NameParser parser) {
         String shared = null;
-        
         if(env != null) {
             this.env = (Hashtable)env.clone();
             this.root = (String)this.env.get("org.osjava.jndi.root");
@@ -259,7 +259,14 @@ public class PropertiesContext implements Context  {
                 e.printStackTrace();
             }
         }
-
+        try {
+            nameInNamespace = nameParser.parse("");
+        } catch (NamingException e) {
+            // TODO Auto-generated catch block
+            /* This shouldn't be an issue at this point */
+            e.printStackTrace();
+        }
+        
 if(DEBUG)            System.err.println("[CTXT]Protocol  is: "+this.protocol);
 if(DEBUG)            System.err.println("[CTXT]Root      is: "+this.root);
 if(DEBUG)            System.err.println("[CTXT]separator is: "+this.separator);
@@ -1035,10 +1042,13 @@ if(DEBUG)       System.err.println("[CTXT]HTTPException? :"+e);
      * @throws NamingException if the subContext already has a name.
      */
     protected void setName(Name name) throws NamingException {
-        if(nameInNamespace != null) {
-            throw new NamingException("Name already set.");
+        if(nameLock) {
+            if(nameInNamespace != null || !nameInNamespace.isEmpty()) {
+                throw new NamingException("Name already set.");
+            }
         }
         nameInNamespace = name;
+        nameLock = true;
     }
 
     /**
