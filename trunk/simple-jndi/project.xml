@@ -83,7 +83,7 @@
     <!-- this is only if you use .type, though not DataSource -->
     <dependency>
       <id>commons-convert</id>
-      <version>0.1</version>
+      <version>SNAPSHOT</version>
       <url>http://jakarta.apache.org/commons/</url>
     </dependency>
   </dependencies>
