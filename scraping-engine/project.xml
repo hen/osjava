@@ -21,7 +21,7 @@
   <shortDescription>A web-scraping engine</shortDescription>
 
   <url>http://www.osjava.org/</url>
-  <issueTrackingUrl>http://www.osjava.org:8080/jira/secure/BrowseProject.jspa?id=10021</issueTrackingUrl>
+  <issueTrackingUrl>http://issues.osjava.org:8080/jira/secure/BrowseProject.jspa?id=10021</issueTrackingUrl>
   <siteAddress>dist.osjava.org/maven/scraping-engine</siteAddress>
   <siteDirectory>/sites/org/osjava/www/maven/scraping-engine/</siteDirectory>
   <distributionDirectory>/sites/org/osjava/www/releases/official/</distributionDirectory>

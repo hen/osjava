@@ -25,7 +25,7 @@
   <shortDescription>XmlWriter</shortDescription>
 
   <url>http://www.osjava.org/xmlwriter/</url>
-  <issueTrackingUrl>http://www.osjava.org:8080/jira/secure/BrowseProject.jspa?id=10024</issueTrackingUrl>
+  <issueTrackingUrl>http://issues.osjava.org:8080/jira/secure/BrowseProject.jspa?id=10024</issueTrackingUrl>
   <siteAddress>www.osjava.org/xmlwriter</siteAddress>
   <siteDirectory>/</siteDirectory>
   <distributionDirectory></distributionDirectory>

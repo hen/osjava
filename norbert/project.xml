@@ -21,7 +21,7 @@
   <shortDescription>A handler for robots.txt</shortDescription>
 
   <url>http://www.osjava.org/norbert/</url>
-  <issueTrackingUrl>http://www.osjava.org:8080/jira/secure/BrowseProject.jspa?id=10022</issueTrackingUrl>
+  <issueTrackingUrl>http://issues.osjava.org:8080/jira/secure/BrowseProject.jspa?id=10022</issueTrackingUrl>
   <siteAddress>www.generationjava.com/maven/norbert</siteAddress>
   <siteDirectory>/sites/org/osjava/www/maven/norbert/</siteDirectory>
   <distributionDirectory>/sites/org/osjava/www/releases/official/</distributionDirectory>

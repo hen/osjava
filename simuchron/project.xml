@@ -21,7 +21,7 @@
   <shortDescription>A real-time datafeed simulator. </shortDescription>
 
   <url>http://www.osjava.org/</url>
-  <issueTrackingUrl>http://www.osjava.org:8080/jira/secure/BrowseProject.jspa?id=10021</issueTrackingUrl>
+  <issueTrackingUrl>http://issues.osjava.org:8080/jira/secure/BrowseProject.jspa?id=10021</issueTrackingUrl>
   <siteAddress>dist.osjava.org/maven/simuchron</siteAddress>
   <siteDirectory>/sites/org/osjava/www/maven/simuchron/</siteDirectory>
   <distributionDirectory>/sites/org/osjava/www/releases/official/</distributionDirectory>
