@@ -11,10 +11,10 @@
 <p>In addition to the basic features of Simple-JNDI, there are four features that are an option to use and may require extra dependencies. </p>
 </section>
 <section name="INI files">
-<p>Simple-JNDI is chiefly based on .properties files, but it can also understand simple .ini files if such is your preference. This feature is enabled by just having a file ending with .ini available, though a .properties and .xml file take precedence. <p>
+<p>Simple-JNDI is chiefly based on .properties files, but it can also understand simple .ini files if such is your preference. This feature is enabled by just having a file ending with .ini available, though a .properties and .xml file take precedence. </p>
 </section>
 <section name="XML files">
-<p>Simple-JNDI can also understand XML files, though you will need the xml-parser jar available from the <a href="Download.html">Download</a> page. Sitting between .properties and .ini files in terms of precedence, XML files are enabled by having a file end with .xml and having the jar in the classpath. Remember, a legal XML file has only one root tag. <p>
+<p>Simple-JNDI can also understand XML files, though you will need the xml-parser jar available from the <a href="Download.html">Download</a> page. Sitting between .properties and .ini files in terms of precedence, XML files are enabled by having a file end with .xml and having the jar in the classpath. Remember, a legal XML file has only one root tag. </p>
 </section>
 <section name="Type converting>
 <p>You don't have to just deal in Strings. Simple-JNDI can automatically convert the values to the Object of your choice via the Jakarta Commons Convert library. Make sure you have the commons-convert jar, see <a href="Download.html">Download</a> page, in your classpath and set a sub-parameter of 'type' in your properties file. For example, person.age.type=java.lang.Integer will make person.age an Integer object. </p>
