@@ -46,6 +46,4 @@ Need a copyright and a last updated bit at the bottom.
 
 Books to add:
 
-NetBeans books.
 Objectbridge book?
-AspectJ
