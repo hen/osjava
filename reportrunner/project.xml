@@ -145,6 +145,15 @@
       </includes>
     </unitTest>
 
+    <resources>
+      <resource>
+        <includes>
+          <include>webapp/</include>
+          <include>conf/renderers.xml</include>
+        </includes>
+      </resource>
+    </resources>
+
   </build>
 
   <reports>
