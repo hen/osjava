@@ -57,8 +57,11 @@
             <email>rzigweid@osjava.org</email>
             <organization>OSJava</organization>
           <roles>
+              <role>Creator</role>
               <role>Developer</role>
+              <role>Project Lead</role>
           </roles>
+          <timezone>-5</timezone>
         </developer>
     </developers>
 
