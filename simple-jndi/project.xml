@@ -14,9 +14,6 @@
   <package>org.osjava</package>
   <logo>/images/1x1.gif</logo>
   
-  <!-- Gump integration -->
-  <gumpRepositoryId>simple-jndi</gumpRepositoryId>
-
   <description>
     A simple implementation of JNDI. It is entirely library based, so no server instances are started, and it sits upon Java .properties files or XML files, so it is easy to use and simple to understand. The .properties/.xml files may be either on the file system or in the classpath. 
   </description>
@@ -34,23 +31,14 @@
     <url>http://www.osjava.org/view-cvs/viewcvs.cgi/simple-jndi/</url>
   </repository>
 
-  <versions>
-    <version>
-      <id>1.0</id>
-      <name>1.0</name>
-      <tag>HEAD</tag>
-    </version>
-  </versions>
-
-  <branches>
-  </branches>
-
-  <!--
   <mailingLists>
     <mailingList>
+      <name>osjava-users</name>
+      <subscribe>http://lists.flamefew.net/mailman/listinfo/osjava-users</subscribe>
+      <unsubscribe>http://lists.flamefew.net/mailman/listinfo/osjava-users</unsubscribe>
+      <archive>http://lists.flamefew.net/mailman/private/osjava-users/</archive>
     </mailingList>
   </mailingLists>
-  -->
 
   <developers>
 

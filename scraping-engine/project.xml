@@ -14,10 +14,6 @@
   <package>org.osjava.scraping</package>
   <logo>http://www.osjava.org/images/1x1.gif</logo>
   
-  <!-- Gump integration -->
-  <gumpRepositoryId>scraping-engine</gumpRepositoryId>
-
-  <description>
       A web-scraping engine.
   </description>
   
@@ -36,23 +32,14 @@
     <url>http://www.generationjava.com/view-cvs/viewcvs.cgi/scraping-engine/</url>
   </repository>
 
-  <versions>
-    <version>
-      <id>1.0</id>
-      <name>1.0</name>
-      <tag>HEAD</tag>
-    </version>
-  </versions>
-
-  <branches>
-  </branches>
-
-  <!--
   <mailingLists>
     <mailingList>
+      <name>osjava-users</name>
+      <subscribe>http://lists.flamefew.net/mailman/listinfo/osjava-users</subscribe>
+      <unsubscribe>http://lists.flamefew.net/mailman/listinfo/osjava-users</unsubscribe>
+      <archive>http://lists.flamefew.net/mailman/private/osjava-users/</archive>
     </mailingList>
   </mailingLists>
-  -->
 
   <developers>
 
@@ -68,11 +55,7 @@
 
   </developers>
 
-  <contributors>
-  </contributors>
   
-  <!-- Need to mark these as compile-time/run-time -->
-
   <dependencies>
     <dependency>
       <id>jdbc</id>
@@ -127,30 +110,13 @@
     <sourceDirectory>src/java</sourceDirectory>
 
     <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
-    <!--
 
-    <integrationUnitTestSourceDirectory/>
+    <unitTest>
+      <includes>
+        <include>**/*Test.java</include>
+      </includes>
+    </unitTest>
 
-    <aspectSourceDirectory></aspectSourceDirectory>
-
-    <unitTestPatterns>
-      <unitTestPattern>include = **/*Test.java</unitTestPattern>
-    </unitTestPatterns>
-
-    <integrationUnitTestPatterns>
-    </integrationUnitTestPatterns>
-    -->
-
-    <!-- J A R  R E S O U R C E S -->
-    <!-- Resources that are packaged up inside the JAR file -->
-
-    <jarResources>
-        <jarResource>include = *.dtd</jarResource>
-        <jarResource>include = log4j.properties</jarResource>
-    </jarResources>
-
-    <jars>
-    </jars>
   </build>
 </project>
 
