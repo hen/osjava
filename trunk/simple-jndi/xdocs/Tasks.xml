@@ -9,6 +9,7 @@
   <body>
     <section name="Future Ideas">
 <ul>
+<li>A downloadable example distribution. </li>
 <li>Allow converters to be configured/plugged in somehow. </li>
 <li>Implement Type in such a way that the object to create may be specified, say JDOPersistenceFactory, and that sub-properties may be set as bean properties.</li>
 <li>Implement binding so that values may be stored in the system, making it Read/Write. </li>
