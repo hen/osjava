@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 
-public class ExcelWriter extends CsvWriter {
+public class ExcelWriter {
 
     private HSSFRow row;
     private HSSFWorkbook wb;
@@ -17,21 +17,37 @@ public class ExcelWriter extends CsvWriter {
     private short col;
     private short rowNum;
 
-    // This needs to become an OutputStream
     public ExcelWriter(OutputStream out) {
-        super(new OutputStreamWriter(out));
         this.out = out;
         wb = new HSSFWorkbook();
         s = wb.createSheet();
         wb.setSheetName(0, "Report");
     }
 
-    public void writeField(String field) throws IOException {
+    public void writeField(Object field) throws IOException {
         if(row == null) {
             row = s.createRow(rowNum);
         }
         HSSFCell cell = row.createCell(col);
-        cell.setCellValue(field);
+        if(field instanceof Number) {
+            cell.setCellType(HSSFCell.CELL_TYPE_NUMERIC);
+            cell.setCellValue( ((Number)field).doubleValue() );
+        } else
+        if(field instanceof Boolean) {
+            cell.setCellType(HSSFCell.CELL_TYPE_BOOLEAN);
+            cell.setCellValue( ((Boolean)field).booleanValue() );
+        } else
+        if(field instanceof java.util.Date) {
+            cell.setCellType(HSSFCell.CELL_TYPE_NUMERIC);
+            cell.setCellValue( (java.util.Date) field );
+        } else
+        if(field instanceof java.util.Calendar) {
+            cell.setCellType(HSSFCell.CELL_TYPE_NUMERIC);
+            cell.setCellValue( (java.util.Calendar) field );
+        } else {
+            cell.setCellType(HSSFCell.CELL_TYPE_STRING);
+            cell.setCellValue(""+field);
+        }
         col++;
     }
 
@@ -43,11 +59,13 @@ public class ExcelWriter extends CsvWriter {
 
     public void close() throws IOException {
         wb.write(out); 
-        super.close();
+        out.flush();
+        out.close();
     }
 
     public void flush() throws IOException {
         wb.write(out);
+        out.flush();
     }
 
 }
