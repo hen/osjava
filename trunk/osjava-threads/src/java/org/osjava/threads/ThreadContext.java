@@ -54,7 +54,6 @@ import javax.naming.NameParser;
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 
-import org.apache.log4j.Logger;
 import org.osjava.jndi.AbstractContext;
 import org.osjava.naming.InvalidObjectTypeException;
 
@@ -356,16 +355,12 @@ public class ThreadContext
      * @throws NamingException if a naming exception is encountered.
      */
     public void notifyThread(Name name) throws NameNotFoundException, NamingException {
-        Logger logger = Logger.getLogger(this.getClass());
-        logger.debug("Notifying Thread -- " + name.toString());
         if(name == null || name.isEmpty()) {
-            logger.debug("Empty name, Notifying everything in context.");
             NamingEnumeration list = list(name);
             while(list.hasMore()) {
                 Object next = list.next();
                 if(next instanceof ExtendedThread) {
                     synchronized(next) {
-                        logger.debug("uhh..pinging! " + next);
                         ((ExtendedRunnable)next).wakeup();
                         continue;
                     }
