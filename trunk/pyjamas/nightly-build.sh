@@ -38,31 +38,35 @@ then
         done
     elif [ $1 = 'update' ];
     then
-        if [ $SCM = 'SVN' ];
-        then
-            for i in `cat NIGHTLY.txt | awk '{print $2}'`
-            do
-                if [ -d $i ];
+        for i in `cat NIGHTLY.txt | awk '{print $2}'`
+        do
+            if [ -d $i ];
+            then
+                cd $i
+                if [ $SCM = 'SVN' ];
                 then
-                    cd $i
                     UPDATES=`svn -u status | grep -v '^\?' | grep -v '^A' | grep -v '^M' | grep -v 'Status against revision' | awk '{print $3}'`
-                    if [ "x${UPDATES}x" != "xx" ];
-                    then
-                        LIST="$LIST $i"
+                fi
+                if [ $SCM = 'CVS' ];
+                then
+                    LIST=`cvs -nq update 2>/dev/null | grep -v '^\?' | grep -v '^A' | grep -v '^M' | awk '{print $2}'`
+                fi
+                if [ "x${UPDATES}x" != "xx" ];
+                then
+                    LIST="$LIST $i"
 #BUG: this does not quite work as we now put these all in the same file and they don't contain the project name
+                    if [ $SCM = 'SVN' ];
+                    then
                         svn update | grep -v '^?' >> $buildDir/SCM_UPDATE
                     fi
-                    cd -
+                    if [ $SCM = 'CVS' ];
+                    then
+                        cvs -q update 2>/dev/null | grep -v '^?' > $buildDir/SCM_UPDATE
+                    fi
                 fi
-            done
-        fi
-        if [ $SCM = 'CVS' ];
-        then
-            cat NIGHTLY.txt | awk '{print $2}' > tmp.NIGHTLY.txt
-            LIST=`cvs -nq update 2>/dev/null | grep -v '^\?' | grep -v '^A' | grep -v '^M' | grep -v 'Status against revision' | awk '{print $2}' | grep -o -f tmp.NIGHTLY.txt  | sort -u`
-            cvs -q update 2>/dev/null | grep -v '^?' > SCM_UPDATE
-            rm tmp.NIGHTLY.txt
-        fi
+                cd -
+            fi
+        done
     else
 # needs to handle doing the checkout if it's not there?
         LIST=$1   # $* ?
