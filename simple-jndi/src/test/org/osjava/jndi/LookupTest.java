@@ -48,6 +48,14 @@ public class LookupTest extends TestCase {
         }
     }
 
+    public void testFailedDSLookup() {
+        try {
+            Object obj = lookup("java:/FailedTestDS");
+            fail("Should have failed, instead found: "+obj);
+        } catch(NamingException ne) {
+        }
+    }
+
     public void testValueLookup() {
         try {
             assertEquals( "13", lookup("test/value") );
