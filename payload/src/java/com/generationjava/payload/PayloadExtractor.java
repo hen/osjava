@@ -81,10 +81,33 @@ public class PayloadExtractor {
         // loop....
         try {
             JarFile jar = new JarFile(new File(jarFile));
+
+            Interpolation interpolation = null;
+
+            // need to find a way to ensure the interpolation is read 
+            // first. possibly scan through the zip first?
             Enumeration enum = jar.entries();
             while(enum.hasMoreElements()) {
                 JarEntry entry = (JarEntry) enum.nextElement();
+                if(entry.getName().equals("payload.properties")) {
+                    InputStream in = jar.getInputStream( entry );
+                    String text = IOUtils.readToString(in);
+                    interpolation = new Interpolation(text);
+                    break;
+                }
+            }
+
+            if(interpolation == null) {
+                interpolation = Interpolation.DEFAULT;
+            }
+
+            enum = jar.entries();
+            while(enum.hasMoreElements()) {
+                JarEntry entry = (JarEntry) enum.nextElement();
                 if(!entry.getName().startsWith("payload")) {
+                    continue;
+                }
+                if(entry.getName().equals("payload.properties")) {
                     continue;
                 }
                 // remove payload/
@@ -103,10 +126,10 @@ public class PayloadExtractor {
                 // TODO: configurable interpolation targets
                 // trusting that we're not interpolating anything 
                 // that can't fit in memory
-                if( props != null && interpolatable(outName)) {
+                if( props != null && interpolation.interpolatable(outName)) {
                     // interpolate push
                     String text = IOUtils.readToString(in);
-                    text = interpolate(text, props);
+                    text = interpolation.interpolate(text, props);
                     in.close();
                     in = new ByteArrayInputStream(text.getBytes());
                 }
@@ -124,17 +147,4 @@ public class PayloadExtractor {
         System.out.println("Payload has arrived. ");
     }
 
-    private static boolean interpolatable(String name) {
-        return name.endsWith(".xml") || name.endsWith(".txt");
-    }
-
-    private static String interpolate(String str, Properties props) {
-        Iterator itr = props.keySet().iterator();
-        while(itr.hasNext()) {
-            String key = (String) itr.next();
-            // switch away from regexp with Lang's replace method?
-            str = str.replaceAll( "\\$\\{"+key+"\\}", props.getProperty(key) );
-        }
-        return str;
-    }
 }
