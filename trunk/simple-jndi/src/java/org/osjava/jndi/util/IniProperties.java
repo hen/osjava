@@ -35,7 +35,6 @@ package org.osjava.jndi.util;
 
 import java.io.*;
 import java.util.*;
-import org.apache.commons.collections.IteratorUtils;
 import com.generationjava.collections.OrderedSet;
 
 /** 
