@@ -11,47 +11,10 @@ import java.util.ArrayList;
 import javax.sql.DataSource;
 import javax.naming.*;
 
-public class SqlReport extends AbstractReport {
+public class SqlReport extends AbstractSqlReport {
 
-    private static String DEFAULT_RESOURCE = "SqlReportDS";
-
-    private String dsName = DEFAULT_RESOURCE;
-    private String sql;
-    private String params;
-
-    public void setSql(String sql) {
-        this.sql = sql;
-    }
-
-    public String getSql() {
-        return this.sql;
-    }
-
-    public void setResource(String name, String resourceName) {
-        if(DEFAULT_RESOURCE.equals(name)) {
-            this.dsName = resourceName;
-        }
-    }
-
-    protected String getDsName() {
-        return this.dsName;
-    }
-
-    public Result execute() throws ReportException {
-        ReportGroup group = super.getReportGroup();
-        Resource resource = group.getResource(this.dsName);
-        DataSource ds = (DataSource) resource.accessResource();
-
+    protected Object[] executeSql(DataSource ds) throws ReportException {
         try {
-            QueryRunner runner = new QueryRunner(ds);
-
-            // build sql from variants
-            Variant[] variants = getVariants();
-            for(int i=0; i<variants.length; i++) {
-                String snippet = variants[i].getSelected().getValue();
-                this.sql = StringUtils.replace( this.sql, "?"+variants[i].getName(), snippet);
-            }
-
             Param[] params = getParams();
             ArrayList values = new ArrayList();
             for(int i=0; i<params.length; i++) {
@@ -60,7 +23,7 @@ public class SqlReport extends AbstractReport {
                 if(Object[].class.isAssignableFrom(params[i].getType())) {
                     Object[] array = (Object[]) params[i].getValue();
                     String marks = StringUtils.chomp(StringUtils.repeat("?,", array.length), ",");
-                    this.sql = StringUtils.replaceOnce(this.sql, "??", marks);
+                    setSql(StringUtils.replaceOnce(getSql(), "??", marks));
                     for(int j=0; j<array.length; j++) {
                         values.add( array[j] );
                     }
@@ -69,72 +32,16 @@ public class SqlReport extends AbstractReport {
                 }
             }
 
+            QueryRunner runner = new QueryRunner(ds);
+
             ResultSetHandler handler = new ReportArrayListHandler(this);
 
-            List list = (List) runner.query(this.sql, values.toArray(), handler);
+            List list = (List) runner.query(getSql(), values.toArray(), handler);
 
-            if(getColumns().length == 0) {
-                // should goto the ResultSetMetaData and get the column names
-                // this means not using the DBUtils code above
-            }
-
-            Object[] array = list.toArray(new Object[0]);
-
-            if(array == null) {
-                return new NullResult();
-            }
-            if(array.length == 0) {
-                return new NullResult();
-            }
-            if(array[0] == null) {
-                return new NullResult();
-            }
-            if(!(array[0] instanceof Object[])) {
-                throw new RuntimeException("The array consists of "+array[0].getClass() );
-            }
-
-            return new ArrayResult(array);
+            return list.toArray(new Object[0]);
         } catch(SQLException sqle) {
             throw new ReportException("Unable to run SQL report", sqle);
         }
-    }
-
-    // returns a Choice[]
-    public Choice[] getParamChoices(Param param) {
-        String binding = param.getBinding();
-
-        if(binding == null) {
-            return null;
-        }
-
-        // assume binding is an SQL statement that returns 
-        // 2 columns. The first is key, the second is value.
-        
-        ReportGroup group = super.getReportGroup();
-        Resource resource = group.getResource(this.dsName);
-        if(resource == null) {
-            throw new RuntimeException("Unable to obtain resource named "+this.dsName+" from the "+group.getName()+" group. ");
-        }
-        DataSource ds = (DataSource) resource.accessResource();
-
-        try {
-            QueryRunner runner = new QueryRunner(ds);
-            List list = (List) runner.query(binding, new ArrayListHandler());
-            Choice[] choices = new Choice[list.size()];
-            for(int i=0; i<choices.length; i++) {
-                Object[] array = (Object[]) list.get(i);
-                Choice c = new Choice(""+array[0], ""+array[1]);
-                choices[i] = c;
-            }
-            return choices;
-        } catch(SQLException sqle) {
-            sqle.printStackTrace();
-        }
-        return null;
-    }
-
-    public String[] getResourceNames() {
-        return new String[] { DEFAULT_RESOURCE };
     }
 
     private class ReportArrayListHandler extends ArrayListHandler {
