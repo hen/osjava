@@ -1,3 +1,4 @@
+<%@ include file="header.inc" %>
 <%@ page import="org.osjava.reportrunner.*" %>
 <%@ page import="org.osjava.reportrunner.servlets.*" %>
 
@@ -7,15 +8,15 @@
 
 %>
 
+<div class="feedback">
 <p>You have chosen the <%= groupName %>/<%= reportName %> report: </p>
-
 <%
     Report report = ReportFactory.getReport(groupName, reportName);
     Param[] params = report.getParams();
     if(params != null && params.length != 0) {
 %>
 <p>For this report, you chose the following parameters: </p>
-<table>
+<table class="chosen_parameters">
 <%
         for(int i=0; i<params.length; i++) {
             %>
@@ -27,6 +28,9 @@
 <%
     }
 %>
+</div>
+
+<div class="input">
 
 <p>Select a renderer: </p>
 
@@ -35,8 +39,10 @@
     Renderer[] renderers = report.getRenderers();
     for(int i=0; i<renderers.length; i++) {
 %>
-    <tr><td><a href="reportrunner?<%= request.getQueryString() %>&<% ReportRunnerServlet.RENDERER %>=<%= renderers[i].getName() %>"><%= renderers[i].getLabel() %></a></td></tr>
+    <tr><td><a href="reportrunner?<%= request.getQueryString() %>&<%= ReportRunnerServlet.RENDERER %>=<%= renderers[i].getName() %>"><%= renderers[i].getLabel() %></a></td></tr>
 <%
     }
 %>
 </table>
+</div>
+<%@ include file="footer.inc" %>
