@@ -24,7 +24,7 @@
       <item name="Mailing List"              href="/mail-lists.html"/>
       <item name="Dependencies"              href="/dependencies.html"/>
       <item name="Source Repository"              href="/cvs-usage.html"/>
-      <item name="Issue Tracking"              href="/issue-tracking.html"/>
+      <item name="Bug Tracking"              href="/issue-tracking.html"/>
     </menu>
     <menu name="CVS reports">
       <item name="CVS History"              href="/changelog-report.html"/>
