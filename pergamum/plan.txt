@@ -21,3 +21,18 @@ Pages generated for each book, publisher and category. An index page created out
 Much xsl hackery. 
 
 Next I need to make sure everything is css'd and start making it pretty.
+
+=====
+2004-03-23
+
+CSS of a sort implemented. At least it's not utterly basic.
+DB improved.
+
+Need to be sorting lists.
+Need PUBLICATION DATES for each book.
+Need more in the coming-soon/new books.
+Need an RDF file for the coming-soon bit.
+Need reviews.
+Need a copyright and a last updated bit at the bottom.
+Get pergamum.org
+Need an explanatory link, about this site and the word pergamum.
