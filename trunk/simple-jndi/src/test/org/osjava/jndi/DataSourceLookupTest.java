@@ -100,6 +100,15 @@ public class DataSourceLookupTest extends TestCase {
         }
     }
 
+    public void testPoolDSLookup() {
+        try {
+            DataSource oneDS = (DataSource) lookup("pooltest.OneDS");
+            DataSource twoDS = (DataSource) lookup("pooltest.TwoDS");
+        } catch(NamingException ne) {
+            fail("NamingException: "+ne.getMessage());
+        }
+    }
+
     private Object lookup(String key) throws NamingException {
         return this.ctxt.lookup( key.replaceAll("\\.", this.delimiter) );
     }
