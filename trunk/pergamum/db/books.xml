@@ -94,4 +94,6 @@
   <book isbn="097521280X" name="How Tomcat Works" publisher="bra" url="http://www.brainysoftware.com/" published="2004-04"/>
   <book isbn="1590593316" name="Pro Jakarta Tomcat 5" publisher="apr" url="http://www.apress.com/book/bookDisplay.html?bID=389" published="2004-12"/>
   <book isbn="0764576771" name="Professional Hibernate" publisher="wrx" url="http://www.wrox.com/WileyCDA/WroxTitle/productCd-0764576771.html" published="2004-09"/>
+  <book isbn="0974514012" name="Pragmatic Unit Testing" publisher="pra" url="http://www.pragmaticprogrammer.com/starter_kit/utj/" published="2003-09"/>
+  <book isbn="0974514039" name="Pragmatic Project Automation" publisher="pra" url="http://www.pragmaticprogrammer.com/starter_kit/auto/" published="2004-07"/>
 </library>

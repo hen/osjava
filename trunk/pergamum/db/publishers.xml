@@ -17,4 +17,5 @@
  <publisher id="sbt" name="SourceBeat" url="http://www.sourcebeat.com/"/>
  <publisher id="mgh" name="McGraw-Hill" url="http://www.mcgraw-hill.com/"/>
  <publisher id="bra" name="Brainy Software" url="http://www.brainysoftware.com/"/>
+ <publisher id="pra" name="Pragmatic Programmmers" url="http://www.pragmaticprogrammer.com/bookshelf/"/>
 </publishers>
