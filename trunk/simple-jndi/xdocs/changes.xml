@@ -7,7 +7,9 @@
   </properties>
 
   <body>
-    <release version="0.8" date="2004-01-0?">
+    <release version="0.8" date="2004-01-03">
+        <action dev="hen" type="fix">Fixed bug #SJN-45, in which the XML property loader did not correctly handle multiple tags with the same name forming a List object. </action>
+        <action dev="hen" type="fix">Fixed a bug in which 'type' did not work in a DataSource file in which you had the DS name as the filename and not delimited in the file. </action>
         <action dev="hen" type="remove">Deprecated usage of the 'org.osjava.jndi.datasource' property in favour of a simple type=javax.sql.DataSource. Especially as JIRA issue #SJN-42 exists with the datasource usage. Will be removed in 0.9. </action>
         <action dev="hen" type="add">Added an example for xml, ini and properties creation of Collections in simple-jndi. </action>
         <action dev="hen" type="add">Added an example for xml, ini and properties built DataSources in simple-jndi. </action>
