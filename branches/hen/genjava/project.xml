@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project>
+  <pomVersion>3</pomVersion>
+  <id>genjava</id>
+  <name>GenJava Master Maven POM</name>
+  <currentVersion>1.0</currentVersion>
+
+  <organization>
+    <name>OSJava</name>
+    <url>http://www.osjava.org/</url>
+    <logo>/images/osjava.gif</logo>
+  </organization>
+  <inceptionYear>2000</inceptionYear>
+  <package>com.generationjava</package>
+  <logo>/images/1x1.gif</logo>
+
+  <url>http://www.osjava.org/genjava-core/${pom.id}/</url>
+  <issueTrackingUrl>http://www.osjava.org:8080/jira/secure/BrowseProject.jspa?id=10010</issueTrackingUrl>
+  <siteAddress>www.osjava.org/genjava-core</siteAddress>
+  <siteDirectory>/sites/org/osjava/www/releases/official/genjava-core/${pom.id}/</siteDirectory>
+  <distributionDirectory>/sites/org/osjava/www/releases/official/genjava-core/${pom.id}/</distributionDirectory>
+
+  <!-- Complains of more than 6 elements
+  <repository>
+    <connection>scm:cvs:ext:hen@orinoco.flamefew.net:/var/cvs:genjava-core/${pom.id}/</connection>
+    <url>http://www.generationjava.com/view-cvs/viewcvs.cgi/genjava-core/${pom.id}/</url>
+  </repository>
+  -->
+  
+  <mailingLists>
+    <mailingList>
+      <name>osjava-users</name>
+      <subscribe>http://lists.flamefew.net/mailman/listinfo/osjava-users</subscribe>
+      <unsubscribe>http://lists.flamefew.net/mailman/listinfo/osjava-users</unsubscribe>
+      <archive>http://lists.flamefew.net/mailman/private/osjava-users/</archive>
+    </mailingList>
+  </mailingLists>
+
+  <developers>
+    <developer>
+      <name>Henri Yandell</name>
+      <id>hen</id>
+      <email>bayard@generationjava.com</email>
+      <organization>GenerationJava</organization>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+
+  </developers>
+
+  <contributors>
+    <contributor>
+      <name>Steve Heath</name>
+      <email>steve@smallcogs.com</email>
+    </contributor>
+  </contributors>
+    
+  <build>
+    <nagEmailAddress>bayard@www.generationjava.com</nagEmailAddress>
+    <sourceDirectory>src/java</sourceDirectory>
+    <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
+
+    <!-- Unit test classes -->
+    <unitTest>
+      <includes>
+        <include>**/*Test.java</include>
+      </includes>
+    </unitTest>
+
+    <resources>
+      <includes>
+        <include>**/*.properties</include>
+      </includes>
+    </resources>
+    
+    <jars></jars>
+  </build>
+
+</project>
