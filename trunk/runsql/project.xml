@@ -26,7 +26,7 @@
   <distributionDirectory>/sites/org/osjava/www/builds/releases/runsql/</distributionDirectory>
 
   <repository>
-    <connection>scm:cvshen@umbongo.flamefew.net:/var/cvs:runsql</connection>
+    <connection>scm:svn:http://svn.osjava.org/svn/osjava/trunk/runsql</connection>
     <url>http://svn.osjava.org/cgi-bin/viewcvs.cgi/trunk/runsql/</url>
   </repository>
 

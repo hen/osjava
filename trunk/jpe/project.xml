@@ -30,7 +30,7 @@
   <distributionDirectory>/sites/org/osjava/www/releases/official/jpe/</distributionDirectory>
 
   <repository>
-    <connection>scm:cvs:pserver:anonymous@cvs.osjava.org:/var/cvs/:jpe</connection>
+    <connection>scm:svn:http://svn.osjava.org/svn/osjava/trunk/jpe</connection>
     <url>http://svn.osjava.org/cgi-bin/viewcvs.cgi/trunk/jpe/</url>
   </repository>
 

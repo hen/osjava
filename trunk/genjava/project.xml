@@ -24,7 +24,7 @@
 
   <!-- complains of more than 6 values -->
   <repository>
-    <connection>scm:cvs:pserver:anonymous@cvs.osjava.org:/var/cvs:genjava/${pom.artifactId}/</connection>
+    <connection>scm:svn:http://svn.osjava.org/svn/osjava/trunk/genjava/${pom.artifactId}/</connection>
     <url>http://svn.osjava.org/cgi-bin/viewcvs.cgi/trunk/genjava/${pom.artifactId}/</url>
   </repository>
 <!--  -->

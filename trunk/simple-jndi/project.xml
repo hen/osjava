@@ -27,7 +27,7 @@
   <distributionDirectory>/sites/org/osjava/www/maven/builds/</distributionDirectory>
 
   <repository>
-    <connection>scm:cvs:pserver:anonymous@cvs.osjava.org:/var/cvs:simple-jndi</connection>
+    <connection>scm:svn:http://svn.osjava.org/svn/osjava/trunk/simple-jndi</connection>
     <url>http://svn.osjava.org/cgi-bin/viewcvs.cgi/trunk/simple-jndi/</url>
   </repository>
 
