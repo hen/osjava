@@ -57,6 +57,23 @@ public class ReportFactory {
         }
         return map;
     }
+    public static String getReportAsXml(String groupName, String reportName) {
+        ReportGroup group = getReportGroup(groupName);
+        if(group == null) {
+            throw new RuntimeException("Illegal group somehow chosen. ");
+        }
+
+        String filename = group.getFilename();
+        XMLNode node = parseXml( new File(filename) ).getNode("reports");
+        Enumeration reportNodes = node.enumerateNode("report");
+        while(reportNodes.hasMoreElements()) {
+            XMLNode reportNode = (XMLNode) reportNodes.nextElement();
+            if(reportNode.getAttr("name").equals(reportName)) {
+                return reportNode.toString();
+            }
+        }
+        throw new RuntimeException("Illegal report somehow chosen. ");
+    }
     public static Report[] getReports(String groupName) {
         ReportGroup group = getReportGroup(groupName);
         if(group == null) {

@@ -33,6 +33,15 @@
      <url-pattern>/checkparameters</url-pattern>    
  </servlet-mapping>
 
+ <servlet>   
+     <servlet-name>XmlViewServlet</servlet-name>      
+     <servlet-class>org.osjava.reportrunner.servlets.XmlViewServlet</servlet-class>      
+ </servlet>      
+ <servlet-mapping>   
+     <servlet-name>XmlViewServlet</servlet-name>      
+     <url-pattern>/xmlview</url-pattern>    
+ </servlet-mapping>
+
  <welcome-file-list>
    <welcome-file>list_groups.jsp</welcome-file>
  </welcome-file-list>
