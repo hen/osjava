@@ -31,7 +31,7 @@
  */
 package org.osjava.scraping;
 
-public class NotificationException extends Exception {
+public class NotificationException extends ScrapingException {
 
     public NotificationException(String msg) {
         super(msg);
