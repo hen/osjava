@@ -33,7 +33,7 @@ reportDir=`pwd`/report
 
 index=$reportDir/index.html
 
-cat header.inc | sed 's/\${TITLE}/Nightly Build/' > $index
+cat header.inc | sed 's/\${TITLE}/Build/' > $index
 
 echo '<ul id="project_list">' >> $index
 
@@ -85,7 +85,7 @@ do
     report=$reportDir/$local_report
 
     tmp=`echo $i | sed 's/\//\\\\\//g'` # wtf, this is a lot of escaping. WHY?
-    cat $buildDir/header.inc | sed "s/\${TITLE}/$tmp Nightly Build/" > $report
+    cat $buildDir/header.inc | sed "s/\${TITLE}/$tmp Build/" > $report
 
     if [ -e BUILD_TIME ]; 
     then
