@@ -25,7 +25,7 @@ public class RunSql {
             DbUtils.closeQuietly(conn);
         }
         long duration = System.currentTimeMillis() - start;
-        System.out.println("Script executed in : " + duration);
+        System.err.println("Script executed in : " + duration);
     }
 
     static public void runScript(Connection conn, InputStream in) throws SQLException {
@@ -64,7 +64,7 @@ public class RunSql {
                 }
             }
             long duration = System.currentTimeMillis() - start;
-            System.out.println("Statement executed in : " + duration);
+            System.err.println("Statement executed in : " + duration);
         } finally {
             DbUtils.closeQuietly(stmt);
         }
