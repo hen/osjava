@@ -35,9 +35,9 @@ public class AtomServletTest extends TestCase
     {
         try
         {
-            URL url = new URL("http://www.blogger.com/atom/7532789");
-            String username = "blogapps";
-            String password = "bloop5luke";
+            URL url = new URL("http://www.blogger.com/atom");
+            String username = "test";
+            String password = "test";
             /*URL url = new URL("http://localhost:8080/roller/atom/admin/feed");
             String username = "admin";
             String password = "admin";*/
