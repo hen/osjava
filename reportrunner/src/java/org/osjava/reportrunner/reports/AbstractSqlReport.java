@@ -64,7 +64,7 @@ public abstract class AbstractSqlReport extends AbstractReport {
             throw new RuntimeException("The array consists of "+array[0].getClass() );
         }
 
-        return postExecute(new ArrayResult(array));
+        return postExecute( new ArrayResult( getColumns(), array ) );
     }
 
     protected Result postExecute(Result result) throws ReportException {

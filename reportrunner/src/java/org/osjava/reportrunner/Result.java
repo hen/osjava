@@ -6,4 +6,6 @@ public interface Result {
     boolean hasNextRow();
     void reset();
 
+    Column[] getHeader();
+
 }

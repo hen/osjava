@@ -13,4 +13,8 @@ public class NullResult implements Result {
     public void reset() {
     }
 
+    public Column[] getHeader() {
+        return null;
+    }
+
 }
