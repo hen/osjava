@@ -353,18 +353,38 @@ public class ThreadContext
      * @return an enumeration of the bindings of the context.  Elements of 
      *         the enumeration are of the type <code>NameClassPair</code>
      * @throws NamingException if a naming exceptino is encountered.
+     * @throws NotContextException if the name being pointed to is not a 
+     *         context
      * @see javax.naming.Context#list(javax.naming.Name)
      */
     public NamingEnumeration list(Name name) throws NamingException {
         if("".equals(name)) {
-            NamingEnumeration enum = new ContextNames(contextStore);
+            /* 
+             * Because there are two mappings that need to be used here, 
+             * create a new mapping and add the two maps to it.  This also 
+             * adds the safety of cloning the two maps so the original is
+             * unharmed.
+             */
+            Map enumStore = new HashMap();
+            enumStore.putAll(contextStore);
+            enumStore.putAll(subContexts);
+            NamingEnumeration enum = new ContextNames(enumStore);
             return enum;
         }
-        Object target = lookup(name);
-        if(target instanceof Context) {
-            return ((Context)target).list("");
+        /* Look for a subcontext */
+        Name subName = name.getPrefix(1);
+        if(contextStore.containsKey(subName)) {
+            /* Nope, actual object */
+            throw new NotContextException(name + " cannot be listed");
         }
-        throw new NotContextException(name + " cannot be listed");
+        if(subContexts.containsKey(subName)) {
+            return ((Context)subContexts.get(subName)).list(name.getSuffix(1));
+        }
+        /* 
+         * Couldn't find the subcontext and it wasn't pointing at us, throw
+         * an exception.
+         */
+        throw new NamingException();
     }
 
     /**
@@ -376,6 +396,8 @@ public class ThreadContext
      * @return an enumeration of the bindings of the context.  Elements of 
      *         the enumeration are of the type <code>NameClassPair</code>
      * @throws NamingException if a naming exceptino is encountered.
+     * @throws NotContextException if the name being pointed to is not a 
+     *         context
      * @see javax.naming.Context#list(java.lang.String)
      */
     public NamingEnumeration list(String name) throws NamingException {
@@ -384,34 +406,55 @@ public class ThreadContext
 
     /**
      * Enumerates the names bound to the context as well as the objects bound
-     * to them.
+     * to them.  The contents of subcontexts are not included.
      * 
      * @param name the name of the context to list.
      * @return an enumeration of the bindings of the context.  Elements of
      *         the enumeration are of the type <code>Binding</code>.
      * @throws NamingException if a naming exception is encountered.
+     * @throws NotContextException if the name being pointed to is not a 
+     *         context
      * @see javax.naming.Context#listBindings(javax.naming.Name)
      */
     public NamingEnumeration listBindings(Name name) throws NamingException {
         if("".equals(name)) {
-            return new ContextBindings((Map)((HashMap)contextStore).clone());
+            /* 
+             * Because there are two mappings that need to be used here, 
+             * create a new mapping and add the two maps to it.  This also 
+             * adds the safety of cloning the two maps so the original is
+             * unharmed.
+             */
+            Map enumStore = new HashMap();
+            enumStore.putAll(contextStore);
+            enumStore.putAll(subContexts);
+            return new ContextBindings(enumStore);
         }
-
-        Object target = lookup(name);
-        if(target instanceof Context) {
-            return ((Context)target).list("");
+        /* Look for a subcontext */
+        Name subName = name.getPrefix(1);
+        if(contextStore.containsKey(subName)) {
+            /* Nope, actual object */
+            throw new NotContextException(name + " cannot be listed");
         }
-        throw new NotContextException("Bindings of " + name + " cannot be listed");
+        if(subContexts.containsKey(subName)) {
+            return ((Context)subContexts.get(subName)).listBindings(name.getSuffix(1));
+        }
+        /* 
+         * Couldn't find the subcontext and it wasn't pointing at us, throw
+         * an exception.
+         */
+        throw new NamingException();
     }
 
     /**
      * Enumerates the names bound to the context as well as the objects bound
-     * to them.
+     * to them.  The contents of subcontexts are not included.
      * 
      * @param name the name of the context to list.
      * @return an enumeration of the bindings of the context.  Elements of
      *         the enumeration are of the type <code>Binding</code>.
      * @throws NamingException if a naming exception is encountered.
+     * @throws NotContextException if the name being pointed to is not a 
+     *         context
      * @see javax.naming.Context#listBindings(java.lang.String)
      */
     public NamingEnumeration listBindings(String name) throws NamingException {
@@ -482,19 +525,22 @@ public class ThreadContext
     }
 
     /**
-     * Retrieve the named object following links.
-     * This essentialy calls
+     * Retrieve the named object following links.  The <code>name</code> must
+     * not be empty.  This essentialy calls {@link lookup(javax.naming.Name}.
      * 
+     * @param name The name to be looked up.
      * @see javax.naming.Context#lookupLink(javax.naming.Name)
      */
     public Object lookupLink(Name name) throws NamingException {
         return lookup(name);
     }
 
-    /*
-     * (non-Javadoc)
+    /**
+     * Retrieve the named object following links.  The <code>name</code> must
+     * not be empty.  This essentialy calls {@link lookup(javax.naming.Name}.
      * 
-     * @see javax.naming.Context#lookupLink(java.lang.String)
+     * @param name The name to be looked up.
+     * @see javax.naming.Context#lookupLink(javax.naming.Name)
      */
     public Object lookupLink(String name) throws NamingException {
         return lookup(nameParser.parse(name));
