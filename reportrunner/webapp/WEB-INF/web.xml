@@ -8,12 +8,12 @@
 
   <context-param>
      <param-name>ReportRunnerDS</param-name>
-     <param-value>EuroDev2DS</param-value>
+     <param-value>ReportsDS</param-value>
   </context-param>
 
  <servlet>   
      <servlet-name>ReportRunnerServlet</servlet-name>      
-     <servlet-class>org.osjava.reportrunner.ReportRunnerServlet</servlet-class>      
+     <servlet-class>org.osjava.reportrunner.servlets.ReportRunnerServlet</servlet-class>      
  </servlet>      
  <servlet-mapping>   
      <servlet-name>ReportRunnerServlet</servlet-name>      
@@ -22,7 +22,7 @@
 
  <servlet>   
      <servlet-name>ChooseReportServlet</servlet-name>      
-     <servlet-class>org.osjava.reportrunner.ChooseReportServlet</servlet-class>      
+     <servlet-class>org.osjava.reportrunner.servlets.ChooseReportServlet</servlet-class>      
  </servlet>      
  <servlet-mapping>   
      <servlet-name>ChooseReportServlet</servlet-name>      
@@ -31,7 +31,7 @@
 
  <servlet>   
      <servlet-name>CheckParametersServlet</servlet-name>      
-     <servlet-class>org.osjava.reportrunner.CheckParametersServlet</servlet-class>      
+     <servlet-class>org.osjava.reportrunner.servlets.CheckParametersServlet</servlet-class>      
  </servlet>      
  <servlet-mapping>   
      <servlet-name>CheckParametersServlet</servlet-name>      
@@ -40,9 +40,9 @@
 
 <resource-ref>
   <description>
-    EuroDev2
+    Report DS
   </description>
-  <res-ref-name>jdbc/EuroDev2DS</res-ref-name>
+  <res-ref-name>jdbc/ReportsDS</res-ref-name>
   <res-type>javax.sql.DataSource</res-type>
   <res-auth>Container</res-auth>
 </resource-ref>

@@ -1,5 +1,4 @@
 <%@ page import="org.osjava.reportrunner.*" %>
-<%@ page import="org.apache.commons.lang.StringUtils" %>
 
 <%
     String reportName = request.getParameter("_report");
