@@ -92,7 +92,7 @@ do
         echo "<div class='build_info'>Last built: `cat BUILD_TIME`<br/>Build took: `cat BUILD_DURATION`</div><br/>" >> $report
     fi
 
-    echo '<ul>' >> $report
+    echo '<ul class="doc_menu">' >> $report
    
     if [ -f checkstyle-report.xml ];
     then
