@@ -17,7 +17,6 @@
   <description>
     A great way to output Xml. Far easier to code with than painful DOM or 
     SAX like solutions and much nicer in terms of speed and memory usage. 
-    Note, xmlwriter is dependent on the Jakarta Commons Lang project found at &lt;a href="http://jakarta.apache.org/commons/lang.html"&gt;http://jakarta.apache.org/commons/lang.html&lt;/a&gt;.
     &lt;br/&gt;
     &lt;br/&gt;
    While XmlWriter contains its own xml outputter, it has the ability to sit on top of other core Xml writing products, such as &lt;a href="http://xmlenc.sf.net/"&gt;XmlEnc&lt;/a&gt;. In addition, the user may layer other functionalities on top of the core writing, such as on the fly schema checking, date/number formatting, specific empty-element handling and pretty-printing. 
@@ -78,11 +77,6 @@
   <!-- Need to mark these as compile-time/run-time -->
 
   <dependencies>
-    <dependency>
-      <id>commons-lang</id>
-      <version>1.0</version>
-      <url>http://jakarta.apache.org/commons/lang.html</url>
-    </dependency>
     <dependency>
       <id>xmlenc</id>
       <version>0.39</version>
