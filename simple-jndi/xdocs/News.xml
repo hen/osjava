@@ -8,6 +8,13 @@
 
   <body>
     <section name="News">
+    <p>Version 0.6 has been released, as of 2003-08-12. The following features were added: </p>
+<ul>
+<li>You may now see the Simple-JNDI parameters through Simple-JNDI. </li>
+<li>Because Windows cannot handle ':' in a filename, "java:" is quietly converted to "java". </li>
+<li>Unit Tests written and plugged into Maven. </li>
+</ul>
+<hr />
     <p>Version 0.5 has been released, as of 2003-04-08. The biggest change was in the move from the 'com.generationjava' namespace to the 'org.osjava' namespace, and an accompanying change in look and feel to the site. However, the following features were also added: </p>
 <ul>
 <li>Boolean and URL Converters added. </li>
