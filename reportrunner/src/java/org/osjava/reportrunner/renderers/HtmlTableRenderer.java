@@ -16,6 +16,16 @@ public class HtmlTableRenderer extends AbstractRenderer {
             return;
         }
         out.write("<table>\n");
+        Column[] columns = report.getColumns();
+        if(columns != null) {
+            out.write("<tr>\n");
+            for(int i=0; i<columns.length; i++) {
+                out.write("<th>");
+                out.write(columns[i].getLabel());
+                out.write("</th>\n");
+            }
+            out.write("</tr>\n");
+        }
         for(int i=0; i<data.length; i++) {
             Object[] row = (Object[]) data[i];
             out.write("<tr>\n");

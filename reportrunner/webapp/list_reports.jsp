@@ -4,10 +4,10 @@
 
 <table>
 <%
-    String[] reports = ReportFactory.getReportNames();
+    Report[] reports = ReportFactory.getReports();
     for(int i=0; i<reports.length; i++) {
 %>
-    <tr><td><a href="_chose_report.jsp?_report=<%= reports[i] %>"><%= reports[i] %></a></td></tr>
+    <tr><td><a href="_chose_report.jsp?_report=<%= reports[i].getName() %>"><%= reports[i].getLabel() %></a></td></tr>
 <%
     }
 %>
