@@ -113,6 +113,11 @@ do
             # errors in report
             echo "There were errors in building $i"
             echo "There were errors in building $i" > $reportDir/$i/FAILED
+	    if [ $count != '0' ];
+            then
+                echo >> ERROR.log
+	        cat OUTPUT.log | grep '\[ERROR\] TEST' >> ERROR.log
+	    fi
             mv ERROR.log OUTPUT.log $reportDir/$i
         fi
     fi
