@@ -25,6 +25,15 @@ import javax.sound.midi.Track;
 import javax.sound.midi.Transmitter;
  
 /**
+ * TODOs
+ * =====
+ * Record key strokes
+ * More colour options?
+ * Re-order so a is not next to b.
+ * Show letter on screen
+ * Go full-screen
+ * More complicated quit mechanism
+ * 
  * @author hyandell
  */
 public class Pound extends Frame implements KeyListener {
