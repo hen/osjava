@@ -53,7 +53,7 @@ sub update {
     } 
     elsif($repository =~ /cvs:/) {
         $repository = substr( $repository, 3 );
-        $update_info = `cvs -q update -dP`;
+        $update_info = `cvs -q update -dP | grep -v '^[?MA]'`;
     } else {
         warn "Attempt to use unknown type of repository. \n";
     }
