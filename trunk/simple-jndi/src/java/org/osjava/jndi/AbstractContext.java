@@ -43,6 +43,7 @@ import javax.naming.NameNotFoundException;
 import javax.naming.NamingEnumeration;
 import javax.naming.Name;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -50,10 +51,12 @@ import java.util.Map;
 
 import org.osjava.naming.ContextBindings;
 import org.osjava.naming.ContextNames;
+import org.osjava.naming.SimpleNameParser;
 
 /**
  * The heart of the system, the abstract implementation of context for 
- * simple-jndi. 
+ * simple-jndi.  There are no abstract methods in this class, but it is
+ * not meant to be instantiated, but extended instead.
  */
 public abstract class AbstractContext implements Context  {
 
@@ -79,7 +82,153 @@ public abstract class AbstractContext implements Context  {
 
     private boolean closing;
 
+    /* **********************************************************************
+     * Constructors.                                                        *
+     * Even though this class cannot be instantiated, it provides default   *
+     * implemenation for doing so in hopes of making Contexts that extend   *
+     * this class easier.                                                   *
+     * **********************************************************************/
+    /**
+     * Creates a AbstractContext.
+     */
+    protected AbstractContext() {
+        this((Hashtable)null);
+    }
+    
+    /**
+     * Creates a AbstractContext.
+     * 
+     * @param env a Hashtable containing the Context's environemnt.
+     */
+    protected AbstractContext(Hashtable env) {
+        /* By default allow system properties to override. */
+        this(env, true, null);
+    }
+    
+    /**
+     * Creates a AbstractContext.
+     * 
+     * @param env a Hashtable containing the Context's environment.
+     * @param systemOverride allow System Parameters to override the
+     *        environment that is passed in.
+     */
+    protected AbstractContext(Hashtable env, boolean systemOverride) {
+        this(env, systemOverride, null);
+    }
 
+    /**
+     * Creates a AbstractContext.
+     * 
+     * @param env a Hashtable containing the Context's environment.
+     * @param parser the NameParser being used by the Context.
+     */
+    protected AbstractContext(Hashtable env, NameParser parser) {
+        this(env, true, parser);
+    }
+
+    /**
+     * Creates a AbstractContext.
+     * 
+     * @param systemOverride allow System Parameters to override the
+     *        environment that is passed in.
+     */
+    protected AbstractContext(boolean systemOverride) {
+        this(null, systemOverride, null);
+    }
+
+    /**
+     * Creates a AbstractContext.
+     * 
+     * @param systemOverride allow System Parameters to override the
+     *        environment that is passed in.
+     * @param parser the NameParser being used by the Context.
+     */
+    protected AbstractContext(boolean systemOverride, NameParser parser) {
+        this(null, systemOverride, parser);
+    }
+
+    /**
+     * Creates a AbstractContext.
+     * 
+     * @param parser the NameParser being used by the Context.
+     */
+    protected AbstractContext(NameParser parser) {
+        this(null, true, parser);
+    }
+
+    /**
+     * Creates a AbstractContext.
+     * 
+     * @param env a Hashtable containing the Context's environment.
+     * @param systemOverride allow System Parameters to override the
+     *        environment that is passed in.
+     * @param parser the NameParser being used by the Context.
+     */
+    protected AbstractContext(Hashtable env, boolean systemOverride, NameParser parser) {
+        String shared = null;
+        if(env != null) {
+            this.env = (Hashtable)env.clone();
+            this.root = (String)this.env.get("org.osjava.jndi.root");
+            this.delimiter = (String)this.env.get("org.osjava.jndi.delimiter");
+            shared = (String)this.env.get("org.osjava.jndi.shared");
+        }
+
+        /* let System properties override the jndi.properties file, if
+         * systemOverride is true */
+        if(systemOverride) {
+            if(System.getProperty("org.osjava.jndi.root") != null) {
+                this.root = System.getProperty("org.osjava.jndi.root");
+            }
+            if(System.getProperty("org.osjava.jndi.delimiter") != null) {
+                this.delimiter = System.getProperty("org.osjava.jndi.delimiter");
+            }
+            if(System.getProperty("org.osjava.jndi.shared") != null) {
+                shared = System.getProperty("org.osjava.jndi.shared");
+            }
+        }
+        
+        if("true".equals(shared)) {
+            this.table = new StaticHashtable();
+        }
+
+        if(this.delimiter == null) {
+            this.delimiter = ".";
+        }
+        this.originalRoot = this.root;
+        this.originalDelimiter = this.delimiter;
+        
+        if(parser == null) {
+            try {
+                nameParser = new SimpleNameParser(this);
+            } catch (NamingException e) {
+                /* 
+                 * XXX: This should never really occur.  If it does, there is 
+                 * a severe problem.  I also don't want to throw the exception
+                 * right now because that would break compatability, even 
+                 * though it is probably the right thing to do.  This might
+                 * get upgraded to a fixme.
+                 */
+                e.printStackTrace();
+            }
+        }
+        try {
+            nameInNamespace = nameParser.parse("");
+        } catch (NamingException e) {
+            // TODO Auto-generated catch block
+            /* This shouldn't be an issue at this point */
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Create a new context based upon the environment of the passed context.
+     * @param that
+     */
+    protected AbstractContext(AbstractContext that) {
+        this(that.env);
+    }
+
+    
     /* **********************************************************************
      * Implementation of methods specified by java.lang.naming.Context      *
      * **********************************************************************/
@@ -408,8 +557,13 @@ public abstract class AbstractContext implements Context  {
     /**
      * @see javax.naming.Context#createSubcontext(javax.naming.Name)
      */
+    public abstract Context createSubcontext(Name name) throws NamingException;
+    /* TODO: Put this example implemenation into the javadoc.
+    /* Example implementation 
     public Context createSubcontext(Name name) throws NamingException {
         Context newContext;
+        Hashtable subContexts = getSubContexts();
+
         if(name.size() > 1) {
             if(subContexts.containsKey(name.getPrefix(1))) {
                 Context subContext = (Context)subContexts.get(name.getPrefix(1));
@@ -419,18 +573,21 @@ public abstract class AbstractContext implements Context  {
             throw new NameNotFoundException("The subcontext " + name.getPrefix(1) + " was not found.");
         }
         
-        if(table.containsKey(name) || subContexts.containsKey(name)) {
+        if(lookup(name) != null) {
             throw new NameAlreadyBoundException();
         }
 
-        Name contextName = (Name)nameInNamespace.clone();
+        Name contextName = getNameParser(getNameInNamespace())
+            .parse(getNameInNamespace());
         contextName.addAll(name);
-        newContext = new PropertiesContext(env);
-        ((PropertiesContext)newContext).setName(contextName);
+        newContext = new GenericContext(this);
+        ((AbstractContext)newContext).setName(contextName);
         subContexts.put(name, newContext);
         return newContext;
     }
 
+    */
+    
     /**
      * @see javax.naming.Context#createSubcontext(java.lang.String)
      */
@@ -600,6 +757,15 @@ public abstract class AbstractContext implements Context  {
         }
         nameInNamespace = name;
         nameLock = true;
+    }
+    
+    /**
+     * Convenience method returning the subcontexts that this context parents.
+     * @return a Hashtable of context objects that are parented by this 
+     *         context.
+     */
+    protected Hashtable getSubContexts() {
+        return (Hashtable)subContexts.clone();
     }
 }
 
