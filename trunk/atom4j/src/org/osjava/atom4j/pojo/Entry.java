@@ -18,7 +18,7 @@ public class Entry
 {
     private String title;
     private String summary;
-    private Author author;
+    private Author author = new Author();  // don't want to risk this being null
     
     private Date issued;
     private Date created;
@@ -27,7 +27,7 @@ public class Entry
     private String link;
     private String id;
     private String comment; // url for posting comments
-    private Content content;    
+    private Content content = new Content(); // don't want to risk this being null   
     
     private static Log logger = 
        LogFactory.getFactory().getInstance(Entry.class);    
