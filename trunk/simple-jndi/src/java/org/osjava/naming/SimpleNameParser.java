@@ -11,7 +11,6 @@
  */
 package org.osjava.naming;
 
-import java.util.Enumeration;
 import java.util.Properties;
 
 import javax.naming.CompoundName;
@@ -21,9 +20,8 @@ import javax.naming.Name;
 import javax.naming.NameParser;
 import javax.naming.NamingException;
 
-
 /**
- * The NameParser for the ThreadContext.  
+ * The NameParser for the Simple-JMDO.  
  * 
  * @author Robert M. Zigweid
  * @version $LastChangedRevision $ $LastChangedDate$
