@@ -31,6 +31,9 @@
  */
 package org.osjava.norbert;
 
+/**
+ * Provides implementation for the path property and a handy toString. 
+ */
 abstract class AbstractRule implements Rule {
 
     private String path;
