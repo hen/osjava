@@ -1,4 +1,4 @@
-package org.osjava.jndi;
+package org.osjava.sj.loader;
 
 import java.util.*;
 import java.io.*;
