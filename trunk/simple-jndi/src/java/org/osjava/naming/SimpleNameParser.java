@@ -91,22 +91,5 @@ public class SimpleNameParser implements NameParser {
             return true;
         }
         return false;
-    }
-    
-    /**
-     * Converts the <code>name</code> of type  {@link javax.naming.Name Name}
-     * to a String using the properties associated with the name parser.
-     * 
-     * @param name the name to be converted
-     * @return a string representation of <code>name</code>.
-     */
-    public String nameToString(Name name) {
-        StringBuffer retString = new StringBuffer("");
-        Enumeration parts = name.getAll();
-        while(parts.hasMoreElements()) {
-            String next = parts.nextElement().toString();
-            retString.append(next);
-        }
-        return retString.toString();
-    }
+    }    
 }
