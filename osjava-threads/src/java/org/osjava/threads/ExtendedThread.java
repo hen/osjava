@@ -47,16 +47,14 @@ package org.osjava.threads;
  * Specifically this implmentation of {@link Thread} adds accessability to the 
  * Runnable which standard Java {@link Thread}s do not.  
  * <p>
- * This class is designed to only be instantiated by the {@link ThreadManager}.
- *
  * @author Robert M. Zigweid
- * @version $Revision: 1.4 $ $Date$
+ * @version $Rev$ $Date$
  */
 public class ExtendedThread extends Thread implements ExtendedRunnable {
     /** 
-     * Field containing the {@link ExtendedRunnable} object 
+     * Field containing the {@link Runnable} object 
      */
-    private ExtendedRunnable runnable;
+    private Runnable runnable;
 
     /** 
      * Field which determines whether or not the {@link Thread} has been 
@@ -70,25 +68,25 @@ public class ExtendedThread extends Thread implements ExtendedRunnable {
      * in the same fashion as java.lang.Thread.
      * <p>
      * This constructor has the same effect as calling <code>
-     * ExtendedThreadGroup(null, target, null, 0)</code>
+     * ExtendedThread(null, target)</code>
      * 
-     * @param target The ExtendedRunnable target for the thread.
+     * @param target the Runnable target for the thread.
      */
-    protected ExtendedThread(ExtendedRunnable target) {
+    protected ExtendedThread(Runnable target) {
         this(target, null);
     }
 
     /**
-     * Creates an ExtendedThread with a specified {@link ExtendedRunnable}
+     * Creates an ExtendedThread with a specified {@link Runnable}
      * as it's run target, and having the name of <code>name</code>.
      * <p>
      * This constructor has the same effect as calling <code>
      * ExtendedThreadGroup(null, target, name, 0)</code>
      * 
-     * @param target The ExtendedRunnable target for the thread.
-     * @param name   The name of the thread.
+     * @param target the Runnable target for the thread.
+     * @param name   the name of the thread.
      */
-    protected ExtendedThread(ExtendedRunnable target, String name) {
+    public ExtendedThread(Runnable target, String name) {
         super(target, name);
     }
 
@@ -98,7 +96,7 @@ public class ExtendedThread extends Thread implements ExtendedRunnable {
      * This constructor has the same effect as calling <code>
      * ExtendedThreadGroup(null, null, name, 0)</code>
      * 
-     * @param name The name of the thread.
+     * @param name the name of the thread.
      */
     protected ExtendedThread(String name) {
         this(null, name);
@@ -120,10 +118,10 @@ public class ExtendedThread extends Thread implements ExtendedRunnable {
      * Sets the runnable object for the thread.  An 
      * {@link ExtendedRunnable} parameter is accepted..  
      * 
-     * @param runnable The ExtendedRunnable object which is to be 
+     * @param runnable the ExtendedRunnable object which is to be 
      *                 utilized ExtendedThread.
      */
-    public void setRunnable(ExtendedRunnable runnable) {
+    public void setRunnable(Runnable runnable) {
         /* TODO: A check needs to be added so that the runnable cannot be 
          * set after the thread is started. */
         this.runnable = runnable;
@@ -135,7 +133,7 @@ public class ExtendedThread extends Thread implements ExtendedRunnable {
      * @return The ExtendedRunnable object that this ExtendedThread
      * is utilizing.
      */
-    public ExtendedRunnable getRunnable() {
+    public Runnable getRunnable() {
         return runnable;
     }
     
@@ -166,27 +164,37 @@ public class ExtendedThread extends Thread implements ExtendedRunnable {
      * started in the {@link ExtendedRunnable} object found by <code>
      * getRunnable()</code>.  If <code>abort</code> is false, the aborting 
      * squence is stopped, if it had been started.  There is no guarantee that 
-     * the aborting can be stopped once started.
+     * the aborting can be stopped once started.  If the Runnable object does
+     * not support aborting, this method does nothing.
      * 
      * @param abort boolean value determining whether or not the thread is to 
      *              be aborted, or can be set to halt a previously declared 
      *              abort
      */
     public void setAbort(boolean abort) {
-        getRunnable().setAbort(abort);
+        if(getRunnable() instanceof ExtendedRunnable) {
+            ((ExtendedRunnable)getRunnable()).setAbort(abort);
+        }
+        /* Don't do anything if it's not supported. */
     }
 
     /**
      * Returns a boolean value indicating  whether or not the
-     * ExtendedThread and its associated {@link ExtendedRunnable} are in the 
+     * ExtendedThread and its associated {@link Runnable} are in the 
      * process of aborting, or already have aborted.  Returning true indicates
      * that the thread has ceased execution, or begun the process of aborting.
+     * If the Runnable of this ExtendedThread doesn't support aborting, false 
+     * is always returned. 
      * 
      * @return A boolean value indicating whether the thread has aborted or 
      *         not. 
      */
     public boolean isAborting() {
-        return getRunnable().isAborting();
+        if(getRunnable() instanceof ExtendedRunnable) {
+            return ((ExtendedRunnable)getRunnable()).isAborting();
+        }
+        /* Return false if the thread can't abort */
+        return false;
     }
     
     /**
