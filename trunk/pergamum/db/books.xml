@@ -65,4 +65,6 @@
   <book isbn="sbt-4" name="Jakarta Commons Live" publisher="sbt" url="http://www.sourcebeat.com/TitleAction.do?id=4" published="2004-05"/>
   <book isbn="sbt-5" name="Jakarta Tomcat Live" publisher="sbt" url="http://www.sourcebeat.com/TitleAction.do?id=5" published="2004-05"/>
   <book isbn="sbt-7" name="Spring Live" publisher="sbt" url="http://www.sourcebeat.com/TitleAction.do?id=7" published="2004-05"/>
+
+  <book isbn="1590592557" name="Professional Struts Applications" publisher="apr" url="http://www.apress.com/book/bookDisplay.html?bID=264" published="2003-08"/>
 </library>
