@@ -25,6 +25,8 @@ public class WildcardUtilsTest extends TestCase {
         assertFalse( WildcardUtils.match("Foo", "Bar") );
         assertTrue( WildcardUtils.match("Foo Bar Foo", "F*o Bar*") );
         assertTrue( WildcardUtils.match("Adobe Acrobat Installer", "Ad*er") );
+        assertTrue( WildcardUtils.match("Foo", "*Foo") );
+        assertTrue( WildcardUtils.match("Foo", "Foo*") );
     }
 
     public void testSplitOnTokens() {
