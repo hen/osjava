@@ -73,7 +73,7 @@ public class PropertiesContext implements Context  {
 
     // table is used as a read-write cache which sits 
     // above the file-store
-    private Hashtable table = new Hashtable();
+    private Hashtable table = new PropertiesStore();
 
     private Hashtable env;
     private String root;
@@ -86,10 +86,13 @@ public class PropertiesContext implements Context  {
     private String _delimiter;
 
     public PropertiesContext(Hashtable env) {
+        String shared = null;
+
         if(env != null) {
             this.env = (Hashtable)env.clone();
             this.root = (String)this.env.get("org.osjava.jndi.root");
             this.delimiter = (String)this.env.get("org.osjava.jndi.delimiter");
+            shared = (String)this.env.get("org.osjava.jndi.shared");
         }
 
         // let System properties override the jndi.properties file
@@ -98,6 +101,13 @@ public class PropertiesContext implements Context  {
         }
         if(System.getProperty("org.osjava.jndi.delimiter") != null) {
             this.delimiter = System.getProperty("org.osjava.jndi.delimiter");
+        }
+        if(System.getProperty("org.osjava.jndi.shared") != null) {
+            shared = System.getProperty("org.osjava.jndi.shared");
+        }
+
+        if("true".equals(shared)) {
+            this.table = new PropertiesStaticStore();
         }
 
         if(this.delimiter == null) {
