@@ -23,6 +23,13 @@
       <version>2.1</version>
       <url>http://jakarta.apache.org/commons/collections.html</url>
     </dependency>
+    <!-- ClassIndex uses the gj-find code -->
+    <dependency>
+      <groupId>genjava</groupId>
+      <artifactId>gj-find</artifactId>
+      <version>0.1</version>
+      <url>http://www.osjava.org/genjava/</url>
+    </dependency>
   </dependencies>
 
 </project>
