@@ -26,10 +26,6 @@
       <version>2.0</version>
       <url>http://jakarta.apache.org/commons/lang.html</url>
     </dependency>
-    <dependency>
-      <id>junit</id>
-      <version>3.7</version>
-    </dependency>
   </dependencies>
 
 </project>
