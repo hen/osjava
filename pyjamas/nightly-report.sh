@@ -92,6 +92,11 @@ do
         echo "<li><a href='$i/javadoc/'>javadoc</a></li>" >> $report
     fi
 
+    if [ -d jcoverage/ ];
+    then
+        echo "<li><a href='$i/jcoverage/'>jcoverage</a></li>" >> $report
+    fi
+
     if [ -f junit-report.xml ];
     then
         echo "<li><a href='$i/junit-report.html'>junit</a></li>" >> $report
