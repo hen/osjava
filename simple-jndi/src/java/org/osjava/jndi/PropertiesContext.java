@@ -131,6 +131,7 @@ public class PropertiesContext implements Context  {
                 if("http".equals(proto)) {
                     this.protocol = HTTP;
                     this.separator = ""+File.separatorChar;
+                    this.root = proto+"://"+this.root;
                 } else 
                 if("classpath".equals(proto)) {
                     this.protocol = CLASSPATH;
@@ -237,9 +238,13 @@ if(DEBUG)        System.err.println("[CTXT]Getting element "+key+" via "+this.pr
         if(this.protocol == HTTP) {
             try {
                 URL url = new URL(key);
-                return url;
+                if( urlExists(url) ) {
+                    return url;
+                } else {
+                    return null;
+                }
             } catch(MalformedURLException murle) {
-                throw new NamingException("Unable to open http url: "+key);
+                throw new NamingException("Unable to treat this as an http url: "+key);
             }
         } else {
             throw new NamingException("Unsupported protocol: "+this.protocol);
@@ -269,8 +274,11 @@ if(DEBUG)        System.err.println("[CTXT]Loading properties from: "+file);
             if( ((URL)file).getFile().endsWith(".ini") ) {
                 properties = new IniProperties();
                 ((IniProperties)properties).setDelimiter(this.delimiter);
-            } else {
+            } else
+            if( ((URL)file).getFile().endsWith(".properties") ) {
                 properties = new CustomProperties();
+            } else {
+                return null;
             }
         } else {
             System.err.println("[CTXT]Warning: Located file was not a File or a URL. ");
@@ -352,10 +360,32 @@ if(DEBUG)                System.err.println("[CTXT]Unknown exception: "+e);
             // how the hell do we know a directory online???
             try { 
                 Properties props = loadProperties(file);
-                return (props == null);
+                if(props == null) {
+                    // TODO: Test against a server that disallows directory viewing
+                    // file ought to be URL here anyway
+                    if(file instanceof URL) {
+                        return urlExists( (URL)file );
+                    } else {
+                        return false;
+                    }
+                } else {
+                    // This is shit. Somehow I am getting an index back
+                    // and I assume it is a directory if any key 
+                    // starts with <, ie html markup.
+                    Iterator iterator = props.keySet().iterator();
+                    while(iterator.hasNext()) {
+                        String key = (String)iterator.next();
+                        if(key.startsWith("<")) {
+                            return true;
+                        }
+                    }
+                    return false;
+                }
             } catch(Exception e) {
                 // we assume this just means a failure to load,
                 // therefore it must be a directory
+if(DEBUG)       System.err.println("[CTXT]HTTPException? :"+e);
+                // TODO: Look at the error code and decide how to handle that
                 return true;
             }
         } else {
@@ -892,6 +922,14 @@ if(DEBUG)        System.err.println("[CTXT]remaining: "+remaining);
         return buf.toString();
     }
     /* END OF StringUtils copy */
+
+    public static boolean urlExists(URL url) {
+        try {
+            return url.getContent() != null;
+        } catch(IOException ioe) {
+            return false;
+        }
+    }
 
 }
 
