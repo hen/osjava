@@ -624,7 +624,13 @@ public abstract class AbstractContext
      * @see javax.naming.Context#getNameParser(javax.naming.Name)
      */
     public NameParser getNameParser(Name name) throws NamingException {
-        if(name == null || name.isEmpty()) {
+        /* 
+         * XXX: Not sure this conditional is adequate.  It might still cause
+         *      problems with foo.foo name structures.
+         */
+        if(name == null ||
+           name.isEmpty() || 
+           (name.size() == 1 && name.toString().equals(getNameInNamespace()))) {
             return nameParser;
         }
         Name subName = name.getPrefix(1); 
@@ -645,7 +651,7 @@ public abstract class AbstractContext
      * @see javax.naming.Context#composeName(javax.naming.Name, javax.naming.Name)
      */
     public Name composeName(Name name, Name prefix) throws NamingException {
-        // NO IDEA IF THIS IS RIGHT
+        // XXX: NO IDEA IF THIS IS RIGHT
         if(name == null || prefix == null) {
             throw new NamingException("Arguments must not be null");
         }
