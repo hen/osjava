@@ -104,6 +104,6 @@ public abstract class AbstractExtendedRunnable
      */
     protected Object clone() throws CloneNotSupportedException {
         throw new CloneNotSupportedException(
-            "An AbstractExtendedRunnable should " + "be cloned.");
+            "An AbstractExtendedRunnable should not be cloned.");
     }
 }
