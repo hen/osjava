@@ -9,20 +9,20 @@ public class Log extends Object {
 
         static PrintStream err = System.err;
 
-        static public void setErr(PrintStream ps) {
+        public static void setErr(PrintStream ps) {
                 err = ps;
         }
 
-        static public void log(Throwable t) {
+        public static void log(Throwable t) {
                 log(t.getMessage(),t);
         }
 
-        static public void log(String str, Throwable t) {
+        public static void log(String str, Throwable t) {
                 log(str);
                 t.printStackTrace(err);
         }
 
-        static public void log(String str) {
+        public static void log(String str) {
                 if(str == null) {
                         log("null");
                 } else {
@@ -32,7 +32,7 @@ public class Log extends Object {
                 }
         }
 
-        static public void log(Object obj) {
+        public static void log(Object obj) {
                 if(obj == null) {
                         log("null");
                 } else {
