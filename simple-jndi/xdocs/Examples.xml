@@ -38,7 +38,7 @@ state=ERROR
 </dd>
 <dt>ProductionDS.properties</dt>
 <dd>
-org.osjava.jndi.datasource=true<br />
+type=javax.sql.DataSource<br />
 driver=org.gjt.mm.mysql.Driver<br />
 url=jdbc:mysql://localhost/testdb<br />
 user=testuser<br />
