@@ -21,25 +21,25 @@ public class ImportFixer {
         private String pckge = null;
         private int importLine = 0;
         
-        static private final String[] importsLit2 = { "","java.io","java.util","java.net","java.sql","java.awt","java.awt.event" };
-        static private final Vector imports2 = toVector(importsLit2);
+        private static final String[] importsLit2 = { "","java.io","java.util","java.net","java.sql","java.awt","java.awt.event" };
+        private static final Vector imports2 = toVector(importsLit2);
 
-        static private final String wordRegexp = "[a-zA-Z][a-zA-Z0-9_]*";
-        static private final String classRegexp = "("+wordRegexp+")";
-        static private final String maybeSpaceRegexp = "\\s*";
-        static private final String leastOneSpaceRegexp = "\\s"+maybeSpaceRegexp;
+        private static final String wordRegexp = "[a-zA-Z][a-zA-Z0-9_]*";
+        private static final String classRegexp = "("+wordRegexp+")";
+        private static final String maybeSpaceRegexp = "\\s*";
+        private static final String leastOneSpaceRegexp = "\\s"+maybeSpaceRegexp;
 
-        static private RE castRe;
-        static private RE declRe;
-            static private RE assiRe;
-            static private RE instRe;
-    static private RE newRe;
-        static private RE classRe;
-        static private RE stringLitRe;
-        static private RE cCommentRe;
-        static private RE cPlusCommentRe;
-        static private RE cPlusStartCommentRe;
-        static private RE cPlusEndCommentRe;
+        private static RE castRe;
+        private static RE declRe;
+            private static RE assiRe;
+            private static RE instRe;
+    private static RE newRe;
+        private static RE classRe;
+        private static RE stringLitRe;
+        private static RE cCommentRe;
+        private static RE cPlusCommentRe;
+        private static RE cPlusStartCommentRe;
+        private static RE cPlusEndCommentRe;
         
     public ImportFixer() {
                 try {
@@ -313,7 +313,7 @@ OUT:        while(enum.hasMoreElements()) {
                 return null;
         }
 
-        static public String[] toStringArray(Vector vec) {
+        public static String[] toStringArray(Vector vec) {
                 String[] ret = new String[vec.size()];
                 for(int i=0;i<vec.size();i++) {
                         ret[i] = (String)vec.elementAt(i);
@@ -321,7 +321,7 @@ OUT:        while(enum.hasMoreElements()) {
                 return ret;
         }
 
-        static public Vector toVector(String[] strs) {
+        public static Vector toVector(String[] strs) {
                 Vector ret = new Vector();
                 for(int i=0;i<strs.length;i++) {
                         ret.addElement(strs[i]);
@@ -329,7 +329,7 @@ OUT:        while(enum.hasMoreElements()) {
                 return ret;
         }
 
-        static public boolean classMatch(String clss, String imp, boolean allowWilds) {
+        public static boolean classMatch(String clss, String imp, boolean allowWilds) {
                 int idx = imp.lastIndexOf('.');
                 if(idx != -1) {
                         if(clss.equals(imp.substring(idx+1))) {
