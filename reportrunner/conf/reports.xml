@@ -12,7 +12,7 @@
   <sql>select * from userrole where rolename=? and username=?</sql>
   <param name="rolename" type="java.lang.String"/>
   <param name="username" type="java.lang.String" binding="select username, username from userrole"/>
-  <renderers>HtmlTable</renderers>
+  <renderers>HtmlTable,Comma delimited,Excel file</renderers>
  </report>
  <report name="DateSql" class="org.osjava.reportrunner.reports.SqlReport">
   <sql>select * from weblogentry where pubtime between ? and ?</sql>
