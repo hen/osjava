@@ -21,10 +21,9 @@ Need a page for:
 
 External imports
 ================
-import com.generationjava.collections.ClassMap;     replaced by convert
-import com.generationjava.collections.OrderedSet;
-import com.generationjava.io.xml.XMLNode;           gj-xml
-import com.generationjava.io.xml.XMLParser;         gj-xml
-import com.generationjava.lang.ClassW;              replaced by convert
-import org.apache.commons.lang.NumberUtils;         replaced by convert
-import org.apache.commons.lang.StringUtils;
+import com.generationjava.collections.OrderedSet;   // how to remove?
+import com.generationjava.util.XmlProperties;
+import org.apache.commons.convert.ConvertRegistry;
+import org.apache.commons.convert.ConvertUtils;
+import org.apache.commons.convert.Converter;
+import org.apache.commons.lang.StringUtils;   // how to remove?
