@@ -15,7 +15,7 @@ implements SocketChannelHandlerAcceptor
 
     public void acceptSocketChannelHandler(SocketChannelHandler sch) {
         if(acceptConnection(sch.getSocket())) {
-            setupConnection(sch);
+            setupSocketStream(sch);
             sch.register(myThread);
         } else {
             try {
@@ -30,6 +30,6 @@ implements SocketChannelHandlerAcceptor
         return true;
     }
 
-    protected abstract void setupConnection(SocketStream stream);
+    protected abstract void setupSocketStream(SocketStream stream);
 
 }
