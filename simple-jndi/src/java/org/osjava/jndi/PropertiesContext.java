@@ -51,6 +51,7 @@ import java.util.Properties;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
@@ -61,6 +62,7 @@ import java.net.MalformedURLException;
 import org.osjava.convert.Convert;
 import org.osjava.jndi.util.CustomProperties;
 import org.osjava.jndi.util.IniProperties;
+import org.osjava.jndi.util.ContextBindings;
 import org.osjava.jndi.util.XmlProperties;
 
 public class PropertiesContext implements Context  {
@@ -673,7 +675,7 @@ if(DEBUG)        System.err.println("[CTXT]remaining: "+remaining);
 
     public NamingEnumeration listBindings(String name) throws NamingException {
         if("".equals(name)) {
-            return new PropertiesBindings(this.table.keys());
+            return new ContextBindings((Map)((Hashtable)table).clone());
         }
 
         Object target = lookup(name);
@@ -790,38 +792,6 @@ if(DEBUG)        System.err.println("[CTXT]remaining: "+remaining);
         }
 
     }
-
-    class PropertiesBindings implements NamingEnumeration {
-
-        private Enumeration names;
-
-        public PropertiesBindings(Enumeration names) {
-            this.names = names;
-        }
-
-        public boolean hasMoreElements() {
-            return names.hasMoreElements();
-        }
-
-        public boolean hasMore() throws NamingException {
-            return hasMoreElements();
-        }
-
-        public Object nextElement() {
-            String name = (String)names.nextElement();
-            return new Binding(name, PropertiesContext.this.table.get(name));
-        }
-
-        public Object next() throws NamingException {
-            return nextElement();
-        }
-
-        public void close() {
-        }
-
-    }
-
-
 
     /* START OF StringUtils copy */
     private static String[] split(String str, String separatorChars) {
