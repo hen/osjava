@@ -19,9 +19,9 @@ if [ "x$1x" != "xx" ];
 then
     if [ $1 = 'all' ];
     then
-        LIST=`cat NIGHTLY.txt | awk '{print $2}' | grep -v '^#'`
+        LIST=`cat NIGHTLY.txt | grep -v '^#' | awk '{print $2}'`
         echo 'Forced build of all components. ' > REASON
-        for i in `cat NIGHTLY.txt | sed 's/ /::::/'`
+        for i in `cat NIGHTLY.txt | grep -v '^#' | sed 's/ /::::/'`
         do
             checkoutDir=`echo $i | sed 's/.*:::://'`
             if [ ! -e $checkoutDir ];
@@ -38,7 +38,7 @@ then
         done
     elif [ $1 = 'update' ];
     then
-        for i in `cat NIGHTLY.txt | awk '{print $2}'`
+        for i in `cat NIGHTLY.txt | grep -v '^#' | awk '{print $2}'`
         do
             if [ -d $i ];
             then
