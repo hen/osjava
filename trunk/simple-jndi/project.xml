@@ -6,12 +6,12 @@
   <name>simple-jndi</name>
   <currentVersion>0.4</currentVersion>
   <organization>
-    <name>GenerationJava</name>
-    <url>http://www.generationjava.com/</url>
+    <name>OSJava</name>
+    <url>http://www.osjava.org/</url>
     <logo>/images/initials.jpg</logo>
   </organization>
   <inceptionYear>2003</inceptionYear>
-  <package>com.generationjava</package>
+  <package>org.osjava</package>
   <logo>/images/core-logo.jpg</logo>
   
   <!-- Gump integration -->
@@ -23,17 +23,17 @@
   
   <shortDescription>A JNDI implementation using .properties</shortDescription>
 
-  <url>http://www.generationjava.com/</url>
+  <url>http://www.osjava.org/</url>
   <!--
   <issueTrackingUrl>http://nagoya.apache.org/scarab/servlet/scarab/</issueTrackingUrl>
   -->
-  <siteAddress>www.generationjava.com/maven/simple-jndi</siteAddress>
-  <siteDirectory>/sites/com/generationjava/www/maven/genjava/simple-jndi/</siteDirectory>
-  <distributionDirectory>/sites/com/generationjava/www/maven/builds/</distributionDirectory>
+  <siteAddress>www.osjava.org/maven/simple-jndi</siteAddress>
+  <siteDirectory>/sites/org/osjava/www/maven/genjava/simple-jndi/</siteDirectory>
+  <distributionDirectory>/sites/org/osjava/www/maven/builds/</distributionDirectory>
 
   <repository>
     <connection>scm:cvshen@umbongo.flamefew.net:/var/cvs:simple-jndi</connection>
-    <url>http://www.generationjava.com/view-cvs/viewcvs.cgi/simple-jndi/</url>
+    <url>http://www.osjava.org/view-cvs/viewcvs.cgi/simple-jndi/</url>
   </repository>
 
   <versions>
@@ -84,7 +84,7 @@
     <dependency>
       <id>genjava-core</id>
       <version>2.0</version>
-      <url>http://www.generationjava.com/</url>
+      <url>http://www.osjava.org/</url>
     </dependency>
     <dependency>
       <id>commons-lang</id>
@@ -105,7 +105,7 @@
 
   <build>
 
-    <nagEmailAddress>bayard@www.generationjava.com</nagEmailAddress>
+    <nagEmailAddress>bayard@www.osjava.org</nagEmailAddress>
 
     <sourceDirectory>src/java</sourceDirectory>
 

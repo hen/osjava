@@ -1,4 +1,4 @@
-package com.generationjava.convert;
+package org.osjava.convert;
 
 import org.apache.commons.lang.NumberUtils;
 

@@ -1,4 +1,4 @@
-package com.generationjava.convert;
+package org.osjava.convert;
 
 import java.util.HashMap;
 import com.generationjava.collections.ClassMap;

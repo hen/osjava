@@ -30,7 +30,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.generationjava.jndi;
+package org.osjava.jndi;
 
 import java.sql.Connection;
 import java.sql.SQLException;

@@ -1,4 +1,4 @@
-package com.generationjava.naming;
+package org.osjava.naming;
 
 import java.util.ArrayList;
 import java.util.List;

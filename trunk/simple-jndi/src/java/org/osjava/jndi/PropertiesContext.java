@@ -30,7 +30,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.generationjava.jndi;
+package org.osjava.jndi;
 
 import javax.naming.Context;
 import javax.naming.NamingException;
@@ -59,9 +59,9 @@ import java.net.URL;
 import java.net.MalformedURLException;
 
 import org.apache.commons.lang.StringUtils;
-import com.generationjava.convert.Convert;
-import com.generationjava.jndi.util.CustomProperties;
-import com.generationjava.jndi.util.XmlProperties;
+import org.osjava.convert.Convert;
+import org.osjava.jndi.util.CustomProperties;
+import org.osjava.jndi.util.XmlProperties;
 
 public class PropertiesContext implements Context  {
 
@@ -82,8 +82,8 @@ public class PropertiesContext implements Context  {
     public PropertiesContext(Hashtable env) {
         if(env != null) {
             this.env = (Hashtable)env.clone();
-            this.root = (String)this.env.get("com.generationjava.jndi.root");
-            this.delimiter = (String)this.env.get("com.generationjava.jndi.delimiter");
+            this.root = (String)this.env.get("org.osjava.jndi.root");
+            this.delimiter = (String)this.env.get("org.osjava.jndi.delimiter");
             if(this.delimiter == null) {
                 this.delimiter = ".";
             }
@@ -356,7 +356,7 @@ public class PropertiesContext implements Context  {
             throw new InvalidNameException("Properties for "+name+" not found. ");
         }
 
-        if("true".equals(properties.get("com.generationjava.jndi.datasource"))) {
+        if("true".equals(properties.get("org.osjava.jndi.datasource"))) {
 //            System.err.println("Datasource!");
             PropertiesDataSource pds = new PropertiesDataSource(properties, env);
             pds.setName(StringUtils.prechomp(StringUtils.getChomp(name,this.delimiter),this.delimiter));
