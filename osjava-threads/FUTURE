@@ -6,10 +6,9 @@ In Progress:
  * Refactored from TigThreads to OSJava-Threads for proper inclusion
    into the OSJava Framework
  * Integration with Simple-JNDI as part of the above process.
+ * Proper utilization and creation of subcontexts
  
 Further down the road:
- * Implementing SubContexts properly so that each ThreadGroup is essentially
-   a subcontext.
  * Deprecate ExtendedThreadGroup.  We're going to try to function without them
    Completely, instead relying upon ThreadContexts
  * Write Unit Tests for the projects. 
