@@ -151,10 +151,24 @@ public class PropertiesContext implements Context  {
         throw new NamingException("Simple-JNDI incorrectly believes "+key+" is special. ");
     }
 
-    private Object getElement(String key) throws NamingException {
-        if(isSpecialKey(key)) {
-            return getSpecial(key);
+    /**
+     * java:/ is impossible to deal with on a Windows box.
+     * Complete utter pain. Solution is to remove the :
+     */
+    private String handleJavaStandard(String key) {
+        if(key != null) {
+            if(key.equals("java:/")) {
+                return "java/";
+            }
+            if(key.startsWith("java:/")) {
+                return "java/"+key.substring(6);
+            }
         }
+        return key;
+    }
+
+    private Object getElement(String key) throws NamingException {
+        
 //        System.err.println("Asked for: "+key+" via "+this.protocol);
         if(this.protocol == FILE) {
             File file = new File(key);
@@ -307,6 +321,12 @@ public class PropertiesContext implements Context  {
             return System.getProperty(name);
         }
 
+        if(isSpecialKey(name)) {
+            return getSpecial(name);
+        }
+
+        name = handleJavaStandard(name);
+
         // name is a delimited notation, each element is either a 
         // directory, file or part of a key.
         String[] elements = StringUtils.split(name, this.delimiter);
@@ -382,7 +402,7 @@ public class PropertiesContext implements Context  {
         if("true".equals(properties.get("org.osjava.jndi.datasource"))) {
 //            System.err.println("Datasource!");
             PropertiesDataSource pds = new PropertiesDataSource(properties, env, this.delimiter);
-            pds.setName(StringUtils.prechomp(StringUtils.getChomp(name,this.delimiter),this.delimiter));
+            pds.setName(StringUtils.getChomp(StringUtils.chomp(name,this.delimiter),this.delimiter).substring(1));
             return pds;
         }
 
