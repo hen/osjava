@@ -9,7 +9,6 @@
   <body>
     <section name="Future Ideas">
 <ul>
-<li>A downloadable example distribution. </li>
 <li>Allow converters to be configured/plugged in somehow. </li>
 <li>Implement Type in such a way that the object to create may be specified, say JDOPersistenceFactory, and that sub-properties may be set as bean properties.</li>
 <li>Implement binding so that values may be stored in the system, making it Read/Write. </li>
@@ -18,7 +17,6 @@
 <li>Switch to using Names in the system, with the String argument being turned to a Name based on delimiters specified in the jndi.properties. Allow more than one delimiter.</li>
 <li>Other DataSource like things? JDO?</li>
 <li>Allow the root to be a url, so properties can be found online</li>
-<li>Hook up DBCP or some other connection pool.</li>
 <li>Make it nice to hook up Enhanced drivers from DbUtils??</li>
 <li>Confirm that jars and zips may be used in the classpath protocol. </li>
 <li>Add a jdbc implementation underneath for the configuration. </li>
