@@ -113,8 +113,9 @@ public class ContextBindings implements NamingEnumeration {
         if(bindings == null) { 
             return null;
         }
-        String name = (String)iterator.next();
-        return new Binding(name, bindings.get(name));
+        Object name = iterator.next();
+        /* What comes out of the iterator should be a CompoundName */
+        return new Binding((String)name.toString(), bindings.get(name));
     }
 
     /**
