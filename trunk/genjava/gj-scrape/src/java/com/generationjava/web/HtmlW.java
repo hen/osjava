@@ -137,6 +137,8 @@ public class HtmlW {
         return str;
     }
 
+    // add unescape for the html entities
+
     /**
      * Remove any html tags from a String.
      */
