@@ -87,8 +87,19 @@ public class Engine implements Runner {
 
             // parse the data
             Parser parser = ParserFactory.getParser(cfg, session);
+
+            // TODO: do a pre-check to see if it should be parsed?
+            // This would classically be done to stop a parse from 
+            // actually happening. 
+            // QUERY: Call this Checker??
+
             // throws ParsingException
             Result result = parser.parse(page, cfg, session);
+
+            // TODO: do a post-check to see if it should be stored?
+            // This would classically be done to convert the output 
+            // into something else, prior to storing.
+            // QUERY: Call this Converter??
 
             // store the data
             Store store = StoreFactory.getStore(cfg, session);
