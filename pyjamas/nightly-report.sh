@@ -37,7 +37,7 @@ cat header.inc | sed 's/\${TITLE}/Nightly Build/' > $index
 
 echo '<ul id="project_list">' >> $index
 
-columns=4
+columns=3
 ALL=`cat NIGHTLY.txt | awk '{print $2}' | grep -v '^#'`
 all_count=`echo $ALL | wc -w`
 row_count=`echo $all_count/$columns + 1 | bc`
