@@ -41,6 +41,7 @@ public interface Config extends Cloneable {
     public Object getAbsolute(String key);
     public String getString(String key);
     public int getInt(String key);
+    public double getDouble(String key);
     public Date getDate(String key);
     public List getList(String key);
     public void setContext(String context);
