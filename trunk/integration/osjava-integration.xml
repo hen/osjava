@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <integration version="1.0">
-  <site label="OSJava" url="http://www.osjava.org/" css="http://www.osjava.org/css/master.css" logo="http://www.osjava.org/images/osjava.gif"/>
+  <site label="OSJava" url="http://www.osjava.org/" css="http://www.osjava.org/css/master.css" logo="http://www.osjava.org/images/osjava.gif" target="report/osjava"/>
   <buildables>
     <buildable project="genjava/gj-beans" repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
     <buildable project="genjava/gj-config" repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
