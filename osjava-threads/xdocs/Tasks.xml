@@ -1,18 +1,24 @@
 <?xml version="1.0"?>
 <document>
-  <properties>
-    <author email="rzigweid@tigransoft.org">Robert M. Zigweidl</author>
-    <title>Introduction</title>
-  </properties>
-  
-  <body>
-    <section name="Pending Tasks">
-      <p>
-        <ul>
-          <li>Thread Pooling</li>
-          <li>Investigate utilizing JNDI (or even Simple-JNDI) to replace a large portion of ThreadManager</li>
-        </ul>
-      </p>
-    </section>
-  </body>
+    <properties>
+        <author email="rzigweid@tigransoft.org">Robert M. Zigweidl</author>
+        <title>Introduction</title>
+    </properties>
+    <body>
+        <section name="Pending Tasks">
+            <ul><li>Thread Pooling</li>
+            <li>Unit Tests</li>
+            <li>
+                Eliminating ThreadManager and replacing it with ThreadContext.
+            </li>
+            <li>
+                Deprecate ExtendedThreadGroup. We're going to try to function
+                without them completely, instead relying upon ThreadContexts.
+            </li>
+            <li>ThreadNameParser needs to be improved drastically. <ul><li>
+                    Should pay attention to it's environment properties</li>
+                <li>.equals is abysmal and going to be often wrong.</li></ul>
+            </li></ul>
+        </section>
+    </body>
 </document>
