@@ -47,7 +47,6 @@ public interface Page {
 
     // have this be a 'get' for a Fetcher?
     public Page fetch(String uri, Config cfg, Session session) throws FetchingException;
-    public Page fetch(String uri, Map values, Config cfg, Session session) throws FetchingException;
 
     public void setDocumentBase(String documentBase);
     public String getDocumentBase();

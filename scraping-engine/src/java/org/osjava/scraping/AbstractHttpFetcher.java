@@ -31,6 +31,8 @@
  */
 package org.osjava.scraping;
 
+import org.apache.commons.lang.StringUtils;
+
 import org.apache.commons.httpclient.*;
 import org.apache.commons.httpclient.methods.*;
 import java.io.IOException;
@@ -54,11 +56,15 @@ public abstract class AbstractHttpFetcher implements Fetcher {
     protected abstract void startSession(URL url, int port, HttpClient client, Config cfg, Session session);
 
     public Page fetch(String uri, Config cfg, Session session) throws FetchingException {
-        return fetch(uri, null, cfg, session);
-    }
-
-    public Page fetch(String uri, Map values, Config cfg, Session session) throws FetchingException {
         try {
+            String postQuery = null;
+            if(cfg.has("action") && "POST".equalsIgnoreCase(""+cfg.get("action")) ) {
+                int idx = uri.indexOf("?");
+                if(idx != -1) {
+                    postQuery = uri.substring(idx+1);
+                    uri = uri.substring(0, idx);
+                }
+            }
             URL url = new URL(uri);
 
 // TODO: Handle true/false here, rather than just 'has'
@@ -71,16 +77,23 @@ public abstract class AbstractHttpFetcher implements Fetcher {
             HttpClient client = new HttpClient();
             HttpMethod method = null;
 
-            if(values == null) {
-                method = new GetMethod(url.getFile());
-            } else {
+            if(postQuery != null) {
                 PostMethod post = new PostMethod(url.getFile());
-                Iterator itr = values.entrySet().iterator();
-                while(itr.hasNext()) {
-                    Map.Entry entry = (Map.Entry) itr.next();
-                    post.addParameter(entry.getKey().toString(), entry.getValue().toString());
+
+                // split on the &
+                String[] elements = StringUtils.split(postQuery, "&");
+                for(int i=0; i<elements.length; i++) {
+                    // split on the =
+                    String[] keyValue = StringUtils.split(elements[i], "=");
+                    if(keyValue.length == 2) {
+                        post.addParameter( keyValue[0], keyValue[1] );
+                    } else {
+                        System.err.println("Bad post pair: "+elements[i]);
+                    }
                 }
                 method = post;
+            } else {
+                method = new GetMethod(url.getFile());
             }
 
             int port = url.getPort();
