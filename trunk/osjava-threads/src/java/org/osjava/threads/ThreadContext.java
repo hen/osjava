@@ -252,8 +252,7 @@ public class ThreadContext
                   * Wrapping target in ExtendedThread because it's not 
                   * ExtendedRunnable 
                   */
-                 Thread newTarget = new ExtendedThread(target);
-                 newTarget.setName(((Thread)target).getName());
+                 Thread newTarget = new ExtendedThread(target, ((Thread)target).getName());
                  /* Reset the target variable to the new thread. */
                  target = newTarget;
              }
