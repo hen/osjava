@@ -102,6 +102,7 @@ function ts_resortTable(lnk) {
     }
         
     span.innerHTML = ARROW;
+    stripe('report', '#fff', '#edf3fe');
 }
 
 function getParent(el, pTagName) {

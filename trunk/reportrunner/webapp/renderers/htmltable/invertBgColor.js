@@ -27,10 +27,7 @@
 
  function initInvertBgColor(id) {
 
-    // if arguments are provided to specify the colours
-    // of the even & odd rows, then use the them;
-    // otherwise use the following defaults:
-    var selected = arguments[1] ? arguments[1] : "#fff";
+    var defaultSelected = arguments[1] ? arguments[1] : "#dd0";
 
     // obtain a reference to the desired table
     // if no such table exists, abort
@@ -51,8 +48,15 @@
         // ... and iterate through them
         for (var i = 0; i < trs.length; i++) {
                 var tr = trs[i];
-                tr.setAttribute('foo', 'woohah');
                 addEvent(tr, "click", function(event) {
+
+    var selected = document.getElementById('swatch').bgColor;
+    if(selected == null) {
+    selected = defaultSelected;
+    } else {
+    selected = selected.toLowerCase();
+    }
+
                 var td = null;
                 if(event.target == null) { 
                     td = event.srcElement;
@@ -77,6 +81,7 @@
                 } else
                 if(color == selected) {
                     setTrColor(obj, unselected);
+                    obj.removeAttribute('unselected');
                 } else {
                     setTrColor(obj, selected);
                 }
