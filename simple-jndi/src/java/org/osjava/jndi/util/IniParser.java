@@ -38,14 +38,16 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.IOException;
 
+import java.util.Map;
+
 /** 
- * Functionally like the CustomProperties class in that it has 
- * comments and an order, IniProperties reads .ini files. These
+ * Functionally like the CustomParser class in that it has 
+ * comments and an order, IniParser reads .ini files. These
  * implicitly have a two level dotted notation, though any values 
  * not in the two level are treated as simple one levels. 
  * Comments are a semi-colon. 
  */
-public class IniProperties extends AbstractProperties {
+public class IniParser implements Parser {
 
     // TODO: Move this up to AbstractProperties
     private String delimiter = "";
@@ -63,7 +65,7 @@ public class IniProperties extends AbstractProperties {
      * semi-colons are comments. blocks are denoted with square brackets.
      * values are then key=value pairs, with blocks being prepended to keys.
      */
-    public synchronized void load(InputStream in) throws IOException {
+    public synchronized void parse(InputStream in, Map map) throws IOException {
         try {
             BufferedReader reader = new BufferedReader( new InputStreamReader(in) );
             String line = "";
@@ -88,9 +90,9 @@ public class IniProperties extends AbstractProperties {
                 if(idx != -1) {
 if(org.osjava.jndi.PropertiesContext.DEBUG)                    System.err.println("[INI] Loading property: "+line.substring(0,idx)+"="+line.substring(idx+1));
                     if("".equals(block)) {
-                        this.setProperty(line.substring(0,idx), line.substring(idx+1));
+                        map.put(line.substring(0,idx), line.substring(idx+1));
                     } else {
-                        this.setProperty(block+this.delimiter+line.substring(0,idx), line.substring(idx+1));
+                        map.put(block+this.delimiter+line.substring(0,idx), line.substring(idx+1));
                     }
                 } else {
                     // blank line, or just a bad line

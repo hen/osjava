@@ -63,9 +63,11 @@ import org.osjava.convert.Convert;
 import org.osjava.naming.ContextBindings;
 import org.osjava.naming.ContextNames;
 
-import org.osjava.jndi.util.CustomProperties;
-import org.osjava.jndi.util.IniProperties;
-import org.osjava.jndi.util.XmlProperties;
+import org.osjava.jndi.util.Parser;
+import org.osjava.jndi.util.PropertiesParser;
+import org.osjava.jndi.util.IniParser;
+import org.osjava.jndi.util.XmlParser;
+import org.osjava.jndi.util.HierarchicalMap;
 
 /**
  * The heart of the system, the Context for simple-jndi. 
@@ -258,47 +260,49 @@ if(DEBUG)        System.err.println("[CTXT]Getting element "+key+" via "+this.pr
         }
     }
 
-    private Properties loadProperties(Object file) throws NamingException {
-if(DEBUG)        System.err.println("[CTXT]Loading properties from: "+file);
-        Properties properties = null;
+    private HierarchicalMap loadHierarchicalMap(Object file) throws NamingException {
+if(DEBUG)        System.err.println("[CTXT]Loading values from: "+file);
+        Parser parser = null;
         if(file instanceof File) {
             if( ((File)file).getName().endsWith(".xml") ) {
-                properties = new XmlProperties();
-                ((XmlProperties)properties).setDelimiter(this.delimiter);
+                parser = new XmlParser();
+                ((XmlParser)parser).setDelimiter(this.delimiter);
             } else 
             if( ((File)file).getName().endsWith(".ini") ) {
-                properties = new IniProperties();
-                ((IniProperties)properties).setDelimiter(this.delimiter);
+                parser = new IniParser();
+                ((IniParser)parser).setDelimiter(this.delimiter);
             } else {
-                properties = new CustomProperties();
+                parser = new PropertiesParser();
             }
         } else
         if(file instanceof URL) {
             if( ((URL)file).getFile().endsWith(".xml") ) {
-                properties = new XmlProperties();
-                ((XmlProperties)properties).setDelimiter(this.delimiter);
+                parser = new XmlParser();
+                ((XmlParser)parser).setDelimiter(this.delimiter);
             } else
             if( ((URL)file).getFile().endsWith(".ini") ) {
-                properties = new IniProperties();
-                ((IniProperties)properties).setDelimiter(this.delimiter);
+                parser = new IniParser();
+                ((IniParser)parser).setDelimiter(this.delimiter);
             } else
             if( ((URL)file).getFile().endsWith(".properties") ) {
-                properties = new CustomProperties();
+                parser = new PropertiesParser();
             } else {
                 return null;
             }
         } else {
             System.err.println("[CTXT]Warning: Located file was not a File or a URL. ");
-            properties = new CustomProperties();
+            parser = new PropertiesParser();
         }
+
+        HierarchicalMap hmap = new HierarchicalMap(this.delimiter);
 
         if(this.protocol == FILE) {
             try {
 if(DEBUG)                System.err.println("[CTXT]Loading FILE: "+file);
                 FileInputStream fis = new FileInputStream((File)file);
-                properties.load(fis);
+                parser.parse(fis, hmap);
                 fis.close();
-                return properties;
+                return hmap;
             } catch(IOException ioe) {
                 throw new NamingException("Failure to open: "+file);
             }
@@ -307,9 +311,9 @@ if(DEBUG)                System.err.println("[CTXT]Loading FILE: "+file);
             try {
 if(DEBUG)                System.err.println("[CTXT]Loading CLASSPATH: "+file);
                 InputStream fis = ((URL)file).openStream();
-                properties.load(fis);
+                parser.parse(fis, hmap);
                 fis.close();
-                return properties;
+                return hmap;
             } catch(IOException ioe) {
                 throw new NamingException("Failure to open: "+file);
             }
@@ -318,9 +322,9 @@ if(DEBUG)                System.err.println("[CTXT]Loading CLASSPATH: "+file);
             try {
 if(DEBUG)                System.err.println("[CTXT]Loading HTTP: "+file);
                 InputStream fis = ((URL)file).openStream();
-                properties.load(fis);
+                parser.parse(fis, hmap);
                 fis.close();
-                return properties;
+                return hmap;
             } catch(IOException ioe) {
                 throw new NamingException("Failure to open: "+file);
             }
@@ -339,7 +343,7 @@ if(DEBUG)        System.err.println("[CTXT]Deciding if this is a directory-> "+f
             // how to figure out if this is a directory?
             // could use reflection, currently we'll copy the http solution
             try { 
-                Properties props = loadProperties(file);
+                HierarchicalMap props = loadHierarchicalMap(file);
                 if(props == null) {
                     return true;
                 } else {
@@ -366,7 +370,7 @@ if(DEBUG)                System.err.println("[CTXT]Unknown exception: "+e);
         if(this.protocol == HTTP) {
             // how the hell do we know a directory online???
             try { 
-                Properties props = loadProperties(file);
+                HierarchicalMap props = loadHierarchicalMap(file);
                 if(props == null) {
                     // TODO: Test against a server that disallows directory viewing
                     // file ought to be URL here anyway
@@ -428,7 +432,7 @@ if(DEBUG)       System.err.println("[CTXT]HTTPException? :"+e);
         // directory, file or part of a key.
         String[] elements = PropertiesContext.split(name, this.delimiter);
         String path = root;
-        Properties properties = null;
+        HierarchicalMap hmap = null;
         int sz = elements.length;
         String remaining = null;
 
@@ -451,7 +455,7 @@ if(DEBUG)                System.err.println("[CTXT]Found directory. ");
             }
             if(file != null) {
                 path = path+this.separator+element;
-                properties = loadProperties(file);
+                hmap = loadHierarchicalMap(file);
 
                 // build the rest of the list
                 java.util.ArrayList list = new java.util.ArrayList();
@@ -479,8 +483,8 @@ if(DEBUG)                System.err.println("[CTXT]Remaining2: "+remaining);
             }
         }
 
-        if(properties == null) {
-            //  if properties is null, then we look for default.properties
+        if(hmap == null) {
+            //  if hmap is null, then we look for default.properties
             Object file = getElement(path+this.separator+"default.properties");
             if(file == null) {
                 file = getElement(path+this.separator+"default.xml");
@@ -489,20 +493,20 @@ if(DEBUG)                System.err.println("[CTXT]Remaining2: "+remaining);
                 file = getElement(path+this.separator+"default.ini");
             }
             if(file != null) {
-                properties = loadProperties(file);
+                hmap = loadHierarchicalMap(file);
             }
         }
 
-       // We have a Properties object by now, or should.
+       // We have a HierarchicalMap object by now, or should.
 
        // TODO: If not, should we attempt to search up the tree?
        // For example, in classpath, com.genjava, com is a directory. 
        // if genjava doesn't exist, it should look for com.genjava as a 
        // key in the parent directory, ad infinitum
 
-        if(properties == null) {
+        if(hmap == null) {
             // unable to find default
-            throw new InvalidNameException("Properties for "+name+" not found. ");
+            throw new InvalidNameException("HierarchicalMap for "+name+" not found. ");
         }
 
         // TODO: Rewrite this block. Not enough grokk. Very badly grokked.
@@ -511,12 +515,12 @@ if(DEBUG)                System.err.println("[CTXT]Remaining2: "+remaining);
             typeLookup = remaining + this.delimiter + typeLookup;
         }
 if(DEBUG)        System.err.println("[CTXT]Type-lookup: " + typeLookup);
-if(DEBUG)        System.err.println("[CTXT]DS-type? : " + properties.getProperty(typeLookup));
-if(DEBUG)        System.err.println("[CTXT]DS-properties : " + properties);
-        if( "javax.sql.DataSource".equals(properties.getProperty(typeLookup)) ) 
+if(DEBUG)        System.err.println("[CTXT]DS-type? : " + hmap.get(typeLookup));
+if(DEBUG)        System.err.println("[CTXT]DS-hmap : " + hmap);
+        if( "javax.sql.DataSource".equals(hmap.get(typeLookup)) ) 
         {
 if(DEBUG)            System.err.println("[CTXT]Found Datasource!");
-            PropertiesDataSource pds = new PropertiesDataSource(properties, env, this.delimiter);
+            PropertiesDataSource pds = new PropertiesDataSource(hmap, env, this.delimiter);
             String dsName = null;   // never remaining???;
             if(dsName == null) {
                 // wants to be the path without the root
@@ -557,16 +561,16 @@ if(DEBUG)            System.err.println("[CTXT]Blanking datasource name. ");
 
 if(DEBUG)        System.err.println("[CTXT]remaining: "+remaining);
         if(remaining == null) {
-            return properties;
+            return hmap;
         }
 
-        Object answer = properties.get(remaining);
+        Object answer = hmap.get(remaining);
 
         if(answer == null) {
             throw new InvalidNameException(""+name+" not found. ");
         } else {
-            if(properties.containsKey(remaining+this.delimiter+"type")) {
-                String type = properties.getProperty(remaining+this.delimiter+"type");
+            if(hmap.containsKey(remaining+this.delimiter+"type")) {
+                String type = (String) hmap.get(remaining+this.delimiter+"type");
                 if(answer instanceof List) {
                     List list = (List)answer;
                     for(int i=0; i<list.size(); i++) {
