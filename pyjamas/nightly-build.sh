@@ -12,7 +12,7 @@ then
     export SCM=SVN
 fi
 
-rm -f LAST_BUILD SVN_UPDATE REASON
+rm -f LAST_BUILD SCM_UPDATE REASON
 buildDir=`pwd`
 
 if [ "x$1x" != "xx" ];
@@ -50,7 +50,7 @@ then
                     then
                         LIST="$LIST $i"
 #BUG: this does not quite work as we now put these all in the same file and they don't contain the project name
-                        svn update | grep -v '^?' >> $buildDir/SVN_UPDATE
+                        svn update | grep -v '^?' >> $buildDir/SCM_UPDATE
                     fi
                     cd -
                 fi
@@ -60,7 +60,7 @@ then
         then
             cat NIGHTLY.txt | awk '{print $2}' > tmp.NIGHTLY.txt
             LIST=`cvs -nq update 2>/dev/null | grep -v '^\?' | grep -v '^A' | grep -v '^M' | grep -v 'Status against revision' | awk '{print $2}' | grep -o -f tmp.NIGHTLY.txt  | sort -u`
-            cvs -q update 2>/dev/null | grep -v '^?' > SVN_UPDATE
+            cvs -q update 2>/dev/null | grep -v '^?' > SCM_UPDATE
             rm tmp.NIGHTLY.txt
         fi
     else
@@ -159,9 +159,9 @@ do
         mv target/$i*.jar $reportDir/$i/$i-`date +%Y%m%d`.jar
     fi
     date +"%Y/%m/%d %k:%M" > $reportDir/$i/BUILD_TIME
-    if [ -e $buildDir/SVN_UPDATE ];
+    if [ -e $buildDir/SCM_UPDATE ];
     then
-        cat $buildDir/SVN_UPDATE | grep $i > $reportDir/$i/REASON
+        cat $buildDir/SCM_UPDATE | grep $i > $reportDir/$i/REASON
     fi
     if [ -e $buildDir/REASON ];
     then
