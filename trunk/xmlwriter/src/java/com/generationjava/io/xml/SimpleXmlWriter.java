@@ -201,10 +201,11 @@ public class SimpleXmlWriter extends AbstractXmlWriter {
 
     /**
      * Close this writer. It does not close the underlying 
-     * writer, but does throw an exception if there are 
-     * as yet unclosed tags.
+     * writer, but does flush it and throw an exception if 
+     * there are as yet unclosed tags.
      */
     public void close() throws IOException {
+        this.writer.flush();
         if(!this.stack.empty()) {
             throw new IOException("Tags are not all closed. "+
                 "Possibly, "+this.stack.pop()+" is unclosed. ");
