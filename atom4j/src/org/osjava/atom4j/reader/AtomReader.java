@@ -18,11 +18,10 @@ package org.osjava.atom4j.reader;
 import org.apache.commons.digester.Digester;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.osjava.atom4j.digester.ContentRule;
-import org.osjava.atom4j.pojo.Content;
+import org.osjava.atom4j.digester.ContentRuleSet;
+import org.osjava.atom4j.digester.LinkRuleSet;
+import org.osjava.atom4j.digester.PersonRuleSet;
 import org.osjava.atom4j.pojo.Entry;
-import org.osjava.atom4j.pojo.Link;
-import org.osjava.atom4j.pojo.Person;
 import org.xml.sax.SAXException;
 
 import java.io.ByteArrayInputStream;
@@ -37,7 +36,7 @@ public abstract class AtomReader
 {
     protected Digester digester = null;
     protected InputStream input = null;
-    
+
     protected static Log logger = 
        LogFactory.getFactory().getInstance(AtomReader.class);
 
@@ -104,7 +103,7 @@ public abstract class AtomReader
         catch (IOException e)
         {
             // huh? Why is this happening?
-            logger.error(e);
+            logger.info(e);
         }
         catch (SAXException e)
         {
@@ -122,89 +121,27 @@ public abstract class AtomReader
 	{
 	    String entryPath = parent + "entry";
 	    digester.addObjectCreate(entryPath, Entry.class.getName());
-	    
-	    configureContentDigester(digester, entryPath + "/title", "setTitle", "</title>");
+
+        digester.addRuleSet(new ContentRuleSet(entryPath + "/title", "setTitle"));
         
 	    digester.addCallMethod(entryPath + "/issued",   "setIssued", 0);
 	    digester.addCallMethod(entryPath + "/created",  "setCreated", 0);
 	    digester.addCallMethod(entryPath + "/modified", "setModified", 0);
-	    digester.addCallMethod(entryPath + "/id",       "setId", 0);
-	
-	    configureLinkDigester(digester, entryPath + "/link");
-	
-	    configurePersonDigester(digester, entryPath + "/author", "setAuthor");
+	    
+        digester.addBeanPropertySetter(entryPath + "/id");
 
-        configurePersonDigester(digester, entryPath + "/contributor", "addContributor");
-	
-	    configureContentDigester(digester, entryPath + "/content", "setContent", "</content>");
-        configureContentDigester(digester, entryPath + "/content/content", "addContent", "</content>");
-	
-	    configureContentDigester(digester, entryPath + "/summary", "setSummary", "</summary>");
+        digester.addRuleSet(new LinkRuleSet(entryPath + "/link"));
+
+        digester.addRuleSet(new PersonRuleSet(entryPath + "/author", "setAuthor"));
+
+        digester.addRuleSet(new PersonRuleSet(entryPath + "/contributor", "addContributor"));
+
+        digester.addRuleSet(new ContentRuleSet(entryPath + "/content", "setContent"));
+        digester.addRuleSet(new ContentRuleSet(entryPath + "/content/content", "addContent"));
+
+        digester.addRuleSet(new ContentRuleSet(entryPath + "/summary", "setSummary"));
 	
 	    digester.addSetNext(entryPath, "addEntry",  Entry.class.getName());
 	}
 
-	/**
-     * Configure digester to add a Link as defined by linkPath.
-     * 
-	 * @param digester
-	 * @param linkPath
-	 */
-	protected void configureLinkDigester(Digester digester, String linkPath)
-	{
-		digester.addObjectCreate( linkPath, Link.class.getName());
-	    digester.addSetProperties(linkPath);
-	    digester.addSetNext(linkPath, "addLink", Link.class.getName());
-	}
-
-	/**
-     * Configure digester to add a Person as defined by personPath, 
-     * calling the method defined by setMethod.
-     * 
-	 * @param digester
-	 * @param personPath
-     * @param setMethod
-	 */
-	protected void configurePersonDigester(
-            Digester digester, String personPath, String setMethod)
-	{
-		digester.addObjectCreate(personPath,    Person.class.getName());
-	    digester.addCallMethod(personPath + "/name", "setName", 0);
-	    digester.addCallMethod(personPath + "/url",  "setUrl", 0);
-	    digester.addCallMethod(personPath + "/email","setEmail", 0);
-	    digester.addSetNext(personPath, setMethod, Person.class.getName());
-	}
-
-	/**
-     * Configure digester to add a Content object as defined by contentPath,
-     * calling the defined setMethod.  Note: the ContentRule class
-     * requires that the closing tag for the Content be defined.
-     * 
-	 * @param digester
-	 * @param contentPath
-     * @param setMethod
-     * @param closeContent The closign tag for the Content identified
-     * by the path.
-	 */
-	protected void configureContentDigester(
-			Digester digester, String contentPath, 
-            String setMethod, String closeContent)
-	{
-		digester.addObjectCreate( contentPath, Content.class.getName());
-	    digester.addSetProperties(contentPath, "type",     "mimeType");
-	    digester.addSetProperties(contentPath, "xml:lang", "language");
-	    digester.addRule(contentPath, new ContentRule(closeContent));
-	    digester.addSetNext(contentPath, setMethod, Content.class.getName());
-	}
-
-    protected void configureNestedContentDigester(
-            Digester digester, String contentPath, 
-            String setMethod, String closeContent)
-    {
-        digester.addObjectCreate( contentPath, Content.class.getName());
-        digester.addSetProperties(contentPath, "type",     "mimeType");
-        digester.addSetProperties(contentPath, "xml:lang", "language");
-        digester.addRule(contentPath, new ContentRule(closeContent));
-        digester.addSetTop(contentPath, setMethod, Content.class.getName());
-    }
 }

@@ -33,14 +33,11 @@ public class ContentRule extends Rule
     
     public ContentRule() {}
 
-    public ContentRule(String closingTag)
-    {
-		this.closingTag = closingTag;
-	}
-
 	public void begin(String namespace, String name, Attributes attributes)
 		throws java.lang.Exception
 	{
+        closingTag = "</" + name + ">";
+        
 		// Set up a new content handler to work in these situations..
 		// The content handler will be responsible for setting back the current
 		// content handler so we can resume the normally scheduled program
