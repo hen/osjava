@@ -8,6 +8,13 @@
 
   <body>
     <section name="News">
+    <p>Version 0.5 has been released, as of 2003-04-08. The biggest change was in the move from the 'com.generationjava' namespace to the 'org.osjava' namespace, and an accompanying change in look and feel to the site. However, the following features were also added: </p>
+<ul>
+<li>Boolean and URL Converters added. </li>
+<li>Values in the System properties [ie) -Dfoo.bar=baa] now override simple-jndi. </li>
+<li>Values may now be bound to the JNDI space, where they override the configured simple-jndi properties. When removed, the value goes back to the simple-jndi default. </li>
+</ul>
+<hr />
     <p>Version 0.4 has been released, as of 2003-02-27. The following features were added: </p>
 <ul>
 <li>com.foo.Value can have a partner key of com.foo.Value.type which specifies the type of object to use for the key. While this system will be pluggable, currently it supports java.lang.Number only.</li>
