@@ -17,6 +17,15 @@ public class ReportFactory {
         }
         return null;
     }
+    public static ReportGroup getReportGroup(String groupName) {
+        ReportGroup[] groups = getReportGroups();
+        for(int i=0; i<groups.length; i++) {
+            if(groups[i].getName().equals(groupName)) {
+                return groups[i];
+            }
+        }
+        return null;
+    }
     public static ReportGroup[] getReportGroups() {
         List groups = new ArrayList();
         XMLNode node = parseXml("reportrunner.xml").getNode("reportrunner");
@@ -30,13 +39,7 @@ public class ReportFactory {
         return (ReportGroup[]) groups.toArray( new ReportGroup[0] );
     }
     public static Report[] getReports(String groupName) {
-        ReportGroup[] groups = getReportGroups();
-        ReportGroup group = null;
-        for(int i=0; i<groups.length; i++) {
-            if(groups[i].getName().equals(groupName)) {
-                group = groups[i];
-            }
-        }
+        ReportGroup group = getReportGroup(groupName);
         if(group == null) {
             throw new RuntimeException("Illegal group somehow chosen. ");
         }
