@@ -90,46 +90,56 @@ public class PropertiesContext implements Context  {
             this.env = (Hashtable)env.clone();
             this.root = (String)this.env.get("org.osjava.jndi.root");
             this.delimiter = (String)this.env.get("org.osjava.jndi.delimiter");
-            if(this.delimiter == null) {
-                this.delimiter = ".";
-            }
-            this._root = this.root;
-            this._delimiter = this.delimiter;
+        }
 
-            // Work out the protocol of the root
-            // No root means we're using a classpath protocol,
-            // no protocol means we're using file protocol [legacy]
-            if(root != null) {
-                int idx = root.indexOf("://");
-                if(idx != -1) {
-                    String proto = root.substring(0,idx);
-                    this.root = root.substring(idx + 3);
-                    if("file".equals(proto)) {
-                        this.protocol = FILE;
-                        this.separator = ""+File.separatorChar;
-                    } else
-                    if("http".equals(proto)) {
-                        this.protocol = HTTP;
-                        this.separator = ""+File.separatorChar;
-                    } else 
-                    if("classpath".equals(proto)) {
-                        this.protocol = CLASSPATH;
-                        this.separator = "/";
-                    }
-                } else {
+        // let System properties override the jndi.properties file
+        if(System.getProperty("org.osjava.jndi.root") != null) {
+            this.root = System.getProperty("org.osjava.jndi.root");
+        }
+        if(System.getProperty("org.osjava.jndi.delimiter") != null) {
+            this.delimiter = System.getProperty("org.osjava.jndi.delimiter");
+        }
+
+        if(this.delimiter == null) {
+            this.delimiter = ".";
+        }
+        this._root = this.root;
+        this._delimiter = this.delimiter;
+
+        // Work out the protocol of the root
+        // No root means we're using a classpath protocol,
+        // no protocol means we're using file protocol [legacy]
+        if(root != null) {
+            int idx = root.indexOf("://");
+            if(idx != -1) {
+                String proto = root.substring(0,idx);
+                this.root = root.substring(idx + 3);
+                if("file".equals(proto)) {
                     this.protocol = FILE;
                     this.separator = ""+File.separatorChar;
+                } else
+                if("http".equals(proto)) {
+                    this.protocol = HTTP;
+                    this.separator = ""+File.separatorChar;
+                } else 
+                if("classpath".equals(proto)) {
+                    this.protocol = CLASSPATH;
+                    this.separator = "/";
                 }
             } else {
-                this.protocol = CLASSPATH;
-                this.separator = "/";
-                this.root = "";
+                this.protocol = FILE;
+                this.separator = ""+File.separatorChar;
             }
+        } else {
+            this.protocol = CLASSPATH;
+            this.separator = "/";
+            this.root = "";
+        }
 
 if(DEBUG)            System.err.println("[CTXT]Protocol  is: "+this.protocol);
 if(DEBUG)            System.err.println("[CTXT]Root      is: "+this.root);
 if(DEBUG)            System.err.println("[CTXT]separator is: "+this.separator);
-        }
+
     }
 
     private PropertiesContext(PropertiesContext that) {
