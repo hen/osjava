@@ -103,6 +103,18 @@ do
         cat junit-report.xml | sed 's/document>/html>/' | sed 's/properties>/head>/' | sed 's/<\/section>//' | sed 's/<\/subsection>//' | sed 's/<section name="\([^"]*\)"/<h1>\1<\/h1/' | sed 's/<subsection name="\([^"]*\)"/<h2>\1<\/h2/' > junit-report.html
     fi
 
+    if [ -f simian-report.xml ];
+    then
+        echo "<li><a href='$i/simian-report.xml'>simian</a></li>" >> $report
+        cat simian-report.xml | sed 's/document>/html>/' | sed 's/properties>/head>/' | sed 's/<\/section>//' | sed 's/<\/subsection>//' | sed 's/<section name="\([^"]*\)"/<h1>\1<\/h1/' | sed 's/<subsection name="\([^"]*\)"/<h2>\1<\/h2/' > simian-report.html
+    fi
+
+    if [ -f jdepend-report.xml ];
+    then
+        echo "<li><a href='$i/jdepend-report.xml'>jdepend</a></li>" >> $report
+        cat jdepend-report.xml | sed 's/document>/html>/' | sed 's/properties>/head>/' | sed 's/<\/section>//' | sed 's/<\/subsection>//' | sed 's/<section name="\([^"]*\)"/<h1>\1<\/h1/' | sed 's/<subsection name="\([^"]*\)"/<h2>\1<\/h2/' > jdepend-report.html
+    fi
+
     echo '</ul>' >> $report
 
     echo '<hr>' >> $report
