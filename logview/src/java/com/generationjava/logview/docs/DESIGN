@@ -1,0 +1,33 @@
+LogSource+LogBuilder--> Log
+                          LogIterator--> LogEvent
+                                           LogField
+                                             LogType
+
+LogViewException (needed??)
+
+Log -> Loglet {, Loglet ... } -> Log
+Log -> Reportlet -> Report
+
+Report -> Renderer => Some form of specific output
+
+
+
+
+QUESTIONS?
+==========
+
+Should Reportlet's be Pipeable? 
+
+How would one create say a TableReport, and then sort it by a 
+column somehow. Would a BarChartReport or a PieChartReport be 
+sortable? Equally, is a BarChart different to a PieChart or Table?
+
+  YES. BarChart is different. etc.
+
+Or create a TableReport with counts in it and then show it in a 
+percent way?  THIS IS A LOGLET. PercentLoglet?
+
+Should a Log have a LogEvent called header? How 
+would a Reportlet know about this?
+
+
