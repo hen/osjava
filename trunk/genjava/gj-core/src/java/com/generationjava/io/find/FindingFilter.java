@@ -88,22 +88,31 @@ public class FindingFilter implements FileFilter {
             return new SizeFilter(option, argument);
         }
         if( option.equals(Finder.NAME) ) {
-            return new NameFilter(option, argument, false);
+            return new NameFilter(option, argument, false, true);
         }
         if( option.equals(Finder.INAME) ) {
-            return new NameFilter(option, argument, true);
+            return new NameFilter(option, argument, true, true);
+        }
+        if( option.equals(Finder.NNAME) ) {
+            return new NameFilter(option, argument, false, false);
         }
         if( option.equals(Finder.PATH) ) {
-            return new PathFilter(option, argument, false);
+            return new PathFilter(option, argument, false, true);
         }
         if( option.equals(Finder.IPATH) ) {
-            return new PathFilter(option, argument, true);
+            return new PathFilter(option, argument, true, true);
+        }
+        if( option.equals(Finder.NPATH) ) {
+            return new PathFilter(option, argument, false, false);
         }
         if( option.equals(Finder.REGEX) ) {
-            return new RegexFilter(option, argument, false);
+            return new RegexFilter(option, argument, false, true);
         }
         if( option.equals(Finder.IREGEX) ) {
-            return new RegexFilter(option, argument, true);
+            return new RegexFilter(option, argument, true, true);
+        }
+        if( option.equals(Finder.NREGEX) ) {
+            return new RegexFilter(option, argument, false, false);
         }
         if( option.equals(Finder.TYPE) ) {
             return new TypeFilter(option, argument);
@@ -222,16 +231,18 @@ class NameFilter implements FileFilter {
     private Object option;
     private Object argument;
     private boolean ignoreCase;
-    public NameFilter(Object option, Object argument, boolean ignoreCase) {
+    private boolean result;
+    public NameFilter(Object option, Object argument, boolean ignoreCase, boolean result) {
         this.option = option;
         this.argument = argument;
         this.ignoreCase = ignoreCase;
+        this.result = result;
     }
     public boolean accept(File file) {
         if(this.ignoreCase) {
-            return WildcardUtils.match(file.getName().toLowerCase(), this.argument.toString().toLowerCase());
+            return WildcardUtils.match(file.getName().toLowerCase(), this.argument.toString().toLowerCase()) == result;
         } else {
-            return WildcardUtils.match(file.getName(), this.argument.toString());
+            return WildcardUtils.match(file.getName(), this.argument.toString()) == result;
         }
     }
 }
@@ -240,16 +251,18 @@ class PathFilter implements FileFilter {
     private Object option;
     private Object argument;
     private boolean ignoreCase;
-    public PathFilter(Object option, Object argument, boolean ignoreCase) {
+    private boolean result;
+    public PathFilter(Object option, Object argument, boolean ignoreCase, boolean result) {
         this.option = option;
         this.argument = argument;
         this.ignoreCase = ignoreCase;
+        this.result = result;
     }
     public boolean accept(File file) {
         if(this.ignoreCase) {
-            return WildcardUtils.match(file.getPath().toLowerCase(), this.argument.toString().toLowerCase());
+            return WildcardUtils.match(file.getPath().toLowerCase(), this.argument.toString().toLowerCase()) == result;
         } else {
-            return WildcardUtils.match(file.getPath(), this.argument.toString());
+            return WildcardUtils.match(file.getPath(), this.argument.toString()) == result;
         }
     }
 }
@@ -258,18 +271,20 @@ class RegexFilter implements FileFilter {
     private Object option;
     private Object argument;
     private boolean ignoreCase;
-    public RegexFilter(Object option, Object argument, boolean ignoreCase) {
+    private boolean result;
+    public RegexFilter(Object option, Object argument, boolean ignoreCase, boolean result) {
         this.option = option;
         this.argument = argument;
         this.ignoreCase = ignoreCase;
+        this.result = result;
     }
     public boolean accept(File file) {
         if(this.ignoreCase) {
             Pattern pattern = Pattern.compile(this.argument.toString(), Pattern.CASE_INSENSITIVE);
             Matcher matcher = pattern.matcher(file.getPath());
-            return matcher.matches();
+            return matcher.matches() == result;
         } else {
-            return file.getPath().matches(this.argument.toString());
+            return file.getPath().matches(this.argument.toString()) == result;
         }
     }
 }

@@ -49,6 +49,7 @@ public interface Finder {
     public static final Object DEPTH = "DEPTH";
     public static final Object MAXDEPTH = "MAXDEPTH";
     public static final Object MINDEPTH = "MINDEPTH";
+    public static final Object IGNORE_HIDDEN_DIRS = "IGNORE_HIDDEN_DIRS";
 
     // Time based tests
     public static final Object MIN = "MIN";
@@ -62,10 +63,13 @@ public interface Finder {
     // name based tests
     public static final Object NAME = "NAME";
     public static final Object INAME = "INAME";
+    public static final Object NNAME = "NNAME";
     public static final Object PATH = "PATH";
     public static final Object IPATH = "IPATH";
+    public static final Object NPATH = "NPATH";
     public static final Object REGEX = "REGEX";
     public static final Object IREGEX = "IREGEX";
+    public static final Object NREGEX = "NREGEX";
 
     // type of file
     public static final Object TYPE = "TYPE";      // supports 'd' and 'f'
