@@ -6,13 +6,13 @@
   <name>scraping-engine</name>
   <currentVersion>0.1</currentVersion>
   <organization>
-    <name>GenerationJava</name>
-    <url>http://www.generationjava.com/</url>
-    <logo>/images/initials.jpg</logo>
+    <name>OSJava</name>
+    <url>http://www.osjava.org/</url>
+    <logo>/images/osjava.gif</logo>
   </organization>
   <inceptionYear>2003</inceptionYear>
   <package>com.generationjava.jndi</package>
-  <logo>/images/core-logo.jpg</logo>
+  <logo>/images/1x1.gif</logo>
   
   <!-- Gump integration -->
   <gumpRepositoryId>scraping-engine</gumpRepositoryId>
