@@ -33,8 +33,18 @@ package org.osjava.scraping;
 
 public interface Store {
 
+    /**
+     * Place the Result in a store of some kind. 
+     * This store does not have to be persistent, it could 
+     * be memory-based or the screen. 
+     */
     public void store(Result result, Config cfg, Session session) throws StoringException;
 
+    /**
+     * Does this Header for a possible Result exist already?
+     * This is designed to try and stop parsing of stuff 
+     * already parsed, though it's not implemented yet. 
+     */
     public boolean exists(Header header, Config cfg, Session session) throws StoringException;
 
 }
