@@ -51,9 +51,6 @@ public class PayloadExtractor {
         String jarName = jarFile.substring( 0, jarFile.length() - 4 );
         System.out.print(".");
 
-        // TODO: check arguments. There can be a -d to specify target dir
-        System.out.print(".");
-
         Properties props = null;
         if(args.length == 0) {
             System.err.println("\nNo properties file specified, will output without interpolation. ");
