@@ -16,60 +16,53 @@
 package org.osjava.atom4j.pojo;
 
 /**
- * Created on Aug 22, 2003
- * @author llavandowska
+ * Created on Feb 14, 2004
+ * @author Lance
  */
-public class Author
+public class Generator
 {
-    private String name;
-    private String url = null;
-    private String email = null;
-    /**
-     * @return
-     */
+    private String content;
+    private String url;
+    private String version;
+
+    public String getContent()
+    {
+        return content;
+    }
+
     public String getUrl()
     {
         return url;
     }
 
-    /**
-     * @return
-     */
-    public String getName()
+    public String getVersion()
     {
-        return name;
+        return version;
     }
 
-    /**
-     * @return
-     */
-    public String getEmail()
+    public void setContent(String string)
     {
-        return email;
+        content = string;
     }
 
-    /**
-     * @param string
-     */
     public void setUrl(String string)
     {
-        url= string;
+        url = string;
     }
 
-    /**
-     * @param string
-     */
-    public void setName(String string)
+    public void setVersion(String string)
     {
-        name= string;
+        version = string;
     }
-
-    /**
-     * @param string
-     */
-    public void setEmail(String string)
+    
+    public String toString()
     {
-        email= string;
+        StringBuffer buf = new StringBuffer("<generator");
+        if (version != null) buf.append(" version=\"").append(version).append("\"");
+        if (url != null) buf.append(" url=\"").append(url).append("\"");
+        buf.append(">");
+        if (content != null) buf.append(content);
+        buf.append("</generator>\n");
+        return buf.toString();
     }
-
 }

@@ -18,41 +18,20 @@ package org.osjava.atom4j.pojo;
 import org.osjava.atom4j.Atom4J;
 
 /**
- * @deprecated
- * 
- * Created on Aug 23, 2003
+ * Created on Aug 22, 2003
  * @author llavandowska
  */
-public class UserPreferences
+public class Person
 {
     private String name;
-    private String id;
-    private String email;
-    
-    public String toString()
-    {
-        StringBuffer buf = new StringBuffer("<userprefs xmlns=\"" + Atom4J.xmlns + "\">\n");
-        buf.append("    <name>Reilly</name>\n");
-        buf.append("    <id>1234</id>\n");
-        buf.append("    <email>reilly@example.org</email>\n");
-        buf.append("</userprefs>\n");
-        return buf.toString();
-    }
-    
+    private String url = null;
+    private String email = null;
     /**
      * @return
      */
-    public String getEmail()
+    public String getUrl()
     {
-        return email;
-    }
-
-    /**
-     * @return
-     */
-    public String getId()
-    {
-        return id;
+        return url;
     }
 
     /**
@@ -64,19 +43,19 @@ public class UserPreferences
     }
 
     /**
-     * @param string
+     * @return
      */
-    public void setEmail(String string)
+    public String getEmail()
     {
-        email= string;
+        return email;
     }
 
     /**
      * @param string
      */
-    public void setId(String string)
+    public void setUrl(String string)
     {
-        id= string;
+        url= string;
     }
 
     /**
@@ -85,6 +64,28 @@ public class UserPreferences
     public void setName(String string)
     {
         name= string;
+    }
+
+    /**
+     * @param string
+     */
+    public void setEmail(String string)
+    {
+        email= string;
+    }
+
+    /**
+     * @param string tag could be "author" or "contributor"
+     * @return
+     */
+    public String toString(String tag)
+    {
+        StringBuffer buf = new StringBuffer("<").append(tag).append(">\n");
+        if (name != null) buf.append("    ").append(Atom4J.simpleTag(name, "name"));
+        if (email != null) buf.append("    ").append(Atom4J.simpleTag(email, "email"));
+        if (url != null) buf.append("    ").append(Atom4J.simpleTag(url, "url")); 
+        buf.append("</").append(tag).append(">\n");
+        return buf.toString();
     }
 
 }

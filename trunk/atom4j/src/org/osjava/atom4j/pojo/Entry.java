@@ -1,35 +1,50 @@
 /*
- * Created on Aug 22, 2003
+ *   Copyright 2003-2004 Lance Lavandowska
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License");
+ *   you may not use this file except in compliance with the License.
+ *   You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   Unless required by applicable law or agreed to in writing, software
+ *   distributed under the License is distributed on an "AS IS" BASIS,
+ *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *   See the License for the specific language governing permissions and
+ *   limitations under the License.
  */
 package org.osjava.atom4j.pojo;
 
-import java.text.ParseException;
-import java.util.Date;
-
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.osjava.atom4j.Atom4J;
-import org.osjava.atom4j.reader.EntryReader;
+
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
 
 /**
+ * Created on Aug 22, 2003
  * @author llavandowska
  */
 public class Entry
 {
-    private String title;
-    private String summary;
-    private Author author = new Author();  // don't want to risk this being null
+    private String id;
+    private Content title;
+    private Content summary;
+    private Content content;
+    private Person author = new Person();
+    private Collection contributors;
+    private Collection links;
+        // Link for editing GET/PUT/DELETE - service.edit
+        // Link for POSTing a Comment - service.post  
+        // Links for GETting next/prev/start entries
     
     private Date issued;
     private Date created;
     private Date modified;
-    
-    private String link;
-    private String id;
-    private String comment; // url for posting comments
-    private Content content = new Content(); // don't want to risk this being null   
-    
+        
     private static Log logger = 
        LogFactory.getFactory().getInstance(Entry.class);    
     
@@ -37,7 +52,7 @@ public class Entry
     {
         try
         {
-            issued = EntryReader.READ_ISO8601_FORMAT.parse(str);
+            issued = Atom4J.READ_ISO8601_FORMAT.parse(str);
         }
         catch (ParseException e)
         {
@@ -49,7 +64,7 @@ public class Entry
     {
         try
         {
-            created = EntryReader.READ_ISO8601_FORMAT.parse(str);
+            created = Atom4J.READ_ISO8601_FORMAT.parse(str);
         }
         catch (ParseException e)
         {
@@ -61,7 +76,7 @@ public class Entry
     {
         try
         {
-            modified = EntryReader.READ_ISO8601_FORMAT.parse(str);
+            modified = Atom4J.READ_ISO8601_FORMAT.parse(str);
         }
         catch (ParseException e)
         {
@@ -72,7 +87,7 @@ public class Entry
     /**
      * @return
      */
-    public Author getAuthor()
+    public Person getAuthor()
     {
         return author;
     }
@@ -112,14 +127,6 @@ public class Entry
     /**
      * @return
      */
-    public String getLink()
-    {
-        return link;
-    }
-
-    /**
-     * @return
-     */
     public Date getModified()
     {
         return modified;
@@ -128,7 +135,7 @@ public class Entry
     /**
      * @return
      */
-    public String getSummary()
+    public Content getSummary()
     {
         return summary;
     }
@@ -136,7 +143,7 @@ public class Entry
     /**
      * @return
      */
-    public String getTitle()
+    public Content getTitle()
     {
         return title;
     }
@@ -144,7 +151,7 @@ public class Entry
     /**
      * @param author
      */
-    public void setAuthor(Author author)
+    public void setAuthor(Person author)
     {
         this.author= author;
     }
@@ -182,14 +189,6 @@ public class Entry
     }
 
     /**
-     * @param string
-     */
-    public void setLink(String string)
-    {
-        link= string;
-    }
-
-    /**
      * @param date
      */
     public void setModified(Date date)
@@ -200,74 +199,105 @@ public class Entry
     /**
      * @param string
      */
-    public void setSummary(String string)
+    public void setSummary(Content content)
     {
-        summary= string;
+        summary= content;
     }
 
     /**
      * @param string
      */
-    public void setTitle(String string)
+    public void setTitle(Content content)
     {
-        title= string;
+        title= content;
     }
-
-    /**
-     * @return
-     */
-    public String getComment()
-    {
-        return comment;
-    }
-
-    /**
-     * @param string
-     */
-    public void setComment(String string)
-    {
-        comment= string;
-    }
-    
+        
     public static String noNull(String str)
     {
         if (str == null) return "";
         return str;
     }
 
+    public Collection getContributors()
+    {
+        return contributors;
+    }
+
+    public void setContributors(Collection persons)
+    {
+        contributors = persons;
+    }
+    
+    public void addContributor(Person person)
+    {
+        if (contributors == null) contributors = new ArrayList();
+        contributors.add(person);
+    }
+
+    public void addLink(Link link)
+    {
+        if (links == null) links = new ArrayList();
+        links.add(link);
+    }
+
+    public Collection getLinks()
+    {
+        return links;
+    }
+
+    public void setLinks(Collection _links)
+    {
+        links = _links;
+    }
+
     /**
-     * Pretty test output.
+     * Pretty  output.
      */
     public String toString()
     {
-        StringBuffer buf = new StringBuffer();
+        StringBuffer buf = new StringBuffer("<entry xmlns=\"" + Atom4J.xmlns + "\" >\n");
 
-        buf.append("<entry xmlns=\"" + Atom4J.xmlns + "\" >\n");
-        buf.append("    <title>" + this.getTitle() + "</title>\n");
-        buf.append("    <summary>A very boring entry...</summary>\n");
-        //buf.append("    <subtitle>" + this.getSummary()+ "</subtitle>\n");
-     
-        buf.append("    <author>\n");
-        if (StringUtils.isNotEmpty(getAuthor().getName()))  
-            buf.append("      <name>" + getAuthor().getName() + "</name>\n");
-        if (StringUtils.isNotEmpty(getAuthor().getUrl()))   
-            buf.append("      <homepage>" + getAuthor().getUrl() + "</homepage>\n");
-        if (StringUtils.isNotEmpty(getAuthor().getEmail())) 
-            buf.append("      <email>" + getAuthor().getEmail() + "</weblog>\n");
-        buf.append("    </author>\n");
-    
-        buf.append("    <issued>" + EntryReader.formatIso8601(this.getIssued()) + "</issued>\n");
-        buf.append("    <created>" + EntryReader.formatIso8601(this.getCreated()) + "</created>\n");
-        buf.append("    <modified>" + EntryReader.formatIso8601(this.getModified()) + "</modified>\n");
-    
-        buf.append("    <link>" + noNull( getLink() ) + "</link>\n");
-        buf.append("    <comment>" + noNull( getComment() ) + "</comment>\n");
-        buf.append("    <id>" + noNull( getId() ) + "</id>\n");
-     
-        buf.append("    <content type=\"" + noNull( getContent().getMimeType() ) + "\"");
-        buf.append(" xml:lang=\"" + noNull( getContent().getLanguage() ) + "\">");
-        buf.append(  noNull( this.getContent().getText() ) );
-        buf.append("</content>\n");
+        if (id != null) buf.append("    ").append(Atom4J.simpleTag(id, "id"));
+        if (title != null) buf.append("    ").append(title.toString("title"));
+        if (summary != null) buf.append("    ").append(summary.toString("summary"));
+        
+        // generate Author and Contributor tags
+        if (author != null) 
+        {
+            buf.append("    ").append(author.toString("author"));
+        }
+        if (contributors != null)
+        {
+            java.util.Iterator it = contributors.iterator();
+            while (it.hasNext())
+            {
+                Person _person = (Person)it.next();
+                buf.append("    ").append(_person.toString("contributor"));
+            }
+        }
+
+        if (links != null)
+        {
+            java.util.Iterator it = links.iterator();
+            while (it.hasNext())
+            {
+                Link _link = (Link)it.next();
+                buf.append("    ").append(_link.toString());
+            }
+        }
+        
+        // generate date tags
+        if (issued != null)
+            buf.append("    ").append(Atom4J.dateTag(issued, "issued"));
+        if (created != null)
+            buf.append("    ").append(Atom4J.dateTag(created, "created"));
+        if (modified != null)
+            buf.append("    ").append(Atom4J.dateTag(modified, "modified"));
+        
+        // generate Content
+        buf.append("    ").append(content.toString("content"));
+        
+        // close entry
         buf.append("</entry>\n");
         
         return buf.toString();
