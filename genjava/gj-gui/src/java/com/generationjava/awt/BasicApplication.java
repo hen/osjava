@@ -370,13 +370,13 @@ public abstract class BasicApplication extends Frame implements WindowListener, 
     public void removeFromOpenList(Object obj) {
         openList.remove( getTitle(obj) );
 
-                openMenu.removeAll();
+        openMenu.removeAll();
 
-                Enumeration enum = openList.keys();
-                while (enum.hasMoreElements()) {
-                        Object tmp = enum.nextElement();
-                        openMenu.add( tmp.toString() );
-                }
+        Enumeration enum = openList.keys();
+        while (enum.hasMoreElements()) {
+            Object tmp = enum.nextElement();
+            openMenu.add( tmp.toString() );
+        }
     }
     
     private Object getFromOpenList(String name) {
