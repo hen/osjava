@@ -1,20 +1,5 @@
 #!/bin/bash
 
-# Big nasty rm that blows away quietly
-function silentrm() {
-    for file in $*
-    do
-        if [ -f $file ];
-        then
-            rm $file
-        fi
-        if [ -d $file ];
-        then
-            rm -r $file
-        fi
-    done
-}
-
 function usage() {
     echo 'Usage:'
     echo ' ./nightly-build.sh all       -  Will build every component specified in NIGHTLY.txt. '
@@ -48,17 +33,17 @@ fi
 buildDir=`pwd`
 reportDir=`pwd`/report
 
-silentrm LAST_BUILD
+rm -f LAST_BUILD
 
 for i in $LIST
 do
-    silentrm report/$i
+    rm -fr report/$i
     echo "Building $i"
     echo $i >> LAST_BUILD
     mkdir -p report/$i
     cd $i
     # cleaning
-    silentrm target/ maven.log velocity.log ERROR.log OUTPUT.log
+    rm -fr target/ maven.log velocity.log ERROR.log OUTPUT.log
     # building
     TIME_START=`date +%s`
     maven -b jar 2> ERROR.log > OUTPUT.log
@@ -106,7 +91,7 @@ do
     fi
     if [ -f target/$i*.jar ];
     then
-        silentrm $reportDir/$i/*.jar
+        rm -f $reportDir/$i/*.jar
         mv target/$i*.jar $reportDir/$i/$i-`date +%Y%m%d`.jar
     fi
     date +"%Y/%m/%d %k:%M" > $reportDir/$i/BUILD_TIME
