@@ -13,7 +13,7 @@
  *   this list of conditions and the following disclaimer in the documentation 
  *   and/or other materials provided with the distribution.
  * 
- * + Neither the name of GenJava nor the names of its contributors 
+ * + Neither the name of Simple-JNDI nor the names of its contributors 
  *   may be used to endorse or promote products derived from this software 
  *   without specific prior written permission.
  * 
@@ -49,9 +49,8 @@ import com.generationjava.io.xml.XMLNode;
 
 /**
  */
-public class XmlProperties extends AbstractProperties {
+public class XmlProperties extends Properties {
 
-    // TODO: Move this up to AbstractProperties
     private String delimiter = ".";
 
     public XmlProperties() {
@@ -76,30 +75,20 @@ public class XmlProperties extends AbstractProperties {
         reader.close();
     }
 
-    // TODO: Decide if load could just throw the root at add.
     public void load(Reader reader) throws IOException {
         XMLParser parser = new XMLParser();
         XMLNode root = parser.parseXML(reader);
         Enumeration enum = root.enumerateNode();
         while(enum.hasMoreElements()) {
             XMLNode node = (XMLNode)enum.nextElement();
-            if(!node.isTag()) { continue; }
 //            add("", node);
-if(org.osjava.jndi.PropertiesContext.DEBUG)            System.err.println("[XML]Adding: "+root.getName()+getDelimiter()+" to "+node);
+//            System.err.println("Adding: "+root.getName()+getDelimiter()+" to "+node);
             add(root.getName(), node);
-        }
-        Enumeration attrs = root.enumerateAttr();
-        if(attrs != null) {
-            while(attrs.hasMoreElements()) {
-                String attr = (String)attrs.nextElement();
-                setProperty( root.getName()+getDelimiter()+attr, root.getAttr(attr));
-if(org.osjava.jndi.PropertiesContext.DEBUG)                System.err.println("[XML]Attr: "+(root.getName()+getDelimiter()+attr) +":"+root.getAttr(attr));
-            }
         }
     }
     
     public void add(String level, XMLNode node) {
-if(org.osjava.jndi.PropertiesContext.DEBUG)        System.err.println("[XML]Adding: "+level);
+//        System.err.println("Adding: "+level);
         if( node.getValue() != null ) {
             setProperty( level+getDelimiter()+node.getName(), node.getValue());
         }
@@ -108,7 +97,7 @@ if(org.osjava.jndi.PropertiesContext.DEBUG)        System.err.println("[XML]Addi
             while(attrs.hasMoreElements()) {
                 String attr = (String)attrs.nextElement();
                 setProperty( level+getDelimiter()+node.getName()+getDelimiter()+attr, node.getAttr(attr));
-if(org.osjava.jndi.PropertiesContext.DEBUG)                System.err.println("[XML]Attr: "+(level+getDelimiter()+node.getName()+getDelimiter()+attr) +":"+node.getAttr(attr));
+//                System.err.println("Attr: "+(level+getDelimiter()+node.getName()+getDelimiter()+attr) +":"+node.getAttr(attr));
             }
         }
         Enumeration nodes = node.enumerateNode();
@@ -116,15 +105,27 @@ if(org.osjava.jndi.PropertiesContext.DEBUG)                System.err.println("[
             level = level+getDelimiter()+node.getName();
             while(nodes.hasMoreElements()) {
                 XMLNode subnode = (XMLNode)nodes.nextElement();
-                if(!subnode.isTag()) { continue; }
                 // temporary pending research into XMLNode parsing:
                 if(!"".equals(subnode.getName())) {
-if(org.osjava.jndi.PropertiesContext.DEBUG)                    System.err.println("[XML]Walking children: "+node.getName());
-if(org.osjava.jndi.PropertiesContext.DEBUG)                    System.err.println("[XML]on: "+level);
+//                    System.err.println("Walking children: "+node.getName());
+//                    System.err.println("on: "+level);
                     add(level, subnode);
                 }
             }
         }
     }
     
+    public Object setProperty(String key, String value) {
+//        System.err.println("Setting property: "+key+" to "+value);
+        return put( key, value );
+    }
+ 
+    // has to make sure not to write out any defaults
+    public void save(OutputStream outstrm, String header) {
+        super.save(outstrm,header);
+    }
+    // has to make sure not to write out any defaults
+    public void store(OutputStream outstrm, String header) throws IOException {
+        super.store(outstrm,header);
+    }
 }

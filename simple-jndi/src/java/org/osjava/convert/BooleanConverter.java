@@ -32,29 +32,28 @@
 
 package org.osjava.convert;
 
-import java.util.HashMap;
-import com.generationjava.collections.ClassMap;
-import com.generationjava.lang.ClassW;
+//import org.apache.commons.lang.BooleanUtils;
 
-public class Convert {
+public class BooleanConverter implements Converter {
 
-
-    private static ClassMap map = new ClassMap(new HashMap());
-
-    static { 
-        map.put(java.lang.Number.class, new NumberConverter());
-        map.put(java.lang.Boolean.class, new BooleanConverter());
-        map.put(java.net.URL.class, new URLConverter());
-    }
-
-    public static Object convert(String value, String type) {
-        Class clss = ClassW.getClass(type); 
-        Converter converter = (Converter)map.get(clss);
-        if(converter != null) {
-            return converter.convert(value);
-        } else {
-            return value;
+    // TODO: Sit this on top of BooleanUtils
+    public Object convert(String value) {
+//        return BooleanUtils.toBooleanObject(value);
+        if ("true".equalsIgnoreCase(value)) {
+            return Boolean.TRUE;
+        } else if ("false".equalsIgnoreCase(value)) {
+            return Boolean.FALSE;
+        } else if ("on".equalsIgnoreCase(value)) {
+            return Boolean.TRUE;
+        } else if ("off".equalsIgnoreCase(value)) {
+            return Boolean.FALSE;
+        } else if ("yes".equalsIgnoreCase(value)) {
+            return Boolean.TRUE;
+        } else if ("no".equalsIgnoreCase(value)) {
+            return Boolean.FALSE;
         }
+        // no match
+        return null;
     }
 
 }

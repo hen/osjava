@@ -8,27 +8,36 @@
 
   <body>
     <section name="News">
-    <p>2004-02-10: Version <a href="changes-report.html#0.9.1">0.9.1</a> has been released to the maven repository. </p>
+    <p>Version 0.6 has been released, as of 2003-08-12. The following features were added: </p>
+<ul>
+<li>You may now see and modify the Simple-JNDI parameters through Simple-JNDI. </li>
+<li>Because Windows cannot handle ':' in a filename, "java:" is quietly converted to "java". </li>
+<li>Unit Tests written and plugged into Maven. </li>
+</ul>
 <hr />
-    <p>2004-02-07: Version <a href="changes-report.html#0.9">0.9</a> has been released. </p>
+    <p>Version 0.5 has been released, as of 2003-04-08. The biggest change was in the move from the 'com.generationjava' namespace to the 'org.osjava' namespace, and an accompanying change in look and feel to the site. However, the following features were also added: </p>
+<ul>
+<li>Boolean and URL Converters added. </li>
+<li>Values in the System properties [ie) -Dfoo.bar=baa] now override simple-jndi. </li>
+<li>Values may now be bound to the JNDI space, where they override the configured simple-jndi properties. When removed, the value goes back to the simple-jndi default. </li>
+</ul>
 <hr />
-    <p>2004-01-18: Version <a href="changes-report.html#0.8.1">0.8.1</a> has been released to the maven repository. </p>
-<hr />
-    <p>2004-01-03: Version <a href="changes-report.html#0.8">0.8</a> has been released. </p>
-<hr />
-    <p>2003-12-06: Version <a href="changes-report.html#0.7">0.7</a> has been released. </p>
-<hr />
-        <p>2003-12-06: More work on the website to get away from the default Maven output and to something a bit more usable. </p>
-<hr />
-        <p>2003-10-20: The website has been improved a touch. Attempting to respond to the some of the complaints in <a href="http://www.jroller.com/page/fate/20030926#simple_jndi_shoots_self_in"> simple-jndi shoots self in foot</a>. </p>
-<hr />
-    <p>2003-08-12: Version <a href="changes-report.html#0.6">0.6</a> has been released. </p>
-<hr />
-    <p>2003-04-08: Version <a href="changes-report.html#0.5">0.5</a> has been released. </p>
-<hr />
-    <p>2003-02-27: Version <a href="changes-report.html#0.4">0.4</a> has been released. </p>
+    <p>Version 0.4 has been released, as of 2003-02-27. The following features were added: </p>
+<ul>
+<li>com.foo.Value can have a partner key of com.foo.Value.type which specifies the type of object to use for the key. While this system will be pluggable, currently it supports java.lang.Number only.</li>
+<li>Any XML format may be used underneath instead of a .properties system. Properties files take precedence over XML files, so in the light of foo.xml and foo.properties, only foo.properties will be read. </li>
+<li>The underlying properties parsing has been improved. It now handles ordered collections. These are implemented by specifying a key multiple times. One issue with this is that the object returned maybe a List or a String [or something else depending on type], leading to an ugly instanceof style of programming. The following eases this. </li>
+<li>org.osjava.naming.Jndi is a wrapper which automatically grabs the default InitialContext and provides simple helper routines for getting data out. One such example is getList(String key) which improves the situation in the previous bullet point. </li>
+</ul>
+
     <hr />
-    <p>2003-02-14: Version <a href="changes-report.html#0.3">0.3</a> has been released. </p>
+    <p>Version 0.3 has been released, as of 2003-02-14. The following features were added: </p>
+<ul>
+<li>Implemented a protocol system for the simple-jndi root's location. The original file location was retrofitted into this and a classpath location was added. A http location is planned</li>
+<li>If a protocol is unspecified, then resort to v0.2 format, ie) file://</li>
+<li>If root is unspecified, then use the classpath</li>
+<li>The delimiter in the search values is configurable, so people can more easily mimic LDAP</li>
+</ul>
 
 </section>
 </body>

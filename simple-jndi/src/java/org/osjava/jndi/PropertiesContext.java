@@ -58,6 +58,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.net.MalformedURLException;
 
+import org.apache.commons.lang.StringUtils;
 import org.osjava.convert.Convert;
 import org.osjava.jndi.util.CustomProperties;
 import org.osjava.jndi.util.IniProperties;
@@ -65,15 +66,13 @@ import org.osjava.jndi.util.XmlProperties;
 
 public class PropertiesContext implements Context  {
 
-    public static final boolean DEBUG = (System.getProperty("SJ.DEBUG")!=null);
-
     private static Object FILE = new String("FILE");
     private static Object CLASSPATH = new String("CLASSPATH");
     private static Object HTTP = new String("HTTP");
 
     // table is used as a read-write cache which sits 
     // above the file-store
-    private Hashtable table = new PropertiesStore();
+    private Hashtable table = new Hashtable();
 
     private Hashtable env;
     private String root;
@@ -86,71 +85,49 @@ public class PropertiesContext implements Context  {
     private String _delimiter;
 
     public PropertiesContext(Hashtable env) {
-        String shared = null;
-
         if(env != null) {
             this.env = (Hashtable)env.clone();
             this.root = (String)this.env.get("org.osjava.jndi.root");
             this.delimiter = (String)this.env.get("org.osjava.jndi.delimiter");
-            shared = (String)this.env.get("org.osjava.jndi.shared");
-        }
+            if(this.delimiter == null) {
+                this.delimiter = ".";
+            }
+            this._root = this.root;
+            this._delimiter = this.delimiter;
 
-        // let System properties override the jndi.properties file
-        if(System.getProperty("org.osjava.jndi.root") != null) {
-            this.root = System.getProperty("org.osjava.jndi.root");
-        }
-        if(System.getProperty("org.osjava.jndi.delimiter") != null) {
-            this.delimiter = System.getProperty("org.osjava.jndi.delimiter");
-        }
-        if(System.getProperty("org.osjava.jndi.shared") != null) {
-            shared = System.getProperty("org.osjava.jndi.shared");
-        }
-
-        if("true".equals(shared)) {
-            this.table = new PropertiesStaticStore();
-        }
-
-        if(this.delimiter == null) {
-            this.delimiter = ".";
-        }
-        this._root = this.root;
-        this._delimiter = this.delimiter;
-
-        // Work out the protocol of the root
-        // No root means we're using a classpath protocol,
-        // no protocol means we're using file protocol [legacy]
-        if(root != null) {
-            int idx = root.indexOf("://");
-            if(idx != -1) {
-                String proto = root.substring(0,idx);
-                this.root = root.substring(idx + 3);
-                if("file".equals(proto)) {
+            // Work out the protocol of the root
+            // No root means we're using a classpath protocol,
+            // no protocol means we're using file protocol [legacy]
+            if(root != null) {
+                if(root.indexOf("://") != -1) {
+                    String proto = StringUtils.chomp(root, "://");
+                    this.root = StringUtils.prechomp(root, "://");
+                    if("file".equals(proto)) {
+                        this.protocol = FILE;
+                        this.separator = ""+File.separatorChar;
+                    } else
+                    if("http".equals(proto)) {
+                        this.protocol = HTTP;
+                        this.separator = ""+File.separatorChar;
+                    } else 
+                    if("classpath".equals(proto)) {
+                        this.protocol = CLASSPATH;
+                        this.separator = "/";
+                    }
+                } else {
                     this.protocol = FILE;
                     this.separator = ""+File.separatorChar;
-                } else
-                if("http".equals(proto)) {
-                    this.protocol = HTTP;
-                    this.separator = ""+File.separatorChar;
-                    this.root = proto+"://"+this.root;
-                } else 
-                if("classpath".equals(proto)) {
-                    this.protocol = CLASSPATH;
-                    this.separator = "/";
                 }
             } else {
-                this.protocol = FILE;
-                this.separator = ""+File.separatorChar;
+                this.protocol = CLASSPATH;
+                this.separator = "/";
+                this.root = "";
             }
-        } else {
-            this.protocol = CLASSPATH;
-            this.separator = "/";
-            this.root = "";
+
+//            System.err.println("proto: "+this.protocol);
+//            System.err.println("root: "+this.root);
+//            System.err.println("sepChar: "+this.separator);
         }
-
-if(DEBUG)            System.err.println("[CTXT]Protocol  is: "+this.protocol);
-if(DEBUG)            System.err.println("[CTXT]Root      is: "+this.root);
-if(DEBUG)            System.err.println("[CTXT]separator is: "+this.separator);
-
     }
 
     private PropertiesContext(PropertiesContext that) {
@@ -220,7 +197,7 @@ if(DEBUG)            System.err.println("[CTXT]separator is: "+this.separator);
 
     private Object getElement(String key) throws NamingException {
         
-if(DEBUG)        System.err.println("[CTXT]Getting element "+key+" via "+this.protocol);
+//        System.err.println("Asked for: "+key+" via "+this.protocol);
         if(this.protocol == FILE) {
             File file = new File(key);
             if(!file.exists()) {
@@ -232,19 +209,16 @@ if(DEBUG)        System.err.println("[CTXT]Getting element "+key+" via "+this.pr
             if(key.startsWith(this.separator)) {
                 key = key.substring(1);
             }
+//            System.err.println("KEY: "+key);
             URL url = this.getClass().getClassLoader().getResource(key);
             return url;
         } else
         if(this.protocol == HTTP) {
             try {
                 URL url = new URL(key);
-                if( urlExists(url) ) {
-                    return url;
-                } else {
-                    return null;
-                }
+                return url;
             } catch(MalformedURLException murle) {
-                throw new NamingException("Unable to treat this as an http url: "+key);
+                throw new NamingException("Unable to open http url: "+key);
             }
         } else {
             throw new NamingException("Unsupported protocol: "+this.protocol);
@@ -252,42 +226,39 @@ if(DEBUG)        System.err.println("[CTXT]Getting element "+key+" via "+this.pr
     }
 
     private Properties loadProperties(Object file) throws NamingException {
-if(DEBUG)        System.err.println("[CTXT]Loading properties from: "+file);
+//        System.err.println("Considering: "+file);
         Properties properties = null;
         if(file instanceof File) {
+//            System.err.println( "FILE "+((File)file).getName() );
             if( ((File)file).getName().endsWith(".xml") ) {
                 properties = new XmlProperties();
                 ((XmlProperties)properties).setDelimiter(this.delimiter);
             } else 
             if( ((File)file).getName().endsWith(".ini") ) {
                 properties = new IniProperties();
-                ((IniProperties)properties).setDelimiter(this.delimiter);
             } else {
                 properties = new CustomProperties();
             }
         } else
         if(file instanceof URL) {
+//            System.err.println( "URL "+((URL)file).getFile() );
             if( ((URL)file).getFile().endsWith(".xml") ) {
+//                System.err.println("Found xml url: "+file);
                 properties = new XmlProperties();
-                ((XmlProperties)properties).setDelimiter(this.delimiter);
+                ((XmlProperties)properties).setDelimiter(this.separator);
             } else
             if( ((URL)file).getFile().endsWith(".ini") ) {
                 properties = new IniProperties();
-                ((IniProperties)properties).setDelimiter(this.delimiter);
-            } else
-            if( ((URL)file).getFile().endsWith(".properties") ) {
-                properties = new CustomProperties();
             } else {
-                return null;
+                properties = new CustomProperties();
             }
         } else {
-            System.err.println("[CTXT]Warning: Located file was not a File or a URL. ");
             properties = new CustomProperties();
         }
 
         if(this.protocol == FILE) {
             try {
-if(DEBUG)                System.err.println("[CTXT]Loading FILE: "+file);
+//                System.err.println("Loading FILE");
                 FileInputStream fis = new FileInputStream((File)file);
                 properties.load(fis);
                 fis.close();
@@ -298,7 +269,7 @@ if(DEBUG)                System.err.println("[CTXT]Loading FILE: "+file);
         } else
         if(this.protocol == CLASSPATH) {
             try {
-if(DEBUG)                System.err.println("[CTXT]Loading CLASSPATH: "+file);
+//                System.err.println("Loading CLASSPATH");
                 InputStream fis = ((URL)file).openStream();
                 properties.load(fis);
                 fis.close();
@@ -309,7 +280,7 @@ if(DEBUG)                System.err.println("[CTXT]Loading CLASSPATH: "+file);
         } else
         if(this.protocol == HTTP) {
             try {
-if(DEBUG)                System.err.println("[CTXT]Loading HTTP: "+file);
+//                System.err.println("Loading HTTP");
                 InputStream fis = ((URL)file).openStream();
                 properties.load(fis);
                 fis.close();
@@ -318,13 +289,12 @@ if(DEBUG)                System.err.println("[CTXT]Loading HTTP: "+file);
                 throw new NamingException("Failure to open: "+file);
             }
         } else {
-            // TODO: should this be thrown in the constructor too??
             throw new NamingException("Unsupported protocol: "+this.protocol);
         }
     }
 
     private boolean isDirectory(Object file) throws NamingException {
-if(DEBUG)        System.err.println("[CTXT]Deciding if this is a directory-> "+file);
+//        System.err.println("Is dir: "+file);
         if(this.protocol == FILE) {
             return ((File)file).isDirectory();
         } else
@@ -333,9 +303,11 @@ if(DEBUG)        System.err.println("[CTXT]Deciding if this is a directory-> "+f
             // could use reflection, currently we'll copy the http solution
             try { 
                 Properties props = loadProperties(file);
+//                System.err.println("P:"+props);
                 if(props == null) {
                     return true;
                 } else {
+//                    System.err.println("P#:"+props.size());
                     // This is shit. Somehow I am getting an index back
                     // and I assume it is a directory as every key 
                     // starts with <, ie html markup.
@@ -344,6 +316,7 @@ if(DEBUG)        System.err.println("[CTXT]Deciding if this is a directory-> "+f
                     while(iterator.hasNext()) {
                         String key = (String)iterator.next();
                         if(!key.startsWith("<")) {
+//                            System.err.println("bing: "+key);
                             return false;
                         }
                     }
@@ -352,7 +325,7 @@ if(DEBUG)        System.err.println("[CTXT]Deciding if this is a directory-> "+f
             } catch(Exception e) {
                 // we assume this just means a failure to load,
                 // therefore it must be a directory
-if(DEBUG)                System.err.println("[CTXT]Unknown exception: "+e);
+//                System.err.println("Unknown e: "+e);
                 return true;
             }
         } else
@@ -360,32 +333,10 @@ if(DEBUG)                System.err.println("[CTXT]Unknown exception: "+e);
             // how the hell do we know a directory online???
             try { 
                 Properties props = loadProperties(file);
-                if(props == null) {
-                    // TODO: Test against a server that disallows directory viewing
-                    // file ought to be URL here anyway
-                    if(file instanceof URL) {
-                        return urlExists( (URL)file );
-                    } else {
-                        return false;
-                    }
-                } else {
-                    // This is shit. Somehow I am getting an index back
-                    // and I assume it is a directory if any key 
-                    // starts with <, ie html markup.
-                    Iterator iterator = props.keySet().iterator();
-                    while(iterator.hasNext()) {
-                        String key = (String)iterator.next();
-                        if(key.startsWith("<")) {
-                            return true;
-                        }
-                    }
-                    return false;
-                }
+                return (props == null);
             } catch(Exception e) {
                 // we assume this just means a failure to load,
                 // therefore it must be a directory
-if(DEBUG)       System.err.println("[CTXT]HTTPException? :"+e);
-                // TODO: Look at the error code and decide how to handle that
                 return true;
             }
         } else {
@@ -419,7 +370,7 @@ if(DEBUG)       System.err.println("[CTXT]HTTPException? :"+e);
 
         // name is a delimited notation, each element is either a 
         // directory, file or part of a key.
-        String[] elements = PropertiesContext.split(name, this.delimiter);
+        String[] elements = StringUtils.split(name, this.delimiter);
         String path = root;
         Properties properties = null;
         int sz = elements.length;
@@ -429,8 +380,9 @@ if(DEBUG)       System.err.println("[CTXT]HTTPException? :"+e);
             String element = elements[i];
 
             Object file = getElement(path+this.separator+element);
+//            System.err.println("Into directory? "+file);
             if( (file != null) && isDirectory(file) ) { 
-if(DEBUG)                System.err.println("[CTXT]Found directory. ");
+//                System.err.println("Was directory. ");
                 path = path+this.separator+element;
                 continue;
             }
@@ -439,9 +391,7 @@ if(DEBUG)                System.err.println("[CTXT]Found directory. ");
             if(file == null) {
                 file = getElement(path+this.separator+element+".xml");
             }
-            if(file == null) {
-                file = getElement(path+this.separator+element+".ini");
-            }
+//            System.err.println("Into file? "+file);
             if(file != null) {
                 path = path+this.separator+element;
                 properties = loadProperties(file);
@@ -452,12 +402,12 @@ if(DEBUG)                System.err.println("[CTXT]Found directory. ");
                     list.add(elements[j]);
                 }
                 if(list.size() > 0) {
-                    remaining = PropertiesContext.join(list.iterator(), this.delimiter);
+                    remaining = StringUtils.join(list.iterator(), this.delimiter);
                 }
-if(DEBUG)                System.err.println("[CTXT]FILE FOUND: "+file);
-if(DEBUG)                System.err.println("[CTXT]Remaining: "+remaining);
-if(DEBUG)                System.err.println("[CTXT]element: "+element);
-if(DEBUG)                System.err.println("[CTXT]path: "+path);
+//                System.err.println("FILE FOUND: "+file);
+//                System.err.println("Remaining: "+remaining);
+//                System.err.println("element: "+element);
+//                System.err.println("path: "+path);
                 break;
             } else {
                 java.util.ArrayList list = new java.util.ArrayList();
@@ -465,9 +415,9 @@ if(DEBUG)                System.err.println("[CTXT]path: "+path);
                     list.add(elements[j]);
                 }
                 if(list.size() > 0) {
-                    remaining = PropertiesContext.join(list.iterator(), this.delimiter);
+                    remaining = StringUtils.join(list.iterator(), this.delimiter);
                 }
-if(DEBUG)                System.err.println("[CTXT]Remaining2: "+remaining);
+//                System.err.println("Rem: "+remaining);
                 break;  // TODO: Is this right?
             }
         }
@@ -477,9 +427,6 @@ if(DEBUG)                System.err.println("[CTXT]Remaining2: "+remaining);
             Object file = getElement(path+this.separator+"default.properties");
             if(file == null) {
                 file = getElement(path+this.separator+"default.xml");
-            }
-            if(file == null) {
-                file = getElement(path+this.separator+"default.ini");
             }
             if(file != null) {
                 properties = loadProperties(file);
@@ -498,48 +445,40 @@ if(DEBUG)                System.err.println("[CTXT]Remaining2: "+remaining);
             throw new InvalidNameException("Properties for "+name+" not found. ");
         }
 
-        // TODO: Rewrite this block. Not enough grokk. Very badly grokked.
-        String typeLookup = "type";
-        if( remaining != null && !remaining.equals("")) {
-            typeLookup = remaining + this.delimiter + typeLookup;
-        }
-if(DEBUG)        System.err.println("[CTXT]Type-lookup: " + typeLookup);
-if(DEBUG)        System.err.println("[CTXT]DS-type? : " + properties.getProperty(typeLookup));
-if(DEBUG)        System.err.println("[CTXT]DS-properties : " + properties);
-        if( "javax.sql.DataSource".equals(properties.getProperty(typeLookup)) ) 
-        {
-if(DEBUG)            System.err.println("[CTXT]Found Datasource!");
+        // TODO: Rewrite this block. Not enough grokk.
+        if("true".equals(properties.get("org.osjava.jndi.datasource"))) {
+//            System.err.println("Datasource!");
             PropertiesDataSource pds = new PropertiesDataSource(properties, env, this.delimiter);
             String dsName = null;   // never remaining???;
             if(dsName == null) {
                 // wants to be the path without the root
-if(DEBUG)                System.err.println("[CTXT]root: "+root);
-if(DEBUG)                System.err.println("[CTXT]path: "+path);
+//                System.err.println("root: "+root);
+//                System.err.println("path: "+path);
                 int ln = root.length() + this.separator.length();
-if(DEBUG)                System.err.println("[CTXT]length of root+separator: "+ln);
-                if(path.equals(root)) {
-                    dsName = remaining;
-                } else {
-                    dsName = path.substring(ln);
-                }
+//                System.err.println("ln: "+ln);
+                dsName = path.substring(ln);
             }
 
-if(DEBUG)            System.err.println("[CTXT]Remaining: "+remaining);
-if(DEBUG)            System.err.println("[CTXT]DsName: '"+dsName+"'");
-if(DEBUG)            System.err.println("[CTXT]Name: '"+name+"'");
+            // Is this unnecessary now that the above is right?
+            int idx = dsName.indexOf(this.delimiter);
+            if(idx != -1) {
+                dsName = dsName.substring(0, idx);
+                dsName = handleJavaStandard(dsName);
+            }
+
+//            System.err.println("remaining: "+remaining);
+//            System.err.println("DsName: '"+dsName+"'");
+//            System.err.println("Name: '"+name+"'");
 
             // get the last element in 'name'
+            int edx = name.lastIndexOf(this.separator);
             String dsn = name;
-            if(!dsn.equals(dsName)) {
-                int edx = name.lastIndexOf(this.separator);
-                if(edx != -1) {
-                    // TODO: Needs a little safety
-                    dsn = name.substring(edx+1);
-                }
+            if(edx != -1) {
+                // TODO: Needs a little safety
+                dsn = name.substring(edx+1);
             }
-if(DEBUG)            System.err.println("[CTXT]DataSource name: "+dsn);
+//            System.err.println("DSN: "+dsn);
             if(dsn.equals(dsName)) {
-if(DEBUG)            System.err.println("[CTXT]Blanking datasource name. ");
                 dsn = "";
             }
 
@@ -548,7 +487,7 @@ if(DEBUG)            System.err.println("[CTXT]Blanking datasource name. ");
             return pds;
         }
 
-if(DEBUG)        System.err.println("[CTXT]remaining: "+remaining);
+//        System.err.println("remaining: "+remaining);
         if(remaining == null) {
             return properties;
         }
@@ -558,8 +497,8 @@ if(DEBUG)        System.err.println("[CTXT]remaining: "+remaining);
         if(answer == null) {
             throw new InvalidNameException(""+name+" not found. ");
         } else {
-            if(properties.containsKey(remaining+this.delimiter+"type")) {
-                String type = properties.getProperty(remaining+this.delimiter+"type");
+            if(properties.containsKey(remaining+".type")) {
+                String type = properties.getProperty(remaining+".type");
                 if(answer instanceof List) {
                     List list = (List)answer;
                     for(int i=0; i<list.size(); i++) {
@@ -820,114 +759,6 @@ if(DEBUG)        System.err.println("[CTXT]remaining: "+remaining);
         }
 
     }
-
-
-
-    /* START OF StringUtils copy */
-    private static String[] split(String str, String separatorChars) {
-        return split(str,separatorChars,-1);
-    }
-    private static String[] split(String str, String separatorChars, int max) {
-        // Performance tuned for 2.0 (JDK1.4)
-        // Direct code is quicker than StringTokenizer.
-        // Also, StringTokenizer uses isSpace() not isWhitespace()
-        
-        if (str == null) {
-            return null;
-        }
-        int len = str.length();
-        if (len == 0) {
-            return new String[0];
-        }
-        List list = new java.util.ArrayList();
-        int sizePlus1 = 1;
-        int i =0, start = 0;
-        boolean match = false;
-        if (separatorChars == null) {
-            // Null separator means use whitespace
-            while (i < len) {
-                if (Character.isWhitespace(str.charAt(i))) {
-                    if (match) {
-                        if (sizePlus1++ == max) {
-                            i = len;
-                        }
-                        list.add(str.substring(start, i));
-                        match = false;
-                    }
-                    start = ++i;
-                    continue;
-                }
-                match = true;
-                i++;
-            }
-        } else if (separatorChars.length() == 1) {
-            // Optimise 1 character case
-            char sep = separatorChars.charAt(0);
-            while (i < len) {
-                if (str.charAt(i) == sep) {
-                    if (match) {
-                        if (sizePlus1++ == max) {
-                            i = len;
-                        }
-                        list.add(str.substring(start, i));
-                        match = false;
-                    }
-                    start = ++i;
-                    continue;
-                }
-                match = true;
-                i++;
-            }
-        } else {
-            // standard case
-            while (i < len) {
-                if (separatorChars.indexOf(str.charAt(i)) >= 0) {
-                    if (match) {
-                        if (sizePlus1++ == max) {
-                            i = len;
-                        }
-                        list.add(str.substring(start, i));
-                        match = false;
-                    }
-                    start = ++i;
-                    continue;
-                }
-                match = true;
-                i++;
-            }
-        }
-        if (match) {
-            list.add(str.substring(start, i));
-        }
-        return (String[]) list.toArray(new String[list.size()]);
-    }
-
-    private static String join(Iterator iterator, String separator) {
-        if (iterator == null) {
-            return null;
-        }
-        StringBuffer buf = new StringBuffer(256);  // Java default is 16, probably too small
-        while (iterator.hasNext()) {
-            Object obj = iterator.next();
-            if (obj != null) {
-                buf.append(obj);
-            }
-            if ((separator != null) && iterator.hasNext()) {
-                buf.append(separator);
-            }
-         }
-        return buf.toString();
-    }
-    /* END OF StringUtils copy */
-
-    public static boolean urlExists(URL url) {
-        try {
-            return url.getContent() != null;
-        } catch(IOException ioe) {
-            return false;
-        }
-    }
-
 }
 
 

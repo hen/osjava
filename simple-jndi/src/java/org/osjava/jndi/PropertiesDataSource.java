@@ -48,9 +48,6 @@ public class PropertiesDataSource implements DataSource {
     private String name;
     private String delimiter;
 
-    // for pooling
-    private boolean poolSetup;
-
     // make delimiter a beanproperty?
     public PropertiesDataSource(Properties props, Hashtable env, String delimiter) {
         this.props = props;
@@ -65,16 +62,9 @@ public class PropertiesDataSource implements DataSource {
      */
     void setName(String name) {
         this.name = name;
-if(org.osjava.jndi.PropertiesContext.DEBUG)        System.err.println("[DS]Loading driver: "+name+this.delimiter+get("driver")+" from "+props);
+//        System.err.println("Loading: "+name+this.delimiter+get("driver")+" from "+props);
 //        DbUtils.ensureLoaded(get("driver"));
         ensureLoaded(get("driver"));
-        String type = "type";
-        if(this.name != null && !this.name.equals("")) {
-            type = this.name+this.delimiter+type;
-        }
-        if(!props.containsKey(type)) {
-            this.props.setProperty(type, "javax.sql.DataSource");
-        }
     }
 
     // nicked from DbUtils
@@ -91,7 +81,7 @@ if(org.osjava.jndi.PropertiesContext.DEBUG)        System.err.println("[DS]Loadi
         if(name != null && !name.equals("")) {
             val = name + this.delimiter + val;
         }
-if(org.osjava.jndi.PropertiesContext.DEBUG)        System.err.println("[DS]Getting property: "+val);
+//        System.err.println("Getting: "+val);
         return this.props.getProperty(val);
     }
 
@@ -103,17 +93,8 @@ if(org.osjava.jndi.PropertiesContext.DEBUG)        System.err.println("[DS]Getti
 
     public Connection getConnection(String username, String password) throws SQLException {
         String url = get("url");
-        String pool = get("pool");
-        if(pool != null) {
-if(org.osjava.jndi.PropertiesContext.DEBUG)        System.err.println("[DS]Getting Pool information");
-            if(!poolSetup) {
-                PoolSetup.setupConnection(pool, url, username, password);
-                this.poolSetup = true;
-            }
-            // url is now a pooling link
-            url = PoolSetup.getUrl(pool);
-        }
-if(org.osjava.jndi.PropertiesContext.DEBUG)        System.err.println("[DS]Getting Connection for url: " + url);
+//        System.err.println(this);
+//        System.err.println("url "+url);
         if(username == null || password == null) {
             return DriverManager.getConnection(url);
         } else {
@@ -157,4 +138,3 @@ if(org.osjava.jndi.PropertiesContext.DEBUG)        System.err.println("[DS]Getti
     }
 
 }
-

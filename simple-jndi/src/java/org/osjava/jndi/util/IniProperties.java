@@ -35,6 +35,8 @@ package org.osjava.jndi.util;
 
 import java.io.*;
 import java.util.*;
+import org.apache.commons.collections.IteratorUtils;
+import com.generationjava.collections.OrderedSet;
 
 /** 
  * Functionally like the CustomProperties class in that it has 
@@ -43,18 +45,7 @@ import java.util.*;
  * not in the two level are treated as simple one levels. 
  * Comments are a semi-colon. 
  */
-public class IniProperties extends AbstractProperties {
-
-    // TODO: Move this up to AbstractProperties
-    private String delimiter = "";
-
-    public void setDelimiter(String delimiter) {
-        this.delimiter = delimiter;
-    }
-
-    public String getDelimiter() {
-        return this.delimiter;
-    }
+public class IniProperties extends CustomProperties {
 
     /**
      * Load in a .ini file. 
@@ -72,7 +63,7 @@ public class IniProperties extends AbstractProperties {
 
                 // handle blocks
                 if(line.startsWith("[") && line.endsWith("]")) {
-                    block = line.substring(1, line.length()-1);
+                    block = line.substring(1, line.length()-1)+".";
                 }
 
                 int idx = line.indexOf(';');
@@ -84,12 +75,8 @@ public class IniProperties extends AbstractProperties {
                 // split equals sign
                 idx = line.indexOf('=');
                 if(idx != -1) {
-if(org.osjava.jndi.PropertiesContext.DEBUG)                    System.err.println("[INI] Loading property: "+line.substring(0,idx)+"="+line.substring(idx+1));
-                    if("".equals(block)) {
-                        this.setProperty(line.substring(0,idx), line.substring(idx+1));
-                    } else {
-                        this.setProperty(block+this.delimiter+line.substring(0,idx), line.substring(idx+1));
-                    }
+//                    System.err.println("Setting: "+line.substring(0,idx)+"="+line.substring(idx+1));
+                    this.setProperty(block+line.substring(0,idx), line.substring(idx+1));
                 } else {
                     // blank line, or just a bad line
                     // we ignore it

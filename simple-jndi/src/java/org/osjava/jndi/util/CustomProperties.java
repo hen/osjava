@@ -35,9 +35,10 @@ package org.osjava.jndi.util;
 
 import java.io.*;
 import java.util.*;
-//import com.generationjava.collections.OrderedSet;
+import org.apache.commons.collections.IteratorUtils;
+import com.generationjava.collections.OrderedSet;
 
-public class CustomProperties extends AbstractProperties {
+public class CustomProperties extends Properties {
 
     public synchronized void load(InputStream in) throws IOException {
         try {
@@ -66,7 +67,7 @@ public class CustomProperties extends AbstractProperties {
                 // split equals sign
                 idx = line.indexOf('=');
                 if(idx != -1) {
-if(org.osjava.jndi.PropertiesContext.DEBUG)                    System.err.println("[CUSTOM]Loading property: "+line.substring(0,idx)+"="+line.substring(idx+1));
+//                    System.err.println("Setting: "+line.substring(0,idx)+"="+line.substring(idx+1));
                     this.setProperty(line.substring(0,idx), line.substring(idx+1));
                 } else {
                     // blank line, or just a bad line
@@ -77,6 +78,74 @@ if(org.osjava.jndi.PropertiesContext.DEBUG)                    System.err.printl
         } catch(IOException ioe) {
             ioe.printStackTrace();
         }
+    }
+
+    public synchronized Object put(Object key, Object value) {
+        if(index.contains(key)) {
+            Object obj = get(key);
+            if( !(obj instanceof List)) {
+                List list = new LinkedList();
+                list.add(obj);
+                obj = list;
+            } 
+            ((List)obj).add(value);
+            value = obj;
+        }
+        if(!index.contains(key)) {
+//            System.err.println("Updating index for: "+key);
+            index.add(key);
+        }
+//        System.err.println("Really setting: "+key+"="+value);
+        return super.put(key, value);
+    }
+
+    // our index for the ordering
+    protected ArrayList index = new ArrayList();
+
+    public CustomProperties() {
+        super();
+    }
+
+    // the props attribute is for defaults. These will need to be 
+    // remembered for the save/store method.
+    public CustomProperties(Properties props) {
+        super(props);
+    }
+
+    public synchronized Object setProperty(String key, String value) {
+        return put(key,value);
+    }
+    
+    public synchronized Object remove(Object key) {
+        index.remove(key);
+        return super.remove(key);
+    }
+    
+    // simple implementation that depends on keySet.
+    public synchronized Enumeration propertyNames() {
+        return IteratorUtils.asEnumeration(keySet().iterator());
+    }
+    public synchronized Enumeration keys() {
+        return propertyNames();
+    }
+    
+    public synchronized Set keySet() {
+        return new OrderedSet(index);
+    }
+ 
+    /**
+     * Currently will write out defaults as well, which is not 
+     * in the specification.
+     */
+    public void save(OutputStream outstrm, String header) {
+        super.save(outstrm,header);
+    }
+    /**
+     * Currently will write out defaults as well, which is not 
+     * in the specification.
+     */
+    public void store(OutputStream outstrm, String header) throws IOException {
+        super.store(outstrm,header);
     }
 
 }
