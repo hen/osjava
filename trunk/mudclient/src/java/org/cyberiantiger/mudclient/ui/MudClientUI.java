@@ -49,7 +49,7 @@ implements ConsoleModelListener, ConsoleWriter {
     public void consoleChanged() {
 	scrollBar.setBlockIncrement(model.getHeight());
 	scrollBar.setValues(
-		model.getBufferSize(),
+		model.getLineOffset(),
 		model.getHeight(),
 		0,
 		model.getHeight() + model.getBufferSize()
@@ -70,5 +70,29 @@ implements ConsoleModelListener, ConsoleWriter {
 
     public OutputConfiguration getConfiguration() {
 	return config;
+    }
+
+    public void lineUp() {
+	model.setLineOffset(model.getLineOffset()-1);
+	consoleChanged();
+	view.repaint();
+    }
+
+    public void lineDown() {
+	model.setLineOffset(model.getLineOffset()+1);
+	consoleChanged();
+	view.repaint();
+    }
+
+    public void pageUp() {
+	model.setLineOffset(model.getLineOffset() - model.getHeight());
+	consoleChanged();
+	view.repaint();
+    }
+
+    public void pageDown() {
+	model.setLineOffset(model.getLineOffset() + model.getHeight());
+	consoleChanged();
+	view.repaint();
     }
 }
