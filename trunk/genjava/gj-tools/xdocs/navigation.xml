@@ -12,6 +12,7 @@
     <menu name="Genjava Projects">
       <item href="../gj-beans/" name="gj-beans"/>
       <item href="../gj-core/" name="gj-core"/>
+      <item href="../gj-config/" name="gj-config"/>
       <item href="../gj-csv/" name="gj-csv"/>
       <item href="../gj-gui/" name="gj-gui"/>
       <item href="../gj-mail/" name="gj-mail"/>
