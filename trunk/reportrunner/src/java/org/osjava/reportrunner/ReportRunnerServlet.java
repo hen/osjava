@@ -29,7 +29,7 @@ public class ReportRunnerServlet extends HttpServlet {
                 String parameter = request.getParameter(params[i].getName());
                 Object value = parameter;
                 if(parser != null) {
-                    value = parser.parse(parameter);
+                    value = parser.parse(parameter, params[i].getType());
                 } 
                 params[i].setValue(value);
             }
