@@ -27,10 +27,6 @@
       <version>2.1</version>
       <url>http://jakarta.apache.org/commons/collections.html</url>
     </dependency>
-    <dependency>
-      <id>junit</id>
-      <version>3.7</version>
-    </dependency>
   </dependencies>
 
 </project>

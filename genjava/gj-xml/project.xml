@@ -12,12 +12,5 @@
   
   <shortDescription>XML Parser</shortDescription>
 
-  <dependencies>
-    <dependency>
-      <id>junit</id>
-      <version>3.7</version>
-    </dependency>
-  </dependencies>
-
 </project>
 
