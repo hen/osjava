@@ -11,6 +11,8 @@ public interface Renderer {
     void setName(String name);
     String getLabel();
     void setLabel(String label);
+    String getDescription();
+    void setDescription(String description);
     String getMimeType();
     void setMimeType(String mimeType);
     String getExtension();

@@ -9,6 +9,7 @@ public abstract class AbstractReport implements Report {
 
     private String name;
     private String label;
+    private String description;
     private String renderers;
     private List params = new ArrayList();
     private List columns = new ArrayList();
@@ -29,6 +30,9 @@ public abstract class AbstractReport implements Report {
     public void setLabel(String label) {
         this.label = label;
     }
+
+    public String getDescription() { return this.description; }
+    public void setDescription(String description) { this.description = description; }
 
     public void setRenderers(String renderers) {
         this.renderers = renderers;

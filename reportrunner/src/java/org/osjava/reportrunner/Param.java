@@ -4,6 +4,7 @@ public class Param {
 
     private String name;
     private String label;
+    private String description;
     private Class type = String.class;
     private Object value;
     private String binding;
@@ -23,6 +24,14 @@ public class Param {
 
     public void setLabel(String label) {
         this.label = label;
+    }
+
+    public String getDescription() {
+        return this.description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Class getType() {

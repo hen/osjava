@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
 <reports>
- <report name="basicsql" label="BasicSql" class="org.osjava.reportrunner.reports.SqlReport">
+ <report name="basicsql" label="BasicSql" class="org.osjava.reportrunner.reports.SqlReport" description="Lists the user roles that exist">
   <sql>select * from userrole</sql>
   <renderers>txt</renderers>
  </report>
- <report name="hardcode" label="Dummy" class="org.osjava.reportrunner.reports.DummyReport">
+ <report name="hardcode" label="Dummy" class="org.osjava.reportrunner.reports.DummyReport" description="This shows that a report may be hard-coded, which in itself is boring, but proves that Java of any kind can create the report. ">
   <renderers>txt,html</renderers>
  </report>
- <report name="paramsql" label="ParamSql" class="org.osjava.reportrunner.reports.SqlReport">
+ <report name="paramsql" label="ParamSql" class="org.osjava.reportrunner.reports.SqlReport" description="This shows the usage of parameters, and binding of a parameter to a list of options. It prints out the user roles for a particular rolename and username. ">
   <sql>select * from userrole where rolename=? and username=?</sql>
-  <param name="rolename" type="java.lang.String"/>
+  <param name="rolename" type="java.lang.String" description="The role name of the user role; most likely author. "/>
   <param name="username" type="java.lang.String" binding="select username, username from userrole"/>
   <renderers>html,csv,excel</renderers>
  </report>
- <report name="datesql" label="DateSql" class="org.osjava.reportrunner.reports.SqlReport">
+ <report name="datesql" label="DateSql" class="org.osjava.reportrunner.reports.SqlReport" description="This report shows the calendar widget which allows the weblog entries between two times to be seen. It also shows the usage of columns to specify what the headers and format of the report columns will be. ">
   <sql>select id, title, text, pubtime from weblogentry where pubtime between ? and ?</sql>
   <param name="after date" type="java.sql.Timestamp" pattern="dd/MM/YYYY" parser="org.osjava.reportrunner.parser.DateTimeParser"/>
   <param name="before date" type="java.sql.Timestamp" pattern="dd/MM/YYYY" parser="org.osjava.reportrunner.parser.DateTimeParser"/>
@@ -24,7 +24,7 @@
   <column name="text" label="Text"/>
   <column name="pubtime" label="Publication time" pattern="dd/MM/YYYY" formatter="org.osjava.reportrunner.formatter.DateTimeFormatter"/>
  </report>
- <report name="bookmarks" label="Bookmarks" class="org.osjava.reportrunner.reports.SqlReport">
+ <report name="bookmarks" label="Bookmarks" class="org.osjava.reportrunner.reports.SqlReport" description="A report to show typed parameters and columns. Much of the code for this is unimplemented. ">
   <sql>select name, url from bookmark where priority = ?</sql>
   <param name="Priority" type="java.lang.Integer"/>
   <renderers>html</renderers>

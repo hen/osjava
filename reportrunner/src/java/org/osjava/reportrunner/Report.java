@@ -9,6 +9,8 @@ public interface Report {
 
     String getName();
     void setName(String name);
+    String getDescription();
+    void setDescription(String description);
     String getLabel();
     void setLabel(String label);
     Renderer[] getRenderers();
