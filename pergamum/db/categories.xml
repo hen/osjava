@@ -17,11 +17,13 @@
     <book>0072256591</book>
     <book>1932394249</book>
     <book>0596006519</book>
+    <book>0471449156</book>
   </category>
   <category id="2" name="Jakarta Tapestry">
     <book>1932394117</book>
   </category>
   <category id="3" name="Apache Ant">
+    <book>0471449156</book>
     <book>1930110588</book>
     <book>0672324261</book>
     <book>1584502487</book>
@@ -33,10 +35,16 @@
     <book>1590590996</book>
     <book>2970036908</book>
   </category>
-  <category id="4" name="Jakarta General">
+  <category id="4" name="Jakarta Cactus">
     <book>0471449156</book>
+  </category>
+  <category id="17" name="Jakarta Velocity">
     <book>0471457949</book>
+  </category>
+  <category id="18" name="Apache Jetspeed">
     <book>0471469513</book>
+  </category>
+  <category id="19" name="Jakarta Lucene">
     <book>1932394281</book>
   </category>
   <category id="5" name="Jakarta Commons">
@@ -62,6 +70,7 @@
     <book>0596005822</book>
     <book>0131413597</book>
     <book>1932394230</book>
+    <book>0471449156</book>
   </category>
   <category id="8" name="XDoclet">
     <book>1932394052</book>
