@@ -465,7 +465,11 @@ if(DEBUG)                System.err.println("[CTXT]root: "+root);
 if(DEBUG)                System.err.println("[CTXT]path: "+path);
                 int ln = root.length() + this.separator.length();
 if(DEBUG)                System.err.println("[CTXT]length of root+separator: "+ln);
-                dsName = path.substring(ln);
+                if(path.equals(root)) {
+                    dsName = remaining;
+                } else {
+                    dsName = path.substring(ln);
+                }
             }
 
             // Is this unnecessary now that the above is right?
