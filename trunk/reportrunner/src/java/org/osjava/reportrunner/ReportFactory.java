@@ -17,6 +17,7 @@ public class ReportFactory {
                 String className = reportNode.getAttr("class");
                 Report report = (Report) ClassW.createObject(className);
                 report.setReportName(reportName);
+                report.setReportLabel(reportNode.getAttr("label"));
                 applyNodes( report, reportNode.enumerateNode() );
                 applyParamTag( report, reportNode.enumerateNode("param") );
                 return report;
@@ -34,6 +35,7 @@ public class ReportFactory {
                 String className = rendererNode.getAttr("class");
                 Renderer renderer = (Renderer) ClassW.createObject(className);
                 renderer.setRendererName(rendererName);
+                renderer.setRendererLabel(rendererNode.getAttr("label"));
                 applyNodes( renderer, rendererNode.enumerateNode() );
                 return renderer;
             }

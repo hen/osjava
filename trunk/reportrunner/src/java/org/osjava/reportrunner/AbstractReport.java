@@ -8,6 +8,7 @@ import com.generationjava.lang.*;
 public abstract class AbstractReport implements Report {
 
     private String name;
+    private String label;
     private String renderers;
     private List params = new ArrayList();
 
@@ -17,6 +18,14 @@ public abstract class AbstractReport implements Report {
 
     public void setReportName(String name) {
         this.name = name;
+    }
+
+    public String getReportLabel() {
+        return this.label;
+    }
+
+    public void setReportLabel(String label) {
+        this.label = label;
     }
 
     public String getRenderers() {
