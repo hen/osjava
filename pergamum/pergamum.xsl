@@ -20,7 +20,7 @@
 
   <xsl:template match="pg:publisher-list">
     <div class="sub-title"><xsl:value-of select="."/></div>
-    <ul>
+    <ul class="publisher-list">
         <xsl:for-each select="document('db/publishers.xml')/publishers/publisher">
             <xsl:variable name="id">
               <xsl:value-of select="@id"/>
@@ -38,7 +38,7 @@
     <div class="sub-title"><xsl:value-of select="$name"/></div>
     <xsl:for-each select="document('db/categories.xml')/category-list/category">
       <div class="category-title"><xsl:value-of select="@name"/></div>
-      <ul>
+      <ul class="library-list">
         <xsl:for-each select="book">
           <xsl:call-template name="pg:book"/>
         </xsl:for-each>
@@ -48,7 +48,7 @@
 
   <xsl:template match="pg:category-list">
     <div class="sub-title"><xsl:value-of select="."/></div>
-    <ul>
+    <ul class="category-list">
         <xsl:for-each select="document('db/categories.xml')/category-list/category">
             <xsl:variable name="id">
               <xsl:value-of select="@id"/>
@@ -106,7 +106,7 @@
       <xsl:value-of select="document('db/publishers.xml')/publishers/publisher[@id=$pub]/@name"/>
     </xsl:variable>
     <li><div class="book-name"><a href="book-{$isbn}.html"><xsl:value-of select="$name"/></a></div> 
-    <span class="publisher-name">(<a href="{$pubUri}"><xsl:value-of select="$pubName"/></a>)</span> - <span class="amz"><a href="http://www.amazon.com/exec/obidos/tg/detail/-/{$isbn}">[amz]</a></span> - <span class="bkp"><a href="http://www.bookpool.com/.x/1/sm/{$isbn}">[bkp]</a></span></li>
+    <div class="book-links"><span class="publisher-name">(<a href="{$pubUri}"><xsl:value-of select="$pubName"/></a>)</span> - <span class="amz"><a href="http://www.amazon.com/exec/obidos/tg/detail/-/{$isbn}">[amz]</a></span> - <span class="bkp"><a href="http://www.bookpool.com/.x/1/sm/{$isbn}">[bkp]</a></span></div></li>
   </xsl:template>
 
   <!-- turns a book.isbn into a full table -->
@@ -132,10 +132,10 @@
     <xsl:variable name="review">
       <xsl:value-of select="document('db/reviews.xml')/reviews/review[@isbn=$isbn]"/>
     </xsl:variable>
-    <div class="book-name"><xsl:value-of select="$name"/></div><br/>
+    <div class="sub-title"><xsl:value-of select="$name"/></div><br/>
     <div class="book-url"><a href="{$url}">url</a></div><br/>
     <div class="publisher-name">(<a href="{$pubUri}"><xsl:value-of select="$pubName"/></a>)</div><br/>
-    <span class="amz"><a href="http://www.amazon.com/exec/obidos/tg/detail/-/{$isbn}">[amz]</a></span> - <span class="bkp"><a href="http://www.bookpool.com/.x/1/sm/{$isbn}">[bkp]</a></span><br/>
+    <div class="books-links"><span class="amz"><a href="http://www.amazon.com/exec/obidos/tg/detail/-/{$isbn}">[amz]</a></span> - <span class="bkp"><a href="http://www.bookpool.com/.x/1/sm/{$isbn}">[bkp]</a></span></div><br/>
     <div class="sub-title">Review</div><br/>
     <div class="review-text"><xsl:value-of select="$review"/></div>
   </xsl:template>
