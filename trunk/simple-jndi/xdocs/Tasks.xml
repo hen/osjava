@@ -26,6 +26,7 @@
 <li>Allow the delimiter in the search values to be configurable, so people can more easily mimic LDAP etc: <b>DONE v0.3</b></li>
 <li>Test if ProductionDS.com.generationjava.jndi.datasource is obtainable [from examples page]</li>
 <li>Confirm that jars and zips may be used in the classpath protocol. </li>
+<li>Add multiple-line format for .properties files. ie) if there are equal keys, they should create a collection. Note, with the OrderedProperties this becomes a list and not a collection. </li>
 </ul>
 
 </section>
