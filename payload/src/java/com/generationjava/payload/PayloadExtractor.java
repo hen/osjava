@@ -74,14 +74,14 @@ public class PayloadExtractor {
                 // that can't fit in memory
                 if( props != null && interpolatable(outName)) {
                     // interpolate push
-                    String text = readToString(in);
+                    String text = IOUtils.readToString(in);
                     text = interpolate(text, props);
                     in.close();
                     in = new ByteArrayInputStream(text.getBytes());
                 }
 
                 OutputStream out = new FileOutputStream( outFile );
-                pushBytes(in, out);
+                IOUtils.pushBytes(in, out);
                 out.close();
                 in.close();
                 System.out.print(".");
@@ -95,28 +95,6 @@ public class PayloadExtractor {
 
     private static boolean interpolatable(String name) {
         return name.endsWith(".xml") || name.endsWith(".txt");
-    }
-
-    // util methods from here down
-    private static void pushBytes(InputStream in, OutputStream out) throws IOException {
-        byte[] buffer = new byte[1023];
-        while(true) {
-            int size = in.read(buffer);
-            if(size == -1) {
-                break;
-            }
-            out.write(buffer,0,size);
-        }
-    }
-
-    private static String readToString(InputStream in) throws IOException {
-        BufferedReader rdr = new BufferedReader(new InputStreamReader(in));
-        StringBuffer buffer = new StringBuffer();
-        String line = "";
-        while( (line = rdr.readLine()) != null) {
-            buffer.append(line);
-        }
-        return buffer.toString();
     }
 
     private static String interpolate(String str, Properties props) {
