@@ -116,18 +116,32 @@ public class ThreadContext
      * Constructors *
      ****************/
     /**
-     * Create a ThreadContext.
+     * Create a new ThreadContext as a root.
+     */
+    public ThreadContext() {
+        try {
+            ThreadContext(null);
+        catch(NamingException e) {
+            /* 
+             * This should never really happen here.  We're creating the 
+             * root context.
+             */
+        }        
+    }
+    /**
+     * Create a ThreadContext with a specific name.  This constructor is 
+     * rpivate and only intended to be invoked from this object.  If <code>
+     * null</code> is passed as the name, it is expected to be a root context.
      * 
      * @param name The name of the ThreadContext.  It can be null, and if it is
      *        considered to be the root context.
-     * 
      * @throws NamingException if a naming exception is encountered.
      */
-    protected ThreadContext(Name name) throws NamingException {
+    private ThreadContext(Name name) throws NamingException {
         nameInNamespace = name; 
         nameParser = new ThreadNameParser(this);
     }
-        
+    
     /* ************************
      * Class Specific Methods *
      * ************************/
