@@ -16,8 +16,8 @@
 <li><a href="/releases/official/simple-jndi/simple-jndi-0.8-src.zip">simple-jndi-0.8-src.zip</a></li>
 <li><a href="/releases/official/simple-jndi/simple-jndi-0.8.tar.gz">simple-jndi-0.8.tar.gz</a></li>
 <li><a href="/releases/official/simple-jndi/simple-jndi-0.8.zip">simple-jndi-0.8.zip</a></li>
-<li><a href="/releases/official/simple-jndi/example-collections-0.8.zip">Collections examples under 0.8</a></li>
-<li><a href="/releases/official/simple-jndi/example-datasource-0.8.zip">DataSource examples under 0.8</a></li>
+<li><a href="/releases/official/simple-jndi/example-collections-0.8.zip">example-collections-0.8.zip</a> - Collections examples under 0.8</li>
+<li><a href="/releases/official/simple-jndi/example-datasource-0.8.zip">example-datasource-0.8.zip</a> - DataSource examples under 0.8</li>
 </ul>
      <p>
      If you require them through usage of optional features, please ensure you have the necessary dependencies:
