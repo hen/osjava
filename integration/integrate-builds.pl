@@ -165,6 +165,7 @@ my @build_list = ();
         print "Building $buildable->{'project'}\n";
 
 # Build the code
+        $buildable->{'build_attempted'} = 1;
         # install a snapshot jar
         system("maven -b clean jar:install-snapshot clean jar 2> /dev/null > /dev/null");
         # build the main jar - record build-time
@@ -249,10 +250,11 @@ my @build_list = ();
             }
         }
         if($failure) {
-            print "Failed to build $buildable->{'project'}\n";
-            if($action eq 'update') {
-                print "Need to mail out a failure. \n";
-#            cat $reportDir/$i/ERROR.log | mail -s "Failed to build $i" bayard@osjava.org
+            if($buildable->{'build_attempted'}) {
+                print "Failed to build $buildable->{'project'}\n";
+                if($action eq 'update') {
+                    `cat $buildable->{'directory'}/ERROR.log | mail -s 'Failed to build $buildable->{'project'}' bayard\@osjava.org`;
+                }
             }
             $buildable->{'failed'} = "There were errors in building $buildable->{'project'}"; 
         }
