@@ -33,6 +33,10 @@ public class SqlReport extends AbstractReport {
         }
     }
 
+    protected String getDsName() {
+        return this.dsName;
+    }
+
     public Result execute() throws ReportException {
         ReportGroup group = super.getReportGroup();
         Resource resource = group.getResource(this.dsName);
