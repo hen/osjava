@@ -3,7 +3,8 @@
  * $Id$
  * $Rev$ 
  * $Date$ 
- * $Author$ 
+ * $Author$
+ * $URL$
  * 
  * Created on Mar 24, 2004
  *
@@ -231,10 +232,13 @@ public class ThreadContext
     /** 
      * Unbind a Thread from the ThreadContext.
      * <br/><br/>
-     * <b>NOTE:</b> This does not destroy the object that was bound in the 
-     * ThreadContext.  It only removes it from the ThreadContext.
+     * <b>NOTE:</b> This does not destroy the {#link ExtendedRunnable} that 
+     * was bound in the context.  It only removes it from the ThreadContext.
+     * A running ExtendedRunnable cannot be removed from the context. 
      * 
      * @param name the name of the object to unbind from the ThreadContext.
+     * @throws ThreadIsRunningException if the thread that is being unbound is
+     *         running.
      * @throws NamingException if a name exception is encountered.
      * @see javax.naming.Context#unbind(javax.naming.Name)
      */
@@ -243,8 +247,17 @@ public class ThreadContext
      *      or threads if the object referred to is a context 
      */
     public void unbind(Name name) throws NamingException {
-        Object obj = lookup(name);
-        if(obj != null) {
+        ExtendedRunnable thread = (ExtendedRunnable)lookup(name);
+        
+        /* 
+         * If the thread is an instance of Thread, make sure that it is not 
+         * alive.
+         */
+        if(thread instanceof Thread &&
+           ((Thread)thread).isAlive()) {
+            throw new ThreadIsRunningException("A running thread cannot be removed from the context.");
+        }
+        if(thread != null) {
            contextStore.remove(name);
         }
     }
@@ -270,7 +283,7 @@ public class ThreadContext
      * @param obj the Object to be bound.
      * @throws NamingException if the object cannot be bound or a naming 
      *         exception is encountered.
-     * @see javax.naming.Context@rebind(javax.naming.Name, java.lang.Object)
+     * @see javax.naming.Context#rebind(javax.naming.Name,java.lang.Object)
      */
     public void rebind(Name name, Object obj) throws NamingException {
         /* Look up the target context first. */
@@ -291,7 +304,7 @@ public class ThreadContext
      * @param obj the Object to be bound.
      * @throws NamingException if the object cannot be bound or a naming 
      *         exception is encountered.
-     * @see javax.naming.Context@rebind(java.lang.String, java.lang.Object)
+     * @see javax.naming.Context#rebind(java.lang.String,java.lang.Object)
      */
     public void rebind(String name, Object obj) throws NamingException {
         rebind(nameParser.parse(name), obj);
@@ -370,8 +383,8 @@ public class ThreadContext
             Map enumStore = new HashMap();
             enumStore.putAll(contextStore);
             enumStore.putAll(subContexts);
-            NamingEnumeration enum = new ContextNames(enumStore);
-            return enum;
+            NamingEnumeration enumerator = new ContextNames(enumStore);
+            return enumerator;
         }
         /* Look for a subcontext */
         Name subName = name.getPrefix(1);
