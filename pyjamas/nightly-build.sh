@@ -103,7 +103,7 @@ do
         mv target/$i*.jar $reportDir/$i/$i-`date +%Y%m%d`.jar
     fi
     date +"%Y/%m/%d %k:%M" > $reportDir/$i/BUILD_TIME
-    if [ -e REASON ];
+    if [ -e $buildDir/REASON ];
     then
         cat $buildDir/REASON | grep ^$i > $reportDir/$i/REASON
     fi
