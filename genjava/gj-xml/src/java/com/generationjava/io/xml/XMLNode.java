@@ -43,7 +43,7 @@ import java.util.Vector;
  */
 public class XMLNode {
 
-    private private final Enumeration EMPTY = new NullEnumeration();
+    private static final Enumeration EMPTY = new NullEnumeration();
 
     private Hashtable myAttrs;
     private Hashtable myNodes;  // allows quick lookup
