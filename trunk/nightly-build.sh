@@ -1,4 +1,5 @@
 #!/bin/bash
+
 # Big nasty rm that blows away quietly
 function silentrm() {
     for file in $*
@@ -14,12 +15,39 @@ function silentrm() {
     done
 }
 
-silentrm report/
-mkdir report/
+function usage() {
+    echo 'Usage:'
+    echo ' ./nightly-build.sh all    -  Will build every component specified in NIGHTLY.txt. '
+    echo ' ./nightly-build.sh update -  Will build only components that have had a changed file since the last update. '
+}
+
+if [ "x$1x" != "xx" ];
+then
+    if [ $1 == 'all' ];
+    then
+        LIST=`cat NIGHTLY.txt | grep -v '^#'`
+    elif [ $1 == 'update' ];
+    then
+        LIST=`svn -u status | grep -v '^?' | grep -v 'Status against revision' | awk '{print $3}' | grep -o -f NIGHTLY.txt  | sort -u`
+        svn update | grep -v '^?'
+    else
+        usage
+        exit
+    fi
+else
+    usage
+    exit
+fi
+
+if [ ! -d report/ ]; 
+then
+    mkdir report/
+fi
 reportDir=`pwd`/report
 
-for i in `cat NIGHTLY.txt | grep -v '^#' `
+for i in $LIST
 do
+    silentrm report/$i
 #F#    failed=0
     echo "Building $i"
     mkdir -p report/$i
