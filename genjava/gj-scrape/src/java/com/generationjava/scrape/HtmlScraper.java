@@ -104,14 +104,14 @@ public class HtmlScraper {
      */
      // This needs to be case-insensitive
     public boolean move(String tag) {
-        int idx = XmlW.getIndexOpeningTag(lcPage.substring(1 + this.currentIndex), tag.toLowerCase());
+        int idx = XmlW.getIndexOpeningTag(lcPage, tag.toLowerCase(), this.currentIndex + 1);
         if(idx == -1) {
             return false;
         } else {
             idx++;
+            this.currentIndex = idx;
+            return true;
         }
-        this.currentIndex = idx;
-        return true;
     }
 
     /**
