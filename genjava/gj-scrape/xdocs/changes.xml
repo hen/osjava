@@ -7,6 +7,9 @@
   </properties>
 
   <body>
+    <release version="2.0.1" date="2004-07-06">
+        <action dev="hen" type="fix" issue="GJC-21">Bug introduced in 2.0 that means a move() ends up a character too far into the text and a subsequent get does not work. </action>
+    </release>
     <release version="2.0" date="2004-06-20">
         <action dev="hen" type="fix" issue="GJC-3">HtmlScraper does not handle apostrophe's [rather than double-quotes].</action>
         <action dev="hen" type="fix" issue="GJC-7">moveToTagWith called twice will find the first one again</action>
