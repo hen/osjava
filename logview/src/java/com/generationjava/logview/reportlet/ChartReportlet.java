@@ -1,7 +1,5 @@
 package com.generationjava.logview.reportlet;
 
-import java.util.Iterator;
-
 import com.generationjava.logview.Log;
 import com.generationjava.logview.LogEvent;
 import com.generationjava.logview.LogField;

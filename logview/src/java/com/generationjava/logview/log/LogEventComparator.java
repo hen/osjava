@@ -3,7 +3,6 @@ package com.generationjava.logview.log;
 import java.util.Comparator;
 
 import com.generationjava.logview.LogEvent;
-import com.generationjava.logview.LogField;
 
 public class LogEventComparator implements Comparator {
 

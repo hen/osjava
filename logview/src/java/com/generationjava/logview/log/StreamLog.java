@@ -1,13 +1,10 @@
 package com.generationjava.logview.log;
 
-import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.apache.commons.collections.IteratorUtils;
 import com.generationjava.logview.Log;
 import com.generationjava.logview.LogBuilder;
-import com.generationjava.logview.LogEvent;
 import com.generationjava.logview.LogIterator;
 
 // A log which can stream the log-events through the system.

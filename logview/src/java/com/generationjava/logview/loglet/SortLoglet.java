@@ -1,17 +1,13 @@
 package com.generationjava.logview.loglet;
 
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
 
 import com.generationjava.collections.CollectionsW;
 import com.generationjava.collections.SortedLimitedList;
 
 import com.generationjava.logview.Log;
-import com.generationjava.logview.Loglet;
 import com.generationjava.logview.LogEvent;
-import com.generationjava.logview.LogField;
-import com.generationjava.logview.LogType;
 import com.generationjava.logview.LogIterator;
 import com.generationjava.logview.LogViewException;
 

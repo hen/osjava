@@ -2,11 +2,8 @@ package com.generationjava.logview.renderer;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-
-import com.generationjava.logview.Report;
 
 import com.generationjava.logview.report.ChartReport;
 import com.generationjava.logview.report.TableReport;

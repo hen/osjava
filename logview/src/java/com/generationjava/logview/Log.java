@@ -1,6 +1,5 @@
 package com.generationjava.logview;
 
-import java.text.ParseException;
 import java.util.Iterator;
 
 public interface Log extends Cloneable {

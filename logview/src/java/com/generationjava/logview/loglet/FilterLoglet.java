@@ -1,11 +1,7 @@
 package com.generationjava.logview.loglet;
 
-import com.generationjava.logview.Log;
-import com.generationjava.logview.Loglet;
 import com.generationjava.logview.LogEvent;
-import com.generationjava.logview.LogField;
 import com.generationjava.logview.LogFilter;
-import com.generationjava.logview.LogType;
 import com.generationjava.logview.LogIterator;
 import com.generationjava.logview.LogViewException;
 
