@@ -32,7 +32,6 @@
 
 package org.osjava.convert;
 
-import com.generationjava.lang.ClassW;
 import org.apache.commons.convert.Converter;
 import org.apache.commons.convert.ConvertRegistry;
 import org.apache.commons.convert.ConvertUtils;
