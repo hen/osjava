@@ -10,7 +10,6 @@ public class DateTimeParser extends AbstractParser {
         try {
             SimpleDateFormat sdf = new SimpleDateFormat( getPattern() );
             java.util.Date date = sdf.parse(input);
-            System.err.println("THE TYPE IS: "+type);
             if(type == java.sql.Date.class) {
                 return new java.sql.Date(date.getTime());
             } else 
