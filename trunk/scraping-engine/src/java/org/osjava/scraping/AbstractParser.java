@@ -40,5 +40,7 @@ public abstract class AbstractParser implements Parser {
 
     // helper methods
     // ??
-
+    // parseDate. Which understands the date-format expected, 
+    // and can handle any odd timezone hacks.
+    // public Date parseDate(String date) throws ParseException;
 }
