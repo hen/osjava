@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<document>
+
+  <properties>
+      <author email="bayard@generationjava.com">Henri Yandell</author>
+      <title>News</title>
+  </properties>
+
+  <body>
+    <section name="News">
+    <p>
+      <h5>2003-09-01 - v2.1 released</h5>
+      <ul>
+	<li>Upgraded the depdency for xmlenc from 0.20 to 0.37. Had to change the XmlEncXmlWriter slightly and improve the unit test. </li>
+      </ul>
+      <h5>2003-08-31 - v2.0 released</h5>
+      <ul>
+	<li>Migration from the xmlwriter.sf.net location.</li>
+	<li>Rework of system so that it is very adaptable/pluggable. There are two underlying core writers, one on top of xmlenc and the other an osjava  version. On top there are multiple decorator pattern implementations. 
+    <p>These include:
+    <ul>
+<li>On the fly schema checking.</li>
+<li>Pretty printing.</li>
+<li>Number/Date formatting.</li>
+<li>Various empty element options.</li>
+</ul></p>
+			    </li>
+      </ul>
+    </p>
+    </section>
+  </body>
+
+</document>
