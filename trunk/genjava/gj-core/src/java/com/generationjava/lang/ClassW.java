@@ -57,7 +57,7 @@ final public class ClassW {
         tmpClass = getClass(classname);
 
         if(tmpClass == null) {
-            System.err.println("No class for: "+classname);
+//            System.err.println("No class for: "+classname);
             return null;
         }
 
@@ -74,18 +74,18 @@ final public class ClassW {
      */
     static public Object createObject(Class clss) {
         if(clss == null) {
-            System.err.println("Null class passed in. ");
+//            System.err.println("Null class passed in. ");
             return null;
         }
 
         try {
             return clss.newInstance();
         } catch (IllegalAccessException  iae) {
-            System.err.println("Cant instantiate " + clss.getName() + " because " +
-                   iae.getMessage());
+//            System.err.println("Cant instantiate " + clss.getName() + " because " +
+//                   iae.getMessage());
         } catch (InstantiationException  ie) {
-            System.err.println("Cant instantiate " + clss.getName() + " because " +
-                   ie.getMessage());
+//            System.err.println("Cant instantiate " + clss.getName() + " because " +
+//                   ie.getMessage());
         }
 
         return null;
@@ -129,9 +129,9 @@ final public class ClassW {
 //            tmpClass = Class.forName(classname);
             tmpClass = Thread.currentThread().getContextClassLoader().loadClass(classname);
         } catch (ClassNotFoundException cnfe) {
-            System.err.println("Can not resolve classname " + classname);
+//            System.err.println("Can not resolve classname " + classname);
         } catch (IllegalArgumentException iae) {
-            System.err.println("Can nott resolve " + tmpClass.getName() + " because " + iae.getMessage());
+//            System.err.println("Can nott resolve " + tmpClass.getName() + " because " + iae.getMessage());
         }
      
         return tmpClass;   
