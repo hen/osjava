@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<project>
+  <extend>../project.xml</extend>
+  <id>gj-xml</id>
+  <name>GenJava-XML</name>
+  <currentVersion>1.0</currentVersion>
+  <inceptionYear>2002</inceptionYear>
+  
+  <description>
+    XML parser component of GenJava-Core. 
+  </description>
+  
+  <shortDescription>XML Parser</shortDescription>
+
+  <dependencies>
+    <dependency>
+      <id>junit</id>
+      <version>3.7</version>
+    </dependency>
+  </dependencies>
+
+</project>
+
