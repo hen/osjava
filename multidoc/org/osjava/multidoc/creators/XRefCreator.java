@@ -9,7 +9,7 @@ import com.generationjava.web.HtmlW;
 
 import java.io.IOException;
 
-public class JavadocCreator implements DocumentProjectCreator {
+public class XRefCreator implements DocumentProjectCreator {
 
     public DocumentProject create(String urlbase) throws IOException {
         HtmlScraper scraper = new HtmlScraper();
@@ -18,28 +18,20 @@ public class JavadocCreator implements DocumentProjectCreator {
             DocumentProject project = scrapeOverview(scraper, urlbase);
             return project;
         } catch(IOException ioe) {
-            // assume it means that overview-summary is not available
-            String pckge = ""+UrlW.getContent(urlbase+"/package-list");
-            String path = pckge.replaceAll("\\.","/");
-            DocumentProject project = new DocumentProject( urlbase, pckge );
-            project.addPackage( new DocumentPackage(pckge, "/"+path+"/package-summary.html", "") );
-            return project;
+            return null;
         }
     }
 
     private DocumentProject scrapeOverview(HtmlScraper scraper, String urlbase) throws IOException {
-        // bit of a hack. two types of possible comment noticed so far
-        if(!scraper.moveToComment("=========== END OF NAVBAR ===========")) {
-            scraper.moveToComment("========= END OF TOP NAVBAR =========");
-        }
+        scraper.move("center");
 
         // also a hack.  TOP variant uses a h1.
         String title = scraper.get("h2").trim();
         if("".equals(title)) {
             title = scraper.get("h1").trim();
         }
-        // title seems to have ' API' on the end
-        title = title.replaceFirst(" API$", "");
+        // xref has Reference a lot
+        title = title.replaceFirst(" Reference$", "");
 
         DocumentProject project = new DocumentProject(urlbase, title);
 
@@ -49,9 +41,7 @@ public class JavadocCreator implements DocumentProjectCreator {
             String cellPackage = scraper.get("A");
             String cellAnchor = scraper.get("A[HREF]");
             if(null == cellAnchor || "".equals(cellAnchor)) { continue; }  // HACK: Bug in scraper I think
-            scraper.move("TD");
-            String cellDescription = scraper.get("TD").trim();
-            project.addPackage( new DocumentPackage( cellPackage, cellAnchor, cellDescription ) );
+            project.addPackage( new DocumentPackage( cellPackage, cellAnchor, "") );
         }
 
         return project;
