@@ -35,6 +35,7 @@ import java.util.Iterator;
 import javax.sql.DataSource;
 import java.sql.*;
 import org.apache.commons.dbutils.DbUtils;
+import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.lang.StringUtils;
 
 import org.apache.log4j.Logger;
@@ -69,6 +70,7 @@ try {
             }
         }
 
+        QueryRunner queryRunner = new QueryRunner();
         Iterator iterator = result.iterateRows();
         while(iterator.hasNext()) {
             Object[] row = (Object[])iterator.next();
@@ -81,7 +83,7 @@ try {
                     sql = "INSERT INTO " + table + " VALUES(?"+ StringUtils.repeat(", ?", row.length-1) + ")";
                 }
             }
-            int count = DbUtils.executeUpdate( conn, sql, row );
+            int count = queryRunner.update( conn, sql, row );
         }
 
 } catch(SQLException sqle) {
