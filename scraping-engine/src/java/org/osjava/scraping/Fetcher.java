@@ -31,6 +31,9 @@
  */
 package org.osjava.scraping;
 
+import org.osjava.oscube.container.Config;
+import org.osjava.oscube.container.Session;
+
 /**
  * Fetches a piece of content for a uri
  * Usually hidden behind a FetcherFactory.

@@ -31,6 +31,11 @@
  */
 package org.osjava.scraping;
 
+import org.osjava.oscube.container.Config;
+import org.osjava.oscube.container.Session;
+import org.osjava.oscube.container.Result;
+import org.osjava.oscube.container.NullResult;
+
 public class NullParser implements Parser {
 
     public Result parse(Page page, Config cfg, Session session) throws ParsingException {

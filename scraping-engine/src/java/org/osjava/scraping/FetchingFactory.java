@@ -31,6 +31,9 @@
  */
 package org.osjava.scraping;
 
+import org.osjava.oscube.container.Config;
+import org.osjava.oscube.container.Session;
+
 public class FetchingFactory {
 
     static public Fetcher getFetcher(Config cfg, Session session) {

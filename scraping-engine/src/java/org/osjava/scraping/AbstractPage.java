@@ -39,6 +39,9 @@ import java.io.BufferedReader;
 
 import org.apache.log4j.Logger;
 
+import org.osjava.oscube.container.Config;
+import org.osjava.oscube.container.Session;
+
 public abstract class AbstractPage implements Page {
 
     private static Logger logger = Logger.getLogger(AbstractPage.class);
