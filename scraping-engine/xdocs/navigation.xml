@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="genjava-core">
+
+  <title>genjava-core</title>
+
+  <body>
+    <menu name="Overview">
+      <item name="Why?"              href="/Why.html"/>
+      <item name="How?"              href="/HowTo.html"/>
+      <item name="Download" href="http://www.osjava.org/releases/official/scraping-engine/"/>
+    </menu>
+  </body>
+</project>
