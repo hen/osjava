@@ -15,6 +15,7 @@
 
     <release version="0.2" date="2004-04-13">
       <action dev="hen" type="add" issue="SCB-8">Examples zip download</action>
+      <action dev="hen" type="update">Extracted OSCube</action>
     </release>
 
     <release version="0.1" date="2003-12-23">
