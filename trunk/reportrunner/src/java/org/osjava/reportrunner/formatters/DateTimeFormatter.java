@@ -24,6 +24,9 @@ public class DateTimeFormatter extends AbstractFormatter {
         }
 
         if(input instanceof java.util.Date) {
+            if("EPOCH".equals(getPattern())) {
+                return ""+ ((java.util.Date) input).getTime();
+            }
             SimpleDateFormat sdf = new SimpleDateFormat( getPattern() );
             return sdf.format( (java.util.Date) input);
         } else {
