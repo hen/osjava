@@ -112,11 +112,11 @@ public abstract class AtomServlet extends HttpServlet
     private void writeResults(HttpServletResponse response, byte[] result)
         throws IOException
     {
-        response.setStatus( HttpServletResponse.SC_OK );
-        response.setContentType("application/x.atom+xml");        
+        response.setStatus( HttpServletResponse.SC_OK );     
         
         if (result.length > 0)
         {
+            response.setContentType("application/x.atom+xml");
             response.setContentLength(XML_HEADER.length + result.length);
             OutputStream output = response.getOutputStream();
             output.write(XML_HEADER);
@@ -408,7 +408,7 @@ public abstract class AtomServlet extends HttpServlet
                     .append("/entry/")
                     .append(entry.getId()).toString();
                 response.setHeader("Location", entryLoc);
-                writeResults(response, "".getBytes());
+                response.setStatus( HttpServletResponse.SC_CREATED ); 
             }
             catch (Exception e)
             {
@@ -503,7 +503,10 @@ public abstract class AtomServlet extends HttpServlet
                         request.getParameter("atom-start-range")).intValue();
                     int endRange = Integer.valueOf(
                         request.getParameter("atom-end-range")).intValue();
-                    entries = getEntryRange(startRange, endRange, pathInfo);
+                    if (startRange >= 0 && endRange > startRange)
+                    {
+                        entries = getEntryRange(startRange, endRange, pathInfo);
+                    }
                 }
                 catch (NumberFormatException e)
                 {
@@ -512,12 +515,14 @@ public abstract class AtomServlet extends HttpServlet
                 
             }
             // get the most recent X-number of entries
-            else if (request.getParameter("atom-last") != null)
+            else if (request.getParameter("atom-last") != null ||
+                      request.getParameter("atom-recent") != null)
             {
+                String maxStr = request.getParameter("atom-last");
+                if (maxStr == null) maxStr = request.getParameter("atom-recent");
                 try
                 {
-                    maxEntries = Integer.valueOf( 
-                        request.getParameter("atom-last") ).intValue();
+                    maxEntries = Integer.valueOf( maxStr ).intValue();
                 }
                 catch (NumberFormatException e)
                 {

@@ -23,8 +23,6 @@ public class EntryReaderTest extends TestCase
         "" + 
         "<author>  " + 
         "  <name>Bob B. Bobbington</name>  " + 
-        "  <homepage>http://bob.name/</homepage>  " + 
-        "  <weblog>http://bob.blog/</weblog>  " + 
         "</author>  " + 
         "" + 
         "<issued>2003-02-05T12:29:29</issued>  " + 
@@ -46,8 +44,6 @@ public class EntryReaderTest extends TestCase
         //"    <subtitle>In which a newbie learns to blog...</subtitle>\n" + 
         "    <author>\n" + 
         "      <name>Bob B. Bobbington</name>\n" + 
-        "      <homepage>http://bob.name/</homepage>\n" + 
-        "      <weblog>http://bob.blog/</weblog>\n" + 
         "    </author>\n" + 
         "    <issued>2003-02-05T12:29:29Z</issued>\n" + 
         "    <created>2003-02-05T14:10:58Z</created>\n" + 
