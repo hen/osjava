@@ -23,7 +23,7 @@ public class IOUtils {
     public static ServerSocketChannelHandler listen(
             InetSocketAddress addr,
             IOThread thread,
-            SocketStreamAcceptor acceptor
+            SocketChannelHandlerAcceptor acceptor
             ) 
         throws IOException
         {
@@ -34,7 +34,7 @@ public class IOUtils {
             ServerSocket socket = chan.socket();
             socket.bind(addr);
 
-            handler.setSocketStreamAcceptor(acceptor);
+            handler.setSocketChannelHandlerAcceptor(acceptor);
             handler.register(thread);
             return handler;
         }
