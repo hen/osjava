@@ -45,6 +45,7 @@ import java.util.Hashtable;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NameAlreadyBoundException;
+import javax.naming.NameNotFoundException;
 import javax.naming.NamingException;
 
 import junit.framework.TestCase;
@@ -105,12 +106,32 @@ public class ThreadContextTest extends TestCase {
      * Test to create a thread with a random name and no explicit runnable.
      * This test expects to receive a NullPointerException 
      */
-    public void testCreateThread_null() {
-        Thread thread = null;
+    public void testCreateThread0() {
         try {
-            thread = ((ThreadContext)context).createThread(null);
+            ((ThreadContext)context).createThread(null);
         } catch (NullPointerException e) {
             return;
+        } catch (NameAlreadyBoundException e) {
+            fail("NameAlreadyBoundException: " + e.getMessage());
+        } catch (ThreadIsRunningException e) {
+            fail("ThreadIsRunningException: " + e.getMessage());
+        } catch (NamingException e) {
+            fail("NamingException: " + e.getMessage());
+        }
+        fail("Should be null");
+    }
+    
+    /**
+     * Test to create a thread with a random name and a proper Runnable type,
+     * in this case, a Thread object.
+     */
+    public void testCreateThread1() {
+        Thread thread = null;
+        try {
+            thread = ((ThreadContext)context).createThread(new Thread());
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            fail("NullPointerException: " + e.getMessage());
         } catch (NameAlreadyBoundException e) {
             fail("NameAlreadyBoundException: " + e.getMessage());
         } catch (ThreadIsRunningException e) {
@@ -122,9 +143,120 @@ public class ThreadContextTest extends TestCase {
     }
     
     /**
+     * Test to create a thread with a specific name and a proper Runnable type,
+     * in this case, a Thread object.
+     */
+    public void testCreateThread2() {
+        Thread thread = null;
+        try {
+            thread = ((ThreadContext)context).createThread(new Thread(), "SomeName");
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            fail("NullPointerException: " + e.getMessage());
+        } catch (NameAlreadyBoundException e) {
+            fail("NameAlreadyBoundException: " + e.getMessage());
+        } catch (ThreadIsRunningException e) {
+            fail("ThreadIsRunningException: " + e.getMessage());
+        } catch (NamingException e) {
+            fail("NamingException: " + e.getMessage());
+        }
+        assertNotNull(thread);
+    }
+    
+    /**
+     * Create a thread in a subcontext.
+     */
+    public void testCreateThread3() {
+        Thread thread = null;
+        try {
+            ((ThreadContext)context).createSubcontext("SomeContext");
+        } catch (NamingException e) {
+            fail("Creating Subcontext NamingException: " + e.getMessage());
+        }
+        try {
+            thread = ((ThreadContext)context).createThread(new Thread(), "SomeContext.SomeName");
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            fail("NullPointerException: " + e.getMessage());
+        } catch (NameAlreadyBoundException e) {
+            fail("NameAlreadyBoundException: " + e.getMessage());
+        } catch (ThreadIsRunningException e) {
+            fail("ThreadIsRunningException: " + e.getMessage());
+        } catch (NamingException e) {
+            fail("NamingException: " + e.getMessage());
+        }
+        assertNotNull(thread);
+    }
+
+    /** 
+     * Notify a specific thread
+     */
+    public void testNotifyThread0() {
+        try {
+            ((ThreadContext)context).createThread(new Thread(), "SomeName");
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            fail("NullPointerException: " + e.getMessage());
+        } catch (NameAlreadyBoundException e) {
+            fail("NameAlreadyBoundException: " + e.getMessage());
+        } catch (ThreadIsRunningException e) {
+            fail("ThreadIsRunningException: " + e.getMessage());
+        } catch (NamingException e) {
+            fail("NamingException: " + e.getMessage());
+        }
+        try {
+            ((ThreadContext)context).notifyThread("SomeName");
+        } catch (NameNotFoundException e) {
+            fail("NameNotFoundException: " + e.getMessage());
+        } catch (NamingException e) {
+            fail("NamingException: " + e.getMessage());
+        }
+    }
+    
+    /** 
+     * Notifying a group of threads that are in a context.
+     */
+    public void testNotifyThread1() {
+        try {
+            ((ThreadContext)context).createSubcontext("SomeContext");
+        } catch (NamingException e) {
+            e.printStackTrace();
+            fail("Creating Subcontext NamingException: " + e.getMessage());
+        }
+        try {
+            ((ThreadContext)context).createThread(new Thread(), "SomeContext.SomeName");            
+            ((ThreadContext)context).createThread(new Thread(), "SomeContext.SomeName2");
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            fail("NullPointerException: " + e.getMessage());
+        } catch (NameAlreadyBoundException e) {
+            e.printStackTrace();
+            fail("NameAlreadyBoundException: " + e.getMessage());
+        } catch (ThreadIsRunningException e) {
+            e.printStackTrace();
+            fail("ThreadIsRunningException: " + e.getMessage());
+        } catch (NamingException e) {
+            e.printStackTrace();
+            fail("NamingException: " + e.getMessage());
+        }
+        try {
+            ((ThreadContext)context).notifyThread("SomeContext");
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            fail("NullPointerException: " + e.getMessage());
+        } catch (NameNotFoundException e) {
+            e.printStackTrace();
+            fail("NameNotFoundException: " + e.getMessage());
+        } catch (NamingException e) {
+            e.printStackTrace();
+            fail("NamingException: " + e.getMessage());
+        }
+    }
+
+    /**
      * Test to create a sub context
      */
-    public void testCreateSubContext1() {
+    public void testCreateSubContext0() {
         Object sub = null;
         try {
             /* Create the subContext object */
