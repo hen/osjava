@@ -6,6 +6,8 @@ package org.osjava.atom4j.reader;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
+import org.osjava.atom4j.Atom4J;
+
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -16,7 +18,7 @@ import junit.framework.TestSuite;
 public class EntryReaderTest extends TestCase
 {
     String entryXML = "<?xml version=\"1.0\" encoding='iso-8859-1'?>" +
-        "<entry xmlns=\"http://example.com/newformat#\" > " + 
+        "<entry xmlns=\"" + Atom4J.xmlns + "\" > " + 
         "<title>My First Entry</title>  " + 
         "<subtitle>In which a newbie learns to blog...</subtitle>  " + 
         "<summary>A very boring entry...</summary>  " + 
@@ -38,7 +40,7 @@ public class EntryReaderTest extends TestCase
         "</entry>";
         
     String expected = 
-        "<entry xmlns=\"http://example.com/newformat#\" >\n" + 
+        "<entry xmlns=\"" + Atom4J.xmlns + "\" >\n" + 
         "    <title>My First Entry</title>\n" + 
         "    <summary>A very boring entry...</summary>\n" + 
         //"    <subtitle>In which a newbie learns to blog...</subtitle>\n" + 
