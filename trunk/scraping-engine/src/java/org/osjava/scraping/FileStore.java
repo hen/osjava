@@ -95,6 +95,9 @@ try {
             URL url = (URL) obj;
             return url.openStream();
         } else 
+        if(obj instanceof String) {
+            return new java.io.ByteArrayInputStream( ( (String) obj ).getBytes() );
+        } else 
         if(obj instanceof InputStream) {
             return (InputStream) obj;
         } else 
