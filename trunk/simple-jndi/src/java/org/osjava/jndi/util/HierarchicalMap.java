@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 
-import org.osjava.convert.Convert;
+//import org.osjava.convert.Convert;
 
 // @date    2000-05-13
 
@@ -177,7 +177,8 @@ public class HierarchicalMap implements Map {
             for(int i=0; i<sz; i++) {
                 Object value = list.get(i);
                 if( !(value instanceof HierarchicalMap) ) {
-                    cloneList.add(Convert.convert((String)value, type));
+//                    cloneList.add(Convert.convert((String)value, type));
+                     cloneList.add(value);
                 }
             }
             return cloneList;
