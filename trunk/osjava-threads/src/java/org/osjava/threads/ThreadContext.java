@@ -811,7 +811,7 @@ public class ThreadContext
         if(closing) {
             return;
         }
-        setAbort((Name)null, true);
+        setAbort("", true);
         Collection threads = new ArrayList();
         NamingEnumeration ne = list("");
         /* 
