@@ -13,14 +13,8 @@
                 Unit Tests
             </li>
             <li>
-                ThreadNameParser needs to be improved drastically. 
-                <ul><li>
-                    Should pay attention to it's environment properties
-                </li>
-                <li>
-                    .equals is abysmal and going to be often wrong.
-                </li></ul>
-            </li></ul>
+                Documentation
+            </li>
         </section>
     </body>
 </document>

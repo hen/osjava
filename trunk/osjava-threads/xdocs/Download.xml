@@ -1,21 +1,28 @@
 <?xml version="1.0"?>
 <document>
   <properties>
-    <author email="rzigweid@tigransoft.org">Robert M. Zigweidl</author>
-    <title>Introduction</title>
+    <author email="rzigweid@osjava.org">Robert M. Zigweidl</author>
+    <title>Downloads</title>
   </properties>
   
   <body>
     <section name="Current Release">
+      <item name="OSJava-Threads-2.0.tar.gz" href="/distributions/OSJava-Threads-2.0.tar.gz"/>
+      <item name="OSJava-Threads-2.0.zip" href="/distributions/OSJava-Threads-2.0.zip"/>
+      <item name="OSJava-Threads-2.0-src.tar.gz" href="/distributions/OSJava-Threads-2.0-src.tar.gz"/>
+      <item name="OSJava-Threads-2.0-src.zip" href="/distributions/OSJava-Threads-2.0-src.zip"/>
+    </section>
+  
+    <section name="Archives">
+      <b>TigThreads Version 1.1</b>  -- That from which OSJava-Threads derived.
+      I do not consider it very useable.  It works, but the current version 
+      is much better.
       <item name="TigThreads-1.1.tar.gz" href="/distributions/TigThreads-1.1.tar.gz"/>
       <item name="TigThreads-1.1.zip" href="/distributions/TigThreads-1.1.zip"/>
       <item name="TigThreads-1.1-src.tar.gz" href="/distributions/TigThreads-1.1-src.tar.gz"/>
       <item name="TigThreads-1.1-src.zip" href="/distributions/TigThreads-1.1-src.zip"/>
-    </section>
-  
-    <section name="Archives">
       <p>
-        <b>Version 1.0</b> -- This version is really not suitable due to a 
+        <b>TigThreads Version 1.0</b> -- This version is really not suitable due to a 
         blocking defect that exists.
         <item name="TigThreads-1.0.tar.gz" href="/distributions/TigThreads-1.0.tar
 .gz"/>

@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <project>
-  <name>TigThreads</name>
+  <name>OSJava-Threads</name>
 
-  <title>TigThreads</title>
+  <title>OSJava-Threads</title>
 
   <body>
     <links>
     </links>
     <menu name="Overview">
-      <item name="Introduction"
-            href="/Introduction.html"/>
+      <item name="Index"
+            href="/index.html"/>
       <item name="News" 
             href="/News.html"/>
       <item name="Pending Tasks and Future Ideas" 
