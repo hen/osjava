@@ -75,6 +75,7 @@ public class XmlProperties extends Properties {
         reader.close();
     }
 
+    // TODO: Decide if load could just throw the root at add.
     public void load(Reader reader) throws IOException {
         XMLParser parser = new XMLParser();
         XMLNode root = parser.parseXML(reader);
@@ -84,6 +85,14 @@ public class XmlProperties extends Properties {
 //            add("", node);
 //            System.err.println("Adding: "+root.getName()+getDelimiter()+" to "+node);
             add(root.getName(), node);
+        }
+        Enumeration attrs = root.enumerateAttr();
+        if(attrs != null) {
+            while(attrs.hasMoreElements()) {
+                String attr = (String)attrs.nextElement();
+                setProperty( root.getName()+getDelimiter()+attr, root.getAttr(attr));
+//                System.err.println("Attr: "+(root.getName()+getDelimiter()+attr) +":"+root.getAttr(attr));
+            }
         }
     }
     
