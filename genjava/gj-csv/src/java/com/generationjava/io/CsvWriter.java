@@ -66,6 +66,10 @@ public class CsvWriter {
             written = false;
         }
 
+        if(field == null) {
+            field = "";
+        }
+
         int idx = field.indexOf(field_delim);
         if(idx != -1) {
             field = "\""+replace(field,"\"","\"\"")+"\"";
@@ -86,6 +90,27 @@ public class CsvWriter {
             writeField(strs[i]);
         }
         endBlock();
+    }
+
+    public void writeField(Object obj) throws IOException {
+        if(obj == null) {
+            writeField("");
+        } else {
+            writeField(obj.toString());
+        }
+    }
+
+    public void writeLine(Object[] objs) throws IOException {
+        int size = objs.length;
+        String[] strs = new String[size];
+        for(int i=0; i<size; i++) {
+            if(objs[i] == null) {
+                strs[i] = "";
+            } else {
+                strs[i] = objs[i].toString();
+            }
+        }
+        writeLine(strs);
     }
 
     public void close() throws IOException {
