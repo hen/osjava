@@ -13,7 +13,7 @@
  *   this list of conditions and the following disclaimer in the documentation 
  *   and/or other materials provided with the distribution.
  * 
- * + Neither the name of GenJava nor the names of its contributors 
+ * + Neither the name of Simple-JNDI nor the names of its contributors 
  *   may be used to endorse or promote products derived from this software 
  *   without specific prior written permission.
  * 
@@ -34,13 +34,9 @@
 package org.osjava.jndi.util;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.InputStream;
-import java.io.File;
-import java.io.FileReader;
 import java.io.Reader;
 import java.io.InputStreamReader;
-import java.io.BufferedReader;
 import java.util.Properties;
 import java.util.Enumeration;
 
@@ -48,6 +44,7 @@ import com.generationjava.io.xml.XMLParser;
 import com.generationjava.io.xml.XMLNode;
 
 /**
+ * Wraps the Genjava gj-xml parser behind a Properties facade.
  */
 public class XmlProperties extends AbstractProperties {
 
