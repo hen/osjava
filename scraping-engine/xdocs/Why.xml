@@ -21,12 +21,9 @@ having to implement the same code again and again. This pays back in development
 
 <p>This is another project of mine. I've found it very nice for configuring systems as there is zero code to add a new configuration option. </p>
     </section>
-    <!--
-    <section name="Why 'Scabies'?">
+    <section name="Why OSCube?">
+      <p>The innards of scraping-engine 0.1 have turned out to be very generic and useful for other things. They handle scheduling, configuration, running, and persistence and notification services. So I released it as a separate framework so other tools can rely on it. </p>
+    </section>
 
-<p>Scraping-engine is part of a larger project that will be called Scabies. Thus the JIRA project name. Scabies because that involves itching and this project is more than just a web-scraper, as things like 'link-check' will show when I release it. I felt there were not enough open source projects named after medical problems. Incidentally, Scabies comes from the latin 'scabere', which means 'scratch'. Also known as 'the itch', and for some reason aka 'the seven year itch'. </p>
-
-</section>
--->
 </body>
 </document>
