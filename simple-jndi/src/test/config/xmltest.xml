@@ -4,4 +4,8 @@
 <four>
   <five>Bang</five>
 </four>
+<multi>
+  <item>one</item>
+  <item>two</item>
+</multi>
 </config>
