@@ -77,6 +77,7 @@
     <dependency>
       <id>jdbc</id>
       <version>2.0</version>
+      <url>http://www.ibiblio.org/maven/jdbc/jars/</url>
     </dependency>
     <dependency>
       <id>commons-lang</id>
