@@ -45,8 +45,13 @@ import com.generationjava.collections.OrderedSet;
  * not in the two level are treated as simple one levels. 
  * Comments are a semi-colon. 
  */
-public class IniProperties extends Properties {
+public class IniProperties extends CustomProperties {
 
+    /**
+     * Load in a .ini file. 
+     * semi-colons are comments. blocks are denoted with square brackets.
+     * values are then key=value pairs, with blocks being prepended to keys.
+     */
     public synchronized void load(InputStream in) throws IOException {
         try {
             BufferedReader reader = new BufferedReader( new InputStreamReader(in) );
@@ -81,78 +86,6 @@ public class IniProperties extends Properties {
         } catch(IOException ioe) {
             ioe.printStackTrace();
         }
-    }
-
-    // This is a copy of CustomProperties from here on in
-    // in reality they should share
-
-    public synchronized Object put(Object key, Object value) {
-        if(index.contains(key)) {
-            Object obj = get(key);
-            if( !(obj instanceof List)) {
-                List list = new LinkedList();
-                list.add(obj);
-                obj = list;
-            } 
-            ((List)obj).add(value);
-            value = obj;
-        }
-        if(!index.contains(key)) {
-//            System.err.println("Updating index for: "+key);
-            index.add(key);
-        }
-//        System.err.println("Really setting: "+key+"="+value);
-        return super.put(key, value);
-    }
-
-
-    // our index for the ordering
-    protected ArrayList index = new ArrayList();
-
-    public IniProperties() {
-        super();
-    }
-
-    // the props attribute is for defaults. These will need to be 
-    // remembered for the save/store method.
-    public IniProperties(Properties props) {
-        super(props);
-    }
-
-    public synchronized Object setProperty(String key, String value) {
-        return put(key,value);
-    }
-    
-    public synchronized Object remove(Object key) {
-        index.remove(key);
-        return super.remove(key);
-    }
-    
-    // simple implementation that depends on keySet.
-    public synchronized Enumeration propertyNames() {
-        return IteratorUtils.asEnumeration(keySet().iterator());
-    }
-    public synchronized Enumeration keys() {
-        return propertyNames();
-    }
-    
-    public synchronized Set keySet() {
-        return new OrderedSet(index);
-    }
- 
-    /**
-     * Currently will write out defaults as well, which is not 
-     * in the specification.
-     */
-    public void save(OutputStream outstrm, String header) {
-        super.save(outstrm,header);
-    }
-    /**
-     * Currently will write out defaults as well, which is not 
-     * in the specification.
-     */
-    public void store(OutputStream outstrm, String header) throws IOException {
-        super.store(outstrm,header);
     }
 
 }
