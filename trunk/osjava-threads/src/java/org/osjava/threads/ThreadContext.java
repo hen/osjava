@@ -48,6 +48,7 @@ import javax.naming.NameAlreadyBoundException;
 import javax.naming.NameParser;
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
+import javax.naming.NotContextException;
 
 import org.osjava.naming.ContextBindings;
 import org.osjava.naming.ContextNames;
@@ -218,18 +219,14 @@ public class ThreadContext
         if("".equals(name)) {
             // here we should return a list of the directories and prop files 
             // minus the .properties that are in the root directory
-            return new ContextNames((Map)contextStore.clone());
+            return new ContextNames((Map)((HashMap)contextStore).clone());
         }
 
         Object target = lookup(name);
         if(target instanceof Context) {
             return ((Context)target).list("");
         }
-        throw new NotContextException(name+" cannot be listed");
-    }
-
-        // TODO Auto-generated method stub
-        return null;
+        throw new NotContextException(name + " cannot be listed");
     }
 
     /*
