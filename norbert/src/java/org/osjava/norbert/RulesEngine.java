@@ -39,7 +39,7 @@ import java.util.List;
  * Contains a series of Rules. It then runs a path against these 
  * to decide if it is allowed or not. 
  */
- // TODO: Make this package private
+ // TODO: Make this package private?
 class RulesEngine {
 
     private List rules;
