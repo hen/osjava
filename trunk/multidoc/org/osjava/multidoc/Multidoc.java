@@ -6,6 +6,8 @@ import java.util.*;
 import com.generationjava.io.xml.*;
 import com.generationjava.web.*;
 
+import org.apache.commons.lang.StringUtils;
+
 public class Multidoc {
 
     // multidoc multidoc.conf target/multidoc
@@ -170,7 +172,16 @@ public class Multidoc {
 
     public static void generateConfiguration(File targetDirectory, DocumentSite site, XMLNode root) throws IOException {
         FileWriter fw = new FileWriter( new File( targetDirectory, "configuration.html") );
-        fw.write(HtmlW.nl2br(XmlW.escapeXml(root.toString())));
+        String xml = root.toString();
+        String font = "<font color='#CC6600'>";
+        xml = StringUtils.replace(xml, "<", font+"&lt;");
+        xml = StringUtils.replace(xml, ">", "&gt;</font>");
+        xml = StringUtils.replace(xml, "  ", "&nbsp;&nbsp;");
+        xml = StringUtils.replace(xml, "=\"", "=\"</font>");
+        xml = StringUtils.replace(xml, "\" ", font+"\" ");
+        xml = StringUtils.replace(xml, "\"&gt;", font+"\"&gt;");
+        xml = HtmlW.nl2br(xml);
+        fw.write(xml);
         fw.close();
     }
 
@@ -184,7 +195,7 @@ public class Multidoc {
         fw.write("'>");
         fw.write(site.getTitle());
         fw.write("</a>. To use it, use the document-types listed in the menu-frame above. </p>");
-        fw.write("</body></html");
+        fw.write("</body></html>");
         fw.close();
     }
 }
