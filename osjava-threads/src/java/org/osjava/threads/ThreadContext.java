@@ -41,6 +41,7 @@ package org.osjava.threads;
 
 import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.Map;
 
 import javax.naming.Context;
@@ -52,6 +53,7 @@ import javax.naming.NameParser;
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 import javax.naming.NotContextException;
+import javax.naming.OperationNotSupportedException;
 
 import org.osjava.naming.ContextBindings;
 import org.osjava.naming.ContextNames;
@@ -116,7 +118,61 @@ public class ThreadContext
     /* ************************
      * Class Specific Methods *
      * ************************/
-            
+    /**
+     * Invokes <code>start()</code> on all of the {@link ExtendedThread
+     * ExtendedThreads} in this context and its subcontexts.
+     */
+    public void start() {        
+        Iterator it = contextStore.keySet().iterator();
+        while (it.hasNext()) {           
+            ExtendedRunnable next = (ExtendedRunnable)contextStore.get(it.next());
+            /* 
+             * This is almost always going to be the case, but there's a chanc
+             * chance it won't be.
+             */
+            if(next instanceof Thread) {
+                ((Thread)next).start();
+            }
+        }
+
+        it = subContexts.keySet().iterator();
+        while (it.hasNext()) {
+            Context next = (Context)subContexts.get(it.next());
+            /* 
+             * We can only make ThreadContexts, start like that and there is
+             * not a guarantee that the subcontext is going to be a
+             * ThreadContext.
+             * 
+             */
+            if(next instanceof ThreadContext) {
+                ((ThreadContext)next).start();
+            }
+        }
+    }
+
+    /**
+     * Run setAbort() on all of the threads that this group is an ancestor of
+     * 
+     * @param abort Boolean value determining whether or not the thread is to 
+     *              be aborted, or can be set to halt a previously declared 
+     *              abort
+     */
+    public void setAbort(boolean abort) {
+        Iterator it = contextStore.keySet().iterator();
+        while (it.hasNext()) {           
+            ExtendedRunnable next = ((ExtendedRunnable)contextStore.get(it.next()));
+            next.setAbort(abort);
+        }
+
+        it = subContexts.keySet().iterator();
+        while (it.hasNext()) {           
+            Context next = ((Context)subContexts.get(it.next()));
+            if(next instanceof ThreadContext) {
+                ((ThreadContext)next).setAbort(abort);
+            }
+        }
+    }
+    
     /* *******************************************
      * Methods required by implementing Context. *
      * *******************************************/
@@ -738,32 +794,32 @@ public class ThreadContext
      * @see javax.naming.Context#getEnvironment()
      */
     public Hashtable getEnvironment() throws NamingException {
-        // TODO Auto-generated method stub
         /*
          * Even though the docs say that nothing is supposed to be done to the
          * environment that is returned, I don't trust people to do the 
-         * right thing.  Returning a clone is safer. */
+         * right thing.  Returning a clone is safer. 
+         */
         return (Hashtable)environment.clone();
     }
 
-    /*
-     * (non-Javadoc)
+    /**
      * 
-     * @see javax.naming.Context#close()
+     * @seee javax.naming.Context#close()
      */
     public void close() throws NamingException {
+        
     // TODO Auto-generated method stub
 
     }
 
-    /*
-     * (non-Javadoc)
+    /**
+     * The current way that ThreadContext is implemented, getNameInNamespace 
+     * cannot be implemented.
      * 
      * @see javax.naming.Context#getNameInNamespace()
      */
     public String getNameInNamespace() throws NamingException {
-        // TODO Auto-generated method stub
-        return null;
+        throw new OperationNotSupportedException();
     }
 
 }
