@@ -59,11 +59,11 @@ then
 #BUG: this does not quite work as we now put these all in the same file and they don't contain the project name
                     if [ $SCM = 'SVN' ];
                     then
-                        svn update | grep -v '^?' >> $buildDir/SCM_UPDATE
+                        svn update | grep -v '^?' | sed "s/^/$i /" >> $buildDir/SCM_UPDATE
                     fi
                     if [ $SCM = 'CVS' ];
                     then
-                        cvs -q update 2>/dev/null | grep -v '^?' >> $buildDir/SCM_UPDATE
+                        cvs -q update 2>/dev/null | grep -v '^?' | sed "s/^/$i /" >> $buildDir/SCM_UPDATE
                     fi
                 fi
                 cd -
@@ -181,7 +181,7 @@ do
     date +"%Y/%m/%d %k:%M" > $reportDir/$i/BUILD_TIME
     if [ -e $buildDir/SCM_UPDATE ];
     then
-        cat $buildDir/SCM_UPDATE | grep $i > $reportDir/$i/REASON
+        cat $buildDir/SCM_UPDATE | grep " $i " > $reportDir/$i/REASON
     fi
     if [ -e $buildDir/REASON ];
     then
