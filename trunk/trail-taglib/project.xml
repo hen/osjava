@@ -45,7 +45,7 @@
 
   <repository>
     <connection>scm:cvs:pserver:anonymous@cvs.osjava.org:/var/cvs:trail-taglib</connection>
-    <url>http://cvs.osjava.org/view-cvs/viewcvs.cgi/trail-taglib/</url>
+    <url>http://svn.osjava.org/cgi-bin/viewcvs.cgi/trunk/trail-taglib/</url>
   </repository>
 
   <mailingLists>

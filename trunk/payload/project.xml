@@ -45,7 +45,7 @@
 
   <repository>
     <connection>scm:cvs:pserver:anonymous@cvs.osjava.org:/var/cvs:payload</connection>
-    <url>http://cvs.osjava.org/view-cvs/viewcvs.cgi/payload/</url>
+    <url>http://svn.osjava.org/cgi-bin/viewcvs.cgi/trunk/payload/</url>
   </repository>
 
   <mailingLists>

@@ -27,7 +27,7 @@
 
   <repository>
     <connection>scm:cvshen@umbongo.flamefew.net:/var/cvs:runsql</connection>
-    <url>http://www.generationjava.com/view-cvs/viewcvs.cgi/runsql/</url>
+    <url>http://svn.osjava.org/cgi-bin/viewcvs.cgi/trunk/runsql/</url>
   </repository>
 
   <developers>
