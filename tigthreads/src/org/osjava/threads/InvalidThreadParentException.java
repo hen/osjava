@@ -1,7 +1,7 @@
 /* 
  * org.osjava.threads.InvalidThreadParentException
  * 
- * $Revision: 1.2 $
+ * $Revision: 1.3 $
  * 
  * Created on Aug 01, 2002
  * 
@@ -39,10 +39,10 @@ package org.osjava.threads;
 
 /**
  * Exception to be thrown in the event that a Thread or ThreadGroup is added 
- * that does not implement {@link ExtendedRunnable).
+ * that does not implement {@link ExtendedRunnable}.
  * 
  * @author Robert M. Zigweid
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class InvalidThreadParentException extends Exception {
 

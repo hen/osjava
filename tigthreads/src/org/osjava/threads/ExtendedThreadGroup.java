@@ -1,7 +1,7 @@
 /* 
  * org.osjava.threads.ExtendedThreadGroup
  * 
- * $Revision: 1.3 $
+ * $Revision: 1.4 $
  * 
  * Created on Aug 01, 2002
  * 
@@ -49,10 +49,11 @@ import java.util.Set;
  * management. 
  * <p>
  * This implementation of ThreadGroup has better access to its 
- * children, be they other ExtendedThreadGroups, or {@link ExtendedThreads}.
+ * children, be they other ExtendedThreadGroups, or {@link ExtendedThread 
+ * ExtendedThreads}.
  * 
  * @author Robert M. Zigweid
- * @version $Revision: 1.3 $ $Date: 2003/11/30 16:40:24 $
+ * @version $Revision: 1.4 $ $Date: 2004/02/12 01:28:46 $
  */
 public class ExtendedThreadGroup extends ThreadGroup {
     /**
@@ -122,7 +123,7 @@ public class ExtendedThreadGroup extends ThreadGroup {
     /**
      * Returns the appropriate ThreadGroup parent to the ExtendedThreadGroup
      * that is created.  This method is only intended to be called from the 
-     * {@link #Constructor(ExtendedThreadGroup,String) ExtendedThreadGroup}
+     * {@link #ExtendedThreadGroup(ExtendedThreadGroup, String) ExtendedThreadGroup}
      * constructor in the instance that a <code>null</code> is passed as the 
      * <code>parent</code> parameter.  If <code>parent</code> is not null, 
      * it is returned directly.  If it is null, the ThreadManager is queried
@@ -248,8 +249,8 @@ public class ExtendedThreadGroup extends ThreadGroup {
 
     /**
      * Returns a Collection of all of the names of the 
-     * {@link ExtendedThreads} that this object parents, but not those of 
-     * the ExtendedThreadGroups that this object parents.
+     * {@link ExtendedThread ExtendedThread} that this object parents, but not
+     * those of the ExtendedThreadGroups that this object parents.
      * 
      * @return a Collection of the names of all of the threads.
      */
@@ -259,11 +260,11 @@ public class ExtendedThreadGroup extends ThreadGroup {
 
     /**
       * Returns a Collection of all of the names of the 
-      * {@link ExtendedThreads} that this object parents. If <code>recurse
-      * </code> is true, the names of all of the ExtendedThreads in all of 
-      * the ExtendedThreadGroups that this one is the ancestor of are included.
-      * If <code>recurse</code> is false, only the ExtendedThreads that are 
-      * directly parented are included.
+      * {@link ExtendedThread ExtendedThreads} that this object parents. If
+      * <code>recurse</code> is true, the names of all of the ExtendedThreads
+      * in all of the ExtendedThreadGroups that this one is the ancestor of are
+      * included.  If <code>recurse</code> is false, only the ExtendedThreads 
+      * that are directly parented are included.
       *
       * @param recurse If recurse is true, decend into child 
       *                ExtendedThreadGroups
@@ -305,7 +306,7 @@ public class ExtendedThreadGroup extends ThreadGroup {
 
     /**
      * Returns a Collection of all of the names of the 
-     * {@link ThreadsGroups} that this ExtendedThreadGroup parents.  If 
+     * {@link ThreadGroup ThreadGroups} that are parented. If 
      * <code>recurse</code> is true, the names of all of the 
      * ExtendedThreads in all of the ExtendedThreadGroups that this one is the 
      * ancestor of are included.  If <code>recurse</code> is false, only the 
@@ -446,8 +447,8 @@ public class ExtendedThreadGroup extends ThreadGroup {
     }
     
     /**
-     * Invokes <code>start()</code> on all of the {@link ExtendedThreads}
-     *  that this group is an ancestor of.
+     * Invokes <code>start()</code> on all of the {@link ExtendedThread
+     * ExtendedThreads} that this group is an ancestor of.
      */
     public void start() {
         Iterator it = threadChildren.keySet().iterator();
