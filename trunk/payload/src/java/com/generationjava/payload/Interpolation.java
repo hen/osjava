@@ -31,14 +31,22 @@
  */
 package com.generationjava.payload;
 
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.StringReader;
 
-// used to handle interpolation concepts, ie:
-//  org.osjava.payload=true
-//  org.osjava.payload.interpolate.endsWith=txt
-//  org.osjava.payload.interpolate.endsWith=xml
-//  org.osjava.payload.interpolate.matches=regexp
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Properties;
+
+/**
+ * used to handle interpolation concepts, ie:
+ *   org.osjava.payload=true
+ *   org.osjava.payload.interpolate.endsWith=txt
+ *   org.osjava.payload.interpolate.endsWith=xml
+ *   org.osjava.payload.interpolate.matches=regexp
+ */
 class Interpolation {
 
     static private String ENDS_WITH = "org.osjava.payload.interpolate.endsWith";
@@ -104,7 +112,6 @@ class Interpolation {
         Iterator itr = props.keySet().iterator();
         while(itr.hasNext()) {
             String key = (String) itr.next();
-            // switch away from regexp with Lang's replace method?
             str = str.replaceAll( "\\$\\{"+key+"\\}", props.getProperty(key) );
         }
         return str;
