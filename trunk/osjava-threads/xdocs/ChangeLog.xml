@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<document>
+
+    <properties>
+        <author email="rzigweid@osjava.org">Robert M. Zigweid</author>
+        <title>ChangeLog</title>
+    </properties>
+    <body>
+        <release version="2.0" date="2004-10-??">
+            <action dev="rzigweid" type="update" issue="TGT-2">
+                COMPAT BUSTER:Refactored the package from org.tigransoft to
+                org.osjava, and renamed the package from TigThreads to 
+                OSJava-Threads.
+            </action>
+            <action dev="rzigweid" type="fix" issue="TGT-3">
+                COMPAT BUSTER: Renamed getAbort() methods to isAborting() in
+                all classes.
+            </action>
+            <action dev="rzigweid" type="update" issue="TGT-4">
+                Improved API to work better with threads that implement 
+                ExtendedRunnable, but do not extend ExtendedThread.
+            </action>
+            <action dev="rzigweid" type="update">
+                Added additional constructors to ExtendedThread.  Constructors
+                should now map to those in java.lang.Thread
+            </action>
+            <action dev="rzigweid" type="update" issue="TGT-5">
+                AbstractExtendedRunnable, and ExtendedThread are made 
+                uncloneable.
+            </action>
+            <action dev="rzigweid" type="add">
+                Added the exception InvalidRunnableException
+            </action>
+            <action dev="rzigweid" type="update">
+                Added mechanism to notify managed Threads that are in a wait 
+                state and wake them up safely.  The necessary synchronization
+                is done and it doesn't require looking up the actual thread 
+                object, as it's done by name.
+            </action>
+            <action dev="rzigweid" type="add">
+                COMPAT BUSTER: Added ThreadContext to replace 
+                ExtendedThreadGroup and ThreadManager.  This is a more 
+                flexible means of handling the grouping and management of 
+                Threads.  This created a dependancy on Simple-JNDI.
+            </action>
+            <action dev="rzigweid" type="remove">
+                COMPAT BUSTER: Removed ExtendedThreadGroup, ThreadManager, 
+                InvalidThreadGroupParentException, 
+                InvalidThreadParentException.
+            </action>
+        </release>
+    </body>
+</document>
+  
