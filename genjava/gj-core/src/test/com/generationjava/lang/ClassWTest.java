@@ -20,9 +20,6 @@ public class ClassWTest extends TestCase {
     //    Object createObject(Class) {
     //    boolean classExists(String) {
     //    Class getClass(String) {
-    //    boolean classInstanceOf(Class, String) {
-    //    boolean classImplements(Class, String) {
-    //    boolean classExtends(Class, String) {
     //    void callMain(String[]) {
     //    void callMain(String, String[]) {
     //    Object callStatic(String, String, Class[], Object[])
@@ -40,21 +37,6 @@ public class ClassWTest extends TestCase {
 
     public void testGetClass() {
         assertEquals("Unable to get String.class",  String.class, ClassW.getClass("java.lang.String") );
-    }
-
-    public void testClassInstanceOf() {
-        assertEquals("HashMap is not an instance of Map",  true, ClassW.classInstanceOf(HashMap.class, "java.util.Map" ) );
-        assertEquals("HashMap is an instance of AbstractList",  false, ClassW.classExtends(HashMap.class, "java.util.AbstractList" ) );
-    }
-
-    public void testClassImplements() {
-        assertEquals( "HashMap does not implement Map", true, ClassW.classImplements(HashMap.class, "java.util.Map" ) );
-        assertEquals( "HashMap implements AbstractMap", false, ClassW.classImplements(HashMap.class, "java.util.AbstractMap" ) );
-    }
-
-    public void testClassExtends() {
-        assertEquals( "HashMap does not extend AbstractMap", true, ClassW.classExtends(HashMap.class, "java.util.AbstractMap" ) );
-        assertEquals( "HashMap extends Map", false, ClassW.classExtends(HashMap.class, "java.util.Map" ) );
     }
 
 }
