@@ -4,7 +4,7 @@
 
 <taglib>
   <tlibversion>1.0</tlibversion>
-  <jspversion>1.1</jspversion>
+  <jspversion>2.0</jspversion>
   <shortname>hibernate</shortname>
   <uri>http://www.osjava.org/taglibs/hibernate-1.0</uri>
   <info>Hibernate in a taglib. </info>
@@ -29,6 +29,32 @@
     </attribute>
     <attribute>
       <name>type</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+  <tag>
+    <name>create</name>
+    <tagclass>org.osjava.hibernate.taglib.CreateTag</tagclass>
+    <bodycontent>JSP</bodycontent>
+    <attribute>
+      <name>var</name>
+      <!-- make this false -->
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    <attribute>
+      <name>type</name>
+      <required>true</required>
+      <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+  <tag>
+    <name>save</name>
+    <tagclass>org.osjava.hibernate.taglib.SaveTag</tagclass>
+    <bodycontent>JSP</bodycontent>
+    <attribute>
+      <name>value</name>
       <required>true</required>
       <rtexprvalue>true</rtexprvalue>
     </attribute>
