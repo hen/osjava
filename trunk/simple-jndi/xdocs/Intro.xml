@@ -12,127 +12,67 @@
 Simple-JNDI is intended to solve two problems. The first is that of finding a container independent way of opening a database connection, the second is to find a good way of specifying application configurations.
 </p>
 <p>
-In a J2EE container, you can use JNDI as a java.sql.Connection factory. This code however is not usable outside of a J2EE container as you cannot guarentee you have a JNDI implementation available, and to be honest, you don't want to start some other server to make your simple script run. Simple-JNDI is not a server, it is merely an API, however it looks exactly the same as the JNDI client code used in a J2EE container.
+In a J2EE container, you can use JNDI as a java.sql.Connection factory. This code however is not usable outside of a J2EE container as you cannot guarrentee you have a JNDI implementation available, and to be honest, you don't want to start some other server to make your simple script run. Simple-JNDI is not a server, it is merely an API, however it looks exactly the same as the JNDI client code used in a J2EE container.
 </p>
 <p>
 Applications need configuration. A servlets container uses the web.xml files to configure, while a J2EE container uses a different system, for example, JBoss has a jboss.jcml configuration file which sets a system up via JMX managed beans. An application <i>could</i> however use Simple-JNDI for parameter values.
 </p>
-<h4>Using Simple-JNDI</h4>
+</section>
+<section name="Using Simple-JNDI">
 <p>
-Using Simple-JNDI is the same as using JNDI itself. So this is not covered here.
+Using Simple-JNDI is the same as using JNDI itself. So this is not covered here, however the examples do give the basic gist.
 </p>
-<h4>Installing Simple-JNDI</h4>
+</section>
+<section name="Installing Simple-JNDI">
 <p>
 Installing Simple-JNDI is as simple as adding the simple-jndi jar, jdbc 2.0 jar and the commons-lang jar to your classpath.
 </p>
-<h4>Setting up Simple-JNDI</h4>
+</section>
+<section name="Setting up Simple-JNDI">
 <p>
-This is where all the work goes in a Simple-JNDI implementation. Firstly you need a jndi.properties file, which somehow needs to go into your classpath. This jndi.properties needs two values:
+This is where all the work goes in a Simple-JNDI installation. Firstly you need a jndi.properties file, which somehow needs to go into your classpath. This jndi.properties needs one manadatory value:
 </p>
 <code>
 java.naming.factory.initial=com.generationjava.jndi.PropertiesFactory
-com.generationjava.jndi.root=/home/hen/gj/simple-jndi/config/
 </code>
 <p>
-The first property is a part of the jndi specification, java.naming.factory.initial. This should be set equal to com.generationjava.jndi.PropertiesFactory. <br />
-The second property is simple-jndi specific, com.generationjava.jndi.root is set to a directory containing all the jndi values for this application.
+This property is a part of the jndi specification, java.naming.factory.initial. This should be set equal to com.generationjava.jndi.PropertiesFactory.
 </p>
-<h4>Simple-JNDI's values</h4>
 <p>
-Simple-JNDI stores values in multiple .properties files and are looked up using a dotted name convention. There is also a special flag to specify whether a .properties file is a DataSource or not. Following are some examples.
-</p>
-<h4>Examples</h4>
-<p>
-Imagine a file-structure looking like,
+There are two optional, simple-jndi specific parameters. <br />
+The first, com.generationjava.jndi.root, is the location of your simple-jndi root, which is the location in which simple-jndi looks for values when code asks for them. The following code block details a few examples with explanatory comments.
 </p>
 <code>
-config/<br />
-config/debug.properties<br />
-config/ProductionDS.properties<br />
-config/application1/default.properties<br />
-config/application1/ds.properties<br />
-config/application1/users.properties<br />
+# absolute directory, using the default file protocol<br />
+com.generationjava.jndi.root=/home/hen/gj/simple-jndi/config/<br />
+<br />
+# relative directory, using the default file protocol<br />
+com.generationjava.jndi.root=config/<br />
+<br />
+# specified file protocol with an absolute directory<br />
+com.generationjava.jndi.root=file:///home/hen/gj/simple-jndi/config/<br />
+<br />
+# specified file protocol with a relative directory<br />
+com.generationjava.jndi.root=file://config/<br />
+<br />
+# classpath protocol with a package 'config'<br />
+com.generationjava.jndi.root=classpath://config<br />
 </code>
 <p>
-in which the files look like;
-<dl>
-<dt>default.properties</dt>
-<dd>
-name=Prototype
-url=http://www.generationjava.com/
-</dd>
-<dt>debug.properties</dt>
-<dd>
-state=ERROR
-</dd>
-<dt>ProductionDS.properties</dt>
-<dd>
-com.generationjava.jndi.datasource=true<br />
-driver=org.gjt.mm.mysql.Driver<br />
-url=jdbc:mysql://localhost/testdb<br />
-user=testuser<br />
-password=testing
-</dd>
-<dt>application1/default.properties</dt>
-<dd>
-name=My Application<br />
-version=v3.4
-</dd>
-<dt>application1/ds.properties</dt>
-<dd>
-com.generationjava.jndi.datasource=true<br />
-TestDS.driver=org.gjt.mm.mysql.Driver<br />
-TestDS.url=jdbc:mysql://localhost/testdb<br />
-TestDS.user=testuser<br />
-TestDS.password=testing
-</dd>
-<dt>application1/users.properties</dt>
-<dd>
-admin=fred<br />
-customer=jim
-</dd>
-</dl>
-The following pieces of Java are all legal ways in which to get values from Simple-JNDI. They assume they are preceded with a line of 'InitialContext ctxt = new InitialContext();'.
-<ul>
-<li>Object value = ctxt.lookup("debug.state")</li>
-<li>Object value = ctxt.lookup("name")</li>
-<li>Object value = ctxt.lookup("url")</li>
-<li>Object value = ctxt.lookup("ProductionDS")</li>
-<li>Object value = ctxt.lookup("application1.name")</li>
-<li>Object value = ctxt.lookup("application1.TestDS")</li>
-<li>Object value = ctxt.lookup("application1.users.admin")</li>
-</ul>
-Note that the ProductionDS and TestDS return types are objects of type javax.sql.DataSource.
+If no com.generationjava.jndi.root is specified, then a classpath root is chosen, with no package.
 </p>
-<h4>FAQ</h4>
-<dl>
-<dt>I get a ClassCastException with java.util.Properties.</dt>
-<dd>Most likely you are trying to get a DataSource but you have forgotten to include com.generationjava.jndi.datasource=true.</dd>
-<dt>I get an SQLException of 'No suitable driver'.</dt>
-<dd>Your driver's jar is not in the classpath.</dd>
-<dt>I get InvalidNameException of [key] not found.</dt>
-<dd>You have not specified the com.generationjava.jndi.root correctly in your jndi.properties.</dd>
-<dt>ClassNotFoundException: com.generationjava.jndi.PropertiesFactory.</dt>
-<dd>You don't have the simple-jndi jar in the classpath.</dd>
-</dl>
-<h4>Todo</h4>
-<ul>
-<li>Types. com.foo.Value can have a partner key of com.foo.Value.type which specifies the type of object to use for the key. </li>
-<li>Implement Type in such a way that the object to create may be specified, say JDOPersistenceFactory, and that sub-properties may be set as bean properties.</li>
-<li>Implement binding so that values may be stored in the system, making it Read/Write. </li>
-<li>Implementing the list methods so you can see the values in a particular directory/properties file. </li>
-<li>Searches. Consider implementing DirContext. </li>
-<li>Switch to using Names in the system, with the String argument being turned to a Name based on delimiters specified in the jndi.properties. Allow more than one delimiter.</li>
-<li>Other DataSource like things? JDO?</li>
-<li>XML underneath as well as .properties</li>
-<li>If root is unspecified, then use the classpath</li>
-<li>Allow the root to be a classpath root, ie) com.generationjava</li>
-<li>Allow the root to be a url, so properties can be found online</li>
-<li>Hook up DBCP or some other connection pool.</li>
-<li>Make it nice to hook up Enhanced drivers from DbUtils??</li>
-<li>Use OrderedProperties to order the underlying .properties files. </li>
-</ul>
-
+<p>
+The second optional parameter is the delimiter used to separate elements in a lookup value. This allows code to get closer to pretending to be another JNDI implementation, such as DNS or LDAP.</p>
+<code>
+# DNS/Java like delimiters<br />
+com.generationjava.jndi.delimiter=.<br />
+<br />
+# LDAP/XPath like delimiters<br />
+com.generationjava.jndi.delimiter=/<br />
+</code>
+<p>
+If no com.generationjava.jndi.delimiter is specified, then a '.' (dot) is chosen. 
+</p>
 </section>
 </body>
 </document>

@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<document>
+
+  <properties>
+      <author email="bayard@generationjava.com">Henri Yandell</author>
+      <title>News</title>
+  </properties>
+
+  <body>
+    <section name="News">
+    <p>Version 0.3 has been released, as of 2003-02-14. The following features were added: </p>
+<ul>
+<li>Implemented a protocol system for the simple-jndi root's location. The original file location was retrofitted into this and a classpath location was added. A http location is planned</li>
+<li>If a protocol is unspecified, then resort to v0.2 format, ie) file://</li>
+<li>If root is unspecified, then use the classpath</li>
+<li>The delimiter in the search values is configurable, so people can more easily mimic LDAP</li>
+</ul>
+
+</section>
+</body>
+</document>
