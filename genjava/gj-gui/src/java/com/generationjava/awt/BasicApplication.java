@@ -99,8 +99,11 @@ public abstract class BasicApplication extends Frame implements WindowListener, 
         Menu m = (Menu)menus.get(fqname);
         if(m == null) {
             m = createMenu(getLabel(getMenuName(fqname)));
-            // TODO: Doesn't include the delimiter
+            
             String parentName = StringUtils.substringBefore(fqname,".");
+            if(parentName.equals(fqname)) {
+                parentName = "";
+            }
             if("".equals(parentName)) {
                 addTopLevelMenu(m);
             } else {
@@ -113,7 +116,11 @@ public abstract class BasicApplication extends Frame implements WindowListener, 
         return m;
     }
     private String getMenuName(String fqname) {
-        return StringUtils.substringAfter(fqname,".");
+        if(fqname.indexOf(".") == -1) {
+            return fqname;
+        } else {
+            return StringUtils.substringAfter(fqname,".");
+        }
     }
     // basically inserts a separator
     protected void createNewBlock(String menuName, int block) {
