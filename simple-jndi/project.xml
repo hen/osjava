@@ -61,11 +61,6 @@
 
   <dependencies>
     <dependency>
-      <id>gj-core</id>
-      <version>3.0</version>
-      <url>http://www.osjava.org/</url>
-    </dependency>
-    <dependency>
       <id>gj-xml</id>
       <version>1.0</version>
       <url>http://www.osjava.org/</url>
