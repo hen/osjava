@@ -11,11 +11,13 @@ public interface Report {
     void setName(String name);
     String getLabel();
     void setLabel(String label);
-    String getRenderers();
+    Renderer[] getRenderers();
     void setRenderers(String renderers);
     Object[] execute();
     Param[] getParams();
     void addParam(Param param);
     Choice[] getParamChoices(Param param);
+    Column[] getColumns();
+    void addColumn(Column column);
 
 }

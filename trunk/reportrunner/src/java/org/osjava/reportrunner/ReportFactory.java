@@ -9,49 +9,55 @@ import com.generationjava.lang.*;
 public class ReportFactory {
 
     public static Report getReport(String reportName) {
-        XMLNode node = parseXml("reports.xml").getNode("reports");
-        Enumeration reports = node.enumerateNode("report");
-        while(reports.hasMoreElements()) {
-            XMLNode reportNode = (XMLNode) reports.nextElement();
-            if(reportNode.getAttr("name").equals(reportName)) {
-                String className = reportNode.getAttr("class");
-                Report report = (Report) ClassW.createObject(className);
-                report.setName(reportName);
-                report.setLabel(reportNode.getAttr("label"));
-                applyNodes( report, reportNode.enumerateNode() );
-                applyParamTag( report, reportNode.enumerateNode("param") );
-                return report;
+        Report[] reports = getReports();
+        for(int i=0; i<reports.length; i++) {
+            if(reports[i].getName().equals(reportName)) {
+                return reports[i];
             }
         }
         return null;
+    }
+    public static Report[] getReports() {
+        List reports = new ArrayList();
+        XMLNode node = parseXml("reports.xml").getNode("reports");
+        Enumeration reportNodes = node.enumerateNode("report");
+        while(reportNodes.hasMoreElements()) {
+            XMLNode reportNode = (XMLNode) reportNodes.nextElement();
+            String className = reportNode.getAttr("class");
+            Report report = (Report) ClassW.createObject(className);
+            report.setName(reportNode.getAttr("name"));
+            report.setLabel(reportNode.getAttr("label"));
+            applyNodes( report, reportNode.enumerateNode() );
+            applyParamTag( report, reportNode.enumerateNode("param") );
+            applyColumnTag( report, reportNode.enumerateNode("column") );
+            reports.add(report);
+        }
+        return (Report[]) reports.toArray( new Report[0] );
     }
 
     public static Renderer getRenderer(String rendererName) {
-        XMLNode node = parseXml("renderers.xml").getNode("renderers");
-        Enumeration renderers = node.enumerateNode("renderer");
-        while(renderers.hasMoreElements()) {
-            XMLNode rendererNode = (XMLNode) renderers.nextElement();
-            if(rendererNode.getAttr("name").equals(rendererName)) {
-                String className = rendererNode.getAttr("class");
-                Renderer renderer = (Renderer) ClassW.createObject(className);
-                renderer.setName(rendererName);
-                renderer.setLabel(rendererNode.getAttr("label"));
-                applyNodes( renderer, rendererNode.enumerateNode() );
-                return renderer;
+        Renderer[] renderers = getRenderers();
+        for(int i=0; i<renderers.length; i++) {
+            if(renderers[i].getName().equals(rendererName)) {
+                return renderers[i];
             }
         }
         return null;
     }
-
-    public static String[] getNames() {
-        ArrayList list = new ArrayList();
-        XMLNode node = parseXml("reports.xml").getNode("reports");
-        Enumeration reports = node.enumerateNode("report");
-        while(reports.hasMoreElements()) {
-            XMLNode reportNode = (XMLNode) reports.nextElement();
-            list.add(reportNode.getAttr("name"));
+    public static Renderer[] getRenderers() {
+        List renderers = new ArrayList();
+        XMLNode node = parseXml("renderers.xml").getNode("renderers");
+        Enumeration renderNodes = node.enumerateNode("renderer");
+        while(renderNodes.hasMoreElements()) {
+            XMLNode rendererNode = (XMLNode) renderNodes.nextElement();
+            String className = rendererNode.getAttr("class");
+            Renderer renderer = (Renderer) ClassW.createObject(className);
+            renderer.setName(rendererNode.getAttr("name"));
+            renderer.setLabel(rendererNode.getAttr("label"));
+            applyNodes( renderer, rendererNode.enumerateNode() );
+            renderers.add(renderer);
         }
-        return (String[]) list.toArray( new String[0] );
+        return (Renderer[]) renderers.toArray( new Renderer[0] );
     }
 
     private static void applyNodes( Object obj, Enumeration nodes ) {
@@ -61,8 +67,8 @@ public class ReportFactory {
                 continue;
             }
             String name = node.getName();
-            if(name.equals("param")) {
-                // special subtag for report
+            if(name.equals("param") || name.equals("column")) {
+                // special subtag for reports
                 continue;
             }
             // needs code to ignore comments
@@ -95,6 +101,23 @@ public class ReportFactory {
                 param.setTypeAsString( type );
                 param.setBinding( binding );
                 report.addParam( param );
+            }
+        }
+    }
+
+    private static void applyColumnTag( Report report, Enumeration nodes ) {
+        while(nodes.hasMoreElements()) {
+            XMLNode node = (XMLNode) nodes.nextElement();
+            String name = node.getName();
+            if(name.equals("column")) {
+                String format = node.getAttr("format");
+                String pattern = node.getAttr("pattern");
+                Column column = new Column();
+                column.setName( node.getAttr("name") );
+                column.setLabel( node.getAttr("label") );
+                column.setFormatAsString( format );
+                column.setPattern( pattern );
+                report.addColumn( column );
             }
         }
     }

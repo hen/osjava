@@ -24,5 +24,8 @@
   <sql>select name, url from bookmark where priority = ?</sql>
   <param name="Priority" type="java.lang.Integer"/>
   <renderers>HtmlTable</renderers>
+  <column name="name" label="Name" pattern="?" format="org.osjava.reportrunner.StringFormat"/>
+  <column name="url" label="Web address"/>
+  <!-- will need sub-renderers per renderer for a column so that urls can be turned into <a href..> etc -->
  </report>
 </reports>

@@ -13,10 +13,10 @@
 <table>
 <%
     Report report = ReportFactory.getReport(reportName);
-    String[] renderers = StringUtils.split(report.getRenderers(), ",");
+    Renderer[] renderers = report.getRenderers();
     for(int i=0; i<renderers.length; i++) {
 %>
-    <tr><td><a href="reportrunner?<%= request.getQueryString() %>&_renderer=<%= renderers[i]%>"><%= renderers[i] %></a></td></tr>
+    <tr><td><a href="reportrunner?<%= request.getQueryString() %>&_renderer=<%= renderers[i].getName() %>"><%= renderers[i].getLabel() %></a></td></tr>
 <%
     }
 %>
