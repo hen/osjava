@@ -31,7 +31,7 @@ public class SqlReport extends AbstractReport {
         }
     }
 
-    public Result execute() {
+    public Result execute() throws ReportException {
         ReportGroup group = super.getReportGroup();
         Resource resource = group.getResource(this.dsName);
         DataSource ds = (DataSource) resource.accessResource();
@@ -71,9 +71,8 @@ public class SqlReport extends AbstractReport {
 
             return new ArrayResult(array);
         } catch(SQLException sqle) {
-            sqle.printStackTrace();
+            throw new ReportException("Unable to run SQL report", sqle);
         }
-        return new NullResult();
     }
 
     // returns a Choice[]

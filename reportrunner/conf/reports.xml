@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
 <reports>
- <report name="basicsql" label="BasicSql" class="org.osjava.reportrunner.reports.SqlReport" description="Lists the user roles that exist">
+ <report author="hen" name="basicsql" label="BasicSql" class="org.osjava.reportrunner.reports.SqlReport" description="Lists the user roles that exist">
   <sql>select * from userrole</sql>
   <renderers>txt</renderers>
  </report>

@@ -8,6 +8,7 @@ import com.generationjava.lang.*;
 public abstract class AbstractReport implements Report {
 
     private String name;
+    private String author;
     private String label;
     private String description;
     private String renderers;
@@ -85,7 +86,16 @@ public abstract class AbstractReport implements Report {
         ; // do nothing
     }
 
-    public abstract Result execute();
+    public String getAuthor() {
+        return this.author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+
+    public abstract Result execute() throws ReportException;
     public abstract Choice[] getParamChoices(Param param);
 
 }

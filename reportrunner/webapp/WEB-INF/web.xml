@@ -46,6 +46,11 @@
    <welcome-file>list_groups.jsp</welcome-file>
  </welcome-file-list>
 
+ <error-page>
+   <exception-type>org.osjava.reportrunner.ReportException</exception-type>
+   <location>report_exception.jsp</location>
+ </error-page>
+
 <resource-ref>
   <description>
     Roller Report DS
