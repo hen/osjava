@@ -24,15 +24,17 @@ function usage() {
 
 if [ "x$1x" != "xx" ];
 then
-    if [ $1 == 'all' ];
+    if [ $1 = 'all' ];
     then
         LIST=`cat NIGHTLY.txt | grep -v '^#'`
-    elif [ $1 == 'update' ];
+	echo 'No updates: Built because all components were built. ' > REASON
+    elif [ $1 = 'update' ];
     then
-        LIST=`svn -u status | grep -v '^?' | grep -v 'Status against revision' | awk '{print $3}' | grep -o -f NIGHTLY.txt  | sort -u`
-        svn update | grep -v '^?'
+        LIST=`svn -u status | grep -v '^\?' | grep -v '^A' | grep -v '^M' | grep -v 'Status against revision' | awk '{print $3}' | grep -o -f NIGHTLY.txt  | sort -u`
+        svn update | grep -v '^?' > SVN_UPDATE
     else
         LIST=$1   # $* ?
+	echo 'No updates: Built because someone specifically chose to build it. ' > REASON
     fi
 else
     usage
@@ -43,18 +45,26 @@ if [ ! -d report/ ];
 then
     mkdir report/
 fi
+buildDir=`pwd`
 reportDir=`pwd`/report
+
+silentrm LAST_BUILD
 
 for i in $LIST
 do
     silentrm report/$i
     echo "Building $i"
+    echo $i >> LAST_BUILD
     mkdir -p report/$i
     cd $i
     # cleaning
     silentrm target/ maven.log velocity.log ERROR.log OUTPUT.log
     # building
+    TIME_START=`date +%s`
     maven -b jar 2> ERROR.log > OUTPUT.log
+    TIME_END=`date +%s`
+    BUILD_DURATION=`echo $TIME_END - $TIME_START | bc`
+    BUILD_DURATION=`date -d "1970-01-01 UTC $BUILD_DURATION seconds" +"%M minutes %S seconds"`
     if [ $? -ne 0 ];
     then
         # create failed report
@@ -99,6 +109,14 @@ do
         silentrm $reportDir/$i/*.jar
         mv target/$i*.jar $reportDir/$i/$i-`date +%Y%m%d`.jar
     fi
+    date +"%Y/%m/%d %k:%M" > $reportDir/$i/BUILD_TIME
+    if [ -e SVN_UPDATE ];
+    then
+        cat $buildDir/SVN_UPDATE | grep ^$i > $reportDir/$i/SVN_UPDATE
+    else
+        cat $buildDir/REASON > $reportDir/$i/SVN_UPDATE
+    fi
+    echo $BUILD_DURATION > $reportDir/$i/BUILD_DURATION
 
     echo "Finished with $i"
     cd -
