@@ -3,6 +3,7 @@ package org.osjava.reportrunner;
 public class Param {
 
     private String name;
+    private String label;
     private Class type = String.class;
     private Object value;
     private String binding;
@@ -16,17 +17,19 @@ public class Param {
         this.name = name;
     }
 
+    public String getLabel() {
+        return this.label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
+    }
+
     public Class getType() {
         return this.type;
     }
 
-    public void setType(Class type) {
-        if(type != null) {
-            this.type = type;
-        }
-    }
-
-    public void setTypeAsString(String typeName) {
+    public void setType(String typeName) {
         if(typeName == null) {
             return;
         }
@@ -62,7 +65,7 @@ public class Param {
 
     // debug
     public String toString() { 
-        return "Param { name="+name+", type="+type+", value="+value+", binding="+binding+" }";
+        return "Param { name="+name+", type="+type+", value="+value+"/"+((value!=null)?value.getClass().getName():"NULL")+", binding="+binding+", "+parser+" }";
     }
 
 
