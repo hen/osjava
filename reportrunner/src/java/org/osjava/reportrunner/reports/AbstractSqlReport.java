@@ -13,7 +13,7 @@ import javax.naming.*;
 
 public abstract class AbstractSqlReport extends AbstractReport {
 
-    private static String DEFAULT_RESOURCE = "AbstractSqlReportDS";
+    private static String DEFAULT_RESOURCE = "SqlReportDS";
 
     private String dsName = DEFAULT_RESOURCE;
     private String sql;
@@ -64,7 +64,11 @@ public abstract class AbstractSqlReport extends AbstractReport {
             throw new RuntimeException("The array consists of "+array[0].getClass() );
         }
 
-        return new ArrayResult(array);
+        return postExecute(new ArrayResult(array));
+    }
+
+    protected Result postExecute(Result result) throws ReportException {
+        return result;
     }
 
     protected abstract Object[] executeSql(DataSource ds) throws ReportException;

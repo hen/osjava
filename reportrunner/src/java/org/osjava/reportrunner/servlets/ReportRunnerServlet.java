@@ -31,11 +31,15 @@ public class ReportRunnerServlet extends HttpServlet {
                 if( Object[].class.isAssignableFrom( params[i].getType() ) ) {
                     String[] parameters = request.getParameterValues(params[i].getName());
                     if(parser != null) {
-                        Object[] array = new Object[parameters.length];
-                        for(int j=0; j<array.length; j++) {
-                            array[j] = parser.parse(parameters[j], params[i].getType());
+                        if(parameters.length == 1) {
+                            value = parser.parse(parameters[0], params[i].getType());
+                        } else {
+                            Object[] array = new Object[parameters.length];
+                            for(int j=0; j<array.length; j++) {
+                                array[j] = parser.parse(parameters[j], params[i].getType());
+                            }
+                            value = array;
                         }
-                        value = array;
                     } else {
                         value = parameters;
                     } 
