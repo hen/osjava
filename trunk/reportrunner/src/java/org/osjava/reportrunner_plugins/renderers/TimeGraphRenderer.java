@@ -16,6 +16,7 @@ public class TimeGraphRenderer extends AbstractRenderer {
 
     public void display(Report report, OutputStream out) throws IOException {
         Object[] data = report.execute();
+        Column[] columns = report.getColumns();
 
         List list = new ArrayList();
 
@@ -27,7 +28,11 @@ public class TimeGraphRenderer extends AbstractRenderer {
                 Number num = (Number) row[j];
                 TimeSeries ts = null;
                 if(list.size() < j) {
-                    ts = new TimeSeries("HACK", Minute.class );
+                    String name = "Column "+j;
+                    if(columns != null && columns.length != 0) {
+                        name = columns[j].getLabel();
+                    }
+                    ts = new TimeSeries(name, Minute.class );
                     list.add(ts);
                 } else {
                     ts = (TimeSeries) list.get(j-1);
@@ -41,10 +46,15 @@ public class TimeGraphRenderer extends AbstractRenderer {
             tsc.addSeries( (TimeSeries) list.get(i) );
         }
 
+        String time = "Time";
+        if(columns != null && columns.length != 0) {
+            time = columns[0].getLabel();
+        }
+
         JFreeChart chart = ChartFactory.createTimeSeriesChart(
-            "Title", 
-            "Timestamp",
-            "Value",
+            report.getLabel(),
+            time,
+            "",
             tsc,
             true,
             true,
