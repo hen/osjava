@@ -48,8 +48,18 @@
       </roles>
     </developer>
 
+    <developer>
+      <name>Robert M. Zigweid</name>
+      <id>rzigweid</id>
+      <email>rzigweid@osjava.org</email>
+      <organization>OSJava</organization>
+      <roles>
+        <role>Developer</role>
+      </roles>
+      <timezone>-5</timezone>
+    </developer>
   </developers>
-
+  
   <contributors>
   </contributors>
   
