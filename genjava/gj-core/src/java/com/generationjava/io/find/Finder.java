@@ -44,39 +44,40 @@ import java.util.Map;
  */
 public interface Finder {
 
+    // MODIFIER
+    public static final String NOT = "NOT_";
+
     // OPTIONS
-    public static final Object DAYSTART = "DAYSTART";
-    public static final Object DEPTH = "DEPTH";
-    public static final Object MAXDEPTH = "MAXDEPTH";
-    public static final Object MINDEPTH = "MINDEPTH";
-    public static final Object IGNORE_HIDDEN_DIRS = "IGNORE_HIDDEN_DIRS";
+    public static final String DAYSTART = "DAYSTART";
+    public static final String DEPTH = "DEPTH";
+    public static final String MAXDEPTH = "MAXDEPTH";
+    public static final String MINDEPTH = "MINDEPTH";
+    public static final String IGNORE_HIDDEN_DIRS = "IGNORE_HIDDEN_DIRS";
 
     // Time based tests
-    public static final Object MIN = "MIN";
-    public static final Object NEWER = "NEWER";
-    public static final Object TIME = "TIME";
+    public static final String MIN = "MIN";
+    public static final String NEWER = "NEWER";
+    public static final String TIME = "TIME";
 
     // size based tests
-    public static final Object EMPTY = "EMPTY";
-    public static final Object SIZE = "SIZE";
+    public static final String EMPTY = "EMPTY";
+    public static final String SIZE = "SIZE";
 
     // name based tests
-    public static final Object NAME = "NAME";
-    public static final Object INAME = "INAME";
-    public static final Object NNAME = "NNAME";
-    public static final Object PATH = "PATH";
-    public static final Object IPATH = "IPATH";
-    public static final Object NPATH = "NPATH";
-    public static final Object REGEX = "REGEX";
-    public static final Object IREGEX = "IREGEX";
-    public static final Object NREGEX = "NREGEX";
+    public static final String NAME = "NAME";
+    public static final String INAME = "INAME";
+    public static final String PATH = "PATH";
+    public static final String IPATH = "IPATH";
+    public static final String REGEX = "REGEX";
+    public static final String IREGEX = "IREGEX";
 
     // type of file
-    public static final Object TYPE = "TYPE";      // supports 'd' and 'f'
+    public static final String TYPE = "TYPE";      // supports 'd' and 'f'
+    public static final String HIDDEN = "HIDDEN";
 
     // permission replacements
-    public static final Object CAN_READ = "CAN_READ";
-    public static final Object CAN_WRITE = "CAN_WRITE";
+    public static final String CAN_READ = "CAN_READ";
+    public static final String CAN_WRITE = "CAN_WRITE";
 
     public void addFindListener(FindListener fl);
     public void removeFindListener(FindListener fl);

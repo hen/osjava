@@ -24,7 +24,7 @@ public class FileFinderTest extends TestCase {
     public void setUp() {
         finder = new FileFinder();
         options = new HashMap();
-        options.put(Finder.NPATH, "*.svn*");
+        options.put(Finder.NOT+Finder.PATH, "*.svn*");
         // uncomment for debugging
 //        finder.addFindListener( new DebugListener() );
     }
@@ -57,8 +57,8 @@ public class FileFinderTest extends TestCase {
         assertEquals(1, files.length);
     }
 
-    public void testFindNPath() {
-        options.put(Finder.NPATH, dirStr+"*");
+    public void testFindNotPath() {
+        options.put(Finder.NOT+Finder.PATH, dirStr+"*");
         File[] files = finder.find(new File(dir, "path"), options);
         assertEquals(0, files.length);
     }
