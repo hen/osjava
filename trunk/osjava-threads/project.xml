@@ -44,7 +44,7 @@ An extention of the threading implementation that accompanies the Java-SDK desig
         http://www.osjava.org/OSJava-Threads
     </url>
     <issueTrackingUrl>
-        http://www.osjava.org:8080/jira/secure/BrowseProject.jspa?id=10001
+        http://issues.osjava.org:8080/jira/secure/BrowseProject.jspa?id=10001
     </issueTrackingUrl>
     <siteAddress>
         www.osjava.org

@@ -21,7 +21,7 @@
   <shortDescription>A container engine</shortDescription>
 
   <url>http://www.osjava.org/oscube/</url>
-  <issueTrackingUrl>http://www.osjava.org:8080/jira/secure/BrowseProject.jspa?id=10042</issueTrackingUrl>
+  <issueTrackingUrl>http://issues.osjava.org:8080/jira/secure/BrowseProject.jspa?id=10042</issueTrackingUrl>
   <siteAddress>www.generationjava.com/maven/oscube</siteAddress>
   <siteDirectory>/sites/org/osjava/www/maven/oscube/</siteDirectory>
   <distributionDirectory>/sites/org/osjava/www/releases/official/</distributionDirectory>

@@ -41,7 +41,7 @@
   <url>http://www.osjava.org/payload/</url>
 
   <!-- You'll need to log into JIRA and find out what your ID is -->
-  <issueTrackingUrl>http://www.osjava.org:8080/jira/secure/BrowseProject.jspa?id=10040</issueTrackingUrl>
+  <issueTrackingUrl>http://issues.osjava.org:8080/jira/secure/BrowseProject.jspa?id=10040</issueTrackingUrl>
 
   <mailingLists>
     <mailingList>
