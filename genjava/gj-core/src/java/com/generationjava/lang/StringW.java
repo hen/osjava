@@ -40,8 +40,6 @@ import org.apache.commons.lang.NumberUtils;
  * possible, so a simple set of static methods seems the most workable.
  *
  * Most methods have now gone to Commons Lang StringUtils.
- *
- * Method ideas have so far been taken from the PHP4, Ruby and .NET languages.
  */
 final public class StringW {
 
@@ -61,8 +59,6 @@ final public class StringW {
      *
      * This implemmentation of the levenshtein distance algorithm 
      * is from http://www.merriampark.com/ld.htm
-     *
-     * @deprecated in favour of Commons Codec
      */
     static public int getLevenshteinDistance(String s, String t) {
         int d[][]; // matrix
@@ -118,37 +114,6 @@ final public class StringW {
         return d[n][m];
     }
 
-
-    /**
-     * Quote a string so that it may be used in a regular expression 
-     * without any parts of the string being considered as a 
-     * part of the regular expression's control characters.
-     * @deprecated Useless as it doesn't handle character classes and I never use it. Gone in 3.0.
-     */
-    static public String quoteRegularExpression(String str) {
-        // replace ? + * / . ^ $ as long as they're not in character 
-        // class. so must be done by hand
-        char[] chrs = str.toCharArray();
-        int sz = chrs.length;
-        StringBuffer buffer = new StringBuffer(2*sz);
-        for(int i=0; i<sz; i++) {
-            switch(chrs[i]) {
-              case '[' :
-              case ']' :
-              case '?' :
-              case '+' :
-              case '*' :
-              case '/' :
-              case '.' :
-              case '^' :
-              case '$' :
-                buffer.append("\\");
-              default : 
-                buffer.append(chrs[i]);
-            }
-        }
-        return buffer.toString();
-    }
 
     /**
      * Create a word-wrapped version of a String. Wrap at 80 characters and 
