@@ -1,0 +1,212 @@
+<lleutranet>
+    <section name="lleutranet" order="1">
+        <image uri="../../comics/Dilbert.gif" link="http://www.dilbert.com/"/>
+        <category name="Dev links">
+            <bookmark uri="http://isis.genscape.com/" label="Integration"/>
+            <bookmark uri="http://ra.genscape.com:8080/jira/secure/Dashboard.jspa" label="JIRA"/>
+            <bookmark uri="http://ra.genscape.com:8080/JSPWiki/" label="Wiki"/>
+            <bookmark uri="http://ra.genscape.com/viewcvs.cgi" label="cvs"/>
+            <bookmark uri="http://lleu.genscape.com/Blueprint/" label="Blueprints"/>
+        </category>
+        <category name="Comics">
+            <bookmark uri="../../comics/sunday-comics.html" label="Sunday Comics"/>
+        </category>
+        <category name="Lleu">
+            <bookmark uri="http://lleu.genscape.com/" label="directory listing"/>
+        </category>
+    </section>
+    <section name="books" order="2">
+        <image uri="../../comics/Bc.gif" link="http://www.comics.com/creators/bc/"/>
+        <category name="Perl">
+            <bookmark label="Perl in a Nutshell" uri="http://lleu.genscape.com/books/oreillybookself/perl/perlnut/index.htm"/>
+            <bookmark label="Learning Perl" uri="http://lleu.genscape.com/books/oreillybookself/perl/lperl/index.htm"/>
+            <bookmark label="Learning Perl on Win32" uri="http://lleu.genscape.com/books/oreillybookself/perl.broken/learn32/index.htm"/>
+            <bookmark label="Programming Perl" uri="http://lleu.genscape.com/books/oreillybookself/perl/prog/index.htm"/>
+            <bookmark label="Advanced Perl Programming" uri="http://lleu.genscape.com/books/oreillybookself/perl.broken/advprog/index.htm"/>
+            <bookmark label="Perl Cookbook" uri="http://lleu.genscape.com/books/oreillybookself/perl/cookbook/index.htm"/>
+            <bookmark label="Perl/TK" uri="http://lleu.genscape.com/books/oreillybookself/perl/tk/index.htm"/>
+            <bookmark label="Perl XML" uri="http://lleu.genscape.com/books/oreillybookself/perl/pxml/index.htm"/>
+            <bookmark label="Perl LWP" uri="http://lleu.genscape.com/books/oreillybookself/perl/lwp/index.htm"/>
+            <bookmark label="The Perl Journal" uri="http://lleu.genscape.com/tpj/"/>
+            <bookmark label="Mason (ext)" uri="http://www.masonbook.com/book/"/>
+        </category>
+        <category name="UNIX">
+            <bookmark label="KSH" uri="http://lleu.genscape.com/books/oreillybookself/unix/ksh/index.htm"/>
+            <bookmark label="Sed/AWK" uri="http://lleu.genscape.com/books/oreillybookself/unix/sedawk/index.htm"/>
+            <bookmark label="Unix Power Tools" uri="http://lleu.genscape.com/books/oreillybookself/unix/upt/index.htm"/>
+            <bookmark label="Vi" uri="http://lleu.genscape.com/books/oreillybookself/unix/vi/index.htm"/>
+        </category>
+        <category name="Java">
+            <bookmark label="Java in a Nutshell" uri="http://lleu.genscape.com/books/oreillybookself/java/javanut/index.htm"/>
+            <bookmark label="Java Language Referance" uri="http://lleu.genscape.com/books/oreillybookself/java/langref/index.htm"/>
+            <bookmark label="Java AWT Referance" uri="http://lleu.genscape.com/books/oreillybookself/java/awt/index.htm"/>
+            <bookmark label="Java Fundamental Classes Referance" uri="http://lleu.genscape.com/books/oreillybookself/java/fclass/index.htm"/>
+            <bookmark label="Exploring Java" uri="http://lleu.genscape.com/books/oreillybookself/java/exp/index.htm"/>
+            <bookmark label="Thinking In Java" uri="http://lleu.genscape.com/books/TIJ/aaa-TIJ3-distribution/TIJ3.htm"/>      
+            <bookmark label="Thinking In Patterns" uri="http://lleu.genscape.com/books/TIPatterns/html/TIPatterns.htm"/>      
+            <bookmark label="JBoss Documentation" uri="http://lleu.genscape.com/books/AllDocsSubscription/"/>
+        </category>
+        <category name="Networking">
+            <bookmark label="DNS and Bind" uri="http://lleu.genscape.com/books/oreillybookself/tcpip/dnsbind/index.htm"/>
+            <bookmark label="Building Internet Firewalls" uri="http://lleu.genscape.com/books/oreillybookself/tcpip/firewall/index.htm"/>
+            <bookmark label="Practical UNIX and Internet Security" uri="http://lleu.genscape.com/books/oreillybookself/tcpip/puis/index.htm"/>
+            <bookmark label="Sendmail" uri="http://lleu.genscape.com/books/oreillybookself/tcpip/sendmail/index.htm"/>
+            <bookmark label="TCP/IP" uri="http://lleu.genscape.com/books/oreillybookself/tcpip/tcpip/index.htm"/>
+        </category>
+        <category name="Shops">
+            <bookmark label="Bookpool" uri="http://www.bookpool.com/"/>
+            <bookmark label="Safari" uri="http://www.safari.com/"/>
+            <bookmark label="Amazon" uri="http://www.amazon.com/"/>
+            <bookmark label="Java Bookshelf" uri="???"/>
+            <bookmark label="Half-priced Books" uri="http://www.halfpricebooks.com/"/>
+            <bookmark label="Amazon UK" uri="http://www.amazon.co.uk/"/>
+        </category>
+        <category name="Web">
+            <bookmark label="HTML Definitive Guide" uri="http://lleu.genscape.com/books/oreillybookself/web/html/index.htm"/>
+            <bookmark label="CGI Programming" uri="http://lleu.genscape.com/books/oreillybookself/web/cgi/index.htm"/>
+            <bookmark label="JavaScript Definitive Guide" uri="http://lleu.genscape.com/books/oreillybookself/web/jscript/index.htm"/>
+            <bookmark label="WebMaster in a Nutshell" uri="http://lleu.genscape.com/books/oreillybookself/web/webnut/index.htm"/>
+        </category>
+        <category name="Publishers">
+            <bookmark label="O'Reilly" uri="http://www.oreilly.com/"/>
+            <bookmark label="Manning" uri="http://www.manning.com"/>
+            <bookmark label="Appress" uri="http://www.appress.com"/>
+        </category>
+        <category name="Databases">
+            <bookmark label="Oracle: PL/SQL Programming" uri="http://lleu.genscape.com/books/oraclecd/prog2/index.htm"/>
+            <bookmark label="Oracle: Guide to Oracle 8i" uri="http://lleu.genscape.com/books/oraclecd/guide8i/index.htm"/>
+            <bookmark label="Oracle: Built-in Packages" uri="http://lleu.genscape.com/books/oraclecd/bipack/index.htm"/>
+            <bookmark label="Oracle: Advanced PL/SQL" uri="http://lleu.genscape.com/books/oraclecd/advprog/index.htm"/>
+            <bookmark label="Oracle: Web Applications" uri="http://lleu.genscape.com/books/oraclecd/webapp/index.htm"/>
+            <bookmark label="Oracle: PL/SQL Pocket Reference" uri="http://lleu.genscape.com/books/oraclecd/langpkt/index.htm"/>
+            <bookmark label="Oracle: Built-ins Pocket Reference" uri="http://lleu.genscape.com/books/oraclecd/bipkt/index.htm"/>
+            <bookmark label="Mysql manual" uri="../../books/mysql/manual_toc.html"/>
+        </category>
+    </section>
+    <section name="docs" order="3">
+        <image uri="../../comics/Foxtrot.gif" link="http://www.foxtrot.com/"/>
+        <category name="Java">
+            <bookmark label="JNLP Quick Ref" uri="http://lopica.sourceforge.net/quick.html"/>
+            <bookmark label="Java Code Conventions" uri="http://lleu.genscape.com/CodeConventions.pdf"/>
+            <bookmark label="EJBPatterns" uri="http://lleu.genscape.com/books/ejbdesignpatterns.pdf"/>
+            <bookmark label="FindBugs" uri="http://lleu.genscape.com/findbugs/"/>
+            <bookmark label="JARV" uri="http://lleu.genscape.com/jarv/JARV.html"/>
+            <bookmark label="javacc" uri="http://lleu.genscape.com/javacc/"/>
+            <bookmark label="pmd" uri="http://lleu.genscape.com/pmd/"/>
+            <bookmark label="lang spec" uri="http://lleu.genscape.com/Specs/langspec/"/>
+            <bookmark label="vm spec" uri="http://lleu.genscape.com/Specs/vmspec/VMSpecTOC.doc.html"/>
+            <bookmark label="Writing a spec" uri="http://lleu.genscape.com/howto/writingapispecs/"/>
+            <bookmark label="Writing javadoc" uri="http://lleu.genscape.com/howto/writingdoccomments/"/>    
+            <bookmark label="JFreeChart 0.9.15" uri="../../jfreechart/jfreechart-0.9.15-US.pdf"/>
+        </category>
+        <category name="JSP">
+            <bookmark label="JSTL Appendix" uri="http://lleu.genscape.com/jstlAppendix.pdf"/>
+            <bookmark label="JSTL Quick Ref" uri="http://www.jadecove.com/jstl-quick-reference.pdf"/>
+            <bookmark label="JSP Quick Ref" uri="http://java.sun.com/products/jsp/syntax/1.2/card12.pdf"/>
+            <bookmark label="JSP Ref" uri="http://java.sun.com/products/jsp/syntax/1.2/syntaxref12.pdf"/>
+            <bookmark label="Webwork" uri="http://lleu.genscape.com/webwork/"/>
+        </category>
+        <category name="Admin">
+            <bookmark label="Starting up Fiorano" uri="http://lleu.genscape.com/Fiorano/FMQStartUpGuide.pdf"/>
+            <bookmark label="Fiorano - startup" uri="http://lleu.genscape.com/Fiorano/Startup%20Guide%20Installer.htm"/>
+            <bookmark label="Oracle docs" uri="http://lleu.genscape.com/Oracle9i/"/>
+            <bookmark label="JBoss JAAS article" uri="http://www.minniger.com/CA-SF/dave/BasicJBossAAC.html"/>
+        </category>
+        <category name="Web">
+            <bookmark label="css" uri="http://www.htmlhelp.com/reference/css/"/>
+            <bookmark label="html" uri="http://www.htmlhelp.com/reference/html40/"/>
+        </category>
+        <category name="Programming">
+            <bookmark label="Nature of Order" uri="http://lleu.genscape.com/books/NatureOfOrder.pdf"/>
+        </category>
+    </section>
+    <section name="hen" order="5">
+        <image uri="../../comics/Apod.jpg" link="http://antwrp.gsfc.nasa.gov/apod/astropix.html"/>
+        <category name="of interest">
+            <bookmark label="OS Java Projects you've never met" uri="http://viva.sourceforge.net/republic/2003/11/free_open_source_java_diamonds_and_rubys_you_never_knew_existed.html"/>       
+            <bookmark label="Oracle JDBC drivers" uri="http://otn.oracle.com/software/tech/java/sqlj_jdbc/htdocs/jdbc9201.html"/>
+            <bookmark label="JAVAsight" uri="http://www.javasight.com/"/>
+            <bookmark label="Javashelf" uri="http://www.javashelf.com/"/>
+        </category>
+        <category name="to-research">
+            <bookmark label="Megg" uri="http://web1.2020media.com/j/jez/javanicuscom/megg/usage.html"/>
+            <bookmark label="StrutsUnit" uri="http://strutsunit.sf.net/"/>
+            <bookmark label="DBUnit" uri="http://dbunit.sf.net/"/>
+            <bookmark label="JBeanTester" uri="http://javabeantester.sf.net/"/>
+        </category>
+        <category name="lleu">
+            <bookmark label="Yesterday's CVS" uri="yesterday-report.html"/>
+            <bookmark label="plantinfo" uri="http://lleu.genscape.com:8013/plantinfo/"/>
+        </category>
+    </section>
+    <section name="javadoc" order="6">
+        <image uri="../../comics/WizardId.gif" link="http://www.comics.com/creators/wizardofid/"/>
+        <category name="JSRs">
+            <bookmark label="JDK 1.4.1" uri="http://lleu.genscape.com/j2sdk-1_4_1/"/>
+            <bookmark label="J2EE-1.4" uri="http://lleu.genscape.com/j2ee-1.4/api/index.html"/>
+            <bookmark label="JSTL 1.0" uri="http://lleu.genscape.com/Javadocs/JSTL/"/>
+            <bookmark label="JMS" uri="http://lleu.genscape.com/Javadocs/jms/"/>
+            <bookmark label="xdoclet" uri="http://lleu.genscape.com/Javadocs/xdoclet/"/>
+        </category>
+        <category name="Apache">
+            <bookmark label="ECS" uri="http://lleu.genscape.com/Javadocs/ecs/ecs.html"/>
+            <bookmark label="log4j" uri="http://lleu.genscape.com/Javadocs/jakarta-log4j/"/>
+            <bookmark label="Commons-Core 1.0" uri="http://lleu.genscape.com/commons-core-1.0/index.html"/>
+            <bookmark label="ObjectBridge" uri="http://lleu.genscape.com/Javadocs/objectbridge/"/>
+            <bookmark label="Struts" uri="http://lleu.genscape.com/Javadocs/struts-documentation/"/>
+        </category>
+        <category name="Taglibs">
+            <bookmark label="Xephyrus" uri="http://lleu.genscape.com/xephyrus/index.html"/>
+            <bookmark label="Cewolf" uri="http://cewolf.sourceforge.net/"/>
+        </category>
+        <category name="Graphical">
+            <bookmark label="jfreechart" uri="http://lleu.genscape.com/jfreechart-0.9.11-docs/"/>
+        </category>
+        <category name="Common APIs">
+            <bookmark label="Complex" uri="http://lleu.genscape.com/complex/api/"/>
+            <bookmark label="futils" uri="http://lleu.genscape.com/futils/"/>
+            <bookmark label="JUnit 3.8.1" uri="http://lleu.genscape.com/Javadocs/junit-3.8.1/"/>
+        </category>
+        <category name="Other">
+            <bookmark label="Enterprisedt FTP" uri="http://lleu.genscape.com/Javadocs/javaftp/api/"/>
+            <bookmark label="jdring" uri="http://lleu.genscape.com/Javadocs/jdring/"/>
+            <bookmark label="Quartz" uri="http://www.quartzscheduler.org/index.jsp"/>
+            <bookmark label="Quartz - cfg" uri="http://demo.jgsullivan.com/quartz/index.html"/>
+            <bookmark label="JEP" uri="http://lleu.genscape.com/Javadocs/jep/"/>
+            <bookmark label="MSNj" uri="http://lleu.genscape.com/Javadocs/msnj/"/>
+            <bookmark label="JBuddy" uri="http://lleu.genscape.com/Javadocs/jbuddy/"/>
+            <bookmark label="Churchill" uri="http://www.churchillobjects.com/c/99009.html"/>
+            <bookmark label="OSJava.org" uri="http://www.osjava.org/"/>
+        </category>
+        <category name="API glossaries">
+            <bookmark label="JFind" uri="http://www.jfind.com/"/>
+            <bookmark label="Java Channel" uri="http://www.java-channel.org/"/>
+        </category>
+        <category name="RSS Libraries">
+            <bookmark label="Informa" uri="http://informa.sourceforge.net/"/>
+            <bookmark label="rss4j" uri="http://www.churchillobjects.com/c/13005.html"/>
+            <bookmark label="rsslibj" uri="http://enigmastation.com/rsslibj/"/>
+        </category>
+        <category name="Java sites">
+            <bookmark label="SF Java Foundry" uri="http://java.foundries.sourceforge.net/"/>
+            <bookmark label="IBM alphaWorks for Java" uri="http://www.alphaworks.ibm.com/java"/>
+            <bookmark label="Java.Net" uri="http://www.java.net/index.html"/>
+            <bookmark label="Java @ Freshmeat.net" uri="http://freshmeat.net/browse/198/?topic_id=198"/>
+            <bookmark label="Java Blogs" uri="http://www.javablogs.com/"/>
+            <bookmark label="OnJava" uri="http://www.onjava.com/"/>
+        </category>
+    </section>
+    <section name="mydocs" order="7">
+        <image uri="../../comics/Snoopy.gif" link="http://www.snoopy.com/"/>
+        <category name="Docs">
+            <bookmark label="How to Estimate" uri="http://lleu.genscape.com/How-To-Estimate.html"/>
+            <bookmark label="How to Document" uri="http://lleu.genscape.com/genscape/HowToDocument.html"/>
+            <bookmark label="Testing Cycle" uri="http://lleu.genscape.com/genscape/TestingCycle.html"/>
+            <bookmark label="How to incident" uri="http://lleu.genscape.com/genscape/HowTo-Incident.html"/>
+            <bookmark label="How to JIRA" uri="http://lleu.genscape.com/genscape/HowTo-JIRA.html"/>
+            <bookmark label="How to Project Organise" uri="HowTo-OrganiseAProject.html"/>
+            <bookmark label="How to cvs" uri="http://lleu.genscape.com/cvs.html"/>
+            <bookmark label="cvs-tag/branching" uri="http://lleu.genscape.com/genscape/developer.html"/>
+        </category>
+    </section>
+</lleutranet>
