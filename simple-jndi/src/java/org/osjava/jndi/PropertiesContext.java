@@ -65,6 +65,8 @@ import org.osjava.jndi.util.XmlProperties;
 
 public class PropertiesContext implements Context  {
 
+    public static final boolean DEBUG = true;
+
     private static Object FILE = new String("FILE");
     private static Object CLASSPATH = new String("CLASSPATH");
     private static Object HTTP = new String("HTTP");
@@ -124,9 +126,9 @@ public class PropertiesContext implements Context  {
                 this.root = "";
             }
 
-//            System.err.println("proto: "+this.protocol);
-//            System.err.println("root: "+this.root);
-//            System.err.println("sepChar: "+this.separator);
+if(DEBUG)            System.err.println("[CTXT]Protocol  is: "+this.protocol);
+if(DEBUG)            System.err.println("[CTXT]Root      is: "+this.root);
+if(DEBUG)            System.err.println("[CTXT]separator is: "+this.separator);
         }
     }
 
@@ -197,7 +199,7 @@ public class PropertiesContext implements Context  {
 
     private Object getElement(String key) throws NamingException {
         
-//        System.err.println("Asked for: "+key+" via "+this.protocol);
+if(DEBUG)        System.err.println("[CTXT]Getting element "+key+" via "+this.protocol);
         if(this.protocol == FILE) {
             File file = new File(key);
             if(!file.exists()) {
@@ -209,7 +211,6 @@ public class PropertiesContext implements Context  {
             if(key.startsWith(this.separator)) {
                 key = key.substring(1);
             }
-//            System.err.println("KEY: "+key);
             URL url = this.getClass().getClassLoader().getResource(key);
             return url;
         } else
@@ -226,10 +227,9 @@ public class PropertiesContext implements Context  {
     }
 
     private Properties loadProperties(Object file) throws NamingException {
-//        System.err.println("Considering: "+file);
+if(DEBUG)        System.err.println("[CTXT]Loading properties from: "+file);
         Properties properties = null;
         if(file instanceof File) {
-//            System.err.println( "FILE "+((File)file).getName() );
             if( ((File)file).getName().endsWith(".xml") ) {
                 properties = new XmlProperties();
                 ((XmlProperties)properties).setDelimiter(this.delimiter);
@@ -242,9 +242,7 @@ public class PropertiesContext implements Context  {
             }
         } else
         if(file instanceof URL) {
-//            System.err.println( "URL "+((URL)file).getFile() );
             if( ((URL)file).getFile().endsWith(".xml") ) {
-//                System.err.println("Found xml url: "+file);
                 properties = new XmlProperties();
                 ((XmlProperties)properties).setDelimiter(this.delimiter);
             } else
@@ -255,13 +253,13 @@ public class PropertiesContext implements Context  {
                 properties = new CustomProperties();
             }
         } else {
-            System.out.println("Warning: Located file was not a File or a URL. ");
+            System.err.println("[CTXT]Warning: Located file was not a File or a URL. ");
             properties = new CustomProperties();
         }
 
         if(this.protocol == FILE) {
             try {
-//                System.err.println("Loading FILE");
+if(DEBUG)                System.err.println("[CTXT]Loading FILE: "+file);
                 FileInputStream fis = new FileInputStream((File)file);
                 properties.load(fis);
                 fis.close();
@@ -272,7 +270,7 @@ public class PropertiesContext implements Context  {
         } else
         if(this.protocol == CLASSPATH) {
             try {
-//                System.err.println("Loading CLASSPATH");
+if(DEBUG)                System.err.println("[CTXT]Loading CLASSPATH: "+file);
                 InputStream fis = ((URL)file).openStream();
                 properties.load(fis);
                 fis.close();
@@ -283,7 +281,7 @@ public class PropertiesContext implements Context  {
         } else
         if(this.protocol == HTTP) {
             try {
-//                System.err.println("Loading HTTP");
+if(DEBUG)                System.err.println("[CTXT]Loading HTTP: "+file);
                 InputStream fis = ((URL)file).openStream();
                 properties.load(fis);
                 fis.close();
@@ -292,12 +290,13 @@ public class PropertiesContext implements Context  {
                 throw new NamingException("Failure to open: "+file);
             }
         } else {
+            // TODO: should this be thrown in the constructor too??
             throw new NamingException("Unsupported protocol: "+this.protocol);
         }
     }
 
     private boolean isDirectory(Object file) throws NamingException {
-//        System.err.println("Is dir: "+file);
+if(DEBUG)        System.err.println("[CTXT]Deciding if this is a directory-> "+file);
         if(this.protocol == FILE) {
             return ((File)file).isDirectory();
         } else
@@ -306,11 +305,9 @@ public class PropertiesContext implements Context  {
             // could use reflection, currently we'll copy the http solution
             try { 
                 Properties props = loadProperties(file);
-//                System.err.println("P:"+props);
                 if(props == null) {
                     return true;
                 } else {
-//                    System.err.println("P#:"+props.size());
                     // This is shit. Somehow I am getting an index back
                     // and I assume it is a directory as every key 
                     // starts with <, ie html markup.
@@ -319,7 +316,6 @@ public class PropertiesContext implements Context  {
                     while(iterator.hasNext()) {
                         String key = (String)iterator.next();
                         if(!key.startsWith("<")) {
-//                            System.err.println("bing: "+key);
                             return false;
                         }
                     }
@@ -328,7 +324,7 @@ public class PropertiesContext implements Context  {
             } catch(Exception e) {
                 // we assume this just means a failure to load,
                 // therefore it must be a directory
-//                System.err.println("Unknown e: "+e);
+if(DEBUG)                System.err.println("[CTXT]Unknown exception: "+e);
                 return true;
             }
         } else
@@ -383,9 +379,8 @@ public class PropertiesContext implements Context  {
             String element = elements[i];
 
             Object file = getElement(path+this.separator+element);
-//            System.err.println("Into directory? "+file);
             if( (file != null) && isDirectory(file) ) { 
-//                System.err.println("Was directory. ");
+if(DEBUG)                System.err.println("[CTXT]Found directory. ");
                 path = path+this.separator+element;
                 continue;
             }
@@ -397,7 +392,6 @@ public class PropertiesContext implements Context  {
             if(file == null) {
                 file = getElement(path+this.separator+element+".ini");
             }
-//            System.err.println("Into file? "+file);
             if(file != null) {
                 path = path+this.separator+element;
                 properties = loadProperties(file);
@@ -410,10 +404,10 @@ public class PropertiesContext implements Context  {
                 if(list.size() > 0) {
                     remaining = PropertiesContext.join(list.iterator(), this.delimiter);
                 }
-//                System.err.println("FILE FOUND: "+file);
-//                System.err.println("Remaining: "+remaining);
-//                System.err.println("element: "+element);
-//                System.err.println("path: "+path);
+if(DEBUG)                System.err.println("[CTXT]FILE FOUND: "+file);
+if(DEBUG)                System.err.println("[CTXT]Remaining: "+remaining);
+if(DEBUG)                System.err.println("[CTXT]element: "+element);
+if(DEBUG)                System.err.println("[CTXT]path: "+path);
                 break;
             } else {
                 java.util.ArrayList list = new java.util.ArrayList();
@@ -423,7 +417,7 @@ public class PropertiesContext implements Context  {
                 if(list.size() > 0) {
                     remaining = PropertiesContext.join(list.iterator(), this.delimiter);
                 }
-//                System.err.println("Rem: "+remaining);
+if(DEBUG)                System.err.println("[CTXT]Remaining2: "+remaining);
                 break;  // TODO: Is this right?
             }
         }
@@ -454,23 +448,23 @@ public class PropertiesContext implements Context  {
             throw new InvalidNameException("Properties for "+name+" not found. ");
         }
 
-//        System.err.println("DS? : "+properties.get("org.osjava.jndi.datasource"));
+if(DEBUG)        System.err.println("[CTXT]DS-property? : "+properties.get("org.osjava.jndi.datasource"));
 
+if(DEBUG)        System.err.println("[CTXT]DS-type? : " + properties.getProperty(remaining+this.delimiter+"type"));
+if(DEBUG)        System.err.println("[CTXT]DS-properties : " + properties);
         // TODO: Rewrite this block. Not enough grokk.
-//        System.err.println("REM-DS? : " + properties.getProperty(remaining+this.delimiter+"type"));
-//        System.err.println("PROPS? : " + properties);
         if( "true".equals(properties.get("org.osjava.jndi.datasource")) ||
             "javax.sql.DataSource".equals(properties.getProperty(remaining+this.delimiter+"type")) ) 
         {
-//            System.err.println("Datasource!");
+if(DEBUG)            System.err.println("[CTXT]Found Datasource!");
             PropertiesDataSource pds = new PropertiesDataSource(properties, env, this.delimiter);
             String dsName = null;   // never remaining???;
             if(dsName == null) {
                 // wants to be the path without the root
-//                System.err.println("root: "+root);
-//                System.err.println("path: "+path);
+if(DEBUG)                System.err.println("[CTXT]root: "+root);
+if(DEBUG)                System.err.println("[CTXT]path: "+path);
                 int ln = root.length() + this.separator.length();
-//                System.err.println("ln: "+ln);
+if(DEBUG)                System.err.println("[CTXT]length of root+separator: "+ln);
                 dsName = path.substring(ln);
             }
 
@@ -481,9 +475,9 @@ public class PropertiesContext implements Context  {
                 dsName = handleJavaStandard(dsName);
             }
 
-//            System.err.println("remaining: "+remaining);
-//            System.err.println("DsName: '"+dsName+"'");
-//            System.err.println("Name: '"+name+"'");
+if(DEBUG)            System.err.println("[CTXT]Remaining: "+remaining);
+if(DEBUG)            System.err.println("[CTXT]DsName: '"+dsName+"'");
+if(DEBUG)            System.err.println("[CTXT]Name: '"+name+"'");
 
             // get the last element in 'name'
             int edx = name.lastIndexOf(this.separator);
@@ -492,7 +486,7 @@ public class PropertiesContext implements Context  {
                 // TODO: Needs a little safety
                 dsn = name.substring(edx+1);
             }
-//            System.err.println("DSN: "+dsn);
+if(DEBUG)            System.err.println("[CTXT]DataSource name: "+dsn);
             if(dsn.equals(dsName)) {
                 dsn = "";
             }
@@ -502,7 +496,7 @@ public class PropertiesContext implements Context  {
             return pds;
         }
 
-//        System.err.println("remaining: "+remaining);
+if(DEBUG)        System.err.println("[CTXT]remaining: "+remaining);
         if(remaining == null) {
             return properties;
         }

@@ -84,7 +84,7 @@ public class XmlProperties extends Properties {
             XMLNode node = (XMLNode)enum.nextElement();
             if(!node.isTag()) { continue; }
 //            add("", node);
-//            System.err.println("Adding: "+root.getName()+getDelimiter()+" to "+node);
+if(org.osjava.jndi.PropertiesContext.DEBUG)            System.err.println("Adding: "+root.getName()+getDelimiter()+" to "+node);
             add(root.getName(), node);
         }
         Enumeration attrs = root.enumerateAttr();
@@ -92,13 +92,13 @@ public class XmlProperties extends Properties {
             while(attrs.hasMoreElements()) {
                 String attr = (String)attrs.nextElement();
                 setProperty( root.getName()+getDelimiter()+attr, root.getAttr(attr));
-//                System.err.println("Attr: "+(root.getName()+getDelimiter()+attr) +":"+root.getAttr(attr));
+if(org.osjava.jndi.PropertiesContext.DEBUG)                System.err.println("Attr: "+(root.getName()+getDelimiter()+attr) +":"+root.getAttr(attr));
             }
         }
     }
     
     public void add(String level, XMLNode node) {
-//        System.err.println("Adding: "+level);
+if(org.osjava.jndi.PropertiesContext.DEBUG)        System.err.println("Adding: "+level);
         if( node.getValue() != null ) {
             setProperty( level+getDelimiter()+node.getName(), node.getValue());
         }
@@ -107,7 +107,7 @@ public class XmlProperties extends Properties {
             while(attrs.hasMoreElements()) {
                 String attr = (String)attrs.nextElement();
                 setProperty( level+getDelimiter()+node.getName()+getDelimiter()+attr, node.getAttr(attr));
-//                System.err.println("Attr: "+(level+getDelimiter()+node.getName()+getDelimiter()+attr) +":"+node.getAttr(attr));
+if(org.osjava.jndi.PropertiesContext.DEBUG)                System.err.println("Attr: "+(level+getDelimiter()+node.getName()+getDelimiter()+attr) +":"+node.getAttr(attr));
             }
         }
         Enumeration nodes = node.enumerateNode();
@@ -118,8 +118,8 @@ public class XmlProperties extends Properties {
                 if(!subnode.isTag()) { continue; }
                 // temporary pending research into XMLNode parsing:
                 if(!"".equals(subnode.getName())) {
-//                    System.err.println("Walking children: "+node.getName());
-//                    System.err.println("on: "+level);
+if(org.osjava.jndi.PropertiesContext.DEBUG)                    System.err.println("Walking children: "+node.getName());
+if(org.osjava.jndi.PropertiesContext.DEBUG)                    System.err.println("on: "+level);
                     add(level, subnode);
                 }
             }
@@ -127,7 +127,7 @@ public class XmlProperties extends Properties {
     }
     
     public Object setProperty(String key, String value) {
-//        System.err.println("Setting property: "+key+" to "+value);
+if(org.osjava.jndi.PropertiesContext.DEBUG)        System.err.println("Setting property: "+key+" to "+value);
         return put( key, value );
     }
  
