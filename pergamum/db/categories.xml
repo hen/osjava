@@ -28,6 +28,7 @@
   </category>
   <category id="4" name="Jakarta General">
     <book>0471449156</book>
+    <book>0471457949</book>
   </category>
   <category id="5" name="Jakarta Commons">
     <book>1590592832</book>
@@ -77,5 +78,13 @@
     <book>013112594X</book>
     <book>1590593340</book>
     <book>0596004079</book>
+  </category>
+  <category id="14" name="AspectJ">
+    <book>1930110936</book>
+    <book>0471431044</book>
+    <book>0672324105</book>
+  </category>
+  <category id="15" name="Netbeans">
+    <book>0596002807</book>
   </category>
 </category-list>
