@@ -48,7 +48,6 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
 import org.osjava.naming.ContextBindings;
 import org.osjava.naming.ContextNames;
 import org.osjava.naming.SimpleNameParser;
@@ -443,7 +442,6 @@ public abstract class AbstractContext
      * @see javax.naming.Context#list(javax.naming.Name)
      */
     public NamingEnumeration list(Name name) throws NamingException {
-        Logger logger = Logger.getLogger(this.getClass());
 //      if name is a directory, we should do the same as we do above
 //      if name is a properties file, we should return the keys (?)
 //      issues: default.properties ?
@@ -457,7 +455,6 @@ public abstract class AbstractContext
             Map enumStore = new HashMap();
             enumStore.putAll(table);
             enumStore.putAll(subContexts);
-            logger.debug(enumStore);
             NamingEnumeration enumerator = new ContextNames(enumStore);
             return enumerator;
         }
