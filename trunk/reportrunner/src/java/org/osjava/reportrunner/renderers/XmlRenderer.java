@@ -18,7 +18,7 @@ public class XmlRenderer extends AbstractRenderer {
         writer.writeEntity("report");
         writer.writeAttribute("name", report.getName());
 
-        Column[] columns = report.getColumns();
+        Column[] columns = result.getHeader();
         if(columns.length == 0) {
             numbers = true;
         }

@@ -35,4 +35,8 @@ public class FormattingResult implements Result {
     public void reset() {
         this.result.reset();
     }
+
+    public Column[] getHeader() {
+        return this.result.getHeader();
+    }
 }

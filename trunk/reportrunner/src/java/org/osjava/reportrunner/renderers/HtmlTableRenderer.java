@@ -23,7 +23,7 @@ public class HtmlTableRenderer extends AbstractRenderer {
         out.write("<script>picker.writeDiv()</script>\n");
 
         out.write("<table border='1' class='sortable' id='report'>\n");
-        Column[] columns = report.getColumns();
+        Column[] columns = result.getHeader();
         if(columns != null) {
             out.write("<tr>\n");
             for(int i=0; i<columns.length; i++) {
