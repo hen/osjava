@@ -38,11 +38,10 @@ import junit.textui.TestRunner;
 
 import java.net.URL;
 import java.net.MalformedURLException;
-import java.io.IOException;
 
 public class NoRobotClientTest extends TestCase {
 
-    private String hardCode = "file:///Users/hen/osj/HEAD/norbert/data/";
+    private String hardCode = "file:///Users/hen/osj/trunk/norbert/data/";
 
     public NoRobotClientTest(String name) {
         super(name);
@@ -61,8 +60,8 @@ public class NoRobotClientTest extends TestCase {
             assertFalse( nrc.isUrlAllowed( new URL(base+"view-cvs/") ) );
         } catch(MalformedURLException murle) {
             throw new RuntimeException("Test failed: "+murle.getMessage());
-        } catch(IOException ioe) {
-            throw new RuntimeException("Test failed: "+ioe.getMessage());
+        } catch(NoRobotException nre) {
+            throw new RuntimeException("Test failed: "+nre.getMessage());
         }
     }
 
@@ -90,8 +89,8 @@ public class NoRobotClientTest extends TestCase {
             // End of rfc test
         } catch(MalformedURLException murle) {
             throw new RuntimeException("Test failed: "+murle.getMessage());
-        } catch(IOException ioe) {
-            throw new RuntimeException("Test failed: "+ioe.getMessage());
+        } catch(NoRobotException nre) {
+            throw new RuntimeException("Test failed: "+nre.getMessage());
         }
     }
 
@@ -117,8 +116,8 @@ public class NoRobotClientTest extends TestCase {
             // End of rfc test
         } catch(MalformedURLException murle) {
             throw new RuntimeException("Test failed: "+murle.getMessage());
-        } catch(IOException ioe) {
-            throw new RuntimeException("Test failed: "+ioe.getMessage());
+        } catch(NoRobotException nre) {
+            throw new RuntimeException("Test failed: "+nre.getMessage());
         }
     }
 
@@ -144,8 +143,8 @@ public class NoRobotClientTest extends TestCase {
             // End of rfc test
         } catch(MalformedURLException murle) {
             throw new RuntimeException("Test failed: "+murle.getMessage());
-        } catch(IOException ioe) {
-            throw new RuntimeException("Test failed: "+ioe.getMessage());
+        } catch(NoRobotException nre) {
+            throw new RuntimeException("Test failed: "+nre.getMessage());
         }
     }
 
@@ -171,8 +170,8 @@ public class NoRobotClientTest extends TestCase {
             // End of rfc test
         } catch(MalformedURLException murle) {
             throw new RuntimeException("Test failed: "+murle.getMessage());
-        } catch(IOException ioe) {
-            throw new RuntimeException("Test failed: "+ioe.getMessage());
+        } catch(NoRobotException nre) {
+            throw new RuntimeException("Test failed: "+nre.getMessage());
         }
     }
 
@@ -187,8 +186,8 @@ public class NoRobotClientTest extends TestCase {
             assertEquals( true,  nrc.isUrlAllowed( new URL(base+"%7Etest/%7Efoo.html") ) );
         } catch(MalformedURLException murle) {
             throw new RuntimeException("Test failed: "+murle.getMessage());
-        } catch(IOException ioe) {
-            throw new RuntimeException("Test failed: "+ioe.getMessage());
+        } catch(NoRobotException nre) {
+            throw new RuntimeException("Test failed: "+nre.getMessage());
         }
     }
 
@@ -202,8 +201,8 @@ public class NoRobotClientTest extends TestCase {
             assertTrue( nrc.isUrlAllowed( new URL(this.hardCode + "basic" ) ) );
         } catch(MalformedURLException murle) {
             throw new RuntimeException("Test failed: "+murle.getMessage());
-        } catch(IOException ioe) {
-            throw new RuntimeException("Test failed: "+ioe.getMessage());
+        } catch(NoRobotException nre) {
+            throw new RuntimeException("Test failed: "+nre.getMessage());
         }
     }
 

@@ -38,8 +38,6 @@ import java.net.URL;
 import java.net.URLDecoder;
 import java.net.MalformedURLException;
 
-import org.apache.log4j.Logger;
-
 import com.generationjava.net.UrlW;
 
 /**
@@ -49,8 +47,6 @@ import com.generationjava.net.UrlW;
  * http://www.robotstxt.org/wc/norobots-rfc.html
  */
 public class NoRobotClient {
-
-    private static Logger logger = Logger.getLogger(NoRobotClient.class);
 
     private String userAgent;
     private RulesEngine rules;
@@ -72,30 +68,26 @@ public class NoRobotClient {
      *
      * @param baseUrl of the site
      */
-    public void parse(URL baseUrl) throws MalformedURLException, IOException {
+    public void parse(URL baseUrl) throws NoRobotException {
 
         this.rules = new RulesEngine();
 
         this.baseUrl = baseUrl;
 
         URL txtUrl = null;
-//        try {
+        try {
             // fetch baseUrl+"robots.txt"
             txtUrl = new URL(baseUrl, "robots.txt");
-//        } catch(MalformedURLException murle) {
-//            logger.info("MalformedURLException", murle);
-//            // we can do what we want
-//            return;
-//        }
+        } catch(MalformedURLException murle) {
+            throw new NoRobotException("Bad URL: "+baseUrl+", robots.txt. ", murle);
+        }
 
         String txt = null;
-//        try {
+        try {
             txt = ""+UrlW.getContent(txtUrl);
-//        } catch(IOException ioe) {
-//            logger.warn("IOException", ioe);
-            // we can do what we want
-//            return;
-//        }
+        } catch(IOException ioe) {
+            throw new NoRobotException("Unable to get content for: "+txtUrl, ioe);
+        }
 
 
         // Classic basic parser style, read an element at a time, 
@@ -106,7 +98,7 @@ public class NoRobotClient {
         String line = "";
         String value = null;
         boolean checkAllows = false;
-//        try {
+        try {
             while( (line = rdr.readLine()) != null ) {
                 // trim whitespace from either side
                 line = line.trim();
@@ -161,10 +153,10 @@ public class NoRobotClient {
                     }
                 }
             }
-            logger.debug(this.rules);
- //       } catch (IOException ioe) {
- //           return;
- //       }
+        } catch (IOException ioe) {
+            // As this is parsing a String, it should not have an IOE
+            throw new NoRobotException("Problem while parsing: "+txtUrl, ioe);
+        }
     }
 
     /**
@@ -195,7 +187,6 @@ public class NoRobotClient {
             return true;
         }
         urlStr = URLDecoder.decode( urlStr );
-        logger.debug("Considering: "+urlStr);
         return this.rules.isAllowed( urlStr );
     }
 
