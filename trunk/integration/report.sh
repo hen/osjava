@@ -12,6 +12,7 @@ then
     if [ $1 = 'all' ];
     then
         LIST=`cat NIGHTLY.txt | awk '{print $2}' | grep -v '^#'`
+	LAST_BUILD_DATE="all"
     elif [ $1 = 'update' ];
     then
         if [ ! -e LAST_BUILD ];
@@ -20,8 +21,10 @@ then
            exit
         fi
         LIST=`cat LAST_BUILD`
+	LAST_BUILD_DATE=`date -r LAST_BUILD +"%Y/%m/%d %k:%M"`
     else
         LIST=$1   # $* ?
+	LAST_BUILD_DATE="forced for $1"
     fi
 else
     usage
@@ -33,7 +36,7 @@ reportDir=`pwd`/report
 
 index=$reportDir/index.html
 
-cat header.inc | sed 's/\${TITLE}/Build/' > $index
+cat header.inc | sed 's/\${TITLE}/Build/' | sed "s/\${TIMESTAMP}/$LAST_BUILD_DATE/" > $index
 
 echo '<ul id="project_list">' >> $index
 
