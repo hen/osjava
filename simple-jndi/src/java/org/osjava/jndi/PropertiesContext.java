@@ -498,11 +498,12 @@ if(DEBUG)                System.err.println("[CTXT]Remaining2: "+remaining);
             throw new InvalidNameException("Properties for "+name+" not found. ");
         }
 
-        // TODO: Rewrite this block. Not enough grokk.
+        // TODO: Rewrite this block. Not enough grokk. Very badly grokked.
         String typeLookup = "type";
         if( remaining != null && !remaining.equals("")) {
             typeLookup = remaining + this.delimiter + typeLookup;
         }
+if(DEBUG)        System.err.println("[CTXT]Type-lookup: " + typeLookup);
 if(DEBUG)        System.err.println("[CTXT]DS-type? : " + properties.getProperty(typeLookup));
 if(DEBUG)        System.err.println("[CTXT]DS-properties : " + properties);
         if( "javax.sql.DataSource".equals(properties.getProperty(typeLookup)) ) 
@@ -523,23 +524,18 @@ if(DEBUG)                System.err.println("[CTXT]length of root+separator: "+l
                 }
             }
 
-            // Is this unnecessary now that the above is right?
-            int idx = dsName.indexOf(this.delimiter);
-            if(idx != -1) {
-                dsName = dsName.substring(0, idx);
-                dsName = handleJavaStandard(dsName);
-            }
-
 if(DEBUG)            System.err.println("[CTXT]Remaining: "+remaining);
 if(DEBUG)            System.err.println("[CTXT]DsName: '"+dsName+"'");
 if(DEBUG)            System.err.println("[CTXT]Name: '"+name+"'");
 
             // get the last element in 'name'
-            int edx = name.lastIndexOf(this.separator);
             String dsn = name;
-            if(edx != -1) {
-                // TODO: Needs a little safety
-                dsn = name.substring(edx+1);
+            if(!dsn.equals(dsName)) {
+                int edx = name.lastIndexOf(this.separator);
+                if(edx != -1) {
+                    // TODO: Needs a little safety
+                    dsn = name.substring(edx+1);
+                }
             }
 if(DEBUG)            System.err.println("[CTXT]DataSource name: "+dsn);
             if(dsn.equals(dsName)) {
