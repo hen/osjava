@@ -120,6 +120,9 @@
     <xsl:variable name="pub">
       <xsl:value-of select="document('db/books.xml')/library/book[@isbn=$isbn]/@publisher"/>
     </xsl:variable>
+    <xsl:variable name="published">
+      <xsl:value-of select="document('db/books.xml')/library/book[@isbn=$isbn]/@published"/>
+    </xsl:variable>
     <xsl:variable name="name">
       <xsl:value-of select="document('db/books.xml')/library/book[@isbn=$isbn]/@name"/>
     </xsl:variable>
@@ -135,6 +138,7 @@
     <div class="sub-title"><xsl:value-of select="$name"/></div><br/>
     <div class="book-url">Visit the book&apos;s site: <a href="{$url}"><xsl:value-of select="$url"/></a></div><br/>
     <div class="publisher-name">(<a href="{$pubUri}"><xsl:value-of select="$pubName"/></a>)</div><br/>
+    <div class="publisher-date"><xsl:value-of select="$published"/></div><br/>
     <div class="books-links"><span class="amz"><a href="http://www.amazon.com/exec/obidos/tg/detail/-/{$isbn}">[amz]</a></span> - <span class="bkp"><a href="http://www.bookpool.com/.x/1/sm/{$isbn}">[bkp]</a></span></div><br/>
     <div class="sub-title">Review</div><br/>
     <div class="review-text"><xsl:value-of select="$review"/></div>
