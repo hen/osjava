@@ -21,7 +21,6 @@ Need a page for:
 
 External imports
 ================
-import com.generationjava.collections.OrderedSet;   // how to remove?
 import com.generationjava.util.XmlProperties;
 import org.apache.commons.convert.ConvertRegistry;
 import org.apache.commons.convert.ConvertUtils;

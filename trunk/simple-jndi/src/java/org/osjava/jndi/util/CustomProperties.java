@@ -35,7 +35,7 @@ package org.osjava.jndi.util;
 
 import java.io.*;
 import java.util.*;
-import com.generationjava.collections.OrderedSet;
+//import com.generationjava.collections.OrderedSet;
 
 public class CustomProperties extends Properties {
 
