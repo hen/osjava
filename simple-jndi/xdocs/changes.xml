@@ -7,6 +7,11 @@
   </properties>
 
   <body>
+    <release version="0.8" date="2003-12-??">
+        <action dev="hen" type="add">Connection pooling added via the use of Jakarta Commons DBCP. </action>
+        <action dev="hen" type="update">Switched dependencies and inlined code so that no jars are needed by default, but to get the xml feature you need gj-xml, to get converting you need commons-convert and to get connection-pooling you need commons-dbcp, which needs commons-pool and commons-collections. </action>
+    </release>
+
     <release version="0.7" date="2003-12-06">
         <action dev="hen" type="fix">XML bug #SJN-39 fixed. In 0.6, XML was barely functional and 0.7 fixes those bugs. </action>
         <action dev="hen" type="add">In addition to .properties and .xml files, simple-jndi now supports .ini files. The precedence in case of similar naming is .properties, .xml then .ini. </action>
