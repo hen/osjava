@@ -144,7 +144,8 @@ public class ThreadContext
     /**
      * Generate a name for the thread.
      *   
-     * @return 
+     * @return the newly generated String that represents a new name for
+     *         for use by a Thread. 
      * @throws NamingException
      */
     private String generateNextThreadName() throws NamingException {
@@ -340,13 +341,33 @@ public class ThreadContext
     /**
      * Invokes <code>start()</code> on all of the {@link ExtendedThread
      * ExtendedThreads} in this context and its subcontexts.
+     * 
+     * @param name the name of the ExtendedThread or ThreadContext 
+     *        start.
+     * @throws NameNotFoundException if the name cannot be found in the 
+     *         context
      */
-    public void start() {        
+    public void start(Name name) throws NameNotFoundException {        
+        if(name == null || name.size() > 1) {
+            Object subContext = null;
+            try {
+                subContext = lookup(name.getPrefix(1));
+            } catch (NamingException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            if(!(subContext instanceof ThreadContext)) {
+                throw new NameNotFoundException("Name not found '" + name + "'.");
+            }
+            ((ThreadContext)subContext).start(name.getSuffix(1));
+            return;
+        }
+
         Iterator it = contextStore.keySet().iterator();
         while (it.hasNext()) {           
             ExtendedRunnable next = (ExtendedRunnable)contextStore.get(it.next());
             /* 
-             * This is almost always going to be the case, but there's a chanc
+             * This is almost always going to be the case, but there's a
              * chance it won't be.
              */
             if(next instanceof Thread) {
@@ -361,22 +382,52 @@ public class ThreadContext
              * We can only make ThreadContexts, start like that and there is
              * not a guarantee that the subcontext is going to be a
              * ThreadContext.
-             * 
              */
             if(next instanceof ThreadContext) {
-                ((ThreadContext)next).start();
+                ((ThreadContext)next).start((Name)null);
             }
         }
     }
+    
+    /**
+     * Invokes <code>start()</code> on all of the {@link ExtendedThread
+     * ExtendedThreads} in this context and its subcontexts.
+     * 
+     * @param name the name of the ExtendedThread or ThreadContext to start.
+     * @throws NameNotFoundException if the name cannot be found in the 
+     *         context.
+     * @throws NamingException if a naming exception is encountered.
+     */
+    public void start(String name) throws NameNotFoundException, NamingException {
+        start(nameParser.parse(name));
+    }
 
     /**
-     * Run setAbort() on all of the threads that this group is an ancestor of
+     * Run setAbort() on all of the threads that this context is an ancestor
+     * of or the specified {@link ExtendedThread}.
      * 
-     * @param abort Boolean value determining whether or not the thread is to 
-     *              be aborted, or can be set to halt a previously declared 
-     *              abort
+     * @param name of the ThreadContext or ExtendedThread that is a 
+     *        decendant of the ThreadContext.
+     * @param abort Boolean value deterMadmining whether or not the thread is to 
+     *        be aborted, or can be set to halt a previously declared abort.
+     * @throws NameNotFoundException if the name cannot be found.
+     * @throws NamingException if a naming exception is encoutnered.
      */
-    public void setAbort(boolean abort) {
+    public void setAbort(Name name, boolean abort) throws NameNotFoundException, NamingException {
+        if(name == null || name.size() > 1) {
+            Object subContext = null;
+            try {
+                subContext = lookup(name.getPrefix(1));
+            } catch (NamingException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            if(!(subContext instanceof ThreadContext)) {
+                throw new NameNotFoundException("Name not found '" + name + "'.");
+            }
+            ((ThreadContext)subContext).setAbort(name.getSuffix(1), abort);
+            return;
+        }
         Iterator it = contextStore.keySet().iterator();
         while (it.hasNext()) {           
             ExtendedRunnable next = ((ExtendedRunnable)contextStore.get(it.next()));
@@ -387,9 +438,24 @@ public class ThreadContext
         while (it.hasNext()) {           
             Context next = ((Context)subContexts.get(it.next()));
             if(next instanceof ThreadContext) {
-                ((ThreadContext)next).setAbort(abort);
+                ((ThreadContext)next).setAbort((Name)null, abort);
             }
         }
+    }
+
+    /**
+     * Run setAbort() on all of the threads that this context is an ancestor
+     * of or the specified {@link ExtendedThread}.
+     * 
+     * @param name of the ThreadContext or ExtendedThread that is a 
+     *        decendant of the ThreadContext.
+     * @param abort Boolean value deterMadmining whether or not the thread is to 
+     *        be aborted, or can be set to halt a previously declared abort.
+     * @throws NameNotFoundException if the name cannot be found..
+     * @throws NamingException if a naming exception is encountered.
+     */
+    public void setAbort(String name, boolean abort) throws NameNotFoundException, NamingException {
+        setAbort(nameParser.parse(name), abort);
     }
     
     /* *******************************************
@@ -1031,7 +1097,7 @@ public class ThreadContext
         if(closing) {
             return;
         }
-        setAbort(true);
+        setAbort((Name)null, true);
         Iterator it = subContexts.keySet().iterator();
         while(it.hasNext()) {
             destroySubcontext((Name)it.next());
