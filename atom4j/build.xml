@@ -39,14 +39,9 @@
     </target>
     
     <target name="test" depends="build">
-		<copy overwrite="true"
-			file="log4j.properties"
-			tofile="${build_classes}/log4j.properties"
-			/>
-		<replace file="${build_classes}/log4j.properties" 
-			token="LEVEL" 
-			value="ERROR" 
-			/>
+		<copy file="log4j.properties"
+			tofile="${build_classes}/log4j.properties" />
+
 		<java fork="yes" classname="org.osjava.atom4j.reader.EntryReader">
 			<classpath>
 	            <path refid="atom4j.classpath"/> 
@@ -56,14 +51,11 @@
     </target>
 
 	<target name="junit" depends="build-test" >
-		<copy overwrite="true"
-			file="log4j.properties"
-			tofile="${build_classes}/log4j.properties"
-			/>
-		<replace file="${build_classes}/log4j.properties" 
-			token="LEVEL" 
-			value="ERROR" 
-			/>
+		<copy file="log4j.properties"
+			tofile="${build_classes}/log4j.properties" />
+	    <copy todir="${build_classes}">
+	        <fileset dir="${basedir}/docs/feed" includes="Atom03_*.xml"/>
+	    </copy>
 
 		<java classname="junit.textui.TestRunner" fork="yes" failonerror="false">
 			<arg value="org.osjava.atom4j.reader.TestAll"/>
@@ -91,7 +83,7 @@
 			optimize="false" 
 			verbose="false" 
 			deprecation="false">
-			<include name="com/**" />
+			<!--include name="com/**" /-->
 			<include name="org/**" />
 			<classpath>
 	            <path refid="atom4j.classpath"/>
@@ -108,7 +100,7 @@
 			optimize="false" 
 			verbose="false" 
 			deprecation="false">
-			<include name="com/**" />
+			<!--include name="com/**" /-->
 			<include name="org/**" />
 			<classpath>
 	            <path refid="atom4j.classpath"/>
@@ -123,13 +115,12 @@
 		
 		<delete file="${dist}/${jar.name}" />
 
-		<copy overwrite="true"
-			file="README.txt"
-			tofile="${build_classes}/README.txt"
-			/>
-
 		<zip zipfile="${dist}/${jar.name}">
-			<zipfileset dir="${build_classes}" includes="**" />
+	        <zipfileset dir="${basedir}" includes="*.txt"/>
+			<zipfileset dir="${build_classes}" >
+				<include name="**" />
+				<exclude name="**/*Test.class" />
+			</zipfileset>
 		</zip>	
 		
 	</target>
@@ -142,8 +133,10 @@
 		<delete file="${dist}/${jar.src.name}" />
 
 		<zip zipfile="${dist}/${jar.src.name}">
+			<zipfileset dir="${basedir}" includes="*.txt" />
 			<zipfileset dir="${build_classes}" includes="**" />
 			<zipfileset dir="${src}" includes="**" />
+			<zipfileset dir="${test}" includes="**" />
 		</zip>	
 			
 	</target>	

@@ -1,11 +1,26 @@
 /*
- * Created on Aug 29, 2003
+ *   Copyright 2003-2004 Lance Lavandowska
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License");
+ *   you may not use this file except in compliance with the License.
+ *   You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   Unless required by applicable law or agreed to in writing, software
+ *   distributed under the License is distributed on an "AS IS" BASIS,
+ *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *   See the License for the specific language governing permissions and
+ *   limitations under the License.
  */
 package org.osjava.atom4j.pojo;
 
 import org.osjava.atom4j.Atom4J;
 
 /**
+ * @deprecated
+ * 
+ * Created on Aug 29, 2003
  * @author llavandowska
  */
 public class Introspection
@@ -22,27 +37,23 @@ public class Introspection
 
     public String toString()
     {
-        StringBuffer buf = new StringBuffer("<introspection xmlns=\"" + Atom4J.xmlns + "\" >\n");
+        StringBuffer buf = new StringBuffer("<introspection xmlns=\"" + Atom4J.xmlns + "\" > ");
         if (createEntry)
-            buf.append("  <create-entry>" + baseURL + "/atom/USER/entry/</create-entry>\n");
-        /* No longer part of spec?
+            buf.append("  <create-entry>" + baseURL + "/atom/USER/entry/</create-entry>");
         if (deleteEntry)
-            buf.append("  <delete-entry>" + baseURL + "/atom/USER/entry/</delete-entry>\n");
+            buf.append("  <delete-entry>" + baseURL + "/atom/USER/entry/id</delete-entry>");
         if (editEntry)
-            buf.append("  <edit-entry>" + baseURL + "/atom/USER/entry/</edit-entry>\n");
-        if (comment)
-            buf.append("  <comment>" + baseURL + "/atom/USER/comment/</comment>\n");
-        */
+            buf.append("  <edit-entry>" + baseURL + "/atom/USER/entry/id</edit-entry>");
         if (userPrefs)
-            buf.append("  <user-prefs>" + baseURL + "/atom/USER/prefs</user-prefs>\n");
+            buf.append("  <user-prefs>" + baseURL + "/atom/USER/prefs</user-prefs>");
         if (searchEntries)
-            buf.append("  <search-entries>" + baseURL + "/atom/USER/search</search-entries>\n");
+            buf.append("  <search-entries>" + baseURL + "/atom/USER/search</search-entries>");
         if (editTemplate)
-            buf.append("  <edit-template>" + baseURL + "/atom/USER/findTemplates</edit-template>\n");
-        /* Behaviour isn't fully specified yet 
+            buf.append("  <edit-template>" + baseURL + "/atom/USER/findTemplates</edit-template>");
         if (categories)
-            buf.append("  <categories>" + baseURL + "/atom/USER/categories</categories>\n");
-        */
+            buf.append("  <categories>" + baseURL + "/atom/USER/categories</categories>");
+        if (comment)
+            buf.append("  <comment>" + baseURL + "/atom/USER/comment/id</comment>");
         buf.append("</introspection>");
         return buf.toString();
     }
