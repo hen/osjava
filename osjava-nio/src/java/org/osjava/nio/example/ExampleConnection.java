@@ -1,9 +1,12 @@
-package org.cyberiantiger.nio.example;
+package org.osjava.nio.example;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import org.cyberiantiger.nio.*;
+
+import org.osjava.nio.IOThread;
+import org.osjava.nio.IOUtils;
+import org.osjava.nio.SocketChannelHandler;
 
 public class ExampleConnection {
 

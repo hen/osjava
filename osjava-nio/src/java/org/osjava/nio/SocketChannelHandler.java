@@ -1,4 +1,4 @@
-package org.cyberiantiger.nio;
+package org.osjava.nio;
 
 import java.io.IOException;
 import java.io.Reader;
