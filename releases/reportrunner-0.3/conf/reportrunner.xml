@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<reportrunner>
+ <reports name="roll" label="Roller" filename="reports.xml" description="Reports for the database behind the Roller weblog engine. ">
+   <resource-param name="SqlReportDS" label="Database" options="roller,jira"/>
+ </reports>
+ <reports name="jira" label="Jira" filename="jirareports.xml" description="Reports for the database behind the Jira issue tracker. ">
+   <report-param name="SqlReportDS" value="jira"/>
+ </reports>
+</reportrunner>

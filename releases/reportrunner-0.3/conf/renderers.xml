@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<renderers>
+ <renderer name="txt" label="Text file" class="org.osjava.reportrunner.renderers.TextRenderer" description="See a report as a simple .txt file. ">
+   <inline>false</inline>
+   <extension>txt</extension>
+   <mimeType>text/plain</mimeType>
+ </renderer>
+ <renderer name="html" label="Web page" class="org.osjava.reportrunner.renderers.HtmlTableRenderer" description="See a report as a javascript-enhanced HTML table. ">
+   <inline>true</inline>
+   <extension>html</extension>
+   <mimeType>text/html</mimeType>
+ </renderer>
+ <renderer name="xml" label="XML" class="org.osjava.reportrunner.renderers.XmlRenderer" description="XML view of a report. ">
+   <inline>false</inline>
+   <extension>xml</extension>
+   <mimeType>text/xml</mimeType>
+ </renderer>
+ <renderer name="tdf" label="Tab delimited" class="org.osjava.reportrunner.renderers.CsvRenderer" description="Tab-delimited version of a report. ">
+   <inline>false</inline>
+   <extension>csv</extension>
+   <fieldDelimiter>	</fieldDelimiter>
+   <mimeType>text/csv</mimeType>
+ </renderer>
+ <renderer name="csv" label="Comma delimited" class="org.osjava.reportrunner.renderers.CsvRenderer" description="Comma-delimited version of a report. ">
+   <inline>false</inline>
+   <extension>csv</extension>
+   <fieldDelimiter>,</fieldDelimiter>
+   <mimeType>text/csv</mimeType>
+ </renderer>
+ <renderer name="excel" label="Excel file" class="org.osjava.reportrunner.renderers.ExcelRenderer" description="Uses Jakarta POI to create real Excel files. ">
+   <inline>false</inline>
+   <extension>xls</extension>
+   <mimeType>application/excel</mimeType>
+ </renderer>
+
+ <!-- plugin renderers -->
+ <renderer name="datetime-chart" label="Time chart" class="org.osjava.reportrunner_plugins.renderers.TimeGraphRenderer" description="Creates a chart using JFreeGraph. ">
+   <inline>true</inline>
+   <extension>png</extension>
+   <mimeType>image/png</mimeType>
+ </renderer>
+
+</renderers>
