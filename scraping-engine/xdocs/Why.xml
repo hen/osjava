@@ -20,6 +20,11 @@ having to implement the same code again and again. This pays back in development
     <section name="Why simple-jndi for configuration?">
 
 <p>This is another project of mine. I've found it very nice for configuring systems as there is zero code to add a new configuration option. </p>
+    </section>
+    <section name="Why 'Scabies'?">
+
+<p>Scraping-engine is part of a larger project that will be called Scabies. Thus the JIRA project name. Scabies because that involves itching, I think. I felt there were not enough open source projects named after medical problems. Incidentally, Scabies comes from the latin 'scabere', which means 'scratch'. Also known as 'the itch', and for some reason aka 'the seven year itch'. </p>
+
 
 </section>
 </body>
