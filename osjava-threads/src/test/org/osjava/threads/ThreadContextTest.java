@@ -116,7 +116,6 @@ public class ThreadContextTest extends TestCase {
         } catch (ThreadIsRunningException e) {
             fail("ThreadIsRunningException: " + e.getMessage());
         } catch (NamingException e) {
-            e.printStackTrace();
             fail("NamingException: " + e.getMessage());
         }
         assertNotNull(thread);

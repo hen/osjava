@@ -551,7 +551,6 @@ public class ThreadContext
          * TODO: If this is a Runnable of any sort, we can wrap an
          * ExtendedThread around it, solving this problem.
          */
-        System.out.println("Object -- " + obj);
         if(!(obj instanceof ExtendedRunnable) &&
            !(obj instanceof ThreadContext)) {
             throw new InvalidObjectTypeException("Objects in this context must implement " +
