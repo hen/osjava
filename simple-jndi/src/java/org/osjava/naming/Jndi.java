@@ -40,6 +40,9 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
+/**
+ * Helper object for talking to JNDI. 
+ */
 public class Jndi {
 
     private Context context;
