@@ -12,21 +12,10 @@ public class ChooseReportServlet extends HttpServlet {
         String reportName = request.getParameter(ReportRunnerServlet.REPORT);
         Report report = ReportFactory.getReport(groupName, reportName);
 
-        List list = Arrays.asList(report.getResourceNames());
-        Param[] resourceParams = report.getReportGroup().getResourceParams();
-        if(resourceParams.length != 0 && (request.getParameter("z") == null || request.getParameter("z").equals("")) ) {
-            boolean found = false;
-            for(int i=0; i<resourceParams.length; i++) {
-                if(list.contains(resourceParams[i].getName())) {
-                    found = true;
-                    break;
-                }
-            }
-            if(found) {
-                // redirect to choose resources page
-                response.sendRedirect("enter_resource_params.jsp?"+request.getQueryString());
-                return;
-            }
+        if(hasResourceChoice(report, request) && (request.getParameter("z") == null || request.getParameter("z").equals("") ) ) {
+            // redirect to choose resources page
+            response.sendRedirect("enter_resource_params.jsp?"+request.getQueryString());
+            return;
         } 
 
         if(report.getParams().length != 0) {
@@ -38,4 +27,14 @@ public class ChooseReportServlet extends HttpServlet {
         }
     }
 
+    public static boolean hasResourceChoice(Report report, HttpServletRequest request) {
+        List list = Arrays.asList(report.getResourceNames());
+        Param[] resourceParams = report.getReportGroup().getResourceParams();
+        for(int i=0; i<resourceParams.length; i++) {
+            if(list.contains(resourceParams[i].getName())) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

@@ -4,16 +4,24 @@
 
 <%
     String groupName = request.getParameter(ReportRunnerServlet.GROUP);
-%>
-
-<div class="stages"><a href="list_groups.jsp">choose-group</a> -&gt; <a href="list_reports.jsp?<%= ReportRunnerServlet.GROUP %>=<%= groupName %>">choose-report</a></div>
-
-<%
     String reportName = request.getParameter(ReportRunnerServlet.REPORT);
     Report report = ReportFactory.getReport(groupName, reportName);
-
     ReportRunnerServlet.applyResources(report, request);
 %>
+
+<div class="stages"><a href="list_groups.jsp">choose-group</a> -&gt; <a href="list_reports.jsp?<%= ReportRunnerServlet.GROUP %>=<%= groupName %>">choose-report</a> -&gt;
+<%
+  if(ChooseReportServlet.hasResourceChoice(report, request)) {
+%>
+<a href="enter_resource_params.jsp?<%= request.getQueryString() %>">choose resource</a>
+<% 
+  } else {
+%>
+<s>choose resource</s>
+<% 
+  }
+%>
+</div>
 
 <div class="feedback">
 <p>You have chosen the <span class="chosen-data"><%= report.getLabel() %></span> report from the <span class="chosen-data"><%= report.getReportGroup().getLabel() %></span> report group. </p>
