@@ -155,6 +155,7 @@ public class LookupTest extends TestCase {
 
     public void testIniLookup() {
         try {
+            assertEquals( "blockless", lookup("testini/first") );
             assertEquals( "13", lookup("testini/block1/value") );
             assertEquals( "pears", lookup("testini/block2/apple") );
             assertEquals( "stairs", lookup("testini/block2/orange") );
