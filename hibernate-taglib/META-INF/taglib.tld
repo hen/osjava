@@ -52,11 +52,14 @@
   <tag>
     <name>save</name>
     <tagclass>org.osjava.hibernate.taglib.SaveTag</tagclass>
-    <bodycontent>JSP</bodycontent>
     <attribute>
       <name>value</name>
       <required>true</required>
       <rtexprvalue>true</rtexprvalue>
     </attribute>
+  </tag>
+  <tag>
+    <name>close</name>
+    <tagclass>org.osjava.hibernate.taglib.CloseTag</tagclass>
   </tag>
 </taglib>
