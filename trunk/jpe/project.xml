@@ -29,11 +29,6 @@
   <siteDirectory>/sites/org/osjava/www/releases/official/jpe/</siteDirectory>
   <distributionDirectory>/sites/org/osjava/www/releases/official/jpe/</distributionDirectory>
 
-  <repository>
-    <connection>scm:svn:http://svn.osjava.org/svn/osjava/trunk/jpe</connection>
-    <url>http://svn.osjava.org/cgi-bin/viewcvs.cgi/trunk/jpe/</url>
-  </repository>
-
   <developers>
 
     <developer>

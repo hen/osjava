@@ -26,11 +26,6 @@
   <siteDirectory>/sites/org/osjava/www/maven/genjava/simple-jndi/</siteDirectory>
   <distributionDirectory>/sites/org/osjava/www/maven/builds/</distributionDirectory>
 
-  <repository>
-    <connection>scm:svn:http://svn.osjava.org/svn/osjava/trunk/simple-jndi</connection>
-    <url>http://svn.osjava.org/cgi-bin/viewcvs.cgi/trunk/simple-jndi/</url>
-  </repository>
-
   <mailingLists>
     <mailingList>
       <name>osjava-users</name>
@@ -120,8 +115,6 @@
         <report>maven-javadoc-plugin</report>
         <report>maven-license-plugin</report>
         <report>maven-changes-plugin</report>           
-        <report>maven-changelog-plugin</report>        
-        <report>maven-statcvs-plugin</report>          
     </reports>
 
 
