@@ -8,16 +8,16 @@
 
   <body>
     <section name="Download Latest Code">
-      <p>The next version of will be 0.9. To get the current version of this you need to check the code out from CVS and build it yourself using Maven. More info on CVS is available on the <a href="http://www.osjava.org/simple-jndi/cvs-usage.html">cvs-usage</a> page and Maven can be obtained from <a href="http://maven.apache.org/">maven.apache.org</a>. </p>
+      <p>The next version of will be 0.10. To get the current version of this you need to check the code out from CVS and build it yourself using Maven. More info on CVS is available on the <a href="http://www.osjava.org/simple-jndi/cvs-usage.html">cvs-usage</a> page and Maven can be obtained from <a href="http://maven.apache.org/">maven.apache.org</a>. </p>
     </section>
     <section name="Download Latest Stable">
 <ul>
-<li><a href="/releases/official/simple-jndi/simple-jndi-0.8-src.tar.gz">simple-jndi-0.8-src.tar.gz</a></li>
-<li><a href="/releases/official/simple-jndi/simple-jndi-0.8-src.zip">simple-jndi-0.8-src.zip</a></li>
-<li><a href="/releases/official/simple-jndi/simple-jndi-0.8.tar.gz">simple-jndi-0.8.tar.gz</a></li>
-<li><a href="/releases/official/simple-jndi/simple-jndi-0.8.zip">simple-jndi-0.8.zip</a></li>
-<li><a href="/releases/official/simple-jndi/example-collections-0.8.zip">example-collections-0.8.zip</a> - Collections examples under 0.8</li>
-<li><a href="/releases/official/simple-jndi/example-datasource-0.8.zip">example-datasource-0.8.zip</a> - DataSource examples under 0.8</li>
+<li><a href="/releases/official/simple-jndi/simple-jndi-0.9-src.tar.gz">simple-jndi-0.9-src.tar.gz</a></li>
+<li><a href="/releases/official/simple-jndi/simple-jndi-0.9-src.zip">simple-jndi-0.9-src.zip</a></li>
+<li><a href="/releases/official/simple-jndi/simple-jndi-0.9.tar.gz">simple-jndi-0.9.tar.gz</a></li>
+<li><a href="/releases/official/simple-jndi/simple-jndi-0.9.zip">simple-jndi-0.9.zip</a></li>
+<li><a href="/releases/official/simple-jndi/example-collections-0.8.zip">example-collections-0.8.zip</a> - Collections examples under 0.8 (unchanged in 0.9)</li>
+<li><a href="/releases/official/simple-jndi/example-datasource-0.8.zip">example-datasource-0.8.zip</a> - DataSource examples under 0.8 (unchanged in 0.9)</li>
 </ul>
      <p>
      If you require them through usage of optional features, please ensure you have the necessary dependencies:
@@ -31,6 +31,12 @@
      </p>
 </section>
 <section name="Archives">
+<ul>
+<li><a href="/releases/official/simple-jndi/simple-jndi-0.8-src.tar.gz">simple-jndi-0.8-src.tar.gz</a></li>
+<li><a href="/releases/official/simple-jndi/simple-jndi-0.8-src.zip">simple-jndi-0.8-src.zip</a></li>
+<li><a href="/releases/official/simple-jndi/simple-jndi-0.8.tar.gz">simple-jndi-0.8.tar.gz</a></li>
+<li><a href="/releases/official/simple-jndi/simple-jndi-0.8.zip">simple-jndi-0.8.zip</a></li>
+</ul>
 <ul>
 <li><a href="/releases/official/simple-jndi/simple-jndi-0.7-src.tar.gz">simple-jndi-0.7-src.tar.gz</a></li>
 <li><a href="/releases/official/simple-jndi/simple-jndi-0.7-src.zip">simple-jndi-0.7-src.zip</a></li>
