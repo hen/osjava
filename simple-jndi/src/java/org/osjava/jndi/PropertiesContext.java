@@ -166,6 +166,9 @@ public class PropertiesContext implements Context  {
      */
     private String handleJavaStandard(String key) {
         if(key != null) {
+            if(key.equals("java:")) {
+                return "java";
+            }
             if(key.equals("java:/")) {
                 return "java/";
             }
@@ -361,6 +364,7 @@ public class PropertiesContext implements Context  {
             }
 //            System.err.println("Into file? "+file);
             if(file != null) {
+                path = path+this.separator+element;
                 properties = loadProperties(file);
 
                 // build the rest of the list
@@ -371,6 +375,10 @@ public class PropertiesContext implements Context  {
                 if(list.size() > 0) {
                     remaining = StringUtils.join(list.iterator(), this.delimiter);
                 }
+//                System.err.println("FILE FOUND: "+file);
+//                System.err.println("Remaining: "+remaining);
+//                System.err.println("element: "+element);
+//                System.err.println("path: "+path);
                 break;
             } else {
                 java.util.ArrayList list = new java.util.ArrayList();
@@ -408,19 +416,44 @@ public class PropertiesContext implements Context  {
             throw new InvalidNameException("Properties for "+name+" not found. ");
         }
 
+        // TODO: Rewrite this block. Not enough grokk.
         if("true".equals(properties.get("org.osjava.jndi.datasource"))) {
 //            System.err.println("Datasource!");
             PropertiesDataSource pds = new PropertiesDataSource(properties, env, this.delimiter);
-            System.err.println("remaining: "+remaining);
-// need to figure out exactly what goes here.
-//            pds.setName(StringUtils.getChomp(StringUtils.chomp(name,this.delimiter),this.delimiter).substring(1));
-            String dsName = remaining;
+            String dsName = null;   // never remaining???;
+            if(dsName == null) {
+                // wants to be the path without the root
+//                System.err.println("root: "+root);
+//                System.err.println("path: "+path);
+                int ln = root.length() + this.separator.length();
+//                System.err.println("ln: "+ln);
+                dsName = path.substring(ln);
+            }
+
+            // Is this unnecessary now that the above is right?
             int idx = dsName.indexOf(this.delimiter);
             if(idx != -1) {
                 dsName = dsName.substring(0, idx);
+                dsName = handleJavaStandard(dsName);
             }
+
+//            System.err.println("remaining: "+remaining);
 //            System.err.println("DsName: '"+dsName+"'");
-            pds.setName(dsName);
+//            System.err.println("Name: '"+name+"'");
+
+            // get the last element in 'name'
+            int edx = name.lastIndexOf(this.separator);
+            String dsn = name;
+            if(edx != -1) {
+                // TODO: Needs a little safety
+                dsn = name.substring(edx+1);
+            }
+//            System.err.println("DSN: "+dsn);
+            if(dsn.equals(dsName)) {
+                dsn = "";
+            }
+
+            pds.setName(dsn);
             return pds;
         }
 
