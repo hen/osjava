@@ -38,6 +38,7 @@ import java.io.File;
 import java.io.FileFilter;
 import java.util.Map;
 import java.util.List;
+import java.util.LinkedList;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -49,7 +50,7 @@ import java.util.Iterator;
 public class FindingFilter implements FileFilter {
 
     private Map options;
-    private List filters;
+    private List filters = new LinkedList();
     private boolean daystart;
 
     public FindingFilter(Map options) {
@@ -111,9 +112,6 @@ public class FindingFilter implements FileFilter {
     }
 
     public boolean accept(File file) {
-        if(filters == null) {
-            return true;
-        }
         Iterator itr = filters.iterator();
         while(itr.hasNext()) {
             FileFilter filter = (FileFilter) itr.next();
@@ -121,7 +119,7 @@ public class FindingFilter implements FileFilter {
                 continue;
             }
             boolean result = filter.accept(file);
-            if(false) {
+            if(result == false) {
                 return false;
             }
         }
@@ -134,7 +132,7 @@ public class FindingFilter implements FileFilter {
 
 }
 
-// need to implement the datestart bits
+// need to implement the daystart bits
 class MinFilter implements FileFilter {
     private Object option;
     private int argument;
@@ -166,6 +164,7 @@ class NewerFilter implements FileFilter {
     }
 }
 
+// implement daystart
 class TimeFilter implements FileFilter {
     private Object option;
     private int argument;
@@ -213,6 +212,7 @@ class SizeFilter implements FileFilter {
     }
 }
 
+// implement Wildcards
 class NameFilter implements FileFilter {
     private Object option;
     private Object argument;
@@ -224,9 +224,9 @@ class NameFilter implements FileFilter {
     }
     public boolean accept(File file) {
         if(this.ignoreCase) {
-            return file.getName().toLowerCase().indexOf(this.argument.toString().toLowerCase()) != -1;
+            return file.getName().toLowerCase().equals(this.argument.toString().toLowerCase());
         } else {
-            return file.getName().indexOf(this.argument.toString()) != -1;
+            return file.getName().equals(this.argument.toString());
         }
     }
 }
@@ -242,9 +242,9 @@ class PathFilter implements FileFilter {
     }
     public boolean accept(File file) {
         if(this.ignoreCase) {
-            return file.getPath().toLowerCase().indexOf(this.argument.toString().toLowerCase()) != -1;
+            return file.getPath().toLowerCase().equals(this.argument.toString().toLowerCase());
         } else {
-            return file.getPath().indexOf(this.argument.toString()) != -1;
+            return file.getPath().equals(this.argument.toString());
         }
     }
 }
