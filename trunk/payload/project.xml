@@ -15,7 +15,7 @@
        major.minor.bugfix, but you can also use RC's, alpha, -dev or anything 
        you want. SNAPSHOT is a special version which is never cached by the 
        dependency downloader. -->
-  <currentVersion>0.2</currentVersion>
+  <currentVersion>0.3</currentVersion>
 
   <organization>
     <name>OSJava</name>
@@ -94,7 +94,6 @@
     <sourceDirectory>src/java</sourceDirectory>
 
     <!-- Also, usually a good default -->
-    <!--
     <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
 
     <unitTest>
@@ -102,7 +101,6 @@
         <include>**/*Test.java</include>
       </includes>
     </unitTest>
-    -->
 
     <!-- You might want to build properties into the jar -->
     <!--
