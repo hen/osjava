@@ -54,7 +54,11 @@ import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 
 import org.apache.naming.NamingContext;
-import org.osjava.naming.InvalidObjectTypeException;
+/* 
+ * Don't use this exception anymore.  It might be moved to directory-naming.
+ * In the meantime, just use NamingException with a message.
+ */
+//import org.osjava.naming.InvalidObjectTypeException;
 
 /**
  * A Context for managing Threads and ThreadGroups.
@@ -83,35 +87,21 @@ public class ThreadContext
      * Constructors *
      ****************/
     /**
-     * Create a new ThreadContext as a root.
-     * 
-     * @throws NamingException if a naming exception is encountered.
-     */
-    public ThreadContext() throws NamingException {
-        this((Hashtable)null);
-    }
-    
-    /** 
-     * Create a ThreadContext with a specified environment.
-     * 
-     * @param env The environment to be used by the subcontext that is 
-     *        created.
-     */
-    public ThreadContext(Hashtable env) {
-        super(env);
-    }
-        
-    /**
      * Create a ThreadContext with a specific name.  This constructor is 
      * private and only intended to be invoked from this object.  If <code>
      * null</code> is passed as the name, it is expected to be a root context.
      * 
+     * @param env the environment to be used by the subcontext.
      * @param name The name of the ThreadContext.  It can be null, and if it is
      *        considered to be the root context.
      * @throws NamingException if a naming exception is encountered.
      */
-    private ThreadContext(Name name) throws NamingException {
-        this(null, name);
+    public ThreadContext(Hashtable env, Name name) throws NamingException {
+        /* 
+         * Directory-naming uses string based names, which is fine, but 
+         * it does not accept a Name for the name, which I think is wrong.
+         */
+        super(env, name.toString());
     }
 
     /**
@@ -124,11 +114,10 @@ public class ThreadContext
      *        considered to be the root context.
      * @throws NamingException if a naming exception is encountered.
      */
-    private ThreadContext(Hashtable env, Name name) throws NamingException {
-        super(env);
-        this.setName(name);
+    public ThreadContext(Hashtable env, String name) throws NamingException {
+        this(env, nameParser.parse(name));
     }
-    
+
     /* ************************
      * Class Specific Methods *
      * ************************/
@@ -500,7 +489,11 @@ public class ThreadContext
          * ExtendedThread around it, solving this problem.
          */
         if(!(obj instanceof ExtendedRunnable)) {
-            throw new InvalidObjectTypeException("Objects in this context must implement " +
+            /*
+             * This should be changed back to an InvalidObjectType exception 
+             * if it gets incorporated into directory-naming.
+             */
+            throw new NamingException("Objects in this context must implement " +
                     "org.osjava.threads.ExtendedRunnable");
         }
     }
@@ -688,7 +681,7 @@ public class ThreadContext
     public Context createSubcontext(Name name) throws NamingException {
         Name contextName = getNameParser(getNameInNamespace()).parse(getNameInNamespace());
         contextName.addAll(name);
-        ThreadContext newContext = new ThreadContext(name);
+        ThreadContext newContext = new ThreadContext(this.env, name);
         bind(name, newContext);
         return newContext;
     }
