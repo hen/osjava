@@ -14,7 +14,7 @@ Using Simple-JNDI is the same as using JNDI itself. So this is not covered here,
 </section>
 <section name="Installing Simple-JNDI">
 <p>
-After download, installing Simple-JNDI is as simple as adding the simple-jndi jar, genjava-core jar, commons-collections 2.1 jar and the commons-lang jar to your classpath. All are downloadable from the <a href="http://www.osjava.org/simple-jndi/Download.html">download</a> page.
+After download, installing Simple-JNDI is as simple as adding the simple-jndi jar to your classpath. Some of the features do however need additional dependencies. To get the xml feature you need gj-xml, to get converting you need commons-convert and to get connection-pooling you need commons-dbcp, which needs commons-pool and commons-collections. All are downloadable from the <a href="http://www.osjava.org/simple-jndi/Download.html">download</a> page.
 </p>
 </section>
 <section name="Setting up Simple-JNDI">
