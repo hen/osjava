@@ -8,7 +8,7 @@
 
   <body>
     <section name="Download Latest Code">
-      <p>The next version of will be 0.10. To get the current version of this you need to check the code out from CVS and build it yourself using Maven. More info on CVS is available on the <a href="http://www.osjava.org/simple-jndi/cvs-usage.html">cvs-usage</a> page and Maven can be obtained from <a href="http://maven.apache.org/">maven.apache.org</a>. </p>
+      <p>The next version of simple-jndi will be 0.10. To get the current version of this you need to check the code out from Subversion and build it yourself using Maven. More info on Subversion is available on the <a href="http://www.osjava.org/svn.php?project=simple-jndi">svn-usage</a> page and Maven can be obtained from <a href="http://maven.apache.org/">maven.apache.org</a>. </p>
     </section>
     <section name="Download Latest Stable">
 <ul>
