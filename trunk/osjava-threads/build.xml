@@ -45,28 +45,78 @@
          basedir =".">
 
     <!-- Global Properties -->
-    <property name        ="srcDir"
-              location    ="src/java"/>
-    <property name        ="buildDir"
-              location    ="build"/>
-    <property name        ="distDir"
-              location    ="dist"/>
+    <!-- homeDir is very developer specific. It is mostly used to determine 
+         where the utilized jar repository is for the jarDir property below. -->
+    <property name      ="homeDir"
+              location  ="/Users/rzigweid"/>
+    <property name      ="srcDir"
+              location  ="src/java"/>
+    <property name      ="buildDir"
+              location  ="build"/>
+    <property name      ="distDir"
+              location  ="dist"/>
+    <!-- Where the jar repository can be found.  For local development purposes
+         only -->
+    <property name      ="jarDir"
+              location  ="${homeDir}/jars"/>
+    <!-- Currently the HEAD of simple-jndi is a dependancy.  This can be 
+         removed when a released version is adequate. -->
+    <property name     ="simple-jndiDir"
+              location ="../simple-jndi/bin"/>
 
     <!-- Targets -->
-    <target name="init">
+    <target name="init"
+            description ="Initialize the build process.">
         <!-- Create the time stamp -->
         <tstamp/>
         <!-- Create the build directory structure used by compile -->
         <mkdir dir="${buildDir}"/>
     </target>
 
-   <target name         ="build"
-           description  ="Compile all of the java files"
-           depends      ="init">
+    <target name         ="build"
+            description  ="Compile all of the java files"
+            depends      ="init">
         <javac srcdir ="${srcDir}"
                destdir="${buildDir}">
             <!-- Currently the project depends upon the HEAD of Simple JNDI -->
-            <classpath path="${classpath}:../simple-jndi/src/java"/>
+            <classpath>
+                <pathelement path="${simple-jndiDir}"/>
+            </classpath>
         </javac>
-   </target>     
+    </target>     
+
+    <target name            ="checkstyle"
+            description     ="Check the code against the OSJava style"
+            depends         ="init">
+        <!-- Properties needed by Hen's checkstyle configuration.
+             How annoying -->
+        <property name      ="checkstyle.cache.file"
+                  location  ="${buildDir}/checkstyle.cache"/>
+        <property name      ="checkstyle.header.file"
+                  location  ="LICENSE.txt"/>
+        <checkstyle config          ="../hen_checkstyle.xml"
+                    failOnViolation ="">
+            <fileset dir    ="${srcDir}">
+                <include name="**/*.java"/> 
+            </fileset>
+            <formatter type     ="xml"
+                       toFile   ="checkstyle-report.xml"/>
+            <formatter type     ="plain"
+                       toFile   ="checkstyle-report.txt"/>
+        </checkstyle>
+    </target>
+
+<!-- Additional task definitions.   Need to find a way to make this global -->
+    <taskdef resource="checkstyletask.properties">
+        <!-- I should probably make symlinks to the specific versions of these
+             files so that I don't ever have to change this - Robert -->
+        <classpath>
+            <pathelement location="${jarDir}/checkstyle-3.4.jar"/>
+            <pathelement location="${jarDir}/antlr-2.7.2.jar"/>
+            <pathelement location="${jarDir}/regexp-1.3.jar"/>
+            <pathelement location="${jarDir}/commons-beanutils-1.6.1.jar"/>
+            <pathelement location="${jarDir}/commons-collections-2.1.jar"/>
+            <pathelement location="${jarDir}/commons-logging-1.0.3.jar"/>
+        </classpath>
+    </taskdef>
 </project>
