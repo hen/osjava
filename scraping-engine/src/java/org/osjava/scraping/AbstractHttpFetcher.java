@@ -52,6 +52,7 @@ public abstract class AbstractHttpFetcher implements Fetcher {
         try {
             URL url = new URL(uri);
 
+// TODO: Handle true/false here, rather than just 'has'
             if(!cfg.has("norobots.override")) {
                 if(checkIllegal(url)) {
                     throw new FetchingException("Not allowed to fetch url: "+uri+" due to the NoRobots RFQ. ");
@@ -82,8 +83,9 @@ public abstract class AbstractHttpFetcher implements Fetcher {
             String type = "unknown";
             if(hdr != null) {
                 type = hdr.toExternalForm();
-                if(!type.startsWith("Content-Type: text") && !type.startsWith("Content-Type: plain")) {
-                    throw new FetchingException("Not going to fetch a non-text file");
+                type = type.toLowerCase();
+                if(!type.startsWith("content-type: text") && !type.startsWith("content-type: plain")) {
+                    throw new FetchingException("Not going to fetch a non-text file. Type is: "+type);
                 }
             }
 
