@@ -19,11 +19,6 @@
       <url>http://jakarta.apache.org/commons/lang.html</url>
     </dependency>
     <dependency>
-      <id>commons-cli</id>
-      <version>1.0</version>
-      <url>http://jakarta.apache.org/commons/cli/</url>
-    </dependency>
-    <dependency>
       <id>commons-collections</id>
       <version>2.1</version>
       <url>http://jakarta.apache.org/commons/collections.html</url>
