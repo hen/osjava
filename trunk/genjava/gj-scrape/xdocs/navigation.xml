@@ -6,8 +6,8 @@
   <body>
     <menu name="gj-scrape">
       <item name="News"       href="/News.html"/>
-      <item name="Download"   href="http://www.osjava.org/releases/official/genjava/gj-scrape/"/>
-      <item name="Jar"        href="http://www.osjava.org/maven/genjava/jars/"/>
+      <item name="Download"   href="http://dist.osjava.org/releases/official/genjava/gj-scrape/"/>
+      <item name="Jar"        href="http://dist.osjava.org/maven/genjava/jars/"/>
       <item name="Changes"              href="/changes-report.html"/>
       <item name="License"              href="/license.html"/>
     </menu>
