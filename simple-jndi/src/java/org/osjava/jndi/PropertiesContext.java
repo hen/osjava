@@ -144,7 +144,7 @@ public class PropertiesContext implements Context  {
             if(key.startsWith(this.separator)) {
                 key = key.substring(1);
             }
-            System.err.println("KEY: "+key);
+//            System.err.println("KEY: "+key);
             URL url = this.getClass().getClassLoader().getResource(key);
             return url;
         } else
@@ -270,15 +270,15 @@ public class PropertiesContext implements Context  {
             String element = elements[i];
 
             Object file = getElement(path+this.separator+element);
-            System.err.println("Into directory? "+file);
+//            System.err.println("Into directory? "+file);
             if( (file != null) && isDirectory(file) ) { 
-                System.err.println("Was directory. ");
+//                System.err.println("Was directory. ");
                 path = path+this.separator+element;
                 continue;
             }
 
             file = getElement(path+this.separator+element+".properties");
-            System.err.println("Into file? "+file);
+//            System.err.println("Into file? "+file);
             if(file != null) {
                 properties = loadProperties(file);
 
@@ -299,7 +299,7 @@ public class PropertiesContext implements Context  {
                 if(list.size() > 0) {
                     remaining = StringUtils.join(list.iterator(), this.delimiter);
                 }
-                System.err.println("Rem: "+remaining);
+//                System.err.println("Rem: "+remaining);
                 break;  // TODO: Is this right?
             }
         }
