@@ -23,7 +23,9 @@ public class JavadocMultidocGenerator implements MultidocGenerator {
 
     // move to Velocity or something
     public void writeProjectFrame(Writer writer, DocumentSite site, Document document) throws IOException {
-        writer.write("<html><head><LINK REL ='stylesheet' TYPE='text/css' HREF='stylesheet.css' TITLE='Style'></head><body>\n");
+        writer.write("<html><head><LINK REL ='stylesheet' TYPE='text/css' HREF='");
+        writer.write(site.getStylesheet());
+        writer.write("' TITLE='Style'></head><body>\n");
 //        writer.write("<table width='100%'><tr><td class='NavBarCell1'><a href='overview-summary.html' target='classFrame'><FONT CLASS='NavBarFont1'><b>Overview</b></FONT></a>\n");
 //        writer.write("<a href=''><FONT CLASS='NavBarFont1'><b>Index</a></b></FONT></a>\n");
 //        writer.write("<a href='help-doc.html' target='classFrame'><FONT CLASS='NavBarFont1'><b>Help</b></FONT></a></td></tr></table>\n");
@@ -58,7 +60,9 @@ public class JavadocMultidocGenerator implements MultidocGenerator {
 
     public void writePackagesFrame(Writer writer, DocumentSite site, Document document) throws IOException {
         writer.write("<HTML><HEAD><TITLE>MetaOverview (Jakarta)</TITLE>\n");
-        writer.write("<LINK REL ='stylesheet' TYPE='text/css' HREF='stylesheet.css' TITLE='Style'>\n");
+        writer.write("<LINK REL ='stylesheet' TYPE='text/css' HREF='");
+        writer.write(site.getStylesheet());
+        writer.write("' TITLE='Style'>\n");
         writer.write("</HEAD>\n");
         writer.write("<BODY BGCOLOR='white'>\n");
 //        writer.write("<FONT CLASS='FrameItemFont'><A HREF='allclasses-frame.html' target='packageFrame'>All Classes</A></FONT>\n");
@@ -89,7 +93,9 @@ public class JavadocMultidocGenerator implements MultidocGenerator {
 
     public void writeOverviewFrame(Writer writer, DocumentSite site, Document document) throws IOException {
         writer.write("<HTML><HEAD><TITLE>Overview (Multidoc)</TITLE>\n");
-        writer.write("<LINK REL ='stylesheet' TYPE='text/css' HREF='stylesheet.css' TITLE='Style'>\n");
+        writer.write("<LINK REL ='stylesheet' TYPE='text/css' HREF='");
+        writer.write(site.getStylesheet());
+        writer.write("' TITLE='Style'>\n");
         writer.write("<SCRIPT type='text/javascript'>\n");
         writer.write("function windowTitle() {\n");
         writer.write("    parent.document.title='Overview (Multidoc)';\n");
