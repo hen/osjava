@@ -93,7 +93,11 @@ public abstract class AbstractConfig implements Config {
     }
 
     public void setContext(String context) {
-        this.context = context;
+        if("".equals(this.context)) {
+            this.context = context;
+        } else {
+            this.context = this.context + "." + context;
+        }
     }
 
     public String getContext() {
