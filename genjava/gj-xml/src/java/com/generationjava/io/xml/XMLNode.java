@@ -120,6 +120,7 @@ public class XMLNode {
         if(this.myAttrs == null) {
             this.myAttrs = new Hashtable();
         }
+        value = unescapeXml(value);
         this.myAttrs.put( name, value );
     }
     
@@ -233,12 +234,7 @@ public class XMLNode {
      * Set the plaintext contained in this node.
      */
     public void setPlaintext(String str) {
-        str = replace(str,"&amp;","&");
-        str = replace(str,"&lt;","<");
-        str = replace(str,"&gt;",">");
-        str = replace(str,"&quot;","\"");
-        str = replace(str,"&apos;","'");
-        this.value = str;
+        this.value = unescapeXml(str);
     }
 
     /**
@@ -405,6 +401,15 @@ public class XMLNode {
             }                
         }
         return tmp.toString();
+    }
+
+    private static String unescapeXml(String str) {
+        str = replace(str,"&amp;","&");
+        str = replace(str,"&lt;","<");
+        str = replace(str,"&gt;",">");
+        str = replace(str,"&quot;","\"");
+        str = replace(str,"&apos;","'");
+        return str;
     }
 
     // from Commons.Lang.StringUtils
