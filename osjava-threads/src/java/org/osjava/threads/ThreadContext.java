@@ -49,6 +49,9 @@ import javax.naming.NameParser;
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 
+import org.osjava.naming.ContextBindings;
+import org.osjava.naming.ContextNames;
+
 /**
  * A Context for managing Threads and ThreadGroups.
  * 
@@ -212,6 +215,19 @@ public class ThreadContext
      * @see javax.naming.Context#list(javax.naming.Name)
      */
     public NamingEnumeration list(Name name) throws NamingException {
+        if("".equals(name)) {
+            // here we should return a list of the directories and prop files 
+            // minus the .properties that are in the root directory
+            return new ContextNames((Map)contextStore.clone());
+        }
+
+        Object target = lookup(name);
+        if(target instanceof Context) {
+            return ((Context)target).list("");
+        }
+        throw new NotContextException(name+" cannot be listed");
+    }
+
         // TODO Auto-generated method stub
         return null;
     }
