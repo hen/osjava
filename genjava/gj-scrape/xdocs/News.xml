@@ -8,7 +8,9 @@
 
   <body>
     <section name="News">
-      <p>Version 2.0 has been released, as of 2004-06-20. </p>
+      <p>Version 2.1 has been released, as of 2004-07-06. A single, yet very important bugfix made. </p>
+      <hr />
+      <p>Version 2.0 has been released, as of 2004-06-20. A rewrite of the innards to make it simpler and faster. </p>
       <hr />
       <p>Version 1.0 has been released, as of 2003-12-08 after being refactored out of genjava-core 2.2. </p>
       <hr />
