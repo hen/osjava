@@ -87,7 +87,9 @@ public class Multidoc {
 
     public static void generateMenu(File targetDirectory, DocumentSite site) throws IOException {
         FileWriter fw = new FileWriter( new File( targetDirectory, "menu.html") );
-        fw.write("<html><head><LINK REL ='stylesheet' TYPE='text/css' HREF='stylesheet.css' TITLE='Style'>\n");
+        fw.write("<html><head><LINK REL ='stylesheet' TYPE='text/css' HREF='");
+        fw.write(site.getStylesheet());
+        fw.write("' TITLE='Style'>\n");
         fw.write("<script> function load() { for(var i=0; i < arguments.length; i+=2) { parent.frames[arguments[i]].location.href=arguments[i+1]; } } </script>\n");
         fw.write("</head><body>\n");
         fw.write("<table width='100%'><tr><td class='NavBarCell1'>\n");
@@ -103,7 +105,7 @@ public class Multidoc {
             fw.write(name);
             fw.write("/overview-summary.html','packageListFrame','");
             fw.write(name);
-            fw.write("/overview-frame.html')\"><FONT CLASS=\"NavBarFont1\"><b>");
+            fw.write("/overview-frame.html','packageFrame','blank.html')\"><FONT CLASS=\"NavBarFont1\"><b>");
             fw.write(name);
             fw.write("</b></FONT></a> - \n");
         }
