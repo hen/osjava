@@ -56,12 +56,6 @@
 
   
   <dependencies>
-<!--
-    <dependency>
-      <id>jdbc</id>
-      <version>2.0</version>
-    </dependency>
--->
     <dependency>
       <id>log4j</id>
       <version>1.2.7</version>
@@ -94,7 +88,7 @@
     </dependency>
     <dependency>
       <id>simple-jndi</id>
-      <version>0.5</version>
+      <version>0.7</version>
       <url>http://www.generationjava.com/</url>
     </dependency>
     <dependency>
