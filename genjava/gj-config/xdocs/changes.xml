@@ -7,7 +7,9 @@
   </properties>
 
   <body>
-    <release version="1.0" date="2004-02-0?">
+    <release version="1.0" date="2004-02-07">
+        <action dev="hen" type="add">JNDI configuration implementation as used in Scraping-Engine with simple-jndi</action>
+        <action dev="hen" type="add">Memory/Map configuration implementation</action>
     </release>
 </body>
 </document>
