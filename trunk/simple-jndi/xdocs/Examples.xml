@@ -51,7 +51,7 @@ version=v3.4
 </dd>
 <dt>application1/ds.properties</dt>
 <dd>
-org.osjava.jndi.datasource=true<br />
+TestDS.type=javax.sql.DataSource<br />
 TestDS.driver=org.gjt.mm.mysql.Driver<br />
 TestDS.url=jdbc:mysql://localhost/testdb<br />
 TestDS.user=testuser<br />
@@ -60,7 +60,11 @@ TestDS.password=testing
 <dt>application1/users.properties</dt>
 <dd>
 admin=fred<br />
-customer=jim
+customer=jim<br />
+quantity=5<br />
+quantity.type=java.lang.Integer<br />
+enabled=true<br />
+enabled.type=java.lang.Boolean
 </dd>
 </dl>
 The following pieces of Java are all legal ways in which to get values from Simple-JNDI. They assume they are preceded with a line of 'InitialContext ctxt = new InitialContext();'.
@@ -72,8 +76,10 @@ The following pieces of Java are all legal ways in which to get values from Simp
 <li>Object value = ctxt.lookup("application1.name")</li>
 <li>Object value = ctxt.lookup("application1.TestDS")</li>
 <li>Object value = ctxt.lookup("application1.users.admin")</li>
+<li>Object value = ctxt.lookup("application1.users.quantity")</li>
+<li>Object value = ctxt.lookup("application1.users.enabled")</li>
 </ul>
-Note that the ProductionDS and TestDS return types are objects of type javax.sql.DataSource.
+Note that the ProductionDS and TestDS return types are objects of type javax.sql.DataSource, while application1.users.quantity is an Integer and application1.users.enabled is Boolean.TRUE.
 </p>
 </section>
 </body>
