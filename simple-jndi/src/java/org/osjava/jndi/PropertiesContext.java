@@ -543,6 +543,7 @@ if(DEBUG)            System.err.println("[CTXT]Name: '"+name+"'");
             }
 if(DEBUG)            System.err.println("[CTXT]DataSource name: "+dsn);
             if(dsn.equals(dsName)) {
+if(DEBUG)            System.err.println("[CTXT]Blanking datasource name. ");
                 dsn = "";
             }
 
