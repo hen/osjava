@@ -39,6 +39,13 @@ while(pms.hasMoreElements()) {
 <%
     Param[] params = report.getParams();
     for(int i=0; i<params.length; i++) {
+        Object value = params[i].getDefault();
+        if(value == null) {
+            value = "";
+        } else {
+            value = value.toString();
+        }
+
         Choice[] choices = report.getParamChoices(params[i]);
         if(choices == null) {
             if(java.util.Date.class.isAssignableFrom(params[i].getType())) {
@@ -51,7 +58,7 @@ while(pms.hasMoreElements()) {
 <script type="text/javascript" src="jscalendar/calendar-setup.js"></script>
 <!-- End of Calendar widget header -->
   <!-- Calendar widget -->
-  <tr><td><label for="<%= params[i].getName() %>"><%= params[i].getLabel() %></label></td><td><input type="text" id="<%= params[i].getName() %>" name="<%= params[i].getName() %>" />
+  <tr><td><label for="<%= params[i].getName() %>"><%= params[i].getLabel() %></label></td><td><input type="text" id="<%= params[i].getName() %>" name="<%= params[i].getName() %>" value="<%= value %>"/>
   <!-- TODO: Make this either button or input-button so it can be on the tab order -->
   <img src="jscalendar/img.gif" id="trigger_<%= params[i].getName() %>" style="cursor: pointer; border: 1px solid red;" title="Date selector"
       onmouseover="this.style.background='red';" onmouseout="this.style.background=''" /><br>
@@ -69,7 +76,7 @@ while(pms.hasMoreElements()) {
 <%
             } else {
 %>
-    <tr><td><label for="<%= params[i].getName() %>"><%= params[i].getLabel() %></label></td><td><input type="text" name="<%= params[i].getName() %>"></td></tr>
+    <tr><td><label for="<%= params[i].getName() %>"><%= params[i].getLabel() %></label></td><td><input type="text" name="<%= params[i].getName() %>" value="<%= value %>"></td></tr>
 <%
             }
         } else {
@@ -77,8 +84,12 @@ while(pms.hasMoreElements()) {
     <tr><td><label for="<%= params[i].getName() %>"><%= params[i].getLabel() %></label></td><td><select name="<%= params[i].getName() %>">
 <%
           for(int j=0; j<choices.length; j++) {
+              String selected = "";
+              if(value.equals(choices[j].getValue())) {
+                  selected = " selected=\"selected\"";
+              }
 %>
-              <option value="<%= choices[j].getValue() %>"><%= choices[j].getLabel() %></option>
+              <option value="<%= choices[j].getValue() %>"<%= selected %>><%= choices[j].getLabel() %></option>
 <%
           }
 %>
