@@ -25,7 +25,7 @@
 
   <url>http://www.osjava.org/jpe/</url>
   <issueTrackingUrl>http://www.osjava.org:8080/jira/secure/BrowseProject.jspa?id=xxxxx</issueTrackingUrl>
-  <siteAddress>www.osjava.org/maven/jpe</siteAddress>
+  <siteAddress>dist.osjava.org/maven/jpe</siteAddress>
   <siteDirectory>/sites/org/osjava/www/releases/official/jpe/</siteDirectory>
   <distributionDirectory>/sites/org/osjava/www/releases/official/jpe/</distributionDirectory>
 
