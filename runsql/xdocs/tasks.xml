@@ -1,9 +1,0 @@
-various ideas for runsql:
-
-
-echo foo | runsql  [DONE]
-meta-runsql. find out meta information on parts of the system. tables, schemas 
-etc. 
-csv importer/exporter
-
-improve the renderer in runsql, so it can output as SQL statements, tsv, csv etc

@@ -1,86 +1,65 @@
 package org.cyberiantiger.nio;
 
 import java.nio.channels.SelectableChannel;
+import java.nio.channels.SocketChannel;
 import java.nio.channels.SelectionKey;
 import java.io.IOException;
 
-/**
- * Abstract implementation of a ChannelHandler.  
- * 
- * @author Antony Riley
- * @version $Revision: 1.5 $
- */
 public abstract class AbstractChannelHandler implements ChannelHandler {
-    /**
-     * The Selection key used by the ChannellHandler.  This key is the one that
-     * is registered with the controlling {@link IOThread}
-     */
-    protected SelectionKey key;
-    
-    /**
-     * The IOThread which listens to the activity on the SocketChannel.
-     */
-    protected IOThread thread;
-    
-    /**
-     * The SocketChannel which wraps around the socket and passes the data
-     * back and forth
-     */
-    protected SelectableChannel chan;
 
-    /**
-     * Creates a ChannelHandler. 
-     * 
-     * @param chan the Channel object representing the socket.
-     * @param thread the controlling {@link IOThread}
-     * @throws IOException if the channel cannot be made non-blocking.
-     */
-    public AbstractChannelHandler(SelectableChannel chan,IOThread thread) 
-        throws IOException {
-        this.thread = thread;
-        this.chan = chan;
-        chan.configureBlocking(false);
+    protected SelectionKey key;
+
+    public void accept() {
     }
 
-    /**
-     * @see org.cyberiantiger.nio.ChannelHandler#accept()
-     */
-    abstract public void accept();
+    public void connect() {
+    }
 
-    /**
-     * @see org.cyberiantiger.nio.ChannelHandler#connect()
-     * @throws IOException when the connection cannot be made.
-     */
-    abstract public void connect() throws IOException;
+    public void read() {
+    }
 
-    /**
-     * @see org.cyberiantiger.nio.ChannelHandler#readFromChannel()
-     */
-    abstract public void readFromChannel();
+    public void write() {
+    }
 
-    /**
-     * @see org.cyberiantiger.nio.ChannelHandler#writeToChannel().
-     * @throws IOException if something prevents the data from being written to
-     *         the SelectableChannel
-     */
-    abstract public void writeToChannel() throws IOException;
-
-    /**
-     * @see org.cyberiantiger.nio.ChannelHandler#close()
-     * @throws IOException if something stops the channel from closing.
-     */
     public void close() throws IOException {
-        thread.deregister(this);
-        if (chan.isOpen()) {
-            chan.close();
+    }
+
+    public void register(IOThread thread) {
+        if(key != null) {
+            throw 
+                new IllegalStateException("ChannelHandler already registered");
+        }
+        SelectableChannel chan = getSelectableChannel();
+        int ops = chan.validOps();
+        // If we're already connected, we're not interested in the 
+        // connect op.
+        if(chan instanceof SocketChannel) {
+            SocketChannel sockChan = (SocketChannel) chan;
+            if(sockChan.isConnected()) {
+                ops &= ~ SelectionKey.OP_CONNECT;
+            } else {
+                ops = SelectionKey.OP_CONNECT;
+            }
+        }
+        // Feckski Offski, I hate the way *everything* throws IOException
+        // It is *NOT* an IOException if you try and register a closed 
+        // channel, it is an IllegalStateException.
+        //
+        // Fuckwits.
+        try {
+            key = thread.register(this, ops);
+        } catch (IOException ioe) {
+            throw new IllegalStateException("Underlying Channel is closed");
         }
     }
 
-    /**
-     * @see org.cyberiantiger.nio.ChannelHandler#getSelectableChannel().
-     * @return the SelectableChannel that the handler is handling.
-     */
-    public SelectableChannel getSelectableChannel() {
-        return chan;
+    public void deregister() {
+        if(key != null) {
+            key.cancel();
+            key = null;
+        }
     }
+
+    public abstract SelectableChannel getSelectableChannel();
+
 }
