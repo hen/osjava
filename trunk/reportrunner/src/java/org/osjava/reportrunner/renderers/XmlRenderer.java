@@ -15,7 +15,8 @@ public class XmlRenderer extends AbstractRenderer {
 
         boolean numbers = false;
 
-        writer.writeEntity(report.getName());
+        writer.writeEntity("report");
+        writer.writeAttribute("name", report.getName());
 
         Column[] columns = report.getColumns();
         if(columns.length == 0) {
@@ -23,7 +24,7 @@ public class XmlRenderer extends AbstractRenderer {
         }
 
         while(result.hasNextRow()) {
-            writer.writeEntity("row");
+            writer.writeEntity("data");
             Object[] row = result.nextRow();
             for(int j=0; j<row.length; j++) {
                 writer.writeAttribute( numbers?"field"+j:columns[j].getName(), row[j] );
