@@ -445,6 +445,8 @@ public class PropertiesContext implements Context  {
             throw new InvalidNameException("Properties for "+name+" not found. ");
         }
 
+//        System.err.println("DS? : "+properties.get("org.osjava.jndi.datasource"));
+
         // TODO: Rewrite this block. Not enough grokk.
         if("true".equals(properties.get("org.osjava.jndi.datasource"))) {
 //            System.err.println("Datasource!");
