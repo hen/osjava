@@ -5,11 +5,15 @@ import java.util.*;
 import com.generationjava.io.xml.*;
 import com.generationjava.lang.*;
 
+import org.apache.commons.lang.BooleanUtils;
+
 public abstract class AbstractRenderer implements Renderer {
 
     private String name;
     private String label;
     private String mimeType;
+    private String extension;
+    private boolean inline;
 
     public String getName() {
         return this.name;
@@ -33,6 +37,22 @@ public abstract class AbstractRenderer implements Renderer {
 
     public void setMimeType(String mimeType) {
         this.mimeType = mimeType;
+    }
+
+    public String getExtension() {
+        return this.extension;
+    }
+
+    public void setExtension(String extension) {
+        this.extension = extension;
+    }
+
+    public boolean isInline() {
+        return this.inline;
+    }
+
+    public void setInline(String yesno) {
+        this.inline = BooleanUtils.toBoolean(yesno);
     }
 
     public void display(Result result, Report report, OutputStream out) throws IOException {
