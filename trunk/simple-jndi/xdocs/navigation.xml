@@ -12,6 +12,7 @@
       <item name="Task list"              href="/Tasks.html"/>
       <item name="FAQ"              href="/FAQ.html"/>
       <item name="Download"              href="/Download.html"/>
+      <item name="Changes"              href="/changes.html"/>
       <item name="License"              href="/license.html"/>
     </menu>
     <menu name="Code docs">
@@ -24,6 +25,10 @@
       <item name="Dependencies"              href="/dependencies.html"/>
       <item name="Source Repository"              href="/cvs-usage.html"/>
       <item name="Issue Tracking"              href="/issue-tracking.html"/>
+    </menu>
+    <menu name="CVS reports">
+      <item name="CVS History"              href="/changelog-report.html"/>
+      <item name="CVS Statistics"              href="/statcvs/"/>
     </menu>
   </body>
 </project>
