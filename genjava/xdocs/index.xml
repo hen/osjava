@@ -14,7 +14,7 @@
         <tr><td>gj-core</td><td>3.0</td><td>The largest of the components, Core contains many things dependent on the JDK. </td></tr>
         <tr><td>gj-config</td><td>1.0</td><td>A simple configuration system, primarily for use with a JNDI implementation, such as simple-jndi. </td></tr>
         <tr><td>gj-csv</td><td>1.0</td><td>A component for reading and writing comma-separated-value files. </td></tr>
-        <tr><td>gj-find</td><td>1.0</td><td>UNIX find command in Java. </td></tr>
+        <tr><td>gj-find</td><td>0.1</td><td>UNIX find command in Java. </td></tr>
         <tr><td>gj-gui</td><td>0.1</td><td>An assortment of widgets and other GUI components.</td></tr>
         <tr><td>gj-mail</td><td>1.0</td><td>A helper for the Sun java-mail API. </td></tr>
         <tr><td>gj-scrape</td><td>1.0</td><td>Set of helpers for dealing with HTML and XML without having to parse it. </td></tr>

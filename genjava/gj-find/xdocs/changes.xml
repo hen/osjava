@@ -7,7 +7,8 @@
   </properties>
 
   <body>
-    <release version="0.1" date="2004-04-??">
+    <release version="0.1" date="2004-04-20">
+        <action dev="hen" type="add">Large rewrite of the more primitive find system that has been in genjava-core for years. </action>
     </release>
 </body>
 </document>
