@@ -128,7 +128,12 @@
     <dependency>
       <groupId>jfreechart</groupId>
       <artifactId>jfreechart</artifactId>
-      <version>0.9.20</version>
+      <version>0.9.21</version>
+    </dependency>
+    <dependency>
+      <groupId>jcommon</groupId>
+      <artifactId>jcommon</artifactId>
+      <version>0.9.6</version>
     </dependency>
   </dependencies>
   <build>
