@@ -35,12 +35,12 @@ public abstract class AbstractRenderer implements Renderer {
         this.mimeType = mimeType;
     }
 
-    public void display(Report report, OutputStream out) throws IOException {
+    public void display(Result result, Report report, OutputStream out) throws IOException {
         Writer writer = new OutputStreamWriter(out);
-        display( report, writer );
+        display( result, report, writer );
         writer.flush();
     }
 
-    public abstract void display(Report report, Writer out) throws IOException;
+    public abstract void display(Result result, Report report, Writer out) throws IOException;
 
 }

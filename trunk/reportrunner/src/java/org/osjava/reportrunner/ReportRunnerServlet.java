@@ -49,7 +49,9 @@ public class ReportRunnerServlet extends HttpServlet {
 
         // bang
         if(renderer != null && report != null) {
-            renderer.display( report, response.getOutputStream() );
+            Result result = report.execute();
+            result = new FormattingResult(result, report);
+            renderer.display( result, report, response.getOutputStream() );
         }
 
         response.getOutputStream().flush();

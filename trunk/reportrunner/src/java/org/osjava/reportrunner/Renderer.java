@@ -13,7 +13,7 @@ public interface Renderer {
     void setLabel(String label);
     String getMimeType();
     void setMimeType(String mimeType);
-    void display(Report report, OutputStream out) throws IOException;
-    void display(Report report, Writer out) throws IOException;
+    void display(Result result, Report report, OutputStream out) throws IOException;
+    void display(Result result, Report report, Writer out) throws IOException;
 
 }

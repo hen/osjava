@@ -7,16 +7,15 @@ import org.osjava.reportrunner.*;
 
 public class ExcelRenderer extends AbstractRenderer {
 
-    public void display(Report report, Writer out) throws IOException {
+    public void display(Result result, Report report, Writer out) throws IOException {
         throw new RuntimeException("This should not be used with a Writer. ");
     }
 
-    public void display(Report report, OutputStream out) throws IOException {
-        Result data = report.execute();
+    public void display(Result result, Report report, OutputStream out) throws IOException {
         ExcelWriter xls = new ExcelWriter(out);
 
-        while(data.hasNextRow()) {
-            Object[] row = data.nextRow();
+        while(result.hasNextRow()) {
+            Object[] row = result.nextRow();
             for(int j=0; j<row.length; j++) {
                 xls.writeField(""+row[j]);
             }
