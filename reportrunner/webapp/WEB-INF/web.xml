@@ -15,10 +15,27 @@
      <servlet-name>ReportRunnerServlet</servlet-name>      
      <servlet-class>org.osjava.reportrunner.ReportRunnerServlet</servlet-class>      
  </servlet>      
-     
  <servlet-mapping>   
      <servlet-name>ReportRunnerServlet</servlet-name>      
      <url-pattern>/reportrunner</url-pattern>    
+ </servlet-mapping>
+
+ <servlet>   
+     <servlet-name>ChooseReportServlet</servlet-name>      
+     <servlet-class>org.osjava.reportrunner.ChooseReportServlet</servlet-class>      
+ </servlet>      
+ <servlet-mapping>   
+     <servlet-name>ChooseReportServlet</servlet-name>      
+     <url-pattern>/choosereport</url-pattern>    
+ </servlet-mapping>
+
+ <servlet>   
+     <servlet-name>CheckParametersServlet</servlet-name>      
+     <servlet-class>org.osjava.reportrunner.CheckParametersServlet</servlet-class>      
+ </servlet>      
+ <servlet-mapping>   
+     <servlet-name>CheckParametersServlet</servlet-name>      
+     <url-pattern>/checkparameters</url-pattern>    
  </servlet-mapping>
 
 <resource-ref>

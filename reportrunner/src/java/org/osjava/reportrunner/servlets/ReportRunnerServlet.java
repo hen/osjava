@@ -1,7 +1,8 @@
-package org.osjava.reportrunner;
+package org.osjava.reportrunner.servlets;
 
 import java.io.IOException;
 import javax.servlet.http.*;
+import org.osjava.reportrunner.*;
 
 public class ReportRunnerServlet extends HttpServlet {
 
