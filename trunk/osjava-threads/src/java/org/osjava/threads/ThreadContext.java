@@ -53,12 +53,8 @@ import javax.naming.NameParser;
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 
-import org.apache.naming.NamingContext;
-/* 
- * Don't use this exception anymore.  It might be moved to directory-naming.
- * In the meantime, just use NamingException with a message.
- */
-//import org.osjava.naming.InvalidObjectTypeException;
+import org.osjava.jndi.AbstractContext;
+import org.osjava.naming.InvalidObjectTypeException;
 
 /**
  * A Context for managing Threads and ThreadGroups.
@@ -78,14 +74,55 @@ import org.apache.naming.NamingContext;
  */
 
 public class ThreadContext
-    extends NamingContext
+    extends AbstractContext
     implements Context {
 
     private boolean closing;
 
-    /****************
+    /* **************
      * Constructors *
-     ****************/
+     * **************/
+    /**
+     * Create a ThreadContext which will use the environment of the passed
+     * {@link AbstractContext}
+     *
+     * @param that the AbstractContext which will supply the environment for 
+     *        the newly created ThreadContext.
+     */
+    public ThreadContext(AbstractContext that) {
+        super(that);
+    }
+
+    /**
+     * Create a ThreadContext which will use the environment of the passed
+     * {@link AbstractContext}
+     *
+     * @param that the AbstractContext which will supply the environment for 
+     *        the newly created ThreadContext.
+     * @param name the Name of the ThreadContext.  It can be null, and if it
+     *        is considered to be the root context.
+     * @throws NamingException if a naming exception is encountered.
+     */
+    public ThreadContext(AbstractContext that, Name name) throws NamingException {
+        super(that);
+        setNameInNamespace(name);
+    }
+
+    /**
+     * Create a ThreadContext which will use the environment of the passed
+     * {@link AbstractContext}
+     *
+     * @param that the AbstractContext which will supply the environment for 
+     *        the newly created ThreadContext.
+     * @param name the String representation of the name of the ThreadContext.
+     *        It can be null, and if it is considered to be the root context.
+     * @throws NamingException if a naming exception is encountered.
+     */
+    public ThreadContext(AbstractContext that, String name) throws NamingException {
+        super(that);
+        setNameInNamespace(name);
+    }
+
     /**
      * Create a ThreadContext with a specific name.  This constructor is 
      * private and only intended to be invoked from this object.  If <code>
@@ -101,7 +138,8 @@ public class ThreadContext
          * Directory-naming uses string based names, which is fine, but 
          * it does not accept a Name for the name, which I think is wrong.
          */
-        super(env, name.toString());
+        super(env);
+        setNameInNamespace(name);
     }
 
     /**
@@ -115,7 +153,8 @@ public class ThreadContext
      * @throws NamingException if a naming exception is encountered.
      */
     public ThreadContext(Hashtable env, String name) throws NamingException {
-        this(env, nameParser.parse(name));
+        super(env);
+        setNameInNamespace(name);
     }
 
     /* ************************
@@ -181,7 +220,7 @@ public class ThreadContext
      */
     public ExtendedThread createThread(String name)
         throws NameAlreadyBoundException, NamingException, ThreadIsRunningException {
-        NameParser nameParser = getNameParser(getNameInNamespace());
+        NameParser nameParser = getNameParser((Name)null);
         return this.createThread(null, nameParser.parse(name));
     }
     
@@ -208,7 +247,7 @@ public class ThreadContext
         }
         if(name.isEmpty()) {
            /* Make up a name for the Thread based upon the context. */
-            Name newName = getNameParser(getNameInNamespace()).parse(getNameInNamespace());
+            Name newName = getNameParser((Name)null).parse(getNameInNamespace());
             newName.add(generateNextThreadName());
             ExtendedThread newThread = new ExtendedThread(target, newName.toString());
             bind(name, newThread);
@@ -243,7 +282,7 @@ public class ThreadContext
      */
     public ExtendedThread createThread(Runnable target, String name)
         throws NameAlreadyBoundException, NamingException, ThreadIsRunningException {
-        NameParser nameParser = getNameParser(getNameInNamespace());
+        NameParser nameParser = getNameParser((Name)null);
         return this.createThread(target, nameParser.parse(name));
     }
         
@@ -313,7 +352,7 @@ public class ThreadContext
      */
     public void notifyThread(String name) 
         throws NamingException, NameNotFoundException {
-        NameParser nameParser = getNameParser(getNameInNamespace());
+        NameParser nameParser = getNameParser((Name)null);
         notifyThread(nameParser.parse(name));
     }
     
@@ -381,7 +420,7 @@ public class ThreadContext
      * @throws NamingException if a naming exception is encountered.
      */
     public void start(String name) throws NameNotFoundException, NamingException {
-        NameParser nameParser = getNameParser(getNameInNamespace());
+        NameParser nameParser = getNameParser((Name)null);
         start(nameParser.parse(name));
     }
 
@@ -451,13 +490,14 @@ public class ThreadContext
      * @throws NamingException if a naming exception is encountered.
      */
     public void setAbort(String name, boolean abort) throws NameNotFoundException, NamingException {
-        NameParser nameParser = getNameParser(getNameInNamespace());
+        NameParser nameParser = getNameParser((Name)null);
         setAbort(nameParser.parse(name), abort);
     }
     
-    /* ****************************************
-     * Methods overriding PorpertiesContext.. *
-     * ****************************************/
+    
+    /* *************************************
+     * Methods overriding AbstractContext. *
+     * *************************************/
     /**
      * Bind the Object <code>obj</code> to the Name <code>name</code>.  The 
      * object must be an {@link ExtendedRunnable}.  The Name <code>name</code>
@@ -493,9 +533,10 @@ public class ThreadContext
              * This should be changed back to an InvalidObjectType exception 
              * if it gets incorporated into directory-naming.
              */
-            throw new NamingException("Objects in this context must implement " +
+            throw new InvalidObjectTypeException("Objects in this context must implement " +
                     "org.osjava.threads.ExtendedRunnable");
         }
+        super.bind(name, obj);
     }
 
     /**
@@ -508,7 +549,7 @@ public class ThreadContext
      * @see javax.naming.Context#bind(java.lang.String, java.lang.Object)
      */
     public void bind(String name, Object obj) throws NamingException {
-        NameParser nameParser = getNameParser(getNameInNamespace());
+        NameParser nameParser = getNameParser((Name)null);
         bind(nameParser.parse(name), obj);
     }
 
@@ -554,7 +595,7 @@ public class ThreadContext
      * @see javax.naming.Context#unbind(java.lang.String)
      */
     public void unbind(String name) throws NamingException {
-        NameParser nameParser = getNameParser(getNameInNamespace());
+        NameParser nameParser = getNameParser((Name)null);
         unbind(nameParser.parse(name));
     }
 
@@ -570,7 +611,7 @@ public class ThreadContext
      * @see javax.naming.Context#rebind(javax.naming.Name,java.lang.Object)
      */
     public void rebind(Name name, Object obj) throws NamingException {
-        rebind(name, obj);
+        super.rebind(name, obj);
         if(obj instanceof Thread) {
             ((Thread)obj).setName(name.toString());
         }
@@ -588,7 +629,7 @@ public class ThreadContext
      * @see javax.naming.Context#rebind(java.lang.String,java.lang.Object)
      */
     public void rebind(String name, Object obj) throws NamingException {
-        NameParser nameParser = getNameParser(getNameInNamespace());
+        NameParser nameParser = getNameParser((Name)null);
         rebind(nameParser.parse(name), obj);
     }
 
@@ -608,9 +649,7 @@ public class ThreadContext
         /* Confirm that this works.  We might have to catch the exception */
         Object old = lookup(oldName);
         super.rename(oldName, newName);
-        /* 
-         * If the object is a Thread, give it the new name.
-         */
+        /*  If the object is a Thread, give it the new name. */
         if(old instanceof Thread) {
             ((Thread)old).setName(newName.toString());
         }
@@ -627,7 +666,7 @@ public class ThreadContext
      * @see javax.naming.Context#rename(java.lang.String, java.lang.String)
      */
     public void rename(String oldName, String newName) throws NamingException {
-        NameParser nameParser = getNameParser(getNameInNamespace());
+        NameParser nameParser = getNameParser((Name)null);
         rename(nameParser.parse(oldName), nameParser.parse(newName));
     }
 
@@ -661,7 +700,7 @@ public class ThreadContext
      * @throws NamingException if a naming exception is encountered.
      */
     public void destroySubcontext(String name) throws NamingException {
-        NameParser nameParser = getNameParser(getNameInNamespace());
+        NameParser nameParser = getNameParser((Name)null);
         destroySubcontext(nameParser.parse(name));
     }
 
@@ -679,9 +718,9 @@ public class ThreadContext
      * @see javax.naming.Context#createSubcontext(javax.naming.Name)
      */
     public Context createSubcontext(Name name) throws NamingException {
-        Name contextName = getNameParser(getNameInNamespace()).parse(getNameInNamespace());
+        Name contextName = getNameParser((Name)null).parse(getNameInNamespace());
         contextName.addAll(name);
-        ThreadContext newContext = new ThreadContext(this.env, name);
+        ThreadContext newContext = new ThreadContext(this, name);
         bind(name, newContext);
         return newContext;
     }
@@ -700,7 +739,7 @@ public class ThreadContext
      * @see javax.naming.Context#createSubcontext(java.lang.String)
      */
     public Context createSubcontext(String name) throws NamingException {
-        NameParser nameParser = getNameParser(getNameInNamespace());
+        NameParser nameParser = getNameParser((Name)null);
         return createSubcontext(nameParser.parse(name));
     }
 
