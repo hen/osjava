@@ -39,10 +39,6 @@ public abstract class BasicApplication extends Frame implements WindowListener, 
     private Vector listeners;
     private Hashtable menus;
 
-    // used to signify whether the ctrl-,/ctrl-. is in effect.
-    private boolean existsBefore;
-    private boolean existsAfter;
-    
     public BasicApplication(String title) {
         super(title);
         openList = new Hashtable();
@@ -51,7 +47,7 @@ public abstract class BasicApplication extends Frame implements WindowListener, 
         this.setMenuBar(bar);
 
         registerMenuItem("File", "Open", "O");
-        registerMenuItem("File","Close","Q");
+        registerMenuItem("File","Close","W");
         createNewBlock("File",0);
         registerMenuItem("File","Exit","E");
         openMenu = (Menu)registerMenu("Opened");
@@ -60,32 +56,6 @@ public abstract class BasicApplication extends Frame implements WindowListener, 
         registerMenuItem("Help","Licence","Shift-L");
         registerMenuItem("Help","QuickHelp","Shift-H");
 
-/*
-        Menu m = new Menu( getLabel("File") );
-        m.addActionListener(this);
-        bar.add(m);
-        
-        MenuItem mi = new GJMenuItem( getLabel("Open"), new MenuShortcut('O'), "Open" );
-        m.add(mi);
-
-        mi = new GJMenuItem( getLabel("Close"), new MenuShortcut('Q'), "Close" );
-        m.add(mi);
-        
-        mi = new GJMenuItem( getLabel("Exit"), new MenuShortcut('E'), "Exit" );
-        m.add(mi);
-
-        openMenu = new Menu( getLabel("Opened") );
-        openMenu.addActionListener(this);
-        bar.add(openMenu);
-        
-        m = new Menu( getLabel("Help") );
-        m.addActionListener(this);
-        bar.setHelpMenu(m);
-        
-        mi = new GJMenuItem( getLabel("About"), new MenuShortcut('A',true), "About" );
-        m.add(mi);
-        */
-        
     }
 
     // Menu Handling Code
@@ -342,6 +312,7 @@ public abstract class BasicApplication extends Frame implements WindowListener, 
         if( openList.get(cmd) != null) {
             setCurrent( openList.get(cmd) );
             selection();
+            reset( cmd );
         } else {
             menuInvoked(cmd);
         }
@@ -368,8 +339,11 @@ public abstract class BasicApplication extends Frame implements WindowListener, 
         reset( title );
     }
     
+    // note that I need to store the open list 
+    // in an ordered map, not in a hashtable
     public void removeFromOpenList(Object obj) {
-        openList.remove( getTitle(obj) );
+        String title = getTitle(obj);
+        openList.remove( title );
 
         openMenu.removeAll();
 
@@ -378,6 +352,9 @@ public abstract class BasicApplication extends Frame implements WindowListener, 
             Object tmp = enum.nextElement();
             openMenu.add( tmp.toString() );
         }
+
+        // randomly choose an open file
+        reset( getTitle( (String) openList.keySet().iterator().next() ) );
     }
     
     private Object getFromOpenList(String name) {
@@ -390,59 +367,58 @@ public abstract class BasicApplication extends Frame implements WindowListener, 
     
     public Object popFromOpenList() {
         Enumeration enum = openList.keys();
-                if(enum.hasMoreElements()) {
-                        return openList.get( enum.nextElement() );
+        if(enum.hasMoreElements()) {
+            return openList.get( enum.nextElement() );
         } else {
             return null;
         }
-                
     }
     
-        private void reset(String filename) {
-                int menusz = openMenu.getItemCount();
-                existsBefore = false;
-                existsAfter = false;
-                for(int i=0;i<menusz;i++) {
-                        openMenu.getItem(i).deleteShortcut();
-                        openMenu.getItem(i).addActionListener(this);
-                }
-                for(int i=0;i<menusz;i++) {
-                        if(filename.equals(openMenu.getItem(i).getLabel())) {
-                                if(i != 0) {
-                                        existsBefore = true;
-                                        openMenu.getItem(i-1).setShortcut(new MenuShortcut(','));
-                                }
-                                if(i != menusz - 1) {
-                                        existsAfter = true;
-                                        openMenu.getItem(i+1).setShortcut(new MenuShortcut('.'));
-                                }
-                                break;
-                        }
-                }
+    private void reset(String title) {
+        int menusz = openMenu.getItemCount();
+        for(int i=0;i<menusz;i++) {
+            openMenu.getItem(i).deleteShortcut();
+            // THIS IS A HACK. Older JVM's will pass the 
+            // menuitem's action performed up to the Menu, 
+            // this seems to not work anymore.
+            openMenu.getItem(i).removeActionListener(this);
+            openMenu.getItem(i).addActionListener(this);
         }
-    
-        protected String getFileName(int mode) {
-                String prompt;
-
-                // depending on load or save set the prompt                
-                if (mode == FileDialog.LOAD) {
-                        prompt = "Open File ";
-                } else {
-                        prompt = "Save File As ";
+        for(int i=0;i<menusz;i++) {
+            if(title.equals(openMenu.getItem(i).getLabel())) {
+                if(i != 0) {
+                    openMenu.getItem(i-1).setShortcut(new MenuShortcut(','));
                 }
+                if(i != menusz - 1) {
+                    openMenu.getItem(i+1).setShortcut(new MenuShortcut('.'));
+                }
+                break;
+            }
+        }
+    }
+    
+    protected String getFileName(int mode) {
+        String prompt;
 
-                // create a file requester
-                FileDialog d = new FileDialog(this, prompt, mode);
+        // depending on load or save set the prompt                
+        if (mode == FileDialog.LOAD) {
+            prompt = "Open File ";
+        } else {
+            prompt = "Save File As ";
+        }
+
+        // create a file requester
+        FileDialog d = new FileDialog(this, prompt, mode);
 
         if(currentDir != null) {
-                    d.setDirectory(currentDir);
-                }
-                d.show();
+            d.setDirectory(currentDir);
+        }
+        d.show();
                 
-                currentDir = d.getDirectory();
+        currentDir = d.getDirectory();
                                 
         return d.getDirectory() + d.getFile();
-        }        
+    }        
 
     // WindowListener interface
     public void windowDeiconified(WindowEvent event) {
@@ -464,7 +440,7 @@ public abstract class BasicApplication extends Frame implements WindowListener, 
     }
 
     public void windowClosing(WindowEvent event) {
-                this.dispose();
+        this.dispose();
     }
 
 }
