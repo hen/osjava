@@ -12,7 +12,7 @@
     <book>0471213020</book>
     <book>159059228X</book>
   </category>
-  <category id="2" name="Apache Jakarta Tapestry">
+  <category id="2" name="Jakarta Tapestry">
     <book>1932394117</book>
   </category>
   <category id="3" name="Apache Ant">
@@ -22,16 +22,20 @@
     <book>0596001843</book>
     <book>0672325624</book>
   </category>
-  <category id="4" name="Apache Jakarta General">
+  <category id="13" name="Apache Log4j">
+    <book>1590590996</book>
+    <book>2970036908</book>
+  </category>
+  <category id="4" name="Jakarta General">
     <book>0471449156</book>
     <book>1590590996</book>
     <book>2970036908</book>
   </category>
-  <category id="5" name="Apache Jakarta Commons">
+  <category id="5" name="Jakarta Commons">
     <book>1590592832</book>
     <book>1584502460</book>
   </category>
-  <category id="6" name="Apache Jakarta Tomcat">
+  <category id="6" name="Jakarta Tomcat">
     <book>0764543725</book>
     <book>0596003188</book>
     <book>0764526065</book>
@@ -46,7 +50,7 @@
   <category id="8" name="XDoclet">
     <book>1932394052</book>
   </category>
-  <category id="9" name="General">
+  <category id="9" name="Misc">
     <book>0471463620</book>
     <book>0471444359</book>
     <book>047120708X</book>
