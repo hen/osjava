@@ -7,7 +7,7 @@ import junit.textui.TestRunner;
 
 public class XmlWTest extends TestCase {
 
-    private String testXml = "<bar thing=\"foo\">test</bar>";
+    private String testXml = "<bar thing=\"foo\" other='single'>test</bar>";
 
     public XmlWTest(String name) {
         super(name);
@@ -60,11 +60,15 @@ public class XmlWTest extends TestCase {
     }
 
     public void testGetIndexClosingTag() {
-        assertEquals( 21, XmlW.getIndexClosingTag("bar", this.testXml) );
+        assertEquals( 36, XmlW.getIndexClosingTag("bar", this.testXml) );
     }
 
     public void testGetContent() {
         assertEquals( "test", XmlW.getContent("bar", this.testXml) );
+    }
+
+    public void testSingleQuoteAttribute() {
+        assertEquals( "single", XmlW.getAttribute("other", this.testXml ) );
     }
 
 }
