@@ -35,37 +35,38 @@ destinationIp=32
 
 <p>It would then be used like this:</p>
 
-<pre>
-import code316.charlotte.Encoding;
-import code316.charlotte.EncodingUtil;
-import code316.charlotte.Parser;
-
-public class Test {
-
-    private static final Encoding TCP_ENCODING;
-    private static final String TCP_ENCODING_FILE = "encoding-definitions/tcp-encoding.enc";
-    static {
-        try {
-            Parser ep = new Parser();
-            InputStream in =
-                Test.class.getClassLoader().getResourceAsStream(TCP_ENCODING_FILE);
-
-            if ( in == null ) {
-                throw new IllegalStateException("could not load tcp encoding file: " + TCP_ENCODING_FILE);
-            }
-            TCP_ENCODING = ep.parse(in);
-        }
-        catch (IOException ioe) {
-            throw new RuntimeException("Could not create encoding", ioe);
-        }
-    }
-
-    public static TcpValue decodeTcpValue(BigInteger bits) {
-        Map valueMap = EncodingUtil.expandFields(TCP_ENCODING, bits);
-	TcpValue tcp = new TcpValue();
-	tcp.setVersion( valueMap.get("version") );
-	....
-</pre>
+<code>
+import code316.charlotte.Encoding;<br/>
+import code316.charlotte.EncodingUtil;<br/>
+import code316.charlotte.Parser;<br/>
+<br/>
+public class Test {<br/>
+<br/>
+    private static final Encoding TCP_ENCODING;<br/>
+    private static final String TCP_ENCODING_FILE = "encoding-definitions/tcp-encoding.enc";<br/>
+    static {<br/>
+        try {<br/>
+            Parser ep = new Parser();<br/>
+            InputStream in =<br/>
+                Test.class.getClassLoader().getResourceAsStream(TCP_ENCODING_FILE);<br/>
+<br/>
+            if ( in == null ) {<br/>
+                throw new IllegalStateException("could not load tcp encoding file: " + TCP_ENCODING_FILE);<br/>
+            }<br/>
+            TCP_ENCODING = ep.parse(in);<br/>
+        }<br/>
+        catch (IOException ioe) {<br/>
+            throw new RuntimeException("Could not create encoding", ioe);<br/>
+        }<br/>
+    }<br/>
+<br/>
+    public static TcpValue decodeTcpValue(BigInteger bits) {<br/>
+        // contains a Map of String to Double<br/>
+        Map valueMap = EncodingUtil.expandFields(TCP_ENCODING, bits);<br/>
+        TcpValue tcp = new TcpValue();<br/>
+        tcp.setVersion( valueMap.get("version") );<br/>
+        ....<br/>
+</code>
 
 </section>
 </body>
