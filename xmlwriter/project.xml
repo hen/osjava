@@ -32,7 +32,7 @@
 
   <repository>
     <connection>scm:cvs:pserver:anonymous@cvs.osjava.org:/var/cvs:xmlwriter</connection>
-    <url>http://www.osjava.org/view-cvs/viewcvs.cgi/xmlwriter/</url>
+    <url>http://svn.osjava.org/cgi-bin/viewcvs.cgi/trunk/xmlwriter/</url>
   </repository>
 
 
