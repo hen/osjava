@@ -80,13 +80,13 @@ final public class XmlW {
         return buffer.toString();
     }
 
-    static public String getContent(String tag, String text) {
-        int idx = XmlW.getIndexOpeningTag(tag, text);
+    static public String getContent(String text, String tag) {
+        int idx = XmlW.getIndexOpeningTag(text, tag);
         if(idx == -1) {
             return "";
         }
         text = text.substring(idx);
-        int end = XmlW.getIndexClosingTag(tag, text);
+        int end = XmlW.getIndexClosingTag(text, tag);
         idx = text.indexOf('>');
         if(idx == -1) {
             return "";
@@ -94,10 +94,10 @@ final public class XmlW {
         return text.substring(idx+1, end);
     }
 
-    static public int getIndexOpeningTag(String tag, String text) {
-        return getIndexOpeningTag(tag, text, 0);
+    static public int getIndexOpeningTag(String text, String tag) {
+        return getIndexOpeningTag(text, tag, 0);
     }
-    static private int getIndexOpeningTag(String tag, String text, int start) {
+    static private int getIndexOpeningTag(String text, String tag, int start) {
         // consider whitespace?
         int idx = text.indexOf("<"+tag, start);
         if(idx == -1) {
@@ -114,10 +114,10 @@ final public class XmlW {
     // Pass in "para" and a string that starts with 
     // <para> and it will return the index of the matching </para>
     // It assumes well-formed xml. Or well enough.
-    static public int getIndexClosingTag(String tag, String text) {
-        return getIndexClosingTag(tag, text, 0);
+    static public int getIndexClosingTag(String text, String tag) {
+        return getIndexClosingTag(text, tag, 0);
     }
-    static public int getIndexClosingTag(String tag, String text, int start) {
+    static public int getIndexClosingTag(String text, String tag, int start) {
         String open = "<"+tag;
         String close = "</"+tag+">";
         int closeSz = close.length();
@@ -141,11 +141,33 @@ final public class XmlW {
         return nextCloseIdx;
     }
 
-    static public String getAttr(String text, String attribute) {
-        return getAttribute(attribute, text);
+    static public String getAttribute(String text, String attribute) {
+        return getAttribute(text, attribute, 0);
     }
-    static public String getAttr(String text, String attribute, int idx) {
-        return getAttribute(attribute, text, idx);
+    static public String getAttribute(String text, String attribute, int idx) {
+        int close = text.indexOf(">", idx);
+        int doubleAttrIdx = text.indexOf(attribute+"=\"", idx);
+        int singleAttrIdx = text.indexOf(attribute+"='", idx);
+
+        int attrIdx = doubleAttrIdx;
+        String endQuote = "\"";
+        if(doubleAttrIdx == -1 || (singleAttrIdx != -1 && singleAttrIdx < doubleAttrIdx) ) {
+            attrIdx = singleAttrIdx;
+            endQuote = "'";
+        }
+
+        if(attrIdx == -1) {
+            return null;
+        }
+        if(attrIdx > close) {
+            return null;
+        }
+        int attrStartIdx = attrIdx + attribute.length() + 2;
+        int attrCloseIdx = text.indexOf(endQuote, attrStartIdx);
+        if(attrCloseIdx > close) {
+            return null;
+        }
+        return unescapeXml(text.substring(attrStartIdx, attrCloseIdx));
     }
 
 }

@@ -45,30 +45,24 @@ public class XmlWTest extends TestCase {
         assertEquals( "", XmlW.removeXml("") );
     }
 
-    public void testGetAttr() {
-        assertEquals( "foo", XmlW.getAttr( this.testXml, "thing") );
-    }
-    /**
-     * @deprecated
-     */
     public void testGetAttribute() {
-        assertEquals( "foo", XmlW.getAttribute("thing", this.testXml ) );
+        assertEquals( "foo", XmlW.getAttribute( this.testXml, "thing" ) );
     }
 
     public void testGetIndexOpeningTag() {
-        assertEquals( 0, XmlW.getIndexOpeningTag("bar", this.testXml) );
+        assertEquals( 0, XmlW.getIndexOpeningTag(this.testXml, "bar") );
     }
 
     public void testGetIndexClosingTag() {
-        assertEquals( 36, XmlW.getIndexClosingTag("bar", this.testXml) );
+        assertEquals( 36, XmlW.getIndexClosingTag(this.testXml, "bar") );
     }
 
     public void testGetContent() {
-        assertEquals( "test", XmlW.getContent("bar", this.testXml) );
+        assertEquals( "test", XmlW.getContent(this.testXml, "bar") );
     }
 
     public void testSingleQuoteAttribute() {
-        assertEquals( "single", XmlW.getAttribute("other", this.testXml ) );
+        assertEquals( "single", XmlW.getAttribute(this.testXml, "other" ) );
     }
 
 }

@@ -143,10 +143,10 @@ public class HtmlW {
     //-------------------------------------------------------------
     // Variants of the XmlW methods that work on case-insensitivity
     //-------------------------------------------------------------
-    static public int getIndexOpeningTag(String text, String text) {
+    static public int getIndexOpeningTag(String text, String tag) {
         return XmlW.getIndexOpeningTag(text.toLowerCase(), tag.toLowerCase() );
     }
-    static public int getIndexClosingTag(String text, String text) {
+    static public int getIndexClosingTag(String text, String tag) {
         return XmlW.getIndexClosingTag(text.toLowerCase(), tag.toLowerCase() );
     }
 
