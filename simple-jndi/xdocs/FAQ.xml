@@ -12,12 +12,12 @@
 <dt>I get "javax.naming.NoInitialContextException: Need to specify class name in environment or system property, or as an applet parameter, or in an application resource file:  java.naming.factory.initial".</dt>
 <dd>You do not have a jndi.properties file in your classpath, or your jndi.properties lacks a java.naming.factory.initial property.</dd>
 <dt>I get a ClassCastException with java.util.Properties.</dt>
-<dd>Most likely you are trying to get a DataSource but you have forgotten to include com.generationjava.jndi.datasource=true.</dd>
+<dd>Most likely you are trying to get a DataSource but you have forgotten to include org.osjava.jndi.datasource=true.</dd>
 <dt>I get an SQLException of 'No suitable driver'.</dt>
 <dd>Your driver's jar is not in the classpath.</dd>
 <dt>I get InvalidNameException of [key] not found.</dt>
-<dd>You have not specified the com.generationjava.jndi.root correctly in your jndi.properties.</dd>
-<dt>ClassNotFoundException: com.generationjava.jndi.PropertiesFactory.</dt>
+<dd>You have not specified the org.osjava.jndi.root correctly in your jndi.properties.</dd>
+<dt>ClassNotFoundException: org.osjava.jndi.PropertiesFactory.</dt>
 <dd>You don't have the simple-jndi jar in the classpath.</dd>
 </dl>
 

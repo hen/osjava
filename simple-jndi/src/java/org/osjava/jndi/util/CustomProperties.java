@@ -1,5 +1,5 @@
 /// TODO: Refactor this out
-package com.generationjava.jndi.util;
+package org.osjava.jndi.util;
 
 import java.io.*;
 import java.util.*;

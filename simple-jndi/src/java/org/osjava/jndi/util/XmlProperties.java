@@ -1,5 +1,5 @@
 // XmlProperties.java
-package com.generationjava.jndi.util;
+package org.osjava.jndi.util;
 
 import java.io.IOException;
 import java.io.OutputStream;

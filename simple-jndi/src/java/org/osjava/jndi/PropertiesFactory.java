@@ -30,7 +30,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package com.generationjava.jndi;
+package org.osjava.jndi;
 
 import javax.naming.spi.InitialContextFactory;
 import javax.naming.Context;
