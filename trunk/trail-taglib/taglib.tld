@@ -33,6 +33,12 @@
       <rtexprvalue>true</rtexprvalue>
       <description>The type of list to show. The default is 'normalized', while any other type specified will result in 'full'. </description>
     </attribute>
+    <attribute>
+      <name>showFinalDelimiter</name>
+      <required>false</required>
+      <rtexprvalue>true</rtexprvalue>
+      <description>Whether the trail should end with the delimiter or not. The default is to not end. A value of "true" is used to indicate it should end with the delimiter. </description>
+    </attribute>
   </tag>
   <tag>
     <name>push</name>

@@ -45,12 +45,13 @@ import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.TagSupport;
 
 // <trail:list/>
-// <trail:list type="full"/>
+// <trail:list type="full" showFinalDelimiter="true"/>
 public class ListTag extends TagSupport {
 
     private String var;
     private String delimiter = " -> ";
     private String type;
+    private String showFinalDelimiter;
 
     public ListTag() {
     }
@@ -63,6 +64,9 @@ public class ListTag extends TagSupport {
 
     public String getDelimiter() { return this.delimiter; }
     public void setDelimiter(String delimiter) { this.delimiter = delimiter; }
+
+    public String getShowFinalDelimiter() { return this.showFinalDelimiter; }
+    public void setShowFinalDelimiter(String showFinalDelimiter) { this.showFinalDelimiter = showFinalDelimiter; }
 
     public int doEndTag() throws JspException {
         BreadCrumbs breadcrumbs = JspUtils.getBreadCrumbs(pageContext);
@@ -88,6 +92,10 @@ public class ListTag extends TagSupport {
             buffer.append(this.delimiter);
         }
         String txt = buffer.toString();
+
+        if("true".equals(this.showFinalDelimiter) && txt.length() > 0) {
+            txt = txt.substring(0, txt.length() - this.delimiter.length() );
+        }
 
         if(this.var == null) {
             JspWriter writer = pageContext.getOut();
