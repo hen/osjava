@@ -230,7 +230,7 @@ public class ThreadContext
          * If no name is supplied, make up a name for the Thread based upon 
          * the context. 
          */        
-        if(name.isEmpty()) {
+        if(name == null || name.isEmpty()) {
             /* Generate a new name for the thread */
             Name newName = getNameParser((Name)null).parse(getNameInNamespace());
             String add = generateNextThreadName();
@@ -397,7 +397,7 @@ public class ThreadContext
          * If the name is empty, we don't need to look anything up.  We know 
          * that the target is this context.
          */
-        if(name.isEmpty()) {
+        if(name == null || name.isEmpty()) {
             NamingEnumeration list = listBindings(name);
             while(list.hasMore()) {
                 Binding next = (Binding)list.next();
@@ -475,7 +475,7 @@ public class ThreadContext
             return;
         }
         
-        if(name.isEmpty()) {
+        if(name == null || name.isEmpty()) {
             NamingEnumeration list = list(name);
             while(list.hasMore()) {
                 Object next = list.next();
