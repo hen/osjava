@@ -1,7 +1,7 @@
 /* 
  * org.osjava.threads.AbstractExtendedRunnable
  * 
- * $Revision: 1.1 $
+ * $Revision: 1.2 $
  * 
  * Created on Aug 01, 2002
  * 
@@ -42,7 +42,7 @@ package org.osjava.threads;
  * methods.
  *
  * @author Robert M. Zigweid
- * @version $Revision: 1.1 $ $Date: 2003/09/08 16:40:26 $
+ * @version $Revision: 1.2 $ $Date: 2003/09/14 16:02:45 $
  *
  */
 public abstract class AbstractExtendedRunnable implements ExtendedRunnable {
@@ -81,7 +81,7 @@ public abstract class AbstractExtendedRunnable implements ExtendedRunnable {
      * @return boolean value indicating whether or not the ExtendedRunnable
      *         is to cease execution.
      */
-    public boolean getAbort() {
+    public boolean isAborting() {
         return this.abort;
     }
 

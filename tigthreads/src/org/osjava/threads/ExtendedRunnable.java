@@ -1,7 +1,7 @@
 /* 
  * org.osjava.threads.ExtendedRunnable
  * 
- * $Revision: 1.1 $
+ * $Revision: 1.2 $
  * 
  * Created on Aug 01, 2002
  * 
@@ -42,7 +42,7 @@ package org.osjava.threads;
  * {@link #setAbort(boolean)} to {@link ExtendedThread}s and or their Runnables.
  * 
  * @author Robert M. Zigweid
- * @version $Revision: 1.1 $ $Date: 2003/09/08 16:40:26 $
+ * @version $Revision: 1.2 $ $Date: 2003/09/14 16:02:45 $
  */
 
 public interface ExtendedRunnable extends Runnable {
@@ -63,5 +63,5 @@ public interface ExtendedRunnable extends Runnable {
      * @return a boolean value indicating whether or not the ExtendedRunnable
      *         is to cease execution.
      */
-    boolean getAbort();
+    boolean isAborting();
 }
