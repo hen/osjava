@@ -60,7 +60,7 @@ public class XmlWriterTest extends TestCase {
     }
 
     private void writeTest2(XmlWriter xw) throws IOException {
-        xw.writeXmlVersion();
+        xw.writeXmlVersion("1.0", "UTF-8");
         xw.writeComment("Unit test");
         xw.writeEntity("unit");
         xw.writeEntity("test").writeAttribute("order","1").writeAttribute("language","english").endEntity();
@@ -69,7 +69,7 @@ public class XmlWriterTest extends TestCase {
     }
 
     private String getTest2Output() {
-        return "<?xml version=\"1.0\"?>" +
+        return "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
                "<!--Unit test-->" +
                "<unit>" +
                "<test order=\"1\" language=\"english\"/>" +
