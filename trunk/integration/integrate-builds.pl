@@ -1,99 +1,127 @@
 #!/usr/bin/perl -w
 
 use XML::Simple;
-
-usage();
+use Data::Dumper;
 
 sub usage() {
     print "Usage:\n";
     print " ./integrate-builds.pl foo-integration.xml all       -  Will build every component specified in the given xml file. \n";
     print " ./integrate-builds.pl foo-integration.xml update    -  Will build only components that have had a changed file since the last update. \n";
-    print " ./integrate-builds.pl foo-integration.xml <project> -  Will build only the component specified. \n";
+#    print " ./integrate-builds.pl foo-integration.xml <project> -  Will build only the component specified. \n";
+    exit 1;
 }
 
-#if [ "x${SCM}x" = "xx" ];
-#then
-#    export SCM=SVN
-#fi
-#
+# repository methods
+sub checkout {
+    my ($repository, $project, $tag, $directory)  = @_;
+    if($repository =~ /svn:/) {
+        if($tag) {
+            $tag = '-'.$tag;
+        } else {
+            $tag = '';
+        }
+        $repository = substr( $repository, 4 );
+        system "svn co $repository/$project-$tag $directory";
+    } 
+    elsif($repository =~ /cvs:/) {
+        if($tag) {
+            $tag = '-r '.$tag;
+        } else {
+            $tag = '';
+        }
+        $repository = substr( $repository, 3 );
+        system "cvs -qd $repository co $tag -d $directory $project";
+    } else {
+        warn "Attempt to use unknown type of repository. \n";
+    }
+}
+
+sub update {
+    my ($repository, $directory)  = @_;
+    chdir $directory;
+    if($repository =~ /svn:/) {
+        $repository = substr( $repository, 4 );
+        system "svn update";
+    } 
+    elsif($repository =~ /cvs:/) {
+        $repository = substr( $repository, 3 );
+        $update_info = `cvs -q update -dP`;
+    } else {
+        warn "Attempt to use unknown type of repository. \n";
+    }
+    chdir '..';
+    return $update_info;
+}
+# end of repository methods
+
+if(@ARGV < 2) {
+    usage();
+}
+
+my $conf_filename = $ARGV[0];
+my $action = $ARGV[1];
+
+# This is pretty ugly, need to pass CONF_FILE to XMLin somehow.
+open(CONF_FILE, $conf_filename) or die("Unable to open xml configuration: $!");
+close(CONF_FILE);
+my $conf = XMLin($conf_filename, forcearray=>1);
+#NOT YET#$global_repository = $conf->{'buildables'}->{'repository'};
+@projects = @{$conf->{'buildables'}[0]->{'buildable'}};
+
+##print Dumper($conf);
+
+my @build_list = ();
+
+# action may be 'all', 'update' or 'project-name' 
+
+# loop over each component in the xml
+foreach $buildable (@projects) {
+    $project = $buildable->{'project'};
+    $repository = $buildable->{'repository'};
+    $tag = $buildable->{'tag'};
+    if(not $tag) {
+        $directory = $project;
+    } else {
+        $directory = ${project}. '_' . $tag;
+    }
+
+    # is component there?
+    if(-e $directory) {
+        # yes: do update check. 
+        $updated = update($repository, $directory);
+
+        # if all:
+        if($action eq 'all') {
+            # put in list of ones to build - build-list
+            push @build_list, $buildable;
+        }
+        elsif($updated) {
+            # put in list of ones to build - build-list
+            push @build_list, $buildable;
+        }
+    } else {
+        # no: checkout
+        checkout($repository, $project, $tag, $directory);
+        # put in list of ones to build - build-list
+        push @build_list, $buildable;
+    }
+}
+}
+
+
+    # loop over each component in build-list
+    foreach $buildable (@build_list) {
+        # install a snapshot jar
+        # build the main jar - record build-time
+        # if failed(), add to build-report
+        # build the site - maven + ttk
+        # deploy deployables
+        # report build-time, build-date, update-reason
+        print $buildable->{'project'}."\n";
+    }
+
 #rm -f LAST_BUILD SCM_UPDATE REASON
 #buildDir=`pwd`
-#
-#if [ "x$1x" != "xx" ];
-#then
-#    if [ $1 = 'all' ];
-#    then
-#        INIT='forced'
-#        echo 'Forced build of all components. ' > REASON
-#        for i in `cat NIGHTLY.txt | grep -v '^#' | sed 's/ /::::/g'`
-#        do
-#            checkoutDir=`echo $i | awk -F '::::' '{print $2}'`
-#            repository=`echo $i | awk -F '::::' '{print $1}'`
-#            tag=`echo $i | awk -F '::::' '{print $3}'`
-#            expectedDir=$checkoutDir
-#            if [ "x${tag}x" != "xx" ];
-#            then
-#                taggedName=`echo $checkoutDir | sed 's/\//-/g'`_$tag
-#                tag="-d $taggedName -r $tag"
-#                expectedDir=$taggedName
-#            fi
-#            if [ ! -e $expectedDir ];
-#            then
-#                if [ $SCM = 'SVN' ];
-#                then
-#                    svn co "$repository$checkoutDir" $checkoutDir
-#                fi
-#                if [ $SCM = 'CVS' ];
-#                then
-#                    cvs -d $repository co $tag $checkoutDir
-#                fi
-#            fi
-#            LIST="$LIST $expectedDir"
-#        done
-#    elif [ $1 = 'update' ];
-#    then
-#        INIT='update'
-#        for i in `cat NIGHTLY.txt | grep -v '^#' | awk '{print $2 "_" $3}' | sed 's/_$//'`
-#        do
-#            if [ -d $i ];
-#            then
-#                cd $i
-#                if [ $SCM = 'SVN' ];
-#                then
-#                    UPDATES=`svn -u status | grep -v '^\?' | grep -v '^A' | grep -v '^M' | grep -v 'Status against revision' | awk '{print $3}'`
-#                fi
-#                if [ $SCM = 'CVS' ];
-#                then
-#                    UPDATES=`cvs -nq -z5 update -dP 2>/dev/null | grep -v '^\?' | grep -v '^A' | grep -v '^M' | awk '{print $2}'`
-#                fi
-#                if [ "x${UPDATES}x" != "xx" ];
-#                then
-#                    LIST="$LIST $i"
-##BUG: this does not quite work as we now put these all in the same file and they don't contain the project name
-#                    if [ $SCM = 'SVN' ];
-#                    then
-#                        esc_i=`echo $i | sed 's/\\//\\\\\//g'`
-#                        svn update | grep -v '^?' | sed "s/^/$esc_i /" >> $buildDir/SCM_UPDATE
-#                    fi
-#                    if [ $SCM = 'CVS' ];
-#                    then
-#                        esc_i=`echo $i | sed 's/\\//\\\\\//g'`
-#                        cvs -q -z5 update -dP 2>/dev/null | grep -v '^?' | sed "s/^/$esc_i /" >> $buildDir/SCM_UPDATE
-#                    fi
-#                fi
-#                cd -
-#            fi
-#        done
-#    else
-#        INIT='forced'
-## needs to handle doing the checkout if it's not there?
-#        LIST=$1   # $* ?
-#        echo 'Forcd update: Built because someone specifically chose to build it. ' > REASON
-#    fi
-#else
-#    usage
-#    exit
-#fi
 #
 #if [ ! -d report/ ]; 
 #then
