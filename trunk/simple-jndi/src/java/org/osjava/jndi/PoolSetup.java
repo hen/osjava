@@ -43,6 +43,11 @@ import org.apache.commons.dbcp.PoolingDriver;
 import org.apache.commons.dbcp.PoolableConnectionFactory;
 import org.apache.commons.dbcp.DriverManagerConnectionFactory;
 
+/**
+ * This is a wrapper for the Pooling functionality, currently provided 
+ * by Jakarta DBCP. Having the wrapper allows the dependency to be 
+ * optional. 
+ */
 public class PoolSetup {
 
     public static void setupConnection(String pool, String url, String username, String password) throws SQLException {
@@ -74,6 +79,7 @@ public class PoolSetup {
 }
 
 /*
+// this is not available in the version of DBCP being used.
 class ShutdownDbcpThread extends Thread {
     
     private String pool;
