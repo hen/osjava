@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="gj-servlet">
+
+  <title>gj-servlet</title>
+
+  <body>
+    <menu name="gj-servlet">
+      <item name="News"       href="/News.html"/>
+      <item name="Download"   href="http://www.osjava.org/releases/official/genjava/gj-servlet/"/>
+      <item name="License"              href="/license.html"/>
+    </menu>
+    <menu name="Genjava Projects">
+      <item href="../gj-beans/" name="gj-beans"/>
+      <item href="../gj-core/" name="gj-core"/>
+      <item href="../gj-csv/" name="gj-csv"/>
+      <item href="../gj-gui/" name="gj-gui"/>
+      <item href="../gj-mail/" name="gj-mail"/>
+      <item href="../gj-scrape/" name="gj-scrape"/>
+      <item href="../gj-servlet/" name="gj-servlet"/>
+      <item href="../gj-tools/" name="gj-tools"/>
+      <item href="../gj-xml/" name="gj-xml"/>
+    </menu>
+    <menu name="Code docs">
+      <item name="JavaDocs"              href="/apidocs/index.html"/>
+      <item name="Source XReference"              href="/xref/index.html"/>
+      <item name="Test XReference"              href="/xref-test/index.html"/>
+    </menu>
+    <menu name="Resources">
+      <item name="Mailing List"              href="/mail-lists.html"/>
+      <item name="Jar Dependencies"              href="/dependencies.html"/>
+      <item name="CVS Repository"              href="/cvs-usage.html"/>
+      <item name="Bug Tracking"              href="/issue-tracking.html"/>
+    </menu>
+    <menu name="CVS reports">
+      <item name="CVS History"              href="/changelog-report.html"/>
+      <item name="CVS Statistics"              href="/statcvs/"/>
+    </menu>
+    <links>
+        <item name="Genjava"                 href="../../"/>
+    </links>
+  </body>
+</project>

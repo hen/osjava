@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<project>
+  <extend>../project.xml</extend>
+  <id>gj-scrape</id>
+  <name>GenJava-Scrape</name>
+  <currentVersion>1.0</currentVersion>
+  <inceptionYear>2002</inceptionYear>
+  
+  <description>
+    Simple scraping component of GenJava-Core. 
+  </description>
+  
+  <shortDescription>Scraper APIs</shortDescription>
+
+  <dependencies>
+    <dependency>
+      <id>commons-lang</id>
+      <version>2.0</version>
+      <url>http://jakarta.apache.org/commons/lang.html</url>
+    </dependency>
+  </dependencies>
+
+</project>
+
