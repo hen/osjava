@@ -17,9 +17,7 @@ import javax.servlet.jsp.JspTagException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.TagSupport;
 
-import net.sf.hibernate.SessionFactory;
 import net.sf.hibernate.Session;
-import net.sf.hibernate.cfg.Configuration;
 import net.sf.hibernate.HibernateException;
 import net.sf.hibernate.Hibernate;
 import net.sf.hibernate.type.Type;
@@ -44,11 +42,8 @@ public class CreateTag extends TagSupport {
     public void setType(String type) { this.type = type; }
 
     public int doEndTag() throws JspException {
-        Session hSession = null;
-
         try {
-            SessionFactory hSf = new Configuration().configure().buildSessionFactory();
-            hSession = hSf.openSession();
+            Session hSession = JspUtils.getHibernateSession(pageContext);
             // construct a type
             Object bean = null;
             try {
@@ -85,14 +80,6 @@ public class CreateTag extends TagSupport {
             he.printStackTrace();
         } catch(Throwable t) {
             t.printStackTrace();
-        } finally {
-            if(hSession != null) {
-                try {
-                    hSession.close();
-                } catch(HibernateException he) {
-                    // ignore
-                }
-            }
         }
 
         return EVAL_PAGE;
