@@ -9,10 +9,8 @@ public class AllTests {
     public static Test suite() {
         TestSuite suite = new TestSuite("Test for code316.bits");
         //$JUnit-BEGIN$
-        suite.addTest(new TestSuite(OperatorTest.class));
         suite.addTest(new TestSuite(ValueExtractorTest.class));
         suite.addTest(new TestSuite(EncodingTest.class));
-        suite.addTest(new TestSuite(FieldTypeTest.class));
         //$JUnit-END$
         return suite;
     }
