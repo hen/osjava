@@ -31,12 +31,22 @@
  */
 package com.generationjava.payload;
 
-import java.util.jar.*;
+import java.util.jar.JarOutputStream;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
-import java.util.*;
+import java.util.Enumeration;
+import java.util.Properties;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileInputStream;
+import java.io.InputStream;
 
+/**
+ * Builds a self-extracting jar. 
+ */
 public class PayloadContractor {
 
 // Allow payload/ to be specified as a system property
