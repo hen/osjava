@@ -8,10 +8,10 @@
   </head>
 
   <body bgcolor="white">
-    <div id="banner"><table width="100%"><tr><td><a href="/"><img border="0" alt="[% site.label %]" src="[% site.logo %]" align="left"></a></td></tr></table></div>
+    <div id="banner"><table width="100%"><tr><td><a href="[% site.url %]"><img border="0" alt="[% site.label %]" src="[% site.logo %]" align="left"></a></td></tr></table></div>
     <div id="breadcrumbs">
       <div id="tagline">
-        [% site.label %] - [% timestamp %]
+        <a href="index.html">[% site.label %] integration</a> - [% timestamp %]
       </div>
       <div id="copyright" align="right">&copy;2004</div>
     </div>
@@ -22,16 +22,16 @@
 
    <ul class="doc_menu">
 [% FOREACH key IN reports.keys -%]
-     <li><a href='[% project.directory %]/[% key %]'>[% reports.$key %]</a></li>
+     <li><a href='[% reports.$key %]'>[% key %]</a></li>
 [% END -%]
    </ul>
 
    <hr>
 
    [% IF project.failed %]
-       <pre>' [% project.failed %] '</pre>
+       <pre>[% project.failed %]</pre>
        <hr>
-       <pre class="error_text">' [% INSERT ERROR.log %] '</pre>
+       <pre class="error_text">[% INSERT $error_log_filename %]</pre>
    [% ELSE %]
        <pre>Build successful.</pre>
    [% END %]
