@@ -43,14 +43,4 @@
       <rtexprvalue>true</rtexprvalue>
     </attribute>
   </tag>
-  <tag>
-    <name>pop</name>
-    <tagclass>org.osjava.taglib.trail.PopTag</tagclass>
-    <bodycontent>JSP</bodycontent>
-    <attribute>
-      <name>label</name>
-      <required>false</required>
-      <rtexprvalue>true</rtexprvalue>
-    </attribute>
-  </tag>
 </taglib>
