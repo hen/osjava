@@ -37,7 +37,9 @@
                 COMPAT BUSTER: Added ThreadContext to replace 
                 ExtendedThreadGroup and ThreadManager.  This is a more 
                 flexible means of handling the grouping and management of 
-                Threads.  This created a dependancy on Simple-JNDI.
+                Threads.  This created a dependancy on the 
+                Directory-naming project currently found in Apache's
+                Incubator program.
             </action>
             <action dev="rzigweid" type="remove">
                 COMPAT BUSTER: Removed ExtendedThreadGroup, ThreadManager, 
