@@ -1,11 +1,16 @@
 <%@ page import="org.osjava.reportrunner.*" %>
 <%@ page import="org.osjava.reportrunner.servlets.*" %>
 
+<%
+    String groupName = request.getParameter(ReportRunnerServlet.GROUP);
+%>
+
+<p>You have chosen the <%= groupName %> group. </p>
+
 <p>Select a report: </p>
 
 <table>
 <%
-    String groupName = request.getParameter(ReportRunnerServlet.GROUP);
     Report[] reports = ReportFactory.getReports(groupName);
     for(int i=0; i<reports.length; i++) {
 %>
