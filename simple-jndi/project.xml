@@ -76,11 +76,6 @@
       <url>http://jakarta.apache.org/commons/lang.html</url>
     </dependency>
     <dependency>
-      <id>commons-collections</id>
-      <version>2.1</version>
-      <url>http://jakarta.apache.org/commons/collections.html</url>
-    </dependency>
-    <dependency>
       <id>commons-convert</id>
       <version>0.1</version>
       <url>http://jakarta.apache.org/commons/</url>
