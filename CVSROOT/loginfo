@@ -36,3 +36,4 @@
 ^tigthreads mail -s "[TIGTHREADS] checkin of `echo %s` by `whoami`" tigran@osjava.org
 ^xmlwriter mail -s "[XMLWRITER] checkin of `echo %s` by `whoami`" bayard@generationjava.com
 
+DEFAULT mail -s "Unknown OSJava project checkin of `echo %s` by `whoami`" bayard@generationjava.com,tigran@osjava.org
