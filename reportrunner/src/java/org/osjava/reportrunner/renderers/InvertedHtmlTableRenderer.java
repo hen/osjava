@@ -41,7 +41,12 @@ public class InvertedHtmlTableRenderer extends AbstractRenderer {
         while(result.hasNextRow()) {
             Object[] row = result.nextRow();
             for(int i=0; i<row.length; i++) {
-                List tmp = (List) rows.get(i);
+                List tmp = null;
+                if(rows.size() <= i) {
+                    tmp = new ArrayList();
+                    rows.add(tmp);
+                }
+                tmp = (List) rows.get(i);
                 if(tmp == null) {
                     tmp = new ArrayList();
                     rows.add(tmp);
