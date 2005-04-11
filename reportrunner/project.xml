@@ -173,8 +173,14 @@
     <resources>
       <resource>
         <includes>
-          <include>webapp/</include>
           <include>conf/renderers.xml</include>
+        </includes>
+      </resource>
+      <resource>
+        <directory>${basedir}/src/java</directory>
+        <includes>
+          <include>**/*.vm</include>
+          <include>**/*.inc</include>
         </includes>
       </resource>
     </resources>
