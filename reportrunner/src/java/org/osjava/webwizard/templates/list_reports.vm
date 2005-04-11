@@ -4,6 +4,7 @@
 
 <div class="feedback">
 <p>You have chosen to run from the <span class="chosen-data">$group.label</span> report group. </p>
+<p>"$group.description"</p>
 </div>
 
 <div class="input">
