@@ -26,6 +26,7 @@ public class JFreeChartApplet extends JApplet {
     private JFreeChart chart;
     
     public void init() {
+        setBackground( new Color( 0xff, 0xff, 0xff ) );
         try {
             String url = getParameter("serUrl");
 
