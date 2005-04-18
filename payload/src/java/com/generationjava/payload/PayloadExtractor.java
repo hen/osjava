@@ -45,6 +45,8 @@ import java.io.FileInputStream;
 import java.io.OutputStream;
 import java.io.InputStream;
 
+import java.util.zip.*;
+
 /**
  * Extracts itself from the jar it is in, assuming it is run with java -jar.
  */
@@ -146,6 +148,7 @@ if(DEBUG) System.out.println("Default interpolation being used. ");
                 // TODO: configurable interpolation targets
                 // trusting that we're not interpolating anything 
                 // that can't fit in memory
+                boolean interpolated = false;
                 if( props != null && interpolation.interpolatable(outName)) {
                     // interpolate push
 if(DEBUG) System.out.println("Interpolating "+outName);
@@ -153,13 +156,94 @@ if(DEBUG) System.out.println("Interpolating "+outName);
                     text = interpolation.interpolate(text, props);
                     in.close();
                     in = new ByteArrayInputStream(text.getBytes());
+                    interpolated = true;
                 }
 
-                OutputStream out = new FileOutputStream( outFile );
-                IOUtils.pushBytes(in, out);
-                out.close();
-                in.close();
-                System.out.print(".");
+                boolean interpolateArchive = false;
+
+                // if an archive, then interpolate in the archive
+                // TODO: Make this configurable
+                if(props != null && interpolation.interpolatableArchive(outName)) {
+                    // first pass. See if any interpolatables
+                    // if so, then flag this for a zip-handler
+                    byte[] bytes = IOUtils.readToBytes(in);
+                    ZipInputStream zin = new ZipInputStream(new ByteArrayInputStream(bytes));
+                    ZipEntry zEntry = null;
+                    while( (zEntry = zin.getNextEntry()) != null) {
+                        if(interpolation.interpolatable(zEntry.getName())) {
+                            interpolateArchive = true;
+                            break;
+                        }
+                    }
+                    zin.close();
+                    in = new ByteArrayInputStream(bytes);
+                }
+
+                if(interpolateArchive) {
+                    FileOutputStream out = new FileOutputStream( outFile );
+                    ZipOutputStream zout = new ZipOutputStream(out);
+                    ZipInputStream zin = new ZipInputStream(in);
+                    ZipEntry zEntry = null;
+                    InputStream tmpin = null;
+                    while( (zEntry = zin.getNextEntry()) != null) {
+                        tmpin = zin;
+                        long size = zEntry.getSize();
+                        long crc = zEntry.getCrc();
+                        if(props != null && interpolation.interpolatable(zEntry.getName())) {
+if(DEBUG) System.out.println("Interpolating in archive "+outName);
+                            String text = IOUtils.readToString(zin);
+                            text = interpolation.interpolate(text, props);
+                            tmpin = new ByteArrayInputStream(text.getBytes());
+                            size = text.getBytes().length;
+                            CRC32 crc32 = new CRC32();
+                            crc32.update(text.getBytes());
+                            crc = crc32.getValue();
+                        }
+                        ZipEntry newEntry = new ZipEntry(zEntry.getName());
+                        if(zEntry.getComment() != null) {
+                            newEntry.setComment(zEntry.getComment());
+                        }
+                        if(zEntry.getExtra() != null) {
+                            newEntry.setExtra(zEntry.getExtra());
+                        }
+                        if(zEntry.getTime() != -1) {
+                            newEntry.setTime(zEntry.getTime());
+                        }
+                        if(zEntry.getMethod() != -1) {
+                            newEntry.setMethod(zEntry.getMethod());
+                            zout.setMethod(zEntry.getMethod());
+                        }
+                        if(crc != -1) {
+                            newEntry.setCrc(crc);
+                        }
+                        if(zEntry.getSize() != -1) {
+                            newEntry.setSize(size);
+                        }
+                        if(zEntry.getCompressedSize() != -1 && size == zEntry.getSize()) {
+                            newEntry.setCompressedSize(zEntry.getCompressedSize());
+                        }
+                        zout.putNextEntry(newEntry);
+
+                        IOUtils.pushBytes(tmpin, zout);
+                        zin.closeEntry();
+                        zout.closeEntry();
+                    }
+                    zout.finish();
+                    out.close();
+                    zin.close();
+                    System.out.print("#");
+                } else {
+                    OutputStream out = new FileOutputStream( outFile );
+                    IOUtils.pushBytes(in, out);
+                    out.close();
+                    in.close();
+                    if(interpolated) {
+                        System.out.print("$");
+                    } else {
+                        System.out.print(".");
+                    }
+                }
+
             }
         } catch(IOException ioe) { ioe.printStackTrace(); }
 

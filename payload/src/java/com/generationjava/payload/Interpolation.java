@@ -51,6 +51,7 @@ class Interpolation {
 
     private static final String ENDS_WITH = "org.osjava.payload.interpolate.endsWith";
     private static final String MATCHES = "org.osjava.payload.interpolate.matches";
+    private static final String ARCHIVE_ENDS_WITH = "org.osjava.payload.interpolate.archive.endsWith";
 
     public static final Interpolation DEFAULT = new Interpolation(
         "org.osjava.payload=true\n" +
@@ -62,6 +63,7 @@ class Interpolation {
 
     private List fileMatches;
     private List fileEndsWith;
+    private List archiveEndsWith;
 
     public Interpolation(String txt) {
         try {
@@ -70,12 +72,20 @@ class Interpolation {
             String line = "";
             this.fileMatches = new ArrayList();
             this.fileEndsWith = new ArrayList();
+            this.archiveEndsWith = new ArrayList();
             while( (line = rdr.readLine()) != null) {
                 if(line.startsWith(ENDS_WITH)) {
                     int idx = line.indexOf("=");
                     if(idx != -1) {
 if(PayloadExtractor.DEBUG) System.out.println("Adding endsWith rule: "+line.substring(idx+1));
                         this.fileEndsWith.add(line.substring(idx+1));
+                    }
+                } else 
+                if(line.startsWith(ARCHIVE_ENDS_WITH)) {
+                    int idx = line.indexOf("=");
+                    if(idx != -1) {
+if(PayloadExtractor.DEBUG) System.out.println("Adding archiveEndsWith rule: "+line.substring(idx+1));
+                        this.archiveEndsWith.add(line.substring(idx+1));
                     }
                 } else 
                 if(line.startsWith(MATCHES)) {
@@ -90,6 +100,17 @@ if(PayloadExtractor.DEBUG) System.out.println("Adding matches rule: "+line.subst
             // ? throw ParsingException?
             ioe.printStackTrace();
         }
+    }
+
+    public boolean interpolatableArchive(String name) {
+        Iterator itr = this.archiveEndsWith.iterator();
+        while(itr.hasNext()) {
+            String substr = (String) itr.next();
+            if(name.endsWith(substr)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public boolean interpolatable(String name) {
@@ -110,7 +131,7 @@ if(PayloadExtractor.DEBUG) System.out.println("Adding matches rule: "+line.subst
         return false;
     }
 
-    public static String interpolate(String str, Properties props) {
+    public String interpolate(String str, Properties props) {
         Iterator itr = props.keySet().iterator();
         while(itr.hasNext()) {
             String key = (String) itr.next();
