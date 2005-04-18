@@ -65,6 +65,9 @@ public class SocketChannelWriter extends Writer {
      * @see java.io.Writer#write(char[], int, int)
      */
     public void write(char[] cbuf, int off, int len) {
+        Logger logger = Logger.getLogger(getClass());
+        logger.debug("Received data in write(char[] int, int)");
+
         /* if the buffer is null the channel has been closed, and we need to 
          * do nothing */
         if(buffer == null) {
@@ -94,6 +97,7 @@ public class SocketChannelWriter extends Writer {
      */
     public void write(ByteBuffer data) {
         Logger logger = Logger.getLogger(getClass());
+        logger.debug("Received data");
         /* if the buffer is null the channel has been closed, and we need to 
          * do nothing */
         if(buffer == null) {
@@ -155,14 +159,18 @@ public class SocketChannelWriter extends Writer {
          *      here on multi-threaded implementations
          *      (which is expected).
          */
+        logger.debug("Changing interested ops");
+        parent.getThread().addInterestOp(key, SelectionKey.OP_WRITE);
         key.selector().wakeup();
-        key.interestOps( key.interestOps() | SelectionKey.OP_WRITE);
+        logger.debug("Done setting interested ops");
     }
 
     /* (non-Javadoc)
      * @see java.io.Writer#flush()
      */
     public void flush() throws IOException {
+        Logger logger = Logger.getLogger(getClass());
+        logger.debug("Flushing channel.");
         parent.writeToChannel();
     }
 

@@ -7,7 +7,9 @@ import java.nio.channels.SelectableChannel;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
@@ -16,6 +18,11 @@ public class IOThread extends Thread {
 
     private Selector mySelector;
 
+    /* Map for adding ops.  The key is the SelectionKey and the value 
+     * is the op to add.
+     */
+    private Map addOps = new HashMap();
+    
     /**
      * Field containing the boolean value which indicates whether or not the 
      * thread should abort.  This field exists for interoperability with 
@@ -58,12 +65,63 @@ public class IOThread extends Thread {
         mySelector = Selector.open();
     }
     
+   public void addInterestOp(SelectionKey key, int op) {
+       int ops = key.readyOps();
+       Logger logger = Logger.getLogger(getClass());
+       logger.debug("Starting Ops for key '" + key + "' -- ");
+       if ((ops & SelectionKey.OP_ACCEPT) != 0) {
+           logger.debug("    ACCEPTING");
+       }
+       if ((ops & SelectionKey.OP_CONNECT) != 0) {
+           logger.debug("    CONNECTING");
+       }
+       if ((ops & SelectionKey.OP_READ) != 0) {
+           logger.debug("    READ");
+       }
+       if ((ops & SelectionKey.OP_WRITE) != 0) {
+           logger.debug("    WRITE");
+       }
+       logger.debug("Op being added -- ");
+       if ((op & SelectionKey.OP_ACCEPT) != 0) {
+           logger.debug("    ACCEPTING");
+       }
+       if ((op & SelectionKey.OP_CONNECT) != 0) {
+           logger.debug("    CONNECTING");
+       }
+       if ((op & SelectionKey.OP_READ) != 0) {
+           logger.debug("    READ");
+       }
+       if ((op & SelectionKey.OP_WRITE) != 0) {
+           logger.debug("    WRITE");
+       }
+       if(!mySelector.keys().contains(key)) {
+           /* TODO: Make this throw an exception */
+           logger.debug("Unknown key.  Aborting.");
+           /* Wake up the selector anyway, just in case */
+           mySelector.wakeup();
+           return;
+       }
+       if(addOps.containsKey(key)) {
+           /* 
+            * If the key already exists in the addOps Map, bitwise OR the 
+            * value.  Unfortunately this has to be the Integer Object 
+            * rather than the primitive, so this looks worse than it 
+            * actually is.
+            */
+           addOps.put(key, new Integer(((Integer)(addOps.get(key))).intValue() | op));
+       } else {
+           addOps.put(key, new Integer(op));
+       }
+       
+       logger.debug("Waking up selector");
+       mySelector.wakeup();       
+   }
 
     /**
      * Register a ChannelHandler with this IOThread
      */
     public SelectionKey register(ChannelHandler handler, int ops) 
-    throws IOException {
+        throws IOException {
         SelectableChannel chan = handler.getSelectableChannel();
 
         if (chan.isBlocking()) {
@@ -105,12 +163,28 @@ public class IOThread extends Thread {
                         break;
                     }
                 }
+                
+                /* Look to apply ops to the keys first */
+                logger.debug("Setting interest ops");
+                Iterator it = addOps.keySet().iterator();
+                while(it.hasNext()) {
+                    SelectionKey next = (SelectionKey)it.next();
+                    logger.debug("Setting an op");
+                    int new_ops = ((Integer)addOps.get(next)).intValue();
+                    next.interestOps(next.interestOps() | new_ops);
+                    logger.debug("Done setting an op");
+                    /* Remove the key from the map. */
+                    addOps.remove(next);
+                }
+
                 try {
                     boolean cont = true;
                     while(cont) {
+                        logger.debug("Preparing to select");
                         int selected;
                         selected = mySelector.select();
-                        cont = selected == 0;
+                        cont = (selected == 0);
+                        logger.debug("Done Selecting");
                     }
                 } catch (InterruptedIOException iie) {
                     logger.debug("Breaking out of IOThread");
@@ -124,15 +198,23 @@ public class IOThread extends Thread {
                     if (key.isValid()) {
                         int ops = key.readyOps();
                         if ((ops & SelectionKey.OP_ACCEPT) != 0) {
+                            logger.debug("ACCEPTING CONNECTION");
                             handler.accept();
                         }
                         if ((ops & SelectionKey.OP_CONNECT) != 0) {
+                            logger.debug("CONNECTING");
                             handler.connect();
                         }
                         if ((ops & SelectionKey.OP_READ) != 0) {
+                            logger.debug("READING FROM CONNECTION");
                             handler.readFromChannel();
+                            /* we always want to leave the reading as 
+                             * an interested Op */
+                            logger.debug("Readding SelectionKey.OP_READ");
+                            addInterestOp(key, SelectionKey.OP_READ);
                         }
                         if ((ops & SelectionKey.OP_WRITE) != 0) {
+                            logger.debug("WRITING TO CONNECTION");
                             handler.writeToChannel();
                         }
                     }

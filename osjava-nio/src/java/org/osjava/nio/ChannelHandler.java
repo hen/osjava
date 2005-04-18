@@ -9,7 +9,7 @@ import java.io.IOException;
  * the channel makes many calls to this interface.
  * 
  * @author Antony Riley, Robert M. Zigweid
- * @version $Revision: 1.4 $ $Date$
+ * @version $Revision$ $Date$
  */
 public interface ChannelHandler {
 
@@ -69,4 +69,11 @@ public interface ChannelHandler {
      * @return The SelectionKey being used by the handler.
      */
     public SelectionKey getSelectionKey();
+    
+    /**
+     * Get the thread that the handler is registered with.
+     * @return the {@link IOThread} that the ChannelHandler is 
+     *         registered with.
+     */
+    public IOThread getThread();
 }

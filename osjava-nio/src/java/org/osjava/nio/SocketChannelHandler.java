@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
+import org.apache.log4j.Logger;
+
 public class SocketChannelHandler extends AbstractChannelHandler {
     protected SocketChannel chan;
     
@@ -55,6 +57,7 @@ public class SocketChannelHandler extends AbstractChannelHandler {
      * the queue of data to be read from this.
      */
     public void readFromChannel() {
+        System.out.println("READING from channel");
         /* Temporary buffer for transfering the data to the reader. */
         ByteBuffer readBuffer=ByteBuffer.allocate(1024);
         int i=0;
@@ -95,8 +98,6 @@ public class SocketChannelHandler extends AbstractChannelHandler {
         
         while(it.hasNext()) {
             SocketListener next = (SocketListener) it.next();
-            /* Flip the readbuffer so everything is setup for use */
-            //readBuffer.flip();
             ByteBuffer tmpBuf = ByteBuffer.allocate(readBuffer.remaining());
             /* copy the readBuffer into the new buffer and flip it */
             tmpBuf.put(readBuffer);
@@ -106,6 +107,8 @@ public class SocketChannelHandler extends AbstractChannelHandler {
     }
 
     public void writeToChannel() throws IOException {
+        Logger logger = Logger.getLogger(getClass());
+        logger.debug("SocketChannelHandler.writeToChannel");
         if(doClose == true) {
             return;
         }
