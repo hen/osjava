@@ -2,6 +2,7 @@ package org.osjava.nio;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.nio.channels.SelectionKey;
 
 public abstract class AbstractSocketChannelHandlerAcceptor 
 implements SocketChannelHandlerAcceptor
@@ -15,6 +16,8 @@ implements SocketChannelHandlerAcceptor
 
     public void acceptSocketChannelHandler(SocketChannelHandler sch) 
         throws IOException {
+        /* Register the reading op with the channel. */
+        myThread.addInterestOp(sch.getSelectionKey(), SelectionKey.OP_READ);
         if(!acceptConnection(sch.getSocket())) {
             sch.close();
         }

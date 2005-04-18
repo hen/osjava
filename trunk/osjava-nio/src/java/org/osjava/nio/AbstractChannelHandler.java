@@ -83,4 +83,8 @@ public abstract class AbstractChannelHandler implements ChannelHandler {
     public SelectableChannel getSelectableChannel() {
         return chan;
     }
+    
+    public IOThread getThread() {
+        return thread;
+    }
 }
