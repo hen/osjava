@@ -129,7 +129,9 @@ public class SocketChannelHandler extends AbstractChannelHandler {
         /* Done writing, tell the key that we're no longer interested in 
          * writing to the channel.  This is essential so that we don't endlessly
          * loop over this and do NOTHING */
-        key.interestOps(key.interestOps() & ~SelectionKey.OP_WRITE);
+        getThread().removeInterestOp(key, SelectionKey.OP_WRITE);
+//        key.interestOps(key.interestOps() & ~SelectionKey.OP_WRITE);
+        
         
         // Check to see if we have any data left to write, if so,
         // don't listen to anymore write operations because something has
@@ -153,12 +155,14 @@ public class SocketChannelHandler extends AbstractChannelHandler {
              * an IllegalStateException or something similar to that too, but
              * I'm not going to be putting that in right now.  -- Robert */
             if (chan.isConnected()) {
-                key.interestOps(chan.validOps() & ~SelectionKey.OP_CONNECT);
+                getThread().removeInterestOp(key, SelectionKey.OP_CONNECT);
+//                key.interestOps(chan.validOps() & ~SelectionKey.OP_CONNECT);
                 return;
             }
             if (chan.isConnectionPending()) {
                 if (chan.finishConnect()) {
-                    key.interestOps(chan.validOps() & ~SelectionKey.OP_CONNECT);
+                    getThread().removeInterestOp(key, SelectionKey.OP_CONNECT);                    
+//                    key.interestOps(chan.validOps() & ~SelectionKey.OP_CONNECT);
                 } else {
                     close();
                 }
