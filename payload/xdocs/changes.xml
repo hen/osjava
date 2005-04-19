@@ -7,9 +7,15 @@
   </properties>
 
   <body>
+    <release version="0.3" date="2005-04-18">
+          <action dev="hen" type="add" issue="PAY-10">Jarring on Windows puts in backslashes. Now uses slashes always. </action>
+          <action dev="hen" type="add" issue="PAY-11">Allow more than one .properties file to be passed in.</action>
+          <action dev="hen" type="add" issue="PAY-12">Interpolate zips/wars/jars etc.</action>
+    </release>
+
     <release version="0.2" date="2004-02-04">
-          <action dev="hen" type="add">Files to interpolate may now be specified.</action>
-          <action dev="hen" type="add">Directories are now recursively included.</action>
+          <action dev="hen" type="add" issue="PAY-5">Files to interpolate may now be specified.</action>
+          <action dev="hen" type="add" issue="PAY-1">Directories are now recursively included.</action>
     </release>
 
     <release version="0.1" date="2004-02-03">
