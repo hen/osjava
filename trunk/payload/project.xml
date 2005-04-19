@@ -67,27 +67,7 @@
     </developer>
 
   </developers>
-
-  <!-- Same as above. Use this to recognise important users/ideasmiths -->
-  <contributors>
-    <contributor>
-    </contributor>
-  </contributors>
   
-  <!-- One of the major parts of Maven. Record your dependencies here. 
-       Look in http://www.ibiblio.org/maven for public copies of your 
-       dependencies. There is an OSJava specific one which may 
-       need to be used, http://dist.osjava.org/maven -->
-  <!--
-  <dependencies>
-    <dependency>
-      <id>DEPENDENCY ID</id>
-      <version>VERSION</version>
-      <url>URL FOR SITE TO LINK TO</url>
-    </dependency>
-  </dependencies>
-  -->
-
   <build>
 
     <!-- This is usually a good default -->
@@ -101,14 +81,6 @@
         <include>**/*Test.java</include>
       </includes>
     </unitTest>
-
-    <!-- You might want to build properties into the jar -->
-    <!--
-    <jarResources>
-        <jarResource>include = *.properties</jarResource>
-    </jarResources>
-    -->
-
   </build>
   
   <reports>
