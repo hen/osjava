@@ -8,9 +8,11 @@
 
   <body>
     <section name="News">
-    <p>2004-02-04: Version <a href="changes-report.html#0.2">0.2</a>, of Payload released. </p>
+    <p>2005-04-18: Version <a href="changes-report.html#0.3">0.3</a>, of Payload released. Most notably a fix for MS Windows and the ability to interpolate inside archives (zip/war/jar files). </p>
 <hr />
-    <p>2004-02-03: Version <a href="changes-report.html#0.1">0.1</a>, created but not released. It lacks recursiveness and the decsion of which file to perform interpolation on needs to improve. </p>
+    <p>2004-02-04: Version <a href="changes-report.html#0.2">0.2</a>, of Payload released. Recursiveness and interpolation decision both avaiable. </p>
+<hr />
+    <p>2004-02-03: Version <a href="changes-report.html#0.1">0.1</a>, created but not released. It lacks recursiveness and the decision of which file to perform interpolation on needs to improve. </p>
 <hr />
 
 </section>
