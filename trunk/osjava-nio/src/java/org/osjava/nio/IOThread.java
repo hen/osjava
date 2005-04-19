@@ -30,6 +30,8 @@ public class IOThread extends Thread {
      */
     private volatile boolean abort=false;
 
+    private Map removeOps = new HashMap();
+
     /**
      * Create a new IOThread.
      *
@@ -111,13 +113,65 @@ public class IOThread extends Thread {
            addOps.put(key, new Integer(((Integer)(addOps.get(key))).intValue() | op));
        } else {
            addOps.put(key, new Integer(op));
+       } 
+       
+       if(removeOps.containsKey(key)) {
+           removeOps.put(key, new Integer(((Integer)(removeOps.get(key))).intValue() & ~op));
+       } 
+       logger.debug("Waking up selector");
+       mySelector.wakeup();       
+   }
+
+   public void removeInterestOp(SelectionKey key, int op) {
+       int ops = key.readyOps();
+       Logger logger = Logger.getLogger(getClass());
+       logger.debug("Removing Ops for key '" + key + "' -- ");
+       if ((ops & SelectionKey.OP_ACCEPT) != 0) {
+           logger.debug("    ACCEPTING");
+       }
+       if ((ops & SelectionKey.OP_CONNECT) != 0) {
+           logger.debug("    CONNECTING");
+       }
+       if ((ops & SelectionKey.OP_READ) != 0) {
+           logger.debug("    READ");
+       }
+       if ((ops & SelectionKey.OP_WRITE) != 0) {
+           logger.debug("    WRITE");
+       }
+       logger.debug("Op being removed -- ");
+       if ((op & SelectionKey.OP_ACCEPT) != 0) {
+           logger.debug("    ACCEPTING");
+       }
+       if ((op & SelectionKey.OP_CONNECT) != 0) {
+           logger.debug("    CONNECTING");
+       }
+       if ((op & SelectionKey.OP_READ) != 0) {
+           logger.debug("    READ");
+       }
+       if ((op & SelectionKey.OP_WRITE) != 0) {
+           logger.debug("    WRITE");
+       }
+       if(!mySelector.keys().contains(key)) {
+           /* TODO: Make this throw an exception */
+           logger.debug("Unknown key.  Aborting.");
+           /* Wake up the selector anyway, just in case */
+           mySelector.wakeup();
+           return;
+       }
+       if(addOps.containsKey(key)) {
+           addOps.put(key, new Integer(((Integer)(addOps.get(key))).intValue() & ~op));
+       } 
+       if(removeOps.containsKey(key)) {
+           removeOps.put(key, new Integer(((Integer)(removeOps.get(key))).intValue() | op));
+       } else {
+           removeOps.put(key, new Integer(ops));
        }
        
        logger.debug("Waking up selector");
        mySelector.wakeup();       
    }
 
-    /**
+   /**
      * Register a ChannelHandler with this IOThread
      */
     public SelectionKey register(ChannelHandler handler, int ops) 
@@ -177,6 +231,18 @@ public class IOThread extends Thread {
                     addOps.remove(next);
                 }
 
+                logger.debug("Removing interest ops");
+                it = removeOps.keySet().iterator();
+                while(it.hasNext()) {
+                    SelectionKey next = (SelectionKey)it.next();
+                    logger.debug("Removing an op");
+                    int new_ops = ((Integer)removeOps.get(next)).intValue();
+                    next.interestOps(next.interestOps() & ~new_ops);
+                    logger.debug("Done removing an op");
+                    /* Remove the key from the map. */
+                    removeOps.remove(next);
+                }
+
                 try {
                     boolean cont = true;
                     while(cont) {
@@ -210,7 +276,6 @@ public class IOThread extends Thread {
                             handler.readFromChannel();
                             /* we always want to leave the reading as 
                              * an interested Op */
-                            logger.debug("Readding SelectionKey.OP_READ");
                             addInterestOp(key, SelectionKey.OP_READ);
                         }
                         if ((ops & SelectionKey.OP_WRITE) != 0) {
