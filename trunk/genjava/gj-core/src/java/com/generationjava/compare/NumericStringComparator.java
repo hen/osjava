@@ -51,6 +51,7 @@ public class NumericStringComparator implements Comparator {
     }
 
     public int compare(Object o1, Object o2) {
+// System.out.println("Comparing: "+o1+" and "+o2);
         if(o1 == null) {
             return 1;
         } else
@@ -70,6 +71,7 @@ public class NumericStringComparator implements Comparator {
             ( !s1.substring(0,idx1).equals(s2.substring(0,idx2)) )
           )
         {
+// System.out.println("Shortcutted. ");
             return s1.compareTo(s2);
         }
 
@@ -109,17 +111,29 @@ public class NumericStringComparator implements Comparator {
             if(zero1 < zero2) {
                 ret = -1;
             }
-            if( (edx1 != -1) && (edx2 != -1) ) {
-                int comp = compare(s1.substring(edx1), s2.substring(edx2));
-                if(comp != 0) {
-                    ret = comp;
-                }
+// System.out.println("EDXs: "+edx1+" & "+edx2);
+            if(edx1 == -1) {
+                s1 = "";
+            } else {
+                s1 = s1.substring(edx1);
             }
+            if(edx2 == -1) {
+                s2 = "";
+            } else {
+                s2 = s2.substring(edx2);
+            }
+
+            int comp = compare(s1, s2);
+            if(comp != 0) {
+                ret = comp;
+            }
+// System.out.println("Dealt with rest of string: "+ret);
             return ret;
         } else {
             // if a numerical string is smaller in length than another
             // then it must be less. 
             if(sub1.length() != sub2.length()) {
+// System.out.println("Ahah, different length. ");
                 return ( sub1.length() < sub2.length() ) ? -1 : 1;
             }
         }
@@ -136,10 +150,12 @@ public class NumericStringComparator implements Comparator {
         for(int i=0; i<sz; i++) {
             // this should give better speed
             if(chr1[i] != chr2[i]) {
+// System.out.println("Length is different. ");
                 return (chr1[i] < chr2[i]) ? -1 : 1;
             }
         }
 
+// System.out.println("Default. Boo. ");
         return 0;
     }
 
