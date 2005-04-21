@@ -32,20 +32,30 @@ public class NumericStringComparatorTest extends TestCase {
     //-----------------------------------------------------------------------
 
     public void test1() {
-        compare(".0004306 - Orlando Inventory", ".4306");
+        compare(".0004306 - Orlando Inventory", ".4306", 1);
     }
 
     public void test2() {
-        compare("2a", "2");
+        compare("2a", "2", 1);
+        compare("2", "2a", -1);
     }
 
     public void test3() {
-        compare("2a", "aa2b3");
+        compare("2a", "aa2b3", -1);
     }
 
-    private void compare(String str1, String str2) {
+    public void test4() {
+        compare("Brak1A", "Brak1B", -1);
+        compare("Brak1", "Brak1B", -1);
+    }
+
+    private void compare(String str1, String str2, int expected) {
         NumericStringComparator nsc = new NumericStringComparator();
-        nsc.compare(str1, str2);
+        int cmp = nsc.compare(str1, str2);
+        if(cmp != 0) {
+            cmp = cmp / Math.abs(cmp);
+        }
+        assertTrue( str1+" and "+str2+" should compare as "+expected+" and not "+cmp, cmp == expected);
     }
 
 }
