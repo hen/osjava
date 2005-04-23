@@ -1,8 +1,40 @@
 /*
- * Created on Nov 8, 2003
+ * org.osjava.nio.SocketChannelWriter
  *
- * To change the template for this generated file go to
- * Window - Preferences - Java - Code Generation - Code and Comments
+ * $Id$
+ * $URL$
+ * $Rev$
+ * $Date$
+ * $Author$
+ *
+ * Copyright (c) 2003-2005, Anthony Riley, Robert M. Zigweid
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * + Redistributions of source code must retain the above copyright notice,
+ *   this list of conditions and the following disclaimer.
+ *
+ * + Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ *
+ * + Neither the name of the OSJava-NIO nor the names of its contributors may
+ *   be used to endorse or promote products derived from this software without
+ *   specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.osjava.nio;
 
@@ -14,19 +46,28 @@ import java.nio.ByteBuffer;
 
 import java.nio.channels.SelectionKey;
 
-import org.apache.log4j.Logger;
-
 /**
- * @author rzigweid
- *
- * To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Generation - Code and Comments
+ * Writer for use with a {@link ChannelHandler}.  This class makes 
+ * communicating over a SelectableChannel easier by not having to 
+ * interact directly with the ByteBuffers that are used for passing 
+ * information through the Channel.
+ *  
+ * @author Robert M. Zigweid
+ * @version $Rev$ $Date$
  */
 public class SocketChannelWriter extends Writer {
     private ByteBuffer buffer = ByteBuffer.allocateDirect(1024);
     
     private ChannelHandler parent = null;
     
+    /**
+     * Create a new SocketChannelWriter with a controlling 
+     * {@link ChannelHandler} <code>parent</code>.
+     * 
+     * @param parent the controlling ChannelHandler.  The ChannelHandler
+     *        has access to the ByteBuffer that is used by the
+     *        SelectableChannel.
+     */
     public SocketChannelWriter(ChannelHandler parent) {
         this.parent = parent;
         /* 
@@ -36,6 +77,14 @@ public class SocketChannelWriter extends Writer {
         buffer.limit(0);
     }
 
+    /**
+     * Return the ByteBuffer currently being used by the Writer.  There is no 
+     * guarantee that the ByteBuffer returned is going to be the one that is used
+     * later.  The ByteBuffer is periodically replaced as more space for it is 
+     * needed.
+     * 
+     * @return the ByteBuffer currently being used by the Writer
+     */
     public ByteBuffer readByteBuffer() {
         /* If there isn't a valid buffer, then we need to abort. */
         /* NOTE: I'm not sure that i like this not throwing an IO exception 
@@ -61,20 +110,21 @@ public class SocketChannelWriter extends Writer {
     }
     
     /**
-     * Write data to the ByteBuffer that is 
+     * Write data to underlying ByteBuffer. 
+     * 
      * @see java.io.Writer#write(char[], int, int)
      */
     public void write(char[] cbuf, int off, int len) {
-        Logger logger = Logger.getLogger(getClass());
-        logger.debug("Received data in write(char[] int, int)");
-
-        /* if the buffer is null the channel has been closed, and we need to 
-         * do nothing */
+        /* 
+         * If the buffer is null the channel has been closed, and we need to 
+         * do nothing 
+         */
         if(buffer == null) {
             return;
         }
         
-        /* Create a new indirect ByteBuffer which will be appended to the 
+        /* 
+         * Create a new indirect ByteBuffer which will be appended to the 
          * SocketChannel's writeBuffer 
          */
         ByteBuffer newBuf = ByteBuffer.allocate((len - off) * 2);
@@ -96,10 +146,10 @@ public class SocketChannelWriter extends Writer {
      *        the writer.
      */
     public void write(ByteBuffer data) {
-        Logger logger = Logger.getLogger(getClass());
-        logger.debug("Received data");
-        /* if the buffer is null the channel has been closed, and we need to 
-         * do nothing */
+        /* 
+         * If the buffer is null the channel has been closed, and we need to 
+         * do nothing 
+         */
         if(buffer == null) {
             return;
         }
@@ -159,18 +209,14 @@ public class SocketChannelWriter extends Writer {
          *      here on multi-threaded implementations
          *      (which is expected).
          */
-        logger.debug("Changing interested ops");
         parent.getThread().addInterestOp(key, SelectionKey.OP_WRITE);
         key.selector().wakeup();
-        logger.debug("Done setting interested ops");
     }
 
-    /* (non-Javadoc)
+    /**
      * @see java.io.Writer#flush()
      */
     public void flush() throws IOException {
-        Logger logger = Logger.getLogger(getClass());
-        logger.debug("Flushing channel.");
         parent.writeToChannel();
     }
 
