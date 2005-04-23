@@ -4,7 +4,7 @@
  * To change the template for this generated file go to
  * Window - Preferences - Java - Code Generation - Code and Comments
  */
-package org.osjava.nio.example;
+package org.osjava.nio.examples;
 
 import java.io.BufferedWriter;
 import java.io.IOException;

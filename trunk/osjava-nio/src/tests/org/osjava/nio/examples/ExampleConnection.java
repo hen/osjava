@@ -1,4 +1,4 @@
-package org.osjava.nio.example;
+package org.osjava.nio.examples;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
