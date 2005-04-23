@@ -38,7 +38,6 @@
  */
 package org.osjava.nio;
 
-
 import java.io.IOException;
 
 import java.net.InetSocketAddress;
@@ -56,7 +55,6 @@ import java.nio.channels.SocketChannel;
  *
  * @author Anthony Riley and Robert M. Zigweid
  * @version $Rev$ $Date$
-
  */
 public class IOUtils {
 
