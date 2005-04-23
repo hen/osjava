@@ -232,7 +232,7 @@ public class SocketChannelWriter extends Writer {
         buffer = null;
     }
     
-    /* (non-Javadoc)
+    /**
      * @see java.io.Writer#close()
      */
     public void close() throws IOException {
