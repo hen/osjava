@@ -142,21 +142,17 @@ public class IOThread extends Thread {
            return;
        }
        int ops;
-       if(changeOps.containsKey(key)) {
-           /*
-            * If the key already exists in the addOps Map, bitwise OR the
-            * value.  Unfortunately this has to be the Integer Object
-            * rather than the primitive, so this looks worse than it
-            * actually is.
-            */
-           ops = ((Integer) changeOps.get(key)).intValue();
-       } else {
-           ops = key.interestOps();
+       synchronized(changeOps) {
+           if(changeOps.containsKey(key)) {
+               ops = ((Integer) changeOps.get(key)).intValue();
+           } else {
+               ops = key.interestOps();
+           }
+
+           ops |= op;
+
+           changeOps.put(key, new Integer(ops));
        }
-
-       ops |= op;
-
-       changeOps.put(key, new Integer(ops));
 
        mySelector.wakeup();
    }
@@ -183,13 +179,15 @@ public class IOThread extends Thread {
            return;
        }
        int ops;
-       if(changeOps.containsKey(key)) {
-           ops = ((Integer) changeOps.get(key)).intValue();
-       } else {
-           ops = key.interestOps();
+       synchronized(changeOps) {
+           if(changeOps.containsKey(key)) {
+               ops = ((Integer) changeOps.get(key)).intValue();
+           } else {
+               ops = key.interestOps();
+           }
+           ops &= ~op;
+           changeOps.put(key, new Integer(ops));
        }
-       ops &= ~op;
-       changeOps.put(key, new Integer(ops));
 
        mySelector.wakeup();
    }
@@ -260,22 +258,29 @@ public class IOThread extends Thread {
                     }
                 }
 
-                /* Look to apply ops to the keys first */
-                Iterator it = changeOps.entrySet().iterator();
-                while(it.hasNext()) {
-                    Map.Entry next = (Map.Entry) it.next();
-                    SelectionKey nextKey = (SelectionKey) next.getKey();
-		    if(nextKey.isValid()) {
-                        int new_ops = ((Integer) next.getValue()).intValue();
-                        nextKey.interestOps(new_ops);
-		    }
-                }
-                /* Quicker to clear map completely than remove one by one */
-                changeOps.clear();
 
                 try {
                     boolean cont = true;
                     while(cont) {
+                        if(changeOps.size() > 0) {
+                            synchronized(changeOps) {
+                                /* Look to apply ops to the keys first */
+                                Iterator it = changeOps.entrySet().iterator();
+                                while(it.hasNext()) {
+                                    Map.Entry next = (Map.Entry) it.next();
+                                    SelectionKey nextKey = 
+                                        (SelectionKey) next.getKey();
+                                    if(nextKey.isValid()) {
+                                        int new_ops = 
+                                            ((Integer) next.getValue()).
+                                            intValue();
+                                        nextKey.interestOps(new_ops);
+                                    }
+                                }
+                                /* Quicker to clear map completely than remove one by one */
+                                changeOps.clear();
+                            }
+                        }
                         int selected;
                         selected = mySelector.select();
                         cont = (selected == 0);
