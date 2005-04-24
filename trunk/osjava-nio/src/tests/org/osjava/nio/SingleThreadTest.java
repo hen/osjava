@@ -40,12 +40,17 @@
 
 package org.osjava.nio;
 
+import java.io.BufferedWriter;
 import java.io.IOException;
 
 import java.net.InetSocketAddress;
 
 import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
 import java.nio.channels.ClosedChannelException;
+import java.nio.charset.CharacterCodingException;
+import java.nio.charset.Charset;
+import java.nio.charset.CharsetDecoder;
 
 import junit.framework.TestCase;
 
@@ -56,7 +61,14 @@ public class SingleThreadTest extends TestCase {
         }
 
         public void receiveData(ByteBuffer buf) {
-            System.out.println("Received String: " + charBuffer);
+            CharBuffer charBuffer = null;
+            
+            ByteBuffer outBuf = buf.duplicate();
+            /* Create the echo to test the sending mechanism */
+            /* This is of course, more complicated than it needs to be. */
+            handler.write("You typed: '");          // Write a String
+            handler.write(outBuf);                  // Write a ByteBuffer
+            handler.write("'\n");                   // Write a String
         }
     }
     
