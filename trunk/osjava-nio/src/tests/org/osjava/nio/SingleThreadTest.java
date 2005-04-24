@@ -60,6 +60,12 @@ public class SingleThreadTest extends TestCase {
             super(iot);
         }
 
+        public void acceptSocketChannelHandler(SocketChannelHandler sch) throws IOException {
+            super.acceptSocketChannelHandler(sch);
+            sch.addListener(this);
+            System.out.println("Accepting connection");
+        }
+
         public void receiveData(ByteBuffer buf) {
             CharBuffer charBuffer = null;
             
@@ -81,15 +87,8 @@ public class SingleThreadTest extends TestCase {
         /* Set up the listening echo server */
         iot = new IOThread();
         iot.start();
-        acceptor = new AbstractSocketChannelHandlerAcceptor(iot) implements SocketListener {
-            public void acceptSocketChannelHandler(SocketChannelHandler sch) throws IOException {
-                super.acceptSocketChannelHandler(sch);
-                sch.addListener(this);
-                System.out.println("Accepting connection");
-            };
-            
-        };
-        handler = IOUtils.listen(new InetSocketAddress("localhost",9999), iot, acceptor);
+        echoServer = new EchoServer(iot);
+        handler = IOUtils.listen(new InetSocketAddress("localhost",9999), iot, echoServer);
     }
 
     protected void tearDown() throws Exception {
