@@ -74,16 +74,10 @@ public class IOThread extends Thread {
     private Selector mySelector;
 
     /**
-     * Map for adding ops to keys.  The key is the SelectionKey and the
-     * value is the op to add.
+     * Map for changing ops for keys.  The key is the SelectionKey and the
+     * value is the op to change.
      */
-    private Map addOps = new HashMap();
-
-    /**
-     * Map for removing ops from keys.  The key is the SelectionKey and
-     * the value is the op to remove.
-     */
-    private Map removeOps = new HashMap();
+    private Map changeOps = new HashMap();
 
     /**
      * Field containing the boolean value which indicates whether or not the
@@ -139,27 +133,31 @@ public class IOThread extends Thread {
     * @param op the operation to add.
     */
    public void addInterestOp(SelectionKey key, int op) {
-       if(!mySelector.keys().contains(key)) {
+       if(!key.isValid() || !mySelector.keys().contains(key) ) {
            /* TODO: Make this throw an exception */
            /* Wake up the selector anyway, just in case */
-           mySelector.wakeup();
+           /* Commented out, we should not be speculatively waking the 
+            * selector up */
+           /* mySelector.wakeup(); */
            return;
        }
-       if(addOps.containsKey(key)) {
+       int ops;
+       if(changeOps.containsKey(key)) {
            /*
             * If the key already exists in the addOps Map, bitwise OR the
             * value.  Unfortunately this has to be the Integer Object
             * rather than the primitive, so this looks worse than it
             * actually is.
             */
-           addOps.put(key, new Integer(((Integer)(addOps.get(key))).intValue() | op));
+           ops = ((Integer) changeOps.get(key)).intValue();
        } else {
-           addOps.put(key, new Integer(op));
+           ops = key.interestOps();
        }
 
-       if(removeOps.containsKey(key)) {
-           removeOps.put(key, new Integer(((Integer)(removeOps.get(key))).intValue() & ~op));
-       }
+       ops |= op;
+
+       changeOps.put(key, new Integer(ops));
+
        mySelector.wakeup();
    }
 
@@ -174,21 +172,24 @@ public class IOThread extends Thread {
     * @param op the operation to remove.
     */
    public void removeInterestOp(SelectionKey key, int op) {
-       int ops = key.readyOps();
-       if(!mySelector.keys().contains(key)) {
+       if(!key.isValid() || !mySelector.keys().contains(key)) {
            /* TODO: Make this throw an exception */
            /* Wake up the selector anyway, just in case */
+           /* Removed, speculatively waking up the selector is just bad
+            * even though it technically can do no harm, I can't see it 
+            * doing any good
            mySelector.wakeup();
+            */
            return;
        }
-       if(addOps.containsKey(key)) {
-           addOps.put(key, new Integer(((Integer)(addOps.get(key))).intValue() & ~op));
-       }
-       if(removeOps.containsKey(key)) {
-           removeOps.put(key, new Integer(((Integer)(removeOps.get(key))).intValue() | op));
+       int ops;
+       if(changeOps.containsKey(key)) {
+           ops = ((Integer) changeOps.get(key)).intValue();
        } else {
-           removeOps.put(key, new Integer(ops));
+           ops = key.interestOps();
        }
+       ops &= ~op;
+       changeOps.put(key, new Integer(ops));
 
        mySelector.wakeup();
    }
@@ -260,23 +261,17 @@ public class IOThread extends Thread {
                 }
 
                 /* Look to apply ops to the keys first */
-                Iterator it = addOps.keySet().iterator();
+                Iterator it = changeOps.entrySet().iterator();
                 while(it.hasNext()) {
-                    SelectionKey next = (SelectionKey)it.next();
-                    int new_ops = ((Integer)addOps.get(next)).intValue();
-                    next.interestOps(next.interestOps() | new_ops);
-                    /* Remove the key from the map. */
-                    addOps.remove(next);
+                    Map.Entry next = (Map.Entry) it.next();
+                    SelectionKey nextKey = (SelectionKey) next.getKey();
+		    if(nextKey.isValid()) {
+                        int new_ops = ((Integer) next.getValue()).intValue();
+                        nextKey.interestOps(new_ops);
+		    }
                 }
-
-                it = removeOps.keySet().iterator();
-                while(it.hasNext()) {
-                    SelectionKey next = (SelectionKey)it.next();
-                    int new_ops = ((Integer)removeOps.get(next)).intValue();
-                    next.interestOps(next.interestOps() & ~new_ops);
-                    /* Remove the key from the map. */
-                    removeOps.remove(next);
-                }
+                /* Quicker to clear map completely than remove one by one */
+                changeOps.clear();
 
                 try {
                     boolean cont = true;
@@ -303,9 +298,6 @@ public class IOThread extends Thread {
                         }
                         if ((ops & SelectionKey.OP_READ) != 0) {
                             handler.readFromChannel();
-                            /* we always want to leave the reading as
-                             * an interested Op */
-                            addInterestOp(key, SelectionKey.OP_READ);
                         }
                         if ((ops & SelectionKey.OP_WRITE) != 0) {
                             handler.writeToChannel();
