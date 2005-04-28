@@ -95,7 +95,7 @@ public abstract class AbstractChannelHandler implements ChannelHandler {
     /**
      * @see org.osjava.nio.ChannelHandler#readFromChannel()
      */
-    abstract public void readFromChannel();
+    abstract public void readFromChannel() throws IOException;
 
     /**
      * @see org.osjava.nio.ChannelHandler#writeToChannel()
