@@ -53,165 +53,170 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
-public class SocketChannelHandler extends AbstractChannelHandler {
+public class SocketChannelHandler extends AbstractChannelHandler 
+implements ByteBroker 
+{
+    /**
+     * The underlying SocketChannel this ChannelHandler wraps.
+     */
     protected SocketChannel chan;
     
-    // Channel Writer (holds unwritten data)
-    protected SocketChannelWriter writer;
+    /**
+     * Buffer to hold data to be written to the channel
+     */
+    protected ByteBuffer writeBuffer = ByteBuffer.allocate(0x10000);
 
-    protected Collection listeners = new ArrayList();
+    /**
+     * Buffer to hold unhandled data read from the channel
+     */
+    protected ByteBuffer readBuffer = ByteBuffer.allocate(0x10000);
 
-    private boolean doClose = false;
+    /**
+     * The ByteBroker which handles data read from the channel
+     */
+    protected ByteBroker aBroker = null;
+
+    /**
+     * A flag to indicate we've reached the end of stream for reading
+     * from the channel
+     */
+    protected boolean readClosed = false;
+
+    /**
+     * A flag to indicate we've reached the ned of stream for writing
+     * to the channel
+     */
+    protected boolean writeClosed = false;
 
     public SocketChannelHandler(SocketChannel chan,IOThread thread)
         throws IOException {
         super(chan, thread);
         this.chan = chan;
-        writer = new SocketChannelWriter(this);
     }
     
-    public Collection getChannelListeners() {
-        return (Collection) ((ArrayList)listeners).clone();
-    }
-    
-    public Writer getChannelWriter() {
-        return writer;
-    }
-    
-    public void addListener(SocketListener listener) {
-        listeners.add(listener);
-    }
-    
-    public void removeListener(SocketListener listener) {
-        while(listeners.contains(listener)) {
-            listeners.remove(listener);
-        }
+    /**
+     * Set the ByteBroker this ChannelHandler uses.
+     */
+    public void setByteBroker(ByteBroker aBroker) {
+        this.aBroker = aBroker;
     }
     
     /** 
      * Method to read all of the data from the socketChannel and put it into 
      * the queue of data to be read from this.
      */
-    public void readFromChannel() {
-        System.out.println("READING from channel");
-        /* Temporary buffer for transfering the data to the reader. */
-        ByteBuffer readBuffer=ByteBuffer.allocate(1024);
-        int i=0;
-        
-        /* If things are closed, we really don't want to be doing anything */
-        if(doClose) {
+    public void readFromChannel() throws IOException {
+        if(readClosed) {
+            System.out.println("readFromChannel called after readClosed, "+
+                    "SHOULD NOT happen (tm)");
             return;
         }
         
-        try {
-            /* Read from the socket and put the information into our readbuff.*/
-            i = chan.read(readBuffer);
-        } catch(IOException e) {
-            /* There really should be some better handling here.  Like throwing
-             * an exception.  -- Tig */
-            e.printStackTrace();
-        }
-            
-        /* Check for end of stream first.  If we've hit the end of the stream
-         * it really doesn't matter whether or not anything was read close the
-         * channel down.*/
-        /* NOTE: I'm not sure if I believe this or not.  The big concern is
-         * whether or not it's even practical to try reading anything that the
-         * buffer was filled with. -- Tig */
-        if(i == -1) {
+        /*
+         * If buffer isn't alread full
+         */
+        if(readBuffer.hasRemaining()) {
+            /*
+             * hopefully read some data
+             */
             try {
-                close();
-            } catch(IOException e) {
-                e.printStackTrace();
+                readClosed = ( -1 == chan.read(readBuffer) );
+            } catch (IOException ioe) {
+                try {
+                    ioe.printStackTrace();
+                    close();
+                } catch (IOException ioe2) {
+                    ioe2.printStackTrace();
+                }
             }
         }
-        
-        /* Test stuff */
-        readBuffer.flip();
-        
-        /* Write the data to the listeners. */
-        Iterator it = listeners.iterator(); 
-        
-        while(it.hasNext()) {
-            SocketListener next = (SocketListener) it.next();
-            ByteBuffer tmpBuf = ByteBuffer.allocate(readBuffer.remaining());
-            /* copy the readBuffer into the new buffer and flip it */
-            tmpBuf.put(readBuffer);
-            tmpBuf.flip();
-            next.receiveData(tmpBuf);
+
+        /*
+         * If we have any data, and a broker set, give them data to play with.
+         */
+        if(readBuffer.position() > 0 && aBroker != null) {
+            readBuffer.flip();
+            aBroker.broker(readBuffer, readClosed);
+            readBuffer.compact();
+        }
+
+        if(readClosed) {
+            getThread().removeInterestOp(key, SelectionKey.OP_READ);
         }
     }
 
     public void writeToChannel() throws IOException {
-        if(doClose == true) {
+        if(writeClosed && writeBuffer.position() == 0) {
             return;
         }
         
-        /* Get the data from the Writer so that it can be written */
-        ByteBuffer outData = writer.readByteBuffer();
-        
-        if(outData == null) {
-            close();
-        }
-                
-        try {
-            chan.write(outData);
-        } catch(IOException e) {
-            e.printStackTrace();
-        }
-                
-        /* Done writing, tell the key that we're no longer interested in 
-         * writing to the channel.  This is essential so that we don't endlessly
-         * loop over this and do NOTHING */
-        getThread().removeInterestOp(key, SelectionKey.OP_WRITE);
-//        key.interestOps(key.interestOps() & ~SelectionKey.OP_WRITE);
-        
-        
-        // Check to see if we have any data left to write, if so,
-        // don't listen to anymore write operations because something has
-        // happened that we couldn't write to the channel.  
-        if (outData.position() < outData.limit()) {
-            if (doClose) {
+        /*
+         * If we have data to write, write some
+         */
+        if(writeBuffer.position() > 0) {
+            writeBuffer.flip();
+            try {
+                chan.write(writeBuffer);
+            } catch (IOException ioe) {
                 try {
                     close();
-                } catch(IOException e) {
-                    /* TODO: Better error handling */
-                    e.printStackTrace();
+                } catch (IOException ioe2) {
+                    ioe2.printStackTrace();
                 }
             }
+            writeBuffer.compact();
+        } else if(writeClosed) {
+            
+        }
+
+        /*
+         * If we have any data in the read buffer see if the broker wants it
+         * yet. (they might be able to do something with it now there's
+         * space in the write buffer)
+         */
+        if(readBuffer.position() > 0 && aBroker != null) {
+            readBuffer.flip();
+            aBroker.broker(readBuffer, readClosed);
+            readBuffer.compact();
         }
     }
 
     public void connect() throws IOException {
-        try {
-            /* If already connected we want to make sure that the socket isn't 
-             * interested in connecting.  More than likely we want to throw 
-             * an IllegalStateException or something similar to that too, but
-             * I'm not going to be putting that in right now.  -- Robert */
-            if (chan.isConnected()) {
-                getThread().removeInterestOp(key, SelectionKey.OP_CONNECT);
-//                key.interestOps(chan.validOps() & ~SelectionKey.OP_CONNECT);
-                return;
-            }
-            if (chan.isConnectionPending()) {
-                if (chan.finishConnect()) {
-                    getThread().removeInterestOp(key, SelectionKey.OP_CONNECT);                    
-//                    key.interestOps(chan.validOps() & ~SelectionKey.OP_CONNECT);
-                } else {
-                    close();
-                }
-            }
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
-            close();
+        /*
+         * If we're already connected, just remove our interest in the
+         * OP_CONNECT event.
+         */
+        if (chan.isConnected()) {
+            getThread().removeInterestOp(key, SelectionKey.OP_CONNECT);
+            return;
         }
+        /* 
+         * If our channel is waiting for the connection to be completed
+         * complete it and remove our interest in the OP_CONNECT event.
+         */
+        if (chan.isConnectionPending()) {
+            if (chan.finishConnect()) {
+                getThread().removeInterestOp(key, SelectionKey.OP_CONNECT);
+            } else {
+                close();
+            }
+            return;
+        }
+        /*
+         * This should never be reached, we've got an OP_CONNECT event
+         * and our chan is not already connected and not in the connection
+         * pending state
+         */
+        throw new IllegalStateException("Received OP_CONNECT event for a " +
+                "channel which is not in the pending state, nor is it " +
+                "connected.");
     }
     
     public void close() throws IOException {
         super.close();
-        /* Close the associated buffers cleanly. */
-        writer.close(true);
-        doClose = true;
+        /* TODO: Close the associated buffers cleanly. */
+        writeClosed = true;
+        readClosed = true;
     }
 
     public SelectableChannel getSelectableChannel() {
@@ -225,9 +230,7 @@ public class SocketChannelHandler extends AbstractChannelHandler {
      */
     public void setSelectionKey(SelectionKey inKey) {
         if(key!=null) {
-            /* Return for now, but we need to throw an exception here if it's
-             * already set, I think -- Robert */
-            return;
+            throw new IllegalStateException("SelectionKey has already been set");
         }
         key=inKey;
     }
@@ -249,5 +252,49 @@ public class SocketChannelHandler extends AbstractChannelHandler {
      */
     public void accept() {
         // TODO: Change to throw an IllegalStateException        
+    }
+
+
+    /*
+     * Methods from ByteBroker
+     */
+    public void broker(ByteBuffer data, boolean close) {
+        if(writeClosed) {
+            /* FIXME */
+            throw new RuntimeException("Write closed, but still being sent data");
+        }
+        if(writeBuffer.hasRemaining() && data.hasRemaining()) {
+            if(data.remaining() <= writeBuffer.remaining()) {
+                writeBuffer.put(data);
+            } else {
+                /* 
+                 * all buffers created via .allocate() have a backing array and
+                 * an array offset of 0 so we can cheat here
+                 * WTF there isn't a provided to do this, I don't know.
+                 * even a .get(ByteBuffer) method would do !
+                 */
+                data.get(writeBuffer.array(), 
+                        writeBuffer.position(), 
+                        writeBuffer.remaining());
+            }
+        }
+        if(close && !data.hasRemaining()) {
+            writeClosed = true;
+        }
+        if(writeBuffer.position() > 0) {
+            getThread().addInterestOp(getSelectionKey(), SelectionKey.OP_WRITE);
+        }
+    }
+
+    public int broker(byte[] data, boolean close) {
+        ByteBuffer buffer = ByteBuffer.wrap(data);
+        broker(buffer, close);
+        return buffer.position();
+    }
+
+    public int broker(byte[] data, int offset, int len, boolean close) {
+        ByteBuffer buffer = ByteBuffer.wrap(data);
+        broker(buffer, close);
+        return buffer.position() - offset;
     }
 }

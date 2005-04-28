@@ -48,8 +48,8 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.SelectableChannel;
 
 public class ServerSocketChannelHandler
-    extends AbstractChannelHandler {
-    
+extends AbstractChannelHandler {
+
     private ServerSocketChannel chan;
     private SocketChannelHandlerAcceptor acceptor;
     private SelectionKey key = null;
@@ -58,20 +58,20 @@ public class ServerSocketChannelHandler
 
     public ServerSocketChannelHandler(ServerSocketChannel chan,IOThread thread)
         throws IOException {
-        super(chan,thread);
-        this.chan = chan;
+            super(chan,thread);
+            this.chan = chan;
 
-        sockThread = thread;
-    }
+            sockThread = thread;
+        }
 
     public void setSocketChannelHandlerAcceptor(SocketChannelHandlerAcceptor acceptor) {
         this.acceptor = acceptor;
     }
 
     /**
-	 * A new connection has been initiated. Register it with the a new
-	 * SocketChannel handler, and the thread handling this ServerSocketChannel.
-	 */
+     * A new connection has been initiated. Register it with the a new
+     * SocketChannel handler, and the thread handling this ServerSocketChannel.
+     */
     public void accept() {
         SelectionKey key = null;
 
@@ -85,7 +85,7 @@ public class ServerSocketChannelHandler
                     new SocketChannelHandler(sockChan,sockThread);
 
                 // Feckski Offski, I hate the way *everything* throws
-				// IOException
+                // IOException
                 // It is *NOT* an IOException if you try and register a closed
                 // channel, it is an IllegalStateException.
                 //
@@ -96,7 +96,7 @@ public class ServerSocketChannelHandler
                     throw new IllegalStateException("Underlying Channel is closed");
                 }
 
-                sch.setSelectionKey(key);
+                //sch.setSelectionKey(key);
                 acceptor.acceptSocketChannelHandler(sch);
             }
         } catch (IOException ioe) {
@@ -118,14 +118,14 @@ public class ServerSocketChannelHandler
     }
 
     /*
-	 * (non-Javadoc) This is a no-op on ServerSocketChannelHandler atm, but
-	 * @see org.cyberiantiger.nio.ChannelHandler#connect()
-	 */
+     * (non-Javadoc) This is a no-op on ServerSocketChannelHandler atm, but
+     * @see org.cyberiantiger.nio.ChannelHandler#connect()
+     */
     public void connect() {
         /*
-		 * TODO: Add IllegalStateException to throw. ServerSockets don't
-		 * connect, they listen.
-		 */
+         * TODO: Add IllegalStateException to throw. ServerSockets don't
+         * connect, they listen.
+         */
     }
 
     /* (non-Javadoc)
@@ -133,7 +133,7 @@ public class ServerSocketChannelHandler
      */
     public void readFromChannel() {
         // TODO Auto-generated method stub
-        
+
     }
 
     /* (non-Javadoc)
@@ -141,7 +141,7 @@ public class ServerSocketChannelHandler
      */
     public void writeToChannel() {
         // TODO Auto-generated method stub
-        
+
     }
 
     /* (non-Javadoc)
@@ -156,6 +156,6 @@ public class ServerSocketChannelHandler
      */
     public void setSelectionKey(SelectionKey key) {
         this.key = key;
-        
+
     }
 }

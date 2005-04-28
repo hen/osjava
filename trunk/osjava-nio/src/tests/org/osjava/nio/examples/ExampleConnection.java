@@ -7,6 +7,8 @@ import java.net.InetSocketAddress;
 import org.osjava.nio.IOThread;
 import org.osjava.nio.IOUtils;
 import org.osjava.nio.SocketChannelHandler;
+import org.osjava.nio.CharBroker;
+import org.osjava.nio.CharToByteBroker;
 
 public class ExampleConnection {
 
@@ -20,12 +22,8 @@ public class ExampleConnection {
             handler = IOUtils.connect(
                                       new InetSocketAddress("localhost",9999),
                                       iot);
-            BufferedWriter chanWriter = 
-                new BufferedWriter(handler.getChannelWriter());
-            chanWriter.write("hello");
-            chanWriter.flush();
-            handler.close();
-
+            CharBroker broker = new CharToByteBroker(handler);
+            broker.broker("Hello",true);
         } catch(IOException ioe) {
             ioe.printStackTrace();
         }

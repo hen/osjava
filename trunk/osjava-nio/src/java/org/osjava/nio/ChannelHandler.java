@@ -69,7 +69,7 @@ public interface ChannelHandler {
      * Called by a {@link IOThread} when there are bytes available to be read
      * from the channel
      */
-    public void readFromChannel();
+    public void readFromChannel() throws IOException;
 
     /**
      * Called by a {@link IOThread} when there is space in a channels write
