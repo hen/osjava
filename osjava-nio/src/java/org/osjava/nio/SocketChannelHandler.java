@@ -107,77 +107,121 @@ implements ByteBroker
      */
     public void readFromChannel() throws IOException {
         if(readClosed) {
-            System.out.println("readFromChannel called after readClosed, "+
-                    "SHOULD NOT happen (tm)");
-            return;
+            throw new RuntimeException("readFromChannel called after " +
+                    "readClosed, this is a bug !");
+        }
+        if(!readBuffer.hasRemaining()) {
+            throw new RuntimeException("readFromChannel called when " +
+                    "readBuffer is full, this is a bug !");
         }
         
-        /*
-         * If buffer isn't alread full
-         */
-        if(readBuffer.hasRemaining()) {
-            /*
-             * hopefully read some data
-             */
+        try {
+            readClosed = ( -1 == chan.read(readBuffer) );
+        } catch (IOException ioe) {
             try {
-                readClosed = ( -1 == chan.read(readBuffer) );
-            } catch (IOException ioe) {
-                try {
-                    ioe.printStackTrace();
-                    close();
-                } catch (IOException ioe2) {
-                    ioe2.printStackTrace();
-                }
+                ioe.printStackTrace();
+                close();
+            } catch (IOException ioe2) {
+                ioe2.printStackTrace();
             }
         }
 
         /*
-         * If we have any data, and a broker set, give them data to play with.
+         * Pass the data to aBroker
          */
-        if(readBuffer.position() > 0 && aBroker != null) {
+        if(aBroker != null) {
             readBuffer.flip();
-            aBroker.broker(readBuffer, readClosed);
+            try {
+                aBroker.broker(readBuffer, readClosed);
+            } catch (BrokerException be) {} /* Ignored */
             readBuffer.compact();
         }
 
-        if(readClosed) {
+        /*
+         * No longer interested in read ops
+         * (readBuffer full, or stream closed by the remote end)
+         */
+        if(readClosed || !readBuffer.hasRemaining()) {
             getThread().removeInterestOp(key, SelectionKey.OP_READ);
         }
     }
 
     public void writeToChannel() throws IOException {
-        if(writeClosed && writeBuffer.position() == 0) {
+        if(writeBuffer.position() == 0) {
+            System.out.println("writeToChannel called when there is " +
+                    "no data to be written, this is a BUG.");
+            System.out.println("If you see this message lots you " +
+                    "need to turn off OP_WRITE");
+            getThread().removeInterestOp(key, SelectionKey.OP_WRITE);
             return;
         }
         
-        /*
-         * If we have data to write, write some
+        /* 
+         * Write some data to the channel
          */
-        if(writeBuffer.position() > 0) {
-            writeBuffer.flip();
-            try {
-                chan.write(writeBuffer);
-            } catch (IOException ioe) {
-                try {
-                    close();
-                } catch (IOException ioe2) {
-                    ioe2.printStackTrace();
-                }
+        writeBuffer.flip();
+        try {
+            chan.write(writeBuffer);
+        } catch (IOException ioe) {
+            /*
+             * Some bugger has closed the stream at the other end
+             * (or the network connection died, or some other such evil
+             * ness).
+             * 
+             * Best way I can think of to handle this is to empty the
+             * write buffer, remove interest in write ops, and set
+             * the writeClosed variable to true.
+             *
+             * However if we do this we can pretty much guarantee 
+             * something will continue trying to write to us.
+             *
+             * Though typically we'll handle this by throwing
+             * some exception to indicate that the damn stream 
+             * has been closed. (Right now it's just a RuntimeException)
+             *
+             * Information in the writeBuffer is lost, this is unavoidable.
+             */
+            getThread().removeInterestOp(key, SelectionKey.OP_WRITE);
+            writeClosed = true;
+            writeBuffer.clear();
+            return;
+        }
+        writeBuffer.compact();
+
+        /*
+         * If buffer is empty
+         */
+        if(writeBuffer.position() == 0) {
+            /*
+             * And we've been told to close the stream
+             */
+            if(writeClosed) {
+                /* TODO: half close the socket */
             }
-            writeBuffer.compact();
-        } else if(writeClosed) {
-            
+            /* 
+             * Remove interest in write operations
+             */
+            getThread().removeInterestOp(key, SelectionKey.OP_WRITE);
         }
 
         /*
-         * If we have any data in the read buffer see if the broker wants it
-         * yet. (they might be able to do something with it now there's
-         * space in the write buffer)
+         * Now we've hopefully made some space in the writeBuffer
+         * If there's data in the readBuffer dispatch it.
          */
         if(readBuffer.position() > 0 && aBroker != null) {
+            boolean readBufferFull = !readBuffer.hasRemaining();
             readBuffer.flip();
-            aBroker.broker(readBuffer, readClosed);
+            try {
+                aBroker.broker(readBuffer, readClosed);
+            } catch (BrokerException be) {} /* Ignored */
             readBuffer.compact();
+            /*
+             * If the read buffer was full and it isn't any more
+             * we need to reregister interest in READ operations
+             */
+            if(readBufferFull && readBuffer.hasRemaining()) {
+                getThread().addInterestOp(key, SelectionKey.OP_READ);
+            }
         }
     }
 
@@ -260,8 +304,8 @@ implements ByteBroker
      */
     public void broker(ByteBuffer data, boolean close) {
         if(writeClosed) {
-            /* FIXME */
-            throw new RuntimeException("Write closed, but still being sent data");
+            throw new BrokerException("Stream closed " +
+                    "(either by you, or an error was encountered)");
         }
         if(writeBuffer.hasRemaining() && data.hasRemaining()) {
             if(data.remaining() <= writeBuffer.remaining()) {
@@ -279,6 +323,8 @@ implements ByteBroker
             }
         }
         if(close && !data.hasRemaining()) {
+            System.out.println("got data: "+data);
+            System.out.println("Closing write access");
             writeClosed = true;
         }
         if(writeBuffer.position() > 0) {

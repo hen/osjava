@@ -1,5 +1,5 @@
 /*
- * org.osjava.nio.CharToByteBroker
+ * org.osjava.nio.AbstractCharBroker
  *
  * $Id: ChannelHandler.java 1641 2005-04-23 20:23:14Z rzigweid $
  * $URL: https://svn.osjava.org/svn/osjava/trunk/osjava-nio/src/java/org/osjava/nio/ChannelHandler.java $
@@ -49,63 +49,30 @@ import java.nio.charset.CoderResult;
  * @author cybertiger
  *
  */
-public class CharToByteBroker extends AbstractCharBroker {
+public abstract class AbstractCharBroker implements CharBroker {
 
-    private ByteBroker aBroker;
-
-    private CharsetEncoder encoder;
-
-    private ByteBuffer encodeBuffer;
-
-    public CharToByteBroker(ByteBroker aBroker) {
-        this(aBroker, Charset.forName("UTF-8").newEncoder());
+    public int broker(char[] data, boolean close) {
+        CharBuffer buffer = CharBuffer.wrap(data);
+        broker(buffer,close);
+        return buffer.position();
     }
 
-    public CharToByteBroker(ByteBroker aBroker, CharsetEncoder encoder) {
-        this(aBroker, encoder, 1024);
+    public int broker(char[] data, int offset, int len, boolean close) {
+        CharBuffer buffer = CharBuffer.wrap(data);
+        broker(buffer,close);
+        return buffer.position() - offset;
     }
 
-    public CharToByteBroker(
-            ByteBroker aBroker, CharsetEncoder encoder, int bufSize
-            ) 
-    {
-        this.aBroker = aBroker;
-        this.encoder = encoder;
-        this.encodeBuffer = ByteBuffer.allocate(bufSize);
+    public int broker(CharSequence str, boolean close) {
+        CharBuffer buffer = CharBuffer.wrap(str);
+        broker(buffer,close);
+        return buffer.position();
     }
 
-    /* 
-     * This is where it actually happens, rest of the methods just call this
-     */
-    public void broker(CharBuffer data, boolean close) {
-        while(true) {
-            CoderResult result = encoder.encode(data, encodeBuffer, close);
-            /* 
-             * If we have any data, try to send it.
-             */
-            if(encodeBuffer.position() > 0) {
-                encodeBuffer.flip();
-                if( data.hasRemaining() ) {
-                    aBroker.broker(encodeBuffer, false);
-                } else {
-                    aBroker.broker(encodeBuffer, close);
-                }
-                encodeBuffer.compact();
-            }
-            if(encodeBuffer.hasRemaining()) {
-                /* 
-                 * Whilst we don't need more data, whoever we're
-                 * passing data onto doesn't seem to want any more
-                 * data (yet)
-                 */
-                return;
-            }
-            if(result.isUnderflow()) {
-                /*
-                 * We need more data to continue, return 
-                 */
-                return;
-            }
-        }
+    public int broker(CharSequence str, int offset, int len, boolean close) {
+        CharBuffer buffer = CharBuffer.wrap(str, offset, len);
+        broker(buffer,close);
+        return buffer.position() - offset;
     }
+
 }
