@@ -314,7 +314,7 @@ implements ByteBroker
                 /* 
                  * all buffers created via .allocate() have a backing array and
                  * an array offset of 0 so we can cheat here
-                 * WTF there isn't a provided to do this, I don't know.
+                 * WTF there isn't a provided method to do this, I don't know.
                  * even a .get(ByteBuffer) method would do !
                  */
                 data.get(writeBuffer.array(), 
@@ -323,8 +323,6 @@ implements ByteBroker
             }
         }
         if(close && !data.hasRemaining()) {
-            System.out.println("got data: "+data);
-            System.out.println("Closing write access");
             writeClosed = true;
         }
         if(writeBuffer.position() > 0) {
