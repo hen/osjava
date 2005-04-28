@@ -1,5 +1,5 @@
 /*
- * org.osjava.nio.CharToByteBroker
+ * org.osjava.nio.BrokerException
  *
  * $Id: ChannelHandler.java 1641 2005-04-23 20:23:14Z rzigweid $
  * $URL: https://svn.osjava.org/svn/osjava/trunk/osjava-nio/src/java/org/osjava/nio/ChannelHandler.java $
@@ -36,76 +36,24 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
 package org.osjava.nio;
 
 import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
-import java.nio.charset.Charset;
-import java.nio.charset.CharsetEncoder;
-import java.nio.charset.CoderResult;
 
 /**
  * @author cybertiger
  *
+ * An exception to indicate that there was some fatal error brokering
+ * some data, and further attempts to broker data should not be attempted.
  */
-public class CharToByteBroker extends AbstractCharBroker {
+public class BrokerException extends RuntimeException{
 
-    private ByteBroker aBroker;
-
-    private CharsetEncoder encoder;
-
-    private ByteBuffer encodeBuffer;
-
-    public CharToByteBroker(ByteBroker aBroker) {
-        this(aBroker, Charset.forName("UTF-8").newEncoder());
+    public BrokerException() {
+        super();
     }
 
-    public CharToByteBroker(ByteBroker aBroker, CharsetEncoder encoder) {
-        this(aBroker, encoder, 1024);
+    public BrokerException(String reason) {
+        super(reason);
     }
 
-    public CharToByteBroker(
-            ByteBroker aBroker, CharsetEncoder encoder, int bufSize
-            ) 
-    {
-        this.aBroker = aBroker;
-        this.encoder = encoder;
-        this.encodeBuffer = ByteBuffer.allocate(bufSize);
-    }
-
-    /* 
-     * This is where it actually happens, rest of the methods just call this
-     */
-    public void broker(CharBuffer data, boolean close) {
-        while(true) {
-            CoderResult result = encoder.encode(data, encodeBuffer, close);
-            /* 
-             * If we have any data, try to send it.
-             */
-            if(encodeBuffer.position() > 0) {
-                encodeBuffer.flip();
-                if( data.hasRemaining() ) {
-                    aBroker.broker(encodeBuffer, false);
-                } else {
-                    aBroker.broker(encodeBuffer, close);
-                }
-                encodeBuffer.compact();
-            }
-            if(encodeBuffer.hasRemaining()) {
-                /* 
-                 * Whilst we don't need more data, whoever we're
-                 * passing data onto doesn't seem to want any more
-                 * data (yet)
-                 */
-                return;
-            }
-            if(result.isUnderflow()) {
-                /*
-                 * We need more data to continue, return 
-                 */
-                return;
-            }
-        }
-    }
 }

@@ -47,7 +47,7 @@ import java.nio.charset.CoderResult;
 /**
  * @author cybertiger
  */
-public class ByteToCharBroker implements ByteBroker {
+public class ByteToCharBroker extends AbstractByteBroker {
 
     private CharBroker aBroker;
     
@@ -73,32 +73,34 @@ public class ByteToCharBroker implements ByteBroker {
     }
 
     public void broker(ByteBuffer data, boolean close) {
-        while(data.hasRemaining()) {
+        while(true) {
             CoderResult result = decoder.decode(data, decodeBuffer, close);
-            /* TODO: need to handle encoder errors ! */
-            decodeBuffer.flip();
-            if(result.length() > 0 && data.hasRemaining()) {
-                aBroker.broker(decodeBuffer, false);
-            } else {
-                aBroker.broker(decodeBuffer, close);
+            /* 
+             * If we have any data, try to send it.
+             */
+            if(decodeBuffer.position() > 0) {
+                decodeBuffer.flip();
+                if( data.hasRemaining() ) {
+                    aBroker.broker(decodeBuffer, false);
+                } else {
+                    aBroker.broker(decodeBuffer, close);
+                }
+                decodeBuffer.compact();
             }
-            decodeBuffer.compact();
-            if(result.length() == 0) {
-                break; /* Can't encode anything else */
+            if(decodeBuffer.hasRemaining()) {
+                /* 
+                 * Whilst we don't need more data, whoever we're
+                 * passing data onto doesn't seem to want any more
+                 * data (yet)
+                 */
+                return;
+            }
+            if(result.isUnderflow()) {
+                /*
+                 * We need more data to continue, return 
+                 */
+                return;
             }
         }
     }
-
-    public int broker(byte[] data, boolean close) {
-        ByteBuffer buffer = ByteBuffer.wrap(data);
-        broker(buffer, close);
-        return buffer.position();
-    }
-
-    public int broker(byte[] data, int offset, int len, boolean close) {
-        ByteBuffer buffer = ByteBuffer.wrap(data);
-        broker(buffer, close);
-        return buffer.position() - offset;
-    }
-
 }
