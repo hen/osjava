@@ -6,19 +6,12 @@
  */
 package org.osjava.nio.examples;
 
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.net.Socket;
-import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
-import java.nio.charset.CharacterCodingException;
-import java.nio.charset.Charset;
-import java.nio.charset.CharsetDecoder;
 
 import org.osjava.nio.AbstractSocketChannelHandlerAcceptor;
 import org.osjava.nio.IOThread;
 import org.osjava.nio.SocketChannelHandler;
-import org.osjava.nio.SocketListener;
 
 /**
  * @author rzigweid
