@@ -104,9 +104,9 @@ if(DEBUG) System.out.println(props.toString());
 
             // need to find a way to ensure the interpolation is read 
             // first. possibly scan through the zip first?
-            Enumeration enum = jar.entries();
-            while(enum.hasMoreElements()) {
-                JarEntry entry = (JarEntry) enum.nextElement();
+            Enumeration enumeration = jar.entries();
+            while(enumeration.hasMoreElements()) {
+                JarEntry entry = (JarEntry) enumeration.nextElement();
                 if(entry.getName().equals("payload.properties")) {
 if(DEBUG) System.out.println("Custom interpolation being used. ");
                     InputStream in = jar.getInputStream( entry );
@@ -123,9 +123,9 @@ if(DEBUG) System.out.println("Default interpolation being used. ");
 
             System.out.print("Payload extracting");
 
-            enum = jar.entries();
-            while(enum.hasMoreElements()) {
-                JarEntry entry = (JarEntry) enum.nextElement();
+            enumeration = jar.entries();
+            while(enumeration.hasMoreElements()) {
+                JarEntry entry = (JarEntry) enumeration.nextElement();
                 if(!entry.getName().startsWith("payload")) {
                     continue;
                 }
