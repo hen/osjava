@@ -48,7 +48,7 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.SelectableChannel;
 
 public class ServerSocketChannelHandler
-extends AbstractChannelHandler {
+    extends AbstractChannelHandler {
 
     private ServerSocketChannel chan;
     private SocketChannelHandlerAcceptor acceptor;
@@ -83,13 +83,6 @@ extends AbstractChannelHandler {
                 // Create a new SocketChannelHandler
                 SocketChannelHandler sch = 
                     new SocketChannelHandler(sockChan,sockThread);
-
-                // Feckski Offski, I hate the way *everything* throws
-                // IOException
-                // It is *NOT* an IOException if you try and register a closed
-                // channel, it is an IllegalStateException.
-                //
-                // Fuckwits.  -- Antony
                 try {
                     key = ((IOThread)Thread.currentThread()).register(sch, ops);
                 } catch (IOException ioe) {
