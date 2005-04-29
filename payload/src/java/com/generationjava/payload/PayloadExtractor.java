@@ -38,6 +38,7 @@ import java.util.Enumeration;
 import java.util.Properties;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -177,60 +178,13 @@ if(DEBUG) System.out.println("Interpolating "+outName);
                     }
                     zin.close();
                     in = new ByteArrayInputStream(bytes);
+
                 }
 
                 if(interpolateArchive) {
                     FileOutputStream out = new FileOutputStream( outFile );
-                    ZipOutputStream zout = new ZipOutputStream(out);
-                    ZipInputStream zin = new ZipInputStream(in);
-                    ZipEntry zEntry = null;
-                    InputStream tmpin = null;
-                    while( (zEntry = zin.getNextEntry()) != null) {
-                        tmpin = zin;
-                        long size = zEntry.getSize();
-                        long crc = zEntry.getCrc();
-                        if(props != null && interpolation.interpolatable(zEntry.getName())) {
-if(DEBUG) System.out.println("Interpolating in archive "+outName);
-                            String text = IOUtils.readToString(zin);
-                            text = interpolation.interpolate(text, props);
-                            tmpin = new ByteArrayInputStream(text.getBytes());
-                            size = text.getBytes().length;
-                            CRC32 crc32 = new CRC32();
-                            crc32.update(text.getBytes());
-                            crc = crc32.getValue();
-                        }
-                        ZipEntry newEntry = new ZipEntry(zEntry.getName());
-                        if(zEntry.getComment() != null) {
-                            newEntry.setComment(zEntry.getComment());
-                        }
-                        if(zEntry.getExtra() != null) {
-                            newEntry.setExtra(zEntry.getExtra());
-                        }
-                        if(zEntry.getTime() != -1) {
-                            newEntry.setTime(zEntry.getTime());
-                        }
-                        if(zEntry.getMethod() != -1) {
-                            newEntry.setMethod(zEntry.getMethod());
-                            zout.setMethod(zEntry.getMethod());
-                        }
-                        if(crc != -1) {
-                            newEntry.setCrc(crc);
-                        }
-                        if(zEntry.getSize() != -1) {
-                            newEntry.setSize(size);
-                        }
-                        if(zEntry.getCompressedSize() != -1 && size == zEntry.getSize()) {
-                            newEntry.setCompressedSize(zEntry.getCompressedSize());
-                        }
-                        zout.putNextEntry(newEntry);
-
-                        IOUtils.pushBytes(tmpin, zout);
-                        zin.closeEntry();
-                        zout.closeEntry();
-                    }
-                    zout.finish();
+                    interpolateArchive(out, in, interpolation, props);
                     out.close();
-                    zin.close();
                     System.out.print("#");
                 } else {
                     OutputStream out = new FileOutputStream( outFile );
@@ -250,6 +204,70 @@ if(DEBUG) System.out.println("Interpolating in archive "+outName);
 
         System.out.println("");
         System.out.println("Payload has arrived. ");
+    }
+
+
+    private static void interpolateArchive(OutputStream out, InputStream in, Interpolation interpolation, Properties props) throws IOException {
+        ZipOutputStream zout = new ZipOutputStream(out);
+        ZipInputStream zin = new ZipInputStream(in);
+        ZipEntry zEntry = null;
+        InputStream tmpin = null;
+        while( (zEntry = zin.getNextEntry()) != null) {
+            tmpin = zin;
+            long size = zEntry.getSize();
+            long crc = zEntry.getCrc();
+            if(props != null && interpolation.interpolatable(zEntry.getName())) {
+if(DEBUG) System.out.println("Interpolating in archive");
+                String text = IOUtils.readToString(zin);
+                text = interpolation.interpolate(text, props);
+                tmpin = new ByteArrayInputStream(text.getBytes());
+                size = text.getBytes().length;
+                CRC32 crc32 = new CRC32();
+                crc32.update(text.getBytes());
+                crc = crc32.getValue();
+            }
+            // if interpolatable archive, then recurse.....
+            if(props != null && interpolation.interpolatableArchive(zEntry.getName())) {
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                interpolateArchive(baos, in, interpolation, props);
+                tmpin = new ByteArrayInputStream( baos.toByteArray() );
+                size = baos.toByteArray().length;
+                CRC32 crc32 = new CRC32();
+                crc32.update(baos.toByteArray());
+                crc = crc32.getValue();
+            }
+
+            ZipEntry newEntry = new ZipEntry(zEntry.getName());
+            if(zEntry.getComment() != null) {
+                newEntry.setComment(zEntry.getComment());
+            }
+            if(zEntry.getExtra() != null) {
+                newEntry.setExtra(zEntry.getExtra());
+            }
+            if(zEntry.getTime() != -1) {
+                newEntry.setTime(zEntry.getTime());
+            }
+            if(zEntry.getMethod() != -1) {
+                newEntry.setMethod(zEntry.getMethod());
+                zout.setMethod(zEntry.getMethod());
+            }
+            if(crc != -1) {
+                newEntry.setCrc(crc);
+            }
+            if(zEntry.getSize() != -1) {
+                newEntry.setSize(size);
+            }
+            if(zEntry.getCompressedSize() != -1 && size == zEntry.getSize()) {
+                newEntry.setCompressedSize(zEntry.getCompressedSize());
+            }
+            zout.putNextEntry(newEntry);
+
+            IOUtils.pushBytes(tmpin, zout);
+            zin.closeEntry();
+            zout.closeEntry();
+        }
+        zout.finish();
+        zin.close();
     }
 
 }
