@@ -89,9 +89,9 @@ if(DEBUG) System.out.println("DEBUG turned on. ");
             jout = new JarOutputStream(new FileOutputStream(new File(targetJar)));
 
             JarFile jar = new JarFile(new File(jarFile));
-            Enumeration enum = jar.entries();
-            while(enum.hasMoreElements()) {
-                JarEntry entry = (JarEntry) enum.nextElement();
+            Enumeration enumeration = jar.entries();
+            while(enumeration.hasMoreElements()) {
+                JarEntry entry = (JarEntry) enumeration.nextElement();
                 InputStream in = jar.getInputStream( entry );
                 JarEntry entry2 = new JarEntry(entry.getName());
                 entry2.setTime(entry.getTime());
