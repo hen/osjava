@@ -229,7 +229,11 @@ if(DEBUG) System.out.println("Interpolating in archive");
             // if interpolatable archive, then recurse.....
             if(props != null && interpolation.interpolatableArchive(zEntry.getName())) {
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                interpolateArchive(baos, in, interpolation, props);
+                IOUtils.pushBytes(zin, baos);
+                tmpin = new ByteArrayInputStream( baos.toByteArray() );
+                baos = new ByteArrayOutputStream();
+if(DEBUG) System.out.println("Recursing into sub-archive");
+                interpolateArchive(baos, tmpin, interpolation, props);
                 tmpin = new ByteArrayInputStream( baos.toByteArray() );
                 size = baos.toByteArray().length;
                 CRC32 crc32 = new CRC32();
