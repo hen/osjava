@@ -261,9 +261,11 @@ if(DEBUG) System.out.println("Recursing into sub-archive");
             if(zEntry.getSize() != -1) {
                 newEntry.setSize(size);
             }
+            /* Oddly fails, unsure why. 
             if(zEntry.getCompressedSize() != -1 && size == zEntry.getSize()) {
                 newEntry.setCompressedSize(zEntry.getCompressedSize());
             }
+            */
             zout.putNextEntry(newEntry);
 
             IOUtils.pushBytes(tmpin, zout);
