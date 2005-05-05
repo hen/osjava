@@ -26,6 +26,7 @@
      org.osjava.payload.interpolate.endsWith=xml
      org.osjava.payload.interpolate.matches=regexp
      org.osjava.payload.interpolate.archive.endsWith=war
+     org.osjava.payload.interpolate.archive.matches=regexp
      </pre>
      This specifies which files are interpolated. It also specifies that any .war files should have their constituent files interpolated too. 
     </li>

@@ -7,6 +7,12 @@
   </properties>
 
   <body>
+    <release version="0.4" date="2005-05-05">
+          <action dev="hen" type="fix">Commenting out the setting of compressed-size. it causes problems and seems unnecessary. </action>
+          <action dev="hen" type="add">Supports regular expression matching for archives too. </action>
+          <action dev="hen" type="add" issue="PAY-13">Interpolating in an archives recurses. </action>
+    </release>
+
     <release version="0.3" date="2005-04-18">
           <action dev="hen" type="add" issue="PAY-10">Jarring on Windows puts in backslashes. Now uses slashes always. </action>
           <action dev="hen" type="add" issue="PAY-11">Allow more than one .properties file to be passed in.</action>
