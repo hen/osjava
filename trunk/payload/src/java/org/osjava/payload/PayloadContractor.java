@@ -29,7 +29,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package com.generationjava.payload;
+package org.osjava.payload;
 
 import java.util.jar.JarOutputStream;
 import java.util.jar.JarEntry;
@@ -99,8 +99,8 @@ if(DEBUG) System.out.println("DEBUG turned on. ");
                 jout.putNextEntry(entry2);
                 if(entry.getName().equals("META-INF/MANIFEST.MF")) {
                     String mf = IOUtils.readToString(in);
-                    mf = mf.replaceAll("Main-Class: com\\.generationjava\\.payload\\.PayloadContractor", 
-                                       "Main-Class: com.generationjava.payload.PayloadExtractor");
+                    mf = mf.replaceAll("Main-Class: org\\.osjava\\.payload\\.PayloadContractor", 
+                                       "Main-Class: org.osjava.payload.PayloadExtractor");
                     jout.write(mf.getBytes());
                 } else {
                     IOUtils.pushBytes(in, jout);
