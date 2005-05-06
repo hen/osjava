@@ -1,4 +1,4 @@
-package com.generationjava.payload;
+package org.osjava.payload;
 
 import java.util.Properties;
 
