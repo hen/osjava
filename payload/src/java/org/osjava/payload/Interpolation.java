@@ -49,78 +49,21 @@ import java.util.Properties;
  */
 class Interpolation {
 
-    private static final String ENDS_WITH = "org.osjava.payload.interpolate.endsWith";
-    private static final String MATCHES = "org.osjava.payload.interpolate.matches";
-    private static final String ARCHIVE_ENDS_WITH = "org.osjava.payload.interpolate.archive.endsWith";
-    private static final String ARCHIVE_MATCHES = "org.osjava.payload.interpolate.archive.matches";
+    private PayloadConfiguration config;
 
-    public static final Interpolation DEFAULT = new Interpolation(
-        "org.osjava.payload=true\n" +
-        "org.osjava.payload.interpolate.endsWith=xml\n" +
-        "org.osjava.payload.interpolate.endsWith=jcml\n" +
-        "org.osjava.payload.interpolate.endsWith=properties\n" +
-        "org.osjava.payload.interpolate.endsWith=txt\n" +
-        "org.osjava.payload.interpolate.endsWith=conf\n");
-
-    private List fileMatches;
-    private List fileEndsWith;
-    private List archiveEndsWith;
-    private List archiveMatches;
-
-    public Interpolation(String txt) {
-        try {
-            // parse
-            BufferedReader rdr = new BufferedReader(new StringReader(txt));
-            String line = "";
-            this.fileMatches = new ArrayList();
-            this.fileEndsWith = new ArrayList();
-            this.archiveEndsWith = new ArrayList();
-            this.archiveMatches = new ArrayList();
-            while( (line = rdr.readLine()) != null) {
-                if(line.startsWith(ENDS_WITH)) {
-                    int idx = line.indexOf("=");
-                    if(idx != -1) {
-if(PayloadExtractor.DEBUG) System.out.println("Adding endsWith rule: "+line.substring(idx+1));
-                        this.fileEndsWith.add(line.substring(idx+1));
-                    }
-                } else 
-                if(line.startsWith(ARCHIVE_ENDS_WITH)) {
-                    int idx = line.indexOf("=");
-                    if(idx != -1) {
-if(PayloadExtractor.DEBUG) System.out.println("Adding archiveEndsWith rule: "+line.substring(idx+1));
-                        this.archiveEndsWith.add(line.substring(idx+1));
-                    }
-                } else 
-                if(line.startsWith(MATCHES)) {
-                    int idx = line.indexOf("=");
-                    if(idx != -1) {
-if(PayloadExtractor.DEBUG) System.out.println("Adding matches rule: "+line.substring(idx+1));
-                        this.fileMatches.add(line.substring(idx+1));
-                    }
-                } else 
-                if(line.startsWith(ARCHIVE_MATCHES)) {
-                    int idx = line.indexOf("=");
-                    if(idx != -1) {
-if(PayloadExtractor.DEBUG) System.out.println("Adding archiveMatches rule: "+line.substring(idx+1));
-                        this.archiveMatches.add(line.substring(idx+1));
-                    }
-                }
-            }
-        } catch(IOException ioe) {
-            // ? throw ParsingException?
-            ioe.printStackTrace();
-        }
+    public Interpolation(PayloadConfiguration configuration) {
+        this.config = configuration;
     }
 
     public boolean interpolatableArchive(String name) {
-        Iterator itr = this.archiveEndsWith.iterator();
+        Iterator itr = this.config.getArchiveEndsWith().iterator();
         while(itr.hasNext()) {
             String substr = (String) itr.next();
             if(name.endsWith(substr)) {
                 return true;
             }
         }
-        itr = this.archiveMatches.iterator();
+        itr = this.config.getArchiveMatches().iterator();
         while(itr.hasNext()) {
             String pattern = (String) itr.next();
             if(name.matches(pattern)) {
@@ -131,14 +74,14 @@ if(PayloadExtractor.DEBUG) System.out.println("Adding archiveMatches rule: "+lin
     }
 
     public boolean interpolatable(String name) {
-        Iterator itr = this.fileEndsWith.iterator();
+        Iterator itr = this.config.getFileEndsWith().iterator();
         while(itr.hasNext()) {
             String substr = (String) itr.next();
             if(name.endsWith(substr)) {
                 return true;
             }
         }
-        itr = this.fileMatches.iterator();
+        itr = this.config.getFileMatches().iterator();
         while(itr.hasNext()) {
             String pattern = (String) itr.next();
             if(name.matches(pattern)) {
@@ -177,4 +120,5 @@ if(PayloadExtractor.DEBUG) System.out.println("Adding archiveMatches rule: "+lin
         buf.append(text.substring(start));
         return buf.toString();
     }
+
 }

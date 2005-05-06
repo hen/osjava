@@ -31,23 +31,32 @@
  */
 package org.osjava.payload;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.StringReader;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Properties;
 
-public interface Paylet {
+/**
+ * used to handle paylet concepts
+ */
+class PayletExecutor {
 
-    /**
-     * Set the arguments to be used each time for the paylet.
-     *
-     * @param args Arguments to the paylet, never null.
-     */
-    void setArgs(String[] args);
+    private PayloadConfiguration configuration;
 
-    /**
-     * Execute the paylet with the provided arguments. 
-     *
-     * @param configuration The baked in payload.properties.
-     * @param properties The user supplied deployment properties. 
-     */
-    void execute(PayloadConfiguration configuration, Properties properties);
+    public PayletExecutor(PayloadConfiguration configuration) {
+        configuration = configuration;
+    }
+
+    public void execute(Properties properties) {
+        Iterator itr = this.configuration.getPaylets().iterator();
+        while(itr.hasNext()) {
+            Paylet paylet = (Paylet) itr.next();
+            paylet.execute(configuration, properties);
+        }
+    }
 
 }
