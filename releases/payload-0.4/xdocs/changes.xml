@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<document>
+
+  <properties>
+      <author email="bayard@generationjava.com">Henri Yandell</author>
+      <title>Changes</title>
+  </properties>
+
+  <body>
+    <release version="0.4" date="2005-05-05">
+          <action dev="hen" type="fix">Commenting out the setting of compressed-size. it causes problems and seems unnecessary. </action>
+          <action dev="hen" type="add">Supports regular expression matching for archives too. </action>
+          <action dev="hen" type="add" issue="PAY-13">Interpolating in an archives recurses. </action>
+    </release>
+
+    <release version="0.3" date="2005-04-18">
+          <action dev="hen" type="add" issue="PAY-10">Jarring on Windows puts in backslashes. Now uses slashes always. </action>
+          <action dev="hen" type="add" issue="PAY-11">Allow more than one .properties file to be passed in.</action>
+          <action dev="hen" type="add" issue="PAY-12">Interpolate zips/wars/jars etc.</action>
+    </release>
+
+    <release version="0.2" date="2004-02-04">
+          <action dev="hen" type="add" issue="PAY-5">Files to interpolate may now be specified.</action>
+          <action dev="hen" type="add" issue="PAY-1">Directories are now recursively included.</action>
+    </release>
+
+    <release version="0.1" date="2004-02-03">
+          <action dev="hen" type="add">Self-extracting jars are built with the payload jar.</action>
+          <action dev="hen" type="add">The self-extracting jar then unpacks itself into a directory with the same name as the jar.</action>
+          <action dev="hen" type="add">A properties file may be specified for interpolation on .txt and .xml files.</action>
+    </release>
+</body>
+</document>
