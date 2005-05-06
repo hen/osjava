@@ -40,7 +40,7 @@ public class InterpolationTest extends TestCase {
     Interpolation interpolation = null;
 
     public void setUp() {
-        this.interpolation = Interpolation.DEFAULT;
+        this.interpolation = new Interpolation( PayloadConfiguration.DEFAULT );
     }
 
     public void tearDown() {

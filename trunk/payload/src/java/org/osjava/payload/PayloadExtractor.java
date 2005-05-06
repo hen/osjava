@@ -101,7 +101,7 @@ if(DEBUG) System.out.println(props.toString());
         try {
             JarFile jar = new JarFile(new File(jarFile));
 
-            Interpolation interpolation = null;
+            PayloadConfiguration configuration = null;
 
             // need to find a way to ensure the interpolation is read 
             // first. possibly scan through the zip first?
@@ -111,16 +111,20 @@ if(DEBUG) System.out.println(props.toString());
                 if(entry.getName().equals("payload.properties")) {
 if(DEBUG) System.out.println("Custom interpolation being used. ");
                     InputStream in = jar.getInputStream( entry );
-                    String text = IOUtils.readToString(in);
-                    interpolation = new Interpolation(text);
+                    String txt = IOUtils.readToString(in);
+                    configuration = new PayloadConfiguration(txt);
                     break;
                 }
             }
 
-            if(interpolation == null) {
-if(DEBUG) System.out.println("Default interpolation being used. ");
-                interpolation = Interpolation.DEFAULT;
+
+            if(configuration == null) {
+if(DEBUG) System.out.println("Default configuration being used. ");
+                configuration = PayloadConfiguration.DEFAULT;
             }
+
+            Interpolation interpolation = new Interpolation(configuration);
+            PayletExecutor payletExecutor = new PayletExecutor(configuration);
 
             System.out.print("Payload extracting");
 
@@ -198,6 +202,10 @@ if(DEBUG) System.out.println("Interpolating "+outName);
                     }
                 }
 
+            }
+
+            if(payletExecutor != null) {
+                payletExecutor.execute(props);
             }
         } catch(IOException ioe) { ioe.printStackTrace(); }
 
