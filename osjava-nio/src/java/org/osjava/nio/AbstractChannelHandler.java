@@ -40,6 +40,8 @@ package org.osjava.nio;
 
 import java.nio.channels.SelectableChannel;
 import java.nio.channels.SelectionKey;
+import java.util.Collection;
+import java.util.LinkedList;
 import java.io.IOException;
 
 /**
@@ -65,6 +67,8 @@ public abstract class AbstractChannelHandler implements ChannelHandler {
      * back and forth
      */
     protected SelectableChannel chan;
+    
+    private Collection channelListeners = new LinkedList();
 
     /**
      * Creates a ChannelHandler for the channel <code>chan</code> to be
@@ -81,26 +85,6 @@ public abstract class AbstractChannelHandler implements ChannelHandler {
         this.chan = chan;
         chan.configureBlocking(false);
     }
-
-    /**
-     * @see org.osjava.nio.ChannelHandler#accept()
-     */
-    abstract public void accept();
-
-    /**
-     * @see org.osjava.nio.ChannelHandler#connect()
-     */
-    abstract public void connect() throws IOException;
-
-    /**
-     * @see org.osjava.nio.ChannelHandler#readFromChannel()
-     */
-    abstract public void readFromChannel() throws IOException;
-
-    /**
-     * @see org.osjava.nio.ChannelHandler#writeToChannel()
-     */
-    abstract public void writeToChannel() throws IOException;
 
     /**
      * Close the underlying SelectableChannel.  The SelectionKey is also
@@ -131,5 +115,17 @@ public abstract class AbstractChannelHandler implements ChannelHandler {
      */
     public IOThread getThread() {
         return thread;
+    }
+    
+    public void addChannelListener(ChannelListener cl) {
+        channelListeners.add(cl);
+    }
+    
+    public void removeChannelListener(ChannelListener cl) {
+        channelListeners.remove(cl);
+    }
+    
+    public Collection getChannelListeners() {
+        return (Collection)((LinkedList)channelListeners).clone();
     }
 }

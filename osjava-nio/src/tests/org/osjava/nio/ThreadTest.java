@@ -40,17 +40,11 @@
 
 package org.osjava.nio;
 
-import java.io.BufferedWriter;
 import java.io.IOException;
 
 import java.net.InetSocketAddress;
 
 import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
-import java.nio.channels.ClosedChannelException;
-import java.nio.charset.CharacterCodingException;
-import java.nio.charset.Charset;
-import java.nio.charset.CharsetDecoder;
 
 import java.util.Random;
 
@@ -63,20 +57,33 @@ public class ThreadTest {
      * Echo data send byte for byte.
      */
     public static class ByteEchoServer 
-        extends AbstractSocketChannelHandlerAcceptor 
-    {
-        public ByteEchoServer(IOThread iot) {
-            super(iot);
-        }
-
-        public void acceptSocketChannelHandler(SocketChannelHandler sch) 
-            throws IOException 
-        {
-            super.acceptSocketChannelHandler(sch);
+        implements ChannelListener {
+        
+        public void connectionAccepted(ChannelHandler serv, ChannelHandler con) {
+            /* Make sure that the incoming connection is the right type */
+            if(!(con instanceof ByteBroker)) {
+                /* Uhhh...do something */
+                return;
+            }
             /*
              * Simply write to self
              */
-            sch.setByteBroker(sch);
+            con.setByteBroker((ByteBroker)con);            
+        }
+
+        public void connectionClosed(ChannelHandler con) {
+            // TODO Auto-generated method stub
+            
+        }
+
+        public void connected(ChannelHandler con) {
+            // TODO Auto-generated method stub
+            
+        }
+
+        public void receiveData(ChannelHandler con, ByteBuffer buf) {
+            // TODO Auto-generated method stub
+            
         }
 
     }
@@ -89,16 +96,12 @@ public class ThreadTest {
      * invalid characters are handled VERY badly in the converters.
      */
     public static class CharEchoServer 
-        extends AbstractSocketChannelHandlerAcceptor
+        implements ChannelListener
     {
-        public CharEchoServer(IOThread iot) {
-            super(iot);
-        }
 
         public void acceptSocketChannelHandler(SocketChannelHandler sch) 
             throws IOException 
         {
-            super.acceptSocketChannelHandler(sch);
             /*
              * Write to self via byte -> char and char -> byte 
              * converters
@@ -108,6 +111,38 @@ public class ThreadTest {
                         new CharToByteBroker(sch)
                         )
                     );
+        }
+
+        public void connectionAccepted(ChannelHandler serv, ChannelHandler con) {
+            /* Make sure that the incoming connection is the right type */
+            if(!(con instanceof ByteBroker)) {
+                /* Uhhh...do something */
+                return;
+            }
+            /*  
+             * Write to self via byte -> char and char -> byte 
+             * converters
+             */
+            con.setByteBroker(
+                    new ByteToCharBroker(
+                        new CharToByteBroker((ByteBroker)con)
+                        )
+                    );
+        }
+
+        public void connectionClosed(ChannelHandler con) {
+            // TODO Auto-generated method stub
+            
+        }
+
+        public void connected(ChannelHandler con) {
+            // TODO Auto-generated method stub
+            
+        }
+
+        public void receiveData(ChannelHandler con, ByteBuffer buf) {
+            // TODO Auto-generated method stub
+            
         }
     }
     
@@ -148,6 +183,7 @@ public class ThreadTest {
                 /*
                  * We've finished already
                  */
+                System.out.println("Already done.");
                 return;
             }
             while(true) {
@@ -168,8 +204,10 @@ public class ThreadTest {
                  * data, return, as whatever we're writing to has
                  * had its' fill
                  */
-                if(!outBuffer.hasRemaining() || outCount == 0) 
+                if(!outBuffer.hasRemaining() || outCount == 0) {
+                    System.out.println("Done");
                     return;
+                }
             }
         }
 
@@ -177,6 +215,7 @@ public class ThreadTest {
          * incoming data
          */
         public void broker(ByteBuffer data, boolean close) {
+            System.out.println("Broker called in DateIntegretyTest");
             while(data.hasRemaining() && inCount > 0) {
                 byte b = data.get();
                 byte[] foo = new byte[1];
@@ -218,15 +257,24 @@ public class ThreadTest {
         int byteCount = Integer.parseInt(args[1]);
 
         IOThread iot = new IOThread();
+        System.out.println("IOThread Created");
         iot.start();
-        ByteEchoServer echoHandler = new ByteEchoServer(iot);
-        IOUtils.listen(new InetSocketAddress(9999), iot, echoHandler);
+        System.out.println("IOThread Started");
+        ByteEchoServer echoHandler = new ByteEchoServer();
+        ServerSocketChannelHandler listenChannel = 
+            IOUtils.listen(new InetSocketAddress(9999), iot);
+            listenChannel.addChannelListener(echoHandler);
+            System.out.println("Listening connection established.");
 
+        System.out.println("Adding connections");
         for(int i=0;i<connectionCount;i++) {
             SocketChannelHandler sch = IOUtils.connect(
                     new InetSocketAddress("localhost",9999),
                     iot);
+            
+            System.out.println("Added connection " + i);
             sch.setByteBroker( new DataIntegrityTestBroker(sch, byteCount) );
+            System.out.println("Broker set.");
         }
     }
 }

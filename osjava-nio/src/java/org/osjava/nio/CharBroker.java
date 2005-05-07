@@ -52,17 +52,18 @@ public interface CharBroker {
     /**
      * Do something with some chars
      *
-     * @param data Some characters, this method is not guaranteed to use all the
-     * data, it is upto the caller to deal with any chars that are left
-     * in the CharBuffer when this method returns.
+     * @param data Some characters, this method is not guaranteed to use all 
+     *        the data, it is upto the caller to deal with any chars that are
+     *        left in the CharBuffer when this method returns.
      */
     public void broker(CharBuffer data, boolean close);
 
     /**
      * Do something with some chars
      *
-     * @param data Some characters, this method is not guaranteed to use all the
-     * data, it is upto the caller to deal with any chars that are not written
+     * @param data Some characters, this method is not guaranteed to use all 
+     *        the data, it is upto the caller to deal with any chars that are
+     *        not written
      * @return the number of chars brokered.
      */
     public int broker(char[] data, boolean close);

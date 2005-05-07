@@ -66,26 +66,21 @@ public class IOUtils {
      *
      * @param addr the address the ServerSocketChannel is bound to.
      * @param thread the IOThread to register the SocketChannel with.
-     * @param acceptor The handler which is called when something connects
-     *        to the newly established ServerSocketChannel.
      * @return a ServerSocketChannelHandler wrapped around the listening
      *         listening ServerSocketChannel object.
      * @throws ClosedChannelException if the underlying channel is closed.
      * @throws IOException if an IO exception occurs.
      */
-    public static ServerSocketChannelHandler listen(InetSocketAddress addr,
-                                                    IOThread thread,
-                                                    SocketChannelHandlerAcceptor acceptor)
-        throws ClosedChannelException, IOException {
+    public static ServerSocketChannelHandler listen(InetSocketAddress addr, IOThread thread)
+            throws ClosedChannelException, IOException {
         ServerSocketChannel chan = ServerSocketChannel.open();
         ServerSocketChannelHandler handler = new ServerSocketChannelHandler(chan,thread);
         int ops = chan.validOps();
         ServerSocket socket = chan.socket();
         socket.bind(addr);
         thread.register(handler, ops);
-        handler.setSocketChannelHandlerAcceptor(acceptor);
         return handler;
-        }
+    }
 
     /**
      * Create a {@link SocketChannelHandler} that is wrapped around a
