@@ -39,7 +39,6 @@
 package org.osjava.nio;
 
 import java.io.IOException;
-import java.io.Writer;
 
 import java.net.Socket;
 
@@ -49,12 +48,9 @@ import java.nio.channels.SelectableChannel;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-
-public class SocketChannelHandler extends AbstractChannelHandler 
-implements ByteBroker 
+public class SocketChannelHandler 
+    extends AbstractChannelHandler 
+    implements ByteBroker 
 {
     /**
      * The underlying SocketChannel this ChannelHandler wraps.
@@ -93,7 +89,7 @@ implements ByteBroker
         super(chan, thread);
         this.chan = chan;
     }
-    
+
     /**
      * Set the ByteBroker this ChannelHandler uses.
      */
@@ -142,7 +138,7 @@ implements ByteBroker
          * (readBuffer full, or stream closed by the remote end)
          */
         if(readClosed || !readBuffer.hasRemaining()) {
-            getThread().removeInterestOp(key, SelectionKey.OP_READ);
+            getThread().removeInterestOp(this, SelectionKey.OP_READ);
         }
     }
 
@@ -152,7 +148,7 @@ implements ByteBroker
                     "no data to be written, this is a BUG.");
             System.out.println("If you see this message lots you " +
                     "need to turn off OP_WRITE");
-            getThread().removeInterestOp(key, SelectionKey.OP_WRITE);
+            getThread().removeInterestOp(this, SelectionKey.OP_WRITE);
             return;
         }
         
@@ -181,7 +177,7 @@ implements ByteBroker
              *
              * Information in the writeBuffer is lost, this is unavoidable.
              */
-            getThread().removeInterestOp(key, SelectionKey.OP_WRITE);
+            getThread().removeInterestOp(this, SelectionKey.OP_WRITE);
             writeClosed = true;
             writeBuffer.clear();
             return;
@@ -201,7 +197,7 @@ implements ByteBroker
             /* 
              * Remove interest in write operations
              */
-            getThread().removeInterestOp(key, SelectionKey.OP_WRITE);
+            getThread().removeInterestOp(this, SelectionKey.OP_WRITE);
         }
 
         /*
@@ -220,7 +216,7 @@ implements ByteBroker
              * we need to reregister interest in READ operations
              */
             if(readBufferFull && readBuffer.hasRemaining()) {
-                getThread().addInterestOp(key, SelectionKey.OP_READ);
+                getThread().addInterestOp(this, SelectionKey.OP_READ);
             }
         }
     }
@@ -231,7 +227,7 @@ implements ByteBroker
          * OP_CONNECT event.
          */
         if (chan.isConnected()) {
-            getThread().removeInterestOp(key, SelectionKey.OP_CONNECT);
+            getThread().removeInterestOp(this, SelectionKey.OP_CONNECT);
             return;
         }
         /* 
@@ -240,7 +236,7 @@ implements ByteBroker
          */
         if (chan.isConnectionPending()) {
             if (chan.finishConnect()) {
-                getThread().removeInterestOp(key, SelectionKey.OP_CONNECT);
+                getThread().removeInterestOp(this, SelectionKey.OP_CONNECT);
             } else {
                 close();
             }
@@ -307,7 +303,10 @@ implements ByteBroker
             throw new BrokerException("Stream closed " +
                     "(either by you, or an error was encountered)");
         }
+        
         if(writeBuffer.hasRemaining() && data.hasRemaining()) {
+            /* FIXME: This logic is flawed. You want to append to the end of 
+             *        the writeBuffer's data, not overwrite it. maybe limit()?*/
             if(data.remaining() <= writeBuffer.remaining()) {
                 writeBuffer.put(data);
             } else {
@@ -318,15 +317,20 @@ implements ByteBroker
                  * even a .get(ByteBuffer) method would do !
                  */
                 data.get(writeBuffer.array(), 
-                        writeBuffer.position(), 
-                        writeBuffer.remaining());
+                         writeBuffer.position(), 
+                         writeBuffer.remaining());
             }
         }
         if(close && !data.hasRemaining()) {
             writeClosed = true;
         }
+        
+        /* XXX: I think more work needs to go here -- RMZ */
         if(writeBuffer.position() > 0) {
-            getThread().addInterestOp(getSelectionKey(), SelectionKey.OP_WRITE);
+            /* If there's no selection key yet, we need to queue information up. */
+            if(getSelectionKey() != null) {
+                getThread().addInterestOp(this, SelectionKey.OP_WRITE);
+            }
         }
     }
 

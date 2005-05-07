@@ -40,17 +40,20 @@
 package org.osjava.nio;
 
 import java.io.IOException;
-import java.io.InterruptedIOException;
 
 import java.nio.channels.ClosedChannelException;
 import java.nio.channels.SelectableChannel;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
+
+import org.apache.log4j.Logger;
 
 /**
  * A Thread facilitating the use of non-blocking
@@ -63,8 +66,8 @@ import java.util.Set;
  * of the Selectors are modifified outside of the IOThread they are registered
  * with.  This is an unfortunate side effect of synchronization issues.  While
  * a Selector and a SelectionKey are both threadsafe, the key sets of a
- * Selector are not.  Instead the {@link #addOps} and {@link #removeOps}
- * methods are provided for this synchronization.
+ * Selector are not.  Instead the {@link #addInterestOp} and 
+ * {@link #removeInterestOp} methods are provided for this synchronization.
  *
  * @author Anthony Riley and Robert M. Zigweid
  * @version $Rev$ $Date$
@@ -85,6 +88,10 @@ public class IOThread extends Thread {
      * OSJava-Threads ExtendedRunnable class.
      */
     private volatile boolean abort=false;
+
+    private Map pendingRegister = new HashMap();
+    
+    private Collection pendingDeregister = new LinkedList();
 
 
     /**
@@ -129,16 +136,29 @@ public class IOThread extends Thread {
     * Adding the op here, does not guarantee that the op will end up
     * getting added to the key when the thread cycles.
     *
-    * @param key the key to which the interest op will be added
+    * @param handler the handler who's SelectionKey will have the interestOp
+    *        added.
     * @param op the operation to add.
     */
-   public void addInterestOp(SelectionKey key, int op) {
+   public void addInterestOp(ChannelHandler handler, int op) {
+       SelectionKey key = handler.getSelectionKey();
+       Logger logger = Logger.getLogger(this.getClass());
+       /* If the key doesn't exist, look for the channel handler in the 
+        * pending handlers.  We should be able to get away with adding 
+        * the op to the value of the Map if that's the case. */
+       synchronized(this) {
+           if(key == null && pendingRegister.containsKey(handler)) {
+               pendingRegister.put(handler, new Integer(((Integer)pendingRegister.get(handler)).intValue() | op));
+               notify();
+               return;
+           }
+       }
        if(!key.isValid() || !mySelector.keys().contains(key) ) {
            /* TODO: Make this throw an exception */
            /* Wake up the selector anyway, just in case */
            /* Commented out, we should not be speculatively waking the 
             * selector up */
-           /* mySelector.wakeup(); */
+           // mySelector.wakeup();
            return;
        }
        int ops;
@@ -150,10 +170,10 @@ public class IOThread extends Thread {
            }
 
            ops |= op;
-
            changeOps.put(key, new Integer(ops));
        }
 
+       logger.debug("Waking up from addInterestOp");
        mySelector.wakeup();
    }
 
@@ -164,10 +184,25 @@ public class IOThread extends Thread {
     * Removing the op here, does not guarantee that the op will end up
     * getting added to the key when the thread cycles.
     *
-    * @param key the key from which the interest op will be removed
+    * @param handler the handler who's key will have the interestOp removed.
     * @param op the operation to remove.
     */
-   public void removeInterestOp(SelectionKey key, int op) {
+   public void removeInterestOp(ChannelHandler handler, int op) {
+       SelectionKey key = handler.getSelectionKey();
+       Logger logger = Logger.getLogger(this.getClass());
+       logger.debug("Removing from key '" + key + "' op '" + op + "'");
+
+       /* If the key doesn't exist, look for the channel handler in the 
+        * pending handlers.  We should be able to get away with adding 
+        * the op to the value of the Map if that's the case. */
+       synchronized(this) {
+           if(key == null && pendingRegister.containsKey(handler)) {
+               pendingRegister.put(handler, new Integer(((Integer)pendingRegister.get(handler)).intValue() & ~op));
+               notify();
+               return;
+           }
+       }
+
        if(!key.isValid() || !mySelector.keys().contains(key)) {
            /* TODO: Make this throw an exception */
            /* Wake up the selector anyway, just in case */
@@ -176,6 +211,7 @@ public class IOThread extends Thread {
             * doing any good
            mySelector.wakeup();
             */
+           logger.debug("invalid key");
            return;
        }
        int ops;
@@ -188,7 +224,6 @@ public class IOThread extends Thread {
            ops &= ~op;
            changeOps.put(key, new Integer(ops));
        }
-
        mySelector.wakeup();
    }
 
@@ -201,12 +236,11 @@ public class IOThread extends Thread {
      * @param handler the ChannelHandler for the Selectable Channel
      * @param ops the initial ops that the returned {@link SelectionKey} is
      *        to be interested in.
-     * @return a SelectionKey to be associated with the <code>handler</code>
      * @throws ClosedChannelException if the underlying channel is closed.
      * @throws IllegalStateException if the underlying channel is a blocking
      *         channel.
      */
-    public SelectionKey register(ChannelHandler handler, int ops)
+    public void register(ChannelHandler handler, int ops)
         throws ClosedChannelException, IllegalStateException {
         SelectableChannel chan = handler.getSelectableChannel();
 
@@ -214,14 +248,13 @@ public class IOThread extends Thread {
             throw new IllegalStateException("SelectableChannel is blocking");
         }
 
-        SelectionKey key = chan.register(mySelector, ops, handler);
-        handler.setSelectionKey(key);
+        pendingRegister.put(handler, new Integer(ops));        
+        mySelector.wakeup();
 
         // XXX: Workaround, Selector hangs when it has nothing registered.
         synchronized (this) {
-            notify();
+            this.notify();
         }
-        return key;
     }
 
     /**
@@ -232,86 +265,147 @@ public class IOThread extends Thread {
      * @param handler the ChannelHandler to deregister.
      */
     public void deregister(ChannelHandler handler) {
-        SelectionKey key=handler.getSelectableChannel().keyFor(mySelector);
-
-        if(key!=null) {
-            key.cancel();
-        }
+        pendingDeregister.add(handler);
+        mySelector.wakeup();
     }
 
     /**
      * The looping run method of the class.  All Threads have this.
      */
     public void run() {
+        Logger logger = Logger.getLogger(this.getClass());
         while (!isAborting()) {
-            try {
-                // XXX: Workaround, Selector.select() never returns if
-                // there is nothing to select on ! (even if you
-                // call Selector.wakeup() )
-                synchronized (this) {
-                    try {
-                        while (mySelector.keys().size() == 0) {
-                            wait();
+            /* Register and deregister channels first */
+            /* Register keys that are pending */
+            if(pendingRegister.size() > 0) {
+                synchronized(pendingRegister) {
+                    Iterator it = pendingRegister.entrySet().iterator();
+                    while(it.hasNext()) { 
+                        Map.Entry next = (Map.Entry)it.next();
+                        ChannelHandler handler = (ChannelHandler)next.getKey();
+                        SelectableChannel chan = handler.getSelectableChannel();
+                        int ops = ((Integer)next.getValue()).intValue();
+                        SelectionKey key = null;
+                        try {
+                            key = chan.register(mySelector, ops, handler);
+                        } catch (ClosedChannelException e) {
+                            e.printStackTrace();
                         }
-                    } catch (InterruptedException ie) {
-                        break;
+                        handler.setSelectionKey(key);
                     }
+                    pendingRegister.clear();
                 }
-
-
-                try {
-                    boolean cont = true;
-                    while(cont) {
-                        if(changeOps.size() > 0) {
-                            synchronized(changeOps) {
-                                /* Look to apply ops to the keys first */
-                                Iterator it = changeOps.entrySet().iterator();
-                                while(it.hasNext()) {
-                                    Map.Entry next = (Map.Entry) it.next();
-                                    SelectionKey nextKey = 
-                                        (SelectionKey) next.getKey();
-                                    if(nextKey.isValid()) {
-                                        int new_ops = 
-                                            ((Integer) next.getValue()).
-                                            intValue();
-                                        nextKey.interestOps(new_ops);
-                                    }
-                                }
-                                /* Quicker to clear map completely than remove one by one */
-                                changeOps.clear();
-                            }
+            }
+            /* Deregistering keys that are pending */
+            if(pendingDeregister.size() > 0) {
+                synchronized(pendingDeregister) {
+                    Iterator it = pendingDeregister.iterator();
+                    while(it.hasNext()) {
+                        ChannelHandler handler = (ChannelHandler)it.next();
+                        SelectionKey key=handler.getSelectableChannel().keyFor(mySelector);                                    
+                        if(key!=null) {
+                            key.cancel();
                         }
-                        int selected;
-                        selected = mySelector.select();
-                        cont = (selected == 0);
                     }
-                } catch (InterruptedIOException iie) {
+                    pendingDeregister.clear();
+                }
+            }
+            // XXX: Workaround, Selector.select() never returns if
+            // there is nothing to select on ! (even if you
+            // call Selector.wakeup() )
+            synchronized (this) {
+                try {
+                    while (mySelector.keys().size() == 0) {
+                        wait();
+                        continue;
+                    }
+                } catch (InterruptedException ie) {
                     break;
                 }
-                Set keys = mySelector.selectedKeys();
-                Iterator i = keys.iterator();
-                while (i.hasNext()) {
-                    SelectionKey key = (SelectionKey)i.next();
-                    ChannelHandler handler = (ChannelHandler)key.attachment();
-                    if (key.isValid()) {
-                        int ops = key.readyOps();
-                        if ((ops & SelectionKey.OP_ACCEPT) != 0) {
+            }
+            
+            boolean cont = true;
+            while(cont) {
+                /* Changing of ops in existing keys. */
+                if(changeOps.size() > 0) {
+                    synchronized(changeOps) {
+                        /* Look to apply ops to the keys first */
+                        Iterator it = changeOps.entrySet().iterator();
+                        while(it.hasNext()) {
+                            Map.Entry next = (Map.Entry) it.next();
+                            SelectionKey nextKey = (SelectionKey) next.getKey();
+                            if(nextKey.isValid()) {
+                                int new_ops = 
+                                    ((Integer) next.getValue()).
+                                    intValue();
+                                logger.debug("Changing interestOps");
+                                nextKey.interestOps(new_ops);
+                                logger.debug("Done changing interestOps");
+                            }
+                        }
+                        /* Quicker to clear map completely than remove one by one */
+                        changeOps.clear();
+                    }
+                }
+                int selected = 0;
+                logger.debug("Selecting");
+                try {
+                    selected = mySelector.select();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                logger.debug("Done Selecting");
+                cont = (selected == 0);
+            }
+            
+            Set keys = mySelector.selectedKeys();
+            Iterator i = keys.iterator();
+            while (i.hasNext()) {
+                SelectionKey key = (SelectionKey)i.next();
+                ChannelHandler handler = (ChannelHandler)key.attachment();
+                if (key.isValid()) {
+                    int ops = key.readyOps();
+                    if ((ops & SelectionKey.OP_ACCEPT) != 0) {
+                        try {
                             handler.accept();
-                        }
-                        if ((ops & SelectionKey.OP_CONNECT) != 0) {
-                            handler.connect();
-                        }
-                        if ((ops & SelectionKey.OP_READ) != 0) {
-                            handler.readFromChannel();
-                        }
-                        if ((ops & SelectionKey.OP_WRITE) != 0) {
-                            handler.writeToChannel();
+                        } catch (ClosedChannelException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        } catch (IllegalStateException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
                         }
                     }
-                    i.remove();
+                    if ((ops & SelectionKey.OP_CONNECT) != 0) {
+                        try {
+                            handler.connect();
+                        } catch (IOException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                    }
+                    if ((ops & SelectionKey.OP_READ) != 0) {
+                        try {
+                            handler.readFromChannel();
+                        } catch (IOException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                    }
+                    if ((ops & SelectionKey.OP_WRITE) != 0) {
+                        try {
+                            handler.writeToChannel();
+                        } catch (IOException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
+                        //key.interestOps(key.interestOps() & ~SelectionKey.OP_WRITE);
+                    }
                 }
-            } catch (IOException ioe) {
-                ioe.printStackTrace();
+                i.remove();
             }
         }
         // XXX: This doesn't work !!!!

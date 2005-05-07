@@ -42,16 +42,20 @@ import java.io.IOException;
 
 import java.net.ServerSocket;
 
+import java.nio.channels.ClosedChannelException;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.SelectableChannel;
 
+import java.util.Iterator;
+
 public class ServerSocketChannelHandler
     extends AbstractChannelHandler {
 
     private ServerSocketChannel chan;
-    private SocketChannelHandlerAcceptor acceptor;
+    
+    
     private SelectionKey key = null;
 
     private IOThread sockThread = null;
@@ -64,42 +68,44 @@ public class ServerSocketChannelHandler
             sockThread = thread;
         }
 
-    public void setSocketChannelHandlerAcceptor(SocketChannelHandlerAcceptor acceptor) {
-        this.acceptor = acceptor;
-    }
-
     /**
      * A new connection has been initiated. Register it with the a new
      * SocketChannel handler, and the thread handling this ServerSocketChannel.
      */
-    public void accept() {
-        SelectionKey key = null;
-
+    public void accept() throws 
+        ClosedChannelException, IllegalStateException, IOException {
+        SocketChannel sockChan = null;
+        
         try {
-            SocketChannel sockChan = chan.accept();
-            int ops = sockChan.validOps() & ~SelectionKey.OP_CONNECT  ;
-
-            if (sockChan != null) {
-                // Create a new SocketChannelHandler
-                SocketChannelHandler sch = 
-                    new SocketChannelHandler(sockChan,sockThread);
-                try {
-                    key = ((IOThread)Thread.currentThread()).register(sch, ops);
-                } catch (IOException ioe) {
-                    throw new IllegalStateException("Underlying Channel is closed");
-                }
-
-                //sch.setSelectionKey(key);
-                acceptor.acceptSocketChannelHandler(sch);
-            }
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
+            sockChan = chan.accept();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        
+        if (sockChan != null) {
+            int ops = sockChan.validOps() & ~SelectionKey.OP_CONNECT ;
+            // Create a new SocketChannelHandler
+            SocketChannelHandler sch =  new SocketChannelHandler(sockChan, sockThread);
+            /* Register the Handler with the IOThread. */
+            sockThread.register(sch, ops);
+            sockThread.addInterestOp(sch, SelectionKey.OP_READ);
+            /* Make sure that the connection op is removed */
+            sockThread.removeInterestOp(sch, SelectionKey.OP_CONNECT);
+            /* Notify Connection Listeners*/
+            Iterator it = getChannelListeners().iterator();
+            while(it.hasNext()) {
+                ((ChannelListener)it.next()).connectionAccepted(this, sch);
+            }
+        }        
     }
-
+    
     public void close() throws IOException {
         chan.close();
-        acceptor = null;
+        /* Notify Connection Listeners*/
+        Iterator it = getChannelListeners().iterator();
+        while(it.hasNext()) {
+            ((ChannelListener)it.next()).connectionClosed(this);
+        }
     }
 
     public SelectableChannel getSelectableChannel() {
@@ -150,5 +156,9 @@ public class ServerSocketChannelHandler
     public void setSelectionKey(SelectionKey key) {
         this.key = key;
 
+    }
+
+    public void setByteBroker(ByteBroker aBroker) {
+        /* Not applicable */
     }
 }

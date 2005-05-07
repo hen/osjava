@@ -38,6 +38,7 @@
  */
 package org.osjava.nio;
 
+import java.nio.channels.ClosedChannelException;
 import java.nio.channels.SelectableChannel;
 import java.nio.channels.SelectionKey;
 import java.io.IOException;
@@ -54,8 +55,11 @@ public interface ChannelHandler {
     /**
      * Called by a {@link IOThread} when there are connections to accept on
      * a ServerSocketChannel
+     * @throws IOException 
+     * @throws IllegalStateException 
+     * @throws ClosedChannelException 
      */
-    public void accept();
+    public void accept() throws ClosedChannelException, IllegalStateException, IOException;
 
     /**
      * Called by a {@link IOThread} to complete the connection sequence on
@@ -113,4 +117,9 @@ public interface ChannelHandler {
      *         registered with.
      */
     public IOThread getThread();
+    
+    /**
+     * Set the ByteBroker this ChannelHandler uses.
+     */
+    public void setByteBroker(ByteBroker aBroker);
 }
