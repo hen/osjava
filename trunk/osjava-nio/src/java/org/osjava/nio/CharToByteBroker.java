@@ -108,4 +108,8 @@ public class CharToByteBroker extends AbstractCharBroker {
             }
         }
     }
+
+    public boolean isClosed() {
+        return aBroker.isClosed();
+    }
 }

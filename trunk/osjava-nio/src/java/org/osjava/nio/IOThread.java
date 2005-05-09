@@ -46,10 +46,11 @@ import java.nio.channels.SelectableChannel;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -76,11 +77,19 @@ public class IOThread extends Thread {
 
     private Selector mySelector;
 
+
     /**
+     * List of Tasks to perform with this thread
+     */
+    private List tasks = new ArrayList();
+
+    /*
      * Map for changing ops for keys.  The key is the SelectionKey and the
      * value is the op to change.
      */
-    private Map changeOps = new HashMap();
+    /* Removed, altered directly now
+       private Map changeOps = new HashMap();
+       */
 
     /**
      * Field containing the boolean value which indicates whether or not the
@@ -89,9 +98,11 @@ public class IOThread extends Thread {
      */
     private volatile boolean abort=false;
 
-    private Map pendingRegister = new HashMap();
-    
-    private Collection pendingDeregister = new LinkedList();
+    /* Removed, altered directly now
+       private Map pendingRegister = new HashMap();
+
+       private Collection pendingDeregister = new LinkedList();
+       */
 
 
     /**
@@ -100,8 +111,8 @@ public class IOThread extends Thread {
      * @throws IOException If there is a problem creating the Selector
      */
     public IOThread() throws IOException {
-       super();
-       mySelector = Selector.open();
+        super();
+        mySelector = Selector.open();
     }
 
     /**
@@ -112,9 +123,9 @@ public class IOThread extends Thread {
      */
     public IOThread(String name)
         throws IOException {
-        super(name);
-        mySelector = Selector.open();
-    }
+            super(name);
+            mySelector = Selector.open();
+        }
 
     /**
      * Create a new IOThread.
@@ -125,109 +136,80 @@ public class IOThread extends Thread {
      */
     public IOThread(ThreadGroup group, String name)
         throws IOException {
-        super(group, name);
-        mySelector = Selector.open();
+            super(group, name);
+            mySelector = Selector.open();
+        }
+
+    public void queueTask(Runnable task) {
+        synchronized(tasks) {
+            tasks.add(task);
+        }
+        /*
+         * XXX: There are possible timing issues with this
+         */
+        mySelector.wakeup();
     }
 
-   /**
-    * Add an interestOp to the specified <code>key</code>.  This will
-    * queue the op for addition in the next cycle of the thread.
-    * Modification of keys outside of this mechanism is not recommended.
-    * Adding the op here, does not guarantee that the op will end up
-    * getting added to the key when the thread cycles.
-    *
-    * @param handler the handler who's SelectionKey will have the interestOp
-    *        added.
-    * @param op the operation to add.
-    */
-   public void addInterestOp(ChannelHandler handler, int op) {
-       SelectionKey key = handler.getSelectionKey();
-       Logger logger = Logger.getLogger(this.getClass());
-       /* If the key doesn't exist, look for the channel handler in the 
-        * pending handlers.  We should be able to get away with adding 
-        * the op to the value of the Map if that's the case. */
-       synchronized(this) {
-           if(key == null && pendingRegister.containsKey(handler)) {
-               pendingRegister.put(handler, new Integer(((Integer)pendingRegister.get(handler)).intValue() | op));
-               notify();
-               return;
-           }
-       }
-       if(!key.isValid() || !mySelector.keys().contains(key) ) {
-           /* TODO: Make this throw an exception */
-           /* Wake up the selector anyway, just in case */
-           /* Commented out, we should not be speculatively waking the 
-            * selector up */
-           // mySelector.wakeup();
-           return;
-       }
-       int ops;
-       synchronized(changeOps) {
-           if(changeOps.containsKey(key)) {
-               ops = ((Integer) changeOps.get(key)).intValue();
-           } else {
-               ops = key.interestOps();
-           }
+    /**
+     * Add an interestOp to the specified <code>key</code>.  This will
+     * queue the op for addition in the next cycle of the thread.
+     * Modification of keys outside of this mechanism is not recommended.
+     * Adding the op here, does not guarantee that the op will end up
+     * getting added to the key when the thread cycles.
+     *
+     * @param handler the handler who's SelectionKey will have the interestOp
+     *        added.
+     * @param op the operation to add.
+     */
+    public void addInterestOp(ChannelHandler handler, int op) {
+        if(Thread.currentThread() != this) {
+            /* Would have used IllegalAccessException, but it isn't a runtime
+             * exception. This needs to be a runtime, because there's no
+             * reason the caller should have to worry about catching it
+             */
+            throw new SecurityException("Can't be accessed with this thread");
+        }
+        SelectionKey key = handler.getSelectableChannel().keyFor(mySelector);
+        Logger logger = Logger.getLogger(this.getClass());
+        logger.debug("Adding to key '" + key + "' op '" + op + "'");
 
-           ops |= op;
-           changeOps.put(key, new Integer(ops));
-       }
+        if(key.isValid()) {
+            key.interestOps(key.interestOps() | op);
+        } else {
+            logger.debug("invalid key");
+        }
+    }
 
-       logger.debug("Waking up from addInterestOp");
-       mySelector.wakeup();
-   }
+    /**
+     * Remove an interestOp from the specified <code>key</code>.  This will
+     * queue the op for removal in the next cycle of the thread.
+     * Modification of keys outside of this mechanism is not recommended.
+     * Removing the op here, does not guarantee that the op will end up
+     * getting added to the key when the thread cycles.
+     *
+     * @param handler the handler who's key will have the interestOp removed.
+     * @param op the operation to remove.
+     */
+    public void removeInterestOp(ChannelHandler handler, int op) {
+        if(Thread.currentThread() != this) {
+            /* Would have used IllegalAccessException, but it isn't a runtime
+             * exception. This needs to be a runtime, because there's no
+             * reason the caller should have to worry about catching it
+             */
+            throw new SecurityException("Can't be accessed with this thread");
+        }
+        SelectionKey key = handler.getSelectableChannel().keyFor(mySelector);
+        Logger logger = Logger.getLogger(this.getClass());
+        logger.debug("Removing from key '" + key + "' op '" + op + "'");
 
-   /**
-    * Remove an interestOp from the specified <code>key</code>.  This will
-    * queue the op for removal in the next cycle of the thread.
-    * Modification of keys outside of this mechanism is not recommended.
-    * Removing the op here, does not guarantee that the op will end up
-    * getting added to the key when the thread cycles.
-    *
-    * @param handler the handler who's key will have the interestOp removed.
-    * @param op the operation to remove.
-    */
-   public void removeInterestOp(ChannelHandler handler, int op) {
-       SelectionKey key = handler.getSelectionKey();
-       Logger logger = Logger.getLogger(this.getClass());
-       logger.debug("Removing from key '" + key + "' op '" + op + "'");
+        if(key.isValid()) {
+            key.interestOps(key.interestOps() & ~op);
+        } else {
+            logger.debug("invalid key");
+        }
+    }
 
-       /* If the key doesn't exist, look for the channel handler in the 
-        * pending handlers.  We should be able to get away with adding 
-        * the op to the value of the Map if that's the case. */
-       synchronized(this) {
-           if(key == null && pendingRegister.containsKey(handler)) {
-               pendingRegister.put(handler, new Integer(((Integer)pendingRegister.get(handler)).intValue() & ~op));
-               notify();
-               return;
-           }
-       }
-
-       if(!key.isValid() || !mySelector.keys().contains(key)) {
-           /* TODO: Make this throw an exception */
-           /* Wake up the selector anyway, just in case */
-           /* Removed, speculatively waking up the selector is just bad
-            * even though it technically can do no harm, I can't see it 
-            * doing any good
-           mySelector.wakeup();
-            */
-           logger.debug("invalid key");
-           return;
-       }
-       int ops;
-       synchronized(changeOps) {
-           if(changeOps.containsKey(key)) {
-               ops = ((Integer) changeOps.get(key)).intValue();
-           } else {
-               ops = key.interestOps();
-           }
-           ops &= ~op;
-           changeOps.put(key, new Integer(ops));
-       }
-       mySelector.wakeup();
-   }
-
-   /**
+    /**
      * Register a {@link ChannelHandler} with the IOThread.  This serves to
      * make the Thread's {@link Selector} aware of the {@link SelectionKey}
      * the channel is associated with.  Handlers from blocking
@@ -240,21 +222,22 @@ public class IOThread extends Thread {
      * @throws IllegalStateException if the underlying channel is a blocking
      *         channel.
      */
-    public void register(ChannelHandler handler, int ops)
-        throws ClosedChannelException, IllegalStateException {
+    public void register(ChannelHandler handler, int ops) throws ClosedChannelException, IllegalStateException 
+    {
+        if(Thread.currentThread() != this) {
+            /* Would have used IllegalAccessException, but it isn't a runtime
+             * exception. This needs to be a runtime, because there's no
+             * reason the caller should have to worry about catching it
+             */
+            throw new SecurityException("Can't be accessed with this thread");
+        }
         SelectableChannel chan = handler.getSelectableChannel();
 
         if (chan.isBlocking()) {
             throw new IllegalStateException("SelectableChannel is blocking");
         }
 
-        pendingRegister.put(handler, new Integer(ops));        
-        mySelector.wakeup();
-
-        // XXX: Workaround, Selector hangs when it has nothing registered.
-        synchronized (this) {
-            this.notify();
-        }
+        SelectionKey key = chan.register(mySelector, ops, handler);
     }
 
     /**
@@ -265,8 +248,15 @@ public class IOThread extends Thread {
      * @param handler the ChannelHandler to deregister.
      */
     public void deregister(ChannelHandler handler) {
-        pendingDeregister.add(handler);
-        mySelector.wakeup();
+        if(Thread.currentThread() != this) {
+            /* Would have used IllegalAccessException, but it isn't a runtime
+             * exception. This needs to be a runtime, because there's no
+             * reason the caller should have to worry about catching it
+             */
+            throw new SecurityException("Can't be accessed with this thread");
+        }
+        SelectionKey key = handler.getSelectableChannel().keyFor(mySelector);
+        key.cancel();
     }
 
     /**
@@ -275,89 +265,22 @@ public class IOThread extends Thread {
     public void run() {
         Logger logger = Logger.getLogger(this.getClass());
         while (!isAborting()) {
-            /* Register and deregister channels first */
-            /* Register keys that are pending */
-            if(pendingRegister.size() > 0) {
-                synchronized(pendingRegister) {
-                    Iterator it = pendingRegister.entrySet().iterator();
-                    while(it.hasNext()) { 
-                        Map.Entry next = (Map.Entry)it.next();
-                        ChannelHandler handler = (ChannelHandler)next.getKey();
-                        SelectableChannel chan = handler.getSelectableChannel();
-                        int ops = ((Integer)next.getValue()).intValue();
-                        SelectionKey key = null;
-                        try {
-                            key = chan.register(mySelector, ops, handler);
-                        } catch (ClosedChannelException e) {
-                            e.printStackTrace();
-                        }
-                        handler.setSelectionKey(key);
-                    }
-                    pendingRegister.clear();
-                }
-            }
-            /* Deregistering keys that are pending */
-            if(pendingDeregister.size() > 0) {
-                synchronized(pendingDeregister) {
-                    Iterator it = pendingDeregister.iterator();
-                    while(it.hasNext()) {
-                        ChannelHandler handler = (ChannelHandler)it.next();
-                        SelectionKey key=handler.getSelectableChannel().keyFor(mySelector);                                    
-                        if(key!=null) {
-                            key.cancel();
-                        }
-                    }
-                    pendingDeregister.clear();
-                }
-            }
-            // XXX: Workaround, Selector.select() never returns if
-            // there is nothing to select on ! (even if you
-            // call Selector.wakeup() )
-            synchronized (this) {
-                try {
-                    while (mySelector.keys().size() == 0) {
-                        wait();
-                        continue;
-                    }
-                } catch (InterruptedException ie) {
-                    break;
-                }
-            }
-            
-            boolean cont = true;
-            while(cont) {
-                /* Changing of ops in existing keys. */
-                if(changeOps.size() > 0) {
-                    synchronized(changeOps) {
-                        /* Look to apply ops to the keys first */
-                        Iterator it = changeOps.entrySet().iterator();
-                        while(it.hasNext()) {
-                            Map.Entry next = (Map.Entry) it.next();
-                            SelectionKey nextKey = (SelectionKey) next.getKey();
-                            if(nextKey.isValid()) {
-                                int new_ops = 
-                                    ((Integer) next.getValue()).
-                                    intValue();
-                                logger.debug("Changing interestOps");
-                                nextKey.interestOps(new_ops);
-                                logger.debug("Done changing interestOps");
+            try {
+                do {
+                    synchronized(tasks) {
+                        if(tasks.size() > 0) {
+                            Iterator i = tasks.iterator();
+                            while(i.hasNext()) {
+                                ((Runnable)i.next()).run();
                             }
+                            tasks.clear();
                         }
-                        /* Quicker to clear map completely than remove one by one */
-                        changeOps.clear();
                     }
-                }
-                int selected = 0;
-                logger.debug("Selecting");
-                try {
-                    selected = mySelector.select();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                logger.debug("Done Selecting");
-                cont = (selected == 0);
+                } while(mySelector.select() == 0);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-            
+
             Set keys = mySelector.selectedKeys();
             Iterator i = keys.iterator();
             while (i.hasNext()) {
@@ -402,13 +325,13 @@ public class IOThread extends Thread {
                             // TODO Auto-generated catch block
                             e.printStackTrace();
                         }
-                        //key.interestOps(key.interestOps() & ~SelectionKey.OP_WRITE);
                     }
                 }
                 i.remove();
             }
         }
         // XXX: This doesn't work !!!!
+        // XXX: This is currently not tested (assumed to break hideously)
         // Cleanup
         // This is where we cleanup the mess left when we're interupted
         // TODO: Only close channels if 'closeOnExit' is set.

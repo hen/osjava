@@ -40,48 +40,29 @@
 
 package org.osjava.nio;
 
-import java.nio.ByteBuffer;
-
 /**
  * Interface to be implemented by objects that want to listen for various 
- * events that happen to a SocketChannelHandler.
+ * events that happen to a ChannelHandler.
  * 
  * @author Robert M. Zigweid
  */
+/*
+ * We DO NOT handle data in here, that's already in the Broker code,
+ * just certain conditions like output being finished and reading being
+ * finished. (We may want to for instance close the socket when this happens)
+ *
+ * This just several possible which can possibly happen on a channel. - CT
+ *
+ * Generally butchered, added some code to handle closing sockets (much needed)
+ */
 public interface ChannelListener {
     
-    /**
-     * Called when the {@link ChannelHandler} <code>serv</code> has accepted
-     * the connection <code>con</code>.
-     * 
-     * @param serv the ChannelHandler that accepted the connection. 
-     * @param con the ChannelHandler that was the connection accepted.
-     */
-    public void connectionAccepted(ChannelHandler serv, ChannelHandler con);
-    
-    /**
-     * Called when the {@link ChannelHandler} <code>con</code> is closed.
-     * 
-     * @param con the ChannelHandler that was the connection accepted.
-     */
+    public void connectionAccepted(ChannelHandler con);
+
     public void connectionClosed(ChannelHandler con);
 
-    /**
-     * Called when the {@link ChannelHandler} <code>con</code> has
-     * succesfully established a connection.
-     * 
-     * @param con the ChannelHandler object that has successfully 
-     *        established a connection.
-     */
-    public void connected(ChannelHandler con);
+    public void writeFinished(ChannelHandler con);
 
-    /**
-     * Called when the {@link ChannelHandler} <code>con</code> receives data.
-     * The {@link ByteBuffer} <code>buf</code> contains the data that was 
-     * received by the channel.
-     *   
-     * @param con the ChannelHandler which received the data. 
-     * @param buf the data received.
-     */
-    public void receiveData(ChannelHandler con, ByteBuffer buf);
+    public void readFinished(ChannelHandler con);
+    
 }

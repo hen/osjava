@@ -41,16 +41,54 @@
 package org.osjava.nio;
 
 import java.io.IOException;
-
 import java.net.InetSocketAddress;
-
 import java.nio.ByteBuffer;
-
+import java.nio.channels.SocketChannel;
 import java.util.Random;
 
 public class ThreadTest {
 
     private final static Random rnd = new Random();
+    private static int testsPassed = 0;
+    private static int closedConnection = 0;
+
+    public static class AutoCloseChannelListener implements ChannelListener {
+        public void connectionAccepted(ChannelHandler con) {}
+
+        public void connectionClosed(ChannelHandler con) {
+            System.out.println("Closed connection count "+(closedConnection++));
+        }
+
+        public void writeFinished(ChannelHandler con) {
+            System.out.println("Write finished");
+                /*
+            try {
+                ((SocketChannel)con.getSelectableChannel()).socket().
+                    shutdownOutput();
+                if(((SocketChannelHandler)con).isReadFinished()) {
+                    con.close();
+                }
+            } catch (IOException ioe) {
+                ioe.printStackTrace();
+            }
+                */
+        }
+
+        public void readFinished(ChannelHandler con) {
+            System.out.println("Read finished");
+            try {
+                /*
+                ((SocketChannel)con.getSelectableChannel()).socket().
+                    shutdownInput();
+                    */
+                if(((SocketChannelHandler)con).isWriteFinished()) {
+                    con.close();
+                }
+            } catch (IOException ioe) {
+                ioe.printStackTrace();
+            }
+        }
+    }
 
     /*
      * Simple echo server
@@ -59,33 +97,22 @@ public class ThreadTest {
     public static class ByteEchoServer 
         implements ChannelListener {
         
-        public void connectionAccepted(ChannelHandler serv, ChannelHandler con) {
-            /* Make sure that the incoming connection is the right type */
-            if(!(con instanceof ByteBroker)) {
-                /* Uhhh...do something */
-                return;
-            }
+        public void connectionAccepted(ChannelHandler con) {
             /*
              * Simply write to self
              */
+            con.setChannelListener(new AutoCloseChannelListener());
             con.setByteBroker((ByteBroker)con);            
         }
 
         public void connectionClosed(ChannelHandler con) {
-            // TODO Auto-generated method stub
-            
         }
 
-        public void connected(ChannelHandler con) {
-            // TODO Auto-generated method stub
-            
+        public void writeFinished(ChannelHandler con) {
         }
 
-        public void receiveData(ChannelHandler con, ByteBuffer buf) {
-            // TODO Auto-generated method stub
-            
+        public void readFinished(ChannelHandler con) {
         }
-
     }
 
     /*
@@ -99,26 +126,7 @@ public class ThreadTest {
         implements ChannelListener
     {
 
-        public void acceptSocketChannelHandler(SocketChannelHandler sch) 
-            throws IOException 
-        {
-            /*
-             * Write to self via byte -> char and char -> byte 
-             * converters
-             */
-            sch.setByteBroker(
-                    new ByteToCharBroker(
-                        new CharToByteBroker(sch)
-                        )
-                    );
-        }
-
-        public void connectionAccepted(ChannelHandler serv, ChannelHandler con) {
-            /* Make sure that the incoming connection is the right type */
-            if(!(con instanceof ByteBroker)) {
-                /* Uhhh...do something */
-                return;
-            }
+        public void connectionAccepted(ChannelHandler con) {
             /*  
              * Write to self via byte -> char and char -> byte 
              * converters
@@ -131,18 +139,12 @@ public class ThreadTest {
         }
 
         public void connectionClosed(ChannelHandler con) {
-            // TODO Auto-generated method stub
-            
         }
 
-        public void connected(ChannelHandler con) {
-            // TODO Auto-generated method stub
-            
+        public void writeFinished(ChannelHandler con) {
         }
 
-        public void receiveData(ChannelHandler con, ByteBuffer buf) {
-            // TODO Auto-generated method stub
-            
+        public void readFinished(ChannelHandler con) {
         }
     }
     
@@ -183,7 +185,9 @@ public class ThreadTest {
                 /*
                  * We've finished already
                  */
+                /*
                 System.out.println("Already done.");
+                */
                 return;
             }
             while(true) {
@@ -205,9 +209,9 @@ public class ThreadTest {
                  * had its' fill
                  */
                 if(!outBuffer.hasRemaining() || outCount == 0) {
-                    System.out.println("Done");
                     return;
                 }
+
             }
         }
 
@@ -215,7 +219,9 @@ public class ThreadTest {
          * incoming data
          */
         public void broker(ByteBuffer data, boolean close) {
+            /*
             System.out.println("Broker called in DateIntegretyTest");
+            */
             while(data.hasRemaining() && inCount > 0) {
                 byte b = data.get();
                 byte[] foo = new byte[1];
@@ -223,6 +229,8 @@ public class ThreadTest {
                 if(b != foo[0]) {
                     System.out.println("Data integrity test failed "+
                             "- corrupt data");
+                System.out.println("Expected bytes remaining: "+inCount);
+                System.out.println("Bytes left to send: "+outCount);
                     System.exit(1);
                 }
                 inCount--;
@@ -231,20 +239,65 @@ public class ThreadTest {
                 System.out.println(data);
                 System.out.println("Data integrity test failed "+
                         "- received more data than we sent");
-                System.exit(1);
+                System.out.println("Expected bytes remaining: "+inCount);
+                System.out.println("Bytes left to send: "+outCount);
+                /* System.exit(1); */
             }
-            if(close && inCount >0) {
+            if(close && inCount > 0) {
                 System.out.println("Data integrity test failed "+
                         "- stream closed before end of expected data");
+                System.out.println("Expected bytes remaining: "+inCount);
+                System.out.println("Bytes left to send: "+outCount);
+                /* System.exit(1); */
             }
 
             if(inCount == 0) {
-                System.out.println("Data test passed");
+                System.out.println("Data test passed "+(testsPassed++));
             }
             /*
              * finally, try to send some more data
              */
             writeToOutput();
+        }
+
+        public boolean isClosed() {
+            return inCount == 0;
+        }
+    }
+
+    public static class SetupTask implements Runnable {
+        private int connectionCount;
+        private int byteCount;
+
+        public SetupTask(int connectionCount, int byteCount) {
+            this.connectionCount = connectionCount;
+            this.byteCount = byteCount;
+        }
+
+        public void run() {
+            IOThread iot = (IOThread) Thread.currentThread();
+            try {
+                ByteEchoServer echoHandler = new ByteEchoServer();
+                ServerSocketChannelHandler listenChannel = 
+                    IOUtils.listen(new InetSocketAddress(9999), iot);
+                listenChannel.setChannelListener(echoHandler);
+                System.out.println("Listening connection established.");
+
+                System.out.println("Adding connections");
+                for(int i=0;i<connectionCount;i++) {
+                    SocketChannelHandler sch = IOUtils.connect(
+                            new InetSocketAddress("localhost",9999),
+                            iot);
+
+                    sch.setChannelListener(new AutoCloseChannelListener());
+                    System.out.println("Added connection " + i);
+                    sch.setByteBroker( 
+                            new DataIntegrityTestBroker(sch, byteCount) 
+                            );
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -253,28 +306,14 @@ public class ThreadTest {
             System.out.println("Usage: <no. of connections> <bytes to send>");
             return;
         }
-        int connectionCount = Integer.parseInt(args[0]);
-        int byteCount = Integer.parseInt(args[1]);
+        final int connectionCount = Integer.parseInt(args[0]);
+        final int byteCount = Integer.parseInt(args[1]);
 
-        IOThread iot = new IOThread();
+        final IOThread iot = new IOThread();
         System.out.println("IOThread Created");
         iot.start();
         System.out.println("IOThread Started");
-        ByteEchoServer echoHandler = new ByteEchoServer();
-        ServerSocketChannelHandler listenChannel = 
-            IOUtils.listen(new InetSocketAddress(9999), iot);
-            listenChannel.addChannelListener(echoHandler);
-            System.out.println("Listening connection established.");
 
-        System.out.println("Adding connections");
-        for(int i=0;i<connectionCount;i++) {
-            SocketChannelHandler sch = IOUtils.connect(
-                    new InetSocketAddress("localhost",9999),
-                    iot);
-            
-            System.out.println("Added connection " + i);
-            sch.setByteBroker( new DataIntegrityTestBroker(sch, byteCount) );
-            System.out.println("Broker set.");
-        }
+        iot.queueTask(new SetupTask( connectionCount, byteCount ) );
     }
 }

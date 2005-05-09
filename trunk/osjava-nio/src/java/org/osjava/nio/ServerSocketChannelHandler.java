@@ -83,28 +83,26 @@ public class ServerSocketChannelHandler
         }
         
         if (sockChan != null) {
-            int ops = sockChan.validOps() & ~SelectionKey.OP_CONNECT ;
+            int ops = sockChan.validOps();
+
+            ops &= ~SelectionKey.OP_CONNECT;
+            ops |= SelectionKey.OP_READ;
+
             // Create a new SocketChannelHandler
             SocketChannelHandler sch =  new SocketChannelHandler(sockChan, sockThread);
             /* Register the Handler with the IOThread. */
             sockThread.register(sch, ops);
-            sockThread.addInterestOp(sch, SelectionKey.OP_READ);
-            /* Make sure that the connection op is removed */
-            sockThread.removeInterestOp(sch, SelectionKey.OP_CONNECT);
-            /* Notify Connection Listeners*/
-            Iterator it = getChannelListeners().iterator();
-            while(it.hasNext()) {
-                ((ChannelListener)it.next()).connectionAccepted(this, sch);
+
+            if(getChannelListener() != null) {
+                getChannelListener().connectionAccepted(sch);
             }
         }        
     }
     
     public void close() throws IOException {
         chan.close();
-        /* Notify Connection Listeners*/
-        Iterator it = getChannelListeners().iterator();
-        while(it.hasNext()) {
-            ((ChannelListener)it.next()).connectionClosed(this);
+        if(getChannelListener() != null) {
+            getChannelListener().connectionClosed(this);
         }
     }
 
@@ -140,21 +138,6 @@ public class ServerSocketChannelHandler
      */
     public void writeToChannel() {
         // TODO Auto-generated method stub
-
-    }
-
-    /* (non-Javadoc)
-     * @see org.cyberiantiger.nio.ChannelHandler#getSelectionKey()
-     */
-    public SelectionKey getSelectionKey() {
-        return key;
-    }
-
-    /* (non-Javadoc)
-     * @see org.cyberiantiger.nio.ChannelHandler#setSelectionKey(java.nio.channels.SelectionKey)
-     */
-    public void setSelectionKey(SelectionKey key) {
-        this.key = key;
 
     }
 
