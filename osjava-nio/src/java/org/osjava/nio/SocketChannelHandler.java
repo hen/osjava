@@ -286,6 +286,11 @@ public class SocketChannelHandler
         }
     }
 
+    /* Confusing, this just tests if write is closed */
+    public boolean isClosed() {
+        return writeClosed;
+    }
+
     public SelectableChannel getSelectableChannel() {
         return chan;
     }
@@ -305,6 +310,10 @@ public class SocketChannelHandler
     /*
      * Methods from ByteBroker
      */
+    public void broker(ByteBuffer data) {
+        broker(data, false);
+    }
+
     public void broker(ByteBuffer data, boolean close) {
         if(writeClosed) {
             throw new BrokerException("Stream closed " +
@@ -347,10 +356,19 @@ public class SocketChannelHandler
         }
     }
 
+
+    public int broker(byte[] data) {
+        return broker(data, false);
+    }    
+    
     public int broker(byte[] data, boolean close) {
         ByteBuffer buffer = ByteBuffer.wrap(data);
         broker(buffer, close);
         return buffer.position();
+    }
+
+    public int broker(byte[] data, int offset, int len) {
+        return broker(data, offset, len, false);
     }
 
     public int broker(byte[] data, int offset, int len, boolean close) {
@@ -359,8 +377,6 @@ public class SocketChannelHandler
         return buffer.position() - offset;
     }
 
-    /* Confusing, this just tests if write is closed */
-    public boolean isClosed() {
-        return writeClosed;
-    }
+
+
 }

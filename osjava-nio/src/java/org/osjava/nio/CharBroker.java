@@ -48,6 +48,14 @@ import java.nio.CharBuffer;
  * the CharBuffer class, or via arrays.
  */
 public interface CharBroker {
+    /**
+     * Do something with some chars
+     *
+     * @param data Some characters, this method is not guaranteed to use all 
+     *        the data, it is upto the caller to deal with any chars that are
+     *        left in the CharBuffer when this method returns.
+     */
+    public void broker(CharBuffer data);
 
     /**
      * Do something with some chars
@@ -55,6 +63,7 @@ public interface CharBroker {
      * @param data Some characters, this method is not guaranteed to use all 
      *        the data, it is upto the caller to deal with any chars that are
      *        left in the CharBuffer when this method returns.
+     * @param close Close socket on last write.
      */
     public void broker(CharBuffer data, boolean close);
 
@@ -66,6 +75,17 @@ public interface CharBroker {
      *        not written
      * @return the number of chars brokered.
      */
+    public int broker(char[] data);
+
+    /**
+     * Do something with some chars
+     *
+     * @param data Some characters, this method is not guaranteed to use all 
+     *        the data, it is upto the caller to deal with any chars that are
+     *        not written
+     * @param close Close socket on last write.
+     * @return the number of chars brokered.
+     */
     public int broker(char[] data, boolean close);
 
     /**
@@ -75,6 +95,7 @@ public interface CharBroker {
      * data, it is upto the caller to deal with any chars that are not written
      * @param offset The offset into data where the chars to broker are.
      * @param len The number of chars at the offset to broker.
+     * @param close Close socket on last write.
      * @return the number of chars brokered.
      */
     public int broker(char[] data, int offset, int len, boolean close);
@@ -86,6 +107,16 @@ public interface CharBroker {
      * data, it is upto the caller to deal with any chars that are not used.
      * @return the number of chars brokered
      */
+    public int broker(CharSequence str);
+
+    /**
+     * Do something with some chars
+     *
+     * @param str Some characters, this method is not guaranteed to use all the
+     * data, it is upto the caller to deal with any chars that are not used.
+     * @param close Close socket on last write.
+     * @return the number of chars brokered
+     */
     public int broker(CharSequence str, boolean close);
 
     /**
@@ -95,6 +126,18 @@ public interface CharBroker {
      * data, it is upto the caller to deal with any chars that are not used.
      * @param offset The offset into data where the chars to broker are.
      * @param len The number of chars at the offset to broker.
+     * @return the number of chars brokered
+     */
+    public int broker(CharSequence str, int offset, int len);
+
+    /**
+     * Do something with some chars
+     *
+     * @param str Some characters, this method is not guaranteed to use all the
+     * data, it is upto the caller to deal with any chars that are not used.
+     * @param offset The offset into data where the chars to broker are.
+     * @param len The number of chars at the offset to broker.
+     * @param close Close socket on last write.
      * @return the number of chars brokered
      */
     public int broker(CharSequence str, int offset, int len, boolean close);

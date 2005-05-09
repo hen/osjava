@@ -47,16 +47,29 @@ import java.nio.CharBuffer;
  */
 public abstract class AbstractCharBroker implements CharBroker {
 
+    public int broker(char[] data) {
+        return broker(data, false);
+    }
+    
     public int broker(char[] data, boolean close) {
         CharBuffer buffer = CharBuffer.wrap(data);
         broker(buffer,close);
         return buffer.position();
     }
 
+    public int broker(char[] data, int offset, int len) {
+        return broker(data, offset, len, false);
+    }
+    
+
     public int broker(char[] data, int offset, int len, boolean close) {
         CharBuffer buffer = CharBuffer.wrap(data);
         broker(buffer,close);
         return buffer.position() - offset;
+    }
+
+    public int broker(CharSequence str) {
+        return broker(str, false);
     }
 
     public int broker(CharSequence str, boolean close) {
@@ -65,10 +78,17 @@ public abstract class AbstractCharBroker implements CharBroker {
         return buffer.position();
     }
 
+    public int broker(CharSequence str, int offset, int len) {
+        return broker(str, offset, len, false);
+    }
+    
     public int broker(CharSequence str, int offset, int len, boolean close) {
         CharBuffer buffer = CharBuffer.wrap(str, offset, len);
         broker(buffer,close);
         return buffer.position() - offset;
     }
-
+    
+    public void broker(CharBuffer buf) {
+        broker(buf, false);
+    }
 }

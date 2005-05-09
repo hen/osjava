@@ -45,16 +45,28 @@ import java.nio.ByteBuffer;
  */
 public abstract class AbstractByteBroker implements ByteBroker {
 
+    public int broker(byte[] data) {
+        return broker(data, false);
+    }
+
     public int broker(byte[] data, boolean close) {
         ByteBuffer buffer = ByteBuffer.wrap(data);
         broker(buffer, close);
         return buffer.position();
     }
 
+    public int broker(byte[] data, int offset, int len) {
+        return broker(data, offset, len, false);
+    }
+
     public int broker(byte[] data, int offset, int len, boolean close) {
         ByteBuffer buffer = ByteBuffer.wrap(data);
         broker(buffer, close);
         return buffer.position() - offset;
+    }
+    
+    public void broker(ByteBuffer buf) {
+        broker(buf, false);
     }
 
 }
