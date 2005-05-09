@@ -54,6 +54,15 @@ public interface ByteBroker {
      * @param data Some bytes, this method is not guaranteed to use all the
      * data, it is upto the caller to deal with any byte that are left
      * in the ByteBuffer when this method returns.
+     */
+    public void broker(ByteBuffer data);
+
+    /**
+     * Do something with some bytes
+     *
+     * @param data Some bytes, this method is not guaranteed to use all the
+     * data, it is upto the caller to deal with any byte that are left
+     * in the ByteBuffer when this method returns.
      * @param close Close socket on last write.
      */
     public void broker(ByteBuffer data, boolean close);
@@ -65,6 +74,16 @@ public interface ByteBroker {
      * data, it is upto the caller to deal with any bytes that are not written
      * @return the number of bytes brokered.
      */
+    public int broker(byte[] data);
+
+    /**
+     * Do something with some bytes
+     *
+     * @param data Some bytes, this method is not guaranteed to use all the
+     * data, it is upto the caller to deal with any bytes that are not written
+     * @param close Close socket on last write.
+     * @return the number of bytes brokered.
+     */
     public int broker(byte[] data, boolean close);
 
     /**
@@ -74,6 +93,18 @@ public interface ByteBroker {
      * data, it is upto the caller to deal with any bytes that are not written
      * @param offset The offset into data where the bytes to broker are.
      * @param len The number of bytes at the offset to broker.
+     * @return the number of bytes brokered.
+     */
+    public int broker(byte[] data, int offset, int len);
+
+    /**
+     * Do something with some bytes
+     *
+     * @param data Some bytes, this method is not guaranteed to use all the
+     * data, it is upto the caller to deal with any bytes that are not written
+     * @param offset The offset into data where the bytes to broker are.
+     * @param len The number of bytes at the offset to broker.
+     * @param close Close socket on last write.
      * @return the number of bytes brokered.
      */
     public int broker(byte[] data, int offset, int len, boolean close);
