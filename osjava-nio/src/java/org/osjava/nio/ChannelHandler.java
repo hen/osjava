@@ -99,19 +99,6 @@ public interface ChannelHandler {
     public SelectableChannel getSelectableChannel();
 
     /**
-     * Set the SelectionKey to be utilized.
-     * @param key
-     */
-    public void setSelectionKey(SelectionKey key);
-
-    /**
-     * Returns the SelectionKey being used by the handler.
-     *
-     * @return The SelectionKey being used by the handler.
-     */
-    public SelectionKey getSelectionKey();
-
-    /**
      * Get the thread that the handler is registered with.
      * @return the {@link IOThread} that the ChannelHandler is
      *         registered with.
@@ -122,4 +109,14 @@ public interface ChannelHandler {
      * Set the ByteBroker this ChannelHandler uses.
      */
     public void setByteBroker(ByteBroker aBroker);
+
+    /**
+     * Set the ChannelListener
+     */
+    public void setChannelListener(ChannelListener chanListener);
+
+    /**
+     * Get the ChannelListener
+     */
+    public ChannelListener getChannelListener();
 }

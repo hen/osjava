@@ -99,4 +99,11 @@ public interface CharBroker {
      */
     public int broker(CharSequence str, int offset, int len, boolean close);
 
+    /**
+     * Test if this CharBroker is closed
+     *
+     * @return true if this CharBroker is closed
+     */
+    public boolean isClosed();
+
 }

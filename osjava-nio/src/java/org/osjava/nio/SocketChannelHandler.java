@@ -96,6 +96,20 @@ public class SocketChannelHandler
     public void setByteBroker(ByteBroker aBroker) {
         this.aBroker = aBroker;
     }
+
+    /**
+     * Test if we've finished reading from the underlying channel
+     */
+    public boolean isReadFinished() {
+        return aBroker.isClosed();
+    }
+
+    /**
+     * Test if we've finished writing to the underlying channel
+     */
+    public boolean isWriteFinished() {
+        return writeClosed;
+    }
     
     /** 
      * Method to read all of the data from the socketChannel and put it into 
@@ -140,14 +154,16 @@ public class SocketChannelHandler
         if(readClosed || !readBuffer.hasRemaining()) {
             getThread().removeInterestOp(this, SelectionKey.OP_READ);
         }
+
+        if(aBroker.isClosed()) {
+            if(getChannelListener() != null) {
+                getChannelListener().readFinished(this);
+            }
+        }
     }
 
     public void writeToChannel() throws IOException {
         if(writeBuffer.position() == 0) {
-            System.out.println("writeToChannel called when there is " +
-                    "no data to be written, this is a BUG.");
-            System.out.println("If you see this message lots you " +
-                    "need to turn off OP_WRITE");
             getThread().removeInterestOp(this, SelectionKey.OP_WRITE);
             return;
         }
@@ -192,7 +208,9 @@ public class SocketChannelHandler
              * And we've been told to close the stream
              */
             if(writeClosed) {
-                /* TODO: half close the socket */
+                if(getChannelListener() != null) {
+                    getChannelListener().writeFinished(this);
+                }
             }
             /* 
              * Remove interest in write operations
@@ -202,7 +220,7 @@ public class SocketChannelHandler
 
         /*
          * Now we've hopefully made some space in the writeBuffer
-         * If there's data in the readBuffer dispatch it.
+         * dispatch the ReadBuffer, (which may be empty)
          */
         if(readBuffer.position() > 0 && aBroker != null) {
             boolean readBufferFull = !readBuffer.hasRemaining();
@@ -253,36 +271,25 @@ public class SocketChannelHandler
     }
     
     public void close() throws IOException {
+        if(readBuffer.position() != 0) {
+            System.out.println(readBuffer);
+            throw new RuntimeException();
+        }
         super.close();
         /* TODO: Close the associated buffers cleanly. */
+        getThread().deregister(this);
+        chan.close();
         writeClosed = true;
         readClosed = true;
+        if(getChannelListener() != null) {
+            getChannelListener().connectionClosed(this);
+        }
     }
 
     public SelectableChannel getSelectableChannel() {
         return chan;
     }
     
-    /**
-     * Set the SelectionKey for the channel.  Only one key can be set for the
-     * channel handler.  If it is already set an exception is thrown
-     * @param inKey
-     */
-    public void setSelectionKey(SelectionKey inKey) {
-        if(key!=null) {
-            throw new IllegalStateException("SelectionKey has already been set");
-        }
-        key=inKey;
-    }
-    
-    /**
-     * Get the key being used by the channel 
-     * @return the SelectionKey
-     */
-    public SelectionKey getSelectionKey() {
-        return key;
-    }
-
     public Socket getSocket() {
         return chan.socket();
     }
@@ -303,10 +310,19 @@ public class SocketChannelHandler
             throw new BrokerException("Stream closed " +
                     "(either by you, or an error was encountered)");
         }
+        if(Thread.currentThread() != getThread()) {
+            throw new SecurityException("No access with this thread");
+        }
         
         if(writeBuffer.hasRemaining() && data.hasRemaining()) {
             /* FIXME: This logic is flawed. You want to append to the end of 
              *        the writeBuffer's data, not overwrite it. maybe limit()?*/
+            /* No it isn't, it's appending to the buffer - CT 
+             * from javadoc for ByteBuffer.put(ByteBuffer):
+             * Relative bulk put method  (optional operation)
+             *
+             * Relative means starting from .position()
+             */
             if(data.remaining() <= writeBuffer.remaining()) {
                 writeBuffer.put(data);
             } else {
@@ -327,10 +343,7 @@ public class SocketChannelHandler
         
         /* XXX: I think more work needs to go here -- RMZ */
         if(writeBuffer.position() > 0) {
-            /* If there's no selection key yet, we need to queue information up. */
-            if(getSelectionKey() != null) {
-                getThread().addInterestOp(this, SelectionKey.OP_WRITE);
-            }
+            getThread().addInterestOp(this, SelectionKey.OP_WRITE);
         }
     }
 
@@ -344,5 +357,10 @@ public class SocketChannelHandler
         ByteBuffer buffer = ByteBuffer.wrap(data);
         broker(buffer, close);
         return buffer.position() - offset;
+    }
+
+    /* Confusing, this just tests if write is closed */
+    public boolean isClosed() {
+        return writeClosed;
     }
 }

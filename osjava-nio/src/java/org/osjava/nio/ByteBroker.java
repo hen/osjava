@@ -78,4 +78,11 @@ public interface ByteBroker {
      */
     public int broker(byte[] data, int offset, int len, boolean close);
 
+    /**
+     * Test if this ByteBroker is closed and no longer accepting data
+     *
+     * @return true if this ByteBroker is closed
+     */
+    public boolean isClosed();
+
 }
