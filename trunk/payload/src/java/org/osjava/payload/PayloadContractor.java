@@ -53,6 +53,8 @@ public class PayloadContractor {
 
 // Allow payload/ to be specified as a system property
 
+// java -jar payload.jar target.jar payload.properties target-files
+// TODO: Add the paylet.jar's. -x paylet.jar?
     public static void main(String[] args) {
         System.out.print("Payload contraction setup");
 
