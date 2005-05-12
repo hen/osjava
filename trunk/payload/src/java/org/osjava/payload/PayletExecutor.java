@@ -52,6 +52,10 @@ class PayletExecutor {
     }
 
     public void execute(Properties properties) {
+        if(configuration == null) {
+            return;
+        }
+
         Iterator itr = this.configuration.getPaylets().iterator();
         while(itr.hasNext()) {
             Paylet paylet = (Paylet) itr.next();
