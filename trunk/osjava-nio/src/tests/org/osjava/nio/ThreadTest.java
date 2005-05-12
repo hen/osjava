@@ -101,8 +101,10 @@ public class ThreadTest {
             /*
              * Simply write to self
              */
-            con.setChannelListener(new AutoCloseChannelListener());
-            con.setByteBroker((ByteBroker)con);            
+            SocketChannelHandler sch = (SocketChannelHandler) con;
+            sch.setChannelListener(new AutoCloseChannelListener());
+            ((SocketChannelHandler)sch).
+                setReceivingByteBroker(sch.getSendingByteBroker());            
         }
 
         public void connectionClosed(ChannelHandler con) {
@@ -131,9 +133,11 @@ public class ThreadTest {
              * Write to self via byte -> char and char -> byte 
              * converters
              */
-            con.setByteBroker(
+            ((SocketChannelHandler)con).setReceivingByteBroker(
                     new ByteToCharBroker(
-                        new CharToByteBroker((ByteBroker)con)
+                        new CharToByteBroker(
+                            ((SocketChannelHandler)con).getSendingByteBroker()
+                            )
                         )
                     );
         }
@@ -291,8 +295,11 @@ public class ThreadTest {
 
                     sch.setChannelListener(new AutoCloseChannelListener());
                     System.out.println("Added connection " + i);
-                    sch.setByteBroker( 
-                            new DataIntegrityTestBroker(sch, byteCount) 
+                    sch.setReceivingByteBroker( 
+                            new DataIntegrityTestBroker(
+                                sch.getSendingByteBroker(), 
+                                byteCount
+                                ) 
                             );
                 }
             } catch (Exception e) {

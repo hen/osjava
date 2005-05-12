@@ -49,11 +49,6 @@ import java.io.IOException;
  * @version $Revision$
  */
 public abstract class AbstractChannelHandler implements ChannelHandler {
-    /**
-     * The Selection key used by the ChannellHandler.  This key is the one that
-     * is registered with the controlling {@link IOThread}
-     */
-    protected SelectionKey key;
 
     /**
      * The IOThread which listens to the activity on the SocketChannel.
