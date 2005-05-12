@@ -161,6 +161,12 @@ if(DEBUG) System.out.println("DEBUG turned on. ");
     }
     private static void storeFile(JarOutputStream jout, File file, String targetName) throws IOException {
         if(file.isDirectory()) {
+            // store directory
+            JarEntry entry = new JarEntry(targetName+"/");
+            // TODO: read time of file
+            entry.setTime(System.currentTimeMillis());
+            jout.putNextEntry(entry);
+
             // recurse
             File[] children = file.listFiles();
             int sz = children.length;
@@ -170,7 +176,7 @@ if(DEBUG) System.out.println("DEBUG turned on. ");
         } else {
             FileInputStream fis = new FileInputStream(file);
             JarEntry entry = new JarEntry(targetName);
-            // read time of file
+            // TODO: read time of file
             entry.setTime(System.currentTimeMillis());
             entry.setSize( file.length() );
             jout.putNextEntry(entry);
