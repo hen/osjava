@@ -50,7 +50,6 @@ import java.nio.channels.SocketChannel;
 
 public class SocketChannelHandler 
     extends AbstractChannelHandler 
-    implements ByteBroker 
 {
     /**
      * The underlying SocketChannel this ChannelHandler wraps.
@@ -90,12 +89,6 @@ public class SocketChannelHandler
         this.chan = chan;
     }
 
-    /**
-     * Set the ByteBroker this ChannelHandler uses.
-     */
-    public void setByteBroker(ByteBroker aBroker) {
-        this.aBroker = aBroker;
-    }
 
     /**
      * Test if we've finished reading from the underlying channel
@@ -286,10 +279,6 @@ public class SocketChannelHandler
         }
     }
 
-    /* Confusing, this just tests if write is closed */
-    public boolean isClosed() {
-        return writeClosed;
-    }
 
     public SelectableChannel getSelectableChannel() {
         return chan;
@@ -306,77 +295,75 @@ public class SocketChannelHandler
         // TODO: Change to throw an IllegalStateException        
     }
 
-
-    /*
-     * Methods from ByteBroker
+    /**
+     * Set the ByteBroker this ChannelHandler sends data to which it has
+     * read from the underlying SocketChannel.
+     *
+     * @param aBroker the ByteBroker to set it to.
      */
-    public void broker(ByteBuffer data) {
-        broker(data, false);
+    public void setReceivingByteBroker(ByteBroker aBroker) {
+        this.aBroker = aBroker;
     }
 
-    public void broker(ByteBuffer data, boolean close) {
-        if(writeClosed) {
-            throw new BrokerException("Stream closed " +
-                    "(either by you, or an error was encountered)");
-        }
-        if(Thread.currentThread() != getThread()) {
-            throw new SecurityException("No access with this thread");
-        }
-        
-        if(writeBuffer.hasRemaining() && data.hasRemaining()) {
-            /* FIXME: This logic is flawed. You want to append to the end of 
-             *        the writeBuffer's data, not overwrite it. maybe limit()?*/
-            /* No it isn't, it's appending to the buffer - CT 
-             * from javadoc for ByteBuffer.put(ByteBuffer):
-             * Relative bulk put method  (optional operation)
-             *
-             * Relative means starting from .position()
-             */
-            if(data.remaining() <= writeBuffer.remaining()) {
-                writeBuffer.put(data);
-            } else {
-                /* 
-                 * all buffers created via .allocate() have a backing array and
-                 * an array offset of 0 so we can cheat here
-                 * WTF there isn't a provided method to do this, I don't know.
-                 * even a .get(ByteBuffer) method would do !
+    private ByteBroker sender = new SendingByteBroker();
+
+    /**
+     * Get the ByteBroker which can be used to send data to the underlying
+     * SocketChannel.
+     *
+     * @return a ByteBroker
+     */
+    public ByteBroker getSendingByteBroker() {
+        return sender;
+    }
+
+    private class SendingByteBroker extends AbstractByteBroker {
+        public void broker(ByteBuffer data, boolean close) {
+            if(writeClosed) {
+                throw new BrokerException("Stream closed " +
+                        "(either by you, or an error was encountered)");
+            }
+            if(Thread.currentThread() != getThread()) {
+                throw new SecurityException("No access with this thread");
+            }
+
+            if(writeBuffer.hasRemaining() && data.hasRemaining()) {
+                /* FIXME: This logic is flawed. You want to append to the end of 
+                 *        the writeBuffer's data, not overwrite it. maybe limit()?*/
+                /* No it isn't, it's appending to the buffer - CT 
+                 * from javadoc for ByteBuffer.put(ByteBuffer):
+                 * Relative bulk put method  (optional operation)
+                 *
+                 * Relative means starting from .position()
                  */
-                data.get(writeBuffer.array(), 
-                         writeBuffer.position(), 
-                         writeBuffer.remaining());
+                if(data.remaining() <= writeBuffer.remaining()) {
+                    writeBuffer.put(data);
+                } else {
+                    /* 
+                     * all buffers created via .allocate() have a backing array and
+                     * an array offset of 0 so we can cheat here
+                     * WTF there isn't a provided method to do this, I don't know.
+                     * even a .get(ByteBuffer) method would do !
+                     */
+                    data.get(writeBuffer.array(), 
+                            writeBuffer.position(), 
+                            writeBuffer.remaining());
+                }
+            }
+            if(close && !data.hasRemaining()) {
+                writeClosed = true;
+            }
+
+            /* XXX: I think more work needs to go here -- RMZ */
+            if(writeBuffer.position() > 0) {
+                getThread().addInterestOp(
+                        SocketChannelHandler.this, 
+                        SelectionKey.OP_WRITE);
             }
         }
-        if(close && !data.hasRemaining()) {
-            writeClosed = true;
-        }
-        
-        /* XXX: I think more work needs to go here -- RMZ */
-        if(writeBuffer.position() > 0) {
-            getThread().addInterestOp(this, SelectionKey.OP_WRITE);
+
+        public boolean isClosed() {
+            return writeClosed;
         }
     }
-
-
-    public int broker(byte[] data) {
-        return broker(data, false);
-    }    
-    
-    public int broker(byte[] data, boolean close) {
-        ByteBuffer buffer = ByteBuffer.wrap(data);
-        broker(buffer, close);
-        return buffer.position();
-    }
-
-    public int broker(byte[] data, int offset, int len) {
-        return broker(data, offset, len, false);
-    }
-
-    public int broker(byte[] data, int offset, int len, boolean close) {
-        ByteBuffer buffer = ByteBuffer.wrap(data);
-        broker(buffer, close);
-        return buffer.position() - offset;
-    }
-
-
-
 }

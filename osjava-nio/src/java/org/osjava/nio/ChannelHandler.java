@@ -106,11 +106,6 @@ public interface ChannelHandler {
     public IOThread getThread();
     
     /**
-     * Set the ByteBroker this ChannelHandler uses.
-     */
-    public void setByteBroker(ByteBroker aBroker);
-
-    /**
      * Set the ChannelListener
      */
     public void setChannelListener(ChannelListener chanListener);
