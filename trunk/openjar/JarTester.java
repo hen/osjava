@@ -49,7 +49,8 @@ public class JarTester {
             while(enumeration.hasMoreElements()) {
                 JarEntry entry = (JarEntry) enumeration.nextElement();
                 if(verbose) {
-                    // TODO: Sun's jar tool pads size to 6 chars. Could be dynamic.
+                    // TODO: Sun's jar tool pads size to 6 chars. 
+                    // Would be better if it could go beyond 6. 
                     String size = ""+entry.getSize();
                     while(size.length() < 6) {
                         size = " "+size;
