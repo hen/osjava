@@ -2,6 +2,7 @@ import java.util.Enumeration;
 import java.util.jar.*;
 import java.io.*;
 
+// TODO: Support STDIN instead of File
 public class JarExtractor {
 
     public static void main(String[] args) throws IOException {
