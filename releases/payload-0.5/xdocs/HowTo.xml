@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<document>
+
+  <properties>
+      <author email="bayard@generationjava.com">Henri Yandell</author>
+      <title>How to use Payload</title>
+  </properties>
+
+  <body>
+  <section name="Using Payload">
+   <p>Utilising Payload is very simple. </p>
+   <ol>
+    <li>Download the payload jar or distribution. </li>
+    <li>Run:  java -jar payload-0.5.jar [new-jar.jar] {files...} </li>
+    <li>Take the jar to the desired unpacking location. </li>
+    <li>Run:  java -jar [new-jar.jar]</li>
+   </ol>
+  </section>
+  <section name="Extraction-time search and replace">
+   <p>The chief reason for Payload is to create environment dependent install files. When deployed to a machine, a .properties file on the machine is used to configure the install file for that machine. This is how that may be done. </p>
+   <ul>
+    <li>Create a payload.properties file and make it the first file listed on step 2 above. It should contain something like the following: 
+     <pre>
+     org.osjava.payload=true
+     org.osjava.payload.interpolate.endsWith=txt
+     org.osjava.payload.interpolate.endsWith=xml
+     org.osjava.payload.interpolate.matches=regexp
+     org.osjava.payload.interpolate.archive.endsWith=war
+     org.osjava.payload.interpolate.archive.matches=regexp
+     </pre>
+     This specifies which files are interpolated. It also specifies that any .war files should have their constituent files interpolated too. 
+    </li>
+    <li>Provide a .properties file on the target machine as a 2nd argument when unpacking. It should contain something like the following:
+     <pre>
+      VARIABLE=A value for the variable
+      PORT=8080
+      IP=127.0.0.1
+     </pre>
+     and the jar'd files should contain ${VARIABLE}, ${PORT} and ${IP}. 
+    </li>
+    <li>This means you end up with two lines that look like:
+     <ol>
+      <li>Run:  java -jar payload-0.5.jar [new-jar.jar] [payload.properties] {files...}</li>
+      <li>Run:  java -jar [new-jar.jar] {some.properties}</li>
+     </ol>
+    </li>
+   </ul>
+  </section>
+  <section name="Paylets - custom extraction behaviour">
+   <p>Sometimes a payload extraction with search and replace is not enough to create the right system. Paylets are a way to send Java code along with the self-extracting jar to provide custom functionality. They are executed after the extraction has occured, and have access to all available parameters. </p>
+   <p>Including a paylet is quite basic:</p>
+   <ol>
+    <li>Code a Paylet against the <code>org.osjava.payload.Paylet</code> interface. </li>
+    <li>Store your paylet(s) and the classes they require in a jar file. </li>
+    <li>Create a payload.properties file. It should contain something like the following: 
+     <pre>
+     org.osjava.payload=true
+     org.osjava.payload.paylet=com.example.ExamplePaylet
+     </pre>
+     This hooks in one example paylet. Many paylets may be hooked in, for example: 
+     <pre>
+     org.osjava.payload=true
+     org.osjava.payload.paylet=com.example.ExamplePaylet
+     org.osjava.payload.paylet=com.example.TestPaylet
+     org.osjava.payload.paylet=com.example.ObfuscatePaylet
+     </pre>
+     </li>
+    <li>Run:  java -jar payload-0.5.jar [new-jar.jar] [payload.properties] {-x example-paylet.jar} {files...} </li>
+    <li>Take the jar to the desired unpacking location. </li>
+    <li>Run:  java -jar [new-jar.jar]</li>
+   </ol>
+  </section>
+
+ </body>
+</document>
