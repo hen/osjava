@@ -33,6 +33,10 @@ package org.osjava.payload;
 
 import java.util.Properties;
 
+/**
+ * Post-extraction custom executable. Hooked into the system 
+ * at contraction time via the payload.properties file and -x flag.
+ */
 public interface Paylet {
 
     /**
