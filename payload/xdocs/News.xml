@@ -8,6 +8,8 @@
 
   <body>
     <section name="News">
+    <p>2005-05-16: Version <a href="changes-report.html#0.5">0.5</a>, of Payload released. The major theme for this release is the arrival of Paylets. A simple plugin API to allow custom behaviour to take effect after a payload extraction. </p>
+<hr />
     <p>2005-05-05: Version <a href="changes-report.html#0.4">0.4</a>, of Payload released. The only improvements are concerning the archive interpolation; it now recurses to archives inside archives ad infinitum, and regular expressions may now be used to specify archives to interpolate inside. </p>
 <hr />
     <p>2005-04-18: Version <a href="changes-report.html#0.3">0.3</a>, of Payload released. Most notably a fix for MS Windows and the ability to interpolate inside archives (zip/war/jar files). </p>

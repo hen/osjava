@@ -11,7 +11,7 @@
    <p>Utilising Payload is very simple. </p>
    <ol>
     <li>Download the payload jar or distribution. </li>
-    <li>Run:  java -jar payload-0.3.jar [new-jar.jar] {files...} </li>
+    <li>Run:  java -jar payload-0.5.jar [new-jar.jar] {files...} </li>
     <li>Take the jar to the desired unpacking location. </li>
     <li>Run:  java -jar [new-jar.jar]</li>
    </ol>
@@ -40,11 +40,35 @@
     </li>
     <li>This means you end up with two lines that look like:
      <ol>
-      <li>Run:  java -jar payload-0.3.jar [new-jar.jar] [payload.properties] {files...} </li>
+      <li>Run:  java -jar payload-0.5.jar [new-jar.jar] [payload.properties] {files...}</li>
       <li>Run:  java -jar [new-jar.jar] {some.properties}</li>
      </ol>
     </li>
    </ul>
+  </section>
+  <section name="Paylets - custom extraction behaviour">
+   <p>Sometimes a payload extraction with search and replace is not enough to create the right system. Paylets are a way to send Java code along with the self-extracting jar to provide custom functionality. They are executed after the extraction has occured, and have access to all available parameters. </p>
+   <p>Including a paylet is quite basic:</p>
+   <ol>
+    <li>Code a Paylet against the <code>org.osjava.payload.Paylet</code> interface. </li>
+    <li>Store your paylet(s) and the classes they require in a jar file. </li>
+    <li>Create a payload.properties file. It should contain something like the following: 
+     <pre>
+     org.osjava.payload=true
+     org.osjava.payload.paylet=com.example.ExamplePaylet
+     </pre>
+     This hooks in one example paylet. Many paylets may be hooked in, for example: 
+     <pre>
+     org.osjava.payload=true
+     org.osjava.payload.paylet=com.example.ExamplePaylet
+     org.osjava.payload.paylet=com.example.TestPaylet
+     org.osjava.payload.paylet=com.example.ObfuscatePaylet
+     </pre>
+     </li>
+    <li>Run:  java -jar payload-0.5.jar [new-jar.jar] [payload.properties] {-x example-paylet.jar} {files...} </li>
+    <li>Take the jar to the desired unpacking location. </li>
+    <li>Run:  java -jar [new-jar.jar]</li>
+   </ol>
   </section>
 
  </body>

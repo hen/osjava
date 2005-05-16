@@ -7,6 +7,12 @@
   </properties>
 
   <body>
+    <release version="0.5" date="2005-05-16">
+          <action dev="hen" type="fix" issue="PAY-21">Not possible to store an empty directory in Payload. </action>
+          <action dev="hen" type="fix">Package naming changed to org.osjava from com.generationjava. </action>
+          <action dev="hen" type="add" issue="PAY-14">Paylets added. Plugins to create custom behaviour at extraction time. </action>
+    </release>
+
     <release version="0.4" date="2005-05-05">
           <action dev="hen" type="fix">Commenting out the setting of compressed-size. it causes problems and seems unnecessary. </action>
           <action dev="hen" type="add">Supports regular expression matching for archives too. </action>
