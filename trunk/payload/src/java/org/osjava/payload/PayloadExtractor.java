@@ -204,9 +204,7 @@ if(DEBUG) System.out.println("Interpolating "+outName);
 
             }
 
-            if(payletExecutor != null) {
-                payletExecutor.execute(props);
-            }
+            payletExecutor.execute(props);
         } catch(IOException ioe) { ioe.printStackTrace(); }
 
 
