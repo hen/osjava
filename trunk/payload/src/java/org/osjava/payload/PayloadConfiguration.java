@@ -49,7 +49,7 @@ import java.util.Properties;
  *   org.osjava.payload=true
  *   org.osjava.payload.paylet=com.example.ExamplePaylet arg1 arg2
  */
-class PayloadConfiguration {
+public class PayloadConfiguration {
 
     private static final String PAYLET = "org.osjava.payload.paylet";
     private static final String ENDS_WITH = "org.osjava.payload.interpolate.endsWith";
@@ -147,5 +147,23 @@ if(PayloadExtractor.DEBUG) System.out.println("Loading paylet: "+line.substring(
     public List getFileEndsWith() { return this.fileEndsWith; }
     public List getFileMatches() { return this.fileMatches; }
     public List getPaylets() { return this.paylets; }
+
+    public String toString() {
+        StringBuffer buffer = new StringBuffer();
+
+        buffer.append("PayloadConfiguration: ");
+        buffer.append("archiveEndsWith: ");
+        buffer.append(this.archiveEndsWith);
+        buffer.append(", archiveMatches: ");
+        buffer.append(this.archiveMatches);
+        buffer.append(", fileEndsWith: ");
+        buffer.append(this.fileEndsWith);
+        buffer.append(", fileMatches: ");
+        buffer.append(this.fileMatches);
+        buffer.append(", paylets: ");
+        buffer.append(this.paylets);
+
+        return buffer.toString();
+    }
 
 }
