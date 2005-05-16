@@ -139,10 +139,37 @@ if(DEBUG) System.out.println("DEBUG turned on. ");
             // loop over every argument, handling recursion, 
             // and pushing into the payload/ directory
             System.out.print("Contracting payload body");
+            boolean expectingPayletJar = false;
             for(int i=start; i<args.length; i++) {
+                if("-x".equals(args[i])) {
+                    expectingPayletJar = true;
+                    continue;
+                }
                 String filename = args[i];
                 File file = new File(filename);
-                storeFile(jout, file);
+                if(expectingPayletJar) {
+                    JarFile payletJar = new JarFile(file);
+                    Enumeration payletEnum = payletJar.entries();
+                    while(payletEnum.hasMoreElements()) {
+                        JarEntry entry = (JarEntry) payletEnum.nextElement();
+                        // Skip any file already in the destination jar. 
+                        // No cascading.
+                        if(jar.getEntry(entry.getName()) != null) {
+                            continue;
+                        }
+                        InputStream in = payletJar.getInputStream( entry );
+                        JarEntry entry2 = new JarEntry(entry.getName());
+                        entry2.setTime(entry.getTime());
+                        entry2.setSize(entry.getSize());
+                        jout.putNextEntry(entry2);
+                        IOUtils.pushBytes(in, jout);
+                        jout.closeEntry();
+                        System.out.print(":");
+                    }
+                    expectingPayletJar = false;
+                } else {
+                    storeFile(jout, file);
+                }
             }
 
             System.out.println("\nFinished. ");
