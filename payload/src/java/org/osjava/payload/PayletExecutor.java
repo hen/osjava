@@ -45,14 +45,17 @@ import java.util.Properties;
  */
 class PayletExecutor {
 
+    public static final boolean DEBUG = (System.getProperty("PAYLOAD.DEBUG")!=null);
+
     private PayloadConfiguration configuration;
 
     public PayletExecutor(PayloadConfiguration configuration) {
-        configuration = configuration;
+        this.configuration = configuration;
     }
 
     public void execute(Properties properties) {
         if(configuration == null) {
+if(DEBUG) System.out.println("Null configuration given to executor.");
             return;
         }
 
