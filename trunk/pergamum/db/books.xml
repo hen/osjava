@@ -46,9 +46,6 @@
   <book isbn="193239415X" name="Hibernate in Action" publisher="man" url="http://www.manning.com/catalog/view.php?book=bauer" published="2004-08"/>
   <book isbn="1590592816" name="JBoss 3.2 Deployment and Administration" publisher="apr" url="http://apress.com/book/bookDisplay.html?bID=245" published="2003-11"/>
   <book isbn="0672323478" name="JBoss Administration and Development" publisher="sam" url="http://www.sams.com/isapi/product_id~{4B73CCDC-9D30-429F-A8A4-E73F14730DC8}/catalog/product.asp" published="2002-03"/>
-  <book isbn="013112594X" name="Core JBoss 3.X: J2EE Application Development and Deployment" publisher="ptr" url="unknown-site.html" published=""/>
-  <book isbn="1590593340" name="The Definitive Guide to JBoss 4" publisher="apr" url="unknown-site.html" published=""/>
-  <book isbn="0596004079" name="Using JBoss" publisher="ora" url="unknown-site.html" published=""/>
   <book isbn="0672324105" name="Aspect-Oriented Programming with AspectJ" publisher="sam" url="http://www.sams.com/isapi/product_id~{681277AC-6106-4C7D-B71A-59D04871EE89}/catalog/product.asp" published="2002-07"/>
   <book isbn="0672323095" name="Data-Driven Programming Using Tomcat and MySQL" publisher="sam" url="http://www.sams.com/isapi/product_id~{F140CAB5-9F88-4A49-8C0F-0CD6595574C0}/catalog/product.asp" published="2002-03"/>
   <book isbn="0735711119" name="Jython for Java Programmers" publisher="sam" url="http://www.sams.com/isapi/product_id~{5BD98ADC-6DE5-43F8-B95C-7E83BF84067A}/catalog/product.asp" published=""/>
@@ -65,8 +62,8 @@
   <book isbn="sbt-1" name="Apache Axis Live" publisher="sbt" url="http://www.sourcebeat.com/TitleAction.do?id=1" published="2004-03"/>
   <book isbn="sbt-2" name="Eclipse Live" publisher="sbt" url="http://www.sourcebeat.com/TitleAction.do?id=2" published="2004-03"/>
   <book isbn="sbt-3" name="Jakarta Struts Live" publisher="sbt" url="http://www.sourcebeat.com/TitleAction.do?id=3" published="2004-03"/>
-  <book isbn="sbt-4" name="Jakarta Commons Live" publisher="sbt" url="http://www.sourcebeat.com/TitleAction.do?id=4" published="2004-05"/>
-  <book isbn="sbt-5" name="Jakarta Tomcat Live" publisher="sbt" url="http://www.sourcebeat.com/TitleAction.do?id=5" published="2004-05"/>
+  <book isbn="sbt-4" name="Hibernate Live" publisher="sbt" url="http://www.sourcebeat.com/TitleAction.do?id=4" published="2004-05"/>
+  <book isbn="sbt-5" name="Geronimo Live" publisher="sbt" url="http://www.sourcebeat.com/TitleAction.do?id=5" published="2004-05"/>
   <book isbn="sbt-7" name="Spring Live" publisher="sbt" url="http://www.sourcebeat.com/TitleAction.do?id=7" published="2004-05"/>
 
   <book isbn="1590592557" name="Professional Struts Applications" publisher="apr" url="http://www.apress.com/book/bookDisplay.html?bID=264" published="2003-08"/>
@@ -90,8 +87,8 @@
   <book isbn="0596007108" name="Eclipse Cookbook" publisher="ora" url="http://www.oreilly.com/catalog/eclipseckbk/" published="2004-06"/>
   <book isbn="0321268385" name="Official Eclipse 3.0 FAQs" publisher="aw" url="http://www.aw-bc.com/catalog/academic/product?ISBN=0321268385" published="2004-06"/>
   <book isbn="0672326108" name="Eclipse Kick Start" publisher="sam" url="http://www.samspublishing.com/title/0672326108" published="2004-09"/>
-  <book isbn="0470020059" name="Beginning Eclipse 3" publisher="wrx" url="unknown-site.html" published=""/>
-  <book isbn="097521280X" name="How Tomcat Works" publisher="bra" url="http://www.brainysoftware.com/" published="2004-04"/>
+  <book isbn="0470020059" name="Professional Eclipse 3 for Java Developers" publisher="wrx" url="http://www.wrox.com/WileyCDA/WroxTitle/productCd-0470020059.html" published="2004-10"/>
+  <book isbn="097521280X" name="How Tomcat Works" publisher="bra" url="http://www.brainysoftware.com/index.php?show=tomcat" published="2004-04"/>
   <book isbn="1590593316" name="Pro Jakarta Tomcat 5" publisher="apr" url="http://www.apress.com/book/bookDisplay.html?bID=389" published="2004-12"/>
   <book isbn="0764576771" name="Professional Hibernate" publisher="wrx" url="http://www.wrox.com/WileyCDA/WroxTitle/productCd-0764576771.html" published="2004-09"/>
   <book isbn="0974514012" name="Pragmatic Unit Testing" publisher="pra" url="http://www.pragmaticprogrammer.com/starter_kit/utj/" published="2003-09"/>
@@ -102,4 +99,16 @@
   <book isbn="0596006543" name="AspectJ Cookbook" publisher="ora" url="http://www.oreilly.com/catalog/aspectjckbk/" published="2004-12"/>
   <book isbn="1932394354" name="Spring in Action" publisher="man" url="http://www.manning.com/walls2/" published="2004-12"/>
   <book isbn="1932394273" name="SWT/JFace in Action" publisher="man" url="http://www.manning.com/scarpino/" published="2004-10"/>
+  <book isbn="0596009100" name="Spring: A Developer's Notebook" publisher="ora" url="http://www.oreilly.com/catalog/springadn/" published="2005-04"/>
+  <book isbn="059600771X" name="Jakarta Struts Cookbook" publisher="ora" url="http://www.oreilly.com/catalog/jakartastrutsckb/" published="2005-02"/>
+  <book isbn="0596006896" name="Unit Test Frameworks" publisher="ora" url="http://www.oreilly.com/catalog/unittest/" published="2004-11"/>
+  <book isbn="1590593278" name="Test-Driven Development: A J2EE Example" publisher="apr" url="http://www.apress.com/book/bookDisplay.html?bID=359" published="2004-11"/>
+  <book isbn="1590594991" name="Pro Apache Log4j" publisher="apr" url="http://apress.com/book/bookDisplay.html?bID=452" published="??"/>
+  <book isbn="1590595114" name="Pro Hibernate 3" publisher="apr" url="http://apress.com/book/bookDisplay.html?bID=439" published="??"/>
+  <book isbn="1590595157" name="Pro Apache Beehive" publisher="apr" url="http://apress.com/book/bookDisplay.html?bID=462" published="??"/>
+  <book isbn="1590594932" name="Pro Eclipse JST: Plug-ins for J2EE Development" publisher="apr" url="http://apress.com/book/bookDisplay.html?bID=447" published="??"/>
+  <book isbn="1590595211" name="Pro Apache Maven" publisher="apr" url="http://apress.com/book/bookDisplay.html?bID=10014" published="??"/>
+  <book isbn="1590595076" name="Foundations of AOP for J2EE Development" publisher="apr" url="http://apress.com/book/bookDisplay.html?bID=435" published="??"/>
+  <book isbn="1932394524" name="Jakarta Commons Online Bookshelf" publisher="man" url="http://www.manning.com/goyal/" published="2005-03"/>
+  <book isbn="0975212818" name="Struts Design and Programming" publisher="bra" url="http://www.brainysoftware.com/index.php?show=struts" published="2005-04"/>
 </library>
