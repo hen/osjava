@@ -18,6 +18,8 @@
     <book>1932394249</book>
     <book>0596006519</book>
     <book>0471449156</book>
+    <book>059600771X</book>
+    <book>0975212818</book>
   </category>
   <category id="2" name="Jakarta Tapestry">
     <book>1932394117</book>
@@ -34,6 +36,10 @@
   <category id="13" name="Apache Log4j">
     <book>1590590996</book>
     <book>2970036908</book>
+    <book>1590594991</book>
+  </category>
+  <category id="20" name="Apache Geronimo">
+    <book>sbt-5</book>
   </category>
   <category id="4" name="Jakarta Cactus">
     <book>0471449156</book>
@@ -51,7 +57,7 @@
     <book>1590592832</book>
     <book>059600706X</book>
     <book>1584502460</book>
-    <book>sbt-4</book>
+    <book>1932394524</book>
   </category>
   <category id="6" name="Jakarta Tomcat">
     <book>0764543725</book>
@@ -63,8 +69,21 @@
     <book>1861008309</book>
     <book>1893115364</book>
     <book>0764559028</book>
-    <book>sbt-5</book>
     <book>0672326361</book>
+  </category>
+  <category id="21" name="Apache Axis">
+    <book>sbt-1</book>
+  </category>
+  <category id="22" name="Apache Beehive">
+    <book>1590595157</book>
+  </category>
+  <category id="23" name="Apache Maven">
+    <book>1590595211</book>
+  </category>
+  <category id="24" name="Spring">
+    <book>1932394354</book>
+    <book>sbt-7</book>
+    <book>0596009100</book>
   </category>
   <category id="7" name="JUnit">
     <book>0596007434</book>
@@ -74,6 +93,8 @@
     <book>1932394230</book>
     <book>0471449156</book>
     <book>097521280X</book>
+    <book>0596006896</book>
+    <book>1590593278</book>
   </category>
   <category id="8" name="XDoclet">
     <book>1932394052</book>
@@ -86,12 +107,9 @@
     <book>1932394192</book>
     <book>1932394060</book>
     <book>1590591259</book>
-    <book>1932394354</book>
     <book>1930110464</book>
     <book>0201325829</book>
     <book>0201771861</book>
-    <book>sbt-1</book>
-    <book>sbt-7</book>
     <book>0764556177</book>
     <book>0596006764</book>
     <book>0974514039</book>
@@ -112,23 +130,24 @@
     <book>0672326108</book>
     <book>0470020059</book>
     <book>0596008384</book>
+    <book>1590594932</book>
   </category>
   <category id="11" name="Hibernate">
     <book>193239415X</book>
     <book>0596006969</book>
+    <book>sbt-4</book>
+    <book>1590595114</book>
   </category>
   <category id="12" name="JBoss">
     <book>1590592816</book>
     <book>0672323478</book>
-    <book>013112594X</book>
-    <book>1590593340</book>
-    <book>0596004079</book>
   </category>
-  <category id="14" name="AspectJ">
+  <category id="14" name="Aspects (AOP)">
     <book>1930110936</book>
     <book>0596006543</book>
     <book>0471431044</book>
     <book>0672324105</book>
+    <book>1590595076</book>
   </category>
   <category id="15" name="Netbeans">
     <book>0596002807</book>
