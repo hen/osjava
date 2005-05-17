@@ -37,7 +37,7 @@
     <item>
       <title><xsl:value-of select="$name"/></title>
       <link>http://www.pergamum.org/book-<xsl:value-of select="$isbn"/></link>
-      <description>Forthcoming from <xsl:value-of select="$pubName"/></description>
+      <description><xsl:value-of select="$name"/> from <xsl:value-of select="$pubName"/></description>
     </item>
   </xsl:template>
 
