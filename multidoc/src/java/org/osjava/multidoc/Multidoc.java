@@ -17,11 +17,11 @@ public class Multidoc {
         XMLParser parser = new XMLParser();
         XMLNode node = parser.parseXML(new BufferedReader(reader));
         // node is <site>
-        String title = node.getAttr("name");
+        String siteName = node.getAttr("name");
         String style = node.getAttr("style");
         String url = node.getAttr("url");
-        System.out.println("Multidocing for "+title);
-        DocumentSite site = new DocumentSite(url, title, style);
+        System.out.println("Multidocing for "+siteName);
+        DocumentSite site = new DocumentSite(url, siteName, style);
         Enumeration docEnum = node.enumerateNode("document");
         // hacked to do just the first one
         while(docEnum.hasMoreElements()) {
@@ -31,15 +31,19 @@ public class Multidoc {
             Document document = new Document(type, name);
             site.addDocument(name, document);
             DocumentProjectCreator creator = Multidoc.getCreator(type);
-            Enumeration uriEnum = subnode.enumerateNode("uri");
-            while(uriEnum.hasMoreElements()) {
-                XMLNode urinode = (XMLNode) uriEnum.nextElement();
-                String uri = urinode.getValue();
-                System.out.println("Loading: "+uri);
+            Enumeration projectEnum = subnode.enumerateNode("project");
+            while(projectEnum.hasMoreElements()) {
+                XMLNode projectNode = (XMLNode) projectEnum.nextElement();
+                String uri = projectNode.getAttr("uri");
+                String title = projectNode.getAttr("title");
+                System.out.println("Loading: "+title+" from "+uri);
                 DocumentProject project = creator.create(uri);
                 if(project == null) {
                     System.err.println("WARN: null project found: "+uri);
                     continue;
+                }
+                if(title != null) {
+                    project.setTitle(title);
                 }
                 document.addProject(project);
             }

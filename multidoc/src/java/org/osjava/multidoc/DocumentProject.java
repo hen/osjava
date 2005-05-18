@@ -23,6 +23,10 @@ public class DocumentProject {
         return this.title;
     }
 
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
     public List getPackages() {
         return this.packages;
     }
