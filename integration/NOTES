@@ -1,0 +1,15 @@
+Now has a .xml file for configuration.
+
+Need to have some kind of file for the persitent data concerning a build. 
+It would record:
+
+Last build state.
+Last build time.
+Last build reason (cvs update files etc).
+Reports generation state.
+
+
+Need to start using perl OO. Make an object for each .xml file.
+So Config class and State class. Config->new("xmlfile") etc. 
+
+
