@@ -75,7 +75,22 @@ public abstract class AbstractHttpFetcher implements Fetcher {
 
 // TODO: Handle true/false here, rather than just 'has'
             if(!cfg.has("norobots.override")) {
-                if(checkIllegal(url)) {
+                String userAgent = "osjava-scraping-engine";
+                if(cfg.has("header")) {
+                    List list = (List) cfg.getList("header");
+                    if(list != null) {
+                        Iterator itr = list.iterator();
+                        while(itr.hasNext()) {
+                            String str = (String) itr.next();
+                            String header = StringUtils.substringBefore(str, "=");
+                            String value = StringUtils.substringAfter(str, "=");
+                            if("User-Agent".equals(header)) {
+                                userAgent = value;
+                            }
+                        }
+                    }
+                }
+                if(checkIllegal(url, userAgent)) {
                     throw new FetchingException("Not allowed to fetch url: "+uri+" due to the NoRobots RFQ. ");
                 }
             }
@@ -170,9 +185,9 @@ public abstract class AbstractHttpFetcher implements Fetcher {
         }
     }
 
-    private boolean checkIllegal(URL url) throws MalformedURLException {
+    private boolean checkIllegal(URL url, String userAgent) throws MalformedURLException {
         // TODO: Use User-Agent here. And fix Norbert.
-        NoRobotClient nrc = new NoRobotClient("osjava-scraping-engine");
+        NoRobotClient nrc = new NoRobotClient(userAgent);
 
         // only parse the root, not the whole url
         try {
