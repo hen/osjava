@@ -85,7 +85,7 @@ public class JarvWriter extends DelegatingXmlWriter implements ErrorHandler {
             }
             verifierHandler.endElement( getDefaultNamespace(), this.tag, this.tag);
         } catch(SAXException se) {
-            throw new IOException("Need to wrap the SAX exception in start element. ");
+            throw new IOException("Need to wrap the SAX exception in start element: "+se);
         }
         this.attrs.clear();
         this.tag = null;
