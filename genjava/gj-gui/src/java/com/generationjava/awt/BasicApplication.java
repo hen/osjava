@@ -29,6 +29,10 @@ import org.apache.commons.lang.StringUtils;
  * A simple framework which allows files to be opened and 
  * many files be in an open state. Thus files may also be closed.
  */
+ // TODO: Add createCompassPanel
+ // TODO: Refactor menu options so they're more easily to clone. ie) open url
+ // TODO: About/Help/Licence. These should open a popup if contain newlines.
+ // TODO: inform(String) that uses getTitle as old
 public abstract class BasicApplication extends Frame implements WindowListener, ActionListener {
     
     private String currentDir;
@@ -275,6 +279,11 @@ public abstract class BasicApplication extends Frame implements WindowListener, 
     }
     
     // ActionListener interface
+    // TODO: Every one of these needs to be pulled out
+    // ie)  open(String filename)
+    // Switch this to a MenuListener interface so other things 
+    // can implement actionPerformed?
+    // also makeit final so people can't implement Menu on their own
     public void actionPerformed(ActionEvent ae) {
         String cmd = ae.getActionCommand();
         if("Exit".equals(cmd)) {
