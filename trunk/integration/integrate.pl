@@ -20,9 +20,9 @@ use POSIX qw(O_CREAT);
 
 sub usage() {
     print "Usage:\n";
-    print " ./integrate-builds.pl foo-integration.xml all               -  Will build every component specified in the given xml file. \n";
-    print " ./integrate-builds.pl foo-integration.xml update            -  Will build only components that have had a changed file since the last update. \n";
-    print " ./integrate-builds.pl foo-integration.xml update <projects> -  Will build only the component specified. \n";
+    print " ./integrate.pl foo-integration.xml all               -  Will build every component specified in the given xml file. \n";
+    print " ./integrate.pl foo-integration.xml update            -  Will build only components that have had a changed file since the last update. \n";
+    print " ./integrate.pl foo-integration.xml update <projects> -  Will build only the component specified. \n";
     exit 1;
 }
 
