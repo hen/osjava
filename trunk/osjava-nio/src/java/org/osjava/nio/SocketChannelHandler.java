@@ -48,6 +48,8 @@ import java.nio.channels.SelectableChannel;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
 
+import org.apache.log4j.Logger;
+
 public class SocketChannelHandler 
     extends AbstractChannelHandler 
 {
@@ -321,6 +323,7 @@ public class SocketChannelHandler
 
     private class SendingByteBroker extends AbstractByteBroker {
         public void broker(ByteBuffer data, boolean close) {
+            Logger logger = Logger.getLogger(getClass());
             /*
             if(writeClosed) {
                 throw new BrokerException("Stream closed " +
@@ -361,9 +364,13 @@ public class SocketChannelHandler
 
                 /* XXX: I think more work needs to go here -- RMZ */
                 if(writeBuffer.position() > 0) {
-                    getThread().addInterestOp(
-                            SocketChannelHandler.this, 
-                            SelectionKey.OP_WRITE);
+                    getThread().queueTask(new Runnable() {
+                        public void run() {
+                            getThread().addInterestOp(
+                                            SocketChannelHandler.this, 
+                                            SelectionKey.OP_WRITE);
+                        }
+                    } );
                 }
             }
         }
