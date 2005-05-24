@@ -145,6 +145,9 @@
     <xsl:variable name="name">
       <xsl:value-of select="document('db/books.xml')/library/book[@isbn=$isbn]/@name"/>
     </xsl:variable>
+    <xsl:variable name="description">
+      <xsl:value-of select="document('db/books.xml')/library/book[@isbn=$isbn]/description"/>
+    </xsl:variable>
     <xsl:variable name="pubUri">
       <xsl:value-of select="document('db/publishers.xml')/publishers/publisher[@id=$pub]/@url"/>
     </xsl:variable>
@@ -159,8 +162,14 @@
     <div class="publisher-name">(<a href="{$pubUri}"><xsl:value-of select="$pubName"/></a>)</div><br/>
     <div class="publisher-date"><xsl:value-of select="$published"/></div><br/>
     <div class="books-links"><span class="ext"><a href="http://www.amazon.com/exec/obidos/tg/detail/-/{$isbn}">[amz]</a></span> / <span class="ext"><a href="http://www.bookpool.com/.x/1/sm/{$isbn}">[bkp]</a></span> / <span class="ext"><a href="http://www.javashelf.com/servlet/books/{$isbn}">[jshf]</a></span></div><br/>
-    <div class="sub-title">Review</div><br/>
-    <div class="review-text"><xsl:copy-of select="$review"/></div>
+    <xsl:if test="$description">
+      <div class="sub-title">Description</div><br/>
+      <div class="description-text"><xsl:copy-of select="$description"/></div>
+    </xsl:if>
+    <xsl:if test="$review">
+      <div class="sub-title">Review</div><br/>
+      <div class="review-text"><xsl:copy-of select="$review"/></div>
+    </xsl:if>
   </xsl:template>
 
   <xsl:template match="pg:include">
