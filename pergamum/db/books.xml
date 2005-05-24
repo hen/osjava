@@ -1,7 +1,11 @@
 <?xml version="1.0"?>
 
 <library>
-  <book isbn="0596003285" name="Programming Jakarta Struts" publisher="ora" url="http://www.oreilly.com/catalog/jakarta" published="2002-11"/>
+  <book isbn="0596003285" name="Programming Jakarta Struts" publisher="ora" url="http://www.oreilly.com/catalog/jakarta" published="2002-11">
+    <description>As popular as the Struts Framework for building web applications with Servlets and JSPs is becoming, the online documentation is inadequate, focusing on the most basic functionality and leaving out information crucial to developers writing today's complex web applications. O'Reilly's Programming Jakarta Struts was written by Chuck Cavaness after his internet company decided to adopt the framework, then spent months really figuring out how to use it to its fullest potential. He calls the books, "the culmination of lessons learned (the hard way) while building our application."
+
+    Readers will benefit from the real-world, "this is how to do it" approach Cavaness takes to developing complex enterprise applications using Struts, and his focus on the 1.1 version of the Framework makes this the most up-to-date book available. </description>
+  </book>
   <book isbn="0596005199" name="Jakarta Struts Pocket Reference" publisher="ora" url="http://www.oreilly.com/catalog/jakartapr" published="2003-06"/>
   <book isbn="0672324725" name="Struts Kick Start" publisher="sam" url="http://www.sams.com/isapi/product_id~{DCBFFCDF-8096-49BC-A3EF-62A7716CB961}/catalog/product.asp" published="2002-12"/>
   <book isbn="1558608621" name="The Struts Framework: Practical Guide for Java Programmers" publisher="mk" url="http://books.elsevier.com/us/mk/us/subindex.asp?isbn=1558608621&amp;country=United+States&amp;community=mk" published="2002-10"/>
