@@ -1,11 +1,11 @@
 /*
  * org.osjava.nio.AbstractCharBroker
  *
- * $Id: ChannelHandler.java 1641 2005-04-23 20:23:14Z rzigweid $
- * $URL: https://svn.osjava.org/svn/osjava/trunk/osjava-nio/src/java/org/osjava/nio/ChannelHandler.java $
- * $Rev: 1641 $
- * $Date: 2005-04-23 21:23:14 +0100 (Sat, 23 Apr 2005) $
- * $Author: rzigweid $
+ * $Id$
+ * $URL$
+ * $Rev$
+ * $Date$
+ * $Author$
  *
  * Copyright (c) 2003-2005, Anthony Riley, Robert M. Zigweid
  * All rights reserved.
