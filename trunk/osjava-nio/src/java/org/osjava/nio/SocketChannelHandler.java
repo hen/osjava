@@ -266,7 +266,7 @@ public class SocketChannelHandler
                 "channel which is not in the pending state, nor is it " +
                 "connected.");
     }
-    
+        
     public void close() throws IOException {
         if(readBuffer.position() != 0) {
             System.out.println(readBuffer);
@@ -274,15 +274,9 @@ public class SocketChannelHandler
         }
         super.close();
         /* TODO: Close the associated buffers cleanly. */
-        getThread().deregister(this);
-        chan.close();
         writeClosed = true;
         readClosed = true;
-        if(getChannelListener() != null) {
-            getChannelListener().connectionClosed(this);
-        }
     }
-
 
     public SelectableChannel getSelectableChannel() {
         return chan;
