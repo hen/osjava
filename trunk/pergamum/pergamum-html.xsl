@@ -159,16 +159,19 @@
     </xsl:variable>
     <div class="sub-title"><xsl:value-of select="$name"/></div><br/>
     <div class="book-url">Visit the book&apos;s site: <a href="{$url}"><xsl:value-of select="$url"/></a></div><br/>
-    <div class="publisher-name">(<a href="{$pubUri}"><xsl:value-of select="$pubName"/></a>)</div><br/>
-    <div class="publisher-date"><xsl:value-of select="$published"/></div><br/>
-    <div class="books-links"><span class="ext"><a href="http://www.amazon.com/exec/obidos/tg/detail/-/{$isbn}">[amz]</a></span> / <span class="ext"><a href="http://www.bookpool.com/.x/1/sm/{$isbn}">[bkp]</a></span> / <span class="ext"><a href="http://www.javashelf.com/servlet/books/{$isbn}">[jshf]</a></span></div><br/>
     <xsl:if test="$description">
-      <div class="sub-title">Description</div><br/>
       <div class="description-text"><xsl:copy-of select="$description"/></div>
     </xsl:if>
+    <div class="publisher">(<span class="publisher-name"><a href="{$pubUri}"><xsl:value-of select="$pubName"/></a></span> - <span class="publisher-date"><xsl:value-of select="$published"/></span>)</div><br/>
+    <div class="books-links"><span class="ext"><a href="http://www.amazon.com/exec/obidos/tg/detail/-/{$isbn}">[amz]</a></span> / <span class="ext"><a href="http://www.bookpool.com/.x/1/sm/{$isbn}">[bkp]</a></span> / <span class="ext"><a href="http://www.javashelf.com/servlet/books/{$isbn}">[jshf]</a></span></div><br/>
     <xsl:if test="$review">
-      <div class="sub-title">Review</div><br/>
-      <div class="review-text"><xsl:copy-of select="$review"/></div>
+      <div class="sub-title">Review(s)</div><br/>
+      <xsl:for-each select="document('db/reviews.xml')/reviews/review[@isbn=$isbn]">
+        <div class="review-text">
+          <xsl:copy-of select="."/>
+          <span class="review-author"><xsl:value-of select="@author"/></span>
+        </div>
+      </xsl:for-each>
     </xsl:if>
   </xsl:template>
 
