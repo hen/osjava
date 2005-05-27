@@ -75,6 +75,10 @@
         font-size: 90%;
     }
 
+    .review-author {
+        font-weight: bold;
+    }
+
     .description-text { 
         background:#efefef;
         border-color: #666;
