@@ -21,7 +21,9 @@
   <book isbn="0672325624" name="Extreme Programming with Ant" publisher="sam" url="http://www.sams.com/isapi/product_id~{FB825A48-BC04-4C55-BD8C-DF93C6BBF920}/catalog/product.asp" published="2003-05"/>
   <book isbn="0471449156" name="Jakarta Pitfalls" publisher="wil" url="http://www.wiley.com/WileyCDA/WileyTitle/productCd-0471449156.html" published="2003-07"/>
   <book isbn="2970036908" name="The complete log4j manual" publisher="qos" url="https://www.qos.ch/shop/products/clm_t.jsp" published="2003-03"/>
-  <book isbn="1590592832" name="Pro Jakarta Commons" publisher="apr" url="http://apress.com/book/bookDisplay.html?bID=246" published="2004-03"/>
+  <book isbn="1590592832" name="Pro Jakarta Commons" publisher="apr" url="http://apress.com/book/bookDisplay.html?bID=246" published="2004-03">
+    <description>Jakarta Commons are easily reusable components that can quickly be put to good use in any server-side Java development undertaking. In fact, components are not big applications, but sleek code bits that perform specific tasks very well. This book provides much-needed documentation and usage information about the popular sub-projects forming Jakarta Commons-so that you can efficiently incorporate them into Java applications. </description>
+  </book>
   <book isbn="1893115364" name="Apache Jakarta Tomcat" publisher="apr" url="http://apress.com/book/bookDisplay.html?bID=7" published="2001-11"/>
   <book isbn="1590591259" name="Enterprise Java Development on a Budget" publisher="apr" url="http://apress.com/book/bookDisplay.html?bID=197" published="2004-03"/>
   <book isbn="1590590996" name="Logging in Java" publisher="apr" url="http://apress.com/book/bookDisplay.html?bID=166" published="2003-04"/>
