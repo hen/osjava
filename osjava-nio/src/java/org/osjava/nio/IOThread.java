@@ -173,7 +173,11 @@ public class IOThread extends Thread {
         Logger logger = Logger.getLogger(this.getClass());
         logger.debug("Adding to key '" + key + "' op '" + op + "'");
 
-        if(key.isValid()) {
+        /* 
+         * Null check necessary because of tasks.  The key might have been 
+         * destroyed while the task was queued.
+         */
+        if(key != null && key.isValid()) {
             key.interestOps(key.interestOps() | op);
         } else {
             logger.debug("invalid key");
@@ -202,7 +206,11 @@ public class IOThread extends Thread {
         Logger logger = Logger.getLogger(this.getClass());
         logger.debug("Removing from key '" + key + "' op '" + op + "'");
 
-        if(key.isValid()) {
+        /* 
+         * Null check necessary because of tasks.  The key might have been 
+         * destroyed while the task was queued.
+         */
+        if(key != null && key.isValid()) {
             key.interestOps(key.interestOps() & ~op);
         } else {
             logger.debug("invalid key");
@@ -256,7 +264,13 @@ public class IOThread extends Thread {
             throw new SecurityException("Can't be accessed with this thread");
         }
         SelectionKey key = handler.getSelectableChannel().keyFor(mySelector);
-        key.cancel();
+        /* 
+         * Null check necessary because of tasks.  The key might have been 
+         * destroyed while the task was queued.
+         */
+        if(key != null) {
+            key.cancel();
+        }
     }
 
     /**
