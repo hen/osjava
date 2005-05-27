@@ -2,14 +2,18 @@
 
 <reviews>
 
-  <review isbn="1590592832">
+  <review isbn="1590592832" author="Stephen Colebourne">
+    <p>"From Lang to Net, BeanUtils to Collections, this book provides a real way in to the breadth and depth of Jakarta Commons. The many examples and step-by-step guides should help everyone get the best from these libraries." </p>
+  </review>
+
+  <review isbn="1590592832" author="Henri Yandell">
    <p>This is the first book available on Jakarta Commons. Every released Commons component at time of print is covered and there are numerous examples. </p>
    <p>Note, I do have a certain level of self-interest in this as I was a technical reviewer on the book. </p>
    <p>After a brief introduction, the author, Harshad Oak, covers the Lang, Logging, Validator, BeanUtils, Pool/DBCP, Digester, Collections/Primitives, HttpClient/FileUpload and Net components, with a chapter on each and then finishes up with a quick overview of DbUtils, Codec, JXPath and Discovery in an ultimate chapter. </p>
    <p>There are other Jakarta Commons books on the way, and this book is ideal for the newbie to Jakarta Commons. I'll be ensuring my workplace has a copy. </p>
   </review>
 
-  <review isbn="1590592557">
+  <review isbn="1590592557" author="Henri Yandell">
    <p>This is a bizarre book, the bane of a librarian everywhere with its coverage of Struts, ObjectRelationBridge, Lucene and Velocity. As if that wasn't enough, the contents page shows that it also covers other open source Java projects, namely, Ant, Anthill and XDoclet, along with concepts such as RSS and EJB. All to create an application called JavaEdge. All of this within 300 pages. </p>
    <p>Originally published by Wrox, the edition I've read is the reprint from Apress. I'm reading the book as someone who feels they know enough about Struts, but would like to pick up the other technologies the book covers, so my attention to the Struts part of the book is relatively glancing. </p>
    <p>The first chapter is equally bizarre, rather than launching into the open source tools in question, it leads the reader through a series of web anti-patterns that contribute to entropy. I wish they had defined what that term means to them with regards to a software project, I imagine many speakers of English around the world would not be too sure. I've taken it to be the increasing tendency of any project to turn into a complete and utter mess. </p>
@@ -31,7 +35,7 @@
    <p><strong>Suggested retitle</strong>: Building a Web Application with Open-Source. </p>
   </review>
 
-  <review isbn="0596003870">
+  <review isbn="0596003870" author="Henri Yandell">
    <p>Subtitled "Extreme Programming in the Real World", this cookbook makes a good introduction to a slew of open-source projects that are of use both by the Extreme Programming (XP) brigade, and by any other Java project. Whilst chapter one introduces us to the real subject of the book, XP Tools, the second chapter is a tiny introduction to XP and largely ignorable. Following from there the book enters the cookbook mode and has chapters on Ant, JUnit, HttpUnit, Mock Objects, Cactus, JUnitPerf and XDoclet. It finishes with a chapter on Tomcat and JBoss which is really a very basic introduction to their administration. </p>
    <p>The Perl Cookbook was an outstanding book. One of the best of the last decade, and since then O'Reilly have continually tried to recreate that quality with various releases in the Cookbook series. I'm not aware of any book which has managed to match it, but there's been nothing to match the classic Programming Perl and Learning Perl combination either. Anyone who has bought the Java Cookbook will be aware of how hit and miss the Cookbook series is. What makes the Perl Cookbook so good is that it is a subject that many of us do a little bit of the time. Therefore when I hit my head for the Nth time and try to recall how you do substrings in Perl, it's just a recipe away. This is not something I would say of this book. </p>
    <p>While the chapters do have recipes, they don't assume familiarity with the subjects in question and so the first 3 or 4 recipes are wasted on how to setup and start using the subject matter. If I'm a user of JUnit already, or have read a good article, I already know the first 5 recipes just to have a working system. There are on average 13 recipes per chapter, and with 4 of these being startup, that's a lot of the book wasted. </p>
