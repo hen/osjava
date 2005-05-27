@@ -89,9 +89,17 @@ public abstract class AbstractChannelHandler implements ChannelHandler {
      * @throws IOException if something prevents the channel from being closed.
      */
     public void close() throws IOException {
-        thread.deregister(this);
+        final ChannelHandler foo = this;
+        thread.queueTask(new Runnable() {
+            public void run() {
+                thread.deregister(foo);
+            }
+        });
         if (chan.isOpen()) {
             chan.close();
+        }
+        if(getChannelListener() != null) {
+            getChannelListener().connectionClosed(this);
         }
     }
 
