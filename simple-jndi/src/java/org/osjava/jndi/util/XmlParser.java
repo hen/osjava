@@ -74,9 +74,9 @@ public class XmlParser implements Parser {
     private void parse(Reader reader, Map map) throws IOException {
         XMLParser parser = new XMLParser();
         XMLNode root = parser.parseXML(reader);
-        Enumeration enum = root.enumerateNode();
-        while(enum.hasMoreElements()) {
-            XMLNode node = (XMLNode)enum.nextElement();
+        Enumeration nodes = root.enumerateNode();
+        while(nodes.hasMoreElements()) {
+            XMLNode node = (XMLNode)nodes.nextElement();
             if(!node.isTag()) { continue; }
 //            add("", node);
 if(org.osjava.jndi.PropertiesContext.DEBUG)            System.err.println("[XML]Adding: "+node+" to "+root.getName()+getDelimiter());
