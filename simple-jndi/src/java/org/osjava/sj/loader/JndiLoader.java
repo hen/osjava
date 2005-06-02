@@ -3,14 +3,11 @@ package org.osjava.sj.loader;
 import java.util.*;
 import java.io.*;
 import javax.naming.*;
-import java.util.logging.Logger;
 
 /**
  * Loads a .properties file into a JNDI server.
  */
 public class JndiLoader {
-
-    private static Logger logger = Logger.getLogger(JndiLoader.class.getName());
 
     private Hashtable table = new Hashtable();
 
