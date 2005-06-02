@@ -67,7 +67,7 @@ public class JndiLoaderTest extends TestCase {
 
     public void testDirectory() {
         try {
-            File file = new File("/Users/hen/osj/trunk/simple-jndi/src/test/config/");
+            File file = new File("src/test/config/");
             JndiLoader loader = new JndiLoader();
             loader.loadDirectory( file, ctxt );
             assertEquals( "13", ctxt.lookup("test/value") );
