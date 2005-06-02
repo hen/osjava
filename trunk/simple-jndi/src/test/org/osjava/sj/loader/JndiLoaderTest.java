@@ -96,4 +96,23 @@ public class JndiLoaderTest extends TestCase {
         }
     }
 
+    public void testSubContext() {
+        try {
+            File file = new File("src/test/config/");
+            JndiLoader loader = new JndiLoader();
+            loader.loadDirectory( file, ctxt );
+            assertEquals( "Boo", ctxt.lookup("java/TestDS/user") );
+            Context subctxt = (Context) ctxt.lookup("java");
+            assertEquals( "Boo", subctxt.lookup("TestDS/user") );
+            subctxt = (Context) ctxt.lookup("java/TestDS");
+            assertEquals( "Boo", subctxt.lookup("user") );
+        } catch(IOException ioe) {
+            ioe.printStackTrace();
+            fail("IOException: "+ioe.getMessage());
+        } catch(NamingException ne) {
+            ne.printStackTrace();
+            fail("NamingException: "+ne.getMessage());
+        }
+    }
+
 }
