@@ -35,7 +35,14 @@ import java.io.InputStream;
 import java.io.IOException;
 import java.util.LinkedList;
 
+import java.text.Format;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.NumberUtils;
 import com.generationjava.web.HtmlW;
 import com.generationjava.web.XmlW;
 
@@ -70,6 +77,11 @@ public class HtmlScraper {
     // Position at which the string-scraper has reached
     private int currentIndex;
 
+    // Whether it has made the first move. 
+    // A hack to handle the semantics of wanting to 
+    // move to the tag that starts the text.
+    private boolean firstMove;
+
     public HtmlScraper() {
     }
 
@@ -81,6 +93,7 @@ public class HtmlScraper {
         if(text.startsWith("http://")) {
             throw new RuntimeException("Text starts with http://. This could be bad. ");
         }
+        
         this.page = text;
         this.lcPage = text.toLowerCase();
         reset();
@@ -104,7 +117,16 @@ public class HtmlScraper {
      */
      // This needs to be case-insensitive
     public boolean move(String tag) {
-        int idx = XmlW.getIndexOpeningTag(lcPage, tag.toLowerCase(), this.currentIndex + 1);
+
+        int lastIdx = this.currentIndex + 1;
+
+        // HACK: We expect move(String) to work the first time, even if it starts with that tag
+        if(firstMove == false && this.currentIndex == 0 && page.startsWith("<") ) {
+            firstMove = true;
+            lastIdx--;
+        }
+
+        int idx = XmlW.getIndexOpeningTag(lcPage, tag.toLowerCase(), lastIdx);
         if(idx == -1) {
             return false;
         } else {
@@ -310,5 +332,92 @@ public class HtmlScraper {
             return null;
         }
     }
+
+
+
+        /*
+             DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm");         
+             Object[] pattern = new Object[] {
+             		Number.class, String.class, String.class, 
+                    Number.class, Number.class, Number.class, 
+                    String.class, df, df, 
+                    String.class, String.class, Number.class};
+            
+             collection = scraper.scrapeTable(pattern);                         
+        */
+     
+    public Object[] scrapeTable() {
+        return scrapeTable(null);
+    }
+    public Object[] scrapeTable(Object[] pattern) {
+        List rowData = new LinkedList();
+        
+LABEL:  while(this.move("tr")) {
+        	String tableRowData = this.get("tr");
+
+            HtmlScraper rowScraper = new HtmlScraper();
+        	rowScraper.scrape(tableRowData);
+            
+            int n = 0;
+            List cells = new ArrayList();
+
+            // TODO: Look for "th"?
+            
+            while (rowScraper.move("td")) {
+            	String cellContent = rowScraper.get("td").trim();
+                
+                if(pattern == null) {
+                    cells.add(cellContent);
+                    continue;
+                }
+
+                Object target = null;
+                   
+                try {
+                	target = pattern[n];
+                } catch (ArrayIndexOutOfBoundsException ae) {                    
+                	continue LABEL;
+                }
+                                                
+                if (Format.class.isAssignableFrom(target.getClass())) {
+                    try {
+                        Object formattedObject = ((Format) target).parseObject(cellContent);
+                        cells.add(formattedObject);
+                    } catch (ParseException pe) {
+                        throw new RuntimeException("Error parsing cell contents into Object: ", pe);
+                    }
+                } else if (target instanceof Class) {
+                    Class clazz = (Class) target;                  
+                	if (String.class.equals(clazz)) {                		
+                		cells.add(cellContent);
+                	} else if (Number.class.isAssignableFrom(clazz)) {
+                		String s = cellContent.replaceAll(",", "");                           
+                		try {
+                			cells.add(NumberUtils.createNumber(s));
+                        } catch (NumberFormatException nfe) {
+                        	throw new RuntimeException("Unable to create a number from input: " + cellContent, nfe);
+                        }
+                	} else {
+                        throw new RuntimeException("Unrecognized class type for target");                		
+                    }
+                } else {
+                	throw new RuntimeException("Target was neither a Format object or a Class object: " + target.getClass().getName());
+                }
+                 
+                n++;
+            }
+            
+            // Does the number of cells match the pattern length?  If not, skip.
+            /*
+            if (pattern != null && cells.size() != pattern.length) {
+            	continue;
+            }           
+            */
+            
+            rowData.add(cells.toArray());
+        }
+                    
+        return rowData.toArray();
+    }    
 
 }
