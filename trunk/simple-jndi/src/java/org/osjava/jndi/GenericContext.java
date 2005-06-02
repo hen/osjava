@@ -157,8 +157,7 @@ public class GenericContext extends AbstractContext {
             throw new NameAlreadyBoundException();
         }
 
-        Name contextName = getNameParser(getNameInNamespace())
-            .parse(getNameInNamespace());
+        Name contextName = getNameParser((Name)null).parse(getNameInNamespace());
         contextName.addAll(name);
         newContext = new GenericContext(this);
         ((AbstractContext)newContext).setNameInNamespace(contextName);
