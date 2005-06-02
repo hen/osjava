@@ -112,8 +112,6 @@
           <exclude>org/osjava/jndi/util/HierarchicalMapTest.java</exclude>
           <exclude>org/osjava/jndi/util/PropertiesParserTest.java</exclude>
           <exclude>org/osjava/jndi/util/XmlParserTest.java</exclude>
-
-          <exclude>org/osjava/sj/loader/JndiLoaderTest.java</exclude>
       </excludes>
       <resources>
         <resource>
