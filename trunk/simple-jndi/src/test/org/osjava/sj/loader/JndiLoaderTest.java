@@ -80,4 +80,20 @@ public class JndiLoaderTest extends TestCase {
         }
     }
 
+    public void testDefaultFile() {
+        try {
+            File file = new File("src/test/config/");
+            JndiLoader loader = new JndiLoader();
+            loader.loadDirectory( file, ctxt );
+            assertEquals( "Fred", ctxt.lookup("name") );
+            assertEquals( "Foo", ctxt.lookup("com.genjava") );
+        } catch(IOException ioe) {
+            ioe.printStackTrace();
+            fail("IOException: "+ioe.getMessage());
+        } catch(NamingException ne) {
+            ne.printStackTrace();
+            fail("NamingException: "+ne.getMessage());
+        }
+    }
+
 }
