@@ -7,6 +7,10 @@
   </properties>
 
   <body>
+    <release version="2.1.0" date="2005-??-??">
+        <action dev="hen" type="fix">If a page starts with a tag, moving to that tag will now move to the first instance of the tag and not the second one. </action>
+        <action dev="hen" type="add">Helper method to suck a html table into a double array. </action>
+    </release>
     <release version="2.0.1" date="2004-07-06">
         <action dev="hen" type="fix" issue="GJC-21">Bug introduced in 2.0 that means a move() ends up a character too far into the text and a subsequent get does not work. </action>
     </release>
@@ -18,7 +22,7 @@
         <action dev="hen" type="fix" issue="GJC-19">Target is always the first argument in HtmlW/XmlW. </action>
     </release>
     <release version="1.0" date="2003-12-13">
-        <action dev="hen" type="add" issue="GJC-2">HtmlScraper needs to be case insensitive</action>
+        <action dev="hen" type="add" issue="GJC-2">HtmlScraper needs to be case insensitive. </action>
     </release>
 </body>
 </document>

@@ -21,6 +21,7 @@ public class HtmlScraperTest extends TestCase {
     }
 
     public void tearDown() {
+        scraper = null;
     }
 
     //-----------------------------------------------------------------------
@@ -58,6 +59,24 @@ public class HtmlScraperTest extends TestCase {
         assertEquals( "<tr><td align='center'>FOO</td></tr>", scraper2.toString() );
     }
 
+    public void testScrapeTableCell() {
+        scraper.move("tr");
+        String t = scraper.get("tr");
+        HtmlScraper scraper2 = new HtmlScraper();
+        scraper2.scrape(t);
+//        HtmlScraper scraper2 = scraper.scrapeTag("tr");
+        assertEquals( "<td align='center'>FOO</td>", scraper2.toString() );
+        assertTrue(scraper2.move("td"));
+        assertEquals("FOO", scraper2.get("td"));
+    }
+
+    public void testTmp() {
+        HtmlScraper s = new HtmlScraper();
+        s.scrape("<td align='center'>FOO</td>");
+        assertTrue(s.move("td"));
+        assertEquals("FOO", s.get("td"));
+    }
+
     public void testMoveToTagWithTwice() {
         assertTrue( scraper.moveToTagWith("bgcolor", "ffffff") );
         assertFalse( scraper.moveToTagWith("bgcolor", "ffffff") );
@@ -79,6 +98,16 @@ public class HtmlScraperTest extends TestCase {
         assertTrue( scraper.move("td") );
         assertEquals( "FOO", scraper.get("td") );
         assertFalse( scraper.move("td") );
+    }
+
+    public void testScrapeTable() {
+        Object[] data = scraper.scrapeTable();
+        assertEquals( "FOO", ((Object[])data[0])[0] );
+    }
+
+    public void testScrapeTable2() {
+        Object[] data = scraper.scrapeTable( new Object[] { String.class } );
+        assertEquals( "FOO", ((Object[])data[0])[0] );
     }
 
 }
