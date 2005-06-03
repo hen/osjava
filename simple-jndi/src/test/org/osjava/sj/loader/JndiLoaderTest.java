@@ -1,7 +1,5 @@
 package org.osjava.sj.loader;
 
-import org.osjava.jndi.GenericContext;
-
 import javax.naming.*;
 import java.io.*;
 import java.util.*;
@@ -10,6 +8,8 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import junit.textui.TestRunner;
+
+import javax.sql.DataSource;
 
 public class JndiLoaderTest extends TestCase {
 
@@ -97,15 +97,15 @@ public class JndiLoaderTest extends TestCase {
     }
 
     public void testSubContext() {
+        String dsString = "bing::::foofoo::::Boo";
         try {
             File file = new File("src/test/config/");
             JndiLoader loader = new JndiLoader();
             loader.loadDirectory( file, ctxt );
-            assertEquals( "Boo", ctxt.lookup("java/TestDS/user") );
             Context subctxt = (Context) ctxt.lookup("java");
-            assertEquals( "Boo", subctxt.lookup("TestDS/user") );
-            subctxt = (Context) ctxt.lookup("java/TestDS");
-            assertEquals( "Boo", subctxt.lookup("user") );
+            assertEquals( dsString, subctxt.lookup("TestDS").toString() );
+            DataSource ds = (DataSource) ctxt.lookup("java/TestDS");
+            assertEquals( dsString, ds.toString() );
         } catch(IOException ioe) {
             ioe.printStackTrace();
             fail("IOException: "+ioe.getMessage());

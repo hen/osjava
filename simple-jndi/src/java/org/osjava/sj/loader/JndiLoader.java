@@ -65,7 +65,7 @@ public class JndiLoader {
                     continue;
                 }
 
-// System.err.println("Is directory. Creating: "+name);
+// System.err.println("Is directory. Creating subcontext: "+name);
                 Context tmpCtxt = ctxt.createSubcontext( name );
                 loadDirectory(file, tmpCtxt);
             } else
@@ -84,7 +84,7 @@ public class JndiLoader {
     }
 
     private Properties loadFile(File file) throws IOException {
-        // replace with better prop class
+        // replace with better prop class?
         Properties p = new Properties();
         FileInputStream fin = null;
         try {
@@ -104,42 +104,134 @@ public class JndiLoader {
     public void load(Properties properties, Context ctxt) throws NamingException {
 // System.err.println("Loading Properties");
 
+        String delimiter = (String) this.table.get(SIMPLE_DELIMITER);
+        String typePostfix = delimiter + "type";
+
+        // scan for pseudo-nodes, aka "type":   foo.type
+        // store in a temporary type table:    "foo", new Properties() with type="value"
+        Map typeMap = new HashMap();
         Iterator iterator = properties.keySet().iterator();
         while(iterator.hasNext()) {
             String key = (String) iterator.next();
-// System.err.println("KEY: "+key);
 
-            // here we need to break by the specified delimiter
-            String[] path = key.split( (String) this.table.get(SIMPLE_DELIMITER) );
-// System.err.println("LN: "+path.length);
-            Context tmpCtxt = ctxt;
-            int lastIndex = path.length - 1;
-            for(int i=0; i < lastIndex; i++) {
-                Object obj = tmpCtxt.lookup(path[i]);
-                if(obj == null) {
-// System.err.println("Creating: "+path[i]);
-                    tmpCtxt = tmpCtxt.createSubcontext(path[i]);
-                } else
-                if(obj instanceof Context) {
-// System.err.println("Using: "+obj);
-                    tmpCtxt = (Context) obj;
-                } else {
-                    // HACK: Unsure how to handle the /type modifier currently
-// System.err.println("Skipping due to non-support, most likely this is due to 'type': "+obj+" and "+path[lastIndex]);
-                    lastIndex--;
-                    break;
-                }
+            if(key.endsWith( typePostfix )) {
+// System.err.println("TYPE: "+key);
+                Properties tmp = new Properties();
+                tmp.put( "type", properties.get(key) );
+                typeMap.put( key.substring(0, key.length() - typePostfix.length()), tmp );
             }
-            Object obj = tmpCtxt.lookup(path[lastIndex]);
-            if(obj == null) {
-// System.err.println("Binding: "+path[lastIndex]);
-                tmpCtxt.bind( path[lastIndex], properties.get(key) );
-            } else {
-// System.err.println("Rebinding: "+path[lastIndex]);
-                tmpCtxt.rebind( path[lastIndex], properties.get(key) );
-            }
+
         }
 
+// if it matches a type root, then it should be added to the properties
+// if not, then it should be placed in the context
+// for each type properties
+// call convert: pass a Properties in that contains everything starting with foo, but without the foo
+// put objects in context
+
+        iterator = properties.keySet().iterator();
+        while(iterator.hasNext()) {
+            String key = (String) iterator.next();
+            Object value = properties.get(key);
+
+            if(key.endsWith( typePostfix )) {
+                continue;
+            }
+
+            if(typeMap.containsKey(key)) {
+// System.err.println("Typed: "+key);
+                ( (Properties) typeMap.get(key) ).put("", value);
+                continue;
+            }
+
+            if(key.indexOf(delimiter) != -1) {
+                String pathText = removeLastElement( key, delimiter );
+                String nodeText = getLastElement( key, delimiter );
+
+                if(typeMap.containsKey(pathText)) {
+// System.err.println("Sibling: "+key);
+                    ( (Properties) typeMap.get(pathText) ).put(nodeText, value);
+                    continue;
+                }
+            }
+
+// System.err.println("Putting: "+key);
+            jndiPut( ctxt, key, properties.get(key) );
+        }
+
+        Iterator typeIterator = typeMap.keySet().iterator();
+        while(typeIterator.hasNext()) {
+            String typeKey = (String) typeIterator.next();
+            Properties typeProperties = (Properties) typeMap.get(typeKey);
+
+            Object value = convert(typeProperties);
+// System.err.println("Putting typed: "+typeKey);
+            jndiPut( ctxt, typeKey, value );
+        }
+
+    }
+
+    private void jndiPut(Context ctxt, String key, Object value) throws NamingException {
+        // here we need to break by the specified delimiter
+        String[] path = key.split( (String) this.table.get(SIMPLE_DELIMITER) );
+
+// System.err.println("LN: "+path.length);
+        int lastIndex = path.length - 1;
+
+
+        Context tmpCtxt = ctxt;
+
+        for(int i=0; i < lastIndex; i++) {
+            Object obj = tmpCtxt.lookup(path[i]);
+            if(obj == null) {
+// System.err.println("Creating subcontext: "+path[i]);
+                tmpCtxt = tmpCtxt.createSubcontext(path[i]);
+            } else
+            if(obj instanceof Context) {
+// System.err.println("Using subcontext: "+obj);
+                tmpCtxt = (Context) obj;
+            } else {
+                throw new RuntimeException("Illegal node/branch clash. At branch value '"+path[i]+"' an Object was found: " +obj);
+            }
+        }
+        
+        Object obj = tmpCtxt.lookup(path[lastIndex]);
+        if(obj == null) {
+// System.err.println("Binding: "+path[lastIndex]+" on "+key);
+            tmpCtxt.bind( path[lastIndex], value );
+        } else {
+// System.err.println("Rebinding: "+path[lastIndex]+" on "+key);
+            tmpCtxt.rebind( path[lastIndex], value );
+        }
+    }
+
+    private static Object convert(Properties properties) {
+        String type = properties.getProperty("type");
+        // TODO: handle a plugin type system
+        
+        // HACK: Supporting only DataSources for the moment
+        if("javax.sql.DataSource".equals(type)) {
+            return new SJDataSource(
+                properties.getProperty("driver"), 
+                properties.getProperty("url"), 
+                properties.getProperty("user"), 
+                properties.getProperty("password"), 
+                properties.getProperty("pool")
+            );
+        }
+
+        return properties.get("");
+
+    }
+
+    // String methods to make the using code more readable
+    private static String getLastElement( String str, String delimiter ) {
+        int idx = str.lastIndexOf(delimiter);
+        return str.substring(idx + 1);
+    }
+    private static String removeLastElement( String str, String delimiter ) {
+        int idx = str.lastIndexOf(delimiter);
+        return str.substring(0, idx);
     }
 
 }
