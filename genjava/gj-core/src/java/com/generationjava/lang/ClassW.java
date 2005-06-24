@@ -152,12 +152,12 @@ final public class ClassW {
     /**
      * Runs a static method on a class.
      *
-     * @param classname String name of class to invoke on.
-     * @param method    String name of method to call.
-     * @param args      Object[] arguments to method.
+     * @param classname     String name of class to invoke on.
+     * @param methodName    String name of method to call.
+     * @param args          Object[] arguments to method.
      */
     static public Object callStatic(String classname, String methodName, 
-                                  Class[] types, Object[] args) 
+                                    Class[] types, Object[] args) 
     {
         return callStatic(getClass(classname), methodName, types, args);
     }
