@@ -60,6 +60,7 @@ import java.net.MalformedURLException;
 import org.osjava.naming.ContextBindings;
 import org.osjava.naming.ContextNames;
 import org.osjava.naming.SimpleNameParser;
+import org.osjava.sj.jndi.StaticHashtable;
 
 import org.osjava.jndi.util.Parser;
 import org.osjava.jndi.util.PropertiesParser;

@@ -1,5 +1,5 @@
 /*
- * org.osjava.jndiGenericContextFactory
+ * org.osjava.jndiMemoryContextFactory
  * $Id$
  * $Rev$ 
  * $Date$ 
@@ -38,7 +38,7 @@
  */
 
 
-package org.osjava.jndi;
+package org.osjava.sj.memory;
 
 import java.util.Hashtable;
 
@@ -47,18 +47,18 @@ import javax.naming.NamingException;
 import javax.naming.spi.InitialContextFactory;
 
 /**
- * Initial Context Factory for GenericContexts.
+ * Initial Context Factory for MemoryContexts.
  * 
  * @author Robert M. Zigweid
  * @since Simple-JNDI 0.11
  * @version $Rev$ $Date$
  */
-public class GenericContextFactory implements InitialContextFactory {
+public class MemoryContextFactory implements InitialContextFactory {
 
     /**
-     * Create a GenericContextFactory
+     * Create a MemoryContextFactory
      */
-    public GenericContextFactory() {
+    public MemoryContextFactory() {
         super();
     }
 
@@ -66,7 +66,7 @@ public class GenericContextFactory implements InitialContextFactory {
      * @see javax.naming.spi.InitialContextFactory#getInitialContext(java.util.Hashtable)
      */
     public Context getInitialContext(Hashtable environment) throws NamingException {
-        GenericContext context = new GenericContext(environment);
+        MemoryContext context = new MemoryContext(environment);
         return context;
     }
 
