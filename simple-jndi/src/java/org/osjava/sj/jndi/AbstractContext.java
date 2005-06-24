@@ -30,7 +30,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.osjava.jndi;
+package org.osjava.sj.jndi;
 
 import javax.naming.Context;
 import javax.naming.ContextNotEmptyException;
@@ -164,18 +164,18 @@ public abstract class AbstractContext
         String shared = null;
         if(env != null) {
             this.env = (Hashtable)env.clone();
-            this.delimiter = (String)this.env.get("org.osjava.jndi.delimiter");
-            shared = (String)this.env.get("org.osjava.jndi.shared");
+            this.delimiter = (String)this.env.get("org.osjava.sj.jndi.delimiter");
+            shared = (String)this.env.get("org.osjava.sj.jndi.shared");
         }
 
         /* let System properties override the jndi.properties file, if
          * systemOverride is true */
         if(systemOverride) {
-            if(System.getProperty("org.osjava.jndi.delimiter") != null) {
-                this.delimiter = System.getProperty("org.osjava.jndi.delimiter");
+            if(System.getProperty("org.osjava.sj.jndi.delimiter") != null) {
+                this.delimiter = System.getProperty("org.osjava.sj.jndi.delimiter");
             }
-            if(System.getProperty("org.osjava.jndi.shared") != null) {
-                shared = System.getProperty("org.osjava.jndi.shared");
+            if(System.getProperty("org.osjava.sj.jndi.shared") != null) {
+                shared = System.getProperty("org.osjava.sj.jndi.shared");
             }
         }
         
@@ -759,7 +759,7 @@ public abstract class AbstractContext
      * @param name the Name of the context.
      * @throws NamingException if the subContext already has a name.
      */
-    protected void setNameInNamespace(Name name) throws NamingException {
+    public void setNameInNamespace(Name name) throws NamingException {
         if(nameLock) {
             if(nameInNamespace != null || !nameInNamespace.isEmpty()) {
                 throw new NamingException("Name already set.");

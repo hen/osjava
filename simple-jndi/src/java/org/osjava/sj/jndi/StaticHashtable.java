@@ -30,7 +30,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.osjava.jndi;
+package org.osjava.sj.jndi;
 
 import java.util.Hashtable;
 import java.util.Set;
@@ -40,7 +40,7 @@ import java.util.Map;
 /**
  * A hashtable that shares its space with any other instance of StaticHashtable.
  */
-class StaticHashtable extends Hashtable {
+public class StaticHashtable extends Hashtable {
 
     private static final Hashtable SELF = new Hashtable();
 

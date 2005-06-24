@@ -1,5 +1,5 @@
 /*
- * org.osjava.jndiGenericContext
+ * org.osjava.sj.memory.MemoryContext
  * $Id$
  * $Rev$ 
  * $Date$ 
@@ -38,7 +38,7 @@
  */
 
 
-package org.osjava.jndi;
+package org.osjava.sj.memory;
 
 import java.util.Hashtable;
 
@@ -49,6 +49,8 @@ import javax.naming.NameNotFoundException;
 import javax.naming.NameParser;
 import javax.naming.NamingException;
 
+import org.osjava.sj.jndi.AbstractContext;
+
 /**
  * A generic context that requires no DataSource backend.   It is designed to
  * live exclusively in memory and not have its state saved.
@@ -57,12 +59,12 @@ import javax.naming.NamingException;
  * @since Simple-JNDI 0.11
  * @version $Rev$ $Date$
  */
-public class GenericContext extends AbstractContext {
+public class MemoryContext extends AbstractContext {
 
     /**
      * 
      */
-    public GenericContext() {
+    public MemoryContext() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -70,7 +72,7 @@ public class GenericContext extends AbstractContext {
     /**
      * @param env
      */
-    public GenericContext(Hashtable env) {
+    public MemoryContext(Hashtable env) {
         super(env);
         // TODO Auto-generated constructor stub
     }
@@ -79,7 +81,7 @@ public class GenericContext extends AbstractContext {
      * @param env
      * @param systemOverride
      */
-    public GenericContext(Hashtable env, boolean systemOverride) {
+    public MemoryContext(Hashtable env, boolean systemOverride) {
         super(env, systemOverride);
         // TODO Auto-generated constructor stub
     }
@@ -88,7 +90,7 @@ public class GenericContext extends AbstractContext {
      * @param env
      * @param parser
      */
-    public GenericContext(Hashtable env, NameParser parser) {
+    public MemoryContext(Hashtable env, NameParser parser) {
         super(env, parser);
         // TODO Auto-generated constructor stub
     }
@@ -96,7 +98,7 @@ public class GenericContext extends AbstractContext {
     /**
      * @param systemOverride
      */
-    public GenericContext(boolean systemOverride) {
+    public MemoryContext(boolean systemOverride) {
         super(systemOverride);
         // TODO Auto-generated constructor stub
     }
@@ -105,7 +107,7 @@ public class GenericContext extends AbstractContext {
      * @param systemOverride
      * @param parser
      */
-    public GenericContext(boolean systemOverride, NameParser parser) {
+    public MemoryContext(boolean systemOverride, NameParser parser) {
         super(systemOverride, parser);
         // TODO Auto-generated constructor stub
     }
@@ -113,7 +115,7 @@ public class GenericContext extends AbstractContext {
     /**
      * @param parser
      */
-    public GenericContext(NameParser parser) {
+    public MemoryContext(NameParser parser) {
         super(parser);
         // TODO Auto-generated constructor stub
     }
@@ -123,7 +125,7 @@ public class GenericContext extends AbstractContext {
      * @param systemOverride
      * @param parser
      */
-    public GenericContext(Hashtable env, boolean systemOverride, NameParser parser) {
+    public MemoryContext(Hashtable env, boolean systemOverride, NameParser parser) {
         super(env, systemOverride, parser);
         // TODO Auto-generated constructor stub
     }
@@ -131,7 +133,7 @@ public class GenericContext extends AbstractContext {
     /**
      * @param that
      */
-    public GenericContext(AbstractContext that) {
+    public MemoryContext(AbstractContext that) {
         super(that);
         // TODO Auto-generated constructor stub
     }
@@ -159,7 +161,7 @@ public class GenericContext extends AbstractContext {
 
         Name contextName = getNameParser((Name)null).parse(getNameInNamespace());
         contextName.addAll(name);
-        newContext = new GenericContext(this);
+        newContext = new MemoryContext(this);
         ((AbstractContext)newContext).setNameInNamespace(contextName);
         bind(name, newContext);
         return newContext;
