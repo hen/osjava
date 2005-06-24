@@ -114,7 +114,7 @@ public class ByteArray {
     /**
      * converts a hexidecimal form of String to a byte array.
      *
-     * @param s String of bytes in hexadecimal format
+     * @param bstr String of bytes in hexadecimal format
      *
      * @return byte[] values of hexadecimal-string
      */
@@ -138,7 +138,7 @@ public class ByteArray {
      * The primitive type, 'long' is 8 times the size of 
      * a byte.
      *
-     * @param s String of byte in hexadecimal format
+     * @param lns Array of longs to be converted to bytes.
      *
      * @return byte value of hexadecimal-string
      */
