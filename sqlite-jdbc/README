@@ -1,0 +1,9 @@
+This project is a jdbc driver for the SQLite package.  The reasons for it are 
+to provide a jdbc driver for SQLite that implements the JDBC 3 (maybe 4) 
+spec as much as possible.
+
+This is a Type 2 driver.  This is necessary because SQLite is not net
+enabled.  Utilizing the SQLite API becomes necessary at this point.
+
+This driver supports SQLite 3.  If it is conveneint, SQLite 2 support may be
+added in the future.
