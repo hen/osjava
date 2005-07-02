@@ -93,8 +93,16 @@ public class TestDriver extends TestCase {
         }
     }
     
+    /**
+     * Open a simple connection with default semantics and then close it.
+     * @throws SQLException
+     */
     public void test_connect1() throws SQLException {
         Connection con = DriverManager.getConnection("jdbc:sqlite:local.db");
-        System.out.println("Connection is -- " + con);
+        con.close();
     }
+    
+    /** 
+     * 
+     */
 }
