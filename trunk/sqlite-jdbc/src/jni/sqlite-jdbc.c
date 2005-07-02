@@ -44,6 +44,10 @@
 #include "org_osjava_jdbc_sqlite_Driver.h"
 
 /*
+ * Class:     org_osjava_jdbc_sqlite_Driver
+ * Method:    proxyConnect
+ * Signature: (Ljava/lang/String;)Ljava/sql/Connection;
+ *
  * Attempts to connect to the database pointed to by the filename in the
  * 'fileName' argument.
  */
@@ -57,8 +61,6 @@ Java_org_osjava_jdbc_sqlite_Driver_proxyConnect(JNIEnv *env,
     jobject connection;
     jclass connectionClass;
     jmethodID connectionMethod;
-    jthrowable e;
-    
 
     handle = (sqlite3 *)malloc(sizeof(sqlite3 *));
     result = sqlite3_open(stringFileName, &handle);
@@ -85,14 +87,77 @@ Java_org_osjava_jdbc_sqlite_Driver_proxyConnect(JNIEnv *env,
     connectionClass = (*env)->FindClass(env,
                                         "org/osjava/jdbc/sqlite/Connection");
     /* Make sure the class was found */
-    printf("Connection class -- %p", connectionClass);
+    /* FIXME: This really should be improved.  Right now, we're passing the 
+              exception directly up to the calling function rather than doing
+              any handling on it.  At the very least we should send back an 
+              improved error message */
+    if(connectionClass == NULL) {
+        return NULL;
+    }
+    
     connectionMethod = (*env)->GetMethodID(env,
                                            connectionClass,
                                            "<init>",
                                            "(I)V");
+    /* FIXME: This really should be improved.  Right now, we're passing the 
+              exception directly up to the calling function rather than doing
+              any handling on it.  At the very least we should send back an 
+              improved error message */
+    if(connectionMethod == NULL) {
+        return NULL;
+    }
+
     connection = (*env)->NewObject(env,
                                    connectionClass,
                                    connectionMethod,
                                    handle);
     return connection;
 }
+
+
+/*
+ * Class:     org_osjava_jdbc_sqlite_Connection
+ * Method:    proxyClose
+ * Signature: (I)V
+ * 
+ * Close an existing Connection object.
+ * The handle that is passed as argument should represent the sqlite3 handle.
+ * Returns true on success, else false.
+ */
+JNIEXPORT void JNICALL 
+Java_org_osjava_jdbc_sqlite_Connection_proxyClose(JNIEnv *env,
+                                                  jobject obj,
+                                                  jint handle) {
+    int result;
+
+    result = sqlite3_close((sqlite3 *)handle);
+    /* FIXME: Busy handling should be improved at some point down the line to 
+     *        allow the client to try again, perhaps.  */
+    if(result == SQLITE_BUSY) {
+        jclass excClass = (*env)->FindClass(env,
+                                            "/java/sql/SQLException");
+        /* Can't find the class?  Give up, though this should never happen */
+        if(excClass == 0) {
+            return;
+        }
+        (*env)->ThrowNew(env,
+                         excClass, 
+                         "SQLite Database Busy.  Cannot close.");
+        return;
+    }
+    
+    /* An error occurred */
+    if(result == SQLITE_ERROR) {
+        jclass excClass = (*env)->FindClass(env,
+                                            "/java/sql/SQLException");
+        /* Can't find the class?  Give up, though this should never happen */
+        if(excClass == 0) {
+            return;
+        }
+        (*env)->ThrowNew(env,
+                         excClass, 
+                         sqlite3_errmsg((sqlite3 *)handle));
+        
+    }
+}
+

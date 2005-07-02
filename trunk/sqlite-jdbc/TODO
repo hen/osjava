@@ -7,3 +7,14 @@
   Throw exceptions damnit!
   
 * Driver.getConnection().  Utilize passed properties where appropriate.
+
+* Consider extending SQLException in more specific classes so that they are 
+  easier to catch without having to parse the message of the exception.
+  When this is done, it will be important that the new exception classes 
+  extend SQLException, so the spec remains in tact.  Additionally the error
+  messages should stay the same as before, for backwards compatability.
+  
+TESTS TO CREATE
+* closing a connection where the database will be busy
+* closing a connection when it's already closed (There's java in place to 
+  prevent this though)

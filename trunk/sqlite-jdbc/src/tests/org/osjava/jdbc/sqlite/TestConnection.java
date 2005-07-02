@@ -1,12 +1,13 @@
+package org.osjava.jdbc.sqlite;
 /*
- * org.osjava.jdbc.sqlite.TestDriver
+ * org.osjava.jdbc.sqlite.TestConnection
  * $Id$
  * $Rev$ 
  * $Date$ 
  * $Author$
  * $URL$
  * 
- * Created on Jun 25, 2005
+ * Created on Jul 2, 2005
  *
  * Copyright (c) 2004, Robert M. Zigweid All rights reserved.
  *
@@ -36,63 +37,52 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-
-
-package org.osjava.jdbc.sqlite;
-
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.SQLException;
-
-import org.osjava.jdbc.sqlite.Driver;
 
 import junit.framework.TestCase;
 
-public class TestDriver extends TestCase {
-    public void setUp() throws Exception {
+public class TestConnection extends TestCase {
+
+    protected void setUp() throws Exception {
         super.setUp();
         try {
             Class.forName("org.osjava.jdbc.sqlite.Driver");
         } catch (ClassNotFoundException e) {
             fail();
         }
+
     }
-    
-    public void tearDown() throws Exception {
+
+    protected void tearDown() throws Exception {
         super.tearDown();
     }
-    /**
-     * Test asserts that the URL beginning with jdbc:sqlite returns true.
-     */
-    public void test_acceptURL1() {
-        Driver driver = new Driver();
-        try {
-            assertTrue(driver.acceptsURL("jdbc:sqlite:local.db"));
-        } catch (SQLException e) {
-            fail();
-        }
-    }
 
     /**
-     * Test asserts that the URL beginning with jdbc:sqlite3 returns true.
+     * Open a simple connection with default semantics and then close it.
+     * @throws SQLException
      */
-    public void test_acceptURL2() {
-        Driver driver = new Driver();
-        try {
-            assertTrue(driver.acceptsURL("jdbc:sqlite3:local.db"));
-        } catch (SQLException e) {
-            fail();
-        }
+    public void test_connect1() throws SQLException {
+        Connection con = DriverManager.getConnection("jdbc:sqlite:local.db");
+        con.close();
     }
 
-    /**
-     * Test asserts that the URL beginning with jdbc:sqlite3 returns false.
-     */
-    public void test_acceptURL3() {
-        Driver driver = new Driver();
+    /* Close the same connection twice. An exception should be thrown 
+     * that we catch for this test to pass.*/
+    public void test_close1() throws SQLException {
+        Connection con = DriverManager.getConnection("jdbc:sqlite:local.db");
+        con.close();
+        /* Catch the exception on this one because it is expected */
         try {
-            assertFalse(driver.acceptsURL("jdbc:sqlite2:local.db"));
-        } catch (SQLException e) {
-            fail();
+            con.close();
+        } catch(SQLException e) {
+            /* We only want to pass if the message is expected.*/
+            assertTrue(e.getMessage().equals("Cannot close Connection. Connection is already closed."));
+            /* Return here because we know the exception that we were 
+             * expecting has been captured. */
+            return;
         }
+        fail();
     }
-    
 }
