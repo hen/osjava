@@ -54,7 +54,17 @@ import java.util.Map;
  *
  */
 public class Connection implements java.sql.Connection {
+    
+    /**
+     * An int representing the memory pointer for the C end of the Connection.
+     */
     private int handle;
+    
+    /**
+     * A boolean value indicating whether or not the connection has been closed.
+     */
+    private boolean closed = false;
+    
     /**
      * 
      */
@@ -101,14 +111,23 @@ public class Connection implements java.sql.Connection {
      * Close the connection.
      */
     public void close() throws SQLException {
+        if(isClosed()) {
+            throw new SQLException("Cannot close Connection. Connection is already closed.");
+        }
+        /* This can throw an exception based upon whether or not the 
+         * connection is busy, or possibly an error if there is another 
+         * circumstance. */ 
         proxyClose(handle);
+        closed = true;
     }
     
-    private native void proxyClose(int handle) throws SQLException;
+    private native boolean proxyClose(int handle) throws SQLException;
     
+    /**
+     * @see java.sql.Connection#isClosed()
+     */
     public boolean isClosed() throws SQLException {
-        // TODO Auto-generated method stub
-        return false;
+        return closed;
     }
     public DatabaseMetaData getMetaData() throws SQLException {
         // TODO Auto-generated method stub
