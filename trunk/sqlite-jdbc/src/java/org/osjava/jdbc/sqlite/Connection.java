@@ -60,6 +60,7 @@ public class Connection implements java.sql.Connection {
      */
     public Connection(int handle) {
         super();
+        System.out.println("Connection created with handle " + handle);
         // TODO Auto-generated constructor stub
     }
     
@@ -95,10 +96,16 @@ public class Connection implements java.sql.Connection {
         // TODO Auto-generated method stub
         
     }
+    
+    /**
+     * Close the connection.
+     */
     public void close() throws SQLException {
-        // TODO Auto-generated method stub
-        
+        proxyClose(handle);
     }
+    
+    private native void proxyClose(int handle) throws SQLException;
+    
     public boolean isClosed() throws SQLException {
         // TODO Auto-generated method stub
         return false;

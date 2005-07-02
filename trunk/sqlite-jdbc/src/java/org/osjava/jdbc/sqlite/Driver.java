@@ -87,7 +87,19 @@ public class Driver implements java.sql.Driver {
      * The <code>url</code> must contain a target that the underlying 
      * SQLite library can understand.  This is usually a filename.</br>
      * 
-     * No properties are used to create the connection at this time.
+     * Useful properties to pass.
+     * <ul>
+     * <li><b>create</b>: Whether or not to create a new database.  Valid
+     *     values are "Always", "Never", or "Open".  These values are case 
+     *     incensitive.  "Always" will always create a new database, removing
+     *     the old one if it existed.  "Never" will never create a new, only 
+     *     using an already existing one.  If there is not a file there, an 
+     *     {@link SQLException} will be thrown. If "Open" is passed, a new 
+     *     file will be created if it does not exist, otherwise the existing
+     *     file will be used.  Any other value will result in a SQLException
+     *     being thrown with a message indicating an invalid Property value.
+     *     The default behavior is "Open".</li>
+     * </ul>
      * 
      * @param url the url to connect to.
      * @param info additional property information used when connecting.  
@@ -105,7 +117,7 @@ public class Driver implements java.sql.Driver {
             return null;
         }
         
-        /* Properties are ignored here, they really aren't relavent */
+       
         String[] parts = url.split(":");
         StringBuffer fileName = new StringBuffer();
         for(int i = 2; i < parts.length; i++) {
@@ -161,7 +173,7 @@ public class Driver implements java.sql.Driver {
      *        database file.
      * @return true on success and false if the connection failed.
      */
-    private native Connection proxyConnect(String url);
+    private native Connection proxyConnect(String url) throws SQLException;
 
     
     private void setErrorMessage(String str) {

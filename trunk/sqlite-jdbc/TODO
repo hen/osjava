@@ -1,0 +1,9 @@
+* Driver.getConnection(). JNI portion.  
+  Determine the message that the exception will throw if the 'create' property
+  is passed and it does not match with the settings.  (I.e. "Never" is the
+  value of the property and the file does not already exist.)
+  
+* Driver.getConnection(). JNI portion.
+  Throw exceptions damnit!
+  
+* Driver.getConnection().  Utilize passed properties where appropriate.
