@@ -40,6 +40,7 @@
 
 package org.osjava.jdbc.sqlite;
 
+import java.io.File;
 import java.sql.SQLException;
 
 import org.osjava.jdbc.sqlite.Driver;
@@ -58,7 +59,13 @@ public class TestDriver extends TestCase {
     
     public void tearDown() throws Exception {
         super.tearDown();
+        /* If the local.db file exists, remove it. */
+        File db = new File("local.db");
+        if(db.exists()) {
+            db.delete();
+        }
     }
+
     /**
      * Test asserts that the URL beginning with jdbc:sqlite returns true.
      */
