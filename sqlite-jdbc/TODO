@@ -2,10 +2,7 @@
   Determine the message that the exception will throw if the 'create' property
   is passed and it does not match with the settings.  (I.e. "Never" is the
   value of the property and the file does not already exist.)
-  
-* Driver.getConnection(). JNI portion.
-  Throw exceptions damnit!
-  
+    
 * Driver.getConnection().  Utilize passed properties where appropriate.
 
 * Consider extending SQLException in more specific classes so that they are 
@@ -13,6 +10,11 @@
   When this is done, it will be important that the new exception classes 
   extend SQLException, so the spec remains in tact.  Additionally the error
   messages should stay the same as before, for backwards compatability.
+
+* I'm not sure that the way that I'm passing around the handler is really all
+  that good.  It should work, as it's just an integer, but I'm concerned about
+  static analysis type tools actually detecting whether or not things are 
+  properly freed, and in fact whether it's going to be leaking memory at all.
   
 TESTS TO CREATE
 * closing a connection where the database will be busy

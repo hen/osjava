@@ -37,6 +37,7 @@ package org.osjava.jdbc.sqlite;
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
+import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -57,6 +58,11 @@ public class TestConnection extends TestCase {
 
     protected void tearDown() throws Exception {
         super.tearDown();
+        /* If the local.db file exists, remove it. */
+        File db = new File("local.db");
+        if(db.exists()) {
+            db.delete();
+        }
     }
 
     /**
@@ -68,8 +74,24 @@ public class TestConnection extends TestCase {
         con.close();
     }
 
-    /* Close the same connection twice. An exception should be thrown 
-     * that we catch for this test to pass.*/
+    /**
+     * Open a connection to the same database twice.  This should not be 
+     * allowed under the most simple of connection circumstances.  Look 
+     * for the exception.
+     * 
+     * @throws SQLException
+     */
+    public void test_connect2() throws SQLException {
+        Connection con = DriverManager.getConnection("jdbc:sqlite:local.db");
+        Connection con2 = DriverManager.getConnection("jdbc:sqlite:local.db");
+        con.close();
+        con2.close();
+    }    
+    
+    /**
+     * Close the same connection twice. An exception should be thrown 
+     * that we catch for this test to pass.
+     */
     public void test_close1() throws SQLException {
         Connection con = DriverManager.getConnection("jdbc:sqlite:local.db");
         con.close();
