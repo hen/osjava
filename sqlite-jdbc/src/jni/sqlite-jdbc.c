@@ -80,6 +80,7 @@ Java_org_osjava_jdbc_sqlite_Driver_proxyConnect(JNIEnv *env,
         /* There is always an open handle from SQLite.  Close it when there's
          * an error */
         sqlite3_close(handle);
+        free(handle);
         return NULL;
     }
 
@@ -156,8 +157,7 @@ Java_org_osjava_jdbc_sqlite_Connection_proxyClose(JNIEnv *env,
         }
         (*env)->ThrowNew(env,
                          excClass, 
-                         sqlite3_errmsg((sqlite3 *)handle));
-        
+                         sqlite3_errmsg((sqlite3 *)handle));   
     }
+    free((sqlite3 *)handle);
 }
-
