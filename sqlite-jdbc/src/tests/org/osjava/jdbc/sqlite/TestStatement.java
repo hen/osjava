@@ -1,13 +1,12 @@
-package org.osjava.jdbc.sqlite;
 /*
- * org.osjava.jdbc.sqlite.TestConnection
+ * org.osjava.jdbc.sqlite.TestStatement
  * $Id$
  * $Rev$ 
  * $Date$ 
  * $Author$
  * $URL$
  * 
- * Created on Jul 2, 2005
+ * Created on Jul 3, 2005
  *
  * Copyright (c) 2004, Robert M. Zigweid All rights reserved.
  *
@@ -37,19 +36,24 @@ package org.osjava.jdbc.sqlite;
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
+
+package org.osjava.jdbc.sqlite;
+
 import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.SQLException;
 
 import junit.framework.TestCase;
 
-public class TestConnection extends TestCase {
+public class TestStatement extends TestCase {
+    private Connection con = null;
 
     protected void setUp() throws Exception {
         super.setUp();
         try {
             Class.forName("org.osjava.jdbc.sqlite.Driver");
+            con = DriverManager.getConnection("jdbc:sqlite:local.db");
         } catch (ClassNotFoundException e) {
             fail();
         }
@@ -57,39 +61,23 @@ public class TestConnection extends TestCase {
 
     protected void tearDown() throws Exception {
         super.tearDown();
+        con.close();
         /* If the local.db file exists, remove it. */
-        File db = new File("local.db");
-        if(db.exists()) {
-            db.delete();
-        }
+//        File db = new File("local.db");
+//        if(db.exists()) {
+//            db.delete();
+//        }
     }
 
     /**
-     * Open a simple connection with default semantics and then close it.
-     * @throws SQLException
+     * Simple Statement.executeQuery() test.  This particular test creates
+     * a new database if it doesn't exist, and then uses 
+     * Statement.executeQuery() to create the first table.  The returned 
+     * ResultSet should not have any 
      */
-    public void test_connect1() throws SQLException {
-        Connection con = DriverManager.getConnection("jdbc:sqlite:local.db");
-        con.close();
+    public void testExecuteQuery() throws Exception {
+        java.sql.Statement stmt = con.createStatement();
+        stmt.executeQuery("CREATE TABLE foo (TestCol VARCHAR(10));");
     }
-
-    /**
-     * Close the same connection twice. An exception should be thrown 
-     * that we catch for this test to pass.
-     */
-    public void test_close1() throws SQLException {
-        Connection con = DriverManager.getConnection("jdbc:sqlite:local.db");
-        con.close();
-        /* Catch the exception on this one because it is expected */
-        try {
-            con.close();
-        } catch(SQLException e) {
-            /* We only want to pass if the message is expected.*/
-            assertTrue(e.getMessage().equals("Cannot close Connection. Connection is already closed."));
-            /* Return here because we know the exception that we were 
-             * expecting has been captured. */
-            return;
-        }
-        fail();
-    }
+    
 }
