@@ -93,7 +93,6 @@ Java_org_osjava_jdbc_sqlite_Driver_proxyConnect(JNIEnv *env,
         return NULL;
     }
 
-    printf("SQLite3 Handle is %p.\n", dbPtr);
     connection = (*env)->NewObject(env,
                                    connectionClass,
                                    connectionMethod,
@@ -161,7 +160,6 @@ Java_org_osjava_jdbc_sqlite_Statement_executeSQL(JNIEnv *env,
                           &errmsg);
 
     /* Check the result */
-    printf("Result of statement -- %i\n", result);
     if(result == SQLITE_BUSY) {
         sqliteThrowSQLException(env, SQLITE_BUSY_MESSAGE);
         return;
