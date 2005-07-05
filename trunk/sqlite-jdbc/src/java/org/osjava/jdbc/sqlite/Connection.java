@@ -46,7 +46,6 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.SQLWarning;
 import java.sql.Savepoint;
-import java.sql.Statement;
 import java.util.Map;
 
 /**
@@ -56,9 +55,9 @@ import java.util.Map;
 public class Connection implements java.sql.Connection {
     
     /**
-     * An int representing the memory pointer for the C end of the Connection.
+     * A pointer to the database connection object.
      */
-    private int handle;
+    private int dbPointer;
     
     /**
      * A boolean value indicating whether or not the connection has been closed.
@@ -66,18 +65,20 @@ public class Connection implements java.sql.Connection {
     private boolean closed = false;
     
     /**
+     * Create a new Connection object.
      * 
+     * @param ptr 
+     * @see java.sql.Connection
      */
-    public Connection(int handle) {
+    public Connection(int ptr) {
         super();
-        System.out.println("Connection created with handle " + handle);
-        // TODO Auto-generated constructor stub
+        dbPointer = ptr;
     }
     
-    public Statement createStatement() throws SQLException {
-        // TODO Auto-generated method stub
-        return null;
+    public java.sql.Statement createStatement() throws SQLException {
+        return new Statement(this);
     }
+    
     public PreparedStatement prepareStatement(String sql) throws SQLException {
         // TODO Auto-generated method stub
         return null;
@@ -109,6 +110,8 @@ public class Connection implements java.sql.Connection {
     
     /**
      * Close the connection.
+     *
+     * @see java.sql.Connection#close()
      */
     public void close() throws SQLException {
         if(isClosed()) {
@@ -117,11 +120,9 @@ public class Connection implements java.sql.Connection {
         /* This can throw an exception based upon whether or not the 
          * connection is busy, or possibly an error if there is another 
          * circumstance. */ 
-        proxyClose(handle);
+        proxyClose(dbPointer);
         closed = true;
     }
-    
-    private native boolean proxyClose(int handle) throws SQLException;
     
     /**
      * @see java.sql.Connection#isClosed()
@@ -165,7 +166,7 @@ public class Connection implements java.sql.Connection {
         // TODO Auto-generated method stub
         
     }
-    public Statement createStatement(int resultSetType, int resultSetConcurrency) throws SQLException {
+    public java.sql.Statement createStatement(int resultSetType, int resultSetConcurrency) throws SQLException {
         // TODO Auto-generated method stub
         return null;
     }
@@ -209,7 +210,7 @@ public class Connection implements java.sql.Connection {
         // TODO Auto-generated method stub
         
     }
-    public Statement createStatement(int resultSetType, int resultSetConcurrency, int resultSetHoldability) throws SQLException {
+    public java.sql.Statement createStatement(int resultSetType, int resultSetConcurrency, int resultSetHoldability) throws SQLException {
         // TODO Auto-generated method stub
         return null;
     }
@@ -233,5 +234,13 @@ public class Connection implements java.sql.Connection {
         // TODO Auto-generated method stub
         return null;
     }
+
+    /* Extra Methods */
+    int getDBPointer() {
+        return dbPointer;
+    }
+    
+    /* Native methods */
+    private native boolean proxyClose(int handle) throws SQLException;
 
 }

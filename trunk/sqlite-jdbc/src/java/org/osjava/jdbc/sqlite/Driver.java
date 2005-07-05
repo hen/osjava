@@ -147,16 +147,23 @@ public class Driver implements java.sql.Driver {
         return null;
     }
 
+    /**
+     * The major version of the driver.
+     * @see java.sql.Driver#getMajorVersion()
+     */
     public int getMajorVersion() {
-        // TODO Auto-generated method stub
         return 0;
     }
 
+    /**
+     * The minor version of the driver.
+     * @see java.sql.Driver#getMinorVersion()
+     */
     public int getMinorVersion() {
-        // TODO Auto-generated method stub
-        return 0;
+        return 1;
     }
 
+    /* Looking forward to turning this into a true ;) */
     public boolean jdbcCompliant() {
         // TODO Auto-generated method stub
         return false;
@@ -165,18 +172,12 @@ public class Driver implements java.sql.Driver {
     /* JNI goodies.*/
     /**
      * Call to make the actual connection. If the connection is successful, the
-     * newly created Connection object is returned. If an error occurs,
-     * <code>null</code> is returned and the callback {@link #setErrorMessage}
-     * will have been called with error message that the driver returned.
+     * newly created Connection object is returned.  If an error occurs, a 
+     * SQLException is thrown.
      * 
      * @param url String containing the filename that is the location of the
      *        database file.
      * @return true on success and false if the connection failed.
      */
     private native Connection proxyConnect(String url) throws SQLException;
-
-    
-    private void setErrorMessage(String str) {
-        lastErrorMessage = str;
-    }
 }
