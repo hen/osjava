@@ -75,10 +75,66 @@ public class Connection implements java.sql.Connection {
         dbPointer = ptr;
     }
     
+    /**
+     * Create a Statement Object. The Statement will produce ResultSets with a
+     * result set type of {@link java.sql.ResultSet#TYPE_FORWARD_ONLY}, a
+     * result set concurrency of {@link java.sql.ResultSet#CONCUR_READ_ONLY} and
+     * a result set holdability of
+     * {@link java.sql.ResultSet#CLOSE_CURSORS_AT_COMMIT}. Note that the latter
+     * of these defaults is not determined by the JDBC-3.0 specification (it's
+     * oddly missing in the spec).
+     * 
+     * @see java.sql.Connection#createStatement()
+     */
     public java.sql.Statement createStatement() throws SQLException {
-        return new Statement(this);
+        return createStatement(java.sql.ResultSet.TYPE_FORWARD_ONLY, 
+                               java.sql.ResultSet.CONCUR_READ_ONLY,
+                               java.sql.ResultSet.CLOSE_CURSORS_AT_COMMIT);
     }
     
+    /**
+     * Create a Statement Object. The Statement will produce ResultSets with a
+     * result set type of <code>resultSetType</code>, a result set
+     * concurrency of <code>resultSetConcurrency</code> and a result set
+     * holdability of {@link java.sql.ResultSet#CLOSE_CURSORS_AT_COMMIT}. Note
+     * that the latter of these defaults is not determined by the JDBC-3.0
+     * specification (it's oddly missing in the spec).
+     * 
+     * @see java.sql.Connection#createStatement(int, int)
+     */
+    public java.sql.Statement createStatement(int resultSetType, int resultSetConcurrency)
+            throws SQLException {
+        return createStatement(resultSetType, resultSetConcurrency, java.sql.ResultSet.CLOSE_CURSORS_AT_COMMIT);
+    }
+
+    /**
+     * Create a Statement Object. The Statement will produce ResultSets with a
+     * result set type of <code>resultSetType</code>, a result set
+     * concurrency of <code>resultSetConcurrency</code> and a result set
+     * holdability of <code>resultSetHoldability</code>. Note that the latter
+     * of these defaults is not determined by the JDBC-3.0 specification (it's
+     * oddly missing in the spec).
+     * 
+     * @see java.sql.Connection#createStatement(int, int, int)
+     */
+    public java.sql.Statement createStatement(int resultSetType, int resultSetConcurrency, int resultSetHoldability)
+            throws SQLException {
+        if(   resultSetType != java.sql.ResultSet.TYPE_FORWARD_ONLY
+           && resultSetType != java.sql.ResultSet.TYPE_SCROLL_INSENSITIVE
+           && resultSetType != java.sql.ResultSet.TYPE_SCROLL_SENSITIVE) {
+            throw new SQLException("Cannot create Statement.  Invalid resultSetType.");
+        }
+        if(   resultSetConcurrency != java.sql.ResultSet.CONCUR_READ_ONLY
+           && resultSetConcurrency != java.sql.ResultSet.CONCUR_UPDATABLE) {
+            throw new SQLException("Cannot create Statement.  Invalid resultSetConcurrency.");
+        }
+        if(   resultSetHoldability != java.sql.ResultSet.CLOSE_CURSORS_AT_COMMIT
+           && resultSetHoldability != java.sql.ResultSet.HOLD_CURSORS_OVER_COMMIT) {
+            throw new SQLException("Cannot create Statement.  Invalid resultSetHoldability.");
+        }
+        return new Statement(this, resultSetType, resultSetConcurrency, resultSetHoldability);
+    }
+
     public PreparedStatement prepareStatement(String sql) throws SQLException {
         // TODO Auto-generated method stub
         return null;
@@ -166,10 +222,6 @@ public class Connection implements java.sql.Connection {
         // TODO Auto-generated method stub
         
     }
-    public java.sql.Statement createStatement(int resultSetType, int resultSetConcurrency) throws SQLException {
-        // TODO Auto-generated method stub
-        return null;
-    }
     public PreparedStatement prepareStatement(String sql, int resultSetType, int resultSetConcurrency) throws SQLException {
         // TODO Auto-generated method stub
         return null;
@@ -209,10 +261,6 @@ public class Connection implements java.sql.Connection {
     public void releaseSavepoint(Savepoint savepoint) throws SQLException {
         // TODO Auto-generated method stub
         
-    }
-    public java.sql.Statement createStatement(int resultSetType, int resultSetConcurrency, int resultSetHoldability) throws SQLException {
-        // TODO Auto-generated method stub
-        return null;
     }
     public PreparedStatement prepareStatement(String sql, int resultSetType, int resultSetConcurrency, int resultSetHoldability) throws SQLException {
         // TODO Auto-generated method stub
