@@ -63,21 +63,55 @@ public class TestStatement extends TestCase {
         super.tearDown();
         con.close();
         /* If the local.db file exists, remove it. */
-//        File db = new File("local.db");
-//        if(db.exists()) {
-//            db.delete();
-//        }
+        File db = new File("local.db");
+        if(db.exists()) {
+            db.delete();
+        }
     }
 
     /**
      * Simple Statement.executeQuery() test.  This particular test creates
      * a new database if it doesn't exist, and then uses 
      * Statement.executeQuery() to create the first table.  The returned 
-     * ResultSet should not have any 
+     * ResultSet should not have any entries.
      */
-    public void testExecuteQuery() throws Exception {
+    public void testExecuteQuery1() throws Exception {
         java.sql.Statement stmt = con.createStatement();
-        stmt.executeQuery("CREATE TABLE foo (TestCol VARCHAR(10));");
+        java.sql.ResultSet result = stmt.executeQuery("CREATE TABLE foo (TestCol VARCHAR(10));");
+        /* The ResultSet cannot be null, but it can be empty. */
+        assertTrue(result != null);
     }
     
+    /**
+     * Simple Statement.executeQuery() test.  This particular test creates
+     * a new database if it doesn't exist, and then uses 
+     * Statement.executeQuery() to create the first table.  The returned 
+     * ResultSet should not have any entries.  Confirm that the last row is 0;
+     */
+    public void testExecuteQuery2() throws Exception {
+        java.sql.Statement stmt = con.createStatement();
+        java.sql.ResultSet result = stmt.executeQuery("CREATE TABLE foo (TestCol VARCHAR(10));");
+        /* The ResultSet cannot be null, but it must be empty. 
+         * Move to the last row and get what the number is.
+         */
+        assertFalse(result.last());
+    }
+    
+    /**
+     * There are a couple of things that happen in here. The only real 
+     * statements made use executeQuery.  The database has to have a table
+     * created, a row populated, and finally a statement to query the entire
+     * table.
+     */
+    public void testExecuteQuery3() throws Exception {
+        java.sql.Statement stmt = con.createStatement();
+        stmt.executeQuery("CREATE TABLE foo (TestCol VARCHAR(10));");
+        stmt.executeQuery("INSERT INTO foo (TestCol) VALUES (\"Test\");");
+        java.sql.ResultSet result = stmt.executeQuery("SELECT * FROM foo;");
+        result.beforeFirst();
+        while(result.next()) {
+            String foo = result.getString("TestCol");
+            assertEquals("Test", foo);
+        }
+    }
 }
