@@ -69,11 +69,16 @@ public class ResultSet implements java.sql.ResultSet {
     java.sql.Statement stmt;
 
     /**
-     * Create a new ResultSet with from the Statement st.
+     * Create a new ResultSet with from the Statement <code>st</code>.
      * 
      * @param st the Statement that produced this object.
+     * @param resultSetHoldability the result set type of the ResultSet.
+     * @param resultSetConcurrency the result set concurrency of the ResultSet.
+     * @param resultSetType the result set holdability of the ResultSet.
+     * @throws SQLException if any of the parameter values are out of range.
      */
-    ResultSet(java.sql.Statement st) {
+    ResultSet(java.sql.Statement st, int resultSetType, int resultSetConcurrency, int resultSetHoldability) 
+            throws SQLException {
         super();
         stmt = st;
     }
