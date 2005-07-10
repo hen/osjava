@@ -46,6 +46,10 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.SQLWarning;
 import java.sql.Savepoint;
+
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Map;
 
 /**
@@ -63,6 +67,11 @@ public class Connection implements java.sql.Connection {
      * A boolean value indicating whether or not the connection has been closed.
      */
     private boolean closed = false;
+
+    /**
+     * Statements that have been created.
+     */
+    Collection statements = new LinkedList();
     
     /**
      * Create a new Connection object.
@@ -132,7 +141,9 @@ public class Connection implements java.sql.Connection {
            && resultSetHoldability != java.sql.ResultSet.HOLD_CURSORS_OVER_COMMIT) {
             throw new SQLException("Cannot create Statement.  Invalid resultSetHoldability.");
         }
-        return new Statement(this, resultSetType, resultSetConcurrency, resultSetHoldability);
+        Statement stmt = new Statement(this, resultSetType, resultSetConcurrency, resultSetHoldability);
+        statements.add(stmt);
+        return stmt;
     }
 
     public PreparedStatement prepareStatement(String sql) throws SQLException {
@@ -172,6 +183,12 @@ public class Connection implements java.sql.Connection {
     public void close() throws SQLException {
         if(isClosed()) {
             throw new SQLException("Cannot close Connection. Connection is already closed.");
+        }
+        /* Ensure that all of the Connection's statements are closed. */
+        Iterator it = statements.iterator();
+        while(it.hasNext()) {
+            Statement next = (Statement)it.next();
+            next.close();
         }
         /* This can throw an exception based upon whether or not the 
          * connection is busy, or possibly an error if there is another 
