@@ -43,6 +43,10 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.SQLWarning;
 
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.LinkedList;
+
 /**
  * @author rzigweid
  * 
@@ -52,18 +56,25 @@ public class Statement implements java.sql.Statement {
      * The connection that the Statement is associated with.
      */
     private Connection con;
+    
+    /**
+     * LinkedList of ResultSets created by the statement.
+     */
+    private Collection results = new LinkedList();
 
     /**
      * The fetch direction from the statement. The default is
      * ResultSet.FETCH_FORWARD.
      */
-    private int        fetchDirection = ResultSet.FETCH_FORWARD;
+    private int         fetchDirection = ResultSet.FETCH_FORWARD;
 
-    private int        resultSetType;
+    private int         resultSetType;
 
-    private int        resultSetConcurrency;
+    private int         resultSetConcurrency;
 
-    private int        resultSetHoldability;
+    private int         resultSetHoldability;
+    
+    private int         fetchSize = 1024;
 
     /**
      * Create a new Statement object. ResultSets that are created from this
@@ -107,11 +118,11 @@ public class Statement implements java.sql.Statement {
      * @see java.sql.Statement#executeQuery(java.lang.String)
      */
     public java.sql.ResultSet executeQuery(String sql) throws SQLException {
-        System.out.println("PING from executeQuery");
         /* Create a new java.sql.ResultSet object that will be filled. */
         ResultSet rs = new ResultSet(this, resultSetType, resultSetConcurrency, resultSetHoldability);
         try {
-            executeSQL(sql, con, rs);
+            System.out.println("ResultSet " + rs);
+            executeSQLWithResultSet(sql, con, rs, 0, getFetchSize());
         } catch (SQLException e) {
             /*
              * FIXME: We don't want to do this. Once out of debugging mode, what
@@ -121,6 +132,7 @@ public class Statement implements java.sql.Statement {
              */
             e.printStackTrace();
         }
+        results.add(rs);
         return rs;
     }
 
@@ -140,8 +152,15 @@ public class Statement implements java.sql.Statement {
      * @see java.sql.Statement#close()
      */
     public void close() throws SQLException {
-    // TODO Auto-generated method stub
-
+        System.err.println("Entering Statement.close");
+        /* Ensure that all of the Connection's statements are closed. */
+        /* XXX: Yuck.  Generics do have some advantages */
+        Iterator it = ((LinkedList)((LinkedList)results).clone()).iterator();
+        while (it.hasNext()) {
+            System.err.println("Closing result -- " + it);
+            ResultSet next = (ResultSet)it.next();
+            next.close();
+        }
     }
 
     /*
@@ -327,14 +346,11 @@ public class Statement implements java.sql.Statement {
 
     }
 
-    /*
-     * (non-Javadoc)
-     * 
+    /**
      * @see java.sql.Statement#getFetchSize()
      */
     public int getFetchSize() throws SQLException {
-        // TODO Auto-generated method stub
-        return 0;
+        return fetchSize;
     }
 
     /*
@@ -487,7 +503,22 @@ public class Statement implements java.sql.Statement {
         // TODO Auto-generated method stub
         return 0;
     }
-
+    
+    /* Helper methods */
+    /**
+     * Remove a ResultSet from the list of tracked results
+     */
+    void removeResult(ResultSet rs) {
+        results.remove(rs);
+    }
+    
     /* Native components */
-    private native void executeSQL(String sql, Connection con, ResultSet rs) throws SQLException;
+    private native void executeSQL(String sql, Connection con) throws SQLException;
+    
+    private native void executeSQLWithResultSet(String sql,
+                                                Connection con,
+                                                ResultSet rs,
+                                                int firstRow,
+                                                int lastRow) 
+            throws SQLException;    
 }

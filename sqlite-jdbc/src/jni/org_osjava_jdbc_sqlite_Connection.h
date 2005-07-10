@@ -13,7 +13,7 @@ extern "C" {
  * Signature: (I)Z
  */
 JNIEXPORT void JNICALL Java_org_osjava_jdbc_sqlite_Connection_proxyCloseConnection
-  (JNIEnv *, jobject, jint);
+  (JNIEnv *, jobject);
 
 #ifdef __cplusplus
 }
