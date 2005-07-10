@@ -181,19 +181,21 @@ public class Connection implements java.sql.Connection {
      * @see java.sql.Connection#close()
      */
     public void close() throws SQLException {
+        System.err.println("Entering Connection.close");
         if(isClosed()) {
             throw new SQLException("Cannot close Connection. Connection is already closed.");
         }
         /* Ensure that all of the Connection's statements are closed. */
         Iterator it = statements.iterator();
         while(it.hasNext()) {
+            System.err.println("Closing statement -- " + it);
             Statement next = (Statement)it.next();
             next.close();
         }
         /* This can throw an exception based upon whether or not the 
          * connection is busy, or possibly an error if there is another 
          * circumstance. */ 
-        proxyClose(dbPointer);
+        proxyCloseConnection();
         closed = true;
     }
     
@@ -306,6 +308,6 @@ public class Connection implements java.sql.Connection {
     }
     
     /* Native methods */
-    private native boolean proxyCloseConnection(int handle) throws SQLException;
+    private native boolean proxyCloseConnection() throws SQLException;
 
 }

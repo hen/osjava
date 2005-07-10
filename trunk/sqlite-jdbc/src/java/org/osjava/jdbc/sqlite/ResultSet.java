@@ -42,19 +42,21 @@ package org.osjava.jdbc.sqlite;
 
 import java.io.InputStream;
 import java.io.Reader;
+
 import java.math.BigDecimal;
+
 import java.net.URL;
+
 import java.sql.Array;
 import java.sql.Blob;
 import java.sql.Clob;
 import java.sql.Date;
 import java.sql.Ref;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.SQLWarning;
-import java.sql.Statement;
 import java.sql.Time;
 import java.sql.Timestamp;
+
 import java.util.Calendar;
 import java.util.Map;
 
@@ -66,21 +68,91 @@ public class ResultSet implements java.sql.ResultSet {
     /**
      * The statement used to create this ResultSet
      */
-    java.sql.Statement stmt;
+    Statement stmt;
+    
+    /** 
+     * The type of ResultSet.  Valid values are: 
+     *      java.sql.ResultSet.TYPE_FORWARD_ONLY
+     *      java.sql.ResultSet.TYPE_SCROLL_INSENSITIVE
+     *      java.sql.ResultSet.TYPE_SCROLL_SENSITIVE
+     */
+    private int resultSetType;
+    
+    /** 
+     * The concurrency of the ResultSet.  Valid values are:
+     *      java.sql.ResultSet.CONCUR_READ_ONLY
+     *      java.sql.ResultSet.CONCUR_UPDATABLE
+     */
+    private int resultSetConcurrency;
+    
+    /**
+     * Value indicating whether or not to close the ResultSet when a commit
+     * is made.  Valid values are:
+     *      java.sql.ResultSet.CLOSE_CURSORS_AT_COMMIT
+     *      java.sql.ResultSet.HOLD_CURSORS_OVER_COMMIT
+     */
+    private int resultSetHoldability;
+    
+    /**
+     * The number of results that will be fetched by the driver at a time.
+     */
+    private int fetchSize = 0;
+    
+    /**
+     * The number of the current row.
+     */
+    private int currentRow;
+    
+    /**
+     * The minimum and maximum rows of the current page.
+     */
+    private int pageMin;
+    private int pageMax;
 
+    /**
+     * MetaData for this ResultSet.
+     */
+    private ResultSetMetaData metaData;
+
+    private int statementPointer;
+
+    private boolean closed;
+    
     /**
      * Create a new ResultSet with from the Statement <code>st</code>.
      * 
      * @param st the Statement that produced this object.
-     * @param resultSetHoldability the result set type of the ResultSet.
-     * @param resultSetConcurrency the result set concurrency of the ResultSet.
      * @param resultSetType the result set holdability of the ResultSet.
+     * @param resultSetConcurrency the result set concurrency of the ResultSet.
+     * @param resultSetHoldability the result set type of the ResultSet.
      * @throws SQLException if any of the parameter values are out of range.
      */
-    ResultSet(java.sql.Statement st, int resultSetType, int resultSetConcurrency, int resultSetHoldability) 
+    ResultSet(Statement st, int resultSetType, int resultSetConcurrency, int resultSetHoldability) 
             throws SQLException {
         super();
+        if (   resultSetType != java.sql.ResultSet.TYPE_FORWARD_ONLY
+            && resultSetType != java.sql.ResultSet.TYPE_SCROLL_INSENSITIVE
+            && resultSetType != java.sql.ResultSet.TYPE_SCROLL_SENSITIVE) {
+            throw new SQLException("Cannot create Statement.  Invalid resultSetType.");
+        }
+        if (   resultSetConcurrency != java.sql.ResultSet.CONCUR_READ_ONLY
+            && resultSetConcurrency != java.sql.ResultSet.CONCUR_UPDATABLE) {
+            throw new SQLException("Cannot create Statement.  Invalid resultSetConcurrency.");
+        }
+        if (   resultSetHoldability != java.sql.ResultSet.CLOSE_CURSORS_AT_COMMIT
+            && resultSetHoldability != java.sql.ResultSet.HOLD_CURSORS_OVER_COMMIT) {
+            throw new SQLException("Cannot create Statement.  Invalid resultSetHoldability.");
+        }
         stmt = st;
+        this.resultSetType = resultSetType;
+        this.resultSetConcurrency = resultSetConcurrency;
+        this.resultSetHoldability = resultSetHoldability;
+        
+        /*
+         * Create the ResultSetMetadata object for this ResultSet.  It doesn't
+         * get populated right away, but it needs to exist.
+         */
+        metaData = new ResultSetMetaData(this);
     }
 
     /* (non-Javadoc)
@@ -91,12 +163,16 @@ public class ResultSet implements java.sql.ResultSet {
         return false;
     }
 
-    /* (non-Javadoc)
+    /**
      * @see java.sql.ResultSet#close()
      */
     public void close() throws SQLException {
-    // TODO Auto-generated method stub
-
+        if(closed) {
+            return;
+        }
+        proxyCloseStatement();
+        stmt.removeResult(this);
+        closed = true;
     }
 
     /* (non-Javadoc)
@@ -187,7 +263,7 @@ public class ResultSet implements java.sql.ResultSet {
         return null;
     }
 
-    /* (non-Javadoc)
+    /* (non-Javadoc) g
      * @see java.sql.ResultSet#getDate(int)
      */
     public Date getDate(int columnIndex) throws SQLException {
@@ -390,9 +466,8 @@ public class ResultSet implements java.sql.ResultSet {
     /* (non-Javadoc)
      * @see java.sql.ResultSet#getMetaData()
      */
-    public ResultSetMetaData getMetaData() throws SQLException {
-        // TODO Auto-generated method stub
-        return null;
+    public java.sql.ResultSetMetaData getMetaData() throws SQLException {
+        return metaData;
     }
 
     /* (non-Javadoc)
@@ -515,12 +590,11 @@ public class ResultSet implements java.sql.ResultSet {
         return false;
     }
 
-    /* (non-Javadoc)
+    /**
      * @see java.sql.ResultSet#getRow()
      */
     public int getRow() throws SQLException {
-        // TODO Auto-generated method stub
-        return 0;
+        return currentRow;
     }
 
     /* (non-Javadoc)
@@ -563,36 +637,46 @@ public class ResultSet implements java.sql.ResultSet {
         return 0;
     }
 
-    /* (non-Javadoc)
+    /**
+     * Sets the ResultSet's fetch size.
+     * 
      * @see java.sql.ResultSet#setFetchSize(int)
      */
     public void setFetchSize(int rows) throws SQLException {
-    // TODO Auto-generated method stub
-
+        if(rows > stmt.getMaxRows()) {
+            throw new SQLException("Cannot set fetch size. Statement's maximum is " + stmt.getMaxRows() + ".");
+        }
+        if(rows < 0) {
+            throw new SQLException("Cannot set fetch size.  Minimum value is 0.");
+        }
+        fetchSize = rows;
     }
 
-    /* (non-Javadoc)
+    /**
+     * Return the number of rows that will be fetched by the JDBC driver at a
+     * time.  If the value has not been set, 
+     * {@link java.sql.Statement#getFetchSize()} will be used.
      * @see java.sql.ResultSet#getFetchSize()
      */
     public int getFetchSize() throws SQLException {
-        // TODO Auto-generated method stub
-        return 0;
+        if(fetchSize > 0) {
+            return fetchSize;
+        }
+        return stmt.getFetchSize();
     }
 
-    /* (non-Javadoc)
+    /**
      * @see java.sql.ResultSet#getType()
      */
     public int getType() throws SQLException {
-        // TODO Auto-generated method stub
-        return 0;
+        return resultSetType;
     }
 
-    /* (non-Javadoc)
+    /**
      * @see java.sql.ResultSet#getConcurrency()
      */
     public int getConcurrency() throws SQLException {
-        // TODO Auto-generated method stub
-        return 0;
+        return resultSetConcurrency;
     }
 
     /* (non-Javadoc)
@@ -982,8 +1066,8 @@ public class ResultSet implements java.sql.ResultSet {
     /**
      * @see java.sql.ResultSet#getStatement()
      */
-    public Statement getStatement() throws SQLException {
-        return stmt;
+    public java.sql.Statement getStatement() throws SQLException {
+        return (java.sql.Statement)stmt;
     }
 
     /* (non-Javadoc)
@@ -1193,5 +1277,20 @@ public class ResultSet implements java.sql.ResultSet {
     // TODO Auto-generated method stub
 
     }
+    
+    /* Extra Methods */
+    private int getStatementPointer() {
+        return statementPointer;
+    }
+    
+    private void setStatementPointer(int p) {
+        statementPointer = p;
+    }
 
+    /* Native Methods. */
+    /* This is possibly somewhat misnamed.  Each ResultSet is associated with 
+     * SQLite3 statement object.  When the result set is closed, the statement
+     * object should be closed on the native side.
+     */
+    private native void proxyCloseStatement() throws SQLException;
 }

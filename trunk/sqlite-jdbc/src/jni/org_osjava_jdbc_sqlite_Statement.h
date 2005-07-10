@@ -10,10 +10,18 @@ extern "C" {
 /*
  * Class:     org_osjava_jdbc_sqlite_Statement
  * Method:    executeSQL
- * Signature: (Ljava/lang/String;Ljava/sql/Connection;Ljava/sql/ResultSet;)V
+ * Signature: (Ljava/lang/String;Ljava/sql/Connection;)V
  */
 JNIEXPORT void JNICALL Java_org_osjava_jdbc_sqlite_Statement_executeSQL
-  (JNIEnv *, jobject, jstring, jobject, jobject);
+  (JNIEnv *, jobject, jstring, jobject);
+
+/*
+ * Class:     org_osjava_jdbc_sqlite_Statement
+ * Method:    executeSQLWithResultSet
+ * Signature: (Ljava/lang/String;Ljava/sql/Connection;Lorg/osjava/jdbc/sqlite/ResultSet;II)V
+ */
+JNIEXPORT void JNICALL Java_org_osjava_jdbc_sqlite_Statement_executeSQLWithResultSet
+  (JNIEnv *, jobject, jstring, jobject, jobject, jint, jint);
 
 #ifdef __cplusplus
 }

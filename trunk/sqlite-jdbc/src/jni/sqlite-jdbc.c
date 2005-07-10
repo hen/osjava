@@ -102,7 +102,7 @@ Java_org_osjava_jdbc_sqlite_Driver_proxyConnect(JNIEnv *env,
 
 /*
  * Class:     org_osjava_jdbc_sqlite_Connection
- * Method:    proxyClose
+ * Method:    proxyCloseConnection
  * Signature: (I)V
  *
  * Close an existing Connection object.
@@ -110,9 +110,9 @@ Java_org_osjava_jdbc_sqlite_Driver_proxyConnect(JNIEnv *env,
  * Returns true on success, else false.
  */
 JNIEXPORT void JNICALL
-Java_org_osjava_jdbc_sqlite_Connection_proxyClose(JNIEnv *env,
-                                                  jobject obj,
-                                                  jint dbPtr) {
+Java_org_osjava_jdbc_sqlite_Connection_proxyCloseConnection(JNIEnv *env,
+                                                            jobject obj) {
+    sqlite3 *dbPtr = getSQLiteHandle(env, obj);
     int result = sqlite3_close((sqlite3 *)dbPtr);
     /* FIXME: Busy handling should be improved at some point down the line to
      *        allow the client to try again, perhaps.  */
@@ -129,16 +129,32 @@ Java_org_osjava_jdbc_sqlite_Connection_proxyClose(JNIEnv *env,
 }
 
 /*
+ * Class:     org_osjava_jdbc_sqlite_ResultSet
+ * Method:    proxyCloseStatement
+ * Signature: (I)Z
+ */
+JNIEXPORT void JNICALL 
+Java_org_osjava_jdbc_sqlite_ResultSet_proxyCloseStatement(JNIEnv *env,
+                                                          jobject stmt) {
+    //int result = 
+    sqlite3_finalize(getStatementHandle(env, stmt));
+}
+
+
+/*
  * Class:     org_osjava_jdbc_sqlite_Statement
  * Method:    executeSQL
  * Signature: (Ljava/lang/String;)V
+ *
+ * Execute a raw SQL statement.
+ * This method should be used when there is no result set that is toi be
+ * created/returned.
  */
 JNIEXPORT void JNICALL
 Java_org_osjava_jdbc_sqlite_Statement_executeSQL(JNIEnv *env,
                                                  jobject obj,
                                                  jstring query,
-                                                 jobject con,
-                                                 jobject resultSet) {
+                                                 jobject con) {
     int result;
     char *errmsg;
     /* Convert the java query into a char array that can be used by the
@@ -146,18 +162,8 @@ Java_org_osjava_jdbc_sqlite_Statement_executeSQL(JNIEnv *env,
     /* 'jbyte *' and 'char *' are synonymous? */
     char *sql = (char *)(*env)->GetStringUTFChars(env, query, 0);
 
-    /* Extract the dbpointer out of the connection object */
-    jclass conClass = (*env)->GetObjectClass(env, con);
-    jmethodID methID = (*env)->GetMethodID(env,
-                                           conClass,
-                                           "getDBPointer",
-                                           "()I");
-    sqlite3 *dbPtr = (sqlite3 *)(*env)->CallIntMethod(env, con, methID);
-    result = sqlite3_exec(dbPtr,
-                          sql,
-                          &sqliteResultSetCallback,
-                          resultSet,
-                          &errmsg);
+    sqlite3 *dbPtr = getSQLiteHandle(env, con);
+    result = sqlite3_exec(dbPtr, sql, NULL, NULL, &errmsg);
 
     /* Check the result */
     if(result == SQLITE_BUSY) {
@@ -172,7 +178,11 @@ Java_org_osjava_jdbc_sqlite_Statement_executeSQL(JNIEnv *env,
 
 /*
  * Callback used by sqlite3_exec() or other functions that callback with
- * results that can be put into a ResultSet
+ * results that can be put into a ResultSet.
+ *
+ * FIXME: There's obviously a lot left to do here, if this is indeed what's
+ *        going to be used, though it looks like that won't be the case, and
+ *        in that event, we'll want to remove this method completely.
  */
 int sqliteResultSetCallback(void *resultSet,
                             int count,
@@ -180,6 +190,186 @@ int sqliteResultSetCallback(void *resultSet,
                             char **colNames) {
     printf("Hit callback.\n");
     return 0;
+}
+
+/*
+ * Class:     org_osjava_jdbc_sqlite_Statement
+ * Method:    executeSQLWithResultSet
+ * Signature: (Ljava/lang/String;Ljava/sql/Connection;Lorg/osjava/jdbc/sqlite/ResultSet;II)V
+ *
+ * Execute a statement in which the results will be put into a ResultSet.
+ *
+ * Due to the need for more flexibility all statements requiring ResultSets
+ * should utilize this method.  It uses sqlite3_prepare() instead of
+ * sqlite3_exec() and it's callback.  A java.sql.SQLException is thrown if
+ * there are any errors encountered.
+ *
+ * statement    - A String representing the SQL statement to be executed.
+ * con          - The java representation of the SQLite3 database connection.
+ * resultSet    - The ResultSet to populate.
+ * startRow     - The first row that will populate the ResultSet.  If the
+ *                start range is out of bounds an SQLException will be thrown.
+ * finishRow    - The last row that will populate the ResultSet.  If the end
+ *                range is out of bounds the ResultSet will only be filled to
+ *                the end of the query.
+ */
+JNIEXPORT void JNICALL
+Java_org_osjava_jdbc_sqlite_Statement_executeSQLWithResultSet(JNIEnv *env,
+                                                              jobject this,
+                                                              jstring query,
+                                                              jobject con,
+                                                              jobject resultSet,
+                                                              jint startRow,
+                                                              jint finishRow) {
+    int result;
+    char *errmsg;
+    sqlite3_stmt *stmt;
+    int count;                 // The current row counter.
+
+    /* Convert the java query into a char array that can be used by the
+     * sqlite method */
+    /* 'jbyte *' and 'char *' are synonymous? */
+    char *sql = (char *)(*env)->GetStringUTFChars(env, query, 0);
+
+    sqlite3 *dbPtr = getSQLiteHandle(env, con);
+    result = sqlite3_prepare(dbPtr, sql, -1, &stmt, NULL);
+    /* Check the result */
+    if(result == SQLITE_BUSY) {
+        sqliteThrowSQLException(env, SQLITE_BUSY_MESSAGE);
+        return;
+    }
+    if(result) {
+        sqliteThrowSQLException(env, errmsg);
+    }
+    
+    (*env)->ReleaseStringUTFChars(env, query, sql);
+
+    /* Associate the statement pointer to the ResultSet */
+    jclass rsClass = (*env)->GetObjectClass(env, resultSet);
+    jmethodID methID = (*env)->GetMethodID(env,
+                                           rsClass,
+                                           "setStatementPointer",
+                                           "(I)V");
+    (*env)->CallVoidMethod(env, resultSet, methID, stmt);
+
+    /* Fill the ResultSet Metadata. */
+    populateResultSetMetadata(env, stmt, resultSet);
+    
+    /* Skip statements up to startRow.  These statements will be ignored. */
+    for(count = 0; count < startRow; count++) {
+        result = sqlite3_step(stmt);
+        /* Check the result */
+        if(result == SQLITE_BUSY) {
+            sqliteThrowSQLException(env, SQLITE_BUSY_MESSAGE);
+            return;
+        }
+        /* ?hrow an SQLException if the result set range is out of bounds.
+         * This exception will be caught and properly processed on the java
+         * side of things. */
+        if(result == SQLITE_DONE) {
+            sqliteThrowSQLException(env, SQLITE_OUT_OF_BOUNDS);
+        }
+        if(result) {
+            sqliteThrowSQLException(env, errmsg);
+        }
+    }
+
+    /* Start populating the ResultSet */
+    for(count = startRow; count <= finishRow; count ++) {
+        result = sqlite3_step(stmt);
+        /* Check the result */
+        if(result == SQLITE_BUSY) {
+            sqliteThrowSQLException(env, SQLITE_BUSY_MESSAGE);
+            return;
+        }
+        /* The expected result most of the time.  Work gets done here.*/
+        if(result == SQLITE_ROW) {
+            populateRow(env, stmt, resultSet);
+            /* Skip the rest of the result conditions */
+            continue;
+        }
+        /* Done populating the result set.  We're done here. */
+        if(result == SQLITE_DONE) {
+            return;
+        }
+        if(result) {
+            sqliteThrowSQLException(env, errmsg);
+        }
+    }
+    printf("Done populating resultset section.\n");
+}
+
+/* Populate a row of the ResultSet */
+void populateRow(JNIEnv *env, sqlite3_stmt *stmt, jobject resultSet) {
+    int numCols = sqlite3_column_count(stmt);
+    int curCol;
+    for(curCol = 0; curCol < numCols; curCol++) {
+
+    }
+}
+
+/* Populate the metadata for the ResultSet */
+void populateResultSetMetadata(JNIEnv *env, sqlite3_stmt *stmt, jobject resultSet) {
+    int numCols;
+    jclass resultSetClass = (*env)->GetObjectClass(env, resultSet);
+    jclass metaDataClass;
+    /* We have to get the resultSet's metadata object */
+    jobject metaData;
+    jmethodID getMetaID = (*env)->GetMethodID(env,
+                                              resultSetClass,
+                                              "getMetaData",
+                                              "()Ljava/sql/ResultSetMetaData;");
+    metaData = (*env)->CallObjectMethod(env, resultSet, getMetaID);
+    /* There's a problem if there is not metadata object */
+    if(metaData == NULL) {
+        sqliteThrowSQLException(env, "Could not populate ResultSetMetaData.  Object does not exist.");
+        return;
+    }
+    /* Determine first whether or not the metadata has already been filled.
+     * If it has, abort immediately.  This should only be done once.
+     * This can easily be done by looking at the number of columns in the
+     * ResultSet.  Anything less than 0 means that it can be populated.  We 
+     * do not throw an exception here because we don't know whether or not 
+     * this is a first run through. */
+    numCols = sqlite3_column_count(stmt);
+    metaDataClass = (*env)->GetObjectClass(env, metaData);
+    jmethodID getColID = (*env)->GetMethodID(env,
+                                             metaDataClass,
+                                             "getColumnCount",
+                                             "()I");
+    if((*env)->CallIntMethod(env, metaData, getColID) >= 0) {
+        return;
+    }
+    
+    jmethodID setColID = (*env)->GetMethodID(env,
+                                             metaDataClass,
+                                             "setColumnCount",
+                                             "(I)V");
+    (*env)->CallVoidMethod(env, metaData, setColID, numCols);
+}
+
+/*
+ * Get the SQLite3 handle from a Connection object.
+ */
+sqlite3 *getSQLiteHandle(JNIEnv *env, jobject con) {
+    jclass conClass = (*env)->GetObjectClass(env, con);
+    jmethodID methID = (*env)->GetMethodID(env,
+                                           conClass,
+                                           "getDBPointer",
+                                           "()I");
+    return (sqlite3 *)(*env)->CallIntMethod(env, con, methID);
+}
+
+/*
+ * Get the SQLite3 statement handle from a ResultSet object.
+ */
+sqlite3_stmt *getStatementHandle(JNIEnv *env, jobject rs) {
+    jclass rsClass = (*env)->GetObjectClass(env, rs);
+    jmethodID methID = (*env)->GetMethodID(env,
+                                           rsClass,
+                                           "getStatementPointer",
+                                           "()I");
+    return (sqlite3_stmt *)(*env)->CallIntMethod(env, rs, methID);
 }
 
 /*

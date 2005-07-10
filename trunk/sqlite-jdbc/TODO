@@ -1,7 +1,6 @@
-* I'm not sure that the way that I'm passing around the handler is really all
-  that good.  It should work, as it's just an integer, but I'm concerned about
-  static analysis type tools actually detecting whether or not things are 
-  properly freed, and in fact whether it's going to be leaking memory at all.
+* Java_org_osjava_jdbc_sqlite_Statement_executeSQLWithResultSet needs to 
+  be improved to not generate a new sqlite3_stmt object if there is already 
+  on associated with the ResultSet.  
 
 * Driver.getConnection(). JNI portion.  
   Determine the message that the exception will throw if the 'create' property
@@ -20,3 +19,4 @@ TESTS TO CREATE
 * closing a connection where the database will be busy
 * closing a connection when it's already closed (There's java in place to 
   prevent this though)
+* ResultSetMetadata tests.
