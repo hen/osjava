@@ -306,6 +306,6 @@ public class Connection implements java.sql.Connection {
     }
     
     /* Native methods */
-    private native boolean proxyClose(int handle) throws SQLException;
+    private native boolean proxyCloseConnection(int handle) throws SQLException;
 
 }

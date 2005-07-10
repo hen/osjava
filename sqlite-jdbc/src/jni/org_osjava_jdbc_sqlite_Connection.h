@@ -12,7 +12,7 @@ extern "C" {
  * Method:    proxyClose
  * Signature: (I)Z
  */
-JNIEXPORT void JNICALL Java_org_osjava_jdbc_sqlite_Connection_proxyClose
+JNIEXPORT void JNICALL Java_org_osjava_jdbc_sqlite_Connection_proxyCloseConnection
   (JNIEnv *, jobject, jint);
 
 #ifdef __cplusplus
