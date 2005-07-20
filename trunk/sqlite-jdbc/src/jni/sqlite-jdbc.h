@@ -50,7 +50,6 @@
 #include "org_osjava_jdbc_sqlite_ResultSet.h"
 #include "org_osjava_jdbc_sqlite_Statement.h"
 
-extern int sqliteResultSetCallback(void *dbPointer, int count, char **rows, char **colNames);
 extern void sqliteThrowSQLException(JNIEnv *env, const char *message);
 extern sqlite3 *getSQLiteHandle(JNIEnv *env, jobject con);
 extern sqlite3_stmt *getStatementHandle(JNIEnv *env, jobject rs);

@@ -177,22 +177,6 @@ Java_org_osjava_jdbc_sqlite_Statement_executeSQL(JNIEnv *env,
 }
 
 /*
- * Callback used by sqlite3_exec() or other functions that callback with
- * results that can be put into a ResultSet.
- *
- * FIXME: There's obviously a lot left to do here, if this is indeed what's
- *        going to be used, though it looks like that won't be the case, and
- *        in that event, we'll want to remove this method completely.
- */
-int sqliteResultSetCallback(void *resultSet,
-                            int count,
-                            char **rows,
-                            char **colNames) {
-    printf("Hit callback.\n");
-    return 0;
-}
-
-/*
  * Class:     org_osjava_jdbc_sqlite_Statement
  * Method:    executeSQLWithResultSet
  * Signature: (Ljava/lang/String;Ljava/sql/Connection;Lorg/osjava/jdbc/sqlite/ResultSet;II)V
