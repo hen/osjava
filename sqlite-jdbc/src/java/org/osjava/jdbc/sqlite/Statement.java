@@ -121,7 +121,6 @@ public class Statement implements java.sql.Statement {
         /* Create a new java.sql.ResultSet object that will be filled. */
         ResultSet rs = new ResultSet(this, resultSetType, resultSetConcurrency, resultSetHoldability);
         try {
-            System.out.println("ResultSet " + rs);
             executeSQLWithResultSet(sql, con, rs, 0, getFetchSize());
         } catch (SQLException e) {
             /*
@@ -142,8 +141,24 @@ public class Statement implements java.sql.Statement {
      * @see java.sql.Statement#executeUpdate(java.lang.String)
      */
     public int executeUpdate(String sql) throws SQLException {
-        // TODO Auto-generated method stub
-        return 0;
+        int count = -1;
+        try {
+            count = executeSQL(sql, con);
+        } catch (SQLException e) {
+            /*
+             * FIXME: We don't want to do this. Once out of debugging mode, what
+             * we really want to do is to rethrow the exception if it's not
+             * something that we can handle here. This will be based upon the
+             * message of the exception.
+             */
+            e.printStackTrace();
+        }
+        /* FIXME: Should look for -1 as the value of count and probably return
+         *        an error (throw exception)
+         */
+        
+        System.out.println("Count is -- " + count);
+        return count;
     }
 
     /*
@@ -151,13 +166,10 @@ public class Statement implements java.sql.Statement {
      * 
      * @see java.sql.Statement#close()
      */
-    public void close() throws SQLException {
-        System.err.println("Entering Statement.close");
-        /* Ensure that all of the Connection's statements are closed. */
+    public void close() throws SQLException {        /* Ensure that all of the Connection's statements are closed. */
         /* XXX: Yuck.  Generics do have some advantages */
         Iterator it = ((LinkedList)((LinkedList)results).clone()).iterator();
         while (it.hasNext()) {
-            System.err.println("Closing result -- " + it);
             ResultSet next = (ResultSet)it.next();
             next.close();
         }
@@ -513,7 +525,7 @@ public class Statement implements java.sql.Statement {
     }
     
     /* Native components */
-    private native void executeSQL(String sql, Connection con) throws SQLException;
+    private native int executeSQL(String sql, Connection con) throws SQLException;
     
     private native void executeSQLWithResultSet(String sql,
                                                 Connection con,

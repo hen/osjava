@@ -133,10 +133,10 @@ Java_org_osjava_jdbc_sqlite_Connection_proxyCloseConnection(JNIEnv *env,
  * Method:    proxyCloseStatement
  * Signature: (I)Z
  */
-JNIEXPORT void JNICALL 
+JNIEXPORT void JNICALL
 Java_org_osjava_jdbc_sqlite_ResultSet_proxyCloseStatement(JNIEnv *env,
                                                           jobject stmt) {
-    //int result = 
+    //int result =
     sqlite3_finalize(getStatementHandle(env, stmt));
 }
 
@@ -144,17 +144,18 @@ Java_org_osjava_jdbc_sqlite_ResultSet_proxyCloseStatement(JNIEnv *env,
 /*
  * Class:     org_osjava_jdbc_sqlite_Statement
  * Method:    executeSQL
- * Signature: (Ljava/lang/String;)V
+ * Signature: (Ljava/lang/String;Ljava/sql/Connection;)I
  *
  * Execute a raw SQL statement.
- * This method should be used when there is no result set that is toi be
+ * This method should be used when there is no result set that is to be
  * created/returned.
  */
-JNIEXPORT void JNICALL
+JNIEXPORT jint JNICALL
 Java_org_osjava_jdbc_sqlite_Statement_executeSQL(JNIEnv *env,
                                                  jobject obj,
                                                  jstring query,
                                                  jobject con) {
+    int count;
     int result;
     char *errmsg;
     /* Convert the java query into a char array that can be used by the
@@ -164,16 +165,19 @@ Java_org_osjava_jdbc_sqlite_Statement_executeSQL(JNIEnv *env,
 
     sqlite3 *dbPtr = getSQLiteHandle(env, con);
     result = sqlite3_exec(dbPtr, sql, NULL, NULL, &errmsg);
+    count = sqlite3_changes(dbPtr);
+    (*env)->ReleaseStringUTFChars(env, query, sql);
 
     /* Check the result */
     if(result == SQLITE_BUSY) {
         sqliteThrowSQLException(env, SQLITE_BUSY_MESSAGE);
-        return;
+        return -1;
     }
     if(result) {
         sqliteThrowSQLException(env, errmsg);
+        return -1;
     }
-    (*env)->ReleaseStringUTFChars(env, query, sql);
+    return count;
 }
 
 /*
@@ -225,7 +229,7 @@ Java_org_osjava_jdbc_sqlite_Statement_executeSQLWithResultSet(JNIEnv *env,
     if(result) {
         sqliteThrowSQLException(env, errmsg);
     }
-    
+
     (*env)->ReleaseStringUTFChars(env, query, sql);
 
     /* Associate the statement pointer to the ResultSet */
@@ -238,9 +242,10 @@ Java_org_osjava_jdbc_sqlite_Statement_executeSQLWithResultSet(JNIEnv *env,
 
     /* Fill the ResultSet Metadata. */
     populateResultSetMetadata(env, stmt, resultSet);
-    
+
     /* Skip statements up to startRow.  These statements will be ignored. */
     for(count = 0; count < startRow; count++) {
+        fprintf(stderr, "Skipping row %i.\n", count);
         result = sqlite3_step(stmt);
         /* Check the result */
         if(result == SQLITE_BUSY) {
@@ -259,7 +264,9 @@ Java_org_osjava_jdbc_sqlite_Statement_executeSQLWithResultSet(JNIEnv *env,
     }
 
     /* Start populating the ResultSet */
+    fprintf(stderr, "Preparing to populate resultset.\n");
     for(count = startRow; count <= finishRow; count ++) {
+        fprintf(stderr, "Inserting row %i.\n", count);
         result = sqlite3_step(stmt);
         /* Check the result */
         if(result == SQLITE_BUSY) {
@@ -280,13 +287,14 @@ Java_org_osjava_jdbc_sqlite_Statement_executeSQLWithResultSet(JNIEnv *env,
             sqliteThrowSQLException(env, errmsg);
         }
     }
-    printf("Done populating resultset section.\n");
+    fprintf(stderr, "Done populating resultset section.\n");
 }
 
 /* Populate a row of the ResultSet */
 void populateRow(JNIEnv *env, sqlite3_stmt *stmt, jobject resultSet) {
     int numCols = sqlite3_column_count(stmt);
     int curCol;
+    fprintf(stderr, "Preparing to populate rows.\n");
     for(curCol = 0; curCol < numCols; curCol++) {
 
     }
@@ -312,8 +320,8 @@ void populateResultSetMetadata(JNIEnv *env, sqlite3_stmt *stmt, jobject resultSe
     /* Determine first whether or not the metadata has already been filled.
      * If it has, abort immediately.  This should only be done once.
      * This can easily be done by looking at the number of columns in the
-     * ResultSet.  Anything less than 0 means that it can be populated.  We 
-     * do not throw an exception here because we don't know whether or not 
+     * ResultSet.  Anything less than 0 means that it can be populated.  We
+     * do not throw an exception here because we don't know whether or not
      * this is a first run through. */
     numCols = sqlite3_column_count(stmt);
     metaDataClass = (*env)->GetObjectClass(env, metaData);
@@ -324,7 +332,7 @@ void populateResultSetMetadata(JNIEnv *env, sqlite3_stmt *stmt, jobject resultSe
     if((*env)->CallIntMethod(env, metaData, getColID) >= 0) {
         return;
     }
-    
+
     jmethodID setColID = (*env)->GetMethodID(env,
                                              metaDataClass,
                                              "setColumnCount",
