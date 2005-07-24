@@ -69,6 +69,29 @@ public class TestStatement extends TestCase {
         }
     }
 
+    /** 
+     * Simple Statement.executeUpdate() test.  This particular test creates
+     * a new database if it doesn't exist, and then creates a table 'foo' in
+     * it.  The returned value should be 0;
+     */
+    public void testExecuteUpdate1() throws Exception {
+        java.sql.Statement stmt = con.createStatement();
+        int result = stmt.executeUpdate("CREATE TABLE foo (TestCol VARCHAR(10));");
+        /* The ResultSet cannot be null, but it can be empty. */
+        assertTrue(result == 0);
+    }
+    
+    /**
+     * A series of SQL statements, to create a table in a database, and
+     * populate one row of the table.
+     */
+    public void testExecuteUpdate2() throws Exception {
+        java.sql.Statement stmt = con.createStatement();
+        stmt.executeUpdate("CREATE TABLE foo (TestCol VARCHAR(10));");
+        int result = stmt.executeUpdate("INSERT INTO foo (TestCol) VALUES (\"WHEE\");");
+        assertTrue(result == 1);
+    }
+    
     /**
      * Simple Statement.executeQuery() test.  This particular test creates
      * a new database if it doesn't exist, and then uses 
@@ -80,6 +103,7 @@ public class TestStatement extends TestCase {
         java.sql.ResultSet result = stmt.executeQuery("CREATE TABLE foo (TestCol VARCHAR(10));");
         /* The ResultSet cannot be null, but it can be empty. */
         assertTrue(result != null);
+        throw new Exception("Not done yet");
     }
     
 //    /**

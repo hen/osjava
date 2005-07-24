@@ -15,6 +15,9 @@
   extend SQLException, so the spec remains in tact.  Additionally the error
   messages should stay the same as before, for backwards compatability.
 
+* Remove the generated .h files from repository and generate them in the
+  makefile instead.
+
 TESTS TO CREATE
 * closing a connection where the database will be busy
 * closing a connection when it's already closed (There's java in place to 
