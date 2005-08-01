@@ -38,6 +38,14 @@ import org.osjava.oscube.container.Session;
 import org.osjava.oscube.container.Header;
 import org.osjava.oscube.container.Result;
 
-public class NullStore extends ConsoleStore {
+public class NullStore implements Store {
+
+    public void store(Result result, Config cfg, Session session) throws StoringException {
+        if(false) throw new StoringException(null,null);
+    }
+
+    public boolean exists(Header header, Config cfg, Session session) throws StoringException {
+        return false;
+    }
 
 }
