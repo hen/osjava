@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 
 public class ControllerServlet extends VelocityServlet {
 
-    // expect to be a url of form:  http://foo.example.com/reports/controller/list-groups.vm
+    // expect to be a url of form:  http://foo.example.com/reports/controller/list_groups.vm
     public Template handleRequest(HttpServletRequest request, HttpServletResponse response, Context ctxt) {
         // get path info such that the vm filename is known
         String file = request.getPathInfo();
