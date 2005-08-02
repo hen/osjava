@@ -84,6 +84,24 @@ public class CsvWriterTest extends TestCase {
         }
     }
 
+    public void testWriteObjectLines() {
+        try {
+            StringWriter sw = new StringWriter();
+            CsvWriter csv = new CsvWriter(sw);
+            Object[] objs = new Object[] { new Long(1), new Integer(2), new Byte((byte)3), "4", new Short((short)5) };
+            csv.writeLine(objs);
+            objs = new String[] { "6", "7", "8", "9", "0" };
+            objs = new Object[] { new Long(6), new Integer(7), new Byte((byte)8), "9", new Short((short)0) };
+            csv.writeLine(objs);
+            csv.close();
+            assertEquals("Does not write lines of objects to csv file correctly. ", 
+                         "1,2,3,4,5\n6,7,8,9,0\n",
+                         sw.toString() );
+        } catch(IOException ioe) {
+            fail("IOException should not have been thrown. ");
+        }
+    }
+
     public void testEscapeQuotes() {
         try {
             StringWriter sw = new StringWriter();
