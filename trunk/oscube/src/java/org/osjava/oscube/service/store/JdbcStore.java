@@ -83,7 +83,7 @@ try {
                     sql = "INSERT INTO " + table + " VALUES(?"+ StringUtils.repeat(", ?", row.length-1) + ")";
                 }
             }
-            int count = queryRunner.update( conn, sql, row );
+            int count = executeSql( conn, sql, row, queryRunner );
         }
 
 } catch(SQLException sqle) {
@@ -91,6 +91,10 @@ try {
 } finally {
         DbUtils.closeQuietly( conn );
 }
+    }
+
+    protected int executeSql(Connection conn, String sql, Object[] row, QueryRunner queryRunner ) throws SQLException {
+        return queryRunner.update( conn, sql, row );
     }
 
     public boolean exists(Header header, Config cfg, Session session) throws StoringException {
