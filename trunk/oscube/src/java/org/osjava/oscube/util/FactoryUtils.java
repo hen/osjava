@@ -58,7 +58,11 @@ public class FactoryUtils {
             // if it couldn't find the Null pattern for the type
             return null;
         } else {
-            return getObject(NULL_NAME, type, defaultPackage);
+            Object obj = getObject(NULL_NAME, type, defaultPackage);
+            if(obj == null) {
+                throw new RuntimeException("Unable to find class: " + name + " or an acceptable Null pattern default. ");
+            }
+            return obj;
         }
     }
 
