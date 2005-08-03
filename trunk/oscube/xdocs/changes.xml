@@ -7,14 +7,14 @@
   </properties>
 
   <body>
-    <release version="0.2" date="2005-08-03">
+    <release version="0.2" date="2005-08-03" description="Minor fixes driven by scraping-engine usage">
       <action dev="hen" type="fix" issue="OSC-6">NullStore should not print to console</action>
       <action dev="hen" type="fix" issue="OSC-1">Rename PrinterStore to ConsoleStore</action>
       <action dev="hen" type="add" issue="OSC-7">Support stored procedures</action>
       <action dev="hen" type="fix">Creates new Config object for each runner to stop many runners sharing one Config</action>
     </release>
 
-    <release version="0.1" date="2004-04-14">
+    <release version="0.1" date="2004-04-14" description="A container of sorts">
       <action dev="hen" type="add">Used by the next version of scraping-engine, 0.2, and the unreleased simulchron. </action>
     </release>
 </body>
