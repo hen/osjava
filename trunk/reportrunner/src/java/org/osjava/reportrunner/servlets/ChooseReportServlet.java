@@ -12,7 +12,7 @@ public class ChooseReportServlet extends HttpServlet {
         String reportName = request.getParameter(ReportRunnerServlet.REPORT);
         Report report = ReportFactory.getReport(groupName, reportName);
 
-        if(hasResourceChoice(report, request) && (request.getParameter("z") == null || request.getParameter("z").equals("") ) ) {
+        if(ReportRunnerServlet.hasResourceChoice(report, request) && (request.getParameter("z") == null || request.getParameter("z").equals("") ) ) {
             // redirect to choose resources page
             response.sendRedirect("enter_resource_params.jsp?"+request.getQueryString());
             return;
@@ -24,7 +24,7 @@ public class ChooseReportServlet extends HttpServlet {
             return;
         } 
 
-        applyVariantParams(report, request);
+        ReportRunnerServlet.applyVariantParams(report, request);
         if(report.getParams().length != 0) {
             // redirect to choose params page
             response.sendRedirect("enter_params.jsp?"+request.getQueryString());
@@ -34,33 +34,5 @@ public class ChooseReportServlet extends HttpServlet {
         }
     }
 
-    public static void applyVariantParams(Report report, HttpServletRequest request) {
-        Variant[] variants = report.getVariants();
-        for(int i=0; i<variants.length; i++) {
-            String key = request.getParameter(variants[i].getName());
-            VariantOption[] options = variants[i].getOptions();
-            for(int j=0; j<options.length; j++) {
-                if(key.equals(options[j].getName())) {
-                    VariantOption option = options[j];
-                    Param[] params = option.getParams();
-                    for(int k=0; k<params.length; k++) {
-                        report.addParam(params[k]);
-                    }
-                    variants[i].setSelected(option);
-                    break;
-                }
-            }
-        }
-    }
-
-    public static boolean hasResourceChoice(Report report, HttpServletRequest request) {
-        List list = Arrays.asList(report.getResourceNames());
-        Param[] resourceParams = report.getReportGroup().getResourceParams();
-        for(int i=0; i<resourceParams.length; i++) {
-            if(list.contains(resourceParams[i].getName())) {
-                return true;
-            }
-        }
-        return false;
-    }
 }
+

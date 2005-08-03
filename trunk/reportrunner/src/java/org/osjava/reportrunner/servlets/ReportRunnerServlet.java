@@ -1,7 +1,7 @@
 package org.osjava.reportrunner.servlets;
 
 import java.io.*;
-import java.util.Date;
+import java.util.*;
 import javax.servlet.http.*;
 import org.osjava.reportrunner.*;
 
@@ -21,7 +21,7 @@ public class ReportRunnerServlet extends HttpServlet {
         Report report = ReportFactory.getReport(groupName, reportName);
 //System.out.println(new java.util.Date()+" Applying resources");
         applyResources(report, request);
-        ChooseReportServlet.applyVariantParams(report, request);
+        applyVariantParams(report, request);
 //System.out.println(new java.util.Date()+" Applying params");
 
         // does report require parameters?
@@ -166,4 +166,35 @@ LABEL:  while(pms.hasMoreElements()) {
         }
         return buffer.toString();
     }
+
+    public static void applyVariantParams(Report report, HttpServletRequest request) {
+        Variant[] variants = report.getVariants();
+        for(int i=0; i<variants.length; i++) {
+            String key = request.getParameter(variants[i].getName());
+            VariantOption[] options = variants[i].getOptions();
+            for(int j=0; j<options.length; j++) {
+                if(key.equals(options[j].getName())) {
+                    VariantOption option = options[j];
+                    Param[] params = option.getParams();
+                    for(int k=0; k<params.length; k++) {
+                        report.addParam(params[k]);
+                    }
+                    variants[i].setSelected(option);
+                    break;
+                }
+            }
+        }
+    }
+
+    public static boolean hasResourceChoice(Report report, HttpServletRequest request) {
+        List list = Arrays.asList(report.getResourceNames());
+        Param[] resourceParams = report.getReportGroup().getResourceParams();
+        for(int i=0; i<resourceParams.length; i++) {
+            if(list.contains(resourceParams[i].getName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }
