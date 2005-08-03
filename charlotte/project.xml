@@ -31,7 +31,7 @@
   <url>http://www.osjava.org/charlotte/</url>
 
   <!-- You'll need to log into JIRA and find out what your ID is -->
-  <issueTrackingUrl>http://issues.osjava.org:8080/jira/secure/BrowseProject.jspa?id=10031</issueTrackingUrl>
+  <issueTrackingUrl>http://issues.osjava.org:8080/jira/browse/BrowseProject.jspa?id=10031</issueTrackingUrl>
 
   <mailingLists>
     <mailingList>

@@ -17,7 +17,7 @@
   <logo>/images/1x1.gif</logo>
 
   <url>http://www.osjava.org/genjava/</url>
-  <issueTrackingUrl>http://issues.osjava.org:8080/jira/secure/BrowseProject.jspa?id=10010</issueTrackingUrl>
+  <issueTrackingUrl>http://issues.osjava.org:8080/jira/browse/BrowseProject.jspa?id=10010</issueTrackingUrl>
   <siteAddress>www.osjava.org/genjava</siteAddress>
   <siteDirectory>/sites/org/osjava/www/releases/official/genjava/${pom.artifactId}/</siteDirectory>
   <distributionDirectory>/sites/org/osjava/www/releases/official/genjava/${pom.artifactId}/</distributionDirectory>

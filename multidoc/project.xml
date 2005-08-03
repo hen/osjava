@@ -21,7 +21,7 @@
   <shortDescription>Wrapper for javadoc-style sites</shortDescription>
 
   <url>http://www.osjava.org/multidoc/</url>
-  <issueTrackingUrl>http://issues.osjava.org:8080/jira/secure/BrowseProject.jspa?id=10060</issueTrackingUrl>
+  <issueTrackingUrl>http://issues.osjava.org:8080/jira/browse/BrowseProject.jspa?id=10060</issueTrackingUrl>
   <siteAddress>www.osjava.org/multidoc</siteAddress>
   <siteDirectory>/sites/org/osjava/www/multidoc/</siteDirectory>
   <distributionDirectory>/sites/org/osjava/www/releases/official/</distributionDirectory>
