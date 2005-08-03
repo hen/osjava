@@ -1,0 +1,36 @@
+#include( "org/osjava/webwizard/templates/header.inc" )
+
+<div class="stages"><a href="list_groups.jsp">choose-group</a> -&gt; <a href="list_reports.jsp?$RRR.GROUP=$group.name">choose-report</a></div>
+
+<div class="feedback">
+<p>You have chosen the <span class="chosen-data">$report.label</span> report from the <span class="chosen-data">$group.label</span> report group. </p>
+<p>"$group.description"</p>
+<p>"$report.description"</p>
+</div>
+
+<div class="input">
+<p>This report may be run against the following resources; would you please select from the following: </p>
+
+<form action="choosereport">
+<!-- need a velocity macro of some kind -->
+<%= ReportRunnerServlet.parametersToHiddens(request, params) %>
+<input type="hidden" name="z" value="1">
+<table>
+#foreach( $param in $reports.reportGroup.resourceParams )
+        <!-- Old JSP code had this
+        List list = Arrays.asList(report.getResourceNames());
+            if(!list.contains(params[i].getName())) {
+                continue;
+            }
+        -->
+    <tr><td><label for="$param.name">$param.label</label></td><td><select name="$param.name">
+    #foreach( $choice in $reports.reportGroup.getResourceParamChoices($param) )
+        <option value="$choice.value">$choice.label</option>
+    #end
+    </select></td></tr>
+#end
+<tr><td colspan="2"><input type="submit" value="Continue"></td></tr>
+</table>
+</form>
+</div>
+#include( "org/osjava/webwizard/templates/footer.inc" )
