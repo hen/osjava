@@ -12,7 +12,7 @@
 
 <div class="stages"><a href="list_groups.jsp">choose-group</a> -&gt; <a href="list_reports.jsp?<%= ReportRunnerServlet.GROUP %>=<%= groupName %>">choose-report</a> -&gt; 
 <%
-  if(ChooseReportServlet.hasResourceChoice(report, request)) {
+  if(ReportRunnerServlet.hasResourceChoice(report, request)) {
 %>
 <a href="enter_resource_params.jsp?<%= request.getQueryString() %>">choose resource</a>
 <% 

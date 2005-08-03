@@ -7,13 +7,13 @@
     String reportName = request.getParameter(ReportRunnerServlet.REPORT);
     Report report = ReportFactory.getReport(groupName, reportName);
     ReportRunnerServlet.applyResources(report, request);
-    ChooseReportServlet.applyVariantParams(report, request);
+    ReportRunnerServlet.applyVariantParams(report, request);
     Param[] params = report.getParams();
 %>
 
 <div class="stages"><a href="list_groups.jsp">choose-group</a> -&gt; <a href="list_reports.jsp?<%= ReportRunnerServlet.GROUP %>=<%= groupName %>">choose-report</a> -&gt;
 <%
-  if(ChooseReportServlet.hasResourceChoice(report, request)) {
+  if(ReportRunnerServlet.hasResourceChoice(report, request)) {
 %>
 <a href="enter_resource_params.jsp?<%= request.getQueryString() %>">choose resource</a>
 <% 
