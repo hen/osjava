@@ -1,6 +1,7 @@
 package org.osjava.webwizard;
 
 import org.osjava.reportrunner.*;
+import org.osjava.reportrunner.servlets.ReportRunnerServlet;
 
 import org.apache.velocity.Template;
 import org.apache.velocity.servlet.VelocityServlet;
@@ -36,22 +37,32 @@ public class ControllerServlet extends VelocityServlet {
             } else {
                 Report report = ReportFactory.getReport(groupName, reportName);
                 ctxt.put("report", report);
+
+                String resourceSet = request.getParameter("z");
+                if(resourceSet != null) {
+                    ReportRunnerServlet.applyResources(report, request);
+                }
             }
         }
 
-        // if list-groups 
+        // if list_groups 
 
-        // if list-reports
+        // if list_reports
 
-        // if enter-resource-params
+        // if choose_report
+        if("/choose_report".equals(file)) {
+            file = handleChooseReport(request, ctxt);
+        }
 
-        // if enter-params
+        // if enter_resource_params
 
-        // if enter-variants
+        // if enter_params
 
-        // if list-renderers
+        // if enter_variants
 
-        String template = "/org/osjava/webwizard/templates"+file+".vm";
+        // if list_renderers
+
+        String template = "org/osjava/webwizard/templates"+file+".vm";
         try {
             return getTemplate(template);
         } catch( ResourceNotFoundException rnfe ) {
@@ -67,6 +78,26 @@ public class ControllerServlet extends VelocityServlet {
             // syntax error : general exception
             throw new RuntimeException("FIX THIS: " + e);
         }
+
     }
 
+    private String handleChooseReport(HttpServletRequest request, Context ctxt) {
+
+        Report report = (Report) ctxt.get("report");
+
+        if(ReportRunnerServlet.hasResourceChoice(report, request) && (request.getParameter("z") == null || request.getParameter("z").equals("") ) ) {
+            return "/enter_resource_params";
+        } 
+
+        if( (report.getVariants().length != 0) && (request.getParameter("y") == null || request.getParameter("y").equals("") ) ) {
+            return "/enter_variants";
+        } 
+
+        ReportRunnerServlet.applyVariantParams(report, request);
+        if(report.getParams().length != 0) {
+            return "/enter_params";
+        } else {
+            return "/list_renderers";
+        }
+    }
 }

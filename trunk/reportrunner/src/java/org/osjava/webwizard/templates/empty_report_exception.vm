@@ -1,5 +1,5 @@
-#include( "header.inc" )
+#include( "org/osjava/webwizard/templates/header.inc" )
 
 The report has returned no data. 
 
-#include( "footer.inc" )
+#include( "org/osjava/webwizard/templates/footer.inc" )

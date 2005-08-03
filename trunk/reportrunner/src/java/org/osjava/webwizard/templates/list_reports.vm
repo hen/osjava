@@ -1,6 +1,6 @@
-#include( "header.inc" )
+#include( "org/osjava/webwizard/templates/header.inc" )
 
-<div class="stages"><a href="list_groups.vm">choose-group</a></div>
+<div class="stages"><a href="list_groups">choose-group</a></div>
 
 <div class="feedback">
 <p>You have chosen to run from the <span class="chosen-data">$group.label</span> report group. </p>
@@ -11,9 +11,9 @@
 <p>Which particular report would you like to run? </p>
 
 <table>
-#foreach( report in $reports )
-    <tr><td><a href="choosereport?$RRR.GROUP=$group.name&$RRR.REPORT=$report.name">$report.label</a></td><td>$report.description</td><td><a href="xmlview?$RRR.GROUP=$group.name&$RRR.REPORT=$report.name">&lt;xml/&gt;</a></tr>
+#foreach( $report in $reports )
+    <tr><td><a href="choose_report?$RRR.GROUP=$group.name&$RRR.REPORT=$report.name">$report.label</a></td><td>$!report.description</td><td><a href="../xmlview?$RRR.GROUP=$group.name&$RRR.REPORT=$report.name">&lt;xml/&gt;</a></tr>
 #end
 </table>
 </div>
-#include( "footer.inc" )
+#include( "org/osjava/webwizard/templates/footer.inc" )
