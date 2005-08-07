@@ -150,6 +150,18 @@ public class ReportRunnerServlet extends HttpServlet {
         }
     }
 
+    public static boolean resourcesChosen(Report report, HttpServletRequest request) {
+        String[] required = report.getResourceNames();
+        for(int i=0; i<required.length; i++) {
+            String value = request.getParameter(required[i]);
+            if(value != null && !value.equals("")) {
+                continue;
+            }
+            return false;
+        }
+        return true;
+    }
+
     public static String parametersToHiddens(HttpServletRequest request, Nameable[] ignore) {
         StringBuffer buffer = new StringBuffer();
         // pull this into a Util
