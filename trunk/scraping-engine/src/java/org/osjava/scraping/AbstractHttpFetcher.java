@@ -51,15 +51,11 @@ import org.osjava.oscube.container.Session;
  */
 public abstract class AbstractHttpFetcher implements Fetcher {
 
-    private Cookie[] cookies;
+    private static final String SESSION_CACHE_CODE = "HTTPCLIENT";
 
     public abstract int getDefaultPort();
 
     protected abstract void startSession(URL url, int port, HttpClient client, Config cfg, Session session);
-
-    public void setCookies(Cookie[] cookies) {
-        this.cookies = cookies;
-    }
 
     public Page fetch(String uri, Config cfg, Session session) throws FetchingException {
         try {
@@ -95,9 +91,10 @@ public abstract class AbstractHttpFetcher implements Fetcher {
                 }
             }
 
-            HttpClient client = new HttpClient();
-            if(this.cookies != null) {
-                client.getState().addCookies(this.cookies);
+            HttpClient client = (HttpClient) session.get(SESSION_CACHE_CODE);
+            if(client == null) {
+                client = new HttpClient();
+                session.put(SESSION_CACHE_CODE, client);
             }
 
             HttpMethod method = null;
@@ -162,12 +159,8 @@ public abstract class AbstractHttpFetcher implements Fetcher {
             }
 
             String txt = method.getResponseBodyAsString();
-            Cookie[] cookies = client.getState().getCookies();
             method.releaseConnection(); 
             MemoryPage page = new MemoryPage(txt, type);
-
-            // TODO: how best to handle this?
-            page.setCookies(cookies);
 
             String base = url.getProtocol()+"://"+url.getHost();
             if(url.getPort() != -1) {

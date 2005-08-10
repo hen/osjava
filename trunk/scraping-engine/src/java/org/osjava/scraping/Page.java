@@ -39,8 +39,6 @@ import java.util.Map;
 import com.generationjava.config.Config;
 import org.osjava.oscube.container.Session;
 
-import org.apache.commons.httpclient.Cookie;
-
 // TODO: Have a page know its URI
 public interface Page {
 
@@ -56,6 +54,4 @@ public interface Page {
     // Page's have different types, this lets us decide what to do with it
     public String getType();
 
-    public void setCookies(Cookie[] cookies);
-    public Cookie[] getCookies();
 }
