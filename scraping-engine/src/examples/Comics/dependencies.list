@@ -1,7 +1,8 @@
 !
 commons-collections-2.1.jar
 commons-dbutils-SNAPSHOT.jar
-commons-httpclient-2.0-rc1.jar
+commons-httpclient-2.0.2.jar
+commons-net-1.4.0.jar
 commons-lang-1.0.1.jar
 commons-logging-1.0.3.jar
 gj-config-1.1.jar
