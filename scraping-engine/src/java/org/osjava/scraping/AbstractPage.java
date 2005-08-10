@@ -44,15 +44,12 @@ import org.apache.log4j.Logger;
 import com.generationjava.config.Config;
 import org.osjava.oscube.container.Session;
 
-import org.apache.commons.httpclient.Cookie;
-
 public abstract class AbstractPage implements Page {
 
     private static Logger logger = Logger.getLogger(AbstractPage.class);
 
     private String documentBase;
     private String type;
-    private Cookie[] cookies;
 
     public AbstractPage() {
     }
@@ -63,14 +60,6 @@ public abstract class AbstractPage implements Page {
 
     public String getType() {
         return this.type;
-    }
-
-    public void setCookies(Cookie[] cookies) {
-        this.cookies = cookies;
-    }
-
-    public Cookie[] getCookies() {
-        return this.cookies;
     }
 
     public abstract Reader read() throws IOException;
@@ -94,9 +83,6 @@ public abstract class AbstractPage implements Page {
         
         logger.debug("Fetching: "+uri);
         Fetcher fetcher = FetchingFactory.getFetcher(cfg, session);
-        if(fetcher instanceof AbstractHttpFetcher) {
-            ((AbstractHttpFetcher)fetcher).setCookies(this.cookies);
-        }
         Page page = fetcher.fetch(uri, cfg, session);
         return page;
     }
