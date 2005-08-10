@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, Henri Yandell
+ * Copyright (c) 2003-2005, Henri Yandell
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or 
@@ -31,13 +31,21 @@
  */
 package org.osjava.scraping;
 
+import com.generationjava.lang.ClassW;
+
 import com.generationjava.config.Config;
 import org.osjava.oscube.container.Session;
 
 public class FetchingFactory {
 
     public static Fetcher getFetcher(Config cfg, Session session) {
+        String fetcher = cfg.getString("fetcher");
+	if(fetcher != null) {
+            return (Fetcher) ClassW.createObject(fetcher);
+	}
+
         String uri = cfg.getString("uri");
+
         if(uri == null) {
             return new NullFetcher();
         }
