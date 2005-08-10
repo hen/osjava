@@ -7,6 +7,13 @@
   </properties>
 
   <body>
+    <release version="0.4" date="2005-08-10" description="Four new features">
+      <action dev="hen" type="add" issue="SCB-17">Caches HttpClient object for a scraper, thereby supporting cookies</action>
+      <action dev="hen" type="add" issue="SCB-18">Ability to set any HTTP Header for initial request. If a User-Agent header is specified, Scraping-Engine will use this to look for a robots.txt</action>
+      <action dev="hen" type="add" issue="SCB-21">ftp:// urls now supported in much the same way as http/https</action>
+      <action dev="hen" type="add" issue="SCB-24">Fetchers are now pluggable</action>
+    </release>
+
     <release version="0.3" date="2004-06-23" description="Biggest change is POST ability">
       <action dev="hen" type="add" issue="SCB-12">Move the example UrlScraper into the main distro so everyone may use it</action>
       <action dev="hen" type="add" issue="SCB-16">Add support for POST requests</action>
