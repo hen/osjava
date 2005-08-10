@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, Henri Yandell
+ * Copyright (c) 2005, Henri Yandell
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or 
@@ -31,28 +31,46 @@
  */
 package org.osjava.scraping;
 
+import java.io.IOException;
+import java.io.ByteArrayOutputStream;
+import java.net.URL;
+
 import com.generationjava.config.Config;
 import org.osjava.oscube.container.Session;
 
-public class FetchingFactory {
+import org.apache.commons.net.ftp.FTPClient;
 
-    public static Fetcher getFetcher(Config cfg, Session session) {
-        String uri = cfg.getString("uri");
-        if(uri == null) {
-            return new NullFetcher();
-        }
+public class FtpFetcher implements Fetcher {
 
-        if(uri.startsWith("http://")) {
-            return new HttpFetcher();
-        }
-        if(uri.startsWith("https://")) {
-            return new HttpsFetcher();
-        }
-        if(uri.startsWith("ftp://")) {
-            return new FtpFetcher();
-        }
+    public Page fetch(String uri, Config cfg, Session session) throws FetchingException {
+        try {
 
-        return new NullFetcher();
+            FTPClient client = new FTPClient();
+            URL url = new URL(uri);
+            client.connect(url.getHost());
+
+            String username = cfg.getString("username");
+            String password = cfg.getString("password");
+            if(username == null) {
+                username = "anonymous";
+            }
+            if(password == null) {
+                password = "";
+            }
+
+            client.login(username, password);
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            client.retrieveFile( url.getPath(), baos );
+
+	    // no way to find an ftp file type that I know of
+            MemoryPage page = new MemoryPage(new String(baos.toByteArray()), null);
+            // TODO: set page's document base
+            return page;
+
+        } catch(IOException ioe) {
+            throw new FetchingException("Unable to download file. ", ioe);
+        }
     }
 
 }
