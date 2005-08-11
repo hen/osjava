@@ -40,7 +40,7 @@ import org.osjava.oscube.container.Session;
 import org.osjava.oscube.container.Result;
 import org.osjava.oscube.container.TabularResult;
 
-public class NullParser extends AbstractParser {
+public class PassThroughParser extends AbstractParser {
 
     public Result parse(Page page, Config cfg, Session session) throws ParsingException {
         try {
