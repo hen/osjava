@@ -43,7 +43,11 @@ import org.osjava.oscube.container.Result;
 import org.osjava.oscube.service.store.*;
 import org.osjava.oscube.service.notify.*;
 
+import org.apache.log4j.Logger;
+
 public class ScrapingRunner implements Runner {
+
+    private static Logger logger = Logger.getLogger(ScrapingRunner.class);
 
     // 'org.osjava.oscube.prefix' needs to equal 'org.osjava.scraper' 
     public static void main(String[] args) {
@@ -53,6 +57,8 @@ public class ScrapingRunner implements Runner {
     }
 
     public void run(Config cfg, Session session) {
+
+        logger.info("Scraping: "+cfg.getString("uri"));
 
         try {
             // fetch the uri
