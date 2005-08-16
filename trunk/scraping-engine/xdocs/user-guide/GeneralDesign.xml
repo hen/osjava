@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<document>
+
+  <properties>
+    <author email="bayard@generationjava.com">Henri Yandell</author>
+    <title></title>
+  </properties>
+
+  <body>
+  <section><p>
+(TODO: Find nice pretty OmniGraffle picture of a year or two ago)
+
+Each scrape in Scraping-Engine follows the same set of steps.
+
+<ol><li> Fetch the configured resource into a Page using a Fetcher</li></ol>
+<ol><li> Parse the Page using a Parser and return a Result</li></ol>
+<ol><li> Store the Result into a configured location</li></ol>
+<ol><li> Notify on success</li></ol>
+
+<ul><li> If an error occurs, Notify this instead</li></ul>
+  </p></section>
+  </body>
+
+</document>

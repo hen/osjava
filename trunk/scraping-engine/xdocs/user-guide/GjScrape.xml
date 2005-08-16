@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<document>
+
+  <properties>
+    <author email="bayard@generationjava.com">Henri Yandell</author>
+    <title></title>
+  </properties>
+
+  <body>
+  <section><p>
+I'm not a believer in trying to convert HTML to XML to parse it. Partly this is because much of the HTML out there is shoddy and it'll take time to find a library that can understand it; but mostly it's because I'm not a believer in scraping XML hierarchically.
+
+When you build an HTML or XML document into a tree, and then walk that tree, you tie yourself to the structure of the page. Owners of pages have a nasty habit of modifying the structure of their pages and the house of cards on which your system is built becomes apparant.
+
+To successfully scrape, and continue scraping repeatedly, you need to minimise the surface area of each page you touch. Thus my scraping strategy is nearly always to find a unique, recognisable token right above the desired data, jump straight to that token and then and only then try to parse the site.
+
+To do this, I use OSJava's gj-scrape (cut to picture of a 1950s mother holding sparkling dishes, the husband has just walked in the door with his suit, tie and briefcase and the children are remarkably free of drugs, tattoos, pregnancy or any other sign of reality). 
+
+<a href="httphttp://www.osjava.org/genjava/multiproject/gj-scrape/">http://www.osjava.org/genjava/multiproject/gj-scrape/</a>
+  </p></section>
+  </body>
+
+</document>

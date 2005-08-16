@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<document>
+
+  <properties>
+    <author email="bayard@generationjava.com">Henri Yandell</author>
+    <title></title>
+  </properties>
+
+  <body>
+  <section><p>
+<ul><li><a href="Justifying.html">Justifying</a></li></ul>
+<ul><li><a href="Downloading.html">Downloading</a></li></ul>
+<ul><li><a href="Configuring.html">Configuring</a></li></ul>
+<ul><li>*<a href="Plugin configuration.html">Plugin configuration</a></li></ul>
+<ul><li>*<a href="ConfigureADataSourceInSimpleJNDI.html">ConfigureADataSourceInSimpleJNDI</a></li></ul>
+<ul><li><a href="General design.html">General design</a></li></ul>
+<ul><li><a href="Fetching.html">Fetching</a></li></ul>
+<ul><li><a href="Parsing.html">Parsing</a></li></ul>
+<ul><li>*<a href="GjScrape.html">GjScrape</a></li></ul>
+<ul><li>*<a href="GjCsv.html">GjCsv</a></li></ul>
+<ul><li>*<a href="GjXml.html">GjXml</a></li></ul>
+<ul><li><a href="Storing.html">Storing</a></li></ul>
+<ul><li><a href="Scheduling.html">Scheduling</a></li></ul>
+<ul><li><a href="Notification.html">Notification</a></li></ul>
+<ul><li><a href="Submitting bugs.html">Submitting bugs</a></li></ul>
+<ul><li><a href="Compiling the source.html">Compiling the source</a></li></ul>
+<ul><li><a href="Submitting patches.html">Submitting patches</a></li></ul>
+  </p></section>
+  </body>
+
+</document>

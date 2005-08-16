@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<document>
+
+  <properties>
+    <author email="bayard@generationjava.com">Henri Yandell</author>
+    <title></title>
+  </properties>
+
+  <body>
+  <section><p>
+When storing data in a database, you are going to need to setup a <code>javax.sql.DataSource</code> object in the simple-jndi configuration. Here's a brief example:
+
+Place a file named <code>ScrapingDS.properties</code> next to your <code>default.properties</code> and containing the following content:
+
+<pre>
+<ol><li> your JDBC driver, must be in classpath</li></ol>
+driver=oracle.jdbc.driver.OracleDriver
+
+<ol><li> username for db</li></ol>
+user=sa
+
+<ol><li> password for that username</li></ol>
+password=lollipop
+
+<ol><li> jdbc url to connect with</li></ol>
+url=jdbc:oracle:thin:@yourdb.example.com:port:sid
+
+<ol><li> let simple-jndi know to make this an Object</li></ol>
+type=javax.sql.DataSource
+
+<ol><li> optional, turn on pooling. </li></ol>
+<ol><li> Commons DBCP, Pool and Collections must be in the classpath</li></ol>
+<ol><li>pool=true</li></ol>
+</pre>
+
+Then in your <code>default.properties</code>, you can simply configure it with:
+
+<pre>
+....
+Xxx.store=Jdbc
+Xxx.DS=ScrapingDS
+....
+</pre>
+  </p></section>
+  </body>
+
+</document>

@@ -1,0 +1,101 @@
+<?xml version="1.0"?>
+<document>
+
+  <properties>
+    <author email="bayard@generationjava.com">Henri Yandell</author>
+    <title></title>
+  </properties>
+
+  <body>
+  <section><p>
+Once you've broken the backbone of a scrape by writing the Parser, you're going to want to put the results somewhere.
+
+The existing Stores are:
+
+<pre>
+ConsoleStore - Print the data to System.out
+NullStore - Throw the data away
+FileStore - Store the data in a file
+JdbcStore - Store data via an INSERT sql statement
+CallableJdbcStore - Store data via a stored procedure
+</pre>
+
+Let's go over each and discuss the configuration options.
+
+</p></section><section name="ConsoleStore"><p>
+
+<pre>
+Xxx.store=Console
+</pre>
+
+Simple to configure, simple to use. Hook it up and your Results be dumped on screen. Useful in debugging.
+
+</p></section><section name="NullStore"><p>
+
+<pre>
+Xxx.store=Null
+</pre>
+
+You also get this store when you provide no configuration. This is also of use in debugging; especially if the debugging you want to see is from your Parser or Fetcher, and you don't want the spam of your results trying to go somewhere.
+
+NullStore is also useful if you're really interested in the fact the server had a dynamic page invoked and not in the actual result from the page.
+
+</p></section><section name="FileStore"><p>
+
+<pre>
+Xxx.store=File
+Xxx.path=/tmp/foo/
+Xxx.saveAs=somefile.foo
+</pre>
+
+The first store with additional options; ie) where to save the file. Currently this store only writes the {0,0} field from your result; ie) the first field in the first row. This may seem silly, but FileStore was created to store scraped images rather than data. Improving this is a TODO.
+
+</p></section><section name="JdbcStore"><p>
+
+<pre>
+Xxx.store=Jdbc
+Xxx.DS=FooDS
+<ol><li> then either</li></ol>
+Xxx.sql=INSERT INTO Foo (col1, col2) VALUES(?,?)
+<ol><li> or</li></ol>
+Xxx.table=Foo
+</pre>
+
+Storing data in a database is hard to get away from when scraping. <code>JdbcStore</code> makes it easy.
+
+The first configuration option is the DataSource; this should be obtained via JNDI as a <code>javax.sql.DataSource</code> object and for most of us this means knowing how to <a href="configure a DataSource in Simple-JNDI.html">configure a DataSource in Simple-JNDI</a>.
+
+Then you can either specify the INSERT statement to use, in <code>java.sql.PreparedStatement</code> notation, or for the exceptionally lazy you can simply specify the table to INSERT into, which will result in a generic statement of the type <code>INSERT INTO Foo VALUES(?, ?)</code> where the number of question marks inside VALUES is dependent on the length of the row in the results.
+
+Currently JdbcStore does not do anything special with your data, so if you want to insert a Date into the database, you'll need to place the correct <code>java.sql</code> type in your results and not <code>java.util.Date</code>. 
+
+</p></section><section name="CallableJdbcStore"><p>
+
+<pre>
+Xxx.store=Jdbc
+Xxx.DS=FooDS
+Xxx.sql=call stored_proc_example(?,?)
+<ol><li> it's a bug that it'll try to work with this. </li></ol>
+Xxx.table=Foo
+</pre>
+
+(TODO: Fix the fact that CallableJdbc accepts table)
+
+<code>CallableJdbcStore</code> is an example of an extension to <code>JdbcStore</code> which uses <code>java.sql.CallableStatement</code> instead of <code>java.sql.PreparedStatement</code>. With the exception of the <code>table</code> option, all of the <code>JdbcStore</code> information applies.
+
+</p></section><section name="Implementing your own Store"><p>
+
+As storing is a service provided by OSCube, creating your own Store involves implementing the two methods in the <code>org.osjava.oscube.service.store.Store</code> interface.
+
+<pre>
+public void store(Result result, Config cfg, Session session) throws StoringException;
+public boolean exists(Header header, Config cfg, Session session) throws StoringException;
+</pre>
+
+For the moment, it is recommended that the exists method merely <code>return false</code>, it's designed for scrapers that don't want to insert repeated data but is currently not very well tested as a concept.
+
+You can also extend existing Stores, such as the <code>org.osjava.oscube.service.store.JdbcStore</code> to avoid having to do all the JDBC work again.
+  </p></section>
+  </body>
+
+</document>

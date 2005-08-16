@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<document>
+
+  <properties>
+    <author email="bayard@generationjava.com">Henri Yandell</author>
+    <title></title>
+  </properties>
+
+  <body>
+  <section><p>
+XML pages are usually going to be well formed, and less likely to change than HTML as you won't have look &amp; feel noise getting in the way of your scraping; however the strategy discussed for <a href="GjScrape.html">GjScrape</a> still may apply.
+
+Failing that, use an XML parser of your choice.
+
+It's non-standard, but I like to use gj-xml; a small, fast and easy API.
+
+<a href="httphttp://www.osjava.org/genjava/multiproject/gj-xml/">http://www.osjava.org/genjava/multiproject/gj-xml/</a>
+  </p></section>
+  </body>
+
+</document>

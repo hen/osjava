@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<document>
+
+  <properties>
+    <author email="bayard@generationjava.com">Henri Yandell</author>
+    <title></title>
+  </properties>
+
+  <body>
+  <section><p>
+You can plug your own code into many parts of Scraping-Engine/OSCube; and the openness of simple-jndi allows you to easily get your configuration there too.
+
+Given the following configuration:
+
+<pre>
+org.osjava.scrapers=SlashRss
+SlashRss.uri=http://slashdot.org/index.rss
+SlashRss.parser=com.example.ExampleParser
+</pre>
+
+the ExampleParser can easily access the configuration while in its <code>parse(String uri, Config config, Session session)</code> method by invoking <code>config.getString("uri")</code>. 
+
+If ExampleParser wishes to have its own configuration, above and beyond Scraping-Engine's default concepts; it can do so with remarkable ease, simply by adding that config to the configuration file, under the same prefix.
+
+<pre>
+org.osjava.scrapers=SlashRss
+SlashRss.uri=http://slashdot.org/index.rss
+SlashRss.parser=com.example.ExampleParser
+SlashRss.answer=42
+</pre>
+
+and then accessing it during its code via <code>config.getString("answer")</code>. As the <a href="Javadoc for gj-config|http://www.osjava.org/genjava/multiproject/gj-config/apidocs/index.html.html">Javadoc for gj-config|http://www.osjava.org/genjava/multiproject/gj-config/apidocs/index.html</a> shows, it would probably be better to use <code>config.getInt("answer")</code> to get 42 as an int instead of a String.
+
+</p></section><section name="Sessions"><p>
+
+In case you are wondering, the Session is nothing more than a sub-class of Config, allowing scheduled scrapings to store Object values between scrapes. 
+  </p></section>
+  </body>
+
+</document>

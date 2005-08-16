@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<document>
+
+  <properties>
+    <author email="bayard@generationjava.com">Henri Yandell</author>
+    <title></title>
+  </properties>
+
+  <body>
+  <section><p>
+Theoretically notification exists to inform somebody when a scraper has an error, or whenever a scraper successfully runs. In reality it's untested and the only implementation of the <code>org.osjava.oscube.service.notify.Notifier</code> interface is <code>NullNotifier</code>, which does nothing.
+
+</p></section><section name="Implementing your own Notifier"><p>
+
+Below is the method you'll need to implement your own <code>Notifier</code>. 
+
+<pre>
+public void notify(Config cfg, Session session) throws NotificationException;
+</pre>
+
+To configure your notifiers:
+
+<pre>
+Xxx.notifier.success=&lt;classname&gt;
+Xxx.notifier.error=&lt;classname&gt;
+</pre>
+
+When writing your error Notifier, the Exception thrown is available via the Session object as the <code>"error"</code> variable.
+  </p></section>
+  </body>
+
+</document>

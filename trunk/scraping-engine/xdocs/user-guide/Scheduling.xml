@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+<document>
+
+  <properties>
+    <author email="bayard@generationjava.com">Henri Yandell</author>
+    <title></title>
+  </properties>
+
+  <body>
+  <section><p>
+Scheduling is the art of deciding when to run your scraper. There are two schedulers available by default
+
+<pre>
+SimpleScheduler
+QuartzScheduler
+</pre>
+
+</p></section><section name="SimpleScheduler"><p>
+
+The best way to describe this scheduler is as the 'run it now' scheduler. When you run the OSCube Engine, it will immediately run the scraper once, and never again.
+
+<pre>
+Xxx.scheduler=Simple
+</pre>
+
+SimpleScheduler is the default option so does not need to be explicitly specified, and is most commonly used when an external cron-job is used, or for testing.
+
+(TODO: There will be a testing mode for OSCube at a later date)
+
+</p></section><section name="QuartzScheduler"><p>
+
+This allows you to specify when you'd like the scraper to run using the de-facto standard of the UNIX cron system, only on startup (as with the <code>SimpleScheduler</code>), or on a repeating basis.
+
+</p></section><section name="!startup"><p>
+
+<pre>
+Xxx.scheduler=Quartz
+Xxx.schedule=startup
+</pre>
+
+</p></section><section name="!repeating"><p>
+
+<pre>
+Xxx.scheduler=Quartz
+Xxx.schedule=simple
+Xxx.schedule.interval=&lt;integer milliseconds&gt;
+Xxx.schedule.repeat=&lt;integer number of times to repeat&gt;
+</pre>
+
+Confusingly the schedule in this case is called <code>simple</code>. The <code>interval</code> is the number of milliseconds to separate each scrape with, and the optional <code>repeat</code> is the number of times to perform the scrape. If unspecified it will go forever.
+
+</p></section><section name="!cron"><p>
+
+<pre>
+Xxx.scheduler=Quartz
+Xxx.schedule=cron
+Xxx.schedule.cron=&lt;cron string&gt;
+</pre>
+
+Quartz's implementation of the UNIX Cron system, their documentation <a href="httphttp://www.opensymphony.com/quartz/tutorial.html#cronTriggers">http://www.opensymphony.com/quartz/tutorial.html#cronTriggers</a> is probably the best place to read up on it.
+
+Scraping every 5 minutes would be:
+
+<pre>
+Xxx.scheduler=Quartz
+Xxx.schedule=cron
+Xxx.schedule.cron=0 0/5 * * * ?
+</pre>
+
+NOTE: Quartz adds a column to the front of the classic cron text to represent seconds, the above example would have only been <code>0/5 * * * ?</code> in the usual cron syntax.
+  </p></section>
+  </body>
+
+</document>
