@@ -3,12 +3,11 @@
 
   <properties>
     <author email="bayard@generationjava.com">Henri Yandell</author>
-    <title></title>
+    <title>Justifying Scraping-Engine</title>
   </properties>
 
   <body>
-  <section><p>
-</p></section><section name="Why create a scraping engine?"><p>
+<section name="Why create a scraping engine?"><p>
 
 I needed a system that will allow me to quickly write http scrapers, without having to implement the same code again and again. This pays back in development speed, stability and maintenance.
 

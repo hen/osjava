@@ -3,11 +3,11 @@
 
   <properties>
     <author email="bayard@generationjava.com">Henri Yandell</author>
-    <title></title>
+    <title>Scheduling scrapes</title>
   </properties>
 
   <body>
-  <section><p>
+  <section name="Scheduling scrapes"><p>
 Scheduling is the art of deciding when to run your scraper. There are two schedulers available by default
 
 <pre>

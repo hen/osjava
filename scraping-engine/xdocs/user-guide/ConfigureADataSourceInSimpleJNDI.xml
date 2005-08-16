@@ -3,11 +3,11 @@
 
   <properties>
     <author email="bayard@generationjava.com">Henri Yandell</author>
-    <title></title>
+    <title>Configuring a DataSource in SimpleJNDI</title>
   </properties>
 
   <body>
-  <section><p>
+  <section name="Configuring a DataSource in SimpleJNDI"><p>
 When storing data in a database, you are going to need to setup a <code>javax.sql.DataSource</code> object in the simple-jndi configuration. Here's a brief example:
 
 Place a file named <code>ScrapingDS.properties</code> next to your <code>default.properties</code> and containing the following content:

@@ -3,11 +3,11 @@
 
   <properties>
     <author email="bayard@generationjava.com">Henri Yandell</author>
-    <title></title>
+    <title>Storing results</title>
   </properties>
 
   <body>
-  <section>
+  <section name="Storing results">
 <p>Once you've broken the backbone of a scrape by writing the Parser, you're going to want to put the results somewhere. </p>
 
 <p>The existing Stores are: </p>

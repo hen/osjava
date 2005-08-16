@@ -3,11 +3,11 @@
 
   <properties>
     <author email="bayard@generationjava.com">Henri Yandell</author>
-    <title></title>
+    <title>Downloading Scraping-Engine</title>
   </properties>
 
   <body>
-  <section>
+  <section name="Downloading">
 
 <p>The recommended way to download and install Scraping-Engine is to download the latest scraping-template archive from <a href="httphttp://dist.osjava.org/releases/official/scraping-engine/">http://dist.osjava.org/releases/official/scraping-engine/</a>, and after reading the README.txt, executing download.sh and run.sh. </p>
 

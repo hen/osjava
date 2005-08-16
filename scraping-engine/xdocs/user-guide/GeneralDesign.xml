@@ -3,11 +3,11 @@
 
   <properties>
     <author email="bayard@generationjava.com">Henri Yandell</author>
-    <title></title>
+    <title>General Design</title>
   </properties>
 
   <body>
-  <section><p>
+  <section name="Scraping-Engine design"><p>
 (TODO: Find nice pretty OmniGraffle picture of a year or two ago)
 
 Each scrape in Scraping-Engine follows the same set of steps.

@@ -3,11 +3,11 @@
 
   <properties>
     <author email="bayard@generationjava.com">Henri Yandell</author>
-    <title></title>
+    <title>Configuring custom plugins</title>
   </properties>
 
   <body>
-  <section><p>
+  <section name="Configuring custom plugins"><p>
 You can plug your own code into many parts of Scraping-Engine/OSCube; and the openness of simple-jndi allows you to easily get your configuration there too.
 
 Given the following configuration:

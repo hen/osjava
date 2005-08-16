@@ -3,11 +3,11 @@
 
   <properties>
     <author email="bayard@generationjava.com">Henri Yandell</author>
-    <title></title>
+    <title>User Guide</title>
   </properties>
 
   <body>
-  <section><p>
+  <section name="Scraping-Engine User-Guide"><p>
 <ul>
 <li><a href="Justifying.html">Justifying</a></li>
 <li><a href="Downloading.html">Downloading</a></li>

@@ -3,11 +3,11 @@
 
   <properties>
     <author email="bayard@generationjava.com">Henri Yandell</author>
-    <title></title>
+    <title>OSJava gj-scrape</title>
   </properties>
 
   <body>
-  <section>
+  <section name="gj-scrape">
 <p>I'm not a believer in trying to convert HTML to XML to parse it. Partly this is because much of the HTML out there is shoddy and it'll take time to find a library that can understand it; but mostly it's because I'm not a believer in scraping XML hierarchically. </p>
 
 <p>When you build an HTML or XML document into a tree, and then walk that tree, you tie yourself to the structure of the page. Owners of pages have a nasty habit of modifying the structure of their pages and the house of cards on which your system is built becomes apparant. </p>

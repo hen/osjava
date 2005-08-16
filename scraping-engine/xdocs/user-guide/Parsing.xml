@@ -3,11 +3,11 @@
 
   <properties>
     <author email="bayard@generationjava.com">Henri Yandell</author>
-    <title></title>
+    <title>Parsing scraped resources</title>
   </properties>
 
   <body>
-  <section><p>
+  <section name="Parsing scraped resources"><p>
 Most of the time you will want to use a customised Parser plugin. This is where the real application logic in scraping a resource tends to go and the whole purpose of Scraping-Engine is to let you focus on this part without having to constantly deal with the other parts.
 
 </p></section><section name="Configuration"><p>

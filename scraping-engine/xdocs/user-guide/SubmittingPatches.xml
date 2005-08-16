@@ -3,11 +3,11 @@
 
   <properties>
     <author email="bayard@generationjava.com">Henri Yandell</author>
-    <title></title>
+    <title>Submitting patches</title>
   </properties>
 
   <body>
-  <section><p>
+  <section name="Patches?"><p>
 One of the beauties of open-source is that you have the opportunity to fix bugs yourself instead of just reporting them. If you should choose to do so, please feel welcome to submit your patch to the main Scraping-Engine codebase.
 
 The correct way to generate a subversion patch is with the following command:
