@@ -38,10 +38,7 @@ When this documentation specifies that an option takes a classname, it should be
 
 <ul>
 <li> First it will look for <code>predefined-package + classname + type</code>. For example, for a parser it will look in <code>"org.osjava.scraping.parser." + classname + "Parser"</code>. </li>
-<li> Next it will look for <code>classname + type</code>, so when implementing a Parser, you do not have to specify the common pattern of ending the classname with "Parser" if you have done so.</li>
 <li> Then it looks for the classname you specified.</li></ul>
-
-(TODO: Kill the 2nd option, it's pointless)
 
 </p></section><section name="Some notes on using Simple-JNDI"><p>
 
