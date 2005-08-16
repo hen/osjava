@@ -5,9 +5,9 @@
 
   <body>
     <menu name="gj-core">
-      <item name="News"       href="/News.html"/>
       <item name="Download"   href="http://dist.osjava.org/releases/official/genjava/gj-core/"/>
       <item name="Jar"        href="http://dist.osjava.org/maven/genjava/jars/"/>
+      <item name="Changes"              href="/changes-report.html"/>
       <item name="License"              href="/license.html"/>
     </menu>
     <menu name="Genjava Projects">
