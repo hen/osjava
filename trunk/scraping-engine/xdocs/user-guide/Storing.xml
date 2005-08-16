@@ -72,14 +72,12 @@ Xxx.table=Foo
 </section><section name="CallableJdbcStore">
 
 <pre>
-Xxx.store=Jdbc
+Xxx.store=CallableJdbc
 Xxx.DS=FooDS
 Xxx.sql=call stored_proc_example(?,?)
-# it's a bug that it'll try to work with this.
+# side-effect of inheritence means it'll accept this; will cause problems to try and use it.
 Xxx.table=Foo
 </pre>
-
-<p>(TODO: Fix the fact that CallableJdbc accepts table)</p>
 
 <p><code>CallableJdbcStore</code> is an example of an extension to <code>JdbcStore</code> which uses <code>java.sql.CallableStatement</code> instead of <code>java.sql.PreparedStatement</code>. With the exception of the <code>table</code> option, all of the <code>JdbcStore</code> information applies. </p>
 
