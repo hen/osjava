@@ -55,9 +55,9 @@ The first store with additional options; ie) where to save the file. Currently t
 <pre>
 Xxx.store=Jdbc
 Xxx.DS=FooDS
-<ol><li> then either</li></ol>
+# then either
 Xxx.sql=INSERT INTO Foo (col1, col2) VALUES(?,?)
-<ol><li> or</li></ol>
+# or
 Xxx.table=Foo
 </pre>
 
@@ -75,7 +75,7 @@ Currently JdbcStore does not do anything special with your data, so if you want 
 Xxx.store=Jdbc
 Xxx.DS=FooDS
 Xxx.sql=call stored_proc_example(?,?)
-<ol><li> it's a bug that it'll try to work with this. </li></ol>
+# it's a bug that it'll try to work with this.
 Xxx.table=Foo
 </pre>
 

@@ -20,9 +20,11 @@ However Scraping-Engine will accept the patch in any form, we're not fussy yet.
 
 Patches should be submitted to one of the following:
 
-<ol><li> Henri Yandell</li></ol>
-<ol><li> The osjava-users mailing list: http://lists.osjava.org/mailman/listinfo/osjava-users</li></ol>
-<ol><li> The OsJava issue tracker: http://issues.osjava.org:8080/jira/secure/BrowseProject.jspa?id=10021</li></ol>
+<ul>
+<li> Henri Yandell</li>
+<li> The osjava-users mailing list: http://lists.osjava.org/mailman/listinfo/osjava-users</li>
+<li> The OsJava issue tracker: http://issues.osjava.org:8080/jira/secure/BrowseProject.jspa?id=10021</li>
+</ul>
 
 They'll be very much appreciated.
   </p></section>

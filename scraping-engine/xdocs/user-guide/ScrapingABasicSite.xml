@@ -14,8 +14,6 @@ Writing a parser
 The parser, despite all the imports, is a pretty simple class. It's given a Page object, a Config and a Session. It's job is to return a Result.
 
 Parsing code, if it uses the gj-scraper module, nearly always starts by loading the page into an HtmlScraper. From there the scraping is simple and a Result, in this case SingleResult, is created.
-
-
      
 
 <pre>
@@ -66,47 +64,23 @@ Configuring
 
 Configuration happens through simple-jndi, meaning that you could put your configuration values in an LDAP server if you should so choose. At least you ought to be able to, it's untested. As well as ensuring you have a correctly set up log4j and jndi properties files, you will need a default.properties that looks something like:
 
-      
      
-<ol><li> first two lines configure scraping-engine under oscube</li></ol>
-   
-     
+<pre>
+# first two lines configure scraping-engine under oscube
 org.osjava.oscube.runner=org.osjava.scraping.ScrapingRunner
-   
-     
 org.osjava.oscube.prefix=org.osjava.scrapers
    
-     
-
-<ol><li> now we hook up a scraper with the given name</li></ol>
-   
-     
+# now we hook up a scraper with the given name
 org.osjava.scrapers=UserFriendly
-   
-     
 
-<ol><li> now we declare variables for the given scraper</li></ol>
-   
-     
+# now we declare variables for the given scraper
 UserFriendly.uri=http://www.userfriendly.org/static/
-   
-     
 UserFriendly.parser=com.generationjava.comics.UserFriendlyParser
-   
-     
 UserFriendly.store=File
-   
-     
 UserFriendly.file.saveAs=UserFriendly.gif
-   
-     
 UserFriendly.file.path=/tmp/comics/
+</pre>
    
-     
-
-   
-    
-
   </p></section>
   </body>
 

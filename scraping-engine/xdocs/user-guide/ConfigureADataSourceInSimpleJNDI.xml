@@ -13,24 +13,24 @@ When storing data in a database, you are going to need to setup a <code>javax.sq
 Place a file named <code>ScrapingDS.properties</code> next to your <code>default.properties</code> and containing the following content:
 
 <pre>
-<ol><li> your JDBC driver, must be in classpath</li></ol>
+# your JDBC driver, must be in classpath
 driver=oracle.jdbc.driver.OracleDriver
 
-<ol><li> username for db</li></ol>
+# username for db
 user=sa
 
-<ol><li> password for that username</li></ol>
+# password for that username
 password=lollipop
 
-<ol><li> jdbc url to connect with</li></ol>
+# jdbc url to connect with
 url=jdbc:oracle:thin:@yourdb.example.com:port:sid
 
-<ol><li> let simple-jndi know to make this an Object</li></ol>
+# let simple-jndi know to make this an Object
 type=javax.sql.DataSource
 
-<ol><li> optional, turn on pooling. </li></ol>
-<ol><li> Commons DBCP, Pool and Collections must be in the classpath</li></ol>
-<ol><li>pool=true</li></ol>
+# optional, turn on pooling. 
+# Commons DBCP, Pool and Collections must be in the classpath
+#pool=true
 </pre>
 
 Then in your <code>default.properties</code>, you can simply configure it with:
