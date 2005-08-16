@@ -6,7 +6,7 @@
   <body>
     <menu name="Overview">
       <item name="Introduction"              href="/index.html"/>
-      <item name="User Guide"              href="/user-guide/Main.html"/>
+      <item name="User Guide"              href="/user-guide/index.html"/>
       <!--
       <item name="Why?"              href="/Why.html"/>
       <item name="How?"              href="/HowTo.html"/>
