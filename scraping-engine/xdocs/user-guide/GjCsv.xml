@@ -7,15 +7,13 @@
   </properties>
 
   <body>
-  <section><p>
-Sometimes life is good and you're scraping a site that returns a CSV file.
+  <section>
+<p>Sometimes life is good and you're scraping a site that returns a CSV file. </p>
 
-However CSV's like to bite you in the arse, there is no specification for comma separated values.
+<p>However CSV's like to bite you in the arse, there is no specification for comma separated values. </p>
 
-To parse these, I use gj-csv.
-
-<a href="httphttp://www.osjava.org/genjava/multiproject/gj-csv/">http://www.osjava.org/genjava/multiproject/gj-csv/</a>
-  </p></section>
+<p>To parse these, I use gj-csv: <a href="http://www.osjava.org/genjava/multiproject/gj-csv/">http://www.osjava.org/genjava/multiproject/gj-csv/</a>. </p>
+  </section>
   </body>
 
 </document>

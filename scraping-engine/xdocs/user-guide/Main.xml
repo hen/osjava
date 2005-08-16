@@ -11,21 +11,27 @@
 <ul>
 <li><a href="Justifying.html">Justifying</a></li>
 <li><a href="Downloading.html">Downloading</a></li>
-<li><a href="Configuring.html">Configuring</a></li>
-<li>*<a href="Plugin configuration.html">Plugin configuration</a></li>
-<li>*<a href="ConfigureADataSourceInSimpleJNDI.html">ConfigureADataSourceInSimpleJNDI</a></li>
-<li><a href="General design.html">General design</a></li>
+<li><a href="Configuring.html">Configuring</a>
+  <ul>
+    <li><a href="PluginConfiguration.html">Plugin configuration</a></li>
+    <li><a href="ConfigureADataSourceInSimpleJNDI.html">ConfigureADataSourceInSimpleJNDI</a></li>
+  </ul>
+</li>
+<li><a href="GeneralDesign.html">General design</a></li>
 <li><a href="Fetching.html">Fetching</a></li>
-<li><a href="Parsing.html">Parsing</a></li>
-<li>*<a href="GjScrape.html">GjScrape</a></li>
-<li>*<a href="GjCsv.html">GjCsv</a></li>
-<li>*<a href="GjXml.html">GjXml</a></li>
+<li><a href="Parsing.html">Parsing</a>
+  <ul>
+    <li><a href="GjScrape.html">GjScrape</a></li>
+    <li><a href="GjCsv.html">GjCsv</a></li>
+    <li><a href="GjXml.html">GjXml</a></li>
+  </ul>
+</li>
 <li><a href="Storing.html">Storing</a></li>
 <li><a href="Scheduling.html">Scheduling</a></li>
 <li><a href="Notification.html">Notification</a></li>
-<li><a href="Submitting bugs.html">Submitting bugs</a></li>
-<li><a href="Compiling the source.html">Compiling the source</a></li>
-<li><a href="Submitting patches.html">Submitting patches</a></li>
+<li><a href="SubmittingBugs.html">Submitting bugs</a></li>
+<li><a href="CompilingTheSource.html">Compiling the source</a></li>
+<li><a href="SubmittingPatches.html">Submitting patches</a></li>
 </ul>
   </p></section>
   </body>

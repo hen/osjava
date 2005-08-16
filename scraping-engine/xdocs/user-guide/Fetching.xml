@@ -57,7 +57,7 @@ XXX.header=User-Agent=Mozilla/5.0,Referer=http://www.osjava.org/index.html
 
 <code>http</code> and <code>https</code> protocols
 
-By default Scraping-Engine uses OSJava's Norbert, a robots.txt parser, to adhere to the <a href="Web Robots Exclusion Standard|http://en.wikipedia.org/wiki/Robots.txt.html">Web Robots Exclusion Standard|http://en.wikipedia.org/wiki/Robots.txt</a>. You may however desire to not adhere to this standard like so:
+By default Scraping-Engine uses OSJava's Norbert, a robots.txt parser, to adhere to the <a href="http://en.wikipedia.org/wiki/Robots.txt.html">Web Robots Exclusion Standard</a>. You may however desire to not adhere to this standard like so:
 
 <pre>
 Xxx.norobots.override=true

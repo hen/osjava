@@ -7,15 +7,13 @@
   </properties>
 
   <body>
-  <section><p>
-XML pages are usually going to be well formed, and less likely to change than HTML as you won't have look &amp; feel noise getting in the way of your scraping; however the strategy discussed for <a href="GjScrape.html">GjScrape</a> still may apply.
+  <section>
+<p>XML pages are usually going to be well formed, and less likely to change than HTML as you won't have look &amp; feel noise getting in the way of your scraping; however the strategy discussed for <a href="GjScrape.html">GjScrape</a> still may apply. </p>
 
-Failing that, use an XML parser of your choice.
+<p>Failing that, use an XML parser of your choice. </p>
 
-It's non-standard, but I like to use gj-xml; a small, fast and easy API.
-
-<a href="httphttp://www.osjava.org/genjava/multiproject/gj-xml/">http://www.osjava.org/genjava/multiproject/gj-xml/</a>
-  </p></section>
+<p>It's non-standard, but I like to use gj-xml; a small, fast and easy API: <a href="http://www.osjava.org/genjava/multiproject/gj-xml/">http://www.osjava.org/genjava/multiproject/gj-xml/</a>. </p>
+  </section>
   </body>
 
 </document>

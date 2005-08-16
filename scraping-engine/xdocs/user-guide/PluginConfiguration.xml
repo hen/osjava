@@ -29,7 +29,7 @@ SlashRss.parser=com.example.ExampleParser
 SlashRss.answer=42
 </pre>
 
-and then accessing it during its code via <code>config.getString("answer")</code>. As the <a href="Javadoc for gj-config|http://www.osjava.org/genjava/multiproject/gj-config/apidocs/index.html.html">Javadoc for gj-config|http://www.osjava.org/genjava/multiproject/gj-config/apidocs/index.html</a> shows, it would probably be better to use <code>config.getInt("answer")</code> to get 42 as an int instead of a String.
+and then accessing it during its code via <code>config.getString("answer")</code>. As the <a href="http://www.osjava.org/genjava/multiproject/gj-config/apidocs/index.html.html">Javadoc for gj-config</a> shows, it would probably be better to use <code>config.getInt("answer")</code> to get 42 as an int instead of a String.
 
 </p></section><section name="Sessions"><p>
 
