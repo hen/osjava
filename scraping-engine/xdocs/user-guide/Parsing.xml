@@ -1,0 +1,103 @@
+<?xml version="1.0"?>
+<document>
+
+  <properties>
+    <author email="bayard@generationjava.com">Henri Yandell</author>
+    <title></title>
+  </properties>
+
+  <body>
+  <section><p>
+Most of the time you will want to use a customised Parser plugin. This is where the real application logic in scraping a resource tends to go and the whole purpose of Scraping-Engine is to let you focus on this part without having to constantly deal with the other parts.
+
+</p></section><section name="Configuration"><p>
+
+Parsers have only one configuration option, the <code>parser</code> config.
+
+<pre>
+Xxx.parser=&lt;classname&gt;
+</pre>
+
+This contains the classname of your customised Parser plugin. 
+
+</p></section><section name="Generic parsers"><p>
+
+The <code>org.osjava.scraping.parser</code> package contains generic re-usable parsers. At the time of writing, there are two reusable parsers.
+
+<ol><li> <code>PassThroughParser</code> - A positive null pattern parser; it merely places the entire page in the results. Useful when you just want to download a resource, or want to test whether your Fetcher is working correctly. </li></ol>
+<ol><li> <code>UrlScraper</code> - An abstract superclass which makes life easier if the aim of parsing the HTML page is to come up with a file to download; for example downloading today's Dilbert.</li></ol>
+
+Technically another parser exists, <code>org.osjava.scraping.NullParser</code>, which does absolutely nothing and is what you get if you fail to specify a parser in the configuration. It's possible that PassThroughParser should replace this.
+
+</p></section><section name="Implementing your own Parser"><p>
+
+This involves implementing the <code>org.osjava.scraping.Parser</code> interface or extending the <code>org.osjava.scraping.AbstractParser</code> abstract class, getting it in the classpath and adding its classname to the configuration using the <code>parser</code> config.
+
+<pre>
+Xxx.parser=com.example.scraping.SlashdotParser
+</pre>
+
+The Parser interface has three methods:
+
+<pre>
+ void bringDown(Config cfg)          
+ Result parse(Page page, Config cfg, Session session)
+ void startUp(Config cfg) 
+</pre>
+
+The <code>AbstractParser</code> provides no-op implementations for <code>bringDown</code> and <code>startUp</code>.
+
+In short, a <code>Parser</code>'s job is to convert a <code>Page</code> object into a <code>Result</code> object. It will usually look something like this:
+
+<pre>
+ public Result parse(Page page, Config cfg, Session session) throws ParsingException {
+   String txt = page.readAsString();
+
+   ... find desired data ...
+
+   return new SingularResult( desiredData );
+ }
+</pre>
+
+Usually you're interested in more than a single piece of data and would do something like this:
+
+<pre>
+ public Result parse(Page page, Config cfg, Session session) throws ParsingException {
+   String txt = page.readAsString();
+
+   ... build Object[] of desired data in a java.util.List ...
+
+   Result = new TabularResult( listOfDesiredData.iterator() );
+ }
+</pre>
+
+Note that in this second case, you are passing an iterator in. It's a very arguable piece of design, but make sure you don't use your listOfDesiredData instance for anything else, it now exists solely for the purposes of the Result.
+
+(NOTE: As it's so arguable, it might have to change :) )
+
+</p></section><section name="Walking a website"><p>
+
+When scraping from a website, it is common to have to walk a few pages first to get that sites session in the right state, or quite simply to figure out the url to use today. Rather than having to implement this code yourself, or somehow re-route things back to the start of the Scraping-Engine, the <code>Page</code> class has a method to get the next url for you.
+
+<pre>
+ Page fetch(String uri, Config cfg, Session session) throws FetchingException
+</pre>
+
+As pages know about their document-base, you can also obtain this next url using a relative url. ie) while scraping <code>"http://www.osjava.org/scraping-engine/index.html"</code>, you could use the page to get <code>"apidocs/index.html"</code> and it would know that you mean <code>"http://www.osjava.org/scraping-engine/apidocs/index.html"</code>.
+
+</p></section><section name="Parsing the data"><p>
+
+You may have noticed something about this page on writing your own parser. It goes on and on, but at no point mentions how to actually parse the data you've downloaded. This is purely intentional.
+
+<ul><li> Scraping-Engine is parser-technology neutral.</li></ul>
+<ul><li> There are many types of files out there to parse, HTML is the common one, but RSS, iCalendar and other XMLs run it a close second; CSV, Excel, mbox even images jump out as potential parse targets.</li></ul>
+
+Given that you've made it this far, there are three parsing libraries that I'll quickly advertise.
+
+<ol><li> HTML parsing with <a href="gj-scrape.html">gj-scrape</a>. </li></ol>
+<ol><li> CSV parsing with <a href="gj-csv.html">gj-csv</a>.</li></ol>
+<ol><li> XML parsing with <a href="gj-xml.html">gj-xml</a>.</li></ol>
+  </p></section>
+  </body>
+
+</document>

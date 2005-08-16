@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<document>
+
+  <properties>
+    <author email="bayard@generationjava.com">Henri Yandell</author>
+    <title></title>
+  </properties>
+
+  <body>
+  <section><p>
+In the simplest case, writing a scraper can merely involve <a href="Downloading.html">Downloading</a> the scraping-engine and configuring the site to scrape.
+
+Configuration happens through simple-jndi, meaning that you could put your configuration values in an LDAP server if you should so choose. At least you ought to be able to, it's untested. Because the use of JNDI is hidden behind the OSJava gj-config API, it should be possible to use another configuration method in the future. Currently OSCube hardcodes the use of a JndiConfig.
+
+Presuming you choose to install things as detailed in the <a href="Downloading.html">Downloading</a> section, 
+the scraping-engine is configured via a default.properties file, much like the one below:
+
+<pre>
+<ol><li> first two lines configure scraping-engine under oscube  </li></ol>
+org.osjava.oscube.runner=org.osjava.scraping.ScrapingRunner
+org.osjava.oscube.prefix=org.osjava.scrapers
+   
+<ol><li> now we hook up a scraper with the given name</li></ol>
+org.osjava.scrapers=SlashRss
+   
+<ol><li> now we declare variables for the given scraper</li></ol>
+SlashRss.uri=http://slashdot.org/index.rss
+SlashRss.parser=org.osjava.scraping.parser.PassThroughParser
+</pre>
+   
+This configuration will pull down Slashdot's RSS file when the scraping engine is run and print it to screen.
+
+For most scraping instances, this will not be enough. You will want to parse the file being pulled down, repeatedly grab the file according to some schedule, and store the parsed information in a database or file. The rest of this user guide should help get you there.
+
+</p></section><section name="Some notes on specifying classnames"><p>
+
+When this documentation specifies that an option takes a classname, it should be clear to everyone that any class in the classpath may be specified using its fully qualified classname. However, there are a couple of additional features:
+
+<ul><li> First it will look for <code>predefined-package + classname + type</code>. For example, for a parser it will look in <code>"org.osjava.scraping.parser." + classname + "Parser"</code>. </li></ul>
+<ul><li> Next it will look for <code>classname + type</code>, so when implementing a Parser, you do not have to specify the common pattern of ending the classname with "Parser" if you have done so.</li></ul>
+<ul><li> Then it looks for the classname you specified.</li></ul>
+
+(TODO: Kill the 2nd option, it's pointless)
+
+</p></section><section name="Some notes on using Simple-JNDI"><p>
+
+It may look like the .properties file above can only have a single scraper installed at a time, however this is not true. Simple-JNDI uses an extended .properties file syntax where repeated entries become a <code>java.util.List</code>. Thus the following is a perfectly good configuration:
+
+<pre>
+org.osjava.oscube.runner=org.osjava.scraping.ScrapingRunner
+org.osjava.oscube.prefix=org.osjava.scrapers
+   
+org.osjava.scrapers=SlashRss
+SlashRss.uri=http://slashdot.org/index.rss
+SlashRss.parser=org.osjava.scraping.parser.PassThroughParser
+
+org.osjava.scrapers=BbcIndex
+BbcIndex.uri=http://news.bbc.co.uk/
+BbcIndex.parser=org.osjava.scraping.parser.PassThroughParser
+</pre>
+
+  </p></section>
+  </body>
+
+</document>

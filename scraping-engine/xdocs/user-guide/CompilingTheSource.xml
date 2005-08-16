@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<document>
+
+  <properties>
+    <author email="bayard@generationjava.com">Henri Yandell</author>
+    <title></title>
+  </properties>
+
+  <body>
+  <section><p>
+To compile the latest source from the source repository, you'll want the following handy-dandy tools available:
+
+<ul><li> Subversion (SVN) client</li></ul>
+<ul><li> Java Developer Kit (1.4.x is the preferred version)</li></ul>
+<ul><li> Maven</li></ul>
+
+If you wish to compile from a source-release, just ignore the Subversion comments below.
+
+</p></section><section name="Get the source"><p>
+
+<pre>
+svn co http://svn.osjava.org/svn/osjava/trunk/scraping-engine
+</pre>
+
+</p></section><section name="Compile"><p>
+
+<pre>
+cd scraping-engine
+maven jar
+</pre>
+
+</p></section><section name="The result"><p>
+
+The result is a JAR file, where x.x.x represents the next version of Scraping-Engine.
+
+<pre>
+target/scraping-engine-x.x.x.jar
+</pre>
+  </p></section>
+  </body>
+
+</document>

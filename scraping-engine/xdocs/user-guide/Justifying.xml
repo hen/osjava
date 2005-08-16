@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<document>
+
+  <properties>
+    <author email="bayard@generationjava.com">Henri Yandell</author>
+    <title></title>
+  </properties>
+
+  <body>
+  <section><p>
+</p></section><section name="Why create a scraping engine?"><p>
+
+I needed a system that will allow me to quickly write http scrapers, without having to implement the same code again and again. This pays back in development speed, stability and maintenance.
+
+</p></section><section name="What is a scraping engine?"><p>
+
+The point of the scraping engine is to have most of the legwork of scraping taken care of and just let the programmer worry about the actual parsing. In reality it's not web-based or scraping-based but is just a framework which grabs content from somewhere, and runs some form of transformation on that content.
+
+</p></section><section name="Why should you use Scraping-Engine?"><p>
+
+There are two major benefits to using Scraping-Engine:
+
+<ol><li>The boring work is already done in the library, leaving you to implement the application logic; ie) parsing the html-pages.</li></ol>
+<ol><li>All your scrapers will follow a defined pattern; all too often scrapers are implemented in an ad-hoc fashion, leaving you with a large mess of independent designs.</li></ol>
+
+There are a few minor benefits to using Scraping-Engine as well:
+
+<ol><li>Very pluggable. Scraping-Engine, and its underlying container OSCube, attempt to be pluggable in every part of the process.</li></ol>
+<ol><li>Programmer is still king. Many approaches to scraping frameworks begin by trying to provide a drag-and-drop system to lower the cost of scraping; the silver bullet approach. By contrast Scraping-Engine merely organizes the ammo.</li></ol>
+
+</p></section><section name="Why simple-jndi for configuration?"><p>
+
+This is another project of mine. I've found it very nice for configuring systems as there is zero code to add a new configuration option. Another plus is that it should be possible to use a different JNDI or even LDAP server, while the biggest minus is that it can be fiddly to setup the first time (I recommend downloading an example). 
+
+</p></section><section name="Why OSCube?"><p>
+
+The innards of scraping-engine 0.1 turned out to be very generic and useful for other things. They handled scheduling, configuration, running, persistence services and notification services, so I released it as a separate framework named OSCube for other tools to rely on. 
+  </p></section>
+  </body>
+
+</document>

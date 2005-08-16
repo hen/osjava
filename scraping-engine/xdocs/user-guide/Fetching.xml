@@ -1,0 +1,89 @@
+<?xml version="1.0"?>
+<document>
+
+  <properties>
+    <author email="bayard@generationjava.com">Henri Yandell</author>
+    <title></title>
+  </properties>
+
+  <body>
+  <section><p>
+Fetching is the highly imaginative name for downloading a resource. 
+
+The following configuration options are important to fetching:
+
+<pre>
+Xxx.uri=&lt;string&gt;
+Xxx.username=&lt;string&gt;
+Xxx.password=&lt;string&gt;
+Xxx.header={&lt;string&gt;=&lt;string&gt;,...}
+Xxx.norobots.override=true
+Xxx.method=POST
+Xxx.fetcher=&lt;classname&gt;
+</pre>
+
+</p></section><section name="uri"><p>
+
+The <code>uri</code> configuration specifies where to fetch the resource from. The first part of the <code>uri</code> usually contains the protocol. Standard protocols are already handled by Scraping-Engine and so there is no need to implement your own plugins.
+
+The current supported protocols are <code>http</code>, <code>https</code> and <code>ftp</code>.
+
+<pre>
+Xxx.uri=http://www.slashdot.org/
+Xxx.uri=https://some.site.com/foo.html
+Xxx.uri=ftp://ftp.kernel.org/public/README
+</pre>
+
+</p></section><section name="username and password"><p>
+
+Unsurprisingly, these are the login credentials needed to get to a resource. In the case of the <code>http</code> and <code>https</code> protocols, BASIC authentication is used; while in the case of <code>ftp</code> these are a part of the general <code>ftp</code> specification. If no credentials are supplied for <code>ftp</code>, a username of <code>"anonymous"</code> and a password of <code>""</code> are used.
+
+<pre>
+Xxx.username=fred
+Xxx.password=fR3d
+</pre>
+
+</p></section><section name="header"><p>
+
+<code>http</code> and <code>https</code> protocols
+
+HTTP headers may be specified as a comma separated list of key=value pairs. For example the browser in use and the page referer could be set using:
+
+<pre>
+XXX.header=User-Agent=Mozilla/5.0,Referer=http://www.osjava.org/index.html
+</pre>
+
+</p></section><section name="norobots.override"><p>
+
+<code>http</code> and <code>https</code> protocols
+
+By default Scraping-Engine uses OSJava's Norbert, a robots.txt parser, to adhere to the <a href="Web Robots Exclusion Standard|http://en.wikipedia.org/wiki/Robots.txt.html">Web Robots Exclusion Standard|http://en.wikipedia.org/wiki/Robots.txt</a>. You may however desire to not adhere to this standard like so:
+
+<pre>
+Xxx.norobots.override=true
+</pre>
+
+</p></section><section name="method"><p>
+
+<code>http</code> and <code>https</code> protocols
+
+The two common HTTP operations are GET and POST. Scraping-Engine GETs by default, but you can tell it to switch to POSTing for sites that don't allow GETs to the url you want.
+
+The parameters to a POST are put in the query string as with a GET, Scraping-Engine takes care of the difference in communication needed.
+
+<pre>
+Xxx.uri=http://www.example.com/form.html?key=value
+Xxx.method=POST
+</pre>
+
+</p></section><section name="fetcher"><p>
+
+There will be times when the resource desired is not available via a built-in Fetcher and you will need to plugin your own Fetcher implementation. This involves implementing the <code>org.osjava.scraping.Fetcher</code> interface, getting it in the classpath and adding its classname to the configuration using the <code>fetcher</code> config.
+
+<pre>
+Xxx.fetcher=com.example.scraping.GopherFetcher
+</pre>
+  </p></section>
+  </body>
+
+</document>

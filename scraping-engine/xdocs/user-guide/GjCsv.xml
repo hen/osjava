@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<document>
+
+  <properties>
+    <author email="bayard@generationjava.com">Henri Yandell</author>
+    <title></title>
+  </properties>
+
+  <body>
+  <section><p>
+Sometimes life is good and you're scraping a site that returns a CSV file.
+
+However CSV's like to bite you in the arse, there is no specification for comma separated values.
+
+To parse these, I use gj-csv.
+
+<a href="httphttp://www.osjava.org/genjava/multiproject/gj-csv/">http://www.osjava.org/genjava/multiproject/gj-csv/</a>
+  </p></section>
+  </body>
+
+</document>

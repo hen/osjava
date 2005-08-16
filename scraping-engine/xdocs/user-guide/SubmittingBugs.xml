@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<document>
+
+  <properties>
+    <author email="bayard@generationjava.com">Henri Yandell</author>
+    <title></title>
+  </properties>
+
+  <body>
+  <section><p>
+Bugs should be reported to one of the following:
+
+<ol><li> Henri Yandell</li></ol>
+<ol><li> The osjava-users mailing list: http://lists.osjava.org/mailman/listinfo/osjava-users</li></ol>
+<ol><li> The OsJava issue tracker: http://issues.osjava.org:8080/jira/secure/BrowseProject.jspa?id=10021</li></ol>
+
+Please report them, you'll be doing Scraping-Engine a great service.
+  </p></section>
+  </body>
+
+</document>
