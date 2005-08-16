@@ -24,8 +24,10 @@ This contains the classname of your customised Parser plugin.
 
 The <code>org.osjava.scraping.parser</code> package contains generic re-usable parsers. At the time of writing, there are two reusable parsers.
 
-<ol><li> <code>PassThroughParser</code> - A positive null pattern parser; it merely places the entire page in the results. Useful when you just want to download a resource, or want to test whether your Fetcher is working correctly. </li></ol>
-<ol><li> <code>UrlScraper</code> - An abstract superclass which makes life easier if the aim of parsing the HTML page is to come up with a file to download; for example downloading today's Dilbert.</li></ol>
+<ol>
+<li> <code>PassThroughParser</code> - A positive null pattern parser; it merely places the entire page in the results. Useful when you just want to download a resource, or want to test whether your Fetcher is working correctly. </li>
+<li> <code>UrlScraper</code> - An abstract superclass which makes life easier if the aim of parsing the HTML page is to come up with a file to download; for example downloading today's Dilbert.</li>
+</ol>
 
 Technically another parser exists, <code>org.osjava.scraping.NullParser</code>, which does absolutely nothing and is what you get if you fail to specify a parser in the configuration. It's possible that PassThroughParser should replace this.
 
@@ -89,14 +91,18 @@ As pages know about their document-base, you can also obtain this next url using
 
 You may have noticed something about this page on writing your own parser. It goes on and on, but at no point mentions how to actually parse the data you've downloaded. This is purely intentional.
 
-<ul><li> Scraping-Engine is parser-technology neutral.</li></ul>
-<ul><li> There are many types of files out there to parse, HTML is the common one, but RSS, iCalendar and other XMLs run it a close second; CSV, Excel, mbox even images jump out as potential parse targets.</li></ul>
+<ul>
+<li> Scraping-Engine is parser-technology neutral.</li>
+<li> There are many types of files out there to parse, HTML is the common one, but RSS, iCalendar and other XMLs run it a close second; CSV, Excel, mbox even images jump out as potential parse targets.</li>
+</ul>
 
 Given that you've made it this far, there are three parsing libraries that I'll quickly advertise.
 
-<ol><li> HTML parsing with <a href="gj-scrape.html">gj-scrape</a>. </li></ol>
-<ol><li> CSV parsing with <a href="gj-csv.html">gj-csv</a>.</li></ol>
-<ol><li> XML parsing with <a href="gj-xml.html">gj-xml</a>.</li></ol>
+<ol>
+<li> HTML parsing with <a href="gj-scrape.html">gj-scrape</a>.</li>
+<li> CSV parsing with <a href="gj-csv.html">gj-csv</a>.</li>
+<li> XML parsing with <a href="gj-xml.html">gj-xml</a>.</li>
+</ol>
   </p></section>
   </body>
 

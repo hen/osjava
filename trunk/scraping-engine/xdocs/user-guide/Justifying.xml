@@ -20,13 +20,17 @@ The point of the scraping engine is to have most of the legwork of scraping take
 
 There are two major benefits to using Scraping-Engine:
 
-<ol><li>The boring work is already done in the library, leaving you to implement the application logic; ie) parsing the html-pages.</li></ol>
-<ol><li>All your scrapers will follow a defined pattern; all too often scrapers are implemented in an ad-hoc fashion, leaving you with a large mess of independent designs.</li></ol>
+<ol>
+<li>The boring work is already done in the library, leaving you to implement the application logic; ie) parsing the html-pages.</li>
+<li>All your scrapers will follow a defined pattern; all too often scrapers are implemented in an ad-hoc fashion, leaving you with a large mess of independent designs.</li>
+</ol>
 
 There are a few minor benefits to using Scraping-Engine as well:
 
-<ol><li>Very pluggable. Scraping-Engine, and its underlying container OSCube, attempt to be pluggable in every part of the process.</li></ol>
-<ol><li>Programmer is still king. Many approaches to scraping frameworks begin by trying to provide a drag-and-drop system to lower the cost of scraping; the silver bullet approach. By contrast Scraping-Engine merely organizes the ammo.</li></ol>
+<ol>
+<li>Very pluggable. Scraping-Engine, and its underlying container OSCube, attempt to be pluggable in every part of the process.</li>
+<li>Programmer is still king. Many approaches to scraping frameworks begin by trying to provide a drag-and-drop system to lower the cost of scraping; the silver bullet approach. By contrast Scraping-Engine merely organizes the ammo.</li>
+</ol>
 
 </p></section><section name="Why simple-jndi for configuration?"><p>
 

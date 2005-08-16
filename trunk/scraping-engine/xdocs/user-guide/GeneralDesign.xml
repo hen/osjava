@@ -12,10 +12,12 @@
 
 Each scrape in Scraping-Engine follows the same set of steps.
 
-<ol><li> Fetch the configured resource into a Page using a Fetcher</li></ol>
-<ol><li> Parse the Page using a Parser and return a Result</li></ol>
-<ol><li> Store the Result into a configured location</li></ol>
-<ol><li> Notify on success</li></ol>
+<ol>
+<li> Fetch the configured resource into a Page using a Fetcher</li>
+<li> Parse the Page using a Parser and return a Result</li>
+<li> Store the Result into a configured location</li>
+<li> Notify on success</li>
+</ol>
 
 <ul><li> If an error occurs, Notify this instead</li></ul>
   </p></section>

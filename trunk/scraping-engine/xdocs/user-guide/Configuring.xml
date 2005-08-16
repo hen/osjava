@@ -16,14 +16,14 @@ Presuming you choose to install things as detailed in the <a href="Downloading.h
 the scraping-engine is configured via a default.properties file, much like the one below:
 
 <pre>
-<ol><li> first two lines configure scraping-engine under oscube  </li></ol>
+# first two lines configure scraping-engine under oscube  
 org.osjava.oscube.runner=org.osjava.scraping.ScrapingRunner
 org.osjava.oscube.prefix=org.osjava.scrapers
    
-<ol><li> now we hook up a scraper with the given name</li></ol>
+# now we hook up a scraper with the given name
 org.osjava.scrapers=SlashRss
    
-<ol><li> now we declare variables for the given scraper</li></ol>
+# now we declare variables for the given scraper
 SlashRss.uri=http://slashdot.org/index.rss
 SlashRss.parser=org.osjava.scraping.parser.PassThroughParser
 </pre>
@@ -36,9 +36,10 @@ For most scraping instances, this will not be enough. You will want to parse the
 
 When this documentation specifies that an option takes a classname, it should be clear to everyone that any class in the classpath may be specified using its fully qualified classname. However, there are a couple of additional features:
 
-<ul><li> First it will look for <code>predefined-package + classname + type</code>. For example, for a parser it will look in <code>"org.osjava.scraping.parser." + classname + "Parser"</code>. </li></ul>
-<ul><li> Next it will look for <code>classname + type</code>, so when implementing a Parser, you do not have to specify the common pattern of ending the classname with "Parser" if you have done so.</li></ul>
-<ul><li> Then it looks for the classname you specified.</li></ul>
+<ul>
+<li> First it will look for <code>predefined-package + classname + type</code>. For example, for a parser it will look in <code>"org.osjava.scraping.parser." + classname + "Parser"</code>. </li>
+<li> Next it will look for <code>classname + type</code>, so when implementing a Parser, you do not have to specify the common pattern of ending the classname with "Parser" if you have done so.</li>
+<li> Then it looks for the classname you specified.</li></ul>
 
 (TODO: Kill the 2nd option, it's pointless)
 
