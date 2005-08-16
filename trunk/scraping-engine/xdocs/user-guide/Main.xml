@@ -9,26 +9,26 @@
   <body>
   <section name="Scraping-Engine User-Guide"><p>
 <ul>
-<li><a href="Justifying.html">Justifying</a></li>
+<li><a href="Justifying.html">Why use Scraping-Engine?</a></li>
 <li><a href="Downloading.html">Downloading</a></li>
 <li><a href="Configuring.html">Configuring</a>
   <ul>
-    <li><a href="PluginConfiguration.html">Plugin configuration</a></li>
-    <li><a href="ConfigureADataSourceInSimpleJNDI.html">ConfigureADataSourceInSimpleJNDI</a></li>
+    <li><a href="PluginConfiguration.html">Configuring custom plugins</a></li>
+    <li><a href="ConfigureADataSourceInSimpleJNDI.html">Configuring a DataSource in Simple-JNDI</a></li>
   </ul>
 </li>
-<li><a href="GeneralDesign.html">General design</a></li>
-<li><a href="Fetching.html">Fetching</a></li>
-<li><a href="Parsing.html">Parsing</a>
+<li><a href="GeneralDesign.html">Scraping-Engine design</a></li>
+<li><a href="Fetching.html">Fetching resources</a></li>
+<li><a href="Parsing.html">Parsing scraped resources</a>
   <ul>
-    <li><a href="GjScrape.html">GjScrape</a></li>
-    <li><a href="GjCsv.html">GjCsv</a></li>
-    <li><a href="GjXml.html">GjXml</a></li>
+    <li><a href="GjScrape.html">gj-scrape</a></li>
+    <li><a href="GjCsv.html">gj-csv</a></li>
+    <li><a href="GjXml.html">gj-xml</a></li>
   </ul>
 </li>
-<li><a href="Storing.html">Storing</a></li>
-<li><a href="Scheduling.html">Scheduling</a></li>
-<li><a href="Notification.html">Notification</a></li>
+<li><a href="Storing.html">Storing results</a></li>
+<li><a href="Scheduling.html">Scheduling scrapes</a></li>
+<li><a href="Notification.html">Notifications</a></li>
 <li><a href="SubmittingBugs.html">Submitting bugs</a></li>
 <li><a href="CompilingTheSource.html">Compiling the source</a></li>
 <li><a href="SubmittingPatches.html">Submitting patches</a></li>
