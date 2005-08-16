@@ -3,11 +3,11 @@
 
   <properties>
     <author email="bayard@generationjava.com">Henri Yandell</author>
-    <title></title>
+    <title>Notifications</title>
   </properties>
 
   <body>
-  <section><p>
+  <section name="Notifications"><p>
 Theoretically notification exists to inform somebody when a scraper has an error, or whenever a scraper successfully runs. In reality it's untested and the only implementation of the <code>org.osjava.oscube.service.notify.Notifier</code> interface is <code>NullNotifier</code>, which does nothing.
 
 </p></section><section name="Implementing your own Notifier"><p>

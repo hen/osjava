@@ -3,11 +3,11 @@
 
   <properties>
     <author email="bayard@generationjava.com">Henri Yandell</author>
-    <title></title>
+    <title>Fetching resources</title>
   </properties>
 
   <body>
-  <section><p>
+  <section name="Fetching resources"><p>
 Fetching is the highly imaginative name for downloading a resource. 
 
 The following configuration options are important to fetching:

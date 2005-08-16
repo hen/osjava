@@ -3,11 +3,11 @@
 
   <properties>
     <author email="bayard@generationjava.com">Henri Yandell</author>
-    <title></title>
+    <title>Configuring Scraping-Engine</title>
   </properties>
 
   <body>
-  <section><p>
+  <section name="Configuring"><p>
 In the simplest case, writing a scraper can merely involve <a href="Downloading.html">Downloading</a> the scraping-engine and configuring the site to scrape.
 
 Configuration happens through simple-jndi, meaning that you could put your configuration values in an LDAP server if you should so choose. At least you ought to be able to, it's untested. Because the use of JNDI is hidden behind the OSJava gj-config API, it should be possible to use another configuration method in the future. Currently OSCube hardcodes the use of a JndiConfig.

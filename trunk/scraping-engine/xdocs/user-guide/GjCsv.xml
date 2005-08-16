@@ -3,11 +3,11 @@
 
   <properties>
     <author email="bayard@generationjava.com">Henri Yandell</author>
-    <title></title>
+    <title>OSJava gj-csv</title>
   </properties>
 
   <body>
-  <section>
+  <section name="gj-csv">
 <p>Sometimes life is good and you're scraping a site that returns a CSV file. </p>
 
 <p>However CSV's like to bite you in the arse, there is no specification for comma separated values. </p>

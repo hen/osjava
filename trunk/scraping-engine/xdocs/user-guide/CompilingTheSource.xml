@@ -3,11 +3,11 @@
 
   <properties>
     <author email="bayard@generationjava.com">Henri Yandell</author>
-    <title></title>
+    <title>Compiling the source</title>
   </properties>
 
   <body>
-  <section><p>
+  <section name="Compiling the source"><p>
 To compile the latest source from the source repository, you'll want the following handy-dandy tools available:
 
 <ul>

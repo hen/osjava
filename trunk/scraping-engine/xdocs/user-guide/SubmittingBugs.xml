@@ -3,11 +3,11 @@
 
   <properties>
     <author email="bayard@generationjava.com">Henri Yandell</author>
-    <title></title>
+    <title>Submitting bugs</title>
   </properties>
 
   <body>
-  <section><p>
+  <section name="Bugs?"><p>
 Bugs should be reported to one of the following:
 
 <ul>
