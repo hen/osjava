@@ -157,7 +157,6 @@ public class Statement implements java.sql.Statement {
          *        an error (throw exception)
          */
         
-        System.out.println("Count is -- " + count);
         return count;
     }
 

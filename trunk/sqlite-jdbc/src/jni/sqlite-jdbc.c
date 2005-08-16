@@ -243,6 +243,7 @@ Java_org_osjava_jdbc_sqlite_Statement_executeSQLWithResultSet(JNIEnv *env,
     /* Fill the ResultSet Metadata. */
     populateResultSetMetadata(env, stmt, resultSet);
 
+    fprintf(stderr, "Start row %i\tEnd row %i\n", startRow, finishRow);
     /* Skip statements up to startRow.  These statements will be ignored. */
     for(count = 0; count < startRow; count++) {
         fprintf(stderr, "Skipping row %i.\n", count);
@@ -281,6 +282,7 @@ Java_org_osjava_jdbc_sqlite_Statement_executeSQLWithResultSet(JNIEnv *env,
         }
         /* Done populating the result set.  We're done here. */
         if(result == SQLITE_DONE) {
+            fprintf(stderr, "There is no more to populate, returning.\n");
             return;
         }
         if(result) {
@@ -294,9 +296,73 @@ Java_org_osjava_jdbc_sqlite_Statement_executeSQLWithResultSet(JNIEnv *env,
 void populateRow(JNIEnv *env, sqlite3_stmt *stmt, jobject resultSet) {
     int numCols = sqlite3_column_count(stmt);
     int curCol;
-    fprintf(stderr, "Preparing to populate rows.\n");
-    for(curCol = 0; curCol < numCols; curCol++) {
+    jclass resultSetClass = (*env)->GetObjectClass(env, resultSet);
+    jmethodID method;
 
+    fprintf(stderr, "Number of columns to populate -- %i.\n", numCols);
+    for(curCol = 0; curCol < numCols; curCol++) {
+        /* What is actually done is dependant upon the column type. */
+        switch(sqlite3_column_type(stmt, curCol)) {
+            case SQLITE_INTEGER:
+                fprintf(stderr, "Found integer.\n");
+                method = (*env)->GetMethodID(env,
+                                             resultSetClass,
+                                             "fillColumnWithInt",
+                                             "(II)V");
+                (*env)->CallVoidMethod(env,
+                                       resultSet,
+                                       method,
+                                       sqlite3_column_int(stmt, curCol));
+                break;
+            case SQLITE_FLOAT:
+                fprintf(stderr, "Found float.\n");
+                method = (*env)->GetMethodID(env,
+                                             resultSetClass,
+                                             "fillColumnWithFloat",
+                                             "(ILjava/lang/String;)V");
+                (*env)->CallVoidMethod(env,
+                                       resultSet,
+                                       method,
+                                       sqlite3_column_text(stmt, curCol));
+                break;
+            case SQLITE_TEXT:
+                fprintf(stderr, "Found text.\n");
+                method = (*env)->GetMethodID(env,
+                                             resultSetClass,
+                                             "fillColumnWithString",
+                                             "(ILjava/lang/String;)V");
+                (*env)->CallVoidMethod(env,
+                                       resultSet,
+                                       method,
+                                       sqlite3_column_text(stmt, curCol));
+                break;
+            case SQLITE_BLOB:
+                fprintf(stderr, "Found blob.\n");
+                /* FIXME: Wrong method signature */
+                method = (*env)->GetMethodID(env,
+                                             resultSetClass,
+                                             "fillColumnWitBlob",
+                                             "(IF)V");
+                (*env)->CallVoidMethod(env,
+                                       resultSet,
+                                       method,
+                                       sqlite3_column_blob(stmt, curCol));
+                break;
+            case SQLITE_NULL:
+                fprintf(stderr, "Found null.\n");
+                method = (*env)->GetMethodID(env,
+                                             resultSetClass,
+                                             "fillColumnWithNull",
+                                             "(I)V");
+                (*env)->CallVoidMethod(env,
+                                        resultSet,
+                                        method);
+                break;
+            default:
+                /* FIXME: WTF.  Throw an exception here. */
+                fprintf(stderr, "Found uhh..something different WTFO!\n");
+                break;
+        }
     }
 }
 
