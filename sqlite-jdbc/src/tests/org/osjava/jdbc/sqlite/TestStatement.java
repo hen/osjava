@@ -88,54 +88,46 @@ public class TestStatement extends TestCase {
     public void testExecuteUpdate2() throws Exception {
         java.sql.Statement stmt = con.createStatement();
         stmt.executeUpdate("CREATE TABLE foo (TestCol VARCHAR(10));");
-        int result = stmt.executeUpdate("INSERT INTO foo (TestCol) VALUES (\"WHEE\");");
-        assertTrue(result == 1);
+        int count = stmt.executeUpdate("INSERT INTO foo (TestCol) VALUES (\"WHEE\");");
+        assertEquals(count, 1);
     }
     
     /**
      * Simple Statement.executeQuery() test.  This particular test creates
      * a new database if it doesn't exist, and then uses 
      * Statement.executeQuery() to create the first table.  The returned 
-     * ResultSet should not have any entries.
+     * ResultSet is examined for basic properties. 
+     * It should not be null.
+     * It should not have any rows.  This will be determined by examining 
+     * the last() method to ensure that it returns False.
      */
     public void testExecuteQuery1() throws Exception {
         java.sql.Statement stmt = con.createStatement();
         java.sql.ResultSet result = stmt.executeQuery("CREATE TABLE foo (TestCol VARCHAR(10));");
         /* The ResultSet cannot be null, but it can be empty. */
-        assertTrue(result != null);
-        throw new Exception("Not done yet");
+        assertNotNull(result);
+        /* Move to the last row.  This should generate a false response 
+         * because there are no rows returned. */
+        assertFalse(result.last());
     }
     
-//    /**
-//     * Simple Statement.executeQuery() test.  This particular test creates
-//     * a new database if it doesn't exist, and then uses 
-//     * Statement.executeQuery() to create the first table.  The returned 
-//     * ResultSet should not have any entries.  Confirm that the last row is 0;
-//     */
-//    public void testExecuteQuery2() throws Exception {
-//        java.sql.Statement stmt = con.createStatement();
-//        java.sql.ResultSet result = stmt.executeQuery("CREATE TABLE foo (TestCol VARCHAR(10));");
-//        /* The ResultSet cannot be null, but it must be empty. 
-//         * Move to the last row and get what the number is.
-//         */
-//        assertFalse(result.last());
-//    }
-//    
-//    /**
-//     * There are a couple of things that happen in here. The only real 
-//     * statements made use executeQuery.  The database has to have a table
-//     * created, a row populated, and finally a statement to query the entire
-//     * table.
-//     */
-//    public void testExecuteQuery3() throws Exception {
-//        java.sql.Statement stmt = con.createStatement();
-//        stmt.executeQuery("CREATE TABLE foo (TestCol VARCHAR(10));");
-//        stmt.executeQuery("INSERT INTO foo (TestCol) VALUES (\"Test\");");
-//        java.sql.ResultSet result = stmt.executeQuery("SELECT * FROM foo;");
-//        result.beforeFirst();
-//        while(result.next()) {
-//            String foo = result.getString("TestCol");
-//            assertEquals("Test", foo);
-//        }
-//    }
+    
+    /**
+     * Make a statement that executes a query and examine its resultSet.
+     * 
+     */
+    public void testExecuteQuery2() throws Exception {
+        java.sql.Statement stmt = con.createStatement();
+        stmt.executeUpdate("CREATE TABLE foo (TestCol VARCHAR(10));");
+        int count = stmt.executeUpdate("INSERT INTO foo (TestCol) VALUES (\"Test\");");
+        /* Make sure that the row was actually added */
+        assertEquals(count, 1);
+        /* Commit before query */
+        java.sql.ResultSet result = stmt.executeQuery("SELECT * FROM foo;");
+        result.beforeFirst();
+        while(result.next()) {
+            String foo = result.getString("TestCol");
+            assertEquals("Test", foo);
+        }
+    }
 }
