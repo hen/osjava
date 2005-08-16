@@ -45,10 +45,6 @@ public class FactoryUtils {
             if(obj != null) {
                 return obj;
             }
-            obj = ClassW.createObject(name+type);
-            if(obj != null) {
-                return obj;
-            }
             obj = ClassW.createObject(name);
             if(obj != null) {
                 return obj;
