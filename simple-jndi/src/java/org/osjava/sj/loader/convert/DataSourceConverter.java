@@ -34,6 +34,8 @@ package org.osjava.sj.loader.convert;
 
 import java.util.Properties;
 
+import org.osjava.sj.loader.SJDataSource;
+
 public class DataSourceConverter implements Converter {
 
     public Object convert(Properties properties) {

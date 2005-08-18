@@ -4,8 +4,8 @@ import java.util.*;
 import java.io.*;
 import javax.naming.*;
 
-import org.osjava.sj.loader.converter.ConvertRegistry;
-import org.osjava.sj.loader.converter.Converter;
+import org.osjava.sj.loader.convert.ConvertRegistry;
+import org.osjava.sj.loader.convert.Converter;
 
 /**
  * Loads a .properties file into a JNDI server.
