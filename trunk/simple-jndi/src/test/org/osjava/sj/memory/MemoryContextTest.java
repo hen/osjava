@@ -1,5 +1,5 @@
 /*
- * org.osjava.jndi.GenericContext_createSubContextTest
+ * org.osjava.jndi.MemoryContext_createSubContextTest
  * $Id$
  * $Rev$ 
  * $Date$ 
@@ -38,7 +38,7 @@
  */
 
 
-package org.osjava.jndi;
+package org.osjava.sj.memory;
 
 import java.util.Hashtable;
 
@@ -51,11 +51,11 @@ import junit.framework.TestCase;
 /**
  * @author rzigweid
  */
-public class GenericContextTest extends TestCase {
+public class MemoryContextTest extends TestCase {
 
     Context context = null;
 
-    public GenericContextTest(String name) {
+    public MemoryContextTest(String name) {
         super(name);
     }
 
