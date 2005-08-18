@@ -9,13 +9,13 @@
   <body>
     <release version="0.11" date="2004-xx-xx">
     </release>
-    <release version="0.10" date="2004-12-09">
+    <release version="0.10" date="2004-12-09" description="Non-public release to support osjava-threads">
         <action dev="rzigweid" type="add">Added NameParser support.</action>
         <action dev="rzigweid" type="add">Added subcontext support.</action>
         <action dev="rzigweid" type="add">Added additional constructors.  This includes a default constructor, a constructor which allows the system environment to not override the passed in environment and one to supply a NameParser different from the default.</action>
         <action dev="rzigweid" type="update">Converted the basis of storage to be Name's instead of Strings.  This goes along with the NameParser support above.</action>
     </release>
-    <release version="0.9.1" date="2004-02-10">
+    <release version="0.9.1" date="2004-02-10" description="DataSource bugfix">
         <action dev="hen" type="add">Fixed #SJN-49, a problem in loading DataSources from particular .properties files. </action>
     </release>
     <release version="0.9" date="2004-02-07">
