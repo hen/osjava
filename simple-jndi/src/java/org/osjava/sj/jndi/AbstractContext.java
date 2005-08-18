@@ -48,9 +48,9 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.osjava.naming.ContextBindings;
-import org.osjava.naming.ContextNames;
-import org.osjava.naming.SimpleNameParser;
+import org.osjava.sj.naming.ContextBindings;
+import org.osjava.sj.naming.ContextNames;
+import org.osjava.sj.naming.SimpleNameParser;
 
 /**
  * The heart of the system, the abstract implementation of context for 
