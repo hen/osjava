@@ -221,17 +221,6 @@ public class JndiLoader {
             // return converter.convert(properties);
         }
 
-        // HACK: Supporting only DataSources for the moment
-        if("javax.sql.DataSource".equals(type)) {
-            return new SJDataSource(
-                properties.getProperty("driver"), 
-                properties.getProperty("url"), 
-                properties.getProperty("user"), 
-                properties.getProperty("password"), 
-                properties.getProperty("pool")
-            );
-        }
-
         // TODO: Support a way to set the default converters in the jndi.properties 
         //       and in the API itself
         Converter converter = convertRegistry.getConverter(type);
