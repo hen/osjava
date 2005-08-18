@@ -36,6 +36,6 @@ import java.util.Properties;
 
 public interface Converter {
 
-    Object convert(Properties properties);
+    Object convert(Properties properties, String type);
 
 }

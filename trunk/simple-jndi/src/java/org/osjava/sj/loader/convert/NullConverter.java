@@ -36,7 +36,7 @@ import java.util.Properties;
 
 public class NullConverter implements Converter {
 
-    public Object convert(Properties properties) {
+    public Object convert(Properties propertie, String types) {
         return properties.get("");
     }
 
