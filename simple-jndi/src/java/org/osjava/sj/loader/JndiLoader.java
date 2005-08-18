@@ -12,8 +12,9 @@ import org.osjava.sj.loader.convert.Converter;
  */
 public class JndiLoader {
 
+    private static ConvertRegistry convertRegistry = new ConvertRegistry();
+
     private Hashtable table = new Hashtable();
-    private ConvertRegistry convertRegistry = new ConvertRegistry();
 
     public JndiLoader() {
         // tmphack
@@ -233,7 +234,7 @@ public class JndiLoader {
 
         // TODO: Support a way to set the default converters in the jndi.properties 
         //       and in the API itself
-        Converter converter = this.convertRegistry.getConverter(type);
+        Converter converter = convertRegistry.getConverter(type);
         if(converter != null) {
             return converter.convert(properties);
         }
