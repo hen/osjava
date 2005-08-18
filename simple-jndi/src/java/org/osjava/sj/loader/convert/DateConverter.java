@@ -35,6 +35,7 @@ package org.osjava.sj.loader.convert;
 import java.util.Date;
 import java.util.Properties;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 public class DateConverter implements Converter {
@@ -52,7 +53,11 @@ public class DateConverter implements Converter {
 
         SimpleDateFormat sdf = new SimpleDateFormat(format);
 
-        return sdf.format( value );
+        try {
+            return sdf.parse( value );
+        } catch(ParseException pe) {
+            throw new RuntimeException("Unable to parse '"+value+"' as format '"+format+"'");
+        }
     }
 
 }
