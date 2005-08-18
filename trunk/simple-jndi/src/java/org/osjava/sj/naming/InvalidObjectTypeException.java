@@ -2,10 +2,10 @@
  * org.osjava.naming.InvalidObjectTypeException
  * 
  * $Id$
- * $URL:$
+ * $URL$
  * $Rev$
  * $Date$
- * $Author:$
+ * $Author$
  * 
  * Created on Sep 24, 2004.
  * Copyright (c) 2004, Robert M. Zigweid 
