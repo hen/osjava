@@ -62,7 +62,7 @@ public class GenericContextTest extends TestCase {
     public void setUp() {
         /* Initial configuration voodoo for the default context. */
         Hashtable contextEnv = new Hashtable();
-        contextEnv.put("java.naming.factory.initial", "org.osjava.jndi.GenericContextFactory");
+        contextEnv.put("java.naming.factory.initial", "org.osjava.sj.memory.MemoryContextFactory");
 
         /* The default is 'flat', which isn't hierarchial and not what I want. */
         contextEnv.put("jndi.syntax.direction", "left_to_right");
