@@ -4,6 +4,9 @@ import java.util.*;
 import java.io.*;
 import javax.naming.*;
 
+import java.lang.reflect.Method;
+import java.lang.reflect.InvocationTargetException;
+
 import org.osjava.sj.loader.convert.ConvertRegistry;
 import org.osjava.sj.loader.convert.Converter;
 
@@ -112,6 +115,10 @@ public class JndiLoader {
         String delimiter = (String) this.table.get(SIMPLE_DELIMITER);
         String typePostfix = delimiter + "type";
 
+        // NOTE: "type" effectively turns on pseudo-nodes; if it 
+        //       isn't there then other pseudo-nodes will result 
+        //       in re-bind errors
+
         // scan for pseudo-nodes, aka "type":   foo.type
         // store in a temporary type table:    "foo", new Properties() with type="value"
         Map typeMap = new HashMap();
@@ -216,9 +223,17 @@ public class JndiLoader {
         
         String converterClassName = properties.getProperty("converter");
         if(converterClassName != null) {
-            // instantiate converter
-            // invoke convert
-            // return converter.convert(properties, type);
+            try {
+                Class converterClass = Class.forName( converterClassName );
+                Converter converter = (Converter) converterClass.newInstance();
+                return converter.convert(properties, type);
+            } catch(ClassNotFoundException cnfe) {
+                throw new RuntimeException("Unable to find class: "+converterClassName, cnfe);
+            } catch(IllegalAccessException ie) {
+                throw new RuntimeException("Unable to access class: "+type, ie);
+            } catch(InstantiationException ie) {
+                throw new RuntimeException("Unable to create Converter " + type + " via empty constructor. ", ie);
+            }
         }
 
         // TODO: Support a way to set the default converters in the jndi.properties 
