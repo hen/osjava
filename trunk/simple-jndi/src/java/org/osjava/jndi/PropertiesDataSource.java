@@ -42,6 +42,8 @@ import java.util.Properties;
 
 import org.osjava.jndi.util.HierarchicalMap;
 
+import org.osjava.sj.loader.PoolSetup;
+
 /**
  * A basic implementation of a DataSource. 
  */
