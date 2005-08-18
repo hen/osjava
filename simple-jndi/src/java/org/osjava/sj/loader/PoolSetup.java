@@ -30,7 +30,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.osjava.jndi;
+package org.osjava.sj.loader;
 
 import java.sql.SQLException;
 import java.sql.DriverManager;
