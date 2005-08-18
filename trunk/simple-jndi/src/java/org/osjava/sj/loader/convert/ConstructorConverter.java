@@ -32,29 +32,38 @@
 
 package org.osjava.sj.loader.convert;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Properties;
 
-public class ConvertRegistry {
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 
-    private static Converter NULL_CONVERTER = new NullConverter();
+public class ConstructorConverter implements Converter {
 
-    private Map converters = new HashMap();
+    public Object convert(Properties properties, String type) {
+        String value = properties.getProperty("");
 
-    // TODO: Support inheritence; ie) key on Class not String?
-    //       Use gj-core ClassMap code?
-    public ConvertRegistry() {
-        this.converters.put( "javax.sql.DataSource", new DataSourceConverter() );
-        this.converters.put( "java.util.Date", new DateConverter() );
-        this.converters.put( "java.lang.Boolean", new ConstructorConverter() );
-    }
-
-    public Converter getConverter(String type) {
-        if(this.converters.containsKey(type)) {
-            return (Converter) converters.get(type);
-        } else {
-            return NULL_CONVERTER;
+        if(value == null) {
+            throw new RuntimeException("Missing value");
         }
+
+        try {
+            Class c = Class.forName(type);
+            Constructor con = c.getConstructor( new Class[] { String.class } );
+            return con.newInstance( new Object[] { value } );
+        } catch(ClassNotFoundException cnfe) {
+            throw new RuntimeException("Unable to find class: "+type, cnfe);
+        } catch(NoSuchMethodException nsme) {
+            throw new RuntimeException("Unable to find (String) constructor on class: "+type, nsme);
+        } catch(InstantiationException ie) {
+            throw new RuntimeException("Unable to instantiate class: "+type, ie);
+        } catch(IllegalAccessException ie) {
+            throw new RuntimeException("Unable to access class: "+type, ie);
+        } catch(IllegalArgumentException iae) {
+            throw new RuntimeException("Unable to pass argument "+value+" to class: "+type, iae);
+        } catch(InvocationTargetException ite) {
+            throw new RuntimeException("Unable to invoke (String) constructor on class: "+type, ite);
+        }
+
     }
 
 }
