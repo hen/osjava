@@ -40,8 +40,6 @@ import java.io.PrintWriter;
 import java.util.Hashtable;
 import java.util.Properties;
 
-import org.osjava.jndi.PoolSetup;
-
 /**
  * A basic implementation of a DataSource. 
  */
