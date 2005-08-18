@@ -36,7 +36,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.  
  */
-package org.osjava.naming;
+package org.osjava.sj.naming;
 
 import java.util.Iterator;
 import java.util.Map;
