@@ -41,8 +41,11 @@ public class ConvertRegistry {
 
     private Map converters = new HashMap();
 
+    // TODO: Support inheritence; ie) key on Class not String?
+    //       Use gj-core ClassMap code?
     public ConvertRegistry() {
         this.converters.put( "javax.sql.DataSource", new DataSourceConverter() );
+        this.converters.put( "java.util.Date", new DateConverter() );
     }
 
     public Converter getConverter(String type) {
