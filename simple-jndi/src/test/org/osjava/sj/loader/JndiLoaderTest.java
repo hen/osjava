@@ -115,4 +115,18 @@ public class JndiLoaderTest extends TestCase {
         }
     }
 
+    public void testBoolean() {
+        try {
+            Properties props = new Properties();
+            props.put("foo", "true");
+            props.put("foo/type", "java.lang.Boolean");
+            JndiLoader loader = new JndiLoader();
+            loader.load( props, ctxt );
+            assertEquals( new Boolean(true), ctxt.lookup("foo") );
+        } catch(NamingException ne) {
+            ne.printStackTrace();
+            fail("NamingException: "+ne.getMessage());
+        }
+    }
+
 }
