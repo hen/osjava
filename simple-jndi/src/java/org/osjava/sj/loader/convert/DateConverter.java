@@ -39,7 +39,7 @@ import java.text.SimpleDateFormat;
 
 public class DateConverter implements Converter {
 
-    public Object convert(Properties properties) {
+    public Object convert(Properties properties, String type) {
         String format = properties.getProperty("format");
         String value = properties.getProperty("");
 

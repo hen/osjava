@@ -38,7 +38,7 @@ import org.osjava.sj.loader.SJDataSource;
 
 public class DataSourceConverter implements Converter {
 
-    public Object convert(Properties properties) {
+    public Object convert(Properties properties, String type) {
         String driver = properties.getProperty("driver");
         String url = properties.getProperty("url");
         String user = properties.getProperty("user");

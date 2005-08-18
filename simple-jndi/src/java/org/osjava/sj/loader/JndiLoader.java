@@ -218,14 +218,14 @@ public class JndiLoader {
         if(converterClassName != null) {
             // instantiate converter
             // invoke convert
-            // return converter.convert(properties);
+            // return converter.convert(properties, type);
         }
 
         // TODO: Support a way to set the default converters in the jndi.properties 
         //       and in the API itself
         Converter converter = convertRegistry.getConverter(type);
         if(converter != null) {
-            return converter.convert(properties);
+            return converter.convert(properties, type);
         }
 
         return properties.get("");
