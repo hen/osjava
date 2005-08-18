@@ -4,12 +4,16 @@ import java.util.*;
 import java.io.*;
 import javax.naming.*;
 
+import org.osjava.sj.loader.converter.ConvertRegistry;
+import org.osjava.sj.loader.converter.Converter;
+
 /**
  * Loads a .properties file into a JNDI server.
  */
 public class JndiLoader {
 
     private Hashtable table = new Hashtable();
+    private ConvertRegistry convertRegistry = new ConvertRegistry();
 
     public JndiLoader() {
         // tmphack
@@ -209,6 +213,13 @@ public class JndiLoader {
         String type = properties.getProperty("type");
         // TODO: handle a plugin type system
         
+        String converterClassName = properties.getProperty("converter");
+        if(converterClassName != null) {
+            // instantiate converter
+            // invoke convert
+            // return converter.convert(properties);
+        }
+
         // HACK: Supporting only DataSources for the moment
         if("javax.sql.DataSource".equals(type)) {
             return new SJDataSource(
@@ -218,6 +229,13 @@ public class JndiLoader {
                 properties.getProperty("password"), 
                 properties.getProperty("pool")
             );
+        }
+
+        // TODO: Support a way to set the default converters in the jndi.properties 
+        //       and in the API itself
+        Converter converter = this.convertRegistry.getConverter(type);
+        if(converter != null) {
+            return converter.convert(properties);
         }
 
         return properties.get("");
