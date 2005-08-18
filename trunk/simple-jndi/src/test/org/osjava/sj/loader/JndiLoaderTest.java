@@ -27,7 +27,7 @@ public class JndiLoaderTest extends TestCase {
         Hashtable contextEnv = new Hashtable();
 
         /* For GenericContext */
-        contextEnv.put(Context.INITIAL_CONTEXT_FACTORY, "org.osjava.jndi.GenericContextFactory");
+        contextEnv.put(Context.INITIAL_CONTEXT_FACTORY, "org.osjava.sj.memory.MemoryContextFactory");
         contextEnv.put("jndi.syntax.direction", "left_to_right");
         contextEnv.put("jndi.syntax.separator", "/");
         /**/
