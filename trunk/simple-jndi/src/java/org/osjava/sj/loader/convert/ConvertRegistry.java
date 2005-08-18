@@ -46,7 +46,7 @@ public class ConvertRegistry {
     }
 
     public Converter getConverter(String type) {
-        if(this.converters.contains(type)) {
+        if(this.converters.containsKey(type)) {
             return (Converter) converters.get(type);
         } else {
             return NULL_CONVERTER;
