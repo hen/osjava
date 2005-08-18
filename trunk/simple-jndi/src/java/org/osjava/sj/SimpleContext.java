@@ -1,6 +1,6 @@
 package org.osjava.sj;
 
-import org.osjava.naming.DelegatingContext;
+import org.osjava.sj.naming.DelegatingContext;
 
 import java.util.Hashtable;
 import javax.naming.NamingException;
