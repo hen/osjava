@@ -189,6 +189,7 @@ public class HtmlScraper {
     }
 
     //   moveTo a[href], www.yandell.org
+    // TODO: Kill the moveToTagWith method and have:  *[href], www.foo.com
     public boolean moveTo(String get, String value) {
         HtmlScraper scraper = new HtmlScraper();
         scraper.scrape(this.page.substring(this.currentIndex));
