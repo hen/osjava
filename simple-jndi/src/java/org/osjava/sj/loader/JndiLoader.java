@@ -20,8 +20,11 @@ public class JndiLoader {
     private Hashtable table = new Hashtable();
 
     public JndiLoader() {
-        // tmphack
-        this.table.put( SIMPLE_DELIMITER, "/" );
+        this("/");
+    }
+    
+    public JndiLoader(String delimiter) {
+        this.table.put( SIMPLE_DELIMITER, delimiter );
     }
     
 // For Directory Naming:
