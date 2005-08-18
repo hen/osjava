@@ -152,4 +152,22 @@ public class JndiLoaderTest extends TestCase {
         }
     }
 
+    public void testConverterPlugin() {
+        try {
+            Properties props = new Properties();
+            props.put("math", "Pi");
+            // type is needed here as otherwise it does not know to allow subelements
+            props.put("math/type", "magic number");
+            props.put("math/converter", "org.osjava.sj.loader.convert.PiConverter");
+
+            JndiLoader loader = new JndiLoader();
+            loader.load( props, ctxt );
+
+            assertEquals( new Double(Math.PI), ctxt.lookup("math") );
+        } catch(NamingException ne) {
+            ne.printStackTrace();
+            fail("NamingException: "+ne.getMessage());
+        }
+    }
+
 }
