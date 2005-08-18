@@ -32,33 +32,27 @@
 
 package org.osjava.sj.loader.convert;
 
+import java.util.Date;
 import java.util.Properties;
 
-import org.osjava.sj.loader.SJDataSource;
+import java.text.SimpleDateFormat;
 
-public class DataSourceConverter implements Converter {
+public class DateConverter implements Converter {
 
     public Object convert(Properties properties) {
-        String driver = properties.getProperty("driver");
-        String url = properties.getProperty("url");
-        String user = properties.getProperty("user");
-        String password = properties.getProperty("password");
-        String pool = properties.getProperty("pool");
+        String format = properties.getProperty("format");
+        String value = properties.getProperty("");
 
-        if(driver == null) {
-            throw new RuntimeException("Required subelement 'driver'");
+        if(format == null) {
+            throw new RuntimeException("Required subelement 'format'");
         }
-        if(url == null) {
-            throw new RuntimeException("Required subelement 'url'");
-        }
-        if(user == null) {
-            throw new RuntimeException("Required subelement 'user'");
-        }
-        if(password == null) {
-            throw new RuntimeException("Required subelement 'password'");
+        if(value == null) {
+            throw new RuntimeException("Missing value");
         }
 
-        return new SJDataSource(driver, url, user, password, pool);
+        SimpleDateFormat sdf = new SimpleDateFormat(format);
+
+        return sdf.format( value );
     }
 
 }
