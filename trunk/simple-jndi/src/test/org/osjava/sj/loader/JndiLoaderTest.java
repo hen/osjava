@@ -129,4 +129,27 @@ public class JndiLoaderTest extends TestCase {
         }
     }
 
+    public void testDate() {
+        try {
+            Properties props = new Properties();
+            props.put("birthday", "2004-10-22");
+            props.put("birthday/type", "java.util.Date");
+            props.put("birthday/format", "yyyy-MM-dd");
+
+            JndiLoader loader = new JndiLoader();
+            loader.load( props, ctxt );
+
+            Date d = (Date) ctxt.lookup("birthday");
+            Calendar c = Calendar.getInstance();
+            c.setTime(d);
+
+            assertEquals( 2004, c.get(Calendar.YEAR) );
+            assertEquals( 10 - 1, c.get(Calendar.MONTH) );
+            assertEquals( 22, c.get(Calendar.DATE) );
+        } catch(NamingException ne) {
+            ne.printStackTrace();
+            fail("NamingException: "+ne.getMessage());
+        }
+    }
+
 }
