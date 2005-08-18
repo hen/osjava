@@ -30,7 +30,7 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.osjava.naming;
+package org.osjava.sj.naming;
 
 import java.util.ArrayList;
 import java.util.List;
