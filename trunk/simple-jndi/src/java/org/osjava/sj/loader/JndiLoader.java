@@ -20,20 +20,14 @@ public class JndiLoader {
     private Hashtable table = new Hashtable();
 
     public JndiLoader() {
-        this("/");
+        this.table.put(SIMPLE_DELIMITER, "/");
     }
     
-    public JndiLoader(String delimiter) {
-        this.table.put( SIMPLE_DELIMITER, delimiter );
+    public JndiLoader(Hashtable env) {
+        this.table.put(SIMPLE_DELIMITER, env.get(SIMPLE_DELIMITER));
+        this.table.put(SIMPLE_SPACE, env.get(SIMPLE_SPACE));
     }
     
-// For Directory Naming:
-//        table.put(Context.INITIAL_CONTEXT_FACTORY, "org.apache.naming.java.javaURLContextFactory");
-//        table.put(Context.URL_PKG_PREFIXES, "org.apache.naming");
-// For GenericContext:
-
-    // root
-    public static final String SIMPLE_ROOT = "org.osjava.jndi.root";
     // separator, or just put them in as contexts?
     public static final String SIMPLE_DELIMITER = "org.osjava.jndi.delimiter";
     // option for top level space; ie) java:comp
