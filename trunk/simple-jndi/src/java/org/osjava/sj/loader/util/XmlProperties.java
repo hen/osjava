@@ -84,7 +84,6 @@ public class XmlProperties extends AbstractProperties {
             XMLNode node = (XMLNode)enum.nextElement();
             if(!node.isTag()) { continue; }
 //            add("", node);
-if(org.osjava.jndi.PropertiesContext.DEBUG)            System.err.println("[XML]Adding: "+root.getName()+getDelimiter()+" to "+node);
             add(root.getName(), node);
         }
         Enumeration attrs = root.enumerateAttr();
@@ -92,13 +91,11 @@ if(org.osjava.jndi.PropertiesContext.DEBUG)            System.err.println("[XML]
             while(attrs.hasMoreElements()) {
                 String attr = (String)attrs.nextElement();
                 setProperty( root.getName()+getDelimiter()+attr, root.getAttr(attr));
-if(org.osjava.jndi.PropertiesContext.DEBUG)                System.err.println("[XML]Attr: "+(root.getName()+getDelimiter()+attr) +":"+root.getAttr(attr));
             }
         }
     }
     
     public void add(String level, XMLNode node) {
-if(org.osjava.jndi.PropertiesContext.DEBUG)        System.err.println("[XML]Adding: "+level);
         if( node.getValue() != null ) {
             setProperty( level+getDelimiter()+node.getName(), node.getValue());
         }
@@ -107,7 +104,6 @@ if(org.osjava.jndi.PropertiesContext.DEBUG)        System.err.println("[XML]Addi
             while(attrs.hasMoreElements()) {
                 String attr = (String)attrs.nextElement();
                 setProperty( level+getDelimiter()+node.getName()+getDelimiter()+attr, node.getAttr(attr));
-if(org.osjava.jndi.PropertiesContext.DEBUG)                System.err.println("[XML]Attr: "+(level+getDelimiter()+node.getName()+getDelimiter()+attr) +":"+node.getAttr(attr));
             }
         }
         Enumeration nodes = node.enumerateNode();
@@ -118,8 +114,6 @@ if(org.osjava.jndi.PropertiesContext.DEBUG)                System.err.println("[
                 if(!subnode.isTag()) { continue; }
                 // temporary pending research into XMLNode parsing:
                 if(!"".equals(subnode.getName())) {
-if(org.osjava.jndi.PropertiesContext.DEBUG)                    System.err.println("[XML]Walking children: "+node.getName());
-if(org.osjava.jndi.PropertiesContext.DEBUG)                    System.err.println("[XML]on: "+level);
                     add(level, subnode);
                 }
             }

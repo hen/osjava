@@ -66,7 +66,6 @@ public class CustomProperties extends AbstractProperties {
                 // split equals sign
                 idx = line.indexOf('=');
                 if(idx != -1) {
-if(org.osjava.jndi.PropertiesContext.DEBUG)                    System.err.println("[CUSTOM]Loading property: "+line.substring(0,idx)+"="+line.substring(idx+1));
                     this.setProperty(line.substring(0,idx), line.substring(idx+1));
                 } else {
                     // blank line, or just a bad line
