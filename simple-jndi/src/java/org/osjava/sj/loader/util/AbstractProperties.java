@@ -53,10 +53,8 @@ public abstract class AbstractProperties extends Properties {
             value = obj;
         }
         if(!index.contains(key)) {
-if(org.osjava.jndi.PropertiesContext.DEBUG)            System.err.println("[PROP]Updating index for: "+key);
             index.add(key);
         }
-if(org.osjava.jndi.PropertiesContext.DEBUG)        System.err.println("[PROP]Setting: "+key+"="+value);
         return super.put(key, value);
     }
 

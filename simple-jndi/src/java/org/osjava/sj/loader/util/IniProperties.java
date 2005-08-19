@@ -84,7 +84,6 @@ public class IniProperties extends AbstractProperties {
                 // split equals sign
                 idx = line.indexOf('=');
                 if(idx != -1) {
-if(org.osjava.jndi.PropertiesContext.DEBUG)                    System.err.println("[INI] Loading property: "+line.substring(0,idx)+"="+line.substring(idx+1));
                     if("".equals(block)) {
                         this.setProperty(line.substring(0,idx), line.substring(idx+1));
                     } else {
