@@ -16,7 +16,7 @@ import org.osjava.sj.loader.JndiLoader;
 public class SimpleContext extends DelegatingContext {
 
     // root
-    public static final String SIMPLE_ROOT = "org.osjava.jndi.root";
+    public static final String SIMPLE_ROOT = "org.osjava.sj.root";
 
     /*
      * 
