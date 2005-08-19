@@ -10,6 +10,8 @@ import java.lang.reflect.InvocationTargetException;
 import org.osjava.sj.loader.convert.ConvertRegistry;
 import org.osjava.sj.loader.convert.Converter;
 
+import org.osjava.sj.loader.util.*;
+
 /**
  * Loads a .properties file into a JNDI server.
  */
@@ -89,8 +91,17 @@ public class JndiLoader {
     }
 
     private Properties loadFile(File file) throws IOException {
-        // replace with better prop class?
-        Properties p = new Properties();
+        Properties p = null;
+
+        if(file.getName().endsWith(".xml")) {
+            p = new XmlProperties();
+        } else
+        if(file.getName().endsWith(".ini")) {
+            p = new IniProperties();
+        } else {
+            p = new CustomProperties();
+        }
+
         FileInputStream fin = null;
         try {
             fin = new FileInputStream(file);

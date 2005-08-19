@@ -85,7 +85,9 @@ public class JndiLoaderTest extends TestCase {
             File file = new File("src/test/config/");
             JndiLoader loader = new JndiLoader();
             loader.loadDirectory( file, ctxt );
-            assertEquals( "Fred", ctxt.lookup("name") );
+            List list = (List) ctxt.lookup("name");
+            assertEquals( "Henri", list.get(0) );
+            assertEquals( "Fred", list.get(1) );
             assertEquals( "Foo", ctxt.lookup("com.genjava") );
         } catch(IOException ioe) {
             ioe.printStackTrace();
