@@ -30,7 +30,7 @@ public class SimpleContext extends DelegatingContext {
      *    org.osjava.jndi.shared
      */
     public SimpleContext(Hashtable env) throws NamingException {
-        super(new InitialContext(env));
+        super(createContext(env));
 
         JndiLoader loader = new JndiLoader(env);
 
@@ -43,4 +43,10 @@ public class SimpleContext extends DelegatingContext {
         }
     }
     
+    private static InitialContext createContext(Hashtable env) throws NamingException {
+        env.put("jndi.syntax.direction", "left_to_right");
+        env.put("jndi.syntax.separator", "/");
+        return new InitialContext(env);
+    }
+
 }
