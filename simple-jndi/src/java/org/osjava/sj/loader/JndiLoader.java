@@ -17,6 +17,13 @@ import org.osjava.sj.loader.util.*;
  */
 public class JndiLoader {
 
+    // separator, or just put them in as contexts?
+    public static final String SIMPLE_DELIMITER = "org.osjava.sj.delimiter";
+    // option for top level space; ie) java:comp
+    public static final String SIMPLE_SPACE = "org.osjava.sj.space";
+    // share the same InitialContext
+    public static final String SIMPLE_SHARED = "org.osjava.sj.shared";
+
     private static ConvertRegistry convertRegistry = new ConvertRegistry();
 
     private Hashtable table = new Hashtable();
@@ -30,13 +37,6 @@ public class JndiLoader {
         this.table.put(SIMPLE_SPACE, env.get(SIMPLE_SPACE));
     }
     
-    // separator, or just put them in as contexts?
-    public static final String SIMPLE_DELIMITER = "org.osjava.jndi.delimiter";
-    // option for top level space; ie) java:comp
-    public static final String SIMPLE_SPACE = "org.osjava.jndi.space";
-    // share the same InitialContext
-    public static final String SIMPLE_SHARED = "org.osjava.jndi.shared";
-
     public void putParameter(String key, String value) {
         table.put(key, value);
     }
