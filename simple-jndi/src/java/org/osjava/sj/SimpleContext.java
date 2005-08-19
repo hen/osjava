@@ -3,6 +3,7 @@ package org.osjava.sj;
 import org.osjava.sj.naming.DelegatingContext;
 
 import java.io.File;
+import java.io.IOException;
 
 import java.util.Hashtable;
 import javax.naming.NamingException;
@@ -13,6 +14,9 @@ import org.osjava.sj.loader.JndiLoader;
 // job is to hide the JndiLoader, apart from a jndi.properties entry
 // can also handle switching . to / so that the delimiter may be settable
 public class SimpleContext extends DelegatingContext {
+
+    // root
+    public static final String SIMPLE_ROOT = "org.osjava.jndi.root";
 
     /*
      * 
@@ -28,11 +32,15 @@ public class SimpleContext extends DelegatingContext {
     public SimpleContext(Hashtable env) throws NamingException {
         super(new InitialContext(env));
 
-        JndiLoader loader = new JndiLoader();
+        JndiLoader loader = new JndiLoader(env);
 
-        String root = (String) env.get("org.osjava.jndi.root");
+        String root = (String) env.get(SIMPLE_ROOT);
 
-        loader.loadDirectory( new File(root), this );
+        try {
+            loader.loadDirectory( new File(root), this );
+        } catch(IOException ioe) {
+            throw new NamingException("Unable to load data from directory: "+root+" due to error: "+ioe.getMessage());
+        }
     }
     
 }
