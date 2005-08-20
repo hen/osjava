@@ -1,2 +1,10 @@
-<html><head><LINK REL ='stylesheet' TYPE='text/css' HREF='http://www.osjava.org/osjavadoc-style.css' TITLE='Style'><script src='http://multidoc.osjava.org/multidoc.js'></script></head><body>
+<html><head><LINK REL ='stylesheet' TYPE='text/css' HREF='http://www.osjava.org/osjavadoc-style.css' TITLE='Style'>
+<script>
+function load() { 
+    for(var i=0; i < arguments.length; i+=2) { 
+        parent.frames[arguments[i]].location.href=arguments[i+1]; 
+    }
+}
+</script>
+</head><body>
 <FONT CLASS='FrameHeadingFont'><b>Versions</b></FONT><br/>
