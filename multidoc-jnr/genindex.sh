@@ -8,7 +8,25 @@ do
   do
     j=`echo $j | sed 's/\/$//'`
     v=`echo $j | sed 's/.*\///'`
-    echo "<nobr><a name=\"$v\"><font class=\"FrameItemFont\"><a href=\"javascript:load('packageListFrame','$v/overview-frame.html','packageFrame','$v/allclasses-frame.html', 'classFrame', '$v/overview-summary.html')\">$i $v</a></font></nobr><br/>" >> $i/versions.html
+    if [ -f $j/overview-frame.html ];
+    then
+        u="'packageListFrame', '$v/overview-frame.html'";
+    else
+        f=`find $j -type f -name 'package-frame.html' | sed 's/[^\/]*\///'`;
+        u="'packageListFrame', '$f'";
+    fi
+
+    u="$u, 'packageFrame','$v/allclasses-frame.html'";
+
+    if [ -f $j/overview-summary.html ];
+    then
+        u="$u, 'classFrame', '$v/overview-summary.html'";
+    else
+        f=`find $j -type f -name 'package-summary.html' | sed 's/[^\/]*\///'`;
+        u="$u, 'classFrame', '$f'";
+    fi
+
+    echo "<nobr><a name=\"$v\"><font class=\"FrameItemFont\"><a href=\"javascript:load($u)\">$i $v</a></font></nobr><br/>" >> $i/versions.html
   done
 
   echo '</body></html>' >> $i/versions.html
