@@ -1,3 +1,5 @@
+cp header-index-template.html index.html
+
 for i in `ls -1d */`
 do
   i=`echo $i | sed 's/\/$//'`
@@ -34,5 +36,8 @@ do
   cp blank-template.html $i/blank.html
   cp index-template.html $i/index.html
 
+  echo "<li><a href=\"$i/index.html\">$i</a></li>" >> index.html
+
 done
 
+echo '</ul></body></html>' >> index.html
