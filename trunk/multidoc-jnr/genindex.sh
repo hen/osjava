@@ -40,4 +40,4 @@ do
 
 done
 
-echo '</ul></body></html>' >> index.html
+cat footer-index-template.html >> index.html
