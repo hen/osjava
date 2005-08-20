@@ -8,7 +8,7 @@ do
   do
     j=`echo $j | sed 's/\/$//'`
     v=`echo $j | sed 's/.*\///'`
-    echo "<nobr><a name='$v'><font class='FrameItemFont'><a href='$v/index.html'>$i $v</a></font></nobr><br/>" >> $i/versions.html
+    echo "<nobr><a name=\"$v\"><font class=\"FrameItemFont\"><a href=\"javascript:load('packageListFrame','$v/overview-frame.html','packageFrame','$v/allclasses-frame.html', 'classFrame', '$v/overview-summary.html')\">$i $v</a></font></nobr><br/>" >> $i/versions.html
   done
 
   echo '</body></html>' >> $i/versions.html
