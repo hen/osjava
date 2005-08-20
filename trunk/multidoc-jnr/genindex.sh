@@ -1,12 +1,12 @@
 cp header-index-template.html index.html
 
-for i in `ls -1d */`
+for i in `ls -1d */ | sort -f`
 do
   i=`echo $i | sed 's/\/$//'`
 
   cp header-template.html $i/versions.html
 
-  for j in `ls -1d $i/*/`
+  for j in `ls -1d $i/*/ | sort -d`
   do
     j=`echo $j | sed 's/\/$//'`
     v=`echo $j | sed 's/.*\///'`
