@@ -51,15 +51,20 @@ import junit.framework.TestCase;
 /**
  * @author rzigweid
  */
-public class MemoryContextTest extends TestCase {
+public abstract class MemoryContextTestAbstract extends TestCase {
 
-    Context context = null;
+    private Context context;
+    private String delimiter;
 
-    public MemoryContextTest(String name) {
+    public MemoryContextTestAbstract(String name) {
         super(name);
     }
 
+    protected abstract String getDelimiter();
+
     public void setUp() {
+        this.delimiter = getDelimiter();
+        
         /* Initial configuration voodoo for the default context. */
         Hashtable contextEnv = new Hashtable();
         contextEnv.put("java.naming.factory.initial", "org.osjava.sj.memory.MemoryContextFactory");
@@ -68,7 +73,7 @@ public class MemoryContextTest extends TestCase {
         contextEnv.put("jndi.syntax.direction", "left_to_right");
 
         /* Separator is required for non-flat */
-        contextEnv.put("jndi.syntax.separator", "/");
+        contextEnv.put("jndi.syntax.separator", this.delimiter);
         
         /* The intial context. */
         try {
@@ -107,7 +112,7 @@ public class MemoryContextTest extends TestCase {
             sub = sub.createSubcontext("one");
             sub = sub.createSubcontext("two");
 
-            assertNotNull( context.lookup("path/one/two") );
+            assertNotNull( context.lookup("path"+this.delimiter+"one"+this.delimiter+"two") );
         } catch (NamingException e) {
             e.printStackTrace();
             fail("NamingException " + e.getMessage());
@@ -117,8 +122,8 @@ public class MemoryContextTest extends TestCase {
     public void testLookupInContext() {
         try {
             context.createSubcontext("path");
-            context.bind("path/foo", "42");
-            assertEquals("42", context.lookup("path/foo") );
+            context.bind("path"+this.delimiter+"foo", "42");
+            assertEquals("42", context.lookup("path"+this.delimiter+"foo") );
         } catch (NamingException e) {
             fail("NamingException " + e.getMessage());
         }
