@@ -18,6 +18,8 @@ public class SimpleContext extends DelegatingContext {
     // root
     public static final String SIMPLE_ROOT = "org.osjava.sj.root";
 
+    public static final String SIMPLE_DELEGATE = "org.osjava.sj.factory";
+
     /*
      * 
      * root
@@ -57,6 +59,13 @@ public class SimpleContext extends DelegatingContext {
             env.put(JndiLoader.SIMPLE_DELIMITER, ".");
         }
         env.put("jndi.syntax.separator", env.get(JndiLoader.SIMPLE_DELIMITER));
+
+        if(!env.containsKey(SIMPLE_DELEGATE)) {
+            env.put(SIMPLE_DELEGATE, "org.osjava.sj.memory.MemoryContextFactory");
+        }
+
+        env.put("java.naming.factory.initial", env.get(SIMPLE_DELEGATE) );
+
         return new InitialContext(env);
     }
 
