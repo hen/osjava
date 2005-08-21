@@ -90,6 +90,7 @@ public class JndiLoaderTest extends TestCase {
             List list = (List) ctxt.lookup("name");
             assertEquals( "Henri", list.get(0) );
             assertEquals( "Fred", list.get(1) );
+            assertEquals( "Foo", ctxt.lookup("com.genjava") );
         } catch(IOException ioe) {
             ioe.printStackTrace();
             fail("IOException: "+ioe.getMessage());
