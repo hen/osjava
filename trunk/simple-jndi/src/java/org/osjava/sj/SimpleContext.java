@@ -53,11 +53,10 @@ public class SimpleContext extends DelegatingContext {
     
     private static InitialContext createContext(Hashtable env) throws NamingException {
         env.put("jndi.syntax.direction", "left_to_right");
-        if(env.containsKey(JndiLoader.SIMPLE_DELIMITER)) {
-            env.put("jndi.syntax.separator", env.get(JndiLoader.SIMPLE_DELIMITER));
-        } else {
-            env.put("jndi.syntax.separator", ".");
+        if(!env.containsKey(JndiLoader.SIMPLE_DELIMITER)) {
+            env.put(JndiLoader.SIMPLE_DELIMITER, ".");
         }
+        env.put("jndi.syntax.separator", env.get(JndiLoader.SIMPLE_DELIMITER));
         return new InitialContext(env);
     }
 
