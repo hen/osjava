@@ -33,8 +33,15 @@ public class JndiLoader {
     }
     
     public JndiLoader(Hashtable env) {
+        if(!env.containsKey(SIMPLE_DELIMITER)) {
+            throw new IllegalArgumentException("The property "+SIMPLE_DELIMITER+" is mandatory. ");
+        }
+        
         this.table.put(SIMPLE_DELIMITER, env.get(SIMPLE_DELIMITER));
-        this.table.put(SIMPLE_SPACE, env.get(SIMPLE_SPACE));
+        
+        if(env.containsKey(SIMPLE_SPACE)) {
+            this.table.put(SIMPLE_SPACE, env.get(SIMPLE_SPACE));
+        }
     }
     
     public void putParameter(String key, String value) {
