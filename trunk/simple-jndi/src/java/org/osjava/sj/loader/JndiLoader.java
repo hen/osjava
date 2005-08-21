@@ -56,9 +56,10 @@ public class JndiLoader {
      * Loads all .properties files in a directory into a context
      */
     public void loadDirectory(File directory, Context ctxt) throws NamingException, IOException {
+// System.err.println("Loading directory. ");
 
         if( !directory.isDirectory() ) {
-            throw new IllegalArgumentException("java.io.File parameter must be a directory. ");
+            throw new IllegalArgumentException("java.io.File parameter must be a directory. ["+directory+"]");
         }
 
         File[] files = directory.listFiles();
@@ -198,9 +199,28 @@ public class JndiLoader {
 
     }
 
+    static String[] split(String str, String delimiter) {
+        ArrayList list = new ArrayList();
+        int idx = 0;
+        while( true ) {
+            idx = str.indexOf( delimiter, idx );
+            if(idx == -1) {
+                list.add(str);
+                break;
+            }
+            list.add(str.substring(0, idx));
+            str = str.substring(idx + delimiter.length());
+        }
+        return (String[]) list.toArray( new String[0] );
+    }
+
     private void jndiPut(Context ctxt, String key, Object value) throws NamingException {
         // here we need to break by the specified delimiter
-        String[] path = key.split( (String) this.table.get(SIMPLE_DELIMITER) );
+
+        // can't use String.split as the regexp will clash with the types of chars 
+        // used in the delimiters. Could use Commons Lang. Quick hack instead.
+//        String[] path = key.split( (String) this.table.get(SIMPLE_DELIMITER) );
+        String[] path = split( key, (String) this.table.get(SIMPLE_DELIMITER) );
 
 // System.err.println("LN: "+path.length);
         int lastIndex = path.length - 1;
