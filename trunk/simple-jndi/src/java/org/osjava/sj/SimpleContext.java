@@ -36,6 +36,14 @@ public class SimpleContext extends DelegatingContext {
 
         String root = (String) env.get(SIMPLE_ROOT);
 
+        if(root == null) {
+            throw new IllegalStateException("Property "+SIMPLE_ROOT+" is mandatory. ");
+        }
+
+        if(root.startsWith("file://")) {
+            root = root.substring("file://".length());
+        }
+
         try {
             loader.loadDirectory( new File(root), this );
         } catch(IOException ioe) {
@@ -48,7 +56,7 @@ public class SimpleContext extends DelegatingContext {
         if(env.containsKey(JndiLoader.SIMPLE_DELIMITER)) {
             env.put("jndi.syntax.separator", env.get(JndiLoader.SIMPLE_DELIMITER));
         } else {
-            env.put("jndi.syntax.separator", "/");
+            env.put("jndi.syntax.separator", ".");
         }
         return new InitialContext(env);
     }
