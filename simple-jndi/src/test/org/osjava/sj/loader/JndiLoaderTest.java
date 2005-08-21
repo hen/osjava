@@ -14,6 +14,7 @@ import javax.sql.DataSource;
 public class JndiLoaderTest extends TestCase {
 
     private Context ctxt;
+    private JndiLoader loader;
 
     public JndiLoaderTest(String name) {
         super(name);
@@ -38,6 +39,10 @@ public class JndiLoaderTest extends TestCase {
         contextEnv.put("jndi.syntax.direction", "left_to_right");
         contextEnv.put("jndi.syntax.separator", "/");
         */
+
+        contextEnv.put(JndiLoader.SIMPLE_DELIMITER, "/");
+
+        loader = new JndiLoader(contextEnv);
         
         try {
             ctxt = new InitialContext(contextEnv);
@@ -55,7 +60,6 @@ public class JndiLoaderTest extends TestCase {
             Properties props = new Properties();
             props.put("foo", "13");
             props.put("bar/foo", "42");
-            JndiLoader loader = new JndiLoader();
             loader.load( props, ctxt );
             assertEquals( "13", ctxt.lookup("foo") );
             assertEquals( "42", ctxt.lookup("bar/foo") );
@@ -68,7 +72,6 @@ public class JndiLoaderTest extends TestCase {
     public void testDirectory() {
         try {
             File file = new File("src/test/config/");
-            JndiLoader loader = new JndiLoader();
             loader.loadDirectory( file, ctxt );
             assertEquals( "13", ctxt.lookup("test/value") );
         } catch(IOException ioe) {
@@ -83,12 +86,10 @@ public class JndiLoaderTest extends TestCase {
     public void testDefaultFile() {
         try {
             File file = new File("src/test/config/");
-            JndiLoader loader = new JndiLoader();
             loader.loadDirectory( file, ctxt );
             List list = (List) ctxt.lookup("name");
             assertEquals( "Henri", list.get(0) );
             assertEquals( "Fred", list.get(1) );
-            assertEquals( "Foo", ctxt.lookup("com.genjava") );
         } catch(IOException ioe) {
             ioe.printStackTrace();
             fail("IOException: "+ioe.getMessage());
@@ -102,7 +103,6 @@ public class JndiLoaderTest extends TestCase {
         String dsString = "bing::::foofoo::::Boo";
         try {
             File file = new File("src/test/config/");
-            JndiLoader loader = new JndiLoader();
             loader.loadDirectory( file, ctxt );
             Context subctxt = (Context) ctxt.lookup("java");
             assertEquals( dsString, subctxt.lookup("TestDS").toString() );
@@ -122,7 +122,6 @@ public class JndiLoaderTest extends TestCase {
             Properties props = new Properties();
             props.put("foo", "true");
             props.put("foo/type", "java.lang.Boolean");
-            JndiLoader loader = new JndiLoader();
             loader.load( props, ctxt );
             assertEquals( new Boolean(true), ctxt.lookup("foo") );
         } catch(NamingException ne) {
@@ -138,7 +137,6 @@ public class JndiLoaderTest extends TestCase {
             props.put("birthday/type", "java.util.Date");
             props.put("birthday/format", "yyyy-MM-dd");
 
-            JndiLoader loader = new JndiLoader();
             loader.load( props, ctxt );
 
             Date d = (Date) ctxt.lookup("birthday");
@@ -162,7 +160,6 @@ public class JndiLoaderTest extends TestCase {
             props.put("math/type", "magic number");
             props.put("math/converter", "org.osjava.sj.loader.convert.PiConverter");
 
-            JndiLoader loader = new JndiLoader();
             loader.load( props, ctxt );
 
             assertEquals( new Double(Math.PI), ctxt.lookup("math") );
