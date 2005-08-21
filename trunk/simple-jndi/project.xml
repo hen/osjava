@@ -104,15 +104,6 @@
       <includes>
         <include>**/*Test.java</include>
       </includes>
-      <excludes>
-          <exclude>org/osjava/jndi/ClasspathLookupTest.java</exclude>
-          <exclude>org/osjava/jndi/DataSourceLookupTest.java</exclude>
-          <exclude>org/osjava/jndi/LookupTest.java</exclude>
-          <exclude>org/osjava/jndi/SharedMemoryTest.java</exclude>
-          <exclude>org/osjava/jndi/util/HierarchicalMapTest.java</exclude>
-          <exclude>org/osjava/jndi/util/PropertiesParserTest.java</exclude>
-          <exclude>org/osjava/jndi/util/XmlParserTest.java</exclude>
-      </excludes>
       <resources>
         <resource>
           <directory>src/test/config</directory>
