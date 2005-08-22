@@ -24,9 +24,6 @@ public class SimpleContext extends DelegatingContext {
     // option for top level space; ie) java:comp
     public static final String SIMPLE_SPACE = "org.osjava.sj.space";
 
-    // char(s) to replace : with on the filesystem in filenames
-    public static final String SIMPLE_COLON_REPLACE = "org.osjava.sj.colon.replace";
-
     /*
      * 
      * root
@@ -57,10 +54,10 @@ public class SimpleContext extends DelegatingContext {
         String space = (String) env.get(SIMPLE_SPACE);
         if(space != null) {
             // make contexts for space...
-        }
-
-        String colonReplace = (String) env.get(SIMPLE_COLON_REPLACE);
-        if(colonReplace != null) {
+            String[] array = JndiLoader.split(space, (String) env.get(JndiLoader.SIMPLE_DELIMITER) );
+            for(int i=0; i<array.length; i++) {
+                ctxt = ctxt.createSubcontext(array[i]);
+            }
         }
 
         try {
