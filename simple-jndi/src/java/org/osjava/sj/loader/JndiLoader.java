@@ -19,8 +19,6 @@ public class JndiLoader {
 
     // separator, or just put them in as contexts?
     public static final String SIMPLE_DELIMITER = "org.osjava.sj.delimiter";
-    // option for top level space; ie) java:comp
-    public static final String SIMPLE_SPACE = "org.osjava.sj.space";
     // share the same InitialContext
     public static final String SIMPLE_SHARED = "org.osjava.sj.shared";
 
@@ -38,10 +36,6 @@ public class JndiLoader {
         }
         
         this.table.put(SIMPLE_DELIMITER, env.get(SIMPLE_DELIMITER));
-        
-        if(env.containsKey(SIMPLE_SPACE)) {
-            this.table.put(SIMPLE_SPACE, env.get(SIMPLE_SPACE));
-        }
     }
     
     public void putParameter(String key, String value) {
