@@ -50,23 +50,12 @@ import com.generationjava.io.xml.XMLNode;
 // TODO: Migrate to the DOM or SAX API
 public class XmlProperties extends AbstractProperties {
 
-    // TODO: Move this up to AbstractProperties
-    private String delimiter = ".";
-
     public XmlProperties() {
         super();
     }
 
     public XmlProperties(Properties props) {
         super(props);
-    }
-
-    public void setDelimiter(String delimiter) {
-        this.delimiter = delimiter;
-    }
-
-    public String getDelimiter() {
-        return this.delimiter;
     }
 
     public void load(InputStream in) throws IOException {

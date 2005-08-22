@@ -30,7 +30,6 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-/// TODO: Refactor this out
 package org.osjava.sj.loader.util;
 
 import java.io.*;
@@ -44,17 +43,6 @@ import java.util.*;
  * Comments are a semi-colon. 
  */
 public class IniProperties extends AbstractProperties {
-
-    // TODO: Move this up to AbstractProperties
-    private String delimiter = "";
-
-    public void setDelimiter(String delimiter) {
-        this.delimiter = delimiter;
-    }
-
-    public String getDelimiter() {
-        return this.delimiter;
-    }
 
     /**
      * Load in a .ini file. 
@@ -87,7 +75,7 @@ public class IniProperties extends AbstractProperties {
                     if("".equals(block)) {
                         this.setProperty(line.substring(0,idx), line.substring(idx+1));
                     } else {
-                        this.setProperty(block+this.delimiter+line.substring(0,idx), line.substring(idx+1));
+                        this.setProperty(block + getDelimiter() + line.substring(0,idx), line.substring(idx+1));
                     }
                 } else {
                     // blank line, or just a bad line

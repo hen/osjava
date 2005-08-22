@@ -30,12 +30,10 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-/// TODO: Refactor this out
 package org.osjava.sj.loader.util;
 
 import java.io.*;
 import java.util.*;
-//import com.generationjava.collections.OrderedSet;
 
 public class CustomProperties extends AbstractProperties {
 
