@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.Hashtable;
 import javax.naming.NamingException;
 import javax.naming.InitialContext;
+import javax.naming.Context;
 
 import org.osjava.sj.loader.JndiLoader;
 
@@ -19,6 +20,12 @@ public class SimpleContext extends DelegatingContext {
     public static final String SIMPLE_ROOT = "org.osjava.sj.root";
 
     public static final String SIMPLE_DELEGATE = "org.osjava.sj.factory";
+
+    // option for top level space; ie) java:comp
+    public static final String SIMPLE_SPACE = "org.osjava.sj.space";
+
+    // char(s) to replace : with on the filesystem in filenames
+    public static final String SIMPLE_COLON_REPLACE = "org.osjava.sj.colon.replace";
 
     /*
      * 
@@ -46,14 +53,31 @@ public class SimpleContext extends DelegatingContext {
             root = root.substring("file://".length());
         }
 
+        Context ctxt = this;
+        String space = (String) env.get(SIMPLE_SPACE);
+        if(space != null) {
+            // make contexts for space...
+        }
+
+        String colonReplace = (String) env.get(SIMPLE_COLON_REPLACE);
+        if(colonReplace != null) {
+        }
+
         try {
-            loader.loadDirectory( new File(root), this );
+            loader.loadDirectory( new File(root), ctxt );
         } catch(IOException ioe) {
             throw new NamingException("Unable to load data from directory: "+root+" due to error: "+ioe.getMessage());
         }
     }
     
     private static InitialContext createContext(Hashtable env) throws NamingException {
+
+        copyFromSystemProperties(env, JndiLoader.SIMPLE_DELIMITER);
+        copyFromSystemProperties(env, SIMPLE_ROOT);
+        copyFromSystemProperties(env, SIMPLE_SPACE);
+        copyFromSystemProperties(env, JndiLoader.SIMPLE_SHARED);
+        copyFromSystemProperties(env, SIMPLE_DELEGATE);
+        
         env.put("jndi.syntax.direction", "left_to_right");
         if(!env.containsKey(JndiLoader.SIMPLE_DELIMITER)) {
             env.put(JndiLoader.SIMPLE_DELIMITER, ".");
@@ -67,6 +91,12 @@ public class SimpleContext extends DelegatingContext {
         env.put("java.naming.factory.initial", env.get(SIMPLE_DELEGATE) );
 
         return new InitialContext(env);
+    }
+
+    private static void copyFromSystemProperties(Hashtable env, String key) {
+        if(System.getProperty(key) != null) {
+            env.put(key, System.getProperty(key));
+        }
     }
 
 }
