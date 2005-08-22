@@ -72,7 +72,6 @@ public class XmlProperties extends AbstractProperties {
         while(enum.hasMoreElements()) {
             XMLNode node = (XMLNode)enum.nextElement();
             if(!node.isTag()) { continue; }
-//            add("", node);
             add(root.getName(), node);
         }
         Enumeration attrs = root.enumerateAttr();
@@ -85,9 +84,7 @@ public class XmlProperties extends AbstractProperties {
     }
     
     public void add(String level, XMLNode node) {
-        if( node.getValue() != null ) {
-            setProperty( level+getDelimiter()+node.getName(), node.getValue());
-        }
+        boolean foundSubNode = false;
         Enumeration attrs = node.enumerateAttr();
         if(attrs != null) {
             while(attrs.hasMoreElements()) {
@@ -97,15 +94,19 @@ public class XmlProperties extends AbstractProperties {
         }
         Enumeration nodes = node.enumerateNode();
         if(nodes != null) {
-            level = level+getDelimiter()+node.getName();
+            String sublevel = level+getDelimiter()+node.getName();
             while(nodes.hasMoreElements()) {
                 XMLNode subnode = (XMLNode)nodes.nextElement();
                 if(!subnode.isTag()) { continue; }
                 // temporary pending research into XMLNode parsing:
                 if(!"".equals(subnode.getName())) {
-                    add(level, subnode);
+                    foundSubNode = true;
+                    add(sublevel, subnode);
                 }
             }
+        }
+        if( foundSubNode == false && node.getValue() != null ) {
+            setProperty( level+getDelimiter()+node.getName(), node.getValue());
         }
     }
     
