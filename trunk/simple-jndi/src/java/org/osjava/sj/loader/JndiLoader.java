@@ -83,23 +83,29 @@ public class JndiLoader {
 // System.err.println("Is directory. Creating subcontext: "+name);
                 Context tmpCtxt = ctxt.createSubcontext( name );
                 loadDirectory(file, tmpCtxt);
-            } else
-            if( file.getName().endsWith(".properties") ) {
+            } else {
+                // TODO: Make this a plugin system
+                String[] extensions = new String[] { ".properties", ".ini" }; // ".xml"
+                for(int j=0; j<extensions.length; j++) {
+                    String extension = extensions[j];
+                    if( file.getName().endsWith(extension) ) {
 // System.err.println("Is .properties file. "+name);
-                Context tmpCtxt = ctxt;
-                if(!file.getName().equals("default.properties")) {
-                    name = name.substring(0, name.length() - ".properties".length());
+                        Context tmpCtxt = ctxt;
+                        if(!file.getName().equals("default"+extension)) {
+                            name = name.substring(0, name.length() - extension.length());
 // System.err.println("Not default, so creating subcontext: "+name);
-                    tmpCtxt = ctxt.createSubcontext( name );
+                            tmpCtxt = ctxt.createSubcontext( name );
+                        }
+                        load( loadFile(file), tmpCtxt );
+                    }
                 }
-                load( loadFile(file), tmpCtxt );
             }
         }
 
     }
 
     private Properties loadFile(File file) throws IOException {
-        Properties p = null;
+        AbstractProperties p = null;
 
         if(file.getName().endsWith(".xml")) {
             p = new XmlProperties();
@@ -110,11 +116,12 @@ public class JndiLoader {
             p = new CustomProperties();
         }
 
+        p.setDelimiter( (String) this.table.get(SIMPLE_DELIMITER) );
+
         FileInputStream fin = null;
         try {
             fin = new FileInputStream(file);
             p.load(fin);
-// System.err.println("Loaded: "+p);
             return p;
         } finally {
             if(fin != null) fin.close();
