@@ -60,9 +60,11 @@ public class JndiLoaderTest extends TestCase {
             Properties props = new Properties();
             props.put("foo", "13");
             props.put("bar/foo", "42");
+            props.put("bar/test/foo", "101");
             loader.load( props, ctxt );
             assertEquals( "13", ctxt.lookup("foo") );
             assertEquals( "42", ctxt.lookup("bar/foo") );
+            assertEquals( "101", ctxt.lookup("bar/test/foo") );
         } catch(NamingException ne) {
             ne.printStackTrace();
             fail("NamingException: "+ne.getMessage());
