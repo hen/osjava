@@ -85,11 +85,11 @@ public class JndiLoader {
                 loadDirectory(file, tmpCtxt);
             } else {
                 // TODO: Make this a plugin system
-                String[] extensions = new String[] { ".properties", ".ini" }; // ".xml"
+                String[] extensions = new String[] { ".properties", ".ini", ".xml" };
                 for(int j=0; j<extensions.length; j++) {
                     String extension = extensions[j];
                     if( file.getName().endsWith(extension) ) {
-// System.err.println("Is .properties file. "+name);
+// System.err.println("Is "+extension+" file. "+name);
                         Context tmpCtxt = ctxt;
                         if(!file.getName().equals("default"+extension)) {
                             name = name.substring(0, name.length() - extension.length());
@@ -210,7 +210,7 @@ public class JndiLoader {
         ArrayList list = new ArrayList();
         int idx = 0;
         while( true ) {
-            idx = str.indexOf( delimiter, idx );
+            idx = str.indexOf( delimiter );
             if(idx == -1) {
                 list.add(str);
                 break;
@@ -238,11 +238,11 @@ public class JndiLoader {
         for(int i=0; i < lastIndex; i++) {
             Object obj = tmpCtxt.lookup(path[i]);
             if(obj == null) {
-// System.err.println("Creating subcontext: "+path[i]);
+// System.err.println("Creating subcontext: " + path[i] + " for " + key);
                 tmpCtxt = tmpCtxt.createSubcontext(path[i]);
             } else
             if(obj instanceof Context) {
-// System.err.println("Using subcontext: "+obj);
+// System.err.println("Using subcontext: "+obj + " for " + key);
                 tmpCtxt = (Context) obj;
             } else {
                 throw new RuntimeException("Illegal node/branch clash. At branch value '"+path[i]+"' an Object was found: " +obj);
