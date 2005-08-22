@@ -19,8 +19,12 @@ public class JndiLoader {
 
     // separator, or just put them in as contexts?
     public static final String SIMPLE_DELIMITER = "org.osjava.sj.delimiter";
+
     // share the same InitialContext
     public static final String SIMPLE_SHARED = "org.osjava.sj.shared";
+
+    // char(s) to replace : with on the filesystem in filenames
+    public static final String SIMPLE_COLON_REPLACE = "org.osjava.sj.colon.replace";
 
     private static ConvertRegistry convertRegistry = new ConvertRegistry();
 
@@ -35,7 +39,13 @@ public class JndiLoader {
             throw new IllegalArgumentException("The property "+SIMPLE_DELIMITER+" is mandatory. ");
         }
         
+
         this.table.put(SIMPLE_DELIMITER, env.get(SIMPLE_DELIMITER));
+
+        if(env.containsKey(SIMPLE_COLON_REPLACE)) {
+            this.table.put(SIMPLE_COLON_REPLACE, env.get(SIMPLE_COLON_REPLACE));
+        }
+
     }
     
     public void putParameter(String key, String value) {
@@ -65,6 +75,12 @@ public class JndiLoader {
         for(int i=0; i<files.length; i++) {
             File file = files[i];
             String name = file.getName();
+
+            if(name.indexOf(":") != -1) {
+                if(this.table.containsKey(SIMPLE_COLON_REPLACE)) {
+                    name = replace( name, (String) this.table.get(SIMPLE_COLON_REPLACE), ":" );
+                }
+            }
 // System.err.println("Consider: "+name);
             // TODO: Replace hack with a FilenameFilter
 
@@ -200,7 +216,7 @@ public class JndiLoader {
 
     }
 
-    static String[] split(String str, String delimiter) {
+    public static String[] split(String str, String delimiter) {
         ArrayList list = new ArrayList();
         int idx = 0;
         while( true ) {
@@ -291,6 +307,19 @@ public class JndiLoader {
     private static String removeLastElement( String str, String delimiter ) {
         int idx = str.lastIndexOf(delimiter);
         return str.substring(0, idx);
+    }
+
+    public static String replace(String str, String repl, String with) {
+        int idx = str.indexOf(repl);
+        if(idx == -1) {
+            return str;
+        } else {
+            String rest = "";
+            if(str.length() > idx + repl.length()) {
+                rest = replace(str.substring(idx + repl.length()), repl, with);
+            }
+            return str.substring(0, idx) + with + rest;
+        }
     }
 
 }
