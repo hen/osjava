@@ -30,16 +30,24 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-/// TODO: Refactor this out
 package org.osjava.sj.loader.util;
 
 import java.io.*;
 import java.util.*;
-//import com.generationjava.collections.OrderedSet;
 
 public abstract class AbstractProperties extends Properties {
 
+    private String delimiter = ".";
+
     public abstract void load(InputStream in) throws IOException;
+
+    public void setDelimiter(String delimiter) {
+        this.delimiter = delimiter;
+    }
+
+    public String getDelimiter() {
+        return this.delimiter;
+    }
 
     public synchronized Object put(Object key, Object value) {
         if(index.contains(key)) {
