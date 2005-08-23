@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, Henri Yandell
+ * Copyright (c) 2003, Henri Yandell, Eric Alexander
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or 
@@ -30,24 +30,26 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-// XmlProperties.java
 package org.osjava.sj.loader.util;
 
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.InputStream;
-import java.io.File;
-import java.io.FileReader;
-import java.io.Reader;
-import java.io.InputStreamReader;
-import java.io.BufferedReader;
 import java.util.Properties;
-import java.util.Enumeration;
 
-import com.generationjava.io.xml.XMLParser;
-import com.generationjava.io.xml.XMLNode;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 
-// TODO: Migrate to the DOM or SAX API
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
+
+/**
+ * Loads properties using the DOM API from an InputStream containing XML
+ */
 public class XmlProperties extends AbstractProperties {
 
     public XmlProperties() {
@@ -59,55 +61,67 @@ public class XmlProperties extends AbstractProperties {
     }
 
     public void load(InputStream in) throws IOException {
-        InputStreamReader reader = new InputStreamReader(in);
-        this.load( reader );
-        reader.close();
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = null;
+        Document document = null;
+        
+        try {
+            builder = factory.newDocumentBuilder();
+            document = builder.parse(in);            
+        } catch (ParserConfigurationException pce) {
+            throw new IOException("Unable to get DocumentBuilder from factory. " + pce.getMessage());
+        } 
+        catch (SAXException se) {
+            throw new IOException("Unable to parse document. " + se.getMessage());
+        }
+        
+        if (document != null) {
+            loadDocument(document);
+        }
     }
 
-    // TODO: Decide if load could just throw the root at add.
-    public void load(Reader reader) throws IOException {
-        XMLParser parser = new XMLParser();
-        XMLNode root = parser.parseXML(reader);
-        Enumeration enum = root.enumerateNode();
-        while(enum.hasMoreElements()) {
-            XMLNode node = (XMLNode)enum.nextElement();
-            if(!node.isTag()) { continue; }
-            add(root.getName(), node);
-        }
-        Enumeration attrs = root.enumerateAttr();
-        if(attrs != null) {
-            while(attrs.hasMoreElements()) {
-                String attr = (String)attrs.nextElement();
-                setProperty( root.getName()+getDelimiter()+attr, root.getAttr(attr));
+    private void loadDocument(Document document) {
+        Element root = document.getDocumentElement();
+        String level = root.getNodeName();
+        processChildren(level, root);
+    }
+    
+    private void processChildren(String level, Node node) {
+        NodeList children = node.getChildNodes();
+        for(int i=0;i<children.getLength();i++) {
+            Node child = children.item(i);
+            addNode(level, child);
+            if (child.hasAttributes()) {
+                String attributeLevel = level + getDelimiter() + child.getNodeName();
+                addAttributes(attributeLevel, child.getAttributes());
             }
         }
     }
     
-    public void add(String level, XMLNode node) {
-        boolean foundSubNode = false;
-        Enumeration attrs = node.enumerateAttr();
-        if(attrs != null) {
-            while(attrs.hasMoreElements()) {
-                String attr = (String)attrs.nextElement();
-                setProperty( level+getDelimiter()+node.getName()+getDelimiter()+attr, node.getAttr(attr));
-            }
+    private void addNode(String level, Node node) {            
+        switch (node.getNodeType()) {
+            case Node.ELEMENT_NODE :
+                level = level + getDelimiter() + node.getNodeName();
+                break;
+            case Node.TEXT_NODE :
+                store(level, node.getNodeValue());
+                break;
         }
-        Enumeration nodes = node.enumerateNode();
-        if(nodes != null) {
-            String sublevel = level+getDelimiter()+node.getName();
-            while(nodes.hasMoreElements()) {
-                XMLNode subnode = (XMLNode)nodes.nextElement();
-                if(!subnode.isTag()) { continue; }
-                // temporary pending research into XMLNode parsing:
-                if(!"".equals(subnode.getName())) {
-                    foundSubNode = true;
-                    add(sublevel, subnode);
-                }
-            }
-        }
-        if( foundSubNode == false && node.getValue() != null ) {
-            setProperty( level+getDelimiter()+node.getName(), node.getValue());
-        }
+                     
+        processChildren(level, node);        
+    }
+        
+    private void addAttributes(String level, NamedNodeMap map) {       
+        for(int i=0;i<map.getLength();i++) {
+            Node attribute = map.item(i);
+            String attributeLevel = level + getDelimiter() + attribute.getNodeName();
+            store(attributeLevel, attribute.getNodeValue());
+        }          
     }
     
+    private void store(String name, String value) {
+        if (value.trim().length() > 0) {
+            setProperty(name, value);
+        }
+    }
 }
