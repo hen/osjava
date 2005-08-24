@@ -11,6 +11,7 @@ import javax.naming.InitialContext;
 import javax.naming.Context;
 
 import org.osjava.sj.loader.JndiLoader;
+import org.osjava.sj.loader.util.Utils;
 
 // job is to hide the JndiLoader, apart from a jndi.properties entry
 // can also handle switching . to / so that the delimiter may be settable
@@ -54,7 +55,7 @@ public class SimpleContext extends DelegatingContext {
         String space = (String) env.get(SIMPLE_SPACE);
         if(space != null) {
             // make contexts for space...
-            String[] array = JndiLoader.split(space, (String) env.get(JndiLoader.SIMPLE_DELIMITER) );
+            String[] array = Utils.split(space, (String) env.get(JndiLoader.SIMPLE_DELIMITER) );
             for(int i=0; i<array.length; i++) {
                 ctxt = ctxt.createSubcontext(array[i]);
             }
