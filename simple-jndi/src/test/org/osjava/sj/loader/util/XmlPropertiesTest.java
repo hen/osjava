@@ -43,26 +43,20 @@ import junit.framework.TestCase;
 
 public class XmlPropertiesTest extends TestCase {
    
-    public void testLoad() {
-        try {
-            InputStream is = new FileInputStream("src/test/config/xmltest.xml");
-            XmlProperties xmlProperties = new XmlProperties();
-            xmlProperties.load(is);
-            
-            List list = new LinkedList();
-            list.add("one");
-            list.add("two");
-            
-            assertEquals(xmlProperties.get("config.value"), "13");
-            assertEquals(xmlProperties.get("config.one.two"), "three");
-            assertEquals(xmlProperties.get("config.four.five"), "Bang");
-            assertEquals(xmlProperties.get("config.multi.item"), list);
-            is.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void testLoad() throws IOException {
+        InputStream is = new FileInputStream("src/test/config/xmltest.xml");
+        XmlProperties xmlProperties = new XmlProperties();
+        xmlProperties.load(is);
+        
+        List list = new LinkedList();
+        list.add("one");
+        list.add("two");
+        
+        assertEquals(xmlProperties.get("config.value"), "13");
+        assertEquals(xmlProperties.get("config.one.two"), "three");
+        assertEquals(xmlProperties.get("config.four.five"), "Bang");
+        assertEquals(xmlProperties.get("config.multi.item"), list);
+        is.close();
     }
 
 }
