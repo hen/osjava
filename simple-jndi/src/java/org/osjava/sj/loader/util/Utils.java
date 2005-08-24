@@ -32,6 +32,8 @@
 // Utils.java
 package org.osjava.sj.loader.util;
 
+import java.util.ArrayList;
+
 /**
  * The usual Utils class with reusable flotsam
  */
