@@ -1,4 +1,4 @@
-package org.osjava.sj.loader;
+package org.osjava.sj.loader.util;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -18,10 +18,10 @@ public class SplitTest extends TestCase {
     }
 
     public void testSplit() {
-        assertArrayEquals("", new String[] { "config", "one", "two"}, JndiLoader.split("config.one.two", ".") );
-        assertArrayEquals("", new String[] { "one", "two", "three"}, JndiLoader.split("one.two.three", ".") );
-        assertArrayEquals("", new String[] { "one"}, JndiLoader.split("one", ".") );
-        assertArrayEquals("", new String[] { ""}, JndiLoader.split("", ".") );
+        assertArrayEquals("", new String[] { "config", "one", "two"}, Utils.split("config.one.two", ".") );
+        assertArrayEquals("", new String[] { "one", "two", "three"}, Utils.split("one.two.three", ".") );
+        assertArrayEquals("", new String[] { "one"}, Utils.split("one", ".") );
+        assertArrayEquals("", new String[] { ""}, Utils.split("", ".") );
     }
 
     private void assertArrayEquals(String message, String[] array1, String[] array2) {
