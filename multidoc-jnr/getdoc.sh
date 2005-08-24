@@ -14,4 +14,5 @@ do
   rmdir $dest/*/docs/apidocs 2>&1 | grep -v 'No such file or directory'
   rmdir $dest/*/docs/ 2>&1 | grep -v 'No such file or directory'
   rmdir $dest/*/ 2>&1 | grep -v 'Directory not empty' | grep -v 'No such file or directory'
+  rmdir $dest/ 2>&1 | grep -v 'Directory not empty' | grep -v 'No such file or directory'
 done
