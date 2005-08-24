@@ -78,7 +78,7 @@ public class JndiLoader {
 
             if(name.indexOf(":") != -1) {
                 if(this.table.containsKey(SIMPLE_COLON_REPLACE)) {
-                    name = replace( name, (String) this.table.get(SIMPLE_COLON_REPLACE), ":" );
+                    name = Utils.replace( name, (String) this.table.get(SIMPLE_COLON_REPLACE), ":" );
                 }
             }
 // System.err.println("Consider: "+name);
@@ -216,28 +216,13 @@ public class JndiLoader {
 
     }
 
-    public static String[] split(String str, String delimiter) {
-        ArrayList list = new ArrayList();
-        int idx = 0;
-        while( true ) {
-            idx = str.indexOf( delimiter );
-            if(idx == -1) {
-                list.add(str);
-                break;
-            }
-            list.add(str.substring(0, idx));
-            str = str.substring(idx + delimiter.length());
-        }
-        return (String[]) list.toArray( new String[0] );
-    }
-
     private void jndiPut(Context ctxt, String key, Object value) throws NamingException {
         // here we need to break by the specified delimiter
 
         // can't use String.split as the regexp will clash with the types of chars 
         // used in the delimiters. Could use Commons Lang. Quick hack instead.
 //        String[] path = key.split( (String) this.table.get(SIMPLE_DELIMITER) );
-        String[] path = split( key, (String) this.table.get(SIMPLE_DELIMITER) );
+        String[] path = Utils.split( key, (String) this.table.get(SIMPLE_DELIMITER) );
 
 // System.err.println("LN: "+path.length);
         int lastIndex = path.length - 1;
@@ -307,19 +292,6 @@ public class JndiLoader {
     private static String removeLastElement( String str, String delimiter ) {
         int idx = str.lastIndexOf(delimiter);
         return str.substring(0, idx);
-    }
-
-    public static String replace(String str, String repl, String with) {
-        int idx = str.indexOf(repl);
-        if(idx == -1) {
-            return str;
-        } else {
-            String rest = "";
-            if(str.length() > idx + repl.length()) {
-                rest = replace(str.substring(idx + repl.length()), repl, with);
-            }
-            return str.substring(0, idx) + with + rest;
-        }
     }
 
 }
