@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<document>
+
+  <properties>
+    <author email="bayard@generationjava.com">Henri Yandell</author>
+    <title>Submitting patches</title>
+  </properties>
+
+  <body>
+  <section name="Patches?"><p>
+One of the beauties of open-source is that you have the opportunity to fix bugs yourself instead of just reporting them. If you should choose to do so, please feel welcome to submit your patch to the main Simple-JNDI codebase.
+
+The correct way to generate a subversion patch is with the following command:
+
+<pre>
+svn diff src/java/org/osjava/sj/SimpleContext.java &gt; SimpleContext-20050810.patch
+</pre>
+
+However Simple-JNDI will accept the patch in any form, we're not fussy yet.
+
+Patches should be submitted to one of the following:
+
+<ul>
+<li>Henri Yandell</li>
+<li>The <a href="http://lists.osjava.org/mailman/listinfo/osjava-users">osjava-users mailing list</a></li>
+<li>The <a href="http://issues.osjava.org:8080/jira/secure/BrowseProject.jspa?id=10000">OSJava Issue Tracker</a></li>
+</ul>
+
+They'll be very much appreciated.
+  </p></section>
+  </body>
+
+</document>
