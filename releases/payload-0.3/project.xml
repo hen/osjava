@@ -26,7 +26,7 @@
   <inceptionYear>2004</inceptionYear>
 
   <!-- The Java package. Javadoc will not build without this. -->
-  <package>org.osjava.payload</package>
+  <package>com.generationjava.payload</package>
 
   <!-- Or provide your own if you have a logo -->
   <logo>http://www.osjava.org/images/1x1.gif</logo>
