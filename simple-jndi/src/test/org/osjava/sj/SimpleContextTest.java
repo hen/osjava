@@ -77,4 +77,12 @@ public class SimpleContextTest extends TestCase {
         assertEquals( "42", subCtxt.lookup("magic") );
     }
 
+    public void testDoubleDSLookup() throws NamingException {
+        String dsString = "org.gjt.mm.mysql.Driver::::jdbc:mysql://127.0.0.1/tmp::::sa";
+        DataSource fooDS = (DataSource) this.ctxt.lookup("nested-datasource.com.foo.FooDS");
+        DataSource barDS = (DataSource) this.ctxt.lookup("nested-datasource.com.foo.BarDS");
+        assertEquals( dsString, fooDS.toString() );
+        assertEquals( dsString, barDS.toString() );
+    }
+
 }
