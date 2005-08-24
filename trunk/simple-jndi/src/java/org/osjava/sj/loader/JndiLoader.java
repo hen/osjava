@@ -76,9 +76,10 @@ public class JndiLoader {
             File file = files[i];
             String name = file.getName();
 
-            if(name.indexOf(":") != -1) {
-                if(this.table.containsKey(SIMPLE_COLON_REPLACE)) {
-                    name = Utils.replace( name, (String) this.table.get(SIMPLE_COLON_REPLACE), ":" );
+            String colonReplace = (String) this.table.get(SIMPLE_COLON_REPLACE);
+            if(colonReplace != null) {
+                if(name.indexOf(colonReplace) != -1) {
+                    name = Utils.replace( name, colonReplace, ":" );
                 }
             }
 // System.err.println("Consider: "+name);

@@ -69,4 +69,12 @@ public class SimpleContextTest extends TestCase {
         assertEquals( "pears", this.ctxt.lookup("testini.block2.apple") );
         assertEquals( "stairs", this.ctxt.lookup("testini.block2.orange") );
     }
+
+    public void testColonReplaceLookup() throws NamingException {
+        assertEquals( "42", this.ctxt.lookup("java:.magic") );
+
+        Context subCtxt = (Context) this.ctxt.lookup("java:");
+        assertEquals( "42", subCtxt.lookup("magic") );
+    }
+
 }
