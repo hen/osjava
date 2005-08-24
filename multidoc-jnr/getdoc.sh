@@ -1,9 +1,12 @@
-for i in `ls -1 /home/sites/org.osjava/dist/releases/official/*/*.zip /home/sites/org.osjava/dist/releases/official/genjava/*/*.zip | grep -v src`
+# DIR should be the location of the checked out svn.osjava.org/site/dist/ directory
+DIR=$1
+OUTPUT=$1/releases/multidoc-jnr
+for i in `ls -1 $DIR/releases/official/*/*.zip $DIR/releases/official/genjava/*/*.zip | grep -v src`
 do
   name=`echo $i | sed 's/.*\///' | sed 's/.zip//'`
   version=`echo $name | sed 's/^[^0-9]*\([0-9][0-9]*\..*\)$/\1/'`
   name=`echo $name | sed 's/\([^0-9]*\).*/\1/' | sed 's/-$//'`
-  dest=$name/$version
+  dest=$OUTPUT/$name/$version
 
   mkdir -p $dest
   unzip -q -d $dest $i *apidocs* 2>&1 | sed "s/caution: filename not matched:.*/No Javadoc in $name $version/"
