@@ -1,8 +1,14 @@
-cp header-index-template.html index.html
+# DIR should be the location of the checked out svn.osjava.org/site/dist/ directory
+DIR=$1
+OUTPUT=$1/releases/multidoc-jnr
 
-for i in `ls -1d */ | sort -f`
+cp header-index-template.html $OUTPUT/index.html
+
+for i in `ls -1d $OUTPUT/*/ | sort -f`
 do
   i=`echo $i | sed 's/\/$//'`
+  countI=`echo $i | wc -c`
+  prettyI=`echo $i | sed 's/.*\///'`
 
   cp header-template.html $i/versions.html
 
@@ -15,6 +21,7 @@ do
         u="'packageListFrame', '$v/overview-frame.html'";
     else
         f=`find $j -type f -name 'package-frame.html' | sed 's/[^\/]*\///'`;
+        f=`echo $f | cut -c ${countI}-`
         u="'packageListFrame', '$f'";
     fi
 
@@ -25,10 +32,11 @@ do
         u="$u, 'classFrame', '$v/overview-summary.html'";
     else
         f=`find $j -type f -name 'package-summary.html' | sed 's/[^\/]*\///'`;
+        f=`echo $f | cut -c ${countI}-`
         u="$u, 'classFrame', '$f'";
     fi
 
-    echo "<nobr><a name=\"$v\"><font class=\"FrameItemFont\"><a href=\"javascript:load($u)\">$i $v</a></font></nobr><br/>" >> $i/versions.html
+    echo "<nobr><a name=\"$v\"><font class=\"FrameItemFont\"><a href=\"javascript:load($u)\">$prettyI $v</a></font></nobr><br/>" >> $i/versions.html
   done
 
   echo '</body></html>' >> $i/versions.html
@@ -36,8 +44,8 @@ do
   cp blank-template.html $i/blank.html
   cp index-template.html $i/index.html
 
-  echo "<li><a href=\"$i/index.html\">$i</a></li>" >> index.html
+  echo "<li><a href=\"$i/index.html\">$prettyI</a></li>" >> $OUTPUT/index.html
 
 done
 
-cat footer-index-template.html >> index.html
+cat footer-index-template.html >> $OUTPUT/index.html
