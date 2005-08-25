@@ -61,26 +61,11 @@ public class ThreadTest {
 
         public void writeFinished(ChannelHandler con) {
             System.out.println("Write finished");
-                /*
-            try {
-                ((SocketChannel)con.getSelectableChannel()).socket().
-                    shutdownOutput();
-                if(((SocketChannelHandler)con).isReadFinished()) {
-                    con.close();
-                }
-            } catch (IOException ioe) {
-                ioe.printStackTrace();
-            }
-                */
         }
 
         public void readFinished(ChannelHandler con) {
             System.out.println("Read finished");
             try {
-                /*
-                ((SocketChannel)con.getSelectableChannel()).socket().
-                    shutdownInput();
-                    */
                 if(((SocketChannelHandler)con).isWriteFinished()) {
                     con.close();
                 }
@@ -321,6 +306,6 @@ public class ThreadTest {
         iot.start();
         System.out.println("IOThread Started");
 
-        iot.queueTask(new SetupTask( connectionCount, byteCount ) );
+        iot.doTask(new SetupTask( connectionCount, byteCount ) );
     }
 }
