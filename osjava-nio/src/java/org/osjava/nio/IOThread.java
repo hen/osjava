@@ -129,9 +129,6 @@ public class IOThread extends Thread {
         synchronized(tasks) {
             tasks.add(task);
         }
-        /*
-         * XXX: There are possible timing issues with this
-         */
         mySelector.wakeup();
     }
 
@@ -168,6 +165,7 @@ public class IOThread extends Thread {
             logger.debug("invalid key");
         }
     }
+
 
     /**
      * Remove an interestOp from the specified <code>key</code>.  This will
@@ -234,7 +232,8 @@ public class IOThread extends Thread {
     }
 
     /**
-     * Deregisters a {@link ChannelHandler} <code>handler</code> from the thread.
+     * Deregisters a {@link ChannelHandler} <code>handler</code> from the 
+     * thread.
      * After deregistering, changes in the state of the thread's {@link
      * SelectionKey} will be ignored.
      *
