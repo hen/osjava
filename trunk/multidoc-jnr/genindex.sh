@@ -68,7 +68,7 @@ do
   cp blank-template.html $i/blank.html
   cp index-template.html $i/index.html
 
-  echo "<li><a href=\"$i/index.html\">$prettyI</a></li>" >> $OUTPUT/index.html
+  echo "<li><a href=\"$prettyI/index.html\">$prettyI</a></li>" >> $OUTPUT/index.html
 
 done
 
