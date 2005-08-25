@@ -15,6 +15,7 @@
 <li><a href="GeneralDesign.html">Simple-JNDI design</a></li>
 <li><a href="DataFiles.html">Creating your data files</a></li>
 <li><a href="ConverterPlugins.html">Implementing your own Converters</a></li>
+<li><a href="DataSources.html">DataSources</a></li>
 <li><a href="Todo.html">List of future ideas</a></li>
 <li><a href="SubmittingBugs.html">Submitting bugs</a></li>
 <li><a href="CompilingTheSource.html">Compiling the source</a></li>

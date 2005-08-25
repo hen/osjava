@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<document>
+
+  <properties>
+    <author email="bayard@generationjava.com">Henri Yandell</author>
+    <title>DataSources</title>
+  </properties>
+
+  <body>
+
+  <section name="DataSources"><p>
+  </p></section>
+
+<section name="Connection pooling">
+<p>Often when using a DataSource you will want to pool the Connections the DataSource is handing out. Simple-JNDI delegates to the Jakarta Commons DBCP project for this feature so you will need commons-dbcp, commons-pool and commons-collections jars in your classpath. Again, the <a href="Download.html">Download</a> page provides links to the jars. </p>
+<p>The feature is turned on by adding a sub-parameter of 'pool=true' in your datasource properties file. For example, ApacheDS.pool=true, will turn DBCP Connection pooling on for the ApacheDS datasource. </p>
+</section>
+
+  </body>
+
+</document>
