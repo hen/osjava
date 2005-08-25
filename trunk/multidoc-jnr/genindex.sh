@@ -54,6 +54,8 @@ do
         echo "</table>" >> $versionfile
         echo "<font class=\"FrameItemFont\"><a href=\"diff-report-${lastV}_${v}.html\" target="classFrame">(diff)</a></font>" >> $i/versions.html
       fi
+    else
+        echo "<script>load($u)</script>" >> $i/versions.html
     fi
 
     echo "<nobr><a name=\"$v\"><font class=\"FrameItemFont\"><a href=\"javascript:load($u)\">$prettyI $v</a></font></nobr><br/>" >> $i/versions.html
