@@ -6,7 +6,6 @@
   <body>
     <menu name="Overview">
       <item name="Introduction"              href="/index.html"/>
-      <item name="News"              href="/News.html"/>
       <item name="Installing"              href="/Intro.html"/>
       <item name="Examples"              href="/Examples.html"/>
       <item name="Optional features"              href="/Optional.html"/>
