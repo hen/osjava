@@ -23,8 +23,11 @@ public class JFreeChartAbstractRenderer extends AbstractRenderer {
             Class c = Class.forName(name);
             creator = (JFreeChartCreator) c.newInstance();
         } catch(ClassNotFoundException cnfe) {
+            throw new RuntimeException("Unable to find class: "+name);
         } catch(InstantiationException ie) {
+            throw new RuntimeException("Unable to instantiate class: "+name);
         } catch(IllegalAccessException iae) {
+            throw new RuntimeException("Unable to access class: "+name);
         }
     }
 
@@ -35,7 +38,7 @@ public class JFreeChartAbstractRenderer extends AbstractRenderer {
 	protected final JFreeChart createChart(Result result, Report report) {
         // JFreeChart has threading problems
         synchronized (JFreeChartAbstractRenderer.class) {
-            return this.creator.createChart(result, report);
+            return this.creator.createChart(result, report, this);
         }
 	}
 
