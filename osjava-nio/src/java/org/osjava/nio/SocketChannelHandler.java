@@ -48,8 +48,6 @@ import java.nio.channels.SelectableChannel;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
 
-import org.apache.log4j.Logger;
-
 public class SocketChannelHandler 
     extends AbstractChannelHandler 
 {
@@ -158,61 +156,59 @@ public class SocketChannelHandler
     }
 
     public void writeToChannel() throws IOException {
-        synchronized(writeBuffer) {
-            if(writeBuffer.position() == 0) {
-                getThread().removeInterestOp(this, SelectionKey.OP_WRITE);
-                return;
-            }
+        if(writeBuffer.position() == 0) {
+            getThread().removeInterestOp(this, SelectionKey.OP_WRITE);
+            return;
+        }
 
-            /* 
-             * Write some data to the channel
-             */
-            writeBuffer.flip();
-            try {
-                chan.write(writeBuffer);
-            } catch (IOException ioe) {
-                /*
-                 * Some bugger has closed the stream at the other end
-                 * (or the network connection died, or some other such evil
-                 * ness).
-                 * 
-                 * Best way I can think of to handle this is to empty the
-                 * write buffer, remove interest in write ops, and set
-                 * the writeClosed variable to true.
-                 *
-                 * However if we do this we can pretty much guarantee 
-                 * something will continue trying to write to us.
-                 *
-                 * Though typically we'll handle this by throwing
-                 * some exception to indicate that the damn stream 
-                 * has been closed. (Right now it's just a RuntimeException)
-                 *
-                 * Information in the writeBuffer is lost, this is unavoidable.
-                 */
-                getThread().removeInterestOp(this, SelectionKey.OP_WRITE);
-                writeClosed = true;
-                writeBuffer.clear();
-                return;
-            }
-            writeBuffer.compact();
-
+        /* 
+         * Write some data to the channel
+         */
+        writeBuffer.flip();
+        try {
+            chan.write(writeBuffer);
+        } catch (IOException ioe) {
             /*
-             * If buffer is empty
+             * Some bugger has closed the stream at the other end
+             * (or the network connection died, or some other such evil
+             * ness).
+             * 
+             * Best way I can think of to handle this is to empty the
+             * write buffer, remove interest in write ops, and set
+             * the writeClosed variable to true.
+             *
+             * However if we do this we can pretty much guarantee 
+             * something will continue trying to write to us.
+             *
+             * Though typically we'll handle this by throwing
+             * some exception to indicate that the damn stream 
+             * has been closed. (Right now it's just a RuntimeException)
+             *
+             * Information in the writeBuffer is lost, this is unavoidable.
              */
-            if(writeBuffer.position() == 0) {
-                /*
-                 * And we've been told to close the stream
-                 */
-                if(writeClosed) {
-                    if(getChannelListener() != null) {
-                        getChannelListener().writeFinished(this);
-                    }
+            getThread().removeInterestOp(this, SelectionKey.OP_WRITE);
+            writeClosed = true;
+            writeBuffer.clear();
+            return;
+        }
+        writeBuffer.compact();
+
+        /*
+         * If buffer is empty
+         */
+        if(writeBuffer.position() == 0) {
+            /*
+             * And we've been told to close the stream
+             */
+            if(writeClosed) {
+                if(getChannelListener() != null) {
+                    getChannelListener().writeFinished(this);
                 }
-                /* 
-                 * Remove interest in write operations
-                 */
-                getThread().removeInterestOp(this, SelectionKey.OP_WRITE);
             }
+            /* 
+             * Remove interest in write operations
+             */
+            getThread().removeInterestOp(this, SelectionKey.OP_WRITE);
         }
 
         /*
@@ -317,55 +313,39 @@ public class SocketChannelHandler
 
     private class SendingByteBroker extends AbstractByteBroker {
         public void broker(ByteBuffer data, boolean close) {
-            Logger logger = Logger.getLogger(getClass());
-            /*
-            if(writeClosed) {
-                throw new BrokerException("Stream closed " +
-                        "(either by you, or an error was encountered)");
-            }
-            if(Thread.currentThread() != getThread()) {
-                throw new SecurityException("No access with this thread");
-            }
-            */
 
-            synchronized(writeBuffer) {
-                if(writeBuffer.hasRemaining() && data.hasRemaining()) {
-                    /* FIXME: This logic is flawed. You want to append to the end of 
-                     *        the writeBuffer's data, not overwrite it. maybe limit()?*/
-                    /* No it isn't, it's appending to the buffer - CT 
-                     * from javadoc for ByteBuffer.put(ByteBuffer):
-                     * Relative bulk put method  (optional operation)
-                     *
-                     * Relative means starting from .position()
+            if(writeBuffer.hasRemaining() && data.hasRemaining()) {
+                /* FIXME: This logic is flawed. You want to append to the end of 
+                 *        the writeBuffer's data, not overwrite it. maybe limit()?*/
+                /* No it isn't, it's appending to the buffer - CT 
+                 * from javadoc for ByteBuffer.put(ByteBuffer):
+                 * Relative bulk put method  (optional operation)
+                 *
+                 * Relative means starting from .position()
+                 */
+                if(data.remaining() <= writeBuffer.remaining()) {
+                    writeBuffer.put(data);
+                } else {
+                    /* 
+                     * all buffers created via .allocate() have a backing array and
+                     * an array offset of 0 so we can cheat here
+                     * WTF there isn't a provided method to do this, I don't know.
+                     * even a .get(ByteBuffer) method would do !
                      */
-                    if(data.remaining() <= writeBuffer.remaining()) {
-                        writeBuffer.put(data);
-                    } else {
-                        /* 
-                         * all buffers created via .allocate() have a backing array and
-                         * an array offset of 0 so we can cheat here
-                         * WTF there isn't a provided method to do this, I don't know.
-                         * even a .get(ByteBuffer) method would do !
-                         */
-                        data.get(writeBuffer.array(), 
-                                writeBuffer.position(), 
-                                writeBuffer.remaining());
-                    }
+                    data.get(writeBuffer.array(), 
+                            writeBuffer.position(), 
+                            writeBuffer.remaining());
                 }
-                if(close && !data.hasRemaining()) {
-                    writeClosed = true;
-                }
+            }
+            if(close && !data.hasRemaining()) {
+                writeClosed = true;
+            }
 
-                /* XXX: I think more work needs to go here -- RMZ */
-                if(writeBuffer.position() > 0) {
-                    getThread().queueTask(new Runnable() {
-                        public void run() {
-                            getThread().addInterestOp(
-                                            SocketChannelHandler.this, 
-                                            SelectionKey.OP_WRITE);
-                        }
-                    } );
-                }
+            /* XXX: I think more work needs to go here -- RMZ */
+            if(writeBuffer.position() > 0) {
+                getThread().addInterestOp(
+                        SocketChannelHandler.this, 
+                        SelectionKey.OP_WRITE);
             }
         }
 

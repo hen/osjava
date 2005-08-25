@@ -54,8 +54,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
-
 /**
  * A Thread facilitating the use of non-blocking
  * {@link SelectableChannel SelectableChannels}.
@@ -91,6 +89,12 @@ public class IOThread extends Thread {
     private volatile boolean abort=false;
 
     /**
+     * The last exception from executing a task.
+     * This is set after a task is executed.
+     */
+    private Exception lastTaskException;
+
+    /**
      * Create a new IOThread.
      *
      * @throws IOException If there is a problem creating the Selector
@@ -106,11 +110,10 @@ public class IOThread extends Thread {
      * @param name The name of the thread.
      * @throws IOException If there is a problem creating the Selector
      */
-    public IOThread(String name)
-        throws IOException {
-            super(name);
-            mySelector = Selector.open();
-        }
+    public IOThread(String name) throws IOException {
+        super(name);
+        mySelector = Selector.open();
+    }
 
     /**
      * Create a new IOThread.
@@ -119,17 +122,39 @@ public class IOThread extends Thread {
      * @param name The name of the thread.
      * @throws IOException If there is a problem creating the Selector
      */
-    public IOThread(ThreadGroup group, String name)
-        throws IOException {
-            super(group, name);
-            mySelector = Selector.open();
-        }
+    public IOThread(ThreadGroup group, String name) throws IOException {
+        super(group, name);
+        mySelector = Selector.open();
+    }
 
-    public void queueTask(Runnable task) {
-        synchronized(tasks) {
-            tasks.add(task);
+    /**
+     * Queue a task to be executed by this thread.
+     *
+     * This is to allow other threads to queue tasks for this
+     * thread to execute.
+     *
+     * @param task The task to queue.
+     * @throws TaskException If there is an exception throw executing the task.
+     */
+    public void doTask(Runnable task) {
+        if(Thread.currentThread() == this) {
+            task.run();
+        } else {
+            synchronized(task) {
+                synchronized(tasks) {
+                    tasks.add(task);
+                }
+                mySelector.wakeup();
+                try {
+                    task.wait();
+                } catch (InterruptedException ie) {
+                    ie.printStackTrace();
+                }
+                if(lastTaskException != null) {
+                    throw new TaskException(lastTaskException);
+                }
+            }
         }
-        mySelector.wakeup();
     }
 
     /**
@@ -142,27 +167,33 @@ public class IOThread extends Thread {
      * @param handler the handler who's SelectionKey will have the interestOp
      *        added.
      * @param op the operation to add.
+     * @throws IllegalArgumentException If handler has not been register, or 
+     * it's SelectionKey has been canceled.
      */
-    public void addInterestOp(ChannelHandler handler, int op) {
+    public void addInterestOp(final ChannelHandler handler, final int op) {
         if(Thread.currentThread() != this) {
-            /* Would have used IllegalAccessException, but it isn't a runtime
-             * exception. This needs to be a runtime, because there's no
-             * reason the caller should have to worry about catching it
+            /*
+             * Execute this via doTask, synchronize on the runnable to
+             * ensure it is carried out before we return.
              */
-            throw new SecurityException("Can't be accessed with this thread");
-        }
-        SelectionKey key = handler.getSelectableChannel().keyFor(mySelector);
-        Logger logger = Logger.getLogger(this.getClass());
-        logger.debug("Adding to key '" + key + "' op '" + op + "'");
-
-        /* 
-         * Null check necessary because of tasks.  The key might have been 
-         * destroyed while the task was queued.
-         */
-        if(key != null && key.isValid()) {
-            key.interestOps(key.interestOps() | op);
+            Runnable r = new Runnable() {
+                public void run() {
+                    addInterestOp(handler,op);
+                }
+            };
+            doTask(r);
         } else {
-            logger.debug("invalid key");
+            SelectionKey key = handler.getSelectableChannel().keyFor(mySelector);
+
+            /* 
+             * Null check necessary because of tasks.  The key might have been 
+             * destroyed while the task was queued.
+             */
+            if(key != null && key.isValid()) {
+                key.interestOps(key.interestOps() | op);
+            } else {
+                throw new IllegalArgumentException("ChannelHandler's key is either no longer valid, or has not been registered");
+            }
         }
     }
 
@@ -176,27 +207,33 @@ public class IOThread extends Thread {
      *
      * @param handler the handler who's key will have the interestOp removed.
      * @param op the operation to remove.
+     * @throws IllegalArgumentException If handler has not been register, or 
+     * it's SelectionKey has been canceled.
      */
-    public void removeInterestOp(ChannelHandler handler, int op) {
+    public void removeInterestOp(final ChannelHandler handler, final int op) {
         if(Thread.currentThread() != this) {
-            /* Would have used IllegalAccessException, but it isn't a runtime
-             * exception. This needs to be a runtime, because there's no
-             * reason the caller should have to worry about catching it
+            /*
+             * Execute this via doTask, synchronize on the runnable to
+             * ensure it is carried out before we return.
              */
-            throw new SecurityException("Can't be accessed with this thread");
-        }
-        SelectionKey key = handler.getSelectableChannel().keyFor(mySelector);
-        Logger logger = Logger.getLogger(this.getClass());
-        logger.debug("Removing from key '" + key + "' op '" + op + "'");
-
-        /* 
-         * Null check necessary because of tasks.  The key might have been 
-         * destroyed while the task was queued.
-         */
-        if(key != null && key.isValid()) {
-            key.interestOps(key.interestOps() & ~op);
+            Runnable r = new Runnable() {
+                public void run() {
+                    removeInterestOp(handler,op);
+                }
+            };
+            doTask(r);
         } else {
-            logger.debug("invalid key");
+            SelectionKey key = handler.getSelectableChannel().keyFor(mySelector);
+
+            /* 
+             * Null check necessary because of tasks.  The key might have been 
+             * destroyed while the task was queued.
+             */
+            if(key != null && key.isValid()) {
+                key.interestOps(key.interestOps() & ~op);
+            } else {
+                throw new IllegalArgumentException("ChannelHandler's key is either no longer valid, or has not been registered");
+            }
         }
     }
 
@@ -212,23 +249,35 @@ public class IOThread extends Thread {
      * @throws ClosedChannelException if the underlying channel is closed.
      * @throws IllegalStateException if the underlying channel is a blocking
      *         channel.
+     * @throws RuntimeException if either ChannelClosedException or 
+     * IllegalStateException are thrown when this is called from another
+     * thread.
      */
-    public void register(ChannelHandler handler, int ops) throws ClosedChannelException, IllegalStateException 
+    public void register(final ChannelHandler handler, final int ops) throws ClosedChannelException, IllegalStateException 
     {
         if(Thread.currentThread() != this) {
-            /* Would have used IllegalAccessException, but it isn't a runtime
-             * exception. This needs to be a runtime, because there's no
-             * reason the caller should have to worry about catching it
+            /*
+             * Execute this via doTask, synchronize on the runnable to
+             * ensure it is carried out before we return.
              */
-            throw new SecurityException("Can't be accessed with this thread");
-        }
-        SelectableChannel chan = handler.getSelectableChannel();
+            Runnable r = new Runnable() {
+                public void run() {
+                    try {
+                        register(handler,ops);
+                    } catch (ClosedChannelException cce) {
+                        throw new TaskException(cce);
+                    }
+                }
+            };
+            doTask(r);
+        } else {
+            SelectableChannel chan = handler.getSelectableChannel();
 
-        if (chan.isBlocking()) {
-            throw new IllegalStateException("SelectableChannel is blocking");
+            if (chan.isBlocking()) {
+                throw new IllegalStateException("SelectableChannel is blocking");
+            }
+            SelectionKey key = chan.register(mySelector, ops, handler);
         }
-
-        SelectionKey key = chan.register(mySelector, ops, handler);
     }
 
     /**
@@ -239,21 +288,30 @@ public class IOThread extends Thread {
      *
      * @param handler the ChannelHandler to deregister.
      */
-    public void deregister(ChannelHandler handler) {
+    public void deregister(final ChannelHandler handler) {
         if(Thread.currentThread() != this) {
-            /* Would have used IllegalAccessException, but it isn't a runtime
-             * exception. This needs to be a runtime, because there's no
-             * reason the caller should have to worry about catching it
+            /*
+             * Execute this via doTask, synchronize on the runnable to
+             * ensure it is carried out before we return.
              */
-            throw new SecurityException("Can't be accessed with this thread");
-        }
-        SelectionKey key = handler.getSelectableChannel().keyFor(mySelector);
-        /* 
-         * Null check necessary because of tasks.  The key might have been 
-         * destroyed while the task was queued.
-         */
-        if(key != null) {
-            key.cancel();
+            Runnable r = new Runnable() {
+                public void run() {
+                    deregister(handler);
+                }
+            };
+            doTask(r);
+        } else {
+            SelectionKey key = handler.getSelectableChannel().keyFor(mySelector);
+            /* 
+             * Null check necessary because of tasks.  The key might have been 
+             * destroyed while the task was queued.
+             * 
+             * If key is already canceled no need to throw an exception as
+             * the request is effectively successful.
+             */
+            if(key != null) {
+                key.cancel();
+            }
         }
     }
 
@@ -261,78 +319,88 @@ public class IOThread extends Thread {
      * The looping run method of the class.  All Threads have this.
      */
     public void run() {
-        Logger logger = Logger.getLogger(this.getClass());
         while (!isAborting()) {
+            int keyCount;
             try {
-                do {
-                    synchronized(tasks) {
-                        while(tasks.size() > 0) {
-                            Runnable r = (Runnable) tasks.remove(0);
-                            synchronized(r) {
-                                r.run();
-                                r.notifyAll();
-                            } 
-                        }
-                    }
-                } while(mySelector.select() == 0);
-            } catch (IOException e) {
-                e.printStackTrace();
+                keyCount = mySelector.select();
+            } catch (IOException io) {
+                setAbort(true);
+                io.printStackTrace();
+                continue;
             }
+            System.out.println("Executing run loop with "+keyCount+" selected and "+tasks.size()+" tasks");
+            while(tasks.size() > 0) {
+                Runnable r;
+                synchronized(tasks) {
+                    r = (Runnable) tasks.remove(0);
+                }
+                synchronized(r) {
+                    Exception tmp = null;
+                    try {
+                        r.run();
+                    } catch (RuntimeException re) {
+                        tmp = re;
+                    }
+                    lastTaskException = tmp;
+                    r.notifyAll();
+                } 
+            }
+
+            if(keyCount == 0) continue;
 
             Set keys = mySelector.selectedKeys();
             Iterator i = keys.iterator();
             while (i.hasNext()) {
                 SelectionKey key = (SelectionKey)i.next();
                 ChannelHandler handler = (ChannelHandler)key.attachment();
-                if (key.isValid()) {
-                    int ops = key.readyOps();
-                    if ((ops & SelectionKey.OP_ACCEPT) != 0) {
-                        try {
-                            handler.accept();
-                        } catch (ClosedChannelException e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
-                        } catch (IllegalStateException e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
-                        } catch (IOException e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
-                        }
-                    }
-                    if ((ops & SelectionKey.OP_CONNECT) != 0) {
-                        try {
-                            handler.connect();
-                        } catch (IOException e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
-                        }
-                    }
-                    if ((ops & SelectionKey.OP_READ) != 0) {
-                        try {
-                            handler.readFromChannel();
-                        } catch (IOException e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
-                        }
-                    }
-                    if ((ops & SelectionKey.OP_WRITE) != 0) {
-                        try {
-                            handler.writeToChannel();
-                        } catch (IOException e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
-                        }
+
+                i.remove();
+
+                if(!key.isValid()) continue;
+
+                int ops = key.readyOps();
+                if ((ops & SelectionKey.OP_ACCEPT) != 0) {
+                    try {
+                        handler.accept();
+                    } catch (ClosedChannelException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    } catch (IllegalStateException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
                     }
                 }
-                i.remove();
+                if ((ops & SelectionKey.OP_CONNECT) != 0) {
+                    try {
+                        handler.connect();
+                    } catch (IOException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                }
+                if ((ops & SelectionKey.OP_READ) != 0) {
+                    try {
+                        handler.readFromChannel();
+                    } catch (IOException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                }
+                if ((ops & SelectionKey.OP_WRITE) != 0) {
+                    try {
+                        handler.writeToChannel();
+                    } catch (IOException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                }
             }
         }
-        // XXX: This doesn't work !!!!
-        // XXX: This is currently not tested (assumed to break hideously)
-        // Cleanup
-        // This is where we cleanup the mess left when we're interupted
-        // TODO: Only close channels if 'closeOnExit' is set.
+        // This should now work in a satisfactory manner.
+        // Close all handlers associated with this IOThread.
         Iterator i = mySelector.keys().iterator();
         while (i.hasNext()) {
             SelectionKey key = (SelectionKey)i.next();
@@ -346,6 +414,7 @@ public class IOThread extends Thread {
                 }
             }
         }
+        // Close mySelector
         try {
             mySelector.close();
         } catch (IOException ioe) {
@@ -363,6 +432,7 @@ public class IOThread extends Thread {
      */
     public void setAbort(boolean abort) {
         this.abort=abort;
+        mySelector.wakeup();
     }
 
     /**
