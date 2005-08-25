@@ -46,7 +46,7 @@ import java.nio.channels.SelectableChannel;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -81,15 +81,7 @@ public class IOThread extends Thread {
     /**
      * List of Tasks to perform with this thread
      */
-    private List tasks = new ArrayList();
-
-    /*
-     * Map for changing ops for keys.  The key is the SelectionKey and the
-     * value is the op to change.
-     */
-    /* Removed, altered directly now
-       private Map changeOps = new HashMap();
-       */
+    private List tasks = new LinkedList();
 
     /**
      * Field containing the boolean value which indicates whether or not the
@@ -97,13 +89,6 @@ public class IOThread extends Thread {
      * OSJava-Threads ExtendedRunnable class.
      */
     private volatile boolean abort=false;
-
-    /* Removed, altered directly now
-       private Map pendingRegister = new HashMap();
-
-       private Collection pendingDeregister = new LinkedList();
-       */
-
 
     /**
      * Create a new IOThread.
@@ -282,12 +267,12 @@ public class IOThread extends Thread {
             try {
                 do {
                     synchronized(tasks) {
-                        if(tasks.size() > 0) {
-                            Iterator i = tasks.iterator();
-                            while(i.hasNext()) {
-                                ((Runnable)i.next()).run();
-                            }
-                            tasks.clear();
+                        while(tasks.size() > 0) {
+                            Runnable r = (Runnable) tasks.remove(0);
+                            synchronized(r) {
+                                r.run();
+                                r.notifyAll();
+                            } 
                         }
                     }
                 } while(mySelector.select() == 0);
