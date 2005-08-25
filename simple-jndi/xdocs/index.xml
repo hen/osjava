@@ -11,16 +11,14 @@
 <p>
 Simple-JNDI is intended to solve two problems. The first is that of finding a container independent way of opening a database connection, the second is to find a good way of specifying application configurations.
 </p>
-<p>
-In a J2EE container, you can use JNDI as a javax.sql.DataSource factory. This code however is not usable outside of a J2EE container as you cannot guarrentee you have a JNDI implementation available, and to be honest, you don't want to start some other server to make your simple script run. Simple-JNDI is not a server, it is merely an API, however it looks exactly the same as the JNDI client code used in a J2EE container.
-</p>
-<p>
-Applications need configuration. A servlets container uses the web.xml files to configure, while a J2EE container uses a different system, for example, JBoss has a jboss.jcml configuration file which sets a system up via JMX managed beans. An application <i>could</i> however use Simple-JNDI for parameter values.
-</p>
+<ol>
+<li>Unit tests or prototype code often need to emulate the environment within which the code is expected to run. A very common one is to get an object of type <i>javax.sql.DataSource</i> from JNDI so a <i>java.sql.Connection</i> to your database of choice may be opened. </li>
+<li>Applications need configuration; a JNDI implementation makes a handy location for configuration values. Either as a globally available system, or via IoC through the use of some kind of JNDI configuration facade (see gj-config). </li>
+</ol>
 </section>
     <section name="A Solution">
     <p>A simple implementation of JNDI. It is entirely library based, so no server instances are started, and it sits upon Java .properties files, XML files or Windows-style .ini files, so it is easy to use and simple to understand. The files may be either on the file system or in the classpath. </p>
-    <p>Simple-JNDI no longer depends on external jars for its basic functionality, however to get certain optional features you will still need to download external jars. This is discussed on the <a href="Optional.html">optional features</a> page. </p>
+    <p>Simple-JNDI depends on no external jars for its basic functionality, however to get certain optional features you will still need to download external jars. When describing these features, the manual will point out which jars are needed and where to get them. </p>
 </section>
 <section name="Getting more help">
     <p>Feel free to ask any questions to the user's <a href="http://www.osjava.org/simple-jndi/mail-lists.html">mailing list</a>. Please report bugs either in the <a href="http://www.osjava.org:8080/jira/secure/BrowseProject.jspa?id=10000 ">issue tracker</a> or to the <a href="http://www.osjava.org/simple-jndi/mail-lists.html">mailing list</a>. </p>
