@@ -1,0 +1,192 @@
+
+# Find java files.
+function findj() {
+   find $1 -type f -name '*.java'
+} 
+
+function findjsp() {
+   find $1 -type f -name '*.jsp'
+} 
+
+function findd() {
+   find $1 -type d
+}
+
+# Find class files.
+function findc() {
+   find $1 -type f -name '*.class'
+} 
+
+# Move a java file and change the class names.
+function javamv() {
+   from=`echo $1 | sed 's/[^.][^j][^a][^v][^a]$/.java/'`
+   to=`echo $2 | sed 's/[^.][^j][^a][^v][^a]$/.java/'`
+   mv $from $to
+
+   # com.blah.Blah
+   from_p=`echo $from | sed 's/.java$//' | sed 's/\//./g'`
+   # Blah
+   from_c=`echo $from_p | sed 's/[^.]*\.//g'`
+   # com.blah
+   from_p=`echo $from_p | sed 's/\.[^.]*$//'`
+
+   # and same for 'to'
+   to_p=`echo $to | sed 's/.java$//' | sed 's/\//./g'`
+   to_c=`echo $to_p | sed 's/[^.]*\.//g'`
+   to_p=`echo $to_p | sed 's/\.[^.]*$//'`
+
+   perl -pi -e "s/package $from_p/package $to_p/g" $to
+   perl -pi -e "s/$from_c/$to_c/g" $to
+}  
+
+# Same as above. Except it copies.
+function javacp() {
+   from=`echo $1 | sed 's/[^.][^j][^a][^v][^a]$/.java/'`
+   to=`echo $2 | sed 's/[^.][^j][^a][^v][^a]$/.java/'`
+   cp $from $to
+
+   # com.blah.Blah
+   from_p=`echo $from | sed 's/.java$//' | sed 's/\//./g'`
+   # Blah
+   from_c=`echo $from_p | sed 's/[^.]*\.//g'`
+   # com.blah
+   from_p=`echo $from_p | sed 's/\.[^.]*$//'`
+
+   # and same for 'to'
+   to_p=`echo $to | sed 's/.java$//' | sed 's/\//./g'`
+   to_c=`echo $to_p | sed 's/[^.]*\.//g'`
+   to_p=`echo $to_p | sed 's/\.[^.]*$//'`
+
+   perl -pi -e "s/package $from_p/package $to_p/g" $to
+   perl -pi -e "s/$from_c/$to_c/g" $to
+}  
+
+# Run a file from its filename and not just its fully qualified name.
+function javad() {
+   source=$1
+   shift 1
+   java `echo ${source} | sed 's/\.java$//' | sed 's/\//./g'` $*
+} 
+
+# Compile everything in a directory.
+# TODO: Make it use jikes if possible else javac.
+function javacdir() {
+   ${JAVAC_COMPILER} `find $1 -path '*.java'` 2>&1 | more
+}    
+
+# Javadoc a package from its root directory.
+function javadocdir() {
+   if [ $# -lt 2 ]
+   then
+       echo "$0 <destination_directory> {source_directories}"
+       exit 1
+   fi
+ 
+   dest=$1
+   shift 1
+ 
+#   # Make this only match *.class || *.java?
+#   files=`find $* -type d | grep -v CVS | grep -v jsp`
+#   packages=`echo $files | sed 's/\//./g'`
+   packages=`jpacks $*`
+   javadoc -author -version -d ${dest} ${packages}
+}  
+
+function jpacks() {
+    for i in $*
+    do
+        findj $i | sed 's/\/[^.\/]*.java$//' | sort -u | sed 's/\//./g'
+    done
+}
+
+# Zips up a directory.
+function zipdir() {
+   find $1 | zip -@q $2
+}
+ 
+# Jars up .class files in a directory.
+# TODO: Increase to include .properties files etc.
+#       Maybe have a variable which contains 'compiled' extensions.
+function jardir() {
+   jar -cf $2 `find $1 -type f -name '*.class'`
+}
+ 
+function cleanclass() {
+   findc | xargs -l rm
+}
+ 
+# Zip up .java source files in a directory.
+# TODO: Increase this to include .properties files and .jsp etc.
+#       Maybe have a variable which contains 'source' extensions.
+function srczip() {
+   findj $1 | zip -@q $2
+}  
+
+function classzip() {
+   findc $1 | zip -@q $2
+}  
+
+function todo() {
+    mv $1 $1.todo
+}
+
+function compilej() {
+    lib=$1
+    shift 1
+
+    # mac OS X
+    cc -bundle -I${JAVA_HOME}/include -o lib${lib}.jnilib -framework JavaVM $*
+    
+    # suse linux
+    # gcc -c -I/usr/lib/jdk1.3/include $1 -o `echo $1 | sed 's/.c$/.o/'`;
+    # gcc -shared -o `echo $1 | sed 's/.c$/.so/'` `echo $1 | sed 's/.c$/.o/'`;
+    # rm `echo $1 | sed 's/.c$/.o/'`
+}
+
+function missingc() {
+    for i in `findj $1`
+    do
+        if [ -e `echo $i | sed 's/java$/class/'` ]; then
+            echo XXXX
+        else
+            echo $i
+        fi
+    done | grep -v 'XXXX'
+}
+
+function jvp() {
+	javap -classpath $1 $2
+}
+
+function d2hx() {
+    if [ $1 -lt 16 ]; then ( echo -n 0; (echo obase=16; echo $1) | bc -l ); else (echo obase=16; echo $1) | bc -l; fi | tr A-Z a-z
+}
+
+# Deprecated by jardiff
+function javadiff2() {
+    mkdir -p /tmp/genjavap
+    unzip -t $1 | grep 'class' | sed 's/.class   OK//' | sed 's/    testing: //' | sed 's/\//./g' > /tmp/genjavap/class.list.1
+    unzip -t $2 | grep 'class' | sed 's/.class   OK//' | sed 's/    testing: //' | sed 's/\//./g' > /tmp/genjavap/class.list.2
+    echo 'Jar changes'
+    echo '==========='
+    diff /tmp/genjavap/class.list.1 /tmp/genjavap/class.list.2 | grep -v '^[0-9]' | sed 's/^>/Added:   /' | sed 's/^</Removed: /'
+    echo
+    echo 'Class changes'
+    echo '============='
+#    classes=`cat /tmp/genjavap/class.list.1 /tmp/genjavap/class.list.2 | sort -u`
+    classes=`grep /tmp/genjavap/class.list.1 -f /tmp/genjavap/class.list.2`
+    for i in $classes
+    do
+        javap -classpath $1 $i 2>&1 | sed 's/ not found/ has been added/' > /tmp/genjavap/foo.1
+        javap -classpath $2 $i 2>&1 | sed 's/ not found/ has been removed/' > /tmp/genjavap/foo.2
+        df=`diff /tmp/genjavap/foo.1 /tmp/genjavap/foo.2 | grep -v '^[0-9]' | grep -v 'static {}'`
+        if [ "x${df}" != "x" ]
+        then
+            echo $i
+            echo $i | sed 's/./-/g'
+            echo $df
+            echo
+        fi
+    done
+    rm -r /tmp/genjavap/
+}
