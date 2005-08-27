@@ -103,10 +103,10 @@ foreach $file (@$same_ref) {
 #       Especially when the class line shows, that has to be a change
 
     foreach (@$added_method_ref) {
-        print "<tr bgcolor=\"aaffaa\"><td width=\"15%\">New method</td><td width=\"15%\">$file</td><td>$_</td></tr>\n";
+        print "<tr bgcolor=\"ccffcc\"><td width=\"15%\">New method</td><td width=\"15%\">$file</td><td>$_</td></tr>\n";
     }
     foreach (@$removed_method_ref) {
-        print "<tr bgcolor=\"ffaaaa\"><td width=\"15%\">Removed method</td><td width=\"15%\">$file</td><td>$_</td></tr>\n";
+        print "<tr bgcolor=\"ffcccc\"><td width=\"15%\">Removed method</td><td width=\"15%\">$file</td><td>$_</td></tr>\n";
     }
 }
 
