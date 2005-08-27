@@ -1,0 +1,102 @@
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+
+#use Algorithm::Diff;  ??
+
+sub cleanJavap {
+    my ($txt) = @_;
+
+    my @lines = ();
+
+    foreach (@$txt) {
+        chomp;
+        if( /^Compiled from/ ) {
+            next;
+        }
+        if( /throws / ) {
+            $lines[$#lines] .= $_;
+            $lines[$#lines] =~ s/;      //;
+        } else {
+            $lines[$#lines + 1] = $_;
+        }
+    }
+
+    return @lines;
+}
+
+sub diff {
+    my ($one, $two) = @_;
+
+    my @added = ();
+    my @removed = ();
+    my @same = ();
+    my %newLookup;
+    my %oldLookup;
+    my $file;
+
+    foreach $file (@$one) { $oldLookup{$file} = 1 }
+    foreach $file (@$two) { $newLookup{$file} = 1 }
+    
+    foreach $file (@$one) {
+        if( exists $newLookup{$file} ) {
+            push(@same, $file);
+        } else {
+            push(@removed, $file);
+        }
+    }
+
+    foreach $file (@$two) {
+        unless( exists $oldLookup{$file} ) {
+            push(@added, $file);
+        }
+    }
+
+    return (\@added, \@removed, \@same);
+}
+
+################ MAIN ################
+
+# for a given pair of jars
+my $old = $ARGV[0];
+my $new = $ARGV[1];
+
+print "Comparing $old to $new\n";
+print "======================\n\n";
+
+my @oldFiles = `unzip -t $old | grep 'class' | sed 's/.class   OK//' | sed 's/    testing: //' | sed 's/\\//./g'`;
+my @newFiles = `unzip -t $new | grep 'class' | sed 's/.class   OK//' | sed 's/    testing: //' | sed 's/\\//./g'`;
+
+my ($added_ref, $removed_ref, $same_ref) = diff(\@oldFiles, \@newFiles);
+
+foreach (@$added_ref) {
+    print "Added   class: $_";
+}
+foreach (@$removed_ref) {
+    print "Removed class: $_";
+}
+
+my $file;
+foreach $file (@$same_ref) {
+    chomp $file;
+#    my @jold = `javap -verbose -classpath $old $file | grep -v '^const #' | grep -v '   [0-9]*:'`;
+#    my @jnew = `javap -verbose -classpath $new $file | grep -v '^const #' | grep -v '   [0-9]*:'`;
+    my @jold = `javap -public -classpath $old $file`;
+    my @jnew = `javap -public -classpath $new $file`;
+
+    my @oldLines = cleanJavap( \@jold );
+    my @newLines = cleanJavap( \@jnew );
+
+    my ($added_method_ref, $removed_method_ref, $same_method_ref) = diff(\@oldLines, \@newLines);
+
+# TODO: Figure out changes versus add/removes
+
+    foreach (@$added_method_ref) {
+        print "Added   method: [$file] $_\n";
+    }
+    foreach (@$removed_method_ref) {
+        print "Removed method: [$file] $_\n";
+    }
+}
+
