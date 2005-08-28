@@ -7,7 +7,7 @@
  * $Date$
  * $Author$
  *
- * Copyright (c) 2003-2005, Anthony Riley, Robert M. Zigweid
+ * Copyright (c) 2003-2005, Antony Riley, Robert M. Zigweid
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -53,7 +53,7 @@ import java.nio.channels.SocketChannel;
  * package easier to use without having to mess around with the inner workings
  * of the package.
  *
- * @author Anthony Riley and Robert M. Zigweid
+ * @author Antony Riley and Robert M. Zigweid
  * @version $Rev$ $Date$
  */
 public class IOUtils {

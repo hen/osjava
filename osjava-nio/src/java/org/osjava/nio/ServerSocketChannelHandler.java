@@ -7,7 +7,7 @@
  * $Date$
  * $Author$
  *
- * Copyright (c) 2003-2005, Anthony Riley, Robert M. Zigweid
+ * Copyright (c) 2003-2005, Antony Riley, Robert M. Zigweid
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

@@ -7,7 +7,7 @@
  * $Date$
  * $Author$
  *
- * Copyright (c) 2003-2005, Anthony Riley, Robert M. Zigweid
+ * Copyright (c) 2003-2005, Antony Riley, Robert M. Zigweid
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -68,7 +68,7 @@ import java.util.Set;
  * Selector are not.  Instead the {@link #addInterestOp} and 
  * {@link #removeInterestOp} methods are provided for this synchronization.
  *
- * @author Anthony Riley and Robert M. Zigweid
+ * @author Antony Riley and Robert M. Zigweid
  * @version $Rev$ $Date$
  */
 public class IOThread extends Thread {
