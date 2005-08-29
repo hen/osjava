@@ -6,12 +6,10 @@
   <body>
     <menu name="Overview">
       <item name="Introduction"              href="/index.html"/>
-      <item name="Manual"              href="/manual/index.html"/>
-      <item name="Examples"              href="/Examples.html"/>
-      <item name="Optional features"              href="/Optional.html"/>
-      <item name="FAQ"              href="/FAQ.html"/>
       <item name="Download"              href="/Download.html"/>
       <item name="Changes"              href="/changes-report.html"/>
+      <item name="Manual"              href="/manual/index.html"/>
+      <item name="FAQ"              href="/FAQ.html"/>
       <item name="License"              href="/license.html"/>
     </menu>
     <menu name="Code docs">
@@ -23,7 +21,7 @@
       <item name="Mailing List"              href="/mail-lists.html"/>
       <item name="Jar Dependencies"              href="/dependencies.html"/>
       <item name="SVN Repository"              href="http://www.osjava.org/svn.html?project=simple-jndi"/>
-      <item name="Bug Tracking"              href="/issue-tracking.html"/>
+      <item name="Bug Tracking"              href="http://issues.osjava.org:8080/jira/browse/BrowseProject.jspa?id=10000"/>
     </menu>
   </body>
 </project>
