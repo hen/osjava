@@ -16,60 +16,60 @@ After download, installing Simple-JNDI is as simple as adding the simple-jndi ja
 <p>
 This is where all the work goes in a Simple-JNDI installation. Firstly you need a jndi.properties file, which somehow needs to go into your classpath. This jndi.properties needs one mandatory value:
 </p>
-<code>
+<pre>
 java.naming.factory.initial=org.osjava.sj.SimpleContextFactory
-</code>
-<p>This property is a part of the jndi specification, <i>java.naming.factory.initial</i>. </p>
+</pre>
+<p>This property, <i>java.naming.factory.initial</i>, is a part of the jndi specification. </p>
 <p>
 There are two optional, simple-jndi specific parameters. <br />
 The first, org.osjava.jndi.root, is the location of your simple-jndi root, which is the location in which simple-jndi looks for values when code asks for them. The following code block details a few examples with explanatory comments.
 </p>
-<code>
-# absolute directory, using the default file protocol<br />
-org.osjava.jndi.root=/home/hen/gj/simple-jndi/config/<br />
-<br />
-# relative directory, using the default file protocol<br />
-org.osjava.jndi.root=config/<br />
-<br />
-# specified file protocol with an absolute directory<br />
-org.osjava.jndi.root=file:///home/hen/gj/simple-jndi/config/<br />
-<br />
-# specified file protocol with a relative directory<br />
-org.osjava.jndi.root=file://config/<br />
+<pre>
+# absolute directory, using the default file protocol
+org.osjava.jndi.root=/home/hen/gj/simple-jndi/config/
+
+# relative directory, using the default file protocol
+org.osjava.jndi.root=config/
+
+# specified file protocol with an absolute directory
+org.osjava.jndi.root=file:///home/hen/gj/simple-jndi/config/
+
+# specified file protocol with a relative directory
+org.osjava.jndi.root=file://config/
 <!--
-<br />
-# classpath protocol with a package 'config'<br />
-org.osjava.jndi.root=classpath://config<br />
+
+# classpath protocol with a package 'config'
+org.osjava.jndi.root=classpath://config
 -->
-</code>
+</pre>
 <p>
 If no org.osjava.jndi.root is specified, then a classpath root is chosen, with no package.
 </p>
 <p>
 The second optional parameter is the delimiter used to separate elements in a lookup value. This allows code to get closer to pretending to be another JNDI implementation, such as DNS or LDAP.</p>
-<code>
-# DNS/Java like delimiters<br />
-org.osjava.jndi.delimiter=.<br />
-<br />
-# LDAP/XPath like delimiters<br />
-org.osjava.jndi.delimiter=/<br />
-</code>
+<pre>
+# DNS/Java like delimiters
+org.osjava.jndi.delimiter=.
+
+# LDAP/XPath like delimiters
+org.osjava.jndi.delimiter=/
+</pre>
 <p>
 If no org.osjava.jndi.delimiter is specified, then a '.' (dot) is chosen. 
 </p>
 </section>
 <section name="Additional JNDI parameters">
  <p>In addition to the parameters mentioned above, shared-memory may be turned on with the following parameter.</p>
- <code>
-  # jndi contexts share the same back-end<br />
-  org.osjava.sj.shared=true<br />
- </code>
+ <pre>
+  # jndi contexts share the same back-end
+  org.osjava.sj.shared=true
+ </pre>
  <!--
  <p>Also, an org.osjava.jndi.root may be a http url.</p>
- <code>
-  # Grab values from a web server<br />
-  org.osjava.jndi.root=http://www.osjava.org/simple-jndi/db/<br />
- </code>
+ <pre>
+  # Grab values from a web server
+  org.osjava.jndi.root=http://www.osjava.org/simple-jndi/db/
+ </pre>
  -->
 </section>
 </body>
