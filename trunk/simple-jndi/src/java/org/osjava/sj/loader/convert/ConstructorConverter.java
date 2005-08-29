@@ -37,6 +37,20 @@ import java.util.Properties;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
+/**
+ * Convert a text value to any object whose constructor 
+ * takes a single String object. 
+ *
+ * For example, to get an Integer object for the lookup key 
+ * <i>com.example.Foo</i> you would have a com/example.properties 
+ * file containing the following three lines. 
+ *
+ * <pre>
+ * Foo=42
+ * Foo.type=java.lang.Integer
+ * Foo.converter=org.osjava.sj.loader.convert.Constructor
+ * </pre>
+ */
 public class ConstructorConverter implements Converter {
 
     public Object convert(Properties properties, String type) {
