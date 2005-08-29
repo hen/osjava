@@ -8,7 +8,7 @@
 
   <body>
   <section name="Scraping-Engine design"><p>
-(TODO: Find nice pretty OmniGraffle picture of a year or two ago)
+<img src="images/Scrapers.png"/>
 
 Each scrape in Scraping-Engine follows the same set of steps.
 
