@@ -8,12 +8,33 @@
 
   <body>
 
-  <section name="DataSources"><p>
-  </p></section>
+  <section name="DataSources">
+
+    <p>The most popular object to get from JNDI is a object of type <i>javax.sql.DataSource</i>, allowing the developer to obtain JDBC connections to databases. Simple-JNDI supports this out of the box.</p>
+
+    <p>There are four mandator parameters for a DataSource in Simple-JNDI, and one optional parameter (see next section). The mandatory parameters are <i>url, driver, user, password</i>. The following shows an example of a DataSource that will be available under the lookup key <i>application1/ds/TestDS</i>. </p>
+
+    <code>application1/ds.properties</code>
+    <pre>
+    TestDS.type=javax.sql.DataSource<br />
+    TestDS.driver=org.gjt.mm.mysql.Driver<br />
+    TestDS.url=jdbc:mysql://localhost/testdb<br />
+    TestDS.user=testuser<br />
+    TestDS.password=testing
+    </pre>
+
+    <p>The code to obtain it would be: </p>
+    <pre>
+      InitialContext ctxt = new InitialContext();
+      DataSource ds = (DataSource) ctxt.lookup("application1/ds/TestDS");
+    </pre>
+
+    <p>This example uses a delimiter of '/', which must be set with the <i>org.osjava.sj.delimiter</i> property. </p>
+  </section>
 
   <section name="Connection pooling">
     <p>Often when using a DataSource you will want to pool the Connections the DataSource is handing out. Simple-JNDI delegates to the Jakarta Commons DBCP project for this feature so you will need commons-dbcp, commons-pool and commons-collections jars in your classpath. </p>
-    <p>The feature is turned on by adding a sub-parameter of 'pool=true' in your datasource properties file. For example, ApacheDS.pool=true, will turn DBCP Connection pooling on for the ApacheDS datasource. </p>
+    <p>The feature is turned on by adding a sub-parameter of '<i>pool=true</i>' in your datasource properties file. For example, <i>ApacheDS.pool=true</i>, will turn DBCP Connection pooling on for the ApacheDS datasource. </p>
   </section>
 
   </body>
