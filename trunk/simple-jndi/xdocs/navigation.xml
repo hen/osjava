@@ -7,6 +7,7 @@
     <menu name="Overview">
       <item name="Introduction"              href="/index.html"/>
       <item name="Installing"              href="/Intro.html"/>
+      <item name="Manual"              href="/manual/index.html"/>
       <item name="Examples"              href="/Examples.html"/>
       <item name="Optional features"              href="/Optional.html"/>
       <item name="FAQ"              href="/FAQ.html"/>
