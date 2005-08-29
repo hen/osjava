@@ -3,7 +3,7 @@
 
   <properties>
     <author email="bayard@generationjava.com">Henri Yandell</author>
-    <title>User Guide</title>
+    <title>Manual</title>
   </properties>
 
   <body>
@@ -14,7 +14,7 @@
 <li><a href="Configuring.html">Configuring</a></li>
 <li><a href="GeneralDesign.html">Simple-JNDI design</a></li>
 <li><a href="DataFiles.html">Creating your data files</a></li>
-<li><a href="ConverterPlugins.html">Implementing your own Converters</a></li>
+<li><a href="ConverterPlugins.html">Using Converters</a></li>
 <li><a href="DataSources.html">DataSources + Pooling</a></li>
 <li><a href="Todo.html">List of future ideas</a></li>
 <li><a href="SubmittingBugs.html">Submitting bugs</a></li>
