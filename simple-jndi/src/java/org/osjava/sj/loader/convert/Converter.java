@@ -36,6 +36,23 @@ import java.util.Properties;
 
 public interface Converter {
 
+    /**
+     * <p>Turn a String-based tree-structure into an Object. Additionally 
+     * the type of object desired is known. This is usually a Java 
+     * class, but this is not mandatory. </p>
+     *
+     * <p>The properties structure is located at the point of the 
+     * lookup key, so if the code asked for a com.example.Foo object, 
+     * the properties structure would be everything below Foo.</p>
+     *
+     * <p>To get at the value of com.example.Foo itself, request the 
+     * empty string, "".</p>
+     *
+     * <p>TODO: No way for a converter to know the delimiter-type. </p>
+     *
+     * @param Properties data structure
+     * @param String type of object desired
+     */
     Object convert(Properties properties, String type);
 
 }
