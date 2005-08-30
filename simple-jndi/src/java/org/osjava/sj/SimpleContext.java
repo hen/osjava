@@ -1,6 +1,6 @@
 package org.osjava.sj;
 
-import org.osjava.sj.naming.DelegatingContext;
+import org.osjava.sj.jndi.DelegatingContext;
 
 import java.io.File;
 import java.io.IOException;

@@ -48,10 +48,6 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.osjava.sj.naming.ContextBindings;
-import org.osjava.sj.naming.ContextNames;
-import org.osjava.sj.naming.SimpleNameParser;
-
 /**
  * The heart of the system, the abstract implementation of context for 
  * simple-jndi.  There are no abstract methods in this class, but it is
