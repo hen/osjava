@@ -3,21 +3,17 @@
 
   <properties>
       <author email="bayard@generationjava.com">Henri Yandell</author>
-      <title>Examples</title>
+      <title>Data files</title>
   </properties>
 
   <body>
-<section name="Simple-JNDI's values">
-<p>
-Simple-JNDI stores values in multiple .properties, xml or ini files and are looked up using a specified name convention, such as dot or slash delimited. It is also possible to set the type of object a property represents. Following are some examples.
-</p>
-</section>
-<section name="Downloadable Examples">
-<p>In addition to the examples below, there are also downloadable examples which show how to set up a DataSource and simple and List property usage. These are available from the <a href="Download.html">Download</a> page. </p>
+<section name="Creating your data files">
+<p>Simple-JNDI stores values in multiple .properties, xml or ini files and are looked up using a specified name convention, such as dot or slash delimited. It is also possible to set the type of object a property represents. As already mentioned, the files are located under a root directory as specified with the <i>org.osjava.sj.root</i> property. </p>
+<p>In addition to the delimited lookup key structure, directory names and file names become part of the lookup key. Each delimited tree-node becomes a JNDI Context, while the leaves are implementations. The only exceptions are pseudo sub-values, which you will see with DataSource and other converters. </p>
 </section>
 <section name="Examples">
 <p>
-Imagine a file-structure looking like,
+The easiest way to understand is to consider a few examples. Imagine a file-structure looking like,
 </p>
 <code>
 config/<br />
@@ -82,7 +78,7 @@ The following pieces of Java are all legal ways in which to get values from Simp
 <li>Object value = ctxt.lookup("application1.users.quantity")</li>
 <li>Object value = ctxt.lookup("application1.users.enabled")</li>
 </ul>
-Note that the ProductionDS and TestDS return types are objects of type javax.sql.DataSource, while application1.users.quantity is an Integer and application1.users.enabled is Boolean.TRUE.
+Note that the ProductionDS and TestDS return types are objects of type javax.sql.DataSource, while application1.users.quantity is an Integer and application1.users.enabled is the Boolean true value. 
 </p>
 </section>
 </body>
