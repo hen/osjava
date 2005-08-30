@@ -7,6 +7,7 @@
   </properties>
 
   <body>
+  <section><div><a href="DataFiles.html">previous</a> - <a href="AsConfig.html">next</a></div></section>
 
   <section name="Converters">
     <p>It can't have escaped your attention that JNDI is an object technology while .xml, .properties and .ini files are very noticeably text based. Simple-JNDI solves this via the <i>org.osjava.sj.loader.convert.Conveter</i> interface. </p>
