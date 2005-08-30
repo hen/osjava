@@ -21,7 +21,7 @@
       <item name="Mailing List"              href="/mail-lists.html"/>
       <item name="Jar Dependencies"              href="/dependencies.html"/>
       <item name="SVN Repository"              href="http://www.osjava.org/svn.html?project=simple-jndi"/>
-      <item name="Bug Tracking"              href="http://issues.osjava.org:8080/jira/browse/BrowseProject.jspa?id=10000"/>
+      <item name="Bug Tracking"              href="http://issues.osjava.org/jira/browse/SJN"/>
     </menu>
   </body>
 </project>
