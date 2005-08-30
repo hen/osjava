@@ -41,6 +41,9 @@ public class MapConverter implements Converter {
     public Object convert(Properties properties, String type) {
         if("java.util.Map".equals(type)) {
             type = "java.util.HashMap";
+        } else 
+        if("java.util.Properties".equals(type)) {
+            return properties;
         }
         try {
             Class c = Class.forName(type);
