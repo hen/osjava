@@ -9,7 +9,7 @@
  *
  * Created on Mar 24, 2004 by Robert M. Zigweid
  */
-package org.osjava.sj.naming;
+package org.osjava.sj.jndi;
 
 import java.util.Properties;
 

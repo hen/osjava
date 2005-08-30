@@ -1,4 +1,4 @@
-package org.osjava.sj.naming;
+package org.osjava.sj.jndi;
 
 import java.util.*;
 import javax.naming.*;
