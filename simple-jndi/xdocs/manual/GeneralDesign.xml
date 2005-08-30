@@ -7,6 +7,7 @@
   </properties>
 
   <body>
+  <section><div><a href="Configuring.html">previous</a> - <a href="DataFiles.html">next</a></div></section>
     <section name="General Design">
       <p>Much of the design of Simple-JNDI is driven by the JNDI specification. The packages break down to the following list. </p>
       <ul>
