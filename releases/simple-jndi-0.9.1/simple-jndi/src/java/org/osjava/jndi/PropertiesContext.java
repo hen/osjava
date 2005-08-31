@@ -212,7 +212,10 @@ if(DEBUG)            System.err.println("[CTXT]separator is: "+this.separator);
                 return "java/";
             }
             if(key.startsWith("java:/")) {
-                return "java/"+key.substring(6);
+                return "java/"+key.substring("java:/".length());
+            }
+            if(key.startsWith("java:")) {
+                return "java/"+key.substring("java/".length());
             }
         }
         return key;
