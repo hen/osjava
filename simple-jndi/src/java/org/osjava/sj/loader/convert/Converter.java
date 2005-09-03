@@ -50,8 +50,8 @@ public interface Converter {
      *
      * <p>TODO: No way for a converter to know the delimiter-type. </p>
      *
-     * @param Properties data structure
-     * @param String type of object desired
+     * @param properties a Properties data structure
+     * @param type a String representation of object desired
      */
     Object convert(Properties properties, String type);
 
