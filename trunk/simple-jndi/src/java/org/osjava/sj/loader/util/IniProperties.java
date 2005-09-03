@@ -32,8 +32,11 @@
 
 package org.osjava.sj.loader.util;
 
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
 
 /** 
  * Functionally like the CustomProperties class in that it has 

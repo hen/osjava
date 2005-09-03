@@ -39,8 +39,6 @@
 
 package org.osjava.sj.memory;
 
-import junit.framework.TestCase;
-
 /**
  * @author bayard@generationjava.com
  */
