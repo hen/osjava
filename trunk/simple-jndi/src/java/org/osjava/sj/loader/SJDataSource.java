@@ -91,9 +91,8 @@ System.err.println("[DS]Setting Pool information");
 System.err.println("[DS]Getting Connection for url: " + tmpUrl);
         if(username == null || password == null) {
             return DriverManager.getConnection(tmpUrl);
-        } else {
-            return DriverManager.getConnection(tmpUrl, username, password);
         }
+        return DriverManager.getConnection(tmpUrl, username, password);
     }
 
     public PrintWriter getLogWriter() throws SQLException {
