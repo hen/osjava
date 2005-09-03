@@ -58,13 +58,12 @@ public class Utils {
         int idx = str.indexOf(repl);
         if(idx == -1) {
             return str;
-        } else {
-            String rest = "";
-            if(str.length() > idx + repl.length()) {
-                rest = replace(str.substring(idx + repl.length()), repl, with);
-            }
-            return str.substring(0, idx) + with + rest;
         }
+        String rest = "";
+        if(str.length() > idx + repl.length()) {
+            rest = replace(str.substring(idx + repl.length()), repl, with);
+        }
+        return str.substring(0, idx) + with + rest;
     }
 
 }
