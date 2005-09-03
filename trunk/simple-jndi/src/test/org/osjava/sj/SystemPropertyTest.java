@@ -1,12 +1,10 @@
 package org.osjava.sj;
 
-import javax.naming.*;
-import java.util.*;
 
-import junit.framework.Test;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+
 import junit.framework.TestCase;
-import junit.framework.TestSuite;
-import junit.textui.TestRunner;
 
 public class SystemPropertyTest extends TestCase {
 
