@@ -32,8 +32,11 @@
 
 package org.osjava.sj.loader.util;
 
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
 
 public class CustomProperties extends AbstractProperties {
 
@@ -73,7 +76,7 @@ public class CustomProperties extends AbstractProperties {
             reader.close();
         } catch(IOException ioe) {
             ioe.printStackTrace();
-        }
+        } finally {}
     }
 
 }
