@@ -73,9 +73,8 @@ class OrderedSet implements Set {
          if(!contains(obj)) {
              list.add(obj);
              return true;
-         } else {
-             return false;
          }
+        return false;
     }
 
     public boolean addAll(Collection c) {

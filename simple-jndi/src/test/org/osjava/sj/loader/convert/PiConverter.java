@@ -40,9 +40,8 @@ public class PiConverter implements Converter {
         Object value = properties.get("");
         if("Pi".equals(value)) {
             return new Double(Math.PI);
-        } else {
-            return value;
         }
+        return value;
     }
 
 }
