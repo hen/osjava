@@ -120,6 +120,7 @@ public class Statement implements java.sql.Statement {
     public java.sql.ResultSet executeQuery(String sql) throws SQLException {
         /* Create a new java.sql.ResultSet object that will be filled. */
         ResultSet rs = new ResultSet(this, resultSetType, resultSetConcurrency, resultSetHoldability);
+        results.add(rs);
         try {
             executeSQLWithResultSet(sql, con, rs, 0, getFetchSize());
         } catch (SQLException e) {
@@ -131,7 +132,6 @@ public class Statement implements java.sql.Statement {
              */
             e.printStackTrace();
         }
-        results.add(rs);
         return rs;
     }
 
@@ -165,11 +165,14 @@ public class Statement implements java.sql.Statement {
      * 
      * @see java.sql.Statement#close()
      */
-    public void close() throws SQLException {        /* Ensure that all of the Connection's statements are closed. */
-        /* XXX: Yuck.  Generics do have some advantages */
-        Iterator it = ((LinkedList)((LinkedList)results).clone()).iterator();
+    public void close() throws SQLException {
+        /* Ensure that all of the Statement's ResultSets are closed. */
+        Iterator it= results.iterator();
+        System.err.println("Trying to close Statement");
         while (it.hasNext()) {
             ResultSet next = (ResultSet)it.next();
+            System.err.println("Closing ResultSet -- " + next);
+            it.remove();
             next.close();
         }
     }

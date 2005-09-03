@@ -173,6 +173,7 @@ public class ResultSet implements java.sql.ResultSet {
      * @see java.sql.ResultSet#close()
      */
     public void close() throws SQLException {
+        System.err.println("Trying to close ResultSet --" + this);
         if(closed) {
             return;
         }
