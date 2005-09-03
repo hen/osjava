@@ -1,15 +1,21 @@
 package org.osjava.sj.loader;
 
-import javax.naming.*;
-import java.io.*;
-import java.util.*;
+import java.io.File;
+import java.io.IOException;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
-import junit.textui.TestRunner;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Hashtable;
+import java.util.List;
+import java.util.Properties;
+
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 
 import javax.sql.DataSource;
+
+import junit.framework.TestCase;
 
 public class JndiLoaderTest extends TestCase {
 

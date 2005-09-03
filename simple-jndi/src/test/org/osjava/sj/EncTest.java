@@ -1,13 +1,12 @@
 package org.osjava.sj;
 
-import javax.naming.*;
-import java.util.*;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+
 import javax.sql.DataSource;
 
-import junit.framework.Test;
 import junit.framework.TestCase;
-import junit.framework.TestSuite;
-import junit.textui.TestRunner;
 
 public class EncTest extends TestCase {
 

@@ -1,13 +1,16 @@
 package org.osjava.sj;
 
-import javax.naming.*;
-import javax.sql.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
-import junit.framework.Test;
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+
+import javax.sql.DataSource;
+
+
 import junit.framework.TestCase;
-import junit.framework.TestSuite;
-import junit.textui.TestRunner;
 
 public class SimpleContextTest extends TestCase {
 

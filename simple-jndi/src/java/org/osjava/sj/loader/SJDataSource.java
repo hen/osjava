@@ -37,8 +37,6 @@ import java.sql.SQLException;
 import javax.sql.DataSource;
 import java.sql.DriverManager;
 import java.io.PrintWriter;
-import java.util.Hashtable;
-import java.util.Properties;
 
 /**
  * A basic implementation of a DataSource. 
