@@ -32,7 +32,6 @@
 
 package org.osjava.sj.loader.convert;
 
-import java.util.Date;
 import java.util.Properties;
 
 import java.text.ParseException;
