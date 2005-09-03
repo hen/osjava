@@ -1,7 +1,13 @@
 package org.osjava.sj.jndi;
 
-import java.util.*;
-import javax.naming.*;
+import java.util.Hashtable;
+
+import javax.naming.Context;
+import javax.naming.Name;
+import javax.naming.NameParser;
+import javax.naming.NamingEnumeration;
+import javax.naming.NamingException;
+
 
 /**
  * Standard delegating pattern for JNDI Contexts.

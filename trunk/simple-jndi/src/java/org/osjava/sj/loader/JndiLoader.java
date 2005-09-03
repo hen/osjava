@@ -4,7 +4,6 @@ package org.osjava.sj.loader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -14,11 +13,14 @@ import java.util.Properties;
 import javax.naming.Context;
 import javax.naming.NamingException;
 
-
 import org.osjava.sj.loader.convert.ConvertRegistry;
 import org.osjava.sj.loader.convert.Converter;
 
-import org.osjava.sj.loader.util.*;
+import org.osjava.sj.loader.util.AbstractProperties;
+import org.osjava.sj.loader.util.CustomProperties;
+import org.osjava.sj.loader.util.IniProperties;
+import org.osjava.sj.loader.util.Utils;
+import org.osjava.sj.loader.util.XmlProperties;
 
 /**
  * Loads a .properties file into a JNDI server.
