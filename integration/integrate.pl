@@ -21,8 +21,9 @@ use POSIX qw(O_CREAT);
 sub usage() {
     print "Usage:\n";
     print " ./integrate.pl foo-integration.xml all               -  Will build every component specified in the given xml file. \n";
+    print " ./integrate.pl foo-integration.xml all <projects> -  Will build only the components specified. \n";
     print " ./integrate.pl foo-integration.xml update            -  Will build only components that have had a changed file since the last update. \n";
-    print " ./integrate.pl foo-integration.xml update <projects> -  Will build only the component specified. \n";
+    print " ./integrate.pl foo-integration.xml update <projects> -  Will build only the components specified. \n";
     exit 1;
 }
 
@@ -109,7 +110,7 @@ $reportDirectory = $conf->{'site'}[0]->{'target'};
 
 my @build_list = ();
 
-# action may be 'all', 'update' or 'project-name' 
+# action may be 'all', 'update'
 
 # loop over each component in the xml
     foreach $buildable (@projects) {
@@ -332,7 +333,7 @@ $timestamp = strftime("%Y/%m/%e %H:%M", localtime());
             timestamp => $timestamp,
             reports => \%reports,
             build_reason => $action,
-            error_log_filename => "$reportDirectory/".$buildable->{'escapedDirectory'}."/ERROR.log",
+            error_log_filename => "$reportDirectory/".$buildable->{'directory'}."/ERROR.log",
         };
         $tt->process($input, $vars, "$reportDirectory/report_".$buildable->{'escapedDirectory'}.".html") || die $tt->error();
     }
