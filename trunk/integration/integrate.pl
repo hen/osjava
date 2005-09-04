@@ -291,51 +291,53 @@ $timestamp = strftime("%Y/%m/%e %H:%M", localtime());
 
 
 # REPORT SYSTEM
-    print "Building front page\n";
-    my $tt = Template->new();
-    my $input = 'templates/group.tt';
-    my $vars = {
-        projects => \@projects,
-        site => $conf->{'site'}[0],
-        timestamp => $timestamp,
-    };
-    $tt->process($input, $vars, "$reportDirectory/index.html") || die $tt->error();
-
-    foreach $buildable (@build_list) {
-        print "Building report for $buildable->{'project'}\n";
-
-        $directory = "$buildable->{'directory'}";
-  
-        # create report pages from xml files
-        my %reports;
-        my @xml_reports = ('checkstyle', 'pmd', 'junit', 'simian', 'jdepend');
-  
-        foreach $xml_report (@xml_reports) {
-            if( -e "$reportDirectory/$directory/${xml_report}-report.xml" ) {
-                xdoc2html("$reportDirectory/$directory/${xml_report}-report.xml", "$reportDirectory/$directory/${xml_report}-report.html");
-                $reports{$xml_report} = "$directory/${xml_report}-report.html";
-            }
-        }
-  
-        my %sub_sites = ('apidocs' => 'javadoc', 'xref' => 'source', 'jcoverage' => 'test coverage', 'builds' => 'builds');
-        while( ($key, $value) = each %sub_sites) {
-            if(-e "$reportDirectory/$directory/$key") {
-                $reports{$value} = "$directory/$key";
-            }
-        }
-  
-        # generate a report page, with links if targets of said links are available
-        # TODO: Make the links unactive if not available, rather than not there
-        my $input = 'templates/project.tt';
+    if(@build_list) {
+        print "Building front page\n";
+        my $tt = Template->new();
+        my $input = 'templates/group.tt';
         my $vars = {
-            project => $buildable,
+            projects => \@projects,
             site => $conf->{'site'}[0],
             timestamp => $timestamp,
-            reports => \%reports,
-            build_reason => $action,
-            error_log_filename => "$reportDirectory/".$buildable->{'directory'}."/ERROR.log",
         };
-        $tt->process($input, $vars, "$reportDirectory/report_".$buildable->{'escapedDirectory'}.".html") || die $tt->error();
+        $tt->process($input, $vars, "$reportDirectory/index.html") || die $tt->error();
+
+        foreach $buildable (@build_list) {
+            print "Building report for $buildable->{'project'}\n";
+
+            $directory = "$buildable->{'directory'}";
+      
+            # create report pages from xml files
+            my %reports;
+            my @xml_reports = ('checkstyle', 'pmd', 'junit', 'simian', 'jdepend');
+      
+            foreach $xml_report (@xml_reports) {
+                if( -e "$reportDirectory/$directory/${xml_report}-report.xml" ) {
+                    xdoc2html("$reportDirectory/$directory/${xml_report}-report.xml", "$reportDirectory/$directory/${xml_report}-report.html");
+                    $reports{$xml_report} = "$directory/${xml_report}-report.html";
+                }
+            }
+      
+            my %sub_sites = ('apidocs' => 'javadoc', 'xref' => 'source', 'jcoverage' => 'test coverage', 'builds' => 'builds');
+            while( ($key, $value) = each %sub_sites) {
+                if(-e "$reportDirectory/$directory/$key") {
+                    $reports{$value} = "$directory/$key";
+                }
+            }
+      
+            # generate a report page, with links if targets of said links are available
+            # TODO: Make the links unactive if not available, rather than not there
+            my $input = 'templates/project.tt';
+            my $vars = {
+                project => $buildable,
+                site => $conf->{'site'}[0],
+                timestamp => $timestamp,
+                reports => \%reports,
+                build_reason => $action,
+                error_log_filename => "$reportDirectory/".$buildable->{'directory'}."/ERROR.log",
+            };
+            $tt->process($input, $vars, "$reportDirectory/report_".$buildable->{'escapedDirectory'}.".html") || die $tt->error();
+        }
     }
 
 exit (scalar @build_list != 0);
