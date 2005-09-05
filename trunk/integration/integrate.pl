@@ -212,11 +212,15 @@ my @build_list = ();
 
         my $reportDir = "${previousDirectory}/${reportDirectory}/$buildable->{'directory'}";
 
-        rmtree($reportDir);
+# Pisses SVN off when the .svn files go away
+#        rmtree($reportDir);
+`find $reportDir -type f | grep -v '\.svn' | xargs rm`;
+`find $reportDir -type d | grep -v '\.svn' | xargs rmdir 2>&1 | grep -v 'Directory not empty'`;
         mkpath($reportDir);
 
         copy "ERROR.log", "$reportDir/";
 
+# TODO: Rewrite these to not need things being deleted
         # deploy reports
         move "target/docs/apidocs/", "$reportDir/apidocs/";
         move "target/docs/jcoverage/", "$reportDir/jcoverage/";
