@@ -6,9 +6,9 @@
   <body>
     <menu name="Overview">
       <item name="Introduction"              href="/index.html"/>
-      <item name="Download"              href="/Download.html"/>
-      <item name="Changes"              href="/changes-report.html"/>
+      <item name="Release Notes"              href="/changes-report.html"/>
       <item name="Manual"              href="/manual/index.html"/>
+      <item name="Download"              href="/Download.html"/>
       <item name="FAQ"              href="/FAQ.html"/>
       <item name="License"              href="/license.html"/>
     </menu>
