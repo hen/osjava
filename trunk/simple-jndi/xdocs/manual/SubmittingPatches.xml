@@ -7,7 +7,7 @@
   </properties>
 
   <body>
-  <section><div><a href="CompilingTheSource.html">previous</a></div></section>
+  <section><div><a href="CompilingTheSource.html">previous</a> - <a href="index.html">contents</a></div></section>
   <section name="Patches?"><p>
 One of the beauties of open-source is that you have the opportunity to fix bugs yourself instead of just reporting them. If you should choose to do so, please feel welcome to submit your patch to the main Simple-JNDI codebase.
 
