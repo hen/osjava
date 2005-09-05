@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<document>
+
+  <properties>
+    <author email="bayard@generationjava.com">Henri Yandell</author>
+    <title>Compiling the source</title>
+  </properties>
+
+  <body>
+  <section><div><a href="SubmittingBugs.html">previous</a> - <a href="index.html">contents</a> - <a href="SubmittingPatches.html">next</a></div></section>
+  <section name="Compiling the source"><p>
+To compile the latest source from the source repository, you'll want the following handy-dandy tools available:
+
+<ul>
+<li> Subversion (SVN) client</li>
+<li> Java Developer Kit (1.4.x is the preferred version)</li>
+<li> Maven</li>
+</ul>
+
+If you wish to compile from a source-release, just ignore the Subversion comments below.
+
+</p></section><section name="Get the source"><p>
+
+<pre>
+svn co http://svn.osjava.org/svn/osjava/trunk/simple-jndi
+</pre>
+
+</p></section><section name="Compile"><p>
+
+<pre>
+cd simple-jndi
+maven jar
+</pre>
+
+</p></section><section name="The result"><p>
+
+The result is a JAR file, where x.x.x represents the next version of Simple-JNDI.
+
+<pre>
+target/simple-jndi-x.x.x.jar
+</pre>
+  </p></section>
+  </body>
+
+</document>

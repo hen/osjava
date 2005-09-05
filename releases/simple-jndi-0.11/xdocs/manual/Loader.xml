@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<document>
+
+  <properties>
+    <author email="bayard@generationjava.com">Henri Yandell</author>
+    <title>Loading into other JNDI implementations</title>
+  </properties>
+
+  <body>
+  <section><div><a href="MemoryContext.html">previous</a> - <a href="index.html">contents</a> - <a href="DataSources.html">next</a></div></section>
+    <section name="Using the JNDI loader system separately">
+      <p>While Simple-JNDI ships with an in-memory JNDI implementation, there is nothing to stop you using a different in-memory JNDI implementation, such as <a href="http://directory.apache.org/naming/">Apache Directory JNDI Naming</a> or a completely different type of JNDI implementation, provided it is writable. </p>
+      <p>To do this, use the <i>org.osjava.sj.factory</i> property to contain the ContextFactory of your chosen JNDI implementation. For example to use Directory Naming you would do: </p>
+      <pre>
+      org.osjava.sj.factory=org.apache.naming.NamingContextFactory
+      </pre>
+      <p>If you should use the loader with a different JNDI implementation, we would love to know. </p>
+    </section>
+  </body>
+
+</document>

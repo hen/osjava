@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<document>
+
+  <properties>
+    <author email="bayard@generationjava.com">Henri Yandell</author>
+    <title>Configuration</title>
+  </properties>
+
+  <body>
+  <section><div><a href="ConverterPlugins.html">previous</a> - <a href="index.html">contents</a> - <a href="MemoryContext.html">next</a></div></section>
+  <section name="Using Simple-JNDI for Configuration">
+    <p>JNDI is a natural location for configuration information for applications, and Simple-JNDI is a good fit for such configuration. Rather than using the JNDI API directly, <a href="http://www.osjava.org/genjava/multiproject/gj-config/">GenJava Config</a> is a nice facade to place on top. </p>
+    <p>Alternatively, <a href="http://jakarta.apache.org/commons/configuration/">Commons Configuration</a> can sit on top of JNDI and should work with Simple-JNDI (we'd love to know if anybody does this). </p>
+  </section>
+  </body>
+
+</document>
