@@ -12,7 +12,7 @@ do
 
   cp header-template.html $i/versions.html
 
-  for j in `ls -1d $i/*/ | sort -dr`
+  for j in `ls -1d $i/*/ | versionsort`
   do
     j=`echo $j | sed 's/\/$//'`
     v=`echo $j | sed 's/.*\///'`
