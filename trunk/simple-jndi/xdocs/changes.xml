@@ -7,7 +7,7 @@
   </properties>
 
   <body>
-    <release version="0.11" date="2004-09-05" description="Complete rewrite with major improvements">
+    <release version="0.11" date="2005-09-05" description="Complete rewrite with major improvements">
         <action dev="eric" type="fix" issue="SJN-59">Move from gj-xml to DOM</action>
         <action dev="hen" type="add" issue="SJN-60">Create user manual</action>
         <action dev="hen" type="add" issue="SJN-22">Pluggable converters</action>
