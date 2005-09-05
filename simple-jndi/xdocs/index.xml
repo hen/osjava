@@ -21,7 +21,7 @@ Simple-JNDI is intended to solve two problems. The first is that of finding a co
     <p>Simple-JNDI depends on no external jars for its basic functionality, however to get certain optional features you will still need to download external jars. When describing these features, the manual will point out which jars are needed and where to get them. </p>
 </section>
 <section name="Getting more help">
-    <p>Feel free to ask any questions to the user's <a href="http://www.osjava.org/simple-jndi/mail-lists.html">mailing list</a>. Please report bugs either in the <a href="http://www.osjava.org:8080/jira/secure/BrowseProject.jspa?id=10000 ">issue tracker</a> or to the <a href="http://www.osjava.org/simple-jndi/mail-lists.html">mailing list</a>. </p>
+    <p>Feel free to ask any questions to the user's <a href="http://www.osjava.org/simple-jndi/mail-lists.html">mailing list</a>. Please report bugs either in the <a href="http://www.osjava.org:8080/jira/browse/SJN ">issue tracker</a> or to the <a href="http://www.osjava.org/simple-jndi/mail-lists.html">mailing list</a>. </p>
     </section>
 </body>
 </document>
