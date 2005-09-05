@@ -7,7 +7,7 @@
   </properties>
 
   <body>
-  <section><div><a href="GeneralDesign.html">previous</a> - <a href="ConverterPlugins.html">next</a></div></section>
+  <section><div><a href="GeneralDesign.html">previous</a> - <a href="index.html">contents</a> - <a href="ConverterPlugins.html">next</a></div></section>
 <section name="Creating your data files">
 <p>Simple-JNDI stores values in multiple .properties, xml or ini files and are looked up using a specified name convention, such as dot or slash delimited. It is also possible to set the type of object a property represents. As already mentioned, the files are located under a root directory as specified with the <i>org.osjava.sj.root</i> property. </p>
 <p>In addition to the delimited lookup key structure, directory names and file names become part of the lookup key. Each delimited tree-node becomes a JNDI Context, while the leaves are implementations. The only exceptions are pseudo sub-values, which you will see with DataSource and other converters. </p>

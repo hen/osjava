@@ -7,7 +7,7 @@
   </properties>
 
   <body>
-  <section><div><a href="DataSources.html">previous</a> - <a href="Todo.html">next</a></div></section>
+  <section><div><a href="DataSources.html">previous</a> - <a href="index.html">contents</a> - <a href="Todo.html">next</a></div></section>
   <section name="Index of supported properties for jndi.properties">
     <ul>
       <li>org.osjava.sj.root - Location at which to find data files to load into JNDI. Protocol based, but currently only the file:// protocol is supported. </li>
