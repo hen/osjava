@@ -1,8 +1,15 @@
 package org.osjava.jms;
-public class MemoryQueueConnectionFactory implements QueueConnectionFactory extends ConnectionFactory{
-    public QueueConnection createQueueConnection();
-       throws JMSException
-    public QueueConnection createQueueConnection(String,java.lang.String);
-       throws JMSException
+
+import javax.jms.QueueConnectionFactory;
+import javax.jms.JMSException;
+
+public class MemoryQueueConnectionFactory extends MemoryConnectionFactory implements QueueConnectionFactory {
+
+    public QueueConnection createQueueConnection() throws JMSException {
+    }
+
+    public QueueConnection createQueueConnection(String user, String passwd) throws JMSException {
+    }
+
 }
 

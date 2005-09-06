@@ -1,8 +1,14 @@
 package org.osjava.jms;
-public class MemoryTopicConnectionFactory implements TopicConnectionFactory extends ConnectionFactory{
-    public TopicConnection createTopicConnection();
-       throws JMSException
-    public TopicConnection createTopicConnection(String,java.lang.String);
-       throws JMSException
+
+import javax.jms.TopicConnectionFactory;
+
+public class MemoryTopicConnectionFactory extends MemoryConnectionFactory implements TopicConnectionFactory {
+
+    public TopicConnection createTopicConnection() throws JMSException {
+    }
+
+    public TopicConnection createTopicConnection(String user, String passwd) throws JMSException {
+    }
+
 }
 
