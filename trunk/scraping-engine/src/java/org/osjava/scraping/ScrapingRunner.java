@@ -101,6 +101,8 @@ public class ScrapingRunner implements Runner {
             notifyError(cfg, session, se);
         } catch(NotificationException ne) {
             notifyError(cfg, session, ne);
+        } catch(RuntimeException re) {
+            notifyError(cfg, session, re);
         }
     }
 
