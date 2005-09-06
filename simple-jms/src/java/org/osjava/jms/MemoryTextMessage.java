@@ -1,8 +1,14 @@
 package org.osjava.jms;
-public class MemoryTextMessage implements TextMessage extends Message{
-    public void setText(String);
-       throws JMSException
-    public String getText();
-       throws JMSException
-}
 
+import javax.jms.TextMessage;
+import javax.jms.JMSException;
+
+public class MemoryTextMessage extends MemoryMessage implements TextMessage {
+
+    public void setText(String text) throws JMSException {
+    }
+
+    public String getText() throws JMSException {
+    }
+
+}
