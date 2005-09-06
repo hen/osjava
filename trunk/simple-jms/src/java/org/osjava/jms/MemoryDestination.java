@@ -1,4 +1,7 @@
 package org.osjava.jms;
-interface Destination{
+
+import javax.jms.Destination;
+
+public abstract class MemoryDestination implements Destination {
 }
 

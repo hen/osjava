@@ -1,8 +1,15 @@
 package org.osjava.jms;
-interface ConnectionFactory{
-    public Connection createConnection();
-       throws JMSException
-    public Connection createConnection(String,java.lang.String);
-       throws JMSException
+
+import javax.jms.ConnectionFactory;
+import javax.jms.JMSException;
+
+public class MemoryConnectionFactory implements ConnectionFactory {
+
+    public Connection createConnection() throws JMSException {
+    }
+
+    public Connection createConnection(String user, String passwd) throws JMSException {
+    }
+
 }
 

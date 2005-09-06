@@ -1,7 +1,15 @@
 package org.osjava.jms;
-public class MemoryQueue implements Queue extends Destination{
-    public String getQueueName();
-       throws JMSException
-    public String toString();
+
+import javax.jms.Queue;
+import javax.jms.JMSException;
+
+public class MemoryQueue extends MemoryDestination implements Queue {
+
+    public String getQueueName() throws JMSException {
+    }
+
+    public String toString() {
+    }
+
 }
 
