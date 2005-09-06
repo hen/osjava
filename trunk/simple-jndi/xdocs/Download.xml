@@ -8,22 +8,24 @@
 
   <body>
     <section name="Download Latest Code">
-      <p>The next version of simple-jndi will be 0.10. To get the current version of this you need to check the code out from Subversion and build it yourself using Maven. More info on Subversion is available on the <a href="http://www.osjava.org/svn.php?project=simple-jndi">svn-usage</a> page and Maven can be obtained from <a href="http://maven.apache.org/">maven.apache.org</a>. </p>
+      <p>The next version of simple-jndi will be 0.12. To get the current version of this you need to check the code out from Subversion and build it yourself using Maven. More info on Subversion is available on the <a href="http://www.osjava.org/svn.php?project=simple-jndi">svn-usage</a> page and Maven can be obtained from <a href="http://maven.apache.org/">maven.apache.org</a>. </p>
     </section>
     <section name="Download Latest Stable">
 <ul>
-<li><a href="http://dist.osjava.org/releases/official/simple-jndi/simple-jndi-0.9-src.tar.gz">simple-jndi-0.9-src.tar.gz</a></li>
-<li><a href="http://dist.osjava.org/releases/official/simple-jndi/simple-jndi-0.9-src.zip">simple-jndi-0.9-src.zip</a></li>
-<li><a href="http://dist.osjava.org/releases/official/simple-jndi/simple-jndi-0.9.tar.gz">simple-jndi-0.9.tar.gz</a></li>
-<li><a href="http://dist.osjava.org/releases/official/simple-jndi/simple-jndi-0.9.zip">simple-jndi-0.9.zip</a></li>
+<li><a href="http://dist.osjava.org/releases/official/simple-jndi/simple-jndi-0.11-src.tar.gz">simple-jndi-0.11-src.tar.gz</a></li>
+<li><a href="http://dist.osjava.org/releases/official/simple-jndi/simple-jndi-0.11-src.zip">simple-jndi-0.11-src.zip</a></li>
+<li><a href="http://dist.osjava.org/releases/official/simple-jndi/simple-jndi-0.11.tar.gz">simple-jndi-0.11.tar.gz</a></li>
+<li><a href="http://dist.osjava.org/releases/official/simple-jndi/simple-jndi-0.11.zip">simple-jndi-0.11.zip</a></li>
+<!--
 <li><a href="http://dist.osjava.org/releases/official/simple-jndi/example-collections-0.8.zip">example-collections-0.8.zip</a> - Collections examples under 0.8 (unchanged in 0.9)</li>
 <li><a href="/releases/official/simple-jndi/example-datasource-0.8.zip">example-datasource-0.8.zip</a> - DataSource examples under 0.8 (unchanged in 0.9)</li>
+-->
 </ul>
      <p>
      If you require them through usage of optional features, please ensure you have the necessary dependencies:
      <ul>
-      <li><a href="http://www.ibiblio.org/maven/genjava/jars/gj-xml-1.0.jar">gj-xml 1.0</a></li>
-      <li><a href="http://dist.osjava.org/maven2/commons-convert/jars/commons-convert-SNAPSHOT.jar">commons-convert CVS HEAD build</a></li>
+      <li>(0.9.1 and before): <a href="http://www.ibiblio.org/maven/genjava/jars/gj-xml-1.0.jar">gj-xml 1.0</a></li>
+      <li>(0.9.1 and before): <a href="http://dist.osjava.org/maven2/commons-convert/jars/commons-convert-SNAPSHOT.jar">commons-convert CVS HEAD build</a></li>
       <li><a href="http://www.ibiblio.org/maven/commons-pool/jars/commons-pool-1.1.jar">commons-pool 1.1</a></li>
       <li><a href="http://www.ibiblio.org/maven/commons-dbcp/jars/commons-dbcp-1.1.jar">commons-dbcp 1.1</a></li>
       <li><a href="http://www.ibiblio.org/maven/commons-collections/jars/commons-collections-2.1.jar">commons-collections 2.1</a></li>
@@ -31,6 +33,15 @@
      </p>
 </section>
 <section name="Archives">
+<ul>
+<li><a href="http://dist.osjava.org/releases/official/simple-jndi/simple-jndi-0.9.1.jar">simple-jndi-0.9.1.jar</a></li>
+</ul>
+<ul>
+<li><a href="http://dist.osjava.org/releases/official/simple-jndi/simple-jndi-0.9-src.tar.gz">simple-jndi-0.9-src.tar.gz</a></li>
+<li><a href="http://dist.osjava.org/releases/official/simple-jndi/simple-jndi-0.9-src.zip">simple-jndi-0.9-src.zip</a></li>
+<li><a href="http://dist.osjava.org/releases/official/simple-jndi/simple-jndi-0.9.tar.gz">simple-jndi-0.9.tar.gz</a></li>
+<li><a href="http://dist.osjava.org/releases/official/simple-jndi/simple-jndi-0.9.zip">simple-jndi-0.9.zip</a></li>
+</ul>
 <ul>
 <li><a href="http://dist.osjava.org/official/simple-jndi/simple-jndi-0.8-src.tar.gz">simple-jndi-0.8-src.tar.gz</a></li>
 <li><a href="http://dist.osjava.org/official/simple-jndi/simple-jndi-0.8-src.zip">simple-jndi-0.8-src.zip</a></li>
