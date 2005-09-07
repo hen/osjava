@@ -2,7 +2,10 @@ package org.osjava.jms;
 
 import java.util.Enumeration;
 import java.util.Collections;
+import java.util.HashMap;
 
+import javax.jms.Destination;
+import javax.jms.JMSException;
 import javax.jms.Message;
 
 public abstract class MemoryMessage implements Message {
@@ -11,6 +14,7 @@ public abstract class MemoryMessage implements Message {
     private long jmsTimestamp;
     private String jmsCorrelationId;
     private Destination jmsReplyTo;
+    private Destination jmsDestination;
     private int jmsDeliveryMode;
     private boolean jmsRedelivered;
     private String jmsType;
@@ -158,39 +162,39 @@ public abstract class MemoryMessage implements Message {
     }
 
     public void setBooleanProperty(String key, boolean bool) throws JMSException {
-        this.properties(key, new Boolean(bool));
+        this.properties.put(key, new Boolean(bool));
     }
 
     public void setByteProperty(String key, byte b) throws JMSException {
-        this.properties(key, new Byte(b));
+        this.properties.put(key, new Byte(b));
     }
 
     public void setShortProperty(String key, short s) throws JMSException {
-        this.properties(key, new Short(s));
+        this.properties.put(key, new Short(s));
     }
 
     public void setIntProperty(String key, int i) throws JMSException {
-        this.properties(key, new Integer(i));
+        this.properties.put(key, new Integer(i));
     }
 
     public void setLongProperty(String key, long ln) throws JMSException {
-        this.properties(key, new Long(ln));
+        this.properties.put(key, new Long(ln));
     }
 
     public void setFloatProperty(String key, float f) throws JMSException {
-        this.properties(key, new Float(f));
+        this.properties.put(key, new Float(f));
     }
 
     public void setDoubleProperty(String key, double d) throws JMSException {
-        this.properties(key, new Double(d));
+        this.properties.put(key, new Double(d));
     }
 
     public void setStringProperty(String key, String str) throws JMSException {
-        this.properties(key, str);
+        this.properties.put(key, str);
     }
 
     public void setObjectProperty(String key, Object object) throws JMSException {
-        this.properties(key, object);
+        this.properties.put(key, object);
     }
 
     public void acknowledge() throws JMSException {
