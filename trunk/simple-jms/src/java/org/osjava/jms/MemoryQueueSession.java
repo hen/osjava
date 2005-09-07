@@ -10,6 +10,10 @@ import javax.jms.QueueSender;
 
 public class MemoryQueueSession extends MemorySession implements QueueSession {
 
+    public MemoryQueueSession(boolean transacted, int acknowledgeMode) {
+        super(transacted, acknowledgeMode);
+    }
+
     public Queue createQueue(String name) throws JMSException {
         return new MemoryQueue(name);
     }

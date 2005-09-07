@@ -13,6 +13,11 @@ public class MemoryQueueReceiver extends MemoryMessageConsumer implements QueueR
         this.queue = queue;
     }
 
+    public MemoryQueueReceiver(Queue queue, String messageSelector) {
+        super(queue, messageSelector);
+        this.queue = queue;
+    }
+
     public Queue getQueue() throws JMSException {
         return queue;
     }
