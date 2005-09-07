@@ -26,6 +26,9 @@
       <artifactId>gj-core</artifactId>
       <groupId>genjava</groupId>
       <version>3.0</version>
+      <properties>
+        <multidoc.url>http://dist.osjava.org/releases/multidoc-jnr</multidoc.url>
+      </properties>
     </dependency>
   </dependencies>
 

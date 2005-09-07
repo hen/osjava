@@ -29,6 +29,9 @@
       <artifactId>gj-find</artifactId>
       <version>0.1</version>
       <url>http://www.osjava.org/genjava/</url>
+      <properties>
+        <multidoc.url>http://dist.osjava.org/releases/multidoc-jnr</multidoc.url>
+      </properties>
     </dependency>
   </dependencies>
 
