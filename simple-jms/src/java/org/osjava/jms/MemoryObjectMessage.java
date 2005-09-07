@@ -6,10 +6,14 @@ import javax.jms.ObjectMessage;
 
 public class MemoryObjectMessage extends MemoryMessage implements ObjectMessage {
 
+    private Serializable ser;
+
     public void setObject(Serializable ser) throws JMSException {
+        this.ser = ser;
     }
 
     public Serializable getObject() throws JMSException {
+        return this.ser;
     }
 
 }
