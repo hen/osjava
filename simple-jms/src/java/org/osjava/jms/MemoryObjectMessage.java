@@ -3,6 +3,7 @@ package org.osjava.jms;
 import java.io.Serializable;
 
 import javax.jms.ObjectMessage;
+import javax.jms.JMSException;
 
 public class MemoryObjectMessage extends MemoryMessage implements ObjectMessage {
 
