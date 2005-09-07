@@ -8,9 +8,17 @@ public class MemoryTopicSubscriber extends MemoryMessageConsumer implements Topi
 
     private String name;
 
+    public MemoryTopicSubscriber(Topic topic, String messageSelector, boolean noLocal) {
+        super(topic, messageSelector, noLocal);
+    }
+
     public MemoryTopicSubscriber(Topic topic, String name, String messageSelector, boolean noLocal) {
         super(topic, messageSelector, noLocal);
         this.name = name;
+    }
+
+    public MemoryTopicSubscriber(Topic topic) {
+        super(topic);
     }
 
     public MemoryTopicSubscriber(Topic topic, String name) {
