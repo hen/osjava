@@ -7,7 +7,11 @@ import javax.jms.TopicSubscriber;
 import javax.jms.TopicPublisher;
 import javax.jms.TopicSession;
 
-public class MemoryTopicSession implements TopicSession {
+public class MemoryTopicSession extends MemorySession implements TopicSession {
+
+    public MemoryTopicSession(boolean transacted, int acknowledgeMode) {
+        super(transacted, acknowledgeMode);
+    }
 
     public Topic createTopic(String name) throws JMSException {
         return new MemoryTopic(name);
@@ -30,7 +34,7 @@ public class MemoryTopicSession implements TopicSession {
     }
 
     public TopicPublisher createPublisher(Topic topic) throws JMSException {
-        return new MemoryTopicPublsher(topic);
+        return new MemoryTopicPublisher(topic);
     }
 
     public TemporaryTopic createTemporaryTopic() throws JMSException {
