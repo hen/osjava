@@ -129,11 +129,11 @@ public class MemorySession implements Session {
     }
 
     public TemporaryQueue createTemporaryQueue() throws JMSException {
-        return new MemoryTemporaryQueue();
+        return new MemoryTemporaryQueue("TODO: Temporary name?");
     }
 
     public TemporaryTopic createTemporaryTopic() throws JMSException {
-        return new MemoryTemporaryTopic();
+        return new MemoryTemporaryTopic("TODO: Temporary name?");
     }
 
     public void unsubscribe(String name) throws JMSException {

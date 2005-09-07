@@ -38,8 +38,4 @@ public class MemoryQueueSession extends MemorySession implements QueueSession {
         return new MemoryQueueBrowser(queue, messageSelector);
     }
 
-    public TemporaryQueue createTemporaryQueue() throws JMSException {
-        return new MemoryTemporaryQueue();
-    }
-
 }
