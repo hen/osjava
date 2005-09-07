@@ -2,6 +2,24 @@ package org.osjava.jms;
 
 import javax.jms.StreamMessage;
 
+// TODO:
+/*  A value written as the row type can be read as the column type.
+
+ |        | boolean byte short char int long float double String byte[]
+ |----------------------------------------------------------------------
+ |boolean |    X                                            X
+ |byte    |          X     X         X   X                  X   
+ |short   |                X         X   X                  X   
+ |char    |                     X                           X
+ |int     |                          X   X                  X   
+ |long    |                              X                  X   
+ |float   |                                    X     X      X   
+ |double  |                                          X      X   
+ |String  |    X     X     X         X   X     X     X      X   
+ |byte[]  |                                                        X
+ |----------------------------------------------------------------------
+*/
+
 public class MemoryStreamMessage extends MemoryMessage implements StreamMessage {
 
     public boolean readBoolean() throws JMSException {
