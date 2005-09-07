@@ -1,6 +1,7 @@
 package org.osjava.jms;
 
 import javax.jms.StreamMessage;
+import javax.jms.JMSException;
 
 // TODO:
 /*  A value written as the row type can be read as the column type.
@@ -23,36 +24,47 @@ import javax.jms.StreamMessage;
 public class MemoryStreamMessage extends MemoryMessage implements StreamMessage {
 
     public boolean readBoolean() throws JMSException {
+        throw new RuntimeException("TODO");
     }
 
     public byte readByte() throws JMSException {
+        throw new RuntimeException("TODO");
     }
 
     public short readShort() throws JMSException {
+        throw new RuntimeException("TODO");
     }
 
     public char readChar() throws JMSException {
+        throw new RuntimeException("TODO");
     }
 
     public int readInt() throws JMSException {
+        throw new RuntimeException("TODO");
     }
 
     public long readLong() throws JMSException {
+        throw new RuntimeException("TODO");
     }
 
     public float readFloat() throws JMSException {
+        throw new RuntimeException("TODO");
     }
 
     public double readDouble() throws JMSException {
+        throw new RuntimeException("TODO");
     }
 
     public String readString() throws JMSException {
+        throw new RuntimeException("TODO");
     }
 
     public int readBytes(byte[] bytes) throws JMSException {
+        throw new RuntimeException("TODO");
     }
 
     public Object readObject() throws JMSException {
+        throw new RuntimeException("TODO");
     }
 
     public void writeBoolean(boolean bool) throws JMSException {

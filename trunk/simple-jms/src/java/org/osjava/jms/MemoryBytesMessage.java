@@ -6,45 +6,59 @@ import javax.jms.JMSException;
 public class MemoryBytesMessage extends MemoryMessage implements BytesMessage {
 
     public long getBodyLength() throws JMSException {
+        throw new RuntimeException("TODO");
     }
 
     public boolean readBoolean() throws JMSException {
+        throw new RuntimeException("TODO");
     }
 
     public byte readByte() throws JMSException {
+        throw new RuntimeException("TODO");
     }
 
     public int readUnsignedByte() throws JMSException {
+        throw new RuntimeException("TODO");
     }
 
     public short readShort() throws JMSException {
+        throw new RuntimeException("TODO");
     }
 
     public int readUnsignedShort() throws JMSException {
+        throw new RuntimeException("TODO");
     }
 
     public char readChar() throws JMSException {
+        throw new RuntimeException("TODO");
     }
 
     public int readInt() throws JMSException {
+        throw new RuntimeException("TODO");
     }
 
     public long readLong() throws JMSException {
+        throw new RuntimeException("TODO");
     }
 
     public float readFloat() throws JMSException {
+        throw new RuntimeException("TODO");
     }
 
     public double readDouble() throws JMSException {
+        throw new RuntimeException("TODO");
     }
 
     public String readUTF() throws JMSException {
+        throw new RuntimeException("TODO");
     }
 
     public int readBytes(byte[] bytes) throws JMSException {
+        throw new RuntimeException("TODO");
     }
 
     public int readBytes(byte[] bytes, int length) throws JMSException {
+        throw new RuntimeException("TODO");
     }
 
     public void writeBoolean(boolean bool) throws JMSException {
