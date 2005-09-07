@@ -3,7 +3,7 @@ package org.osjava.jms;
 import javax.jms.Topic;
 import javax.jms.JMSException;
 
-public class MemoryTopic extends MemoryDestination implements Topic {
+public class MemoryTopic implements Topic {
 
     private String name;
 
