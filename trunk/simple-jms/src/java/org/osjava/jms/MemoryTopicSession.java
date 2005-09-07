@@ -37,10 +37,6 @@ public class MemoryTopicSession extends MemorySession implements TopicSession {
         return new MemoryTopicPublisher(topic);
     }
 
-    public TemporaryTopic createTemporaryTopic() throws JMSException {
-        return new MemoryTemporaryTopic();
-    }
-
     public void unsubscribe(String name) throws JMSException {
         // TODO: Implement this
     }
