@@ -3,6 +3,7 @@ package org.osjava.jms;
 import javax.jms.ConnectionConsumer;
 import javax.jms.TopicConnection;
 import javax.jms.Topic;
+import javax.jms.TopicSession;
 import javax.jms.ServerSessionPool;
 import javax.jms.JMSException;
 
