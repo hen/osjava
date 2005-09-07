@@ -1,10 +1,24 @@
 package org.osjava.jms;
-public class MemoryTopicConnection implements TopicConnection extends Connection{
-    public TopicSession createTopicSession(boolean,int);
-       throws JMSException
-    public ConnectionConsumer createConnectionConsumer(javax.jms.Topic,String,javax.jms.ServerSessionPool,int);
-       throws JMSException
-    public ConnectionConsumer createDurableConnectionConsumer(javax.jms.Topic,String,java.lang.String,javax.jms.ServerSessionPool,int);
-       throws JMSException
+
+import javax.jms.ConnectionConsumer;
+import javax.jms.TopicConnection;
+import javax.jms.Topic;
+import javax.jms.ServerSessionPool;
+import javax.jms.JMSException;
+
+public class MemoryTopicConnection extends MemoryConnection implements TopicConnection {
+
+    public TopicSession createTopicSession(boolean transacted, int acknowledgeMode) throws JMSException {
+        return new MemoryTopicSession(transacted, acknowledgeMode);
+    }
+
+    public ConnectionConsumer createConnectionConsumer(Topic topic, String messageSelector, ServerSessionPool sessionPool, int maxMessages) throws JMSException {
+        throw new UnsupportedOperationException("Unsupported optional method");
+    }
+
+    public ConnectionConsumer createDurableConnectionConsumer(Topic topic, String subscriptionName, String messageSelector, ServerSessionPool sessionPool, int maxMessages) throws JMSException {
+        throw new UnsupportedOperationException("Unsupported optional method");
+    }
+
 }
 
