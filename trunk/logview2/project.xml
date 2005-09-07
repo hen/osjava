@@ -83,16 +83,25 @@
       <groupId>reportrunner</groupId>
       <artifactId>reportrunner</artifactId>
       <version>dev</version>
+      <properties>
+        <multidoc.url>http://dist.osjava.org/releases/multidoc-jnr</multidoc.url>
+      </properties>
     </dependency>
     <dependency>
       <groupId>genjava</groupId>
       <artifactId>gj-core</artifactId>
       <version>3.0</version>
+      <properties>
+        <multidoc.url>http://dist.osjava.org/releases/multidoc-jnr</multidoc.url>
+      </properties>
     </dependency>
     <dependency>
       <groupId>genjava</groupId>
       <artifactId>gj-xml</artifactId>
       <version>1.0</version>
+      <properties>
+        <multidoc.url>http://dist.osjava.org/releases/multidoc-jnr</multidoc.url>
+      </properties>
     </dependency>
     <dependency>
       <groupId>commons-io</groupId>

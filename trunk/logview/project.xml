@@ -48,10 +48,16 @@
       <groupId>genjava-core</groupId>
       <artifactId>genjava-core</artifactId>
       <version>1.0</version>
+      <properties>
+        <multidoc.url>http://dist.osjava.org/releases/multidoc-jnr</multidoc.url>
+      </properties>
     </dependency> 
     <dependency>
       <id>genjava-j2ee</id>
       <version>0.2</version>
+      <properties>
+        <multidoc.url>http://dist.osjava.org/releases/multidoc-jnr</multidoc.url>
+      </properties>
     </dependency> 
     <dependency>
       <id>servletapi</id>

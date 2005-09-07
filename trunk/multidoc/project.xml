@@ -58,16 +58,25 @@
       <groupId>genjava</groupId>
       <artifactId>gj-scrape</artifactId>
       <version>2.0.1</version>
+      <properties>
+        <multidoc.url>http://dist.osjava.org/releases/multidoc-jnr</multidoc.url>
+      </properties>
     </dependency>
     <dependency>
       <groupId>genjava</groupId>
       <artifactId>gj-core</artifactId>
       <version>3.0</version>
+      <properties>
+        <multidoc.url>http://dist.osjava.org/releases/multidoc-jnr</multidoc.url>
+      </properties>
     </dependency>
     <dependency>
       <groupId>genjava</groupId>
       <artifactId>gj-xml</artifactId>
       <version>1.0</version>
+      <properties>
+        <multidoc.url>http://dist.osjava.org/releases/multidoc-jnr</multidoc.url>
+      </properties>
     </dependency>
     <dependency>
       <id>commons-collections</id>

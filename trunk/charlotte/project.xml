@@ -73,6 +73,9 @@
       <artifactId>code316-core</artifactId>
       <version>0.8</version>
       <url>http://www.code316.com/</url>
+      <properties>
+        <multidoc.url>http://dist.osjava.org/releases/multidoc-jnr</multidoc.url>
+      </properties>
     </dependency>
 
     <dependency>
