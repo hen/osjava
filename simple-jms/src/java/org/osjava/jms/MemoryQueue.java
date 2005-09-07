@@ -3,7 +3,7 @@ package org.osjava.jms;
 import javax.jms.Queue;
 import javax.jms.JMSException;
 
-public class MemoryQueue extends MemoryDestination implements Queue {
+public class MemoryQueue implements Queue {
 
     private String name;
 
