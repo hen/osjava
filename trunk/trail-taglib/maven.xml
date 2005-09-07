@@ -5,4 +5,12 @@
     <attainGoal name="taglib:tagreference" />
   </preGoal>
 
+  <preGoal name="maven-javadoc-plugin:report">
+    <j:forEach var="dep" items="${pom.dependencies}">
+      <j:if test="${dep.getProperty('multidoc.url') != null}">
+        <j:set var="maven.javadoc.links" value="${maven.javadoc.links},${dep.getProperty('multidoc.url')}/${dep.getArtifactId()}/${dep.getVersion()}/"/>
+      </j:if>
+    </j:forEach>
+  </preGoal>
+
 </project>
