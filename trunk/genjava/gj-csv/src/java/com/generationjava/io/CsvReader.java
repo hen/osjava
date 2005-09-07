@@ -61,6 +61,9 @@ public class CsvReader {
     private boolean consume;
 
     public CsvReader(Reader rdr) {
+        if(rdr == null) {
+            throw new NullPointerException("Must be given a java.io.Reader instance. ");
+        }
         this.reader = rdr;
     }
 

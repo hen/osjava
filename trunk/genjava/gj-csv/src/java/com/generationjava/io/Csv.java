@@ -49,6 +49,9 @@ public class Csv {
     private String[] headers;
 
     public Csv(CsvReader reader) throws IOException {
+        if(reader == null) {
+            throw new NullPointerException("Must be given a com.generationjava.io.CsvReader instance. ");
+        }
         this.headers = reader.readLine();
 
         String[] line = null;
