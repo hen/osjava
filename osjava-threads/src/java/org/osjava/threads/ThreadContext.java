@@ -55,7 +55,7 @@ import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 
 import org.osjava.sj.jndi.AbstractContext;
-import org.osjava.naming.InvalidObjectTypeException;
+import org.osjava.sj.jndi.InvalidObjectTypeException;
 
 
 /**
