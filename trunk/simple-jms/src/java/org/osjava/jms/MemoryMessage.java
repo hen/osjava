@@ -8,7 +8,7 @@ import javax.jms.Destination;
 import javax.jms.JMSException;
 import javax.jms.Message;
 
-public abstract class MemoryMessage implements Message {
+public class MemoryMessage implements Message {
 
     private String jmsMessageId;
     private long jmsTimestamp;

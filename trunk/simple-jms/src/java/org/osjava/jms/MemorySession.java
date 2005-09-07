@@ -15,7 +15,8 @@ public class MemorySession implements Session {
     }
 
     public BytesMessage createBytesMessage() throws JMSException {
-        return new MemoryBytesMessage();
+        return null;
+//        return new MemoryBytesMessage();
     }
 
     public MapMessage createMapMessage() throws JMSException {
@@ -31,11 +32,14 @@ public class MemorySession implements Session {
     }
 
     public ObjectMessage createObjectMessage(Serializable ser) throws JMSException {
-        return new MemoryObjectMessage(ser);
+        ObjectMessage msg = new MemoryObjectMessage();
+        msg.setObject(ser);
+        return msg;
     }
 
     public StreamMessage createStreamMessage() throws JMSException {
-        return new MemoryStreamMessage();
+        return null;
+//        return new MemoryStreamMessage();
     }
 
     public TextMessage createTextMessage() throws JMSException {
@@ -43,7 +47,9 @@ public class MemorySession implements Session {
     }
 
     public TextMessage createTextMessage(String text) throws JMSException {
-        return new MemoryTextMessage(text);
+        TextMessage msg = new MemoryTextMessage();
+        msg.setText(text);
+        return msg;
     }
 
     public boolean getTransacted() throws JMSException {
@@ -78,20 +84,24 @@ public class MemorySession implements Session {
         this.listener = listener;
     }
 
-    public void run() throws JMSException {
+    public void run() {
         // TODO: Implement this
     }
 
     public MessageProducer createProducer(Destination destination) throws JMSException {
+        return new MemoryMessageProducer(destination);
     }
 
     public MessageConsumer createConsumer(Destination destination) throws JMSException {
+        return new MemoryMessageConsumer(destination);
     }
 
-    public MessageConsumer createConsumer(Destination destination, String) throws JMSException {
+    public MessageConsumer createConsumer(Destination destination, String messageSelector) throws JMSException {
+        return new MemoryMessageConsumer(destination, messageSelector);
     }
 
-    public MessageConsumer createConsumer(Destination destination, String, boolean) throws JMSException {
+    public MessageConsumer createConsumer(Destination destination, String messageSelector, boolean noLocal) throws JMSException {
+        return new MemoryMessageConsumer(destination, messageSelector, noLocal);
     }
 
     public Queue createQueue(String name) throws JMSException {
@@ -102,16 +112,20 @@ public class MemorySession implements Session {
         return new MemoryTopic(name);
     }
 
-    public TopicSubscriber createDurableSubscriber(Topic topic, String) throws JMSException {
+    public TopicSubscriber createDurableSubscriber(Topic topic, String name) throws JMSException {
+        return new MemoryTopicSubscriber(topic, name);
     }
 
-    public TopicSubscriber createDurableSubscriber(Topic topic, String, String, boolean) throws JMSException {
+    public TopicSubscriber createDurableSubscriber(Topic topic, String name, String messageSelector, boolean noLocal) throws JMSException {
+        return new MemoryTopicSubscriber(topic, name, messageSelector, noLocal);
     }
 
-    public QueueBrowser createBrowser(Queue) throws JMSException {
+    public QueueBrowser createBrowser(Queue queue) throws JMSException {
+        return new MemoryQueueBrowser(queue);
     }
 
-    public QueueBrowser createBrowser(Queue, String) throws JMSException {
+    public QueueBrowser createBrowser(Queue queue, String messageSelector) throws JMSException {
+        return new MemoryQueueBrowser(queue, messageSelector);
     }
 
     public TemporaryQueue createTemporaryQueue() throws JMSException {
@@ -122,7 +136,7 @@ public class MemorySession implements Session {
         return new MemoryTemporaryTopic();
     }
 
-    public void unsubscribe(String) throws JMSException {
+    public void unsubscribe(String name) throws JMSException {
         // TODO: Implement this
     }
 
