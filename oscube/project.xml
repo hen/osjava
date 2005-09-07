@@ -76,17 +76,26 @@
       <artifactId>gj-core</artifactId>
       <version>3.0</version>
       <url>http://www.osjava.org/genjava/</url>
+      <properties>
+        <multidoc.url>http://dist.osjava.org/releases/multidoc-jnr</multidoc.url>
+      </properties>
     </dependency>
     <dependency>
       <groupId>genjava</groupId>
       <artifactId>gj-config</artifactId>
       <version>1.1</version>
       <url>http://www.osjava.org/genjava/</url>
+      <properties>
+        <multidoc.url>http://dist.osjava.org/releases/multidoc-jnr</multidoc.url>
+      </properties>
     </dependency>
     <dependency>
       <id>simple-jndi</id>
       <version>0.9</version>
       <url>http://www.osjava.org/simple-jndi/</url>
+      <properties>
+        <multidoc.url>http://dist.osjava.org/releases/multidoc-jnr</multidoc.url>
+      </properties>
     </dependency>
     <dependency>
       <id>quartz</id>

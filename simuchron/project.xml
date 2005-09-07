@@ -54,12 +54,18 @@
       <id>oscube</id>
       <version>0.1</version>
       <url>http://www.osjava.org/oscube/</url>
+      <properties>
+        <multidoc.url>http://dist.osjava.org/releases/multidoc-jnr</multidoc.url>
+      </properties>
     </dependency>
     <dependency>
       <groupId>genjava</groupId>
       <artifactId>gj-config</artifactId>
       <version>1.1</version>
       <url>http://www.osjava.org/genjava/multiproject/gj-config/</url>
+      <properties>
+        <multidoc.url>http://dist.osjava.org/releases/multidoc-jnr</multidoc.url>
+      </properties>
     </dependency>
     <dependency>
       <id>log4j</id>
@@ -76,12 +82,18 @@
       <artifactId>gj-core</artifactId>
       <version>3.0</version>
       <url>http://www.osjava.org/genjava/multiproject/gj-core/</url>
+      <properties>
+        <multidoc.url>http://dist.osjava.org/releases/multidoc-jnr</multidoc.url>
+      </properties>
     </dependency>
     <dependency>
       <groupId>genjava</groupId>
       <artifactId>gj-xml</artifactId>
       <version>1.0</version>
       <url>http://www.osjava.org/genjava/multiproject/gj-xml/</url>
+      <properties>
+        <multidoc.url>http://dist.osjava.org/releases/multidoc-jnr</multidoc.url>
+      </properties>
     </dependency>
     <dependency>
       <id>commons-dbutils</id>

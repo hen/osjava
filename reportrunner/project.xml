@@ -83,11 +83,17 @@
       <groupId>genjava</groupId>
       <artifactId>gj-core</artifactId>
       <version>3.0</version>
+      <properties>
+        <multidoc.url>http://dist.osjava.org/releases/multidoc-jnr</multidoc.url>
+      </properties>
     </dependency>
     <dependency>
       <groupId>genjava</groupId>
       <artifactId>gj-xml</artifactId>
       <version>1.0</version>
+      <properties>
+        <multidoc.url>http://dist.osjava.org/releases/multidoc-jnr</multidoc.url>
+      </properties>
     </dependency>
     <dependency>
       <groupId>commons-io</groupId>
@@ -109,6 +115,9 @@
       <groupId>genjava</groupId>
       <artifactId>gj-csv</artifactId>
       <version>1.0</version>
+      <properties>
+        <multidoc.url>http://dist.osjava.org/releases/multidoc-jnr</multidoc.url>
+      </properties>
     </dependency>
     <!-- for sqlreport -->
     <dependency>
@@ -127,6 +136,9 @@
       <groupId>xmlwriter</groupId>
       <artifactId>xmlwriter</artifactId>
       <version>2.2</version>
+      <properties>
+        <multidoc.url>http://dist.osjava.org/releases/multidoc-jnr</multidoc.url>
+      </properties>
     </dependency>
     <!-- servlet compilation -->
     <dependency>

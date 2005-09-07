@@ -48,6 +48,9 @@
       <groupId>genjava</groupId>
       <artifactId>gj-core</artifactId>
       <version>3.0</version>
+      <properties>
+        <multidoc.url>http://dist.osjava.org/releases/multidoc-jnr</multidoc.url>
+      </properties>
     </dependency>
     <dependency>
       <id>commons-lang</id>

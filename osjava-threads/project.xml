@@ -73,6 +73,9 @@
             <artifactId>simple-jndi</artifactId>
             <version>0.11</version>
             <url>http://www.osjava.org/simple-jndi</url>
+            <properties>
+                <multidoc.url>http://dist.osjava.org/releases/multidoc-jnr</multidoc.url>
+            </properties>
         </dependency>
     </dependencies>
 
