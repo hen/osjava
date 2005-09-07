@@ -7,6 +7,10 @@ public class MemoryTopic extends MemoryDestination implements Topic {
 
     private String name;
 
+    public MemoryTopic(String name) {
+        this.name = name;
+    }
+
     public String getTopicName() throws JMSException {
         return this.name;
     }
