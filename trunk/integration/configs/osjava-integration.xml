@@ -26,6 +26,7 @@
     <buildable project="payload" repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
     <buildable project="runsql" repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
     <buildable project="scraping-engine" repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
+    <buildable project="simple-jms" repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
     <buildable project="simple-jndi" repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
     <buildable project="simuchron" repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
     <buildable project="trail-taglib" repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
