@@ -1,7 +1,6 @@
 package org.osjava.jms;
 
 import javax.jms.JMSException;
-import javax.jms.TemporaryTopic;
 import javax.jms.Topic;
 import javax.jms.TopicSubscriber;
 import javax.jms.TopicPublisher;

@@ -3,7 +3,6 @@ package org.osjava.jms;
 import javax.jms.JMSException;
 import javax.jms.QueueSession;
 import javax.jms.Queue;
-import javax.jms.TemporaryQueue;
 import javax.jms.QueueReceiver;
 import javax.jms.QueueBrowser;
 import javax.jms.QueueSender;

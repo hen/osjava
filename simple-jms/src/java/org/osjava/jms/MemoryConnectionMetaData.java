@@ -3,7 +3,6 @@ package org.osjava.jms;
 import java.util.Enumeration;
 
 import javax.jms.ConnectionMetaData;
-import javax.jms.JMSException;
 
 public class MemoryConnectionMetaData implements ConnectionMetaData {
 
