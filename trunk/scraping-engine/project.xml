@@ -55,12 +55,18 @@
       <id>oscube</id>
       <version>0.2</version>
       <url>http://www.osjava.org/oscube/</url>
+      <properties>
+        <multidoc.url>http://dist.osjava.org/releases/multidoc-jnr</multidoc.url>
+      </properties>
     </dependency>
     <dependency>
       <groupId>genjava</groupId>
       <artifactId>gj-config</artifactId>
       <version>1.1</version>
       <url>http://www.osjava.org/genjava/multiproject/gj-config/</url>
+      <properties>
+        <multidoc.url>http://dist.osjava.org/releases/multidoc-jnr</multidoc.url>
+      </properties>
     </dependency>
     <dependency>
       <id>log4j</id>
@@ -87,17 +93,26 @@
       <artifactId>gj-core</artifactId>
       <version>3.0</version>
       <url>http://www.osjava.org/genjava/multiproject/gj-core/</url>
+      <properties>
+        <multidoc.url>http://dist.osjava.org/releases/multidoc-jnr</multidoc.url>
+      </properties>
     </dependency>
     <dependency>
       <groupId>genjava</groupId>
       <artifactId>gj-scrape</artifactId>
       <version>2.0.1</version>
       <url>http://www.osjava.org/genjava/multiproject/gj-scrape/</url>
+      <properties>
+        <multidoc.url>http://dist.osjava.org/releases/multidoc-jnr</multidoc.url>
+      </properties>
     </dependency>
     <dependency>
       <id>norbert</id>
       <version>0.3</version>
       <url>http://www.osjava.org/norbert/</url>
+      <properties>
+        <multidoc.url>http://dist.osjava.org/releases/multidoc-jnr</multidoc.url>
+      </properties>
     </dependency>
   </dependencies>
 
