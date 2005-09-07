@@ -1,26 +1,54 @@
 package org.osjava.jms;
-interface Connection{
-    public Session createSession(boolean,int);
-       throws JMSException
-    public String getClientID();
-       throws JMSException
-    public void setClientID(String);
-       throws JMSException
-    public ConnectionMetaData getMetaData();
-       throws JMSException
-    public ExceptionListener getExceptionListener();
-       throws JMSException
-    public void setExceptionListener(ExceptionListener);
-       throws JMSException
-    public void start();
-       throws JMSException
-    public void stop();
-       throws JMSException
-    public void close();
-       throws JMSException
-    public ConnectionConsumer createConnectionConsumer(javax.jms.Destination,String,javax.jms.ServerSessionPool,int);
-       throws JMSException
-    public ConnectionConsumer createDurableConnectionConsumer(javax.jms.Topic,String,java.lang.String,javax.jms.ServerSessionPool,int);
-       throws JMSException
-}
 
+import javax.jms.*;
+
+public class MemoryConnection implements Connection {
+
+    private ExceptionListener listener;
+    private String clientId;
+
+    public Session createSession(boolean transacted, int acknowledgeMode) throws JMSException {
+        return new MemorySession(transacted, acknowledgeMode);
+    }
+
+    public String getClientID() throws JMSException {
+        return this.clientId;
+    }
+
+    public void setClientID(String clientId) throws JMSException {
+        this.clientId = clientId;
+    }
+
+    public ConnectionMetaData getMetaData() throws JMSException {
+        return new MemoryConnectionMetaData();
+    }
+
+    public ExceptionListener getExceptionListener() throws JMSException {
+        return listener;
+    }
+
+    public void setExceptionListener(ExceptionListener listener) throws JMSException {
+        this.listener = listener;
+    }
+
+    public void start() throws JMSException {
+    }
+
+    public void stop() throws JMSException {
+    }
+
+    public void close() throws JMSException {
+    }
+
+    public ConnectionConsumer createConnectionConsumer(Destination destination, String messageSelector, ServerSessionPool sessionPool, int maxMessages) throws JMSException {
+        // TODO: Implement?
+        throw new UnsupportedOperationException("Not yet implemented. ");
+    }
+
+    public ConnectionConsumer createDurableConnectionConsumer(Topic topic, String subscriptionName, String messageSelector, ServerSessionPool sessionPool, int maxMessages) throws JMSException {
+        // TODO: Implement?
+        throw new UnsupportedOperationException("Not yet implemented. ");
+    }
+
+
+}
