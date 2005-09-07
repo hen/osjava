@@ -45,6 +45,9 @@ public class CsvWriter {
     private boolean written;
 
     public CsvWriter(Writer wtr) {
+        if(wtr == null) {
+            throw new NullPointerException("Must be given a java.io.Writer instance. ");
+        }
         this.writer = wtr;
     }
 
