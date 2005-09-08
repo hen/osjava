@@ -1,7 +1,6 @@
 package org.osjava.jms;
 
 import java.util.Enumeration;
-
 import javax.jms.ConnectionMetaData;
 
 public class MemoryConnectionMetaData implements ConnectionMetaData {
