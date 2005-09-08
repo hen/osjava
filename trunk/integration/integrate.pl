@@ -208,6 +208,7 @@ my @build_list = ();
             close(FH);
         }
         system("maven -b maven-simian-plugin maven-jdepend-plugin:report maven-jcoverage-plugin:report checkstyle maven-junit-report-plugin:report maven-jxr-plugin:report pmd javadoc 2> DOCS-ERROR.log > DOCS-OUTPUT.log");
+        system("maven -b javadoc pmd checkstyle maven-jxr-plugin:report maven-junit-report-plugin:report 2>> DOCS-ERROR.log >> DOCS-OUTPUT.log");
         # report build-time, build-date, update-reason
 
         my $reportDir = "${previousDirectory}/${reportDirectory}/$buildable->{'directory'}";
@@ -229,7 +230,10 @@ my @build_list = ();
         move "target/generated-xdocs/simian-report.xml", $reportDir;
         move "target/generated-xdocs/pmd-report.xml", $reportDir;
         move "target/generated-xdocs/jdepend-report.xml", $reportDir;
+# TODO: Search and replace the image in the checkstyle-report
         move "target/generated-xdocs/checkstyle-report.xml", $reportDir;
+        move "target/generated-xdocs/checkstyle.rss", $reportDir;
+# TODO: Search and replace the image in the junit-report
         move "target/generated-xdocs/junit-report.xml", $reportDir;
 
         # deploy targets
