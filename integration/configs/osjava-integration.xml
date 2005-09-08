@@ -29,6 +29,7 @@
     <buildable project="simple-jms" repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
     <buildable project="simple-jndi" repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
     <buildable project="simuchron" repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
+    <buildable project="sqlite-jdbc" repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
     <buildable project="trail-taglib" repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
     <buildable project="xmlwriter" repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
   </buildables>
