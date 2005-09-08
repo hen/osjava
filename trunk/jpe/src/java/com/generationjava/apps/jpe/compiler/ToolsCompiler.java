@@ -5,6 +5,8 @@ package com.generationjava.apps.jpe.compiler;
 
 import java.io.PrintStream;
 
+import java.lang.reflect.Method;
+
 import com.generationjava.apps.jpe.Compiler;
 import com.generationjava.apps.jpe.CompilerException;
 
@@ -16,9 +18,16 @@ import com.generationjava.apps.jpe.CompilerException;
 public class ToolsCompiler implements Compiler {
 
     public void compile(String filename) throws CompilerException {
-    	String[] argv = new String[1];
-    	argv[0] = filename;
-	    sun.tools.javac.Main.main(argv);
+	    //sun.tools.javac.Main.main(argv);
+        // use reflection to avoid compile failures when 
+        // Tools not present
+        try {
+            Class javac = Class.forName("sun.tools.javac.Main");
+            Method main = javac.getMethod("main", new Class[] { String[].class } );
+            main.invoke(null, new Object[] { new String[] { filename } } );
+        } catch(Exception e) {
+            throw new CompilerException(e);
+        }
     }
     
     public void setErrorStream(PrintStream errorStream) {
