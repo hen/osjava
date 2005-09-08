@@ -223,10 +223,28 @@ my @build_list = ();
 
 # TODO: Rewrite these to not need things being deleted
         # deploy reports
-        move "target/docs/apidocs/", "$reportDir/apidocs/";
-        move "target/docs/jcoverage/", "$reportDir/jcoverage/";
-        move "target/docs/xref/", "$reportDir/xref/";
-        move "target/docs/xref-test/", "$reportDir/xref-test/";
+##        move "target/docs/apidocs/", "$reportDir/apidocs/";
+##        move "target/docs/jcoverage/", "$reportDir/jcoverage/";
+##        move "target/docs/xref/", "$reportDir/xref/";
+##        move "target/docs/xref-test/", "$reportDir/xref-test/";
+## TMP: Port this to Perl
+        if(-d "target/docs/apidocs/") {
+            `mkdir -p $reportDir/apidocs/`;
+            `cp -r target/docs/apidocs/* $reportDir/apidocs/`;
+        }
+        if(-d "target/docs/jcoverage/") {
+            `mkdir -p $reportDir/jcoverage/`;
+            `cp -r target/docs/jcoverage/* $reportDir/jcoverage/`;
+        }
+        if(-d "target/docs/xref/") {
+            `mkdir -p $reportDir/xref/`;
+            `cp -r target/docs/xref/* $reportDir/xref/`;
+        }
+        if(-d "target/docs/xref-test/") {
+            `mkdir -p $reportDir/xref-test/`;
+            `cp -r target/docs/xref-test/* $reportDir/xref-test/`;
+        }
+
         move "target/generated-xdocs/simian-report.xml", $reportDir;
         move "target/generated-xdocs/pmd-report.xml", $reportDir;
         move "target/generated-xdocs/jdepend-report.xml", $reportDir;
