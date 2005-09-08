@@ -15,8 +15,7 @@ public class MemorySession implements Session {
     }
 
     public BytesMessage createBytesMessage() throws JMSException {
-        return null;
-//        return new MemoryBytesMessage();
+        return new MemoryBytesMessage();
     }
 
     public MapMessage createMapMessage() throws JMSException {
@@ -38,8 +37,7 @@ public class MemorySession implements Session {
     }
 
     public StreamMessage createStreamMessage() throws JMSException {
-        return null;
-//        return new MemoryStreamMessage();
+        return new MemoryStreamMessage();
     }
 
     public TextMessage createTextMessage() throws JMSException {
