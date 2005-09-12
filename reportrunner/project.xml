@@ -184,11 +184,6 @@
 
     <resources>
       <resource>
-        <includes>
-          <include>conf/renderers.xml</include>
-        </includes>
-      </resource>
-      <resource>
         <directory>${basedir}/src/java</directory>
         <includes>
           <include>**/*.vm</include>
