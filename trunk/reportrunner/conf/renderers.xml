@@ -34,11 +34,4 @@
    <mimeType>application/excel</mimeType>
  </renderer>
 
- <!-- plugin renderers -->
- <renderer name="datetime-chart" label="Time chart" class="org.osjava.reportrunner_plugins.renderers.TimeGraphRenderer" description="Creates a chart using JFreeGraph. ">
-   <inline>true</inline>
-   <extension>png</extension>
-   <mimeType>image/png</mimeType>
- </renderer>
-
 </renderers>
