@@ -21,7 +21,11 @@ public class QueueTest extends TestCase implements MessageListener {
     public void testQueue() throws Exception {
         QueueConnectionFactory qcf = new MemoryQueueConnectionFactory();
         QueueConnection qc = qcf.createQueueConnection();
-        QueueSession qss = (QueueSession) qc.createSession(false, Session.AUTO_ACKNOWLEDGE);
+        QueueSession qss = qc.createQueueSession(false, Session.AUTO_ACKNOWLEDGE);
+
+        // NOTE: This is not the correct way to make a Queue, 
+        // We should be getting it from JNDI or something
+        // probably by depending on simple-jndi and implementing converters
         Queue q = qss.createQueue("Test Q");
         QueueSender qs = qss.createSender(q);
         QueueReceiver qr = qss.createReceiver(q);
