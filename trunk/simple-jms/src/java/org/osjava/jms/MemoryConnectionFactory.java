@@ -34,16 +34,32 @@ package org.osjava.jms;
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
 import javax.jms.JMSException;
+import java.util.HashMap;
 
 public class MemoryConnectionFactory implements ConnectionFactory {
 
+	private static MemoryConnectionFactory self;
+	
+	public static MemoryConnectionFactory getInstance () {
+		if (self == null) {
+			self = new MemoryConnectionFactory ();
+		}
+		return self;
+	}
+
+	private HashMap connections = new HashMap();
+	
     public Connection createConnection() throws JMSException {
-        return new MemoryConnection();
+    		MemoryConnection conn =  new MemoryConnection();
+    		String clientId =""+Math.random(); 
+    		conn.setClientID(clientId);
+    		connections.put(clientId, conn);
+        return conn;
     }
 
     public Connection createConnection(String user, String passwd) throws JMSException {
-        return new MemoryConnection();
-    }
+    		return createConnection();
+    	}
 
 }
 
