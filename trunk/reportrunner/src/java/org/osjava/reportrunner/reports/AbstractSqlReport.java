@@ -8,6 +8,7 @@ import org.osjava.reportrunner.*;
 import java.sql.*;
 import java.util.List;
 import java.util.ArrayList;
+import java.lang.reflect.*;
 import javax.sql.DataSource;
 import javax.naming.*;
 
@@ -64,6 +65,8 @@ public abstract class AbstractSqlReport extends AbstractReport {
             throw new RuntimeException("The array consists of "+array[0].getClass() );
         }
 
+        array = hackOracleTimestamp(array);
+
         return postExecute( new ArrayResult( getColumns(), array ) );
     }
 
@@ -111,4 +114,44 @@ public abstract class AbstractSqlReport extends AbstractReport {
         return new String[] { DEFAULT_RESOURCE };
     }
 
+    private static Method method = null;
+    private static Object[] hackOracleTimestamp(Object[] array) throws ReportException {
+        Object[] firstRow = ((Object[]) array[0]);
+        int sz = firstRow.length;
+        boolean[] columns = new boolean[sz];
+        boolean found = false;
+        for(int i=0; i<sz; i++) {
+            if("oracle.sql.TIMESTAMP".equals(firstRow[i].getClass().getName())) {
+                if(method == null) {
+                    try {
+                        method = firstRow[i].getClass().getMethod("timestampValue", new Class[0] );
+                    } catch(NoSuchMethodException nsme) {
+                        throw new ReportException("Unable to convert Oracle timestamp", nsme);
+                    }
+                }
+                columns[i] = true;
+                found = true;
+            }
+        }
+        if(found) {
+            int len = array.length;
+            for(int i = 0; i < len; i++) {
+                for(int j = 0; j < sz; j++) {
+                    if(columns[j]) {
+                        try {
+                            ((Object[]) array[i])[j] = method.invoke( ((Object[]) array[i])[j], new String[0] );
+                        } catch(IllegalAccessException iae) {
+                            throw new ReportException("Unable to convert Oracle timestamp", iae);
+                        } catch(IllegalArgumentException iae) {
+                            throw new ReportException("Unable to convert Oracle timestamp", iae);
+                        } catch(InvocationTargetException ite) {
+                            throw new ReportException("Unable to convert Oracle timestamp", ite);
+                        }
+                    }
+                }
+            }
+        }
+
+        return array;
+    }
 }
