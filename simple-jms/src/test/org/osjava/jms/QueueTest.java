@@ -74,11 +74,19 @@ public class QueueTest extends TestCase implements MessageListener {
     public void tearDown() {
     }
 
-    public void testQueue() throws Exception {
+    public void testAsyncMessageDelivery() throws Exception {
         qr.setMessageListener(this);
         Message m = qss.createMessage();
         qs.send(m);
         assertEquals(this.lastMessage, m);
+    }
+
+    public void testSyncMessageDelivery() throws Exception {
+        Message sent = qss.createMessage();
+        qs.send(sent);
+        Message received = qr.receive();
+        
+        assertEquals(received, sent);
     }
 
     public void onMessage(Message m) {
