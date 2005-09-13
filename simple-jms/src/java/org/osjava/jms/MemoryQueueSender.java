@@ -38,9 +38,9 @@ import javax.jms.JMSException;
 
 public class MemoryQueueSender extends MemoryMessageProducer implements QueueSender {
 
-    private Queue queue;
+    private MemoryQueue queue;
 
-    public MemoryQueueSender(Queue queue) {
+    public MemoryQueueSender(MemoryQueue queue) {
         super(queue);
         this.queue = queue;
     }
@@ -50,19 +50,22 @@ public class MemoryQueueSender extends MemoryMessageProducer implements QueueSen
     }
 
     public void send(Message msg) throws JMSException {
-        // TODO
+        this.queue.push(msg);
     }
 
-    public void send(Message message, int deliveryMode, int priority, long timeToLive) throws JMSException {
-        // TODO
+    // TODO: Implement options?
+    public void send(Message msg, int deliveryMode, int priority, long timeToLive) throws JMSException {
+        send(msg);
     }
 
     public void send(Queue queue, Message msg) throws JMSException {
-        // TODO
+        MemoryQueue mq = (MemoryQueue) queue;
+        mq.push(msg);
     }
 
-    public void send(Queue queue, Message message, int deliveryMode, int priority, long timeToLive) throws JMSException {
-        // TODO
+    // TODO: Implement options?
+    public void send(Queue queue, Message msg, int deliveryMode, int priority, long timeToLive) throws JMSException {
+        send(queue, msg);
     }
 
 }

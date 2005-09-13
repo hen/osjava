@@ -31,26 +31,32 @@
  */
 package org.osjava.jms;
 
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.MessageListener;
 import javax.jms.QueueReceiver;
 import javax.jms.Queue;
-import javax.jms.JMSException;
 
 public class MemoryQueueReceiver extends MemoryMessageConsumer implements QueueReceiver {
 
-    private Queue queue;
+    private MemoryQueue queue;
 
-    public MemoryQueueReceiver(Queue queue) {
-        super(queue);
-        this.queue = queue;
-    }
-
-    public MemoryQueueReceiver(Queue queue, String messageSelector) {
+    public MemoryQueueReceiver(MemoryQueue queue, String messageSelector) {
         super(queue, messageSelector);
         this.queue = queue;
     }
 
+    public void setMessageListener(MessageListener listener) throws JMSException {
+        super.setMessageListener(listener);
+        this.queue.setMessageListener(listener);
+    }
+
     public Queue getQueue() throws JMSException {
         return queue;
+    }
+
+    public Message receive() throws JMSException {
+        return this.queue.pop();
     }
 
 }
