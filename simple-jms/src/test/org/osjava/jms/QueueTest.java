@@ -102,7 +102,7 @@ public class QueueTest extends TestCase implements MessageListener {
                 try {
                     qr.receive(timeout);
                 } catch (JMSException e) {
-                    // TODO: what? 
+                    throw new RuntimeException("Exception while trying to receive", e);
                 }
             }
         };
