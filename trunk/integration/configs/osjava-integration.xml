@@ -3,8 +3,10 @@
 <integration version="1.0">
   <site label="OSJava" url="http://www.osjava.org/" css="http://www.osjava.org/css/master.css" logo="http://www.osjava.org/images/osjava.gif" target="report/osjava"/>
   <buildables>
-<!--    <buildable project="atom4j" repository="svn:http://svn.osjava.org/svn/osjava/trunk" /> -->
+    <buildable project="atom4j" repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
+    <buildable project="cachew" repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
     <buildable project="charlotte" repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
+    <buildable project="code316-core" repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
     <buildable project="genjava/gj-beans" repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
     <buildable project="genjava/gj-config" repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
     <buildable project="genjava/gj-csv" repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
@@ -24,6 +26,7 @@
     <buildable project="osjava-nio" repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
     <buildable project="osjava-threads" repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
     <buildable project="payload" repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
+    <buildable project="reportrunner" repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
     <buildable project="runsql" repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
     <buildable project="scraping-engine" repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
     <buildable project="simple-jms" repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
