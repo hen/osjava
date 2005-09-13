@@ -63,6 +63,8 @@ public class MemoryQueue implements Queue {
     }
 
     Message pop() {
+    		while (this.queueList.isEmpty())
+    			Thread.yield();
         return (Message) this.queueList.getFirst();
     }
 
