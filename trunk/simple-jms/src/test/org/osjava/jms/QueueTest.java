@@ -95,17 +95,17 @@ public class QueueTest extends TestCase implements MessageListener {
      * @throws Exception
      */
     public void testTimedSyncMessageDelivery() throws Exception {
-    		final int timeout = 100;
-    		
-    		Thread thread = new Thread () {
-    			public void run () {
-    				try {
-						qr.receive(timeout);
-					} catch (JMSException e) {
-						// TODO: what? 
-					}
-    			}
-    		};
+        final int timeout = 100;
+            
+        Thread thread = new Thread () {
+            public void run () {
+                try {
+                    qr.receive(timeout);
+                } catch (JMSException e) {
+                    // TODO: what? 
+                }
+            }
+        };
         thread.start();
         thread.join(timeout); // a bit spurious, I know..
         
