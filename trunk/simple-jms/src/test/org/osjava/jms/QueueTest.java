@@ -31,6 +31,7 @@
  */
 package org.osjava.jms;
 
+import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageListener;
 import javax.jms.Queue;
@@ -87,6 +88,29 @@ public class QueueTest extends TestCase implements MessageListener {
         Message received = qr.receive();
         
         assertEquals(received, sent);
+    }
+
+    /**
+     * Test the timeout works. Note this is a rough test because it's too hard to time it exactly.
+     * @throws Exception
+     */
+    public void testTimedSyncMessageDelivery() throws Exception {
+    		final int timeout = 100;
+    		
+    		Thread thread = new Thread () {
+    			public void run () {
+    				try {
+						qr.receive(timeout);
+					} catch (JMSException e) {
+						// TODO: what? 
+					}
+    			}
+    		};
+        thread.start();
+        thread.join(timeout); // a bit spurious, I know..
+        
+        assertFalse (thread.isAlive()); //thing should have finished ages ago!
+        thread.destroy();
     }
 
     public void onMessage(Message m) {
