@@ -26,6 +26,7 @@
     <buildable project="osjava-nio" repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
     <buildable project="osjava-threads" repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
     <buildable project="payload" repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
+    <buildable project="pound" repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
     <buildable project="reportrunner" repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
     <buildable project="runsql" repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
     <buildable project="scraping-engine" repository="svn:http://svn.osjava.org/svn/osjava/trunk" />
