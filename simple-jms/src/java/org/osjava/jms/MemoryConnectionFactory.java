@@ -38,28 +38,27 @@ import java.util.HashMap;
 
 public class MemoryConnectionFactory implements ConnectionFactory {
 
-	private static MemoryConnectionFactory self;
-	
-	public static MemoryConnectionFactory getInstance () {
-		if (self == null) {
-			self = new MemoryConnectionFactory ();
-		}
-		return self;
-	}
+    private static MemoryConnectionFactory self;
+    
+    public static MemoryConnectionFactory getInstance () {
+        if (self == null) {
+            self = new MemoryConnectionFactory ();
+        }
+        return self;
+    }
 
-	private HashMap connections = new HashMap();
-	
+    private HashMap connections = new HashMap();
+    
     public Connection createConnection() throws JMSException {
-    		MemoryConnection conn =  new MemoryConnection();
-    		String clientId =""+Math.random(); 
-    		conn.setClientID(clientId);
-    		connections.put(clientId, conn);
+        MemoryConnection conn =  new MemoryConnection();
+        String clientId =""+Math.random(); 
+        conn.setClientID(clientId);
+        connections.put(clientId, conn);
         return conn;
     }
 
     public Connection createConnection(String user, String passwd) throws JMSException {
-    		return createConnection();
-    	}
+        return createConnection();
+    }
 
 }
-
