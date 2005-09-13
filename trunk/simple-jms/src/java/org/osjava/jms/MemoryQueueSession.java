@@ -48,16 +48,25 @@ public class MemoryQueueSession extends MemorySession implements QueueSession {
         return new MemoryQueue(name);
     }
 
+    /**
+     * @throw ClassCastException if not given a MemoryQueue
+     */
     public QueueReceiver createReceiver(Queue queue) throws JMSException {
-        return new MemoryQueueReceiver(queue);
+        return createReceiver(queue, null);
     }
 
+    /**
+     * @throw ClassCastException if not given a MemoryQueue
+     */
     public QueueReceiver createReceiver(Queue queue, String messageSelector) throws JMSException {
-        return new MemoryQueueReceiver(queue, messageSelector);
+        return new MemoryQueueReceiver( (MemoryQueue) queue, messageSelector);
     }
 
+    /**
+     * @throw ClassCastException if not given a MemoryQueue
+     */
     public QueueSender createSender(Queue queue) throws JMSException {
-        return new MemoryQueueSender(queue);
+        return new MemoryQueueSender( (MemoryQueue) queue);
     }
 
     public QueueBrowser createBrowser(Queue queue) throws JMSException {

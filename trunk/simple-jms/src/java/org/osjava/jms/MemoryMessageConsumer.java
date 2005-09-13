@@ -75,19 +75,19 @@ public class MemoryMessageConsumer implements MessageConsumer {
         this.listener = listener;
     }
 
+    // TODO Make this abstract?
     public Message receive() throws JMSException {
-        // TODO: Implement this
         return null;
     }
 
+    // TODO: Implement timeout?
     public Message receive(long timeout) throws JMSException {
-        // TODO: Implement this
-        return null;
+        return receive();
     }
 
+    // TODO: Implement noWait?
     public Message receiveNoWait() throws JMSException {
-        // TODO: Implement this
-        return null;
+        return receive();
     }
 
     public void close() throws JMSException {

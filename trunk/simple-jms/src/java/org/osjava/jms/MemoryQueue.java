@@ -31,12 +31,20 @@
  */
 package org.osjava.jms;
 
+import java.util.LinkedList;
+
 import javax.jms.Queue;
 import javax.jms.JMSException;
+
+// non-API
+import javax.jms.MessageListener;
+import javax.jms.Message;
 
 public class MemoryQueue implements Queue {
 
     private String name;
+    private LinkedList queueList = new LinkedList();
+    private MessageListener listener;
 
     public MemoryQueue(String name) {
         this.name = name;
@@ -44,6 +52,22 @@ public class MemoryQueue implements Queue {
 
     public String getQueueName() throws JMSException {
         return this.name;
+    }
+
+    void push(Message msg) {
+        if(listener != null) {
+            listener.onMessage(msg);
+        } else {
+            this.queueList.addLast(msg);
+        }
+    }
+
+    Message pop() {
+        return (Message) this.queueList.getFirst();
+    }
+
+    void setMessageListener(MessageListener listener) {
+        this.listener = listener;
     }
 
     public String toString() {
