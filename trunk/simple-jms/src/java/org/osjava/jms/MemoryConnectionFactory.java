@@ -50,8 +50,8 @@ public class MemoryConnectionFactory implements ConnectionFactory {
     private HashMap connections = new HashMap();
     
     public Connection createConnection() throws JMSException {
-        MemoryConnection conn =  new MemoryConnection();
-        String clientId =""+Math.random(); 
+        MemoryConnection conn = new MemoryConnection();
+        String clientId = "" + Math.random(); 
         conn.setClientID(clientId);
         connections.put(clientId, conn);
         return conn;
