@@ -79,7 +79,7 @@ public class QueueTest extends TestCase implements MessageListener {
         qr.setMessageListener(this);
         Message m = qss.createMessage();
         qs.send(m);
-        assertEquals(this.lastMessage, m);
+        assertEquals("Asynchronous message damaged", this.lastMessage, m);
     }
 
     public void testSyncMessageDelivery() throws Exception {
@@ -87,7 +87,7 @@ public class QueueTest extends TestCase implements MessageListener {
         qs.send(sent);
         Message received = qr.receive();
         
-        assertEquals(received, sent);
+        assertEquals("Synchronous message damaged", received, sent);
     }
 
     /**
