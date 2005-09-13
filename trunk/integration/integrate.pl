@@ -59,7 +59,7 @@ sub update {
     chdir $directory;
     if($repository =~ /svn:/) {
         $repository = substr( $repository, 4 );
-        $update_info = `svn -q update`;
+        $update_info = `svn update`;
     } 
     elsif($repository =~ /cvs:/) {
         $repository = substr( $repository, 3 );
