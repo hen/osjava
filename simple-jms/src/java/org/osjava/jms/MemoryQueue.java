@@ -44,7 +44,6 @@ public class MemoryQueue implements Queue {
 
     private String name;
     private LinkedList queueList = new LinkedList();
-    private MessageListener listener;
 
     public MemoryQueue(String name) {
         this.name = name;
@@ -55,11 +54,7 @@ public class MemoryQueue implements Queue {
     }
 
     void push(Message msg) {
-        if(listener != null) {
-            listener.onMessage(msg);
-        } else {
-            this.queueList.addLast(msg);
-        }
+        this.queueList.addLast(msg);
     }
 
     Message pop() {
@@ -70,11 +65,29 @@ public class MemoryQueue implements Queue {
     }
 
     void setMessageListener(MessageListener listener) {
-        this.listener = listener;
+        new Thread( new Watcher( this, listener ) ).start();
     }
 
     public String toString() {
         return getClass()+"["+this.name+"]";
+    }
+
+    class Watcher implements Runnable {
+
+        private MemoryQueue queue;
+        private MessageListener listener;
+
+        public Watcher(MemoryQueue queue, MessageListener listener) {
+            this.queue= queue;
+            this.listener = listener;
+        }
+
+        public void run() {
+            while(true) {
+                listener.onMessage(queue.pop());
+            }
+        }
+
     }
 
 }
