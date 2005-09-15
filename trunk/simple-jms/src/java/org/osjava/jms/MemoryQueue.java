@@ -61,7 +61,7 @@ public class MemoryQueue implements Queue {
         while (this.queueList.isEmpty()) {
             Thread.yield();
         }
-        return (Message) this.queueList.getFirst();
+        return (Message) this.queueList.removeFirst();
     }
 
     void setMessageListener(MessageListener listener) {
