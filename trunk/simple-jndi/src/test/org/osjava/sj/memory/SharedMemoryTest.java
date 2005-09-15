@@ -74,4 +74,16 @@ public class SharedMemoryTest extends TestCase {
             fail("NamingException " + e.getMessage());
         }
     }
+
+    public void testSharedSubContextMemory() {
+        try {
+            InitialContext context = createContext();
+            context.createSubcontext("path");
+            context.bind("path/foo", "42");
+            context = createContext();
+            assertEquals("42", context.lookup("path/foo") );
+        } catch (NamingException e) {
+            fail("NamingException " + e.getMessage());
+        }
+    }
 }
