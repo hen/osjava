@@ -18,10 +18,10 @@ JNIEXPORT jint JNICALL Java_org_osjava_jdbc_sqlite_Statement_executeSQL
 /*
  * Class:     org_osjava_jdbc_sqlite_Statement
  * Method:    executeSQLWithResultSet
- * Signature: (Ljava/lang/String;Ljava/sql/Connection;Lorg/osjava/jdbc/sqlite/ResultSet;II)V
+ * Signature: (Ljava/lang/String;Ljava/sql/Connection;Lorg/osjava/jdbc/sqlite/ResultSet;I)V
  */
 JNIEXPORT void JNICALL Java_org_osjava_jdbc_sqlite_Statement_executeSQLWithResultSet
-  (JNIEnv *, jobject, jstring, jobject, jobject, jint, jint);
+  (JNIEnv *, jobject, jstring, jobject, jobject, jint);
 
 #ifdef __cplusplus
 }

@@ -119,10 +119,10 @@ public class Statement implements java.sql.Statement {
      */
     public java.sql.ResultSet executeQuery(String sql) throws SQLException {
         /* Create a new java.sql.ResultSet object that will be filled. */
-        ResultSet rs = new ResultSet(this, resultSetType, resultSetConcurrency, resultSetHoldability);
+        ResultSet rs = new ResultSet(this, resultSetType, resultSetConcurrency, resultSetHoldability, this);
         results.add(rs);
         try {
-            executeSQLWithResultSet(sql, con, rs, 0, getFetchSize());
+            executeSQLWithResultSet(sql, con, rs, getFetchSize());
         } catch (SQLException e) {
             /*
              * FIXME: We don't want to do this. Once out of debugging mode, what
@@ -532,7 +532,6 @@ public class Statement implements java.sql.Statement {
     private native void executeSQLWithResultSet(String sql,
                                                 Connection con,
                                                 ResultSet rs,
-                                                int firstRow,
-                                                int lastRow) 
+                                                int numRows)
             throws SQLException;    
 }

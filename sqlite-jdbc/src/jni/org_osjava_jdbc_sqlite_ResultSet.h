@@ -10,10 +10,18 @@ extern "C" {
 /*
  * Class:     org_osjava_jdbc_sqlite_ResultSet
  * Method:    proxyCloseStatement
- * Signature: ()Z
+ * Signature: ()V
  */
 JNIEXPORT void JNICALL Java_org_osjava_jdbc_sqlite_ResultSet_proxyCloseStatement
   (JNIEnv *, jobject);
+
+/*
+ * Class:     org_osjava_jdbc_sqlite_ResultSet
+ * Method:    populateRows
+ * Signature: (II)V
+ */
+JNIEXPORT void JNICALL Java_org_osjava_jdbc_sqlite_ResultSet_populateRows
+  (JNIEnv *, jobject, jint, jint);
 
 #ifdef __cplusplus
 }

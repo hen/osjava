@@ -107,7 +107,7 @@ public class ResultSet implements java.sql.ResultSet {
     /**
      * Array of rows.
      */
-    private ArrayList rows = new ArrayList();
+    private Object rows[] = null;
     
     /**
      * The minimum and maximum rows of the current page.
@@ -133,7 +133,7 @@ public class ResultSet implements java.sql.ResultSet {
      * @param resultSetHoldability the result set type of the ResultSet.
      * @throws SQLException if any of the parameter values are out of range.
      */
-    ResultSet(Statement st, int resultSetType, int resultSetConcurrency, int resultSetHoldability) 
+    ResultSet(Statement st, int resultSetType, int resultSetConcurrency, int resultSetHoldability, Statement parent) 
             throws SQLException {
         super();
         if (   resultSetType != java.sql.ResultSet.TYPE_FORWARD_ONLY
@@ -153,6 +153,14 @@ public class ResultSet implements java.sql.ResultSet {
         this.resultSetType = resultSetType;
         this.resultSetConcurrency = resultSetConcurrency;
         this.resultSetHoldability = resultSetHoldability;
+        
+        /* Set the fetch size based upon the Statement's fetchSize */
+        fetchSize = parent.getFetchSize();
+        
+        /* Create the rows ArrayList, based upon the fetch size */
+        rows = new Object[fetchSize];
+        pageMin = 0;
+        pageMax = fetchSize;
         
         /*
          * Create the ResultSetMetadata object for this ResultSet.  It doesn't
@@ -1293,6 +1301,33 @@ public class ResultSet implements java.sql.ResultSet {
     private void setStatementPointer(int p) {
         statementPointer = p;
     }
+    
+    /**
+     * Scroll the ResultSet.  If the ResultSet is unidirectional, the whole
+     * ResultSet is renewed.  If it is bidirectional, the first half of the
+     * ResultSet is filled with the last half of the previous values. 
+     */
+    private void scrollResultSet(int where) {
+        /* Scroll a full page size for ResultSet.TYPE_FORWARD_ONLY */
+        int start;
+        int end;
+        rows = new Object[fetchSize];
+        if(resultSetType == ResultSet.TYPE_FORWARD_ONLY) {
+            start = pageMax + 1;
+        } else {
+            start = where - (fetchSize / 2);
+            if(start < 0) {
+                start = 0;
+            }
+        }
+        end = start + fetchSize;
+        rows = new Object[fetchSize];
+        /* Repopulate the ResultSet with the current page settings */
+        pageMin = start;
+        pageMax = end;
+        populateRows(start, end);
+    }
+    
 
     /* Native Methods. */
     /* This is possibly somewhat misnamed.  Each ResultSet is associated with 
@@ -1303,7 +1338,7 @@ public class ResultSet implements java.sql.ResultSet {
     
     /* Fill the the column col of the current row with a String value */
     private void fillColumnWithString(int col, String value) {
-        ArrayList row = (ArrayList)rows.get(currentRow);
+        Object row[] = (Object[])rows[currentRow];
         /* If the current row hasn't been created yet, create it */
         if(row == null) {
             row = new ArrayList();
@@ -1355,4 +1390,7 @@ public class ResultSet implements java.sql.ResultSet {
         }
         row.set(col, null);
     }
+    
+    /* Native Methods */
+    private native void populateRows(int startRow, int finishRow);
 }
