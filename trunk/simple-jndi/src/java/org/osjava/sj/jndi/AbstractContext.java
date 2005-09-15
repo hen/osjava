@@ -172,6 +172,7 @@ public abstract class AbstractContext
         
         if("true".equals(shared)) {
             this.table = new StaticHashtable();
+            this.subContexts = new StaticHashtable();
         }
 
         if(parser == null) {
