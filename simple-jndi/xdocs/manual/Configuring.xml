@@ -63,7 +63,7 @@ If no org.osjava.jndi.delimiter is specified, then a '.' (dot) is chosen.
  <p>In addition to the parameters mentioned above, shared-memory may be turned on with the following parameter.</p>
  <pre>
   # jndi contexts share the same back-end
-  org.osjava.sj.shared=true
+  org.osjava.sj.jndi.shared=true
  </pre>
  <!--
  <p>Also, an org.osjava.jndi.root may be a http url.</p>
