@@ -195,11 +195,6 @@ Java_org_osjava_jdbc_sqlite_Statement_executeSQL(JNIEnv *env,
  * statement    - A String representing the SQL statement to be executed.
  * con          - The java representation of the SQLite3 database connection.
  * resultSet    - The ResultSet to populate.
- * startRow     - The first row that will populate the ResultSet.  If the
- *                start range is out of bounds an SQLException will be thrown.
- * finishRow    - The last row that will populate the ResultSet.  If the end
- *                range is out of bounds the ResultSet will only be filled to
- *                the end of the query.
  */
 JNIEXPORT void JNICALL
 Java_org_osjava_jdbc_sqlite_Statement_executeSQLWithResultSet(JNIEnv *env,
@@ -207,12 +202,10 @@ Java_org_osjava_jdbc_sqlite_Statement_executeSQLWithResultSet(JNIEnv *env,
                                                               jstring query,
                                                               jobject con,
                                                               jobject resultSet,
-                                                              jint startRow,
-                                                              jint finishRow) {
+                                                              jint numRows) {
     int result;
     char *errmsg;
     sqlite3_stmt *stmt;
-    int count;                 // The current row counter.
 
     /* Convert the java query into a char array that can be used by the
      * sqlite method */
@@ -243,53 +236,11 @@ Java_org_osjava_jdbc_sqlite_Statement_executeSQLWithResultSet(JNIEnv *env,
     /* Fill the ResultSet Metadata. */
     populateResultSetMetadata(env, stmt, resultSet);
 
-    fprintf(stderr, "Start row %i\tEnd row %i\n", startRow, finishRow);
-    /* Skip statements up to startRow.  These statements will be ignored. */
-    for(count = 0; count < startRow; count++) {
-        fprintf(stderr, "Skipping row %i.\n", count);
-        result = sqlite3_step(stmt);
-        /* Check the result */
-        if(result == SQLITE_BUSY) {
-            sqliteThrowSQLException(env, SQLITE_BUSY_MESSAGE);
-            return;
-        }
-        /* ?hrow an SQLException if the result set range is out of bounds.
-         * This exception will be caught and properly processed on the java
-         * side of things. */
-        if(result == SQLITE_DONE) {
-            sqliteThrowSQLException(env, SQLITE_OUT_OF_BOUNDS);
-        }
-        if(result) {
-            sqliteThrowSQLException(env, errmsg);
-        }
-    }
-
-    /* Start populating the ResultSet */
-    fprintf(stderr, "Preparing to populate resultset.\n");
-    for(count = startRow; count <= finishRow; count ++) {
-        fprintf(stderr, "Inserting row %i.\n", count);
-        result = sqlite3_step(stmt);
-        /* Check the result */
-        if(result == SQLITE_BUSY) {
-            sqliteThrowSQLException(env, SQLITE_BUSY_MESSAGE);
-            return;
-        }
-        /* The expected result most of the time.  Work gets done here.*/
-        if(result == SQLITE_ROW) {
-            populateRow(env, stmt, resultSet);
-            /* Skip the rest of the result conditions */
-            continue;
-        }
-        /* Done populating the result set.  We're done here. */
-        if(result == SQLITE_DONE) {
-            fprintf(stderr, "There is no more to populate, returning.\n");
-            return;
-        }
-        if(result) {
-            sqliteThrowSQLException(env, errmsg);
-        }
-    }
-    fprintf(stderr, "Done populating resultset section.\n");
+    fprintf(stderr, "From executeStatement, populating rows.\n");
+    Java_org_osjava_jdbc_sqlite_ResultSet_populateRows(env,
+                                                       resultSet,
+                                                       0,
+                                                       numRows);
 }
 
 /* Populate a row of the ResultSet */
@@ -364,6 +315,69 @@ void populateRow(JNIEnv *env, sqlite3_stmt *stmt, jobject resultSet) {
                 break;
         }
     }
+}
+
+/* Populate a range of rows for a given sqlite3 statement. */
+JNIEXPORT void JNICALL 
+Java_org_osjava_jdbc_sqlite_ResultSet_populateRows(JNIEnv *env, 
+                                                   jobject resultSet, 
+                                                   jint startRow, 
+                                                   jint finishRow) {
+    int count;
+    char *errmsg;
+    int result;
+
+    fprintf(stderr, "Start populate rows.\n");
+    /* Get the statement pointer. */
+    sqlite3_stmt *stmt = getStatementHandle(env, resultSet);
+    fprintf(stderr, "Start row %i\tEnd row %i\n", (int)startRow, (int)finishRow);
+    /* Skip statements up to startRow.  These statements will be ignored. */
+    for(count = 0; count < startRow; count++) {
+        fprintf(stderr, "Skipping row %i.\n", count);
+        result = sqlite3_step(stmt);
+        /* Check the result */
+        if(result == SQLITE_BUSY) {
+            sqliteThrowSQLException(env, SQLITE_BUSY_MESSAGE);
+            return;
+        }
+        /* ?hrow an SQLException if the result set range is out of bounds.
+         * This exception will be caught and properly processed on the java
+         * side of things. */
+        if(result == SQLITE_DONE) {
+            sqliteThrowSQLException(env, SQLITE_OUT_OF_BOUNDS);
+        }
+        if(result) {
+            sqliteThrowSQLException(env, errmsg);
+        }
+    }
+
+    /* Start populating the ResultSet */
+    fprintf(stderr, "Preparing to populate resultset.\n");
+    for(count = startRow; count <= finishRow; count ++) {
+        fprintf(stderr, "Inserting row %i.\n", count);
+        result = sqlite3_step(stmt);
+        /* Check the result */
+        if(result == SQLITE_BUSY) {
+            sqliteThrowSQLException(env, SQLITE_BUSY_MESSAGE);
+            return;
+        }
+        /* The expected result most of the time.  Work gets done here.*/
+        if(result == SQLITE_ROW) {
+            populateRow(env, stmt, resultSet);
+            /* Skip the rest of the result conditions */
+            continue;
+        }
+        /* Done populating the result set.  We're done here. */
+        if(result == SQLITE_DONE) {
+            fprintf(stderr, "There is no more to populate, returning.\n");
+            return;
+        }
+        if(result) {
+            sqliteThrowSQLException(env, errmsg);
+        }
+    }
+    fprintf(stderr, "Done populating resultset section.\n");
+    
 }
 
 /* Populate the metadata for the ResultSet */
