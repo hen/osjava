@@ -37,5 +37,7 @@
    [% END %]
 
    <hr><h2>Built because:</h2><pre>[% build_reason %]</pre><br/>
+   <code>
    [% project.updated %]
+   </code>
 </body></html>
