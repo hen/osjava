@@ -47,10 +47,11 @@ import org.osjava.jms.MemoryQueueConnectionFactory;
 public class QueueTest extends TestCase implements MessageListener {
 
     private Message lastMessage;
+    private Thread lastThread;
+
     private QueueConnectionFactory qcf = null;
     private QueueConnection qc = null;
     private QueueSession qss = null;
-
     private Queue q = null;
     private QueueSender qs = null;
     private QueueReceiver qr = null;
@@ -79,7 +80,16 @@ public class QueueTest extends TestCase implements MessageListener {
         qr.setMessageListener(this);
         Message m = qss.createMessage();
         qs.send(m);
-        assertEquals("Asynchronous message damaged", this.lastMessage, m);
+        while(this.lastMessage == null) {
+            Thread.yield();
+        }
+        assertEquals("Asynchronous message damaged", m, this.lastMessage);
+        assertTrue("Same thread was used", Thread.currentThread() != this.lastThread);
+    }
+
+    public void onMessage(Message m) {
+        this.lastThread = Thread.currentThread();
+        this.lastMessage = m;
     }
 
     public void testSyncMessageDelivery() throws Exception {
@@ -111,10 +121,6 @@ public class QueueTest extends TestCase implements MessageListener {
         
         assertFalse ("Thread should have timed out", thread.isAlive());
         thread.destroy();
-    }
-
-    public void onMessage(Message m) {
-        this.lastMessage = m;
     }
 
 }
