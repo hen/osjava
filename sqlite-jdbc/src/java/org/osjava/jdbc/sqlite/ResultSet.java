@@ -1302,6 +1302,22 @@ public class ResultSet implements java.sql.ResultSet {
         statementPointer = p;
     }
     
+    /** 
+     * Inserts a row into the backend representation of the ResultSet.
+     * 
+     * @param index integer representing the index of the row.  This is 
+     *        the current page, not the entire ResultSet
+     * @throws SQLException if the row is not in the current page.
+     */
+    private void insertRow(int index) throws SQLException {
+        if(index < 0 || index > rows.length) {
+            throw new SQLException("Could not insert row, Index out of bounds");
+        }
+        int colCount = metaData.getColumnCount();
+        Object[] row = new Object[colCount];
+        rows[index] = row;
+    }
+    
     /**
      * Scroll the ResultSet.  If the ResultSet is unidirectional, the whole
      * ResultSet is renewed.  If it is bidirectional, the first half of the
@@ -1338,57 +1354,28 @@ public class ResultSet implements java.sql.ResultSet {
     
     /* Fill the the column col of the current row with a String value */
     private void fillColumnWithString(int col, String value) {
-        Object row[] = (Object[])rows[currentRow];
-        /* If the current row hasn't been created yet, create it */
-        if(row == null) {
-            row = new ArrayList();
-        }
-        row.set(col, value);
+        ((Object[])rows[currentRow])[col] = value;
     }
 
     /* Fill the the column col of the current row with a Integers value */
     private void fillColumnWithInt(int col, int value) {
-        ArrayList row = (ArrayList)rows.get(currentRow);
-        /* If the current row hasn't been created yet, create it */
-        if(row == null) {
-            row = new ArrayList();
-        }
-        row.set(col, new Integer(value));
+        ((Object[])rows[currentRow])[col] = new Integer(value);
     }
 
     /* Fill the the column col of the current row with a Float value */
-    private void fillColumnWithFloat(int col, String value) {
-        ArrayList row = (ArrayList)rows.get(currentRow);
-        /* If the current row hasn't been created yet, create it */
-        if(row == null) {
-            row = new ArrayList();
-        }
-        /* XXX: It should be relatively safe not to be worried about
-         *      converting the String to a Float, because of the way 
-         *      we get it out of sqlite3.
-         */
-        row.set(col, new Float(value));
+    private void fillColumnWithFloat(int col, float value) {
+        ((Object[])rows[currentRow])[col] = new Float(value);
     }
 
     /* Fill the the column col of the current row with a Blob value */
     /* FIXME: This one's all fucked up at this point */
-    private void fillColumnWithBlob(int col, float value) {
-        ArrayList row = (ArrayList)rows.get(currentRow);
-        /* If the current row hasn't been created yet, create it */
-        if(row == null) {
-            row = new ArrayList();
-        }
-        row.set(col, new Float(value));
+    private void fillColumnWithBlob(int col, byte[] value) {
+        ((Object[])rows[currentRow])[col] = value;
     }
     
-    /* Fill the the column col of the current row with the Float value */
+    /* Fill the the column col of the current row with the NULL value */
     private void fillColumnWithNull(int col) {
-        ArrayList row = (ArrayList)rows.get(currentRow);
-        /* If the current row hasn't been created yet, create it */
-        if(row == null) {
-            row = new ArrayList();
-        }
-        row.set(col, null);
+        ((Object[])rows[currentRow])[col] = null;
     }
     
     /* Native Methods */
