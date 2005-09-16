@@ -70,14 +70,14 @@ public class MemoryQueue implements Queue {
     }
 
     void setMessageListener(MessageListener listener) {
-    		if (queueWatcher != null){
-    			queueWatcher.interrupt();
-    			try {
-					queueWatcher.join();
-				} catch (InterruptedException e) {
-					// we don't care so ling as the thread dies.
-				}
-    		}
+        if (queueWatcher != null){
+            queueWatcher.interrupt();
+            try {
+                queueWatcher.join();
+            } catch (InterruptedException e) {
+                // we don't care so long as the thread dies.
+            }
+        }
         queueWatcher = new Watcher( this, listener ) ;
         queueWatcher.start();
     }
