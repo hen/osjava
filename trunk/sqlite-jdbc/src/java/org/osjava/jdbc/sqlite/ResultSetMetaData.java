@@ -53,7 +53,7 @@ public class ResultSetMetaData implements java.sql.ResultSetMetaData {
     /**
      * The number of columns in the ResultSet
      */
-    private int columnCount = 0;
+    private int columnCount = -1;
 
     public ResultSetMetaData(ResultSet rs) {
         super();
@@ -234,6 +234,7 @@ public class ResultSetMetaData implements java.sql.ResultSetMetaData {
         /* FIXME: Throw a SQLException if the count is changed.  It should
          *        never change.
          */
+        System.err.println("ResultSetMetadata.setColumnCount(" + count + ")");
         columnCount = count;
     }
 }
