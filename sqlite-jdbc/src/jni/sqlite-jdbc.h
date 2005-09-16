@@ -54,7 +54,6 @@ extern void sqliteThrowSQLException(JNIEnv *env, const char *message);
 extern sqlite3 *getSQLiteHandle(JNIEnv *env, jobject con);
 extern sqlite3_stmt *getStatementHandle(JNIEnv *env, jobject rs);
 extern void populateRow(JNIEnv *env, sqlite3_stmt *stmt, jobject resultSet);
-extern void fillResultSetMetadata(JNIEnv env, sqlite3_stmt stmt, jobject resultSet);
 extern void populateResultSetMetadata(JNIEnv *env, sqlite3_stmt *stmt, jobject resultSet);
 
 /* Error messages */

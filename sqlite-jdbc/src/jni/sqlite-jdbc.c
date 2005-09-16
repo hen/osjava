@@ -326,6 +326,8 @@ Java_org_osjava_jdbc_sqlite_ResultSet_populateRows(JNIEnv *env,
     int count;
     char *errmsg;
     int result;
+    jmethodID method;
+    jclass resultSetClass = (*env)->GetObjectClass(env, resultSet);
 
     fprintf(stderr, "Start populate rows.\n");
     /* Get the statement pointer. */
@@ -333,7 +335,6 @@ Java_org_osjava_jdbc_sqlite_ResultSet_populateRows(JNIEnv *env,
     fprintf(stderr, "Start row %i\tEnd row %i\n", (int)startRow, (int)finishRow);
     /* Skip statements up to startRow.  These statements will be ignored. */
     for(count = 0; count < startRow; count++) {
-        fprintf(stderr, "Skipping row %i.\n", count);
         result = sqlite3_step(stmt);
         /* Check the result */
         if(result == SQLITE_BUSY) {
@@ -352,9 +353,19 @@ Java_org_osjava_jdbc_sqlite_ResultSet_populateRows(JNIEnv *env,
     }
 
     /* Start populating the ResultSet */
-    fprintf(stderr, "Preparing to populate resultset.\n");
+    method = (*env)->GetMethodID(env,
+                                 resultSetClass,
+                                 "insertRow",
+                                 "(I)V");
     for(count = startRow; count <= finishRow; count ++) {
         fprintf(stderr, "Inserting row %i.\n", count);
+        /* First insert the representation of the row into the ResultSet */
+        /* Use count - startRow because we need to specify the position in 
+         * the page, rather than in the total of the resultset */
+        (*env)->CallVoidMethod(env,
+                               resultSet,
+                               method,
+                               count - startRow);
         result = sqlite3_step(stmt);
         /* Check the result */
         if(result == SQLITE_BUSY) {
