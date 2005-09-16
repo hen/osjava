@@ -68,7 +68,7 @@ public class QueueTest extends TestCase implements MessageListener {
         // NOTE: This is not the correct way to make a Queue, 
         // We should be getting it from JNDI or something
         // probably by depending on simple-jndi and implementing converters
-        q = qss.createQueue("Test Q");
+        q = new MemoryQueue("Test Q");
         qs = qss.createSender(q);
         qr = qss.createReceiver(q);
     }
