@@ -119,6 +119,7 @@ public class QueueTest extends TestCase implements MessageListener {
         thread.start();
         thread.join(timeout); // a bit spurious, I know..
         
+        assertNull("Last message should still be null", lastMessage);
         assertFalse ("Thread should have timed out", thread.isAlive());
         thread.destroy();
     }

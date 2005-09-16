@@ -31,7 +31,9 @@
  */
 package org.osjava.jms;
 
+import java.util.Collections;
 import java.util.LinkedList;
+import java.util.List;
 
 import javax.jms.Queue;
 import javax.jms.JMSException;
@@ -43,7 +45,8 @@ import javax.jms.Message;
 public class MemoryQueue implements Queue {
 
     private String name;
-    private LinkedList queueList = new LinkedList();
+    private List queueList = Collections.synchronizedList(new LinkedList());
+    private Watcher queueWatcher = null;
 
     public MemoryQueue(String name) {
         this.name = name;
@@ -54,25 +57,36 @@ public class MemoryQueue implements Queue {
     }
 
     void push(Message msg) {
-        this.queueList.addLast(msg);
+        this.queueList.add(msg);
     }
 
     Message pop() {
         while (this.queueList.isEmpty()) {
             Thread.yield();
         }
-        return (Message) this.queueList.removeFirst();
+        Message msg = (Message) this.queueList.get(0);
+        this.queueList.remove(0);
+        return msg;
     }
 
     void setMessageListener(MessageListener listener) {
-        new Thread( new Watcher( this, listener ) ).start();
+    		if (queueWatcher != null){
+    			queueWatcher.interrupt();
+    			try {
+					queueWatcher.join();
+				} catch (InterruptedException e) {
+					// we don't care so ling as the thread dies.
+				}
+    		}
+        queueWatcher = new Watcher( this, listener ) ;
+        queueWatcher.start();
     }
 
     public String toString() {
         return getClass()+"["+this.name+"]";
     }
 
-    class Watcher implements Runnable {
+    class Watcher extends Thread {
 
         private MemoryQueue queue;
         private MessageListener listener;
