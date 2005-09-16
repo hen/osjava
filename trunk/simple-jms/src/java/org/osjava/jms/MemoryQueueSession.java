@@ -44,10 +44,6 @@ public class MemoryQueueSession extends MemorySession implements QueueSession {
         super(transacted, acknowledgeMode);
     }
 
-    public Queue createQueue(String name) throws JMSException {
-        return new MemoryQueue(name);
-    }
-
     /**
      * @throw ClassCastException if not given a MemoryQueue
      */
