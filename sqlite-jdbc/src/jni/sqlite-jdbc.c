@@ -263,6 +263,7 @@ void populateRow(JNIEnv *env, sqlite3_stmt *stmt, jobject resultSet) {
                 (*env)->CallVoidMethod(env,
                                        resultSet,
                                        method,
+                                       curCol,
                                        sqlite3_column_int(stmt, curCol));
                 break;
             case SQLITE_FLOAT:
@@ -274,10 +275,14 @@ void populateRow(JNIEnv *env, sqlite3_stmt *stmt, jobject resultSet) {
                 (*env)->CallVoidMethod(env,
                                        resultSet,
                                        method,
+                                       curCol,
                                        sqlite3_column_text(stmt, curCol));
                 break;
             case SQLITE_TEXT:
                 fprintf(stderr, "Found text.\n");
+                /* Convert the returned string to a Java String */
+                const char *cstr = sqlite3_column_text(stmt, curCol);
+                jstring str = convertNativeString(env, cstr);
                 method = (*env)->GetMethodID(env,
                                              resultSetClass,
                                              "fillColumnWithString",
@@ -285,7 +290,9 @@ void populateRow(JNIEnv *env, sqlite3_stmt *stmt, jobject resultSet) {
                 (*env)->CallVoidMethod(env,
                                        resultSet,
                                        method,
-                                       sqlite3_column_text(stmt, curCol));
+                                       curCol,
+                                       str);
+                fprintf(stderr, "Successfully planted string.\n");
                 break;
             case SQLITE_BLOB:
                 fprintf(stderr, "Found blob.\n");
@@ -297,6 +304,7 @@ void populateRow(JNIEnv *env, sqlite3_stmt *stmt, jobject resultSet) {
                 (*env)->CallVoidMethod(env,
                                        resultSet,
                                        method,
+                                       curCol,
                                        sqlite3_column_blob(stmt, curCol));
                 break;
             case SQLITE_NULL:
@@ -307,7 +315,8 @@ void populateRow(JNIEnv *env, sqlite3_stmt *stmt, jobject resultSet) {
                                              "(I)V");
                 (*env)->CallVoidMethod(env,
                                         resultSet,
-                                        method);
+                                        method,
+                                        curCol);
                 break;
             default:
                 /* FIXME: WTF.  Throw an exception here. */
@@ -358,14 +367,6 @@ Java_org_osjava_jdbc_sqlite_ResultSet_populateRows(JNIEnv *env,
                                  "insertRow",
                                  "(I)V");
     for(count = startRow; count <= finishRow; count ++) {
-        fprintf(stderr, "Inserting row %i.\n", count);
-        /* First insert the representation of the row into the ResultSet */
-        /* Use count - startRow because we need to specify the position in 
-         * the page, rather than in the total of the resultset */
-        (*env)->CallVoidMethod(env,
-                               resultSet,
-                               method,
-                               count - startRow);
         result = sqlite3_step(stmt);
         /* Check the result */
         if(result == SQLITE_BUSY) {
@@ -374,6 +375,13 @@ Java_org_osjava_jdbc_sqlite_ResultSet_populateRows(JNIEnv *env,
         }
         /* The expected result most of the time.  Work gets done here.*/
         if(result == SQLITE_ROW) {
+            /* First insert the representation of the row into the ResultSet */
+            /* Use count - startRow because we need to specify the position in 
+             * the page, rather than in the total of the resultset */
+            (*env)->CallVoidMethod(env,
+                                   resultSet,
+                                   method,
+                                   count - startRow);
             populateRow(env, stmt, resultSet);
             /* Skip the rest of the result conditions */
             continue;
@@ -420,7 +428,10 @@ void populateResultSetMetadata(JNIEnv *env, sqlite3_stmt *stmt, jobject resultSe
                                              metaDataClass,
                                              "getColumnCount",
                                              "()I");
+    /* If the column count is < 0 (i.e. -1) the ResultSetMetadata hasn't been
+       set yet */
     if((*env)->CallIntMethod(env, metaData, getColID) >= 0) {
+        fprintf(stderr, "Already filled metadata.\n");
         return;
     }
 
@@ -429,6 +440,7 @@ void populateResultSetMetadata(JNIEnv *env, sqlite3_stmt *stmt, jobject resultSe
                                              "setColumnCount",
                                              "(I)V");
     (*env)->CallVoidMethod(env, metaData, setColID, numCols);
+    fprintf(stderr, "Successfully set column width.\n");
 }
 
 /*
@@ -453,6 +465,31 @@ sqlite3_stmt *getStatementHandle(JNIEnv *env, jobject rs) {
                                            "getStatementPointer",
                                            "()I");
     return (sqlite3_stmt *)(*env)->CallIntMethod(env, rs, methID);
+}
+
+/*
+ * Convert a Native String to a Java String
+ * This is largely taken from Sun's example.
+ */
+jstring convertNativeString(JNIEnv *env, const char *inStr) {
+    int len = strlen(inStr);
+    jbyteArray bytes = (*env)->NewByteArray(env, len);
+    if(bytes != NULL) {
+        (*env)->SetByteArrayRegion(env, bytes, 0, len, (jbyte *)inStr);
+        jclass stringClass = (*env)->FindClass(env, "java/lang/String");
+        jthrowable exc = ExceptionOccurred(JNIEnv *env);
+        if(exc != NULL) { 
+            return;
+        }
+        jmethodID methID = (*env)->GetMethodID(env,
+                                               stringClass,
+                                               "<init>",
+                                               "([B)V");
+        jstring result = (*env)->NewObject(env, stringClass, methID, bytes);
+        (*env)->DeleteLocalRef(env, bytes);
+        return result;
+    }
+    return NULL;
 }
 
 /*
