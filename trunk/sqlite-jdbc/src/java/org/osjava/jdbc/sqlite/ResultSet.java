@@ -1316,6 +1316,8 @@ public class ResultSet implements java.sql.ResultSet {
         int colCount = metaData.getColumnCount();
         Object[] row = new Object[colCount];
         rows[index] = row;
+        /* XXX: I'm not really all that sure I want the currentRow set here */
+        currentRow = index;
     }
     
     /**

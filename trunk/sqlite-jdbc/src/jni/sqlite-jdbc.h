@@ -55,6 +55,7 @@ extern sqlite3 *getSQLiteHandle(JNIEnv *env, jobject con);
 extern sqlite3_stmt *getStatementHandle(JNIEnv *env, jobject rs);
 extern void populateRow(JNIEnv *env, sqlite3_stmt *stmt, jobject resultSet);
 extern void populateResultSetMetadata(JNIEnv *env, sqlite3_stmt *stmt, jobject resultSet);
+jstring convertNativeString(JNIEnv *env, const char *inStr);
 
 /* Error messages */
 #define SQLITE_BUSY_MESSAGE "Database busy, cannot perform operation."
