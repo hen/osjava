@@ -77,7 +77,7 @@ Java_org_osjava_jdbc_sqlite_Driver_proxyConnect(JNIEnv *env,
               exception directly up to the calling function rather than doing
               any handling on it.  At the very least we should send back an
               improved error message */
-    if(connectionClass == NULL) {
+    if((*env)->ExceptionOccurred(env)) {
         return NULL;
     }
 
@@ -85,11 +85,7 @@ Java_org_osjava_jdbc_sqlite_Driver_proxyConnect(JNIEnv *env,
                                            connectionClass,
                                            "<init>",
                                            "(I)V");
-    /* FIXME: This really should be improved.  Right now, we're passing the
-              exception directly up to the calling function rather than doing
-              any handling on it.  At the very least we should send back an
-              improved error message */
-    if(connectionMethod == NULL) {
+    if((*env)->ExceptionOccurred(env)) {
         return NULL;
     }
 
@@ -97,6 +93,9 @@ Java_org_osjava_jdbc_sqlite_Driver_proxyConnect(JNIEnv *env,
                                    connectionClass,
                                    connectionMethod,
                                    dbPtr);
+    if((*env)->ExceptionOccurred(env)) {
+        return NULL;
+    }
     return connection;
 }
 
@@ -227,11 +226,20 @@ Java_org_osjava_jdbc_sqlite_Statement_executeSQLWithResultSet(JNIEnv *env,
 
     /* Associate the statement pointer to the ResultSet */
     jclass rsClass = (*env)->GetObjectClass(env, resultSet);
+    if((*env)->ExceptionOccurred(env)) {
+        return;
+    }
     jmethodID methID = (*env)->GetMethodID(env,
                                            rsClass,
                                            "setStatementPointer",
                                            "(I)V");
+    if((*env)->ExceptionOccurred(env)) {
+        return;
+    }
     (*env)->CallVoidMethod(env, resultSet, methID, stmt);
+    if((*env)->ExceptionOccurred(env)) {
+        return;
+    }
 
     /* Fill the ResultSet Metadata. */
     populateResultSetMetadata(env, stmt, resultSet);
@@ -241,6 +249,9 @@ Java_org_osjava_jdbc_sqlite_Statement_executeSQLWithResultSet(JNIEnv *env,
                                                        resultSet,
                                                        0,
                                                        numRows);
+    if((*env)->ExceptionOccurred(env)) {
+        return;
+    }
 }
 
 /* Populate a row of the ResultSet */
@@ -260,11 +271,17 @@ void populateRow(JNIEnv *env, sqlite3_stmt *stmt, jobject resultSet) {
                                              resultSetClass,
                                              "fillColumnWithInt",
                                              "(II)V");
+                if((*env)->ExceptionOccurred(env)) {
+                    return;
+                }
                 (*env)->CallVoidMethod(env,
                                        resultSet,
                                        method,
                                        curCol,
                                        sqlite3_column_int(stmt, curCol));
+                if((*env)->ExceptionOccurred(env)) {
+                    return;
+                }
                 break;
             case SQLITE_FLOAT:
                 fprintf(stderr, "Found float.\n");
@@ -272,11 +289,17 @@ void populateRow(JNIEnv *env, sqlite3_stmt *stmt, jobject resultSet) {
                                              resultSetClass,
                                              "fillColumnWithFloat",
                                              "(ILjava/lang/String;)V");
+                if((*env)->ExceptionOccurred(env)) {
+                    return;
+                }
                 (*env)->CallVoidMethod(env,
                                        resultSet,
                                        method,
                                        curCol,
                                        sqlite3_column_text(stmt, curCol));
+                if((*env)->ExceptionOccurred(env)) {
+                    return;
+                }
                 break;
             case SQLITE_TEXT:
                 fprintf(stderr, "Found text.\n");
@@ -287,11 +310,17 @@ void populateRow(JNIEnv *env, sqlite3_stmt *stmt, jobject resultSet) {
                                              resultSetClass,
                                              "fillColumnWithString",
                                              "(ILjava/lang/String;)V");
+                if((*env)->ExceptionOccurred(env)) {
+                    return;
+                }
                 (*env)->CallVoidMethod(env,
                                        resultSet,
                                        method,
                                        curCol,
                                        str);
+                if((*env)->ExceptionOccurred(env)) {
+                    return;
+                }
                 fprintf(stderr, "Successfully planted string.\n");
                 break;
             case SQLITE_BLOB:
@@ -301,11 +330,17 @@ void populateRow(JNIEnv *env, sqlite3_stmt *stmt, jobject resultSet) {
                                              resultSetClass,
                                              "fillColumnWitBlob",
                                              "(IF)V");
+                if((*env)->ExceptionOccurred(env)) {
+                    return;
+                }
                 (*env)->CallVoidMethod(env,
                                        resultSet,
                                        method,
                                        curCol,
                                        sqlite3_column_blob(stmt, curCol));
+                if((*env)->ExceptionOccurred(env)) {
+                    return;
+                }
                 break;
             case SQLITE_NULL:
                 fprintf(stderr, "Found null.\n");
@@ -313,10 +348,16 @@ void populateRow(JNIEnv *env, sqlite3_stmt *stmt, jobject resultSet) {
                                              resultSetClass,
                                              "fillColumnWithNull",
                                              "(I)V");
+                if((*env)->ExceptionOccurred(env)) {
+                    return;
+                }
                 (*env)->CallVoidMethod(env,
                                         resultSet,
                                         method,
                                         curCol);
+                if((*env)->ExceptionOccurred(env)) {
+                    return;
+                }
                 break;
             default:
                 /* FIXME: WTF.  Throw an exception here. */
@@ -337,6 +378,9 @@ Java_org_osjava_jdbc_sqlite_ResultSet_populateRows(JNIEnv *env,
     int result;
     jmethodID method;
     jclass resultSetClass = (*env)->GetObjectClass(env, resultSet);
+    if((*env)->ExceptionOccurred(env)) {
+        return;
+    }
 
     fprintf(stderr, "Start populate rows.\n");
     /* Get the statement pointer. */
@@ -366,6 +410,9 @@ Java_org_osjava_jdbc_sqlite_ResultSet_populateRows(JNIEnv *env,
                                  resultSetClass,
                                  "insertRow",
                                  "(I)V");
+    if((*env)->ExceptionOccurred(env)) {
+        return;
+    }
     for(count = startRow; count <= finishRow; count ++) {
         result = sqlite3_step(stmt);
         /* Check the result */
@@ -382,6 +429,9 @@ Java_org_osjava_jdbc_sqlite_ResultSet_populateRows(JNIEnv *env,
                                    resultSet,
                                    method,
                                    count - startRow);
+            if((*env)->ExceptionOccurred(env)) {
+                return;
+            }
             populateRow(env, stmt, resultSet);
             /* Skip the rest of the result conditions */
             continue;
@@ -410,7 +460,13 @@ void populateResultSetMetadata(JNIEnv *env, sqlite3_stmt *stmt, jobject resultSe
                                               resultSetClass,
                                               "getMetaData",
                                               "()Ljava/sql/ResultSetMetaData;");
+    if((*env)->ExceptionOccurred(env)) {
+        return;
+    }
     metaData = (*env)->CallObjectMethod(env, resultSet, getMetaID);
+    if((*env)->ExceptionOccurred(env)) {
+        return;
+    }
     /* There's a problem if there is not metadata object */
     if(metaData == NULL) {
         sqliteThrowSQLException(env, "Could not populate ResultSetMetaData.  Object does not exist.");
@@ -424,14 +480,24 @@ void populateResultSetMetadata(JNIEnv *env, sqlite3_stmt *stmt, jobject resultSe
      * this is a first run through. */
     numCols = sqlite3_column_count(stmt);
     metaDataClass = (*env)->GetObjectClass(env, metaData);
+    if((*env)->ExceptionOccurred(env)) {
+        return;
+    }
     jmethodID getColID = (*env)->GetMethodID(env,
                                              metaDataClass,
                                              "getColumnCount",
                                              "()I");
+    if((*env)->ExceptionOccurred(env)) {
+        return;
+    }
     /* If the column count is < 0 (i.e. -1) the ResultSetMetadata hasn't been
        set yet */
     if((*env)->CallIntMethod(env, metaData, getColID) >= 0) {
+        if((*env)->ExceptionOccurred(env)) {
+            return;
+        }
         fprintf(stderr, "Already filled metadata.\n");
+        /* FIXME: Should probably throw an exception here instead? */
         return;
     }
 
@@ -439,7 +505,13 @@ void populateResultSetMetadata(JNIEnv *env, sqlite3_stmt *stmt, jobject resultSe
                                              metaDataClass,
                                              "setColumnCount",
                                              "(I)V");
+    if((*env)->ExceptionOccurred(env)) {
+        return;
+    }
     (*env)->CallVoidMethod(env, metaData, setColID, numCols);
+    if((*env)->ExceptionOccurred(env)) {
+        return;
+    }
     fprintf(stderr, "Successfully set column width.\n");
 }
 
@@ -448,11 +520,21 @@ void populateResultSetMetadata(JNIEnv *env, sqlite3_stmt *stmt, jobject resultSe
  */
 sqlite3 *getSQLiteHandle(JNIEnv *env, jobject con) {
     jclass conClass = (*env)->GetObjectClass(env, con);
+    if((*env)->ExceptionOccurred(env)) {
+        return NULL;
+    }
     jmethodID methID = (*env)->GetMethodID(env,
                                            conClass,
                                            "getDBPointer",
                                            "()I");
-    return (sqlite3 *)(*env)->CallIntMethod(env, con, methID);
+    if((*env)->ExceptionOccurred(env)) {
+        return NULL;
+    }
+    sqlite3 *result = (sqlite3 *)(*env)->CallIntMethod(env, con, methID);
+    if((*env)->ExceptionOccurred(env)) {
+        return NULL;
+    }
+    return result;
 }
 
 /*
@@ -460,11 +542,21 @@ sqlite3 *getSQLiteHandle(JNIEnv *env, jobject con) {
  */
 sqlite3_stmt *getStatementHandle(JNIEnv *env, jobject rs) {
     jclass rsClass = (*env)->GetObjectClass(env, rs);
+    if((*env)->ExceptionOccurred(env)) {
+        return NULL;
+    }
     jmethodID methID = (*env)->GetMethodID(env,
                                            rsClass,
                                            "getStatementPointer",
                                            "()I");
-    return (sqlite3_stmt *)(*env)->CallIntMethod(env, rs, methID);
+    if((*env)->ExceptionOccurred(env)) {
+        return NULL;
+    }
+    sqlite3_stmt *result = (sqlite3_stmt *)(*env)->CallIntMethod(env, rs, methID);
+    if((*env)->ExceptionOccurred(env)) {
+        return NULL;
+    }
+    return result;
 }
 
 /*
@@ -477,18 +569,27 @@ jstring convertNativeString(JNIEnv *env, const char *inStr) {
     if(bytes != NULL) {
         (*env)->SetByteArrayRegion(env, bytes, 0, len, (jbyte *)inStr);
         jclass stringClass = (*env)->FindClass(env, "java/lang/String");
-        jthrowable exc = ExceptionOccurred(JNIEnv *env);
-        if(exc != NULL) { 
-            return;
+        if((*env)->ExceptionOccurred(env)) {
+            return NULL;
         }
         jmethodID methID = (*env)->GetMethodID(env,
                                                stringClass,
                                                "<init>",
                                                "([B)V");
+        if((*env)->ExceptionOccurred(env)) {
+            return NULL;
+        }
         jstring result = (*env)->NewObject(env, stringClass, methID, bytes);
+        if((*env)->ExceptionOccurred(env)) {
+            return NULL;
+        }
         (*env)->DeleteLocalRef(env, bytes);
+        if((*env)->ExceptionOccurred(env)) {
+            return NULL;
+        }
         return result;
     }
+    /* FIXME: An exception should be thrown? */
     return NULL;
 }
 
@@ -498,6 +599,9 @@ jstring convertNativeString(JNIEnv *env, const char *inStr) {
 void sqliteThrowSQLException(JNIEnv *env, const char *message) {
     jclass excClass = (*env)->FindClass(env,
                                         "java/sql/SQLException");
+    if((*env)->ExceptionOccurred(env)) {
+        return;
+    }
     /* Can't find the class?  Give up, though this should never happen */
     if(excClass == 0) {
         return;
@@ -505,6 +609,8 @@ void sqliteThrowSQLException(JNIEnv *env, const char *message) {
     (*env)->ThrowNew(env,
                      excClass,
                      message);
+    if((*env)->ExceptionOccurred(env)) {
+        return;
+    }
     return;
 }
-
