@@ -34,9 +34,6 @@ package org.osjava.sj.loader.convert;
 
 import java.util.Properties;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-
 /**
  * Create a new Class usign an empty constructor.
  *
@@ -59,16 +56,12 @@ public class EmptyConstructorConverter implements Converter {
             return c.newInstance();
         } catch(ClassNotFoundException cnfe) {
             throw new RuntimeException("Unable to find class: "+type, cnfe);
-        } catch(NoSuchMethodException nsme) {
-            throw new RuntimeException("Unable to find (String) constructor on class: "+type, nsme);
         } catch(InstantiationException ie) {
             throw new RuntimeException("Unable to instantiate class: "+type, ie);
         } catch(IllegalAccessException ie) {
             throw new RuntimeException("Unable to access class: "+type, ie);
         } catch(IllegalArgumentException iae) {
             throw new RuntimeException("Unable to pass argument "+value+" to class: "+type, iae);
-        } catch(InvocationTargetException ite) {
-            throw new RuntimeException("Unable to invoke (String) constructor on class: "+type, ite);
         }
 
     }
