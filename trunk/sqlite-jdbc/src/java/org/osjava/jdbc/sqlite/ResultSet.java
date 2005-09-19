@@ -57,7 +57,6 @@ import java.sql.SQLWarning;
 import java.sql.Time;
 import java.sql.Timestamp;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Map;
 
@@ -101,8 +100,17 @@ public class ResultSet implements java.sql.ResultSet {
     
     /**
      * The number of the current row.
+     * Special values are: </br>
+     * <ul><li>-1: Position 'beforeFirst()'</li>
+     *     <li>-2: Position 'afterLast()'</li>
+     *     <li>-3: No position set yet</li></ul>
      */
-    private int currentRow;
+    private int currentRow = -3;
+    
+    /**
+     * Maximum row known
+     */
+    private int maxRow = -1;
     
     /**
      * Array of rows.
@@ -545,31 +553,37 @@ public class ResultSet implements java.sql.ResultSet {
      * @see java.sql.ResultSet#isBeforeFirst()
      */
     public boolean isBeforeFirst() throws SQLException {
-        // TODO Auto-generated method stub
-        return false;
+        return currentRow == -1;
     }
 
     /* (non-Javadoc)
      * @see java.sql.ResultSet#isAfterLast()
      */
     public boolean isAfterLast() throws SQLException {
-        // TODO Auto-generated method stub
-        return false;
+        return currentRow == -2;
     }
 
     /* (non-Javadoc)
      * @see java.sql.ResultSet#isFirst()
      */
     public boolean isFirst() throws SQLException {
-        // TODO Auto-generated method stub
-        return false;
+        return currentRow == 0;
     }
 
     /* (non-Javadoc)
      * @see java.sql.ResultSet#isLast()
      */
     public boolean isLast() throws SQLException {
-        // TODO Auto-generated method stub
+        if(maxRow != -1 && resultSetType != java.sql.ResultSet.TYPE_SCROLL_SENSITIVE) {
+            return currentRow == maxRow;
+        }
+        /* If the next element in the page is not null, return false.  There
+         * is a potential issue here if the current row is the last row
+         * possible on the page.   I'm not sure if I want to make it pull 
+         * the next page down. */
+        if(currentRow != pageMax) {
+            return rows[(currentRow - pageMin) + 1] == null;
+        }
         return false;
     }
 
@@ -577,23 +591,27 @@ public class ResultSet implements java.sql.ResultSet {
      * @see java.sql.ResultSet#beforeFirst()
      */
     public void beforeFirst() throws SQLException {
-    // TODO Auto-generated method stub
-
+        currentRow = -1;
     }
 
     /* (non-Javadoc)
      * @see java.sql.ResultSet#afterLast()
      */
     public void afterLast() throws SQLException {
-    // TODO Auto-generated method stub
-
+        currentRow = -2;
     }
 
     /* (non-Javadoc)
      * @see java.sql.ResultSet#first()
      */
     public boolean first() throws SQLException {
-        // TODO Auto-generated method stub
+        int originalRow = currentRow;
+        if(resultSetType == ResultSet.TYPE_FORWARD_ONLY) {
+            throw new SQLException("Type is java.sql.ResultSet.TYPE_FORWARD_ONLY.  Invalid operation");
+        }
+        /* Make sure tha tthe row 0 is valid */
+        currentRow = 0;
+        
         return false;
     }
 
@@ -601,7 +619,29 @@ public class ResultSet implements java.sql.ResultSet {
      * @see java.sql.ResultSet#last()
      */
     public boolean last() throws SQLException {
-        // TODO Auto-generated method stub
+        if(resultSetType == ResultSet.TYPE_FORWARD_ONLY) {
+            throw new SQLException("Type is java.sql.ResultSet.TYPE_FORWARD_ONLY.  Invalid operation");
+        }
+        /* Scroll from current all the way to the end.  */
+        int pageStart = pageMin;
+        if(currentRow < 0) {
+            scrollResultSet(0);
+        }
+        /* Look at the last element of the page. If it's filled, try to get
+         * the next page.  Do this until we're on the last valid page. */
+        while(rows[rows.length] != null) {
+            scrollResultSet(pageMax + 1);
+        }
+        
+        /* Scroll backwards until we determine the first actual filled row.
+         * This is where we will set up
+         */
+        for(int i = fetchSize; i >= 0; i--) {
+            if(rows[i] != null) {
+                currentRow = pageMin + i;
+                return true;
+            }
+        }
         return false;
     }
 
@@ -609,7 +649,10 @@ public class ResultSet implements java.sql.ResultSet {
      * @see java.sql.ResultSet#getRow()
      */
     public int getRow() throws SQLException {
-        return currentRow;
+        if(currentRow < 0) {
+            return 0;
+        }
+        return currentRow + 1;
     }
 
     /* (non-Javadoc)
