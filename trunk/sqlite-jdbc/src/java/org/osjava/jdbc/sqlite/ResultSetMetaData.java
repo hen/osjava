@@ -259,7 +259,7 @@ public class ResultSetMetaData implements java.sql.ResultSetMetaData {
     int getColumnForName(String colName) {
         for(int i = 0; i < columnNames.length; i++) {
             if(columnNames[i].equals(colName)) {
-                return i;
+                return i+1;
             }
         }
         return -1;
