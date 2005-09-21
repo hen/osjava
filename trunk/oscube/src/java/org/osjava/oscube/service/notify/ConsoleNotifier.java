@@ -36,6 +36,8 @@ import org.osjava.oscube.container.Session;
 
 public class ConsoleNotifier implements Notifier {
 
+    // TODO: Problem with notifiers. If an error did not come from an Exception, 
+    //       the system tends to think it was a success. The below is a good example of that
     public void notify(Config cfg, Session session) {
         Exception error = (Exception)session.get(cfg.getContext()+".error");
         if(error != null) {
