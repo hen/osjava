@@ -17,6 +17,8 @@
 
 * Remove the generated .h files from repository and generate them in the
   makefile instead.
+  
+* ResultSet.SCROLLTYPE_SENSITIVE not implemented properly.
 
 TESTS TO CREATE
 * closing a connection where the database will be busy

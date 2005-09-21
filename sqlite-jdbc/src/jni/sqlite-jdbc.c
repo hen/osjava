@@ -451,6 +451,7 @@ Java_org_osjava_jdbc_sqlite_ResultSet_populateRows(JNIEnv *env,
 
 /* Populate the metadata for the ResultSet */
 void populateResultSetMetadata(JNIEnv *env, sqlite3_stmt *stmt, jobject resultSet) {
+    int i;
     int numCols;
     jclass resultSetClass = (*env)->GetObjectClass(env, resultSet);
     jclass metaDataClass;
@@ -513,6 +514,26 @@ void populateResultSetMetadata(JNIEnv *env, sqlite3_stmt *stmt, jobject resultSe
         return;
     }
     fprintf(stderr, "Successfully set column width.\n");
+    
+    /* Set the column names */
+    jmethodID setNameID = (*env)->GetMethodID(env,
+                                              metaDataClass,
+                                              "setColumnName",
+                                              "(ILjava/lang/String;)V");
+    if((*env)->ExceptionOccurred(env)) {
+        return;
+    }
+    for(i = 0; i < numCols; i++) {
+        const char *colName = sqlite3_column_name(stmt, i);
+        (*env)->CallVoidMethod(env,
+                               metaData,
+                               setNameID,
+                               i,
+                               convertNativeString(env, colName));
+        if((*env)->ExceptionOccurred(env)) {
+            return;
+        }        
+    }
 }
 
 /*

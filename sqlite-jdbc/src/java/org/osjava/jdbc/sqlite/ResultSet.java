@@ -218,8 +218,13 @@ public class ResultSet implements java.sql.ResultSet {
      * @see java.sql.ResultSet#getString(int)
      */
     public String getString(int columnIndex) throws SQLException {
-        // TODO Auto-generated method stub
-        return null;
+        if(currentRow < 0 || rows[currentRow] == null) {
+            throw new SQLException("Invalid row");
+        }
+        if(columnIndex > ((Object[])rows[currentRow]).length) {
+            throw new SQLException("Invalid column");
+        }
+        return ((Object[])rows[currentRow])[columnIndex].toString();
     }
 
     /* (non-Javadoc)
@@ -346,8 +351,7 @@ public class ResultSet implements java.sql.ResultSet {
      * @see java.sql.ResultSet#getString(java.lang.String)
      */
     public String getString(String columnName) throws SQLException {
-        // TODO Auto-generated method stub
-        return null;
+        return getString(metaData.getColumnForName(columnName));
     }
 
     /* (non-Javadoc)
@@ -1407,7 +1411,11 @@ public class ResultSet implements java.sql.ResultSet {
     
     /* Fill the the column col of the current row with a String value */
     private void fillColumnWithString(int col, String value) {
+        System.err.println("Current row is -- " + currentRow);
+        System.err.println("received -- " + value);
+        System.err.println("Setting into column -- " + col);
         ((Object[])rows[currentRow])[col] = value;
+        System.err.println("Looking at cell -- " + ((Object[])rows[currentRow])[col]);
     }
 
     /* Fill the the column col of the current row with a Integers value */
