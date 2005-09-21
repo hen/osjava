@@ -52,10 +52,9 @@ public class NamespaceSession extends AbstractConfig implements Session {
         this.namespace.putValue(key, value);
     }
 
-    // TODO: Move to AbstractSession
     public Object remove(String key) {
         Object obj = get(key);
-        this.namespace.putValue(key, null);
+        put(key, null);
         return obj;
     }
 
