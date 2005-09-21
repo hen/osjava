@@ -103,9 +103,8 @@ public class ResultSet implements java.sql.ResultSet {
      * Special values are: </br>
      * <ul><li>-1: Position 'beforeFirst()'</li>
      *     <li>-2: Position 'afterLast()'</li>
-     *     <li>-3: No position set yet</li></ul>
      */
-    private int currentRow = -3;
+    private int currentRow = -1;
     
     /**
      * Maximum row known
@@ -181,8 +180,17 @@ public class ResultSet implements java.sql.ResultSet {
      * @see java.sql.ResultSet#next()
      */
     public boolean next() throws SQLException {
-        // TODO Auto-generated method stub
-        return false;
+        if(currentRow == pageMax) {
+            scrollResultSet(pageMax + 1);
+        }
+        currentRow++;
+        /* If the next row is null, that means that the end of the ResultSet
+         * is reached.  Set things properly */
+        if(rows[currentRow - pageMin] == null) {
+            currentRow = -2;
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -1352,7 +1360,7 @@ public class ResultSet implements java.sql.ResultSet {
      *        the current page, not the entire ResultSet
      * @throws SQLException if the row is not in the current page.
      */
-    private void insertRow(int index) throws SQLException {
+    private void insertRowIntoResultSet(int index) throws SQLException {
         if(index < 0 || index > rows.length) {
             throw new SQLException("Could not insert row, Index out of bounds");
         }
