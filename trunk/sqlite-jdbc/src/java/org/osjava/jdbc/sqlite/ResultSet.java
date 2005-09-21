@@ -218,13 +218,14 @@ public class ResultSet implements java.sql.ResultSet {
      * @see java.sql.ResultSet#getString(int)
      */
     public String getString(int columnIndex) throws SQLException {
+        /* XXX: Row count is based on 1 based index, not 0 based index */
         if(currentRow < 0 || rows[currentRow] == null) {
             throw new SQLException("Invalid row");
         }
         if(columnIndex > ((Object[])rows[currentRow]).length) {
             throw new SQLException("Invalid column");
         }
-        return ((Object[])rows[currentRow])[columnIndex].toString();
+        return ((Object[])rows[currentRow])[columnIndex - 1].toString();
     }
 
     /* (non-Javadoc)
@@ -351,127 +352,112 @@ public class ResultSet implements java.sql.ResultSet {
      * @see java.sql.ResultSet#getString(java.lang.String)
      */
     public String getString(String columnName) throws SQLException {
-        return getString(metaData.getColumnForName(columnName));
+        return getString(findColumn(columnName));
     }
 
     /* (non-Javadoc)
      * @see java.sql.ResultSet#getBoolean(java.lang.String)
      */
     public boolean getBoolean(String columnName) throws SQLException {
-        // TODO Auto-generated method stub
-        return false;
+        return getBoolean(findColumn(columnName));
     }
 
     /* (non-Javadoc)
      * @see java.sql.ResultSet#getByte(java.lang.String)
      */
     public byte getByte(String columnName) throws SQLException {
-        // TODO Auto-generated method stub
-        return 0;
+        return getByte(findColumn(columnName));
     }
 
     /* (non-Javadoc)
      * @see java.sql.ResultSet#getShort(java.lang.String)
      */
     public short getShort(String columnName) throws SQLException {
-        // TODO Auto-generated method stub
-        return 0;
+        return getShort(findColumn(columnName));
     }
 
     /* (non-Javadoc)
      * @see java.sql.ResultSet#getInt(java.lang.String)
      */
     public int getInt(String columnName) throws SQLException {
-        // TODO Auto-generated method stub
-        return 0;
+        return getInt(findColumn(columnName));
     }
 
     /* (non-Javadoc)
      * @see java.sql.ResultSet#getLong(java.lang.String)
      */
     public long getLong(String columnName) throws SQLException {
-        // TODO Auto-generated method stub
-        return 0;
+        return getLong(findColumn(columnName));
     }
 
     /* (non-Javadoc)
      * @see java.sql.ResultSet#getFloat(java.lang.String)
      */
     public float getFloat(String columnName) throws SQLException {
-        // TODO Auto-generated method stub
-        return 0;
+        return getFloat(findColumn(columnName));
     }
 
     /* (non-Javadoc)
      * @see java.sql.ResultSet#getDouble(java.lang.String)
      */
     public double getDouble(String columnName) throws SQLException {
-        // TODO Auto-generated method stub
-        return 0;
+        return getDouble(findColumn(columnName));
     }
 
     /* (non-Javadoc)
      * @see java.sql.ResultSet#getBigDecimal(java.lang.String, int)
      */
     public BigDecimal getBigDecimal(String columnName, int scale) throws SQLException {
-        // TODO Auto-generated method stub
-        return null;
+        return getBigDecimal(findColumn(columnName));
     }
 
     /* (non-Javadoc)
      * @see java.sql.ResultSet#getBytes(java.lang.String)
      */
     public byte[] getBytes(String columnName) throws SQLException {
-        // TODO Auto-generated method stub
-        return null;
+        return getBytes(findColumn(columnName));
     }
 
     /* (non-Javadoc)
      * @see java.sql.ResultSet#getDate(java.lang.String)
      */
     public Date getDate(String columnName) throws SQLException {
-        // TODO Auto-generated method stub
-        return null;
+        return getDate(findColumn(columnName));
     }
 
     /* (non-Javadoc)
      * @see java.sql.ResultSet#getTime(java.lang.String)
      */
     public Time getTime(String columnName) throws SQLException {
-        // TODO Auto-generated method stub
-        return null;
+        return getTime(findColumn(columnName));
     }
 
     /* (non-Javadoc)
      * @see java.sql.ResultSet#getTimestamp(java.lang.String)
      */
     public Timestamp getTimestamp(String columnName) throws SQLException {
-        // TODO Auto-generated method stub
-        return null;
+        return getTimestamp(findColumn(columnName));
     }
 
     /* (non-Javadoc)
      * @see java.sql.ResultSet#getAsciiStream(java.lang.String)
      */
     public InputStream getAsciiStream(String columnName) throws SQLException {
-        // TODO Auto-generated method stub
-        return null;
+        return getAsciiStream(findColumn(columnName));
     }
 
     /* (non-Javadoc)
      * @see java.sql.ResultSet#getUnicodeStream(java.lang.String)
      */
     public InputStream getUnicodeStream(String columnName) throws SQLException {
-        // TODO Auto-generated method stub
-        return null;
+        return getUnicodeStream(findColumn(columnName));
     }
 
     /* (non-Javadoc)
      * @see java.sql.ResultSet#getBinaryStream(java.lang.String)
      */
     public InputStream getBinaryStream(String columnName) throws SQLException {
-        // TODO Auto-generated method stub
-        return null;
+        return getBinaryStream(findColumn(columnName));
     }
 
     /* (non-Javadoc)
@@ -517,16 +503,14 @@ public class ResultSet implements java.sql.ResultSet {
      * @see java.sql.ResultSet#getObject(java.lang.String)
      */
     public Object getObject(String columnName) throws SQLException {
-        // TODO Auto-generated method stub
-        return null;
+        return getObject(findColumn(columnName));
     }
 
     /* (non-Javadoc)
      * @see java.sql.ResultSet#findColumn(java.lang.String)
      */
     public int findColumn(String columnName) throws SQLException {
-        // TODO Auto-generated method stub
-        return 0;
+        return metaData.getColumnForName(columnName);
     }
 
     /* (non-Javadoc)
@@ -1411,11 +1395,7 @@ public class ResultSet implements java.sql.ResultSet {
     
     /* Fill the the column col of the current row with a String value */
     private void fillColumnWithString(int col, String value) {
-        System.err.println("Current row is -- " + currentRow);
-        System.err.println("received -- " + value);
-        System.err.println("Setting into column -- " + col);
         ((Object[])rows[currentRow])[col] = value;
-        System.err.println("Looking at cell -- " + ((Object[])rows[currentRow])[col]);
     }
 
     /* Fill the the column col of the current row with a Integers value */
