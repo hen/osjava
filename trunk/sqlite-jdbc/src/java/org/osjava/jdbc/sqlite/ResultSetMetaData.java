@@ -54,6 +54,11 @@ public class ResultSetMetaData implements java.sql.ResultSetMetaData {
      * The number of columns in the ResultSet
      */
     private int columnCount = -1;
+    
+   /** 
+    * Array containing the names of columns for the ResultSet
+    */
+    String[] columnNames = null;
 
     public ResultSetMetaData(ResultSet rs) {
         super();
@@ -230,11 +235,44 @@ public class ResultSetMetaData implements java.sql.ResultSetMetaData {
     /*
      * Support Methods, not in the spec.
      */
+    /**
+     * Set the number of columns in the ResultSet.
+     */
     private void setColumnCount(int count) {
         /* FIXME: Throw a SQLException if the count is changed.  It should
          *        never change.
          */
         System.err.println("ResultSetMetadata.setColumnCount(" + count + ")");
         columnCount = count;
+        columnNames = new String[columnCount];
+    }
+    
+    /* Ugh, package private */
+    /**
+     * Get the 1-based index of the column with the name <code>colName</code>.
+     * The first match is the column index returned if there are duplicates.
+     * -1 is returned if no match is found. 
+     * 
+     * @param colName the name of the column being searched for
+     * @return 0 
+     */
+    int getColumnForName(String colName) {
+        for(int i = 0; i < columnNames.length; i++) {
+            if(columnNames[i].equals(colName)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+    
+    /** 
+     * Set the name of a column
+     */
+    private void setColumnName(int col, String name) throws SQLException {
+        /* XXX: Note that column counts are 1 based in the api and 0 based here. */
+        if(col >= columnCount) {
+            throw new SQLException("Invalid column");
+        }
+        columnNames[col] = name;
     }
 }
