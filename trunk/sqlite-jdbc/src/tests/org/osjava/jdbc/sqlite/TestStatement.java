@@ -106,9 +106,9 @@ public class TestStatement extends TestCase {
         java.sql.ResultSet result = stmt.executeQuery("CREATE TABLE foo (TestCol VARCHAR(10));");
         /* The ResultSet cannot be null, but it can be empty. */
         assertNotNull(result);
-        /* Move to the last row.  This should generate a false response 
+        /* Move to the next row.  This should generate a false response 
          * because there are no rows returned. */
-        assertFalse(result.last());
+        assertFalse(result.next());
     }
     
     
@@ -127,6 +127,7 @@ public class TestStatement extends TestCase {
         result.beforeFirst();
         while(result.next()) {
             String foo = result.getString("TestCol");
+            System.err.println("Result -- " + foo);
             assertEquals("Test", foo);
         }
     }
