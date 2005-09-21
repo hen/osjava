@@ -408,7 +408,7 @@ Java_org_osjava_jdbc_sqlite_ResultSet_populateRows(JNIEnv *env,
     /* Start populating the ResultSet */
     method = (*env)->GetMethodID(env,
                                  resultSetClass,
-                                 "insertRow",
+                                 "insertRowIntoResultSet",
                                  "(I)V");
     if((*env)->ExceptionOccurred(env)) {
         return;
