@@ -1,14 +1,14 @@
 /*
- * org.osjava.jdbc.sqlite.TestStatement
+ * org.osjava.jdbc.sqlite.TestResultSet
  * $Id$
  * $Rev$ 
  * $Date$ 
  * $Author$
  * $URL$
  * 
- * Created on Jul 3, 2005
+ * Created on Sep 21, 2005
  *
- * Copyright (c) 2004, Robert M. Zigweid All rights reserved.
+ * Copyright (c) 2005, Robert M. Zigweid All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
@@ -46,9 +46,18 @@ import java.sql.DriverManager;
 
 import junit.framework.TestCase;
 
-public class TestStatement extends TestCase {
+/**
+ * ResultSet tests.
+ * 
+ * @author Robert M. Zigweid
+ */
+public class TestResultSet extends TestCase {
     private Connection con = null;
 
+    /**
+     * Setup the Connection.  Table setup and population are done in 
+     * individual tests
+     */
     protected void setUp() throws Exception {
         super.setUp();
         try {
@@ -69,54 +78,28 @@ public class TestStatement extends TestCase {
         }
     }
 
-    /** 
-     * Simple Statement.executeUpdate() test.  This particular test creates
-     * a new database if it doesn't exist, and then creates a table 'foo' in
-     * it.  The returned value should be 0;
-     */
-    public void testExecuteUpdate1() throws Exception {
-        java.sql.Statement stmt = con.createStatement();
-        int result = stmt.executeUpdate("CREATE TABLE foo (TestCol VARCHAR(10));");
-        /* The ResultSet cannot be null, but it can be empty. */
-        assertTrue(result == 0);
-    }
-    
     /**
-     * A series of SQL statements, to create a table in a database, and
-     * populate one row of the table.
+     * Get a String from the table base upon the column number.
      */
-    public void testExecuteUpdate2() throws Exception {
+    public void testGetString1() throws Exception {
         java.sql.Statement stmt = con.createStatement();
         stmt.executeUpdate("CREATE TABLE foo (TestCol VARCHAR(10));");
-        int count = stmt.executeUpdate("INSERT INTO foo (TestCol) VALUES (\"WHEE\");");
+        int count = stmt.executeUpdate("INSERT INTO foo (TestCol) VALUES (\"Test\");");
+        /* Make sure that the row was actually added */
         assertEquals(count, 1);
+        /* Commit before query */
+        java.sql.ResultSet result = stmt.executeQuery("SELECT * FROM foo;");
+        result.beforeFirst();
+        while(result.next()) {
+            String foo = result.getString(1);
+            assertEquals("Test", foo);
+        }
     }
-    
+
     /**
-     * Simple Statement.executeQuery() test.  This particular test creates
-     * a new database if it doesn't exist, and then uses 
-     * Statement.executeQuery() to create the first table.  The returned 
-     * ResultSet is examined for basic properties. 
-     * It should not be null.
-     * It should not have any rows.  This will be determined by examining 
-     * the last() method to ensure that it returns False.
+     * Get a String from the table base upon the column name.
      */
-    public void testExecuteQuery1() throws Exception {
-        java.sql.Statement stmt = con.createStatement();
-        java.sql.ResultSet result = stmt.executeQuery("CREATE TABLE foo (TestCol VARCHAR(10));");
-        /* The ResultSet cannot be null, but it can be empty. */
-        assertNotNull(result);
-        /* Move to the next row.  This should generate a false response 
-         * because there are no rows returned. */
-        assertFalse(result.next());
-    }
-    
-    
-    /**
-     * Make a statement that executes a query and examine its resultSet.
-     * 
-     */
-    public void testExecuteQuery2() throws Exception {
+    public void testGetString12() throws Exception {
         java.sql.Statement stmt = con.createStatement();
         stmt.executeUpdate("CREATE TABLE foo (TestCol VARCHAR(10));");
         int count = stmt.executeUpdate("INSERT INTO foo (TestCol) VALUES (\"Test\");");
@@ -129,5 +112,5 @@ public class TestStatement extends TestCase {
             String foo = result.getString("TestCol");
             assertEquals("Test", foo);
         }
-    }
+    }    
 }
