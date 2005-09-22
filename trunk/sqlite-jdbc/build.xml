@@ -1,55 +1,55 @@
 <?xml version="1.0"?>
-<project name="sqlite-jdbc"
-	     default="build"
-		 basedir=".">
-    <property name="dest"
-              location="dist"/>   
-    <property name="java_src"
-              location="src/java"/>
-    <property name="jni_src"
-              location="src/jni"/>
-    <property name="tests"
-              location="src/tests"/>   
-   
+<project name="sqlite-jdbc" default="build" basedir=".">
+    <property name="dest" location="bin" />
+    <property name="java_src" location="src/java" />
+    <property name="jni_src" location="src/jni" />
+    <property name="tests" location="src/tests" />
+
+    <path id="build.classpath">
+        <pathelement path="${dest}"/>
+    </path>
     <!-- - - - - - - - - - - - - - - - - - 
           target: build
           Default build target, which is to build everything
          - - - - - - - - - - - - - - - - - -->
-    <target name="build" 
-            depends="init, build_java, build_jni"/>
-    
+    <target name="build" depends="init, build_java, build_jni" />
+
     <!-- - - - - - - - - - - - - - - - - - 
           target: init                      
          - - - - - - - - - - - - - - - - - -->
     <target name="init">
-        <mkdir dir="${dest}"/>
+        <mkdir dir="${dest}" />
     </target>
-   
+
     <!-- - - - - - - - - - - - - - - - - - 
           target: build_java                      
          - - - - - - - - - - - - - - - - - -->
-	<target name="build_java">      
-        <javac srcdir="${java_src}"
-         destdir="${dest}"/>      
-	</target>
+    <target name="build_java">
+        <javac srcdir="${java_src}" destdir="${dest}" />
+    </target>
 
     <!-- - - - - - - - - - - - - - - - - - 
           target: build_jni_headers                      
          - - - - - - - - - - - - - - - - - -->
-	<target name="build_jni_headers">
+    <target name="build_jni_headers">
+        <javah destdir="${jni_src}">
+            <classpath refid="build.classpath"/>
+            <class name="org.osjava.jdbc.sqlite.Connection" />
+            <class name="org.osjava.jdbc.sqlite.Driver" />
+            <class name="org.osjava.jdbc.sqlite.ResultSet" />
+            <class name="org.osjava.jdbc.sqlite.Statement" />
+        </javah>      
 	</target>
 		
     <!-- - - - - - - - - - - - - - - - - - 
           target: build_jni                     
          - - - - - - - - - - - - - - - - - -->
-	<target name="build_jni"
-            depends="build_jni_headers">
+	<target name="build_jni" depends="build_jni_headers">
     </target>
  
     <!-- - - - - - - - - - - - - - - - - - 
           target: build_tests                     
          - - - - - - - - - - - - - - - - - -->
-    <target name="build_tests"
-            depends="build_java, build_jni">
+    <target name="build_tests" depends="build_java, build_jni">
     </target>
 </project>
