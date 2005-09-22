@@ -266,11 +266,11 @@ void populateRow(JNIEnv *env, sqlite3_stmt *stmt, jobject resultSet) {
         /* What is actually done is dependant upon the column type. */
         switch(sqlite3_column_type(stmt, curCol)) {
             case SQLITE_INTEGER:
-                fprintf(stderr, "Found integer.\n");
+                fprintf(stderr, "Found Number %lld.\n", sqlite3_column_int64(stmt, curCol));
                 method = (*env)->GetMethodID(env,
                                              resultSetClass,
                                              "fillColumnWithNumber",
-                                             "(II)V");
+                                             "(IJ)V");
                 if((*env)->ExceptionOccurred(env)) {
                     return;
                 }
@@ -278,7 +278,7 @@ void populateRow(JNIEnv *env, sqlite3_stmt *stmt, jobject resultSet) {
                                        resultSet,
                                        method,
                                        curCol,
-                                       sqlite3_column_int(stmt, curCol));
+                                       sqlite3_column_int64(stmt, curCol));
                 if((*env)->ExceptionOccurred(env)) {
                     return;
                 }
