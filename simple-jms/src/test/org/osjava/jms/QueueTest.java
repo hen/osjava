@@ -31,16 +31,21 @@
  */
 package org.osjava.jms;
 
+import java.util.Enumeration;
+
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageListener;
 import javax.jms.Queue;
+import javax.jms.QueueBrowser;
 import javax.jms.QueueConnection;
 import javax.jms.QueueConnectionFactory;
 import javax.jms.QueueReceiver;
 import javax.jms.QueueSender;
 import javax.jms.QueueSession;
 import javax.jms.Session;
+import javax.jms.TextMessage;
+
 import junit.framework.TestCase;
 import org.osjava.jms.MemoryQueueConnectionFactory;
 
@@ -124,6 +129,27 @@ public class QueueTest extends TestCase implements MessageListener {
         
         assertFalse ("Thread should have timed out", thread.isAlive());
         thread.interrupt();
+    }
+    
+    public void testBrowser () throws Exception {
+        qs.send (qss.createTextMessage("test1"));
+        qs.send (qss.createTextMessage("test2"));
+        qs.send (qss.createTextMessage("test3"));
+        
+        QueueBrowser qb = qss.createBrowser(q);
+        
+        Enumeration e = qb.getEnumeration();
+        TextMessage m = null;
+        assertTrue("has at least one element", e.hasMoreElements());
+        m = (TextMessage)e.nextElement();
+        assertEquals("1st message is correct", "test1", m.getText());
+        assertTrue("has at least two elements", e.hasMoreElements());
+        m = (TextMessage)e.nextElement();
+        assertEquals("2nd message is correct", "test2", m.getText());
+        assertTrue("has at least three elements", e.hasMoreElements());
+        m = (TextMessage)e.nextElement();
+        assertEquals("3rd message is correct", "test3", m.getText());
+        assertFalse ("No more elements", e.hasMoreElements());
     }
 
 }

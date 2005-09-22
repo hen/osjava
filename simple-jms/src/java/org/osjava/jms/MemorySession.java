@@ -167,11 +167,11 @@ public class MemorySession implements Session {
     }
 
     public QueueBrowser createBrowser(Queue queue) throws JMSException {
-        return new MemoryQueueBrowser(queue);
+        return new MemoryQueueBrowser((MemoryQueue)queue);
     }
 
     public QueueBrowser createBrowser(Queue queue, String messageSelector) throws JMSException {
-        return new MemoryQueueBrowser(queue, messageSelector);
+        return new MemoryQueueBrowser((MemoryQueue)queue, messageSelector);
     }
 
     public TemporaryQueue createTemporaryQueue() throws JMSException {

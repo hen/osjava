@@ -39,14 +39,14 @@ import javax.jms.QueueBrowser;
 
 public class MemoryQueueBrowser implements QueueBrowser {
 
-    private Queue queue;
+    private MemoryQueue queue;
     private String messageSelector;
 
-    public MemoryQueueBrowser(Queue queue) {
+    public MemoryQueueBrowser(MemoryQueue queue) {
         this.queue = queue;
     }
 
-    public MemoryQueueBrowser(Queue queue, String messageSelector) {
+    public MemoryQueueBrowser(MemoryQueue queue, String messageSelector) {
         this.queue = queue;
         this.messageSelector = messageSelector;
     }
@@ -60,8 +60,7 @@ public class MemoryQueueBrowser implements QueueBrowser {
     }
 
     public Enumeration getEnumeration() throws JMSException {
-        // TODO: Implement this
-        return null;
+        return queue.getEnumeration();
     }
 
     public void close() throws JMSException {

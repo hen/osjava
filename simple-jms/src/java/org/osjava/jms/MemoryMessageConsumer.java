@@ -37,8 +37,6 @@ import javax.jms.MessageConsumer;
 import javax.jms.MessageListener;
 import javax.jms.Destination;
 
-import com.sun.rsasign.r;
-
 public class MemoryMessageConsumer implements MessageConsumer {
 
     private MessageListener listener;
