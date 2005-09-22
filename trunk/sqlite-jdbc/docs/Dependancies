@@ -4,6 +4,7 @@ Dependancies for Building
 -------------------------
 * Java 1.4 or above, though this may eventually be elevated to Java 5 as a 
   minimum.
+* SQLite 3
 * Ant (1.6.5 tested)
   * Optional javah task
 * Gcc or other Ansi C compliant compiler for building the JNI portion.  There
