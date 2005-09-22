@@ -99,7 +99,7 @@ public class TestResultSet extends TestCase {
     /**
      * Get a String from the table base upon the column name.
      */
-    public void testGetString12() throws Exception {
+    public void testGetString2() throws Exception {
         java.sql.Statement stmt = con.createStatement();
         stmt.executeUpdate("CREATE TABLE foo (TestCol VARCHAR(10));");
         int count = stmt.executeUpdate("INSERT INTO foo (TestCol) VALUES (\"Test\");");
@@ -112,5 +112,21 @@ public class TestResultSet extends TestCase {
             String foo = result.getString("TestCol");
             assertEquals("Test", foo);
         }
-    }    
+    }
+    
+    
+    public void testGetInt1() throws Exception {
+        java.sql.Statement stmt = con.createStatement();
+        stmt.executeUpdate("CREATE TABLE foo (TestCol INTEGER);");
+        int count = stmt.executeUpdate("INSERT INTO foo (TestCol) VALUES (1234)");
+        /* Make sure that the row was actually added */
+        assertEquals(count, 1);
+        /* Commit before query */
+        java.sql.ResultSet result = stmt.executeQuery("SELECT * FROM foo;");
+        result.beforeFirst();
+        while(result.next()) {
+            int foo = result.getInt(1);
+            assertEquals(1234, foo);
+        }
+    }
 }
