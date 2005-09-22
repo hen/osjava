@@ -269,7 +269,7 @@ void populateRow(JNIEnv *env, sqlite3_stmt *stmt, jobject resultSet) {
                 fprintf(stderr, "Found integer.\n");
                 method = (*env)->GetMethodID(env,
                                              resultSetClass,
-                                             "fillColumnWithInt",
+                                             "fillColumnWithNumber",
                                              "(II)V");
                 if((*env)->ExceptionOccurred(env)) {
                     return;
