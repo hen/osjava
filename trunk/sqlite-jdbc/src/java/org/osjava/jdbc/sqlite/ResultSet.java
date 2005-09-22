@@ -1,11 +1,11 @@
 /*
  * org.osjava.jdbc.sqlite.ResultSet
  * $Id$
- * $Rev$ 
- * $Date$ 
+ * $Rev$
+ * $Date$
  * $Author$
  * $URL$
- * 
+ *
  * Created on Jul 2, 2005
  *
  * Copyright (c) 2004, Robert M. Zigweid All rights reserved.
@@ -13,21 +13,21 @@
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
  *
- * + Redistributions of source code must retain the above copyright notice, 
- *   this list of conditions and the following disclaimer. 
+ * + Redistributions of source code must retain the above copyright notice,
+ *   this list of conditions and the following disclaimer.
  *
  * + Redistributions in binary form must reproduce the above copyright notice,
- *   this list of conditions and the following disclaimer in the documentation 
- *   and/or other materials provided with the distribution. 
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
  *
  * + Neither the name of the SQLite-JDBC nor the names of its contributors may
- *   be used to endorse or promote products derived from this software without 
+ *   be used to endorse or promote products derived from this software without
  *   specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- * ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE 
+ * ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
  * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
  * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
  * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
@@ -69,22 +69,22 @@ public class ResultSet implements java.sql.ResultSet {
      * The statement used to create this ResultSet
      */
     Statement stmt;
-    
-    /** 
-     * The type of ResultSet.  Valid values are: 
+
+    /**
+     * The type of ResultSet.  Valid values are:
      *      java.sql.ResultSet.TYPE_FORWARD_ONLY
      *      java.sql.ResultSet.TYPE_SCROLL_INSENSITIVE
      *      java.sql.ResultSet.TYPE_SCROLL_SENSITIVE
      */
     private int resultSetType;
-    
-    /** 
+
+    /**
      * The concurrency of the ResultSet.  Valid values are:
      *      java.sql.ResultSet.CONCUR_READ_ONLY
      *      java.sql.ResultSet.CONCUR_UPDATABLE
      */
     private int resultSetConcurrency;
-    
+
     /**
      * Value indicating whether or not to close the ResultSet when a commit
      * is made.  Valid values are:
@@ -92,12 +92,12 @@ public class ResultSet implements java.sql.ResultSet {
      *      java.sql.ResultSet.HOLD_CURSORS_OVER_COMMIT
      */
     private int resultSetHoldability;
-    
+
     /**
      * The number of results that will be fetched by the driver at a time.
      */
     private int fetchSize = 0;
-    
+
     /**
      * The number of the current row.
      * Special values are: </br>
@@ -105,17 +105,17 @@ public class ResultSet implements java.sql.ResultSet {
      *     <li>-2: Position 'afterLast()'</li>
      */
     private int currentRow = -1;
-    
+
     /**
      * Maximum row known
      */
     private int maxRow = -1;
-    
+
     /**
      * Array of rows.
      */
     private Object rows[] = null;
-    
+
     /**
      * The minimum and maximum rows of the current page.
      */
@@ -130,20 +130,20 @@ public class ResultSet implements java.sql.ResultSet {
     private int statementPointer;
 
     private boolean closed;
-    
+
 /****************
  * Constructors *
  ****************/
     /**
      * Create a new ResultSet with from the Statement <code>st</code>.
-     * 
+     *
      * @param st the Statement that produced this object.
      * @param resultSetType the result set holdability of the ResultSet.
      * @param resultSetConcurrency the result set concurrency of the ResultSet.
      * @param resultSetHoldability the result set type of the ResultSet.
      * @throws SQLException if any of the parameter values are out of range.
      */
-    ResultSet(Statement st, int resultSetType, int resultSetConcurrency, int resultSetHoldability, Statement parent) 
+    ResultSet(Statement st, int resultSetType, int resultSetConcurrency, int resultSetHoldability, Statement parent)
             throws SQLException {
         super();
         if (   resultSetType != java.sql.ResultSet.TYPE_FORWARD_ONLY
@@ -163,15 +163,15 @@ public class ResultSet implements java.sql.ResultSet {
         this.resultSetType = resultSetType;
         this.resultSetConcurrency = resultSetConcurrency;
         this.resultSetHoldability = resultSetHoldability;
-        
+
         /* Set the fetch size based upon the Statement's fetchSize */
         fetchSize = parent.getFetchSize();
-        
+
         /* Create the rows ArrayList, based upon the fetch size */
         rows = new Object[fetchSize];
         pageMin = 0;
         pageMax = fetchSize;
-        
+
         /*
          * Create the ResultSetMetadata object for this ResultSet.  It doesn't
          * get populated right away, but it needs to exist.
@@ -223,7 +223,7 @@ public class ResultSet implements java.sql.ResultSet {
         }
         /* Make sure tha tthe row 0 is valid */
         currentRow = 0;
-        
+
         return false;
     }
 
@@ -244,7 +244,7 @@ public class ResultSet implements java.sql.ResultSet {
         while(rows[rows.length] != null) {
             scrollResultSet(pageMax + 1);
         }
-        
+
         /* Scroll backwards until we determine the first actual filled row.
          * This is where we will set up
          */
@@ -318,7 +318,7 @@ public class ResultSet implements java.sql.ResultSet {
         }
         /* If the next element in the page is not null, return false.  There
          * is a potential issue here if the current row is the last row
-         * possible on the page.   I'm not sure if I want to make it pull 
+         * possible on the page.   I'm not sure if I want to make it pull
          * the next page down. */
         if(currentRow != pageMax) {
             return rows[(currentRow - pageMin) + 1] == null;
@@ -375,7 +375,7 @@ public class ResultSet implements java.sql.ResultSet {
 
     /**
      * Sets the ResultSet's fetch size.
-     * 
+     *
      * @see java.sql.ResultSet#setFetchSize(int)
      */
     public void setFetchSize(int rows) throws SQLException {
@@ -390,7 +390,7 @@ public class ResultSet implements java.sql.ResultSet {
 
     /**
      * Return the number of rows that will be fetched by the JDBC driver at a
-     * time.  If the value has not been set, 
+     * time.  If the value has not been set,
      * {@link java.sql.Statement#getFetchSize()} will be used.
      * @see java.sql.ResultSet#getFetchSize()
      */
@@ -430,7 +430,7 @@ public class ResultSet implements java.sql.ResultSet {
     /* (non-Javadoc)
      * @see java.sql.ResultSet#getArray(int)
      */
-    public Array getArray(int i) throws SQLException {
+    public Array getArray(int columnIndex) throws SQLException {
         // TODO Auto-generated method stub
         return null;
     }
@@ -438,9 +438,8 @@ public class ResultSet implements java.sql.ResultSet {
     /* (non-Javadoc)
      * @see java.sql.ResultSet#getArray(java.lang.String)
      */
-    public Array getArray(String colName) throws SQLException {
-        // TODO Auto-generated method stub
-        return null;
+    public Array getArray(String columnName) throws SQLException {
+        return getArray(findColumn(columnName));
     }
 
     /* (non-Javadoc)
@@ -470,8 +469,7 @@ public class ResultSet implements java.sql.ResultSet {
      * @see java.sql.ResultSet#getBigDecimal(java.lang.String)
      */
     public BigDecimal getBigDecimal(String columnName) throws SQLException {
-        // TODO Auto-generated method stub
-        return null;
+        return getBigDecimal(findColumn(columnName));
     }
 
     /* (non-Javadoc)
@@ -486,7 +484,7 @@ public class ResultSet implements java.sql.ResultSet {
      * @see java.sql.ResultSet#getBigDecimal(java.lang.String, int)
      */
     public BigDecimal getBigDecimal(String columnName, int scale) throws SQLException {
-        return getBigDecimal(findColumn(columnName));
+        return getBigDecimal(findColumn(columnName), scale);
     }
 
     /* (non-Javadoc)
@@ -496,6 +494,14 @@ public class ResultSet implements java.sql.ResultSet {
         // TODO Auto-generated method stub
         return null;
     }
+
+    /* (non-Javadoc)
+     * @see java.sql.ResultSet#getBinaryStream(java.lang.String)
+     */
+    public InputStream getBinaryStream(String columnName) throws SQLException {
+        return getBinaryStream(findColumn(columnName));
+    }
+
 
     /* (non-Javadoc)
      * @see java.sql.ResultSet#getBlob(int)
@@ -508,16 +514,8 @@ public class ResultSet implements java.sql.ResultSet {
      * @see java.sql.ResultSet#getBlob(java.lang.String)
      */
 
-    public Blob getBlob(String colName) throws SQLException {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    /* (non-Javadoc)
-     * @see java.sql.ResultSet#getBinaryStream(java.lang.String)
-     */
-    public InputStream getBinaryStream(String columnName) throws SQLException {
-        return getBinaryStream(findColumn(columnName));
+    public Blob getBlob(String columnName) throws SQLException {
+        return getBlob(findColumn(columnName));
     }
 
     /* (non-Javadoc)
@@ -536,17 +534,18 @@ public class ResultSet implements java.sql.ResultSet {
     }
 
     /* (non-Javadoc)
+     * @see java.sql.ResultSet#getByte(int)
+     */
+    public byte getByte(int columnIndex) throws SQLException {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    /* (non-Javadoc)
      * @see java.sql.ResultSet#getByte(java.lang.String)
      */
     public byte getByte(String columnName) throws SQLException {
         return getByte(findColumn(columnName));
-    }
-
-    /* (non-Javadoc)
-     * @see java.sql.ResultSet#getBytes(java.lang.String)
-     */
-    public byte[] getBytes(String columnName) throws SQLException {
-        return getBytes(findColumn(columnName));
     }
 
     /* (non-Javadoc)
@@ -558,35 +557,10 @@ public class ResultSet implements java.sql.ResultSet {
     }
 
     /* (non-Javadoc)
-     * @see java.sql.ResultSet#getByte(int)
+     * @see java.sql.ResultSet#getBytes(java.lang.String)
      */
-    public byte getByte(int columnIndex) throws SQLException {
-        // TODO Auto-generated method stub
-        return 0;
-    }
-
-    /* (non-Javadoc)
-     * @see java.sql.ResultSet#getCharacterStream(java.lang.String)
-     */
-    public Reader getCharacterStream(String columnName) throws SQLException {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    /* (non-Javadoc)
-     * @see java.sql.ResultSet#getClob(int)
-     */
-    public Clob getClob(int i) throws SQLException {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    /* (non-Javadoc)
-     * @see java.sql.ResultSet#getClob(java.lang.String)
-     */
-    public Clob getClob(String colName) throws SQLException {
-        // TODO Auto-generated method stub
-        return null;
+    public byte[] getBytes(String columnName) throws SQLException {
+        return getBytes(findColumn(columnName));
     }
 
     /* (non-Javadoc)
@@ -595,6 +569,28 @@ public class ResultSet implements java.sql.ResultSet {
     public Reader getCharacterStream(int columnIndex) throws SQLException {
         // TODO Auto-generated method stub
         return null;
+    }
+
+    /* (non-Javadoc)
+     * @see java.sql.ResultSet#getCharacterStream(java.lang.String)
+     */
+    public Reader getCharacterStream(String columnName) throws SQLException {
+        return getCharacterStream(findColumn(columnName));
+    }
+
+    /* (non-Javadoc)
+     * @see java.sql.ResultSet#getClob(int)
+     */
+    public Clob getClob(int columnIndex) throws SQLException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    /* (non-Javadoc)
+     * @see java.sql.ResultSet#getClob(java.lang.String)
+     */
+    public Clob getClob(String columnName) throws SQLException {
+        return getClob(findColumn(columnName));
     }
 
     /* (non-Javadoc) g
@@ -624,8 +620,7 @@ public class ResultSet implements java.sql.ResultSet {
      * @see java.sql.ResultSet#getDate(java.lang.String, java.util.Calendar)
      */
     public Date getDate(String columnName, Calendar cal) throws SQLException {
-        // TODO Auto-generated method stub
-        return null;
+        return getDate(findColumn(columnName), cal);
     }
 
     /* (non-Javadoc)
@@ -666,8 +661,6 @@ public class ResultSet implements java.sql.ResultSet {
         return 0;
     }
 
-
-
     /* (non-Javadoc)
      * @see java.sql.ResultSet#getInt(java.lang.String)
      */
@@ -691,13 +684,6 @@ public class ResultSet implements java.sql.ResultSet {
     }
 
     /* (non-Javadoc)
-     * @see java.sql.ResultSet#getObject(java.lang.String)
-     */
-    public Object getObject(String columnName) throws SQLException {
-        return getObject(findColumn(columnName));
-    }
-
-    /* (non-Javadoc)
      * @see java.sql.ResultSet#getObject(int)
      */
     public Object getObject(int columnIndex) throws SQLException {
@@ -706,33 +692,39 @@ public class ResultSet implements java.sql.ResultSet {
     }
 
     /* (non-Javadoc)
-     * @see java.sql.ResultSet#getObject(java.lang.String, java.util.Map)
+     * @see java.sql.ResultSet#getObject(java.lang.String)
      */
-    public Object getObject(String colName, Map map) throws SQLException {
-        // TODO Auto-generated method stub
-        return null;
+    public Object getObject(String columnName) throws SQLException {
+        return getObject(findColumn(columnName));
     }
 
     /* (non-Javadoc)
      * @see java.sql.ResultSet#getObject(int, java.util.Map)
      */
-    public Object getObject(int i, Map map) throws SQLException {
+    public Object getObject(int columnIndex, Map map) throws SQLException {
         // TODO Auto-generated method stub
         return null;
     }
 
     /* (non-Javadoc)
+     * @see java.sql.ResultSet#getObject(java.lang.String, java.util.Map)
+     */
+    public Object getObject(String columnName, Map map) throws SQLException {
+        return getObject(findColumn(columnName), map);
+    }
+
+    /* (non-Javadoc)
      * @see java.sql.ResultSet#getRef(int)
      */
-    public Ref getRef(int i) throws SQLException {
+    public Ref getRef(int columnIndex) throws SQLException {
         // TODO Auto-generated method stub
         return null;
     }
-    
+
     /* (non-Javadoc)
      * @see java.sql.ResultSet#getRef(java.lang.String)
      */
-    public Ref getRef(String colName) throws SQLException {
+    public Ref getRef(String columnName) throws SQLException {
         // TODO Auto-generated method stub
         return null;
     }
@@ -744,7 +736,7 @@ public class ResultSet implements java.sql.ResultSet {
         // TODO Auto-generated method stub
         return 0;
     }
-    
+
     /* (non-Javadoc)
      * @see java.sql.ResultSet#getShort(java.lang.String)
      */
@@ -789,19 +781,18 @@ public class ResultSet implements java.sql.ResultSet {
     }
 
     /* (non-Javadoc)
-     * @see java.sql.ResultSet#getTime(java.lang.String, java.util.Calendar)
-     */
-    public Time getTime(String columnName, Calendar cal) throws SQLException {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    /* (non-Javadoc)
      * @see java.sql.ResultSet#getTime(int, java.util.Calendar)
      */
     public Time getTime(int columnIndex, Calendar cal) throws SQLException {
         // TODO Auto-generated method stub
         return null;
+    }
+
+    /* (non-Javadoc)
+     * @see java.sql.ResultSet#getTime(java.lang.String, java.util.Calendar)
+     */
+    public Time getTime(String columnName, Calendar cal) throws SQLException {
+        return getTime(findColumn(columnName), cal);
     }
 
     /* (non-Javadoc)
@@ -831,8 +822,7 @@ public class ResultSet implements java.sql.ResultSet {
      * @see java.sql.ResultSet#getTimestamp(java.lang.String, java.util.Calendar)
      */
     public Timestamp getTimestamp(String columnName, Calendar cal) throws SQLException {
-        // TODO Auto-generated method stub
-        return null;
+        return getTimestamp(findColumn(columnName), cal);
     }
 
     /* (non-Javadoc)
@@ -862,8 +852,7 @@ public class ResultSet implements java.sql.ResultSet {
      * @see java.sql.ResultSet#getURL(java.lang.String)
      */
     public URL getURL(String columnName) throws SQLException {
-        // TODO Auto-generated method stub
-        return null;
+        return getURL(findColumn(columnName));
     }
 
     /* (non-Javadoc)
@@ -924,369 +913,322 @@ public class ResultSet implements java.sql.ResultSet {
      * @see java.sql.ResultSet#updateArray(int, java.sql.Array)
      */
     public void updateArray(int columnIndex, Array x) throws SQLException {
-    // TODO Auto-generated method stub
-
+        // TODO Auto-generated method stub
     }
 
     /* (non-Javadoc)
      * @see java.sql.ResultSet#updateArray(java.lang.String, java.sql.Array)
      */
     public void updateArray(String columnName, Array x) throws SQLException {
-    // TODO Auto-generated method stub
-
+        updateArray(findColumn(columnName), x);
     }
 
     /* (non-Javadoc)
      * @see java.sql.ResultSet#updateAsciiStream(int, java.io.InputStream, int)
      */
     public void updateAsciiStream(int columnIndex, InputStream x, int length) throws SQLException {
-    // TODO Auto-generated method stub
-    
+        // TODO Auto-generated method stub
     }
 
     /* (non-Javadoc)
      * @see java.sql.ResultSet#updateAsciiStream(java.lang.String, java.io.InputStream, int)
      */
     public void updateAsciiStream(String columnName, InputStream x, int length) throws SQLException {
-    // TODO Auto-generated method stub
-    
-    }
-
-    /* (non-Javadoc)
-     * @see java.sql.ResultSet#updateBinaryStream(java.lang.String, java.io.InputStream, int)
-     */
-    public void updateBinaryStream(String columnName, InputStream x, int length) throws SQLException {
-    // TODO Auto-generated method stub
-    
-    }
-
-
-    /* (non-Javadoc)
-     * @see java.sql.ResultSet#updateBigDecimal(int, java.math.BigDecimal)
-     */
-    public void updateBigDecimal(int columnIndex, BigDecimal x) throws SQLException {
-    // TODO Auto-generated method stub
-    
-    }
-
-    /* (non-Javadoc)
-     * @see java.sql.ResultSet#updateBigDecimal(java.lang.String, java.math.BigDecimal)
-     */
-    public void updateBigDecimal(String columnName, BigDecimal x) throws SQLException {
-    // TODO Auto-generated method stub
-    
+        updateAsciiStream(findColumn(columnName), x, length);
     }
 
     /* (non-Javadoc)
      * @see java.sql.ResultSet#updateBinaryStream(int, java.io.InputStream, int)
      */
     public void updateBinaryStream(int columnIndex, InputStream x, int length) throws SQLException {
-    // TODO Auto-generated method stub
-    
+        // TODO Auto-generated method stub
+    }
+
+    /* (non-Javadoc)
+     * @see java.sql.ResultSet#updateBinaryStream(java.lang.String, java.io.InputStream, int)
+     */
+    public void updateBinaryStream(String columnName, InputStream x, int length) throws SQLException {
+        updateBinaryStream(findColumn(columnName), x, length);
+    }
+
+    /* (non-Javadoc)
+     * @see java.sql.ResultSet#updateBigDecimal(int, java.math.BigDecimal)
+     */
+    public void updateBigDecimal(int columnIndex, BigDecimal x) throws SQLException {
+        // TODO Auto-generated method stub
+    }
+
+    /* (non-Javadoc)
+     * @see java.sql.ResultSet#updateBigDecimal(java.lang.String, java.math.BigDecimal)
+     */
+    public void updateBigDecimal(String columnName, BigDecimal x) throws SQLException {
+        updateBigDecimal(findColumn(columnName), x);
     }
 
     /* (non-Javadoc)
      * @see java.sql.ResultSet#updateBlob(int, java.sql.Blob)
      */
     public void updateBlob(int columnIndex, Blob x) throws SQLException {
-    // TODO Auto-generated method stub
-
+        // TODO Auto-generated method stub
     }
 
     /* (non-Javadoc)
      * @see java.sql.ResultSet#updateBlob(java.lang.String, java.sql.Blob)
      */
     public void updateBlob(String columnName, Blob x) throws SQLException {
-    // TODO Auto-generated method stub
-
+        updateBlob(findColumn(columnName), x);
     }
 
     /* (non-Javadoc)
      * @see java.sql.ResultSet#updateBoolean(int, boolean)
      */
     public void updateBoolean(int columnIndex, boolean x) throws SQLException {
-    // TODO Auto-generated method stub
-
+        // TODO Auto-generated method stub
     }
 
     /* (non-Javadoc)
      * @see java.sql.ResultSet#updateBoolean(java.lang.String, boolean)
      */
     public void updateBoolean(String columnName, boolean x) throws SQLException {
-    // TODO Auto-generated method stub
-    
+        updateBoolean(findColumn(columnName), x);
     }
 
     /* (non-Javadoc)
      * @see java.sql.ResultSet#updateByte(int, byte)
      */
     public void updateByte(int columnIndex, byte x) throws SQLException {
-    // TODO Auto-generated method stub
-
+        // TODO Auto-generated method stub
     }
 
     /* (non-Javadoc)
      * @see java.sql.ResultSet#updateByte(java.lang.String, byte)
      */
     public void updateByte(String columnName, byte x) throws SQLException {
-    // TODO Auto-generated method stub
-    
+        updateByte(findColumn(columnName), x);
     }
 
     /* (non-Javadoc)
      * @see java.sql.ResultSet#updateBytes(int, byte[])
      */
     public void updateBytes(int columnIndex, byte[] x) throws SQLException {
-    // TODO Auto-generated method stub
-    
+        // TODO Auto-generated method stub
     }
 
     /* (non-Javadoc)
      * @see java.sql.ResultSet#updateBytes(java.lang.String, byte[])
      */
     public void updateBytes(String columnName, byte[] x) throws SQLException {
-    // TODO Auto-generated method stub
-    
+        updateBytes(findColumn(columnName), x);
     }
 
     /* (non-Javadoc)
      * @see java.sql.ResultSet#updateCharacterStream(int, java.io.Reader, int)
      */
     public void updateCharacterStream(int columnIndex, Reader x, int length) throws SQLException {
-    // TODO Auto-generated method stub
-    
+        // TODO Auto-generated method stub
     }
 
     /* (non-Javadoc)
      * @see java.sql.ResultSet#updateCharacterStream(java.lang.String, java.io.Reader, int)
      */
-    public void updateCharacterStream(String columnName, Reader reader, int length) throws SQLException {
-    // TODO Auto-generated method stub
-    
+    public void updateCharacterStream(String columnName, Reader x, int length) throws SQLException {
+        updateCharacterStream(findColumn(columnName), x, length);
     }
 
     /* (non-Javadoc)
      * @see java.sql.ResultSet#updateClob(int, java.sql.Clob)
      */
     public void updateClob(int columnIndex, Clob x) throws SQLException {
-    // TODO Auto-generated method stub
-
+        // TODO Auto-generated method stub
     }
 
     /* (non-Javadoc)
      * @see java.sql.ResultSet#updateClob(java.lang.String, java.sql.Clob)
      */
     public void updateClob(String columnName, Clob x) throws SQLException {
-    // TODO Auto-generated method stub
-
+        updateClob(findColumn(columnName), x);
     }
 
     /* (non-Javadoc)
      * @see java.sql.ResultSet#updateDate(int, java.sql.Date)
      */
     public void updateDate(int columnIndex, Date x) throws SQLException {
-    // TODO Auto-generated method stub
-    
+        // TODO Auto-generated method stub
     }
 
     /* (non-Javadoc)
      * @see java.sql.ResultSet#updateDate(java.lang.String, java.sql.Date)
      */
     public void updateDate(String columnName, Date x) throws SQLException {
-    // TODO Auto-generated method stub
-    
+        updateDate(findColumn(columnName), x);
     }
 
     /* (non-Javadoc)
      * @see java.sql.ResultSet#updateDouble(int, double)
      */
     public void updateDouble(int columnIndex, double x) throws SQLException {
-    // TODO Auto-generated method stub
-    
+        // TODO Auto-generated method stub
     }
 
     /* (non-Javadoc)
      * @see java.sql.ResultSet#updateDouble(java.lang.String, double)
      */
     public void updateDouble(String columnName, double x) throws SQLException {
-    // TODO Auto-generated method stub
-    
+        updateDouble(findColumn(columnName), x);
     }
 
     /* (non-Javadoc)
      * @see java.sql.ResultSet#updateFloat(int, float)
      */
     public void updateFloat(int columnIndex, float x) throws SQLException {
-    // TODO Auto-generated method stub
-    
+        // TODO Auto-generated method stub
     }
 
     /* (non-Javadoc)
      * @see java.sql.ResultSet#updateFloat(java.lang.String, float)
      */
     public void updateFloat(String columnName, float x) throws SQLException {
-    // TODO Auto-generated method stub
-    
+        updateFloat(findColumn(columnName), x);
     }
 
     /* (non-Javadoc)
      * @see java.sql.ResultSet#updateInt(int, int)
      */
     public void updateInt(int columnIndex, int x) throws SQLException {
-    // TODO Auto-generated method stub
-
+        // TODO Auto-generated method stub
     }
 
     /* (non-Javadoc)
      * @see java.sql.ResultSet#updateInt(java.lang.String, int)
      */
     public void updateInt(String columnName, int x) throws SQLException {
-    // TODO Auto-generated method stub
-    
+        updateInt(findColumn(columnName), x);
     }
 
     /* (non-Javadoc)
      * @see java.sql.ResultSet#updateLong(int, long)
      */
     public void updateLong(int columnIndex, long x) throws SQLException {
-    // TODO Auto-generated method stub
-
+        // TODO Auto-generated method stub
     }
 
     /* (non-Javadoc)
      * @see java.sql.ResultSet#updateLong(java.lang.String, long)
      */
     public void updateLong(String columnName, long x) throws SQLException {
-    // TODO Auto-generated method stub
-    
+        updateLong(findColumn(columnName), x);
     }
 
     /* (non-Javadoc)
      * @see java.sql.ResultSet#updateNull(int)
      */
     public void updateNull(int columnIndex) throws SQLException {
-    // TODO Auto-generated method stub
-    
+        // TODO Auto-generated method stub
     }
 
     /* (non-Javadoc)
      * @see java.sql.ResultSet#updateNull(java.lang.String)
      */
     public void updateNull(String columnName) throws SQLException {
-    // TODO Auto-generated method stub
-    
-    }
-
-    /* (non-Javadoc)
-     * @see java.sql.ResultSet#updateObject(int, java.lang.Object, int)
-     */
-    public void updateObject(int columnIndex, Object x, int scale) throws SQLException {
-    // TODO Auto-generated method stub
-    
+        updateNull(findColumn(columnName));
     }
 
     /* (non-Javadoc)
      * @see java.sql.ResultSet#updateObject(int, java.lang.Object)
      */
     public void updateObject(int columnIndex, Object x) throws SQLException {
-    // TODO Auto-generated method stub
-
+        // TODO Auto-generated method stub
     }
 
     /* (non-Javadoc)
      * @see java.sql.ResultSet#updateObject(java.lang.String, java.lang.Object)
      */
     public void updateObject(String columnName, Object x) throws SQLException {
-    // TODO Auto-generated method stub
-    
+        updateObject(findColumn(columnName), x);
+    }
+
+    /* (non-Javadoc)
+     * @see java.sql.ResultSet#updateObject(int, java.lang.Object, int)
+     */
+    public void updateObject(int columnIndex, Object x, int scale) throws SQLException {
+        // TODO Auto-generated method stub
     }
 
     /* (non-Javadoc)
      * @see java.sql.ResultSet#updateObject(java.lang.String, java.lang.Object, int)
      */
     public void updateObject(String columnName, Object x, int scale) throws SQLException {
-    // TODO Auto-generated method stub
-    
+        updateObject(findColumn(columnName), x, scale);
     }
 
     /* (non-Javadoc)
      * @see java.sql.ResultSet#updateRef(int, java.sql.Ref)
      */
     public void updateRef(int columnIndex, Ref x) throws SQLException {
-    // TODO Auto-generated method stub
-
+        // TODO Auto-generated method stub
     }
 
     /* (non-Javadoc)
      * @see java.sql.ResultSet#updateRef(java.lang.String, java.sql.Ref)
      */
     public void updateRef(String columnName, Ref x) throws SQLException {
-    // TODO Auto-generated method stub
-
+        updateRef(findColumn(columnName), x);
     }
 
     /* (non-Javadoc)
      * @see java.sql.ResultSet#updateShort(int, short)
      */
     public void updateShort(int columnIndex, short x) throws SQLException {
-    // TODO Auto-generated method stub
-    
+        // TODO Auto-generated method stub
     }
 
     /* (non-Javadoc)
      * @see java.sql.ResultSet#updateShort(java.lang.String, short)
      */
     public void updateShort(String columnName, short x) throws SQLException {
-    // TODO Auto-generated method stub
-    
+        updateShort(findColumn(columnName), x);
     }
 
     /* (non-Javadoc)
      * @see java.sql.ResultSet#updateString(int, java.lang.String)
      */
     public void updateString(int columnIndex, String x) throws SQLException {
-    // TODO Auto-generated method stub
-    
+        // TODO Auto-generated method stub
     }
 
     /* (non-Javadoc)
      * @see java.sql.ResultSet#updateString(java.lang.String, java.lang.String)
      */
     public void updateString(String columnName, String x) throws SQLException {
-    // TODO Auto-generated method stub
-
+        updateString(findColumn(columnName), x);
     }
 
     /* (non-Javadoc)
      * @see java.sql.ResultSet#updateTime(int, java.sql.Time)
      */
     public void updateTime(int columnIndex, Time x) throws SQLException {
-    // TODO Auto-generated method stub
-    
+        // TODO Auto-generated method stub
     }
 
     /* (non-Javadoc)
      * @see java.sql.ResultSet#updateTime(java.lang.String, java.sql.Time)
      */
     public void updateTime(String columnName, Time x) throws SQLException {
-    // TODO Auto-generated method stub
-    
+        updateTime(findColumn(columnName), x);
     }
 
     /* (non-Javadoc)
      * @see java.sql.ResultSet#updateTimestamp(int, java.sql.Timestamp)
      */
     public void updateTimestamp(int columnIndex, Timestamp x) throws SQLException {
-    // TODO Auto-generated method stub
-    
+        // TODO Auto-generated method stub
     }
 
     /* (non-Javadoc)
      * @see java.sql.ResultSet#updateTimestamp(java.lang.String, java.sql.Timestamp)
      */
     public void updateTimestamp(String columnName, Timestamp x) throws SQLException {
-    // TODO Auto-generated method stub
-
+        updateTimestamp(findColumn(columnName), x);
     }
 
     /* (non-Javadoc)
@@ -1351,21 +1293,21 @@ public class ResultSet implements java.sql.ResultSet {
     public java.sql.Statement getStatement() throws SQLException {
         return (java.sql.Statement)stmt;
     }
-    
-    
+
+
     /* Extra Methods */
     private int getStatementPointer() {
         return statementPointer;
     }
-    
+
     private void setStatementPointer(int p) {
         statementPointer = p;
     }
-    
-    /** 
+
+    /**
      * Inserts a row into the backend representation of the ResultSet.
-     * 
-     * @param index integer representing the index of the row.  This is 
+     *
+     * @param index integer representing the index of the row.  This is
      *        the current page, not the entire ResultSet
      * @throws SQLException if the row is not in the current page.
      */
@@ -1379,11 +1321,11 @@ public class ResultSet implements java.sql.ResultSet {
         /* XXX: I'm not really all that sure I want the currentRow set here */
         currentRow = index;
     }
-    
+
     /**
      * Scroll the ResultSet.  If the ResultSet is unidirectional, the whole
      * ResultSet is renewed.  If it is bidirectional, the first half of the
-     * ResultSet is filled with the last half of the previous values. 
+     * ResultSet is filled with the last half of the previous values.
      */
     private void scrollResultSet(int where) {
         /* Scroll a full page size for ResultSet.TYPE_FORWARD_ONLY */
@@ -1405,15 +1347,15 @@ public class ResultSet implements java.sql.ResultSet {
         pageMax = end;
         populateRows(start, end);
     }
-    
+
 
     /* Native Methods. */
-    /* This is possibly somewhat misnamed.  Each ResultSet is associated with 
+    /* This is possibly somewhat misnamed.  Each ResultSet is associated with
      * SQLite3 statement object.  When the result set is closed, the statement
      * object should be closed on the native side.
      */
     private native void proxyCloseStatement() throws SQLException;
-    
+
     /* Fill the the column col of the current row with a String value */
     private void fillColumnWithString(int col, String value) {
         ((Object[])rows[currentRow])[col] = value;
@@ -1434,12 +1376,12 @@ public class ResultSet implements java.sql.ResultSet {
     private void fillColumnWithBlob(int col, byte[] value) {
         ((Object[])rows[currentRow])[col] = value;
     }
-    
+
     /* Fill the the column col of the current row with the NULL value */
     private void fillColumnWithNull(int col) {
         ((Object[])rows[currentRow])[col] = null;
     }
-    
+
     /* Native Methods */
     private native void populateRows(int startRow, int finishRow);
 }
