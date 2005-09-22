@@ -511,7 +511,7 @@ public class ResultSet implements java.sql.ResultSet {
     /* (non-Javadoc)
      * @see java.sql.ResultSet#getBlob(int)
      */
-    public Blob getBlob(int i) throws SQLException {
+    public Blob getBlob(int columnIndex) throws SQLException {
         throwBadCellException(columnIndex);
         // TODO Auto-generated method stub
         return null;
