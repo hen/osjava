@@ -32,6 +32,8 @@
 package org.osjava.jms;
 
 import java.util.Collections;
+import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -103,6 +105,21 @@ public class MemoryQueue implements Queue {
         }
 
     }
+    
+    Enumeration getEnumeration () {
+        return new Enumeration () {
+            Iterator i = queueList.iterator();
+
+          public boolean hasMoreElements() {
+                return i.hasNext();
+            }
+
+            public Object nextElement() {
+                return i.next();
+            }
+        
+        };
+   }
 
 }
 
