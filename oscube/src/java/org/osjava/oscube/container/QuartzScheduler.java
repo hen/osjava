@@ -101,19 +101,19 @@ public class QuartzScheduler implements Scheduler {
 
                 Trigger trigger = null;
                 if("cron".equalsIgnoreCase(schedule)) {
-                    String cronTxt = cfg.getString("cron");
+                    String cronTxt = cfg.getString("quartz.cron");
                     logger.debug("Creating cron trigger: "+cronTxt+" for "+ctxt);
                     CronTrigger cron = new CronTrigger(ctxt+"crontrigger", jobgroup, jobName, jobgroup, cronTxt);
                     trigger = cron;
                 } else {
                     // TODO: ie) "simple" in this case. need to make this explicit
-//                    Date start = cfg.getDate("start");
-//                    Date end = cfg.getDate("end");
-                    int repeat = cfg.getInt("repeat");
+//                    Date start = cfg.getDate("simple.start");
+//                    Date end = cfg.getDate("simple.end");
+                    int repeat = cfg.getInt("simple.repeat");
                     if(repeat == -1) {
                         repeat = SimpleTrigger.REPEAT_INDEFINITELY;
                     }
-                    int interval = cfg.getInt("interval");
+                    int interval = cfg.getInt("simple.interval");
                     logger.debug("Creating simple trigger: "+interval+":"+repeat+" for "+ctxt);
                     SimpleTrigger simp = new SimpleTrigger(ctxt+"simpletrigger", jobgroup, repeat, interval);
                     trigger = simp;
