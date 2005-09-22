@@ -545,8 +545,21 @@ public class ResultSet implements java.sql.ResultSet {
      */
     public byte getByte(int columnIndex) throws SQLException {
         throwBadCellException(columnIndex);
-        // TODO Auto-generated method stub
-        return 0;
+        Object raw = ((Object[])rows[currentRow])[columnIndex - 1];
+        if(raw == null) {
+            return 0;
+        }
+        if(raw instanceof Number) {
+            return ((Number)raw).byteValue();
+        }
+        if(raw instanceof String) {
+            try {
+                return Byte.parseByte((String)raw);
+            } catch (NumberFormatException e) {
+                throw new SQLiteException(e);
+            }
+        }
+        throw new SQLException("Unable to determine source data type.");
     }
 
     /* (non-Javadoc)
@@ -641,8 +654,21 @@ public class ResultSet implements java.sql.ResultSet {
      */
     public double getDouble(int columnIndex) throws SQLException {
         throwBadCellException(columnIndex);
-        // TODO Auto-generated method stub
-        return 0;
+        Object raw = ((Object[])rows[currentRow])[columnIndex - 1];
+        if(raw == null) {
+            return 0;
+        }
+        if(raw instanceof Number) {
+            return ((Number)raw).doubleValue();
+        }
+        if(raw instanceof String) {
+            try {
+                return Double.parseDouble((String)raw);
+            } catch (NumberFormatException e) {
+                throw new SQLiteException(e);
+            }
+        }
+        throw new SQLException("Unable to determine source data type.");
     }
 
     /* (non-Javadoc)
@@ -657,8 +683,21 @@ public class ResultSet implements java.sql.ResultSet {
      */
     public float getFloat(int columnIndex) throws SQLException {
         throwBadCellException(columnIndex);
-        // TODO Auto-generated method stub
-        return 0;
+        Object raw = ((Object[])rows[currentRow])[columnIndex - 1];
+        if(raw == null) {
+            return 0;
+        }
+        if(raw instanceof Number) {
+            return ((Number)raw).floatValue();
+        }
+        if(raw instanceof String) {
+            try {
+                return Float.parseFloat((String)raw);
+            } catch (NumberFormatException e) {
+                throw new SQLiteException(e);
+            }
+        }
+        throw new SQLException("Unable to determine source data type.");
     }
 
     /* (non-Javadoc)
@@ -702,8 +741,21 @@ public class ResultSet implements java.sql.ResultSet {
      */
     public long getLong(int columnIndex) throws SQLException {
         throwBadCellException(columnIndex);
-        // TODO Auto-generated method stub
-        return 0;
+        Object raw = ((Object[])rows[currentRow])[columnIndex - 1];
+        if(raw == null) {
+            return 0;
+        }
+        if(raw instanceof Number) {
+            return ((Number)raw).longValue();
+        }
+        if(raw instanceof String) {
+            try {
+                return Long.parseLong((String)raw);
+            } catch (NumberFormatException e) {
+                throw new SQLiteException(e);
+            }
+        }
+        throw new SQLException("Unable to determine source data type.");
     }
 
     /* (non-Javadoc)
@@ -766,8 +818,21 @@ public class ResultSet implements java.sql.ResultSet {
      */
     public short getShort(int columnIndex) throws SQLException {
         throwBadCellException(columnIndex);
-        // TODO Auto-generated method stub
-        return 0;
+        Object raw = ((Object[])rows[currentRow])[columnIndex - 1];
+        if(raw == null) {
+            return 0;
+        }
+        if(raw instanceof Number) {
+            return ((Number)raw).shortValue();
+        }
+        if(raw instanceof String) {
+            try {
+                return Short.parseShort((String)raw);
+            } catch (NumberFormatException e) {
+                throw new SQLiteException(e);
+            }
+        }
+        throw new SQLException("Unable to determine source data type.");
     }
 
     /* (non-Javadoc)
@@ -1431,8 +1496,8 @@ public class ResultSet implements java.sql.ResultSet {
     }
 
     /* Fill the the column col of the current row with a Integers value */
-    private void fillColumnWithInt(int col, int value) {
-        ((Object[])rows[currentRow])[col] = new Integer(value);
+    private void fillColumnWithNumber(int col, double value) {
+        ((Object[])rows[currentRow])[col] = new Double(value);
     }
 
     /* Fill the the column col of the current row with a Float value */
