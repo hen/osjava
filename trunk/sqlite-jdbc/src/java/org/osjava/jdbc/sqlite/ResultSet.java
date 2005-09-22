@@ -684,10 +684,6 @@ public class ResultSet implements java.sql.ResultSet {
             try {
                 return Integer.parseInt((String)raw);
             } catch (NumberFormatException e) {
-                /* FIXME: I don't like this.  SQLException doesn't have a
-                 *        constructor that takes a Throwable argument like
-                 *        most exceptions
-                 */
                 throw new SQLiteException(e);
             }
         }
