@@ -90,9 +90,17 @@ public class TestResultSet extends TestCase {
         /* Commit before query */
         java.sql.ResultSet result = stmt.executeQuery("SELECT * FROM foo;");
         result.beforeFirst();
+        boolean alreadyPassed = false;
         while(result.next()) {
+            if(alreadyPassed) {
+                fail("Too many rows in ResultSet");
+            }
+            alreadyPassed = true;
             String foo = result.getString(1);
             assertEquals("Test", foo);
+        }
+        if(!alreadyPassed) {
+            fail();
         }
     }
 
@@ -108,13 +116,25 @@ public class TestResultSet extends TestCase {
         /* Commit before query */
         java.sql.ResultSet result = stmt.executeQuery("SELECT * FROM foo;");
         result.beforeFirst();
+        boolean alreadyPassed = false;
         while(result.next()) {
+            if(alreadyPassed) {
+                fail("Too many rows in ResultSet");
+            }
+            alreadyPassed = true;
             String foo = result.getString("TestCol");
             assertEquals("Test", foo);
         }
-    }
-    
-    
+        if(!alreadyPassed) {
+            fail();
+        }
+   }
+       
+    /**
+     * Simple test which puts an integer into a column and retrieves it from
+     * the ResultSet.  The column number is used instead of the column name.
+     * @throws Exception
+     */
     public void testGetInt1() throws Exception {
         java.sql.Statement stmt = con.createStatement();
         stmt.executeUpdate("CREATE TABLE foo (TestCol INTEGER);");
@@ -124,9 +144,109 @@ public class TestResultSet extends TestCase {
         /* Commit before query */
         java.sql.ResultSet result = stmt.executeQuery("SELECT * FROM foo;");
         result.beforeFirst();
+        boolean alreadyPassed = false;
         while(result.next()) {
+            if(alreadyPassed) {
+                fail("Too many rows in ResultSet");
+            }
+            alreadyPassed = true;
             int foo = result.getInt(1);
             assertEquals(1234, foo);
+        }
+        if(!alreadyPassed) {
+            fail();
+        }
+    }
+
+    /**
+     * Same test as testGetInt1, except that it uses the column name instead
+     */
+    public void testGetInt2() throws Exception {
+        java.sql.Statement stmt = con.createStatement();
+        stmt.executeUpdate("CREATE TABLE foo (TestCol INTEGER);");
+        int count = stmt.executeUpdate("INSERT INTO foo (TestCol) VALUES (1234)");
+        /* Make sure that the row was actually added */
+        assertEquals(count, 1);
+        /* Commit before query */
+        java.sql.ResultSet result = stmt.executeQuery("SELECT * FROM foo;");
+        result.beforeFirst();
+        boolean alreadyPassed = false;
+        while(result.next()) {
+            if(alreadyPassed) {
+                fail("Too many rows in ResultSet");
+            }
+            alreadyPassed = true;
+            int foo = result.getInt("TestCol");
+            assertEquals(1234, foo);
+        }
+        if(!alreadyPassed) {
+            fail();
+        }
+   }
+
+    /** 
+     * Test to put the data into the table as a string, even though it is a number
+     * and try to convert it to an int on the way out.
+     * 
+     * @throws Exception
+     */
+    public void testGetInt3() throws Exception {
+        /* XXX: Confirm with the spec whether or not this behavior is allowed */
+        java.sql.Statement stmt = con.createStatement();
+        stmt.executeUpdate("CREATE TABLE foo (TestCol VARCHAR(10));");
+        int count = stmt.executeUpdate("INSERT INTO foo (TestCol) VALUES (\"1234\");");
+        /* Make sure that the row was actually added */
+        assertEquals(count, 1);
+        /* Commit before query */
+        java.sql.ResultSet result = stmt.executeQuery("SELECT * FROM foo;");
+        result.beforeFirst();
+        boolean alreadyPassed = false;
+        while(result.next()) {
+            if(alreadyPassed) {
+                fail("Too many rows in ResultSet");
+            }
+            alreadyPassed = true;
+            int foo = result.getInt(1);
+            assertEquals(1234, foo);
+        }
+        if(!alreadyPassed) {
+            fail();
+        }
+    }
+    
+    /** 
+     * Test to put the data into the table as a string.  The data is not able 
+     * to be converted to a string, so we are expecting an exception to be 
+     * thrown here.
+     * 
+     * @throws Exception
+     */
+    public void testGetInt4() throws Exception {
+        /* XXX: Confirm with the spec whether or not this behavior is allowed */
+        java.sql.Statement stmt = con.createStatement();
+        stmt.executeUpdate("CREATE TABLE foo (TestCol VARCHAR(10));");
+        int count = stmt.executeUpdate("INSERT INTO foo (TestCol) VALUES (\"Test\");");
+        /* Make sure that the row was actually added */
+        assertEquals(count, 1);
+        /* Commit before query */
+        java.sql.ResultSet result = stmt.executeQuery("SELECT * FROM foo;");
+        result.beforeFirst();
+        boolean alreadyPassed = false;
+        while(result.next()) {
+            if(alreadyPassed) {
+                fail("Too many rows in ResultSet");
+            }
+            alreadyPassed = true;
+            try {
+                int foo = result.getInt(1);
+            } catch (SQLiteException e) {
+                if(e.getCause() instanceof NumberFormatException) {
+                    continue;
+                }
+            }
+        }
+        if(!alreadyPassed) {
+            fail();
         }
     }
 }
