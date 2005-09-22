@@ -37,6 +37,8 @@ import javax.jms.MessageConsumer;
 import javax.jms.MessageListener;
 import javax.jms.Destination;
 
+import com.sun.rsasign.r;
+
 public class MemoryMessageConsumer implements MessageConsumer {
 
     private MessageListener listener;
@@ -82,16 +84,37 @@ public class MemoryMessageConsumer implements MessageConsumer {
 
     // TODO: Implement timeout?
     public Message receive(long timeout) throws JMSException {
-        return receive();
+        TimedReceiver receiver = new TimedReceiver();
+        receiver.start();
+        try {
+            receiver.join(timeout);
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        receiver.interrupt();
+        if (receiver.jmsEx != null)
+            throw receiver.jmsEx;
+        return receiver.msg;
     }
 
     // TODO: Implement noWait?
     public Message receiveNoWait() throws JMSException {
-        return receive();
+        return receive(0);
     }
 
     public void close() throws JMSException {
         // TODO: Implement this
     }
-
+    class TimedReceiver extends Thread {
+        public Message msg = null;
+        public JMSException jmsEx = null;
+        public void run () {
+            try {
+                msg = receive();
+            } catch (JMSException e) {
+                jmsEx = e;
+            }
+        }
+    }
 }

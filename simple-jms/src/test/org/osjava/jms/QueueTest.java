@@ -118,9 +118,12 @@ public class QueueTest extends TestCase implements MessageListener {
         };
         thread.start();
         thread.join(timeout); // a bit spurious, I know..
+        // the problem is that I'm waitingthe same timeout as the receive method,
+        // however, this thread has done other things in the mean time so there's no
+        // accuracy here..
         
         assertFalse ("Thread should have timed out", thread.isAlive());
-        thread.destroy();
+        thread.interrupt();
     }
 
 }
