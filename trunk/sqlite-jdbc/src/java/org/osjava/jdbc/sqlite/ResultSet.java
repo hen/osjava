@@ -673,8 +673,25 @@ public class ResultSet implements java.sql.ResultSet {
      */
     public int getInt(int columnIndex) throws SQLException {
         throwBadCellException(columnIndex);
-        // TODO Auto-generated method stub
-        return 0;
+        Object raw = ((Object[])rows[currentRow])[columnIndex - 1];
+        if(raw == null) {
+            return 0;
+        }
+        if(raw instanceof Number) {
+            return ((Number)raw).intValue();
+        }
+        if(raw instanceof String) {
+            try {
+                return Integer.parseInt((String)raw);
+            } catch (NumberFormatException e) {
+                /* FIXME: I don't like this.  SQLException doesn't have a
+                 *        constructor that takes a Throwable argument like
+                 *        most exceptions
+                 */
+                throw new SQLException(e.getMessage());
+            }
+        }
+        throw new SQLException("Unable to determine source data type.");
     }
 
     /* (non-Javadoc)
