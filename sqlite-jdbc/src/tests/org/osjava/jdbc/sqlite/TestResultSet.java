@@ -43,6 +43,7 @@ package org.osjava.jdbc.sqlite;
 import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 
 import junit.framework.TestCase;
 
@@ -100,7 +101,7 @@ public class TestResultSet extends TestCase {
             assertEquals("Test", foo);
         }
         if(!alreadyPassed) {
-            fail();
+            fail("No test was run");
         }
     }
 
@@ -126,7 +127,7 @@ public class TestResultSet extends TestCase {
             assertEquals("Test", foo);
         }
         if(!alreadyPassed) {
-            fail();
+            fail("No test was run");
         }
    }
        
@@ -154,7 +155,7 @@ public class TestResultSet extends TestCase {
             assertEquals(1234, foo);
         }
         if(!alreadyPassed) {
-            fail();
+            fail("No test was run");
         }
     }
 
@@ -180,7 +181,7 @@ public class TestResultSet extends TestCase {
             assertEquals(1234, foo);
         }
         if(!alreadyPassed) {
-            fail();
+            fail("No test was run");
         }
    }
 
@@ -210,7 +211,7 @@ public class TestResultSet extends TestCase {
             assertEquals(1234, foo);
         }
         if(!alreadyPassed) {
-            fail();
+            fail("No test was run");
         }
     }
     
@@ -243,10 +244,94 @@ public class TestResultSet extends TestCase {
                 if(e.getCause() instanceof NumberFormatException) {
                     continue;
                 }
+                fail("Incorrect cause for exception");
             }
+            fail("Expected exception not thrown");
         }
         if(!alreadyPassed) {
-            fail();
+            fail("No test was run");
+        }
+    }
+
+    /**
+     * A test in which the number put into the database is too big to fit in
+     * an int.
+     * 
+     * @throws Exception
+     */
+    public void testGetInt5() throws Exception {
+        /* XXX: Confirm with the spec whether or not this behavior is allowed */
+        java.sql.Statement stmt = con.createStatement();
+        long tooBig = Integer.MAX_VALUE;
+        tooBig += 1;
+        stmt.executeUpdate("CREATE TABLE foo (TestCol INTEGER);");
+        int count = stmt.executeUpdate("INSERT INTO foo (TestCol) VALUES (\"" + tooBig + "\");");
+        /* Make sure that the row was actually added */
+        assertEquals(count, 1);
+        /* Commit before query */
+        java.sql.ResultSet result = stmt.executeQuery("SELECT * FROM foo;");
+        result.beforeFirst();
+        boolean alreadyPassed = false;
+        while(result.next()) {
+            if(alreadyPassed) {
+                fail("Too many rows in ResultSet");
+            }
+            alreadyPassed = true;
+            try {
+                int foo = result.getInt(1);
+            } catch (SQLException e) {
+                if(e.getMessage().startsWith("Number out of range for type int.")) {
+                    continue;
+                }
+                fail("Incorrect cause for exception");
+            } catch (Throwable e) {
+                fail("Caught unexpected exception -- " + e.getClass());
+            }
+            fail("Expected exception not thrown");
+        }
+        if(!alreadyPassed) {
+            fail("No test was run");
+        }
+    }
+
+    /**
+     * A test in which the number put into the database is too big to fit in
+     * an int.
+     * 
+     * @throws Exception
+     */
+    public void testGetInt6() throws Exception {
+        /* XXX: Confirm with the spec whether or not this behavior is allowed */
+        java.sql.Statement stmt = con.createStatement();
+        long tooSmall = Integer.MIN_VALUE;
+        tooSmall -= 1;
+        stmt.executeUpdate("CREATE TABLE foo (TestCol INTEGER);");
+        int count = stmt.executeUpdate("INSERT INTO foo (TestCol) VALUES (\"" + tooSmall + "\");");
+        /* Make sure that the row was actually added */
+        assertEquals(count, 1);
+        /* Commit before query */
+        java.sql.ResultSet result = stmt.executeQuery("SELECT * FROM foo;");
+        result.beforeFirst();
+        boolean alreadyPassed = false;
+        while(result.next()) {
+            if(alreadyPassed) {
+                fail("Too many rows in ResultSet");
+            }
+            alreadyPassed = true;
+            try {
+                int foo = result.getInt(1);
+            } catch (SQLException e) {
+                if(e.getMessage().startsWith("Number out of range for type int.")) {
+                    continue;
+                }
+                fail("Incorrect cause for exception");
+            } catch (Throwable e) {
+                fail("Caught unexpected exception -- " + e.getClass());
+            }
+            fail("Expected exception not thrown");
+        }
+        if(!alreadyPassed) {
+            fail("No test was run");
         }
     }
 }

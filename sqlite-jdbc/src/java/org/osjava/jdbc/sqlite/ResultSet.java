@@ -545,21 +545,13 @@ public class ResultSet implements java.sql.ResultSet {
      */
     public byte getByte(int columnIndex) throws SQLException {
         throwBadCellException(columnIndex);
-        Object raw = ((Object[])rows[currentRow])[columnIndex - 1];
-        if(raw == null) {
-            return 0;
+        long ret = getNumberType(columnIndex);
+        if(ret != (byte)ret) {
+            StringBuffer message = new StringBuffer();
+            message.append("Number out of range for type byte.  Got ").append(ret);
+            throw new SQLException(message.toString());
         }
-        if(raw instanceof Number) {
-            return ((Number)raw).byteValue();
-        }
-        if(raw instanceof String) {
-            try {
-                return Byte.parseByte((String)raw);
-            } catch (NumberFormatException e) {
-                throw new SQLiteException(e);
-            }
-        }
-        throw new SQLException("Unable to determine source data type.");
+        return (byte)ret;
     }
 
     /* (non-Javadoc)
@@ -712,21 +704,13 @@ public class ResultSet implements java.sql.ResultSet {
      */
     public int getInt(int columnIndex) throws SQLException {
         throwBadCellException(columnIndex);
-        Object raw = ((Object[])rows[currentRow])[columnIndex - 1];
-        if(raw == null) {
-            return 0;
+        long ret = getNumberType(columnIndex);
+        if(ret != (int)ret) {
+            StringBuffer message = new StringBuffer();
+            message.append("Number out of range for type int.  Got ").append(ret);
+            throw new SQLException(message.toString());
         }
-        if(raw instanceof Number) {
-            return ((Number)raw).intValue();
-        }
-        if(raw instanceof String) {
-            try {
-                return Integer.parseInt((String)raw);
-            } catch (NumberFormatException e) {
-                throw new SQLiteException(e);
-            }
-        }
-        throw new SQLException("Unable to determine source data type.");
+        return (int)ret;
     }
 
     /* (non-Javadoc)
@@ -740,22 +724,13 @@ public class ResultSet implements java.sql.ResultSet {
      * @see java.sql.ResultSet#getLong(int)
      */
     public long getLong(int columnIndex) throws SQLException {
+        /* XXX: There is no bounds checking on long, because it is the same
+         *      size as the backend type for SQLite.  If it rolls, it is going
+         *      to roll there too.
+         */
         throwBadCellException(columnIndex);
-        Object raw = ((Object[])rows[currentRow])[columnIndex - 1];
-        if(raw == null) {
-            return 0;
-        }
-        if(raw instanceof Number) {
-            return ((Number)raw).longValue();
-        }
-        if(raw instanceof String) {
-            try {
-                return Long.parseLong((String)raw);
-            } catch (NumberFormatException e) {
-                throw new SQLiteException(e);
-            }
-        }
-        throw new SQLException("Unable to determine source data type.");
+        long ret = getNumberType(columnIndex);
+        return ret;
     }
 
     /* (non-Javadoc)
@@ -818,21 +793,13 @@ public class ResultSet implements java.sql.ResultSet {
      */
     public short getShort(int columnIndex) throws SQLException {
         throwBadCellException(columnIndex);
-        Object raw = ((Object[])rows[currentRow])[columnIndex - 1];
-        if(raw == null) {
-            return 0;
+        long ret = getNumberType(columnIndex);
+        if(ret != (short)ret) {
+            StringBuffer message = new StringBuffer();
+            message.append("Number out of range for type short.  Got ").append(ret);
+            throw new SQLException(message.toString());
         }
-        if(raw instanceof Number) {
-            return ((Number)raw).shortValue();
-        }
-        if(raw instanceof String) {
-            try {
-                return Short.parseShort((String)raw);
-            } catch (NumberFormatException e) {
-                throw new SQLiteException(e);
-            }
-        }
-        throw new SQLException("Unable to determine source data type.");
+        return (short)ret;
     }
 
     /* (non-Javadoc)
@@ -1436,8 +1403,29 @@ public class ResultSet implements java.sql.ResultSet {
         if(columnIndex > ((Object[])rows[currentRow]).length) {
             throw new SQLException("Invalid column");
         }
-
     }
+    
+    private long getNumberType(int columnIndex) throws SQLException {
+        Object raw = ((Object[])rows[currentRow])[columnIndex - 1];
+        long ret;
+        if(raw == null) {
+            return 0;
+        }
+        if(raw instanceof Number) {
+            ret = ((Number)raw).longValue();
+        }
+        else if(raw instanceof String) {
+            try {
+                ret =  Long.parseLong((String)raw);
+            } catch (NumberFormatException e) {
+                throw new SQLiteException(e);
+            }
+        } else {
+            throw new SQLException("Unable to determine source data type.");            
+        }
+        return ret;
+    }
+    
     /**
      * Inserts a row into the backend representation of the ResultSet.
      *
@@ -1496,8 +1484,8 @@ public class ResultSet implements java.sql.ResultSet {
     }
 
     /* Fill the the column col of the current row with a Integers value */
-    private void fillColumnWithNumber(int col, double value) {
-        ((Object[])rows[currentRow])[col] = new Double(value);
+    private void fillColumnWithNumber(int col, long value) {
+        ((Object[])rows[currentRow])[col] = new Long(value);
     }
 
     /* Fill the the column col of the current row with a Float value */
