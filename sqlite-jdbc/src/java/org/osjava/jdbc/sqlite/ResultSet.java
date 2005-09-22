@@ -431,6 +431,7 @@ public class ResultSet implements java.sql.ResultSet {
      * @see java.sql.ResultSet#getArray(int)
      */
     public Array getArray(int columnIndex) throws SQLException {
+        throwBadCellException(columnIndex);
         // TODO Auto-generated method stub
         return null;
     }
@@ -446,6 +447,7 @@ public class ResultSet implements java.sql.ResultSet {
      * @see java.sql.ResultSet#getAsciiStream(int)
      */
     public InputStream getAsciiStream(int columnIndex) throws SQLException {
+        throwBadCellException(columnIndex);
         // TODO Auto-generated method stub
         return null;
     }
@@ -461,6 +463,7 @@ public class ResultSet implements java.sql.ResultSet {
      * @see java.sql.ResultSet#getBigDecimal(int)
      */
     public BigDecimal getBigDecimal(int columnIndex) throws SQLException {
+        throwBadCellException(columnIndex);
         // TODO Auto-generated method stub
         return null;
     }
@@ -476,6 +479,7 @@ public class ResultSet implements java.sql.ResultSet {
      * @see java.sql.ResultSet#getBigDecimal(int, int)
      */
     public BigDecimal getBigDecimal(int columnIndex, int scale) throws SQLException {
+        throwBadCellException(columnIndex);
         // TODO Auto-generated method stub
         return null;
     }
@@ -491,6 +495,7 @@ public class ResultSet implements java.sql.ResultSet {
      * @see java.sql.ResultSet#getBinaryStream(int)
      */
     public InputStream getBinaryStream(int columnIndex) throws SQLException {
+        throwBadCellException(columnIndex);
         // TODO Auto-generated method stub
         return null;
     }
@@ -507,6 +512,7 @@ public class ResultSet implements java.sql.ResultSet {
      * @see java.sql.ResultSet#getBlob(int)
      */
     public Blob getBlob(int i) throws SQLException {
+        throwBadCellException(columnIndex);
         // TODO Auto-generated method stub
         return null;
     }
@@ -522,6 +528,7 @@ public class ResultSet implements java.sql.ResultSet {
      * @see java.sql.ResultSet#getBoolean(int)
      */
     public boolean getBoolean(int columnIndex) throws SQLException {
+        throwBadCellException(columnIndex);
         // TODO Auto-generated method stub
         return false;
     }
@@ -537,6 +544,7 @@ public class ResultSet implements java.sql.ResultSet {
      * @see java.sql.ResultSet#getByte(int)
      */
     public byte getByte(int columnIndex) throws SQLException {
+        throwBadCellException(columnIndex);
         // TODO Auto-generated method stub
         return 0;
     }
@@ -552,6 +560,7 @@ public class ResultSet implements java.sql.ResultSet {
      * @see java.sql.ResultSet#getBytes(int)
      */
     public byte[] getBytes(int columnIndex) throws SQLException {
+        throwBadCellException(columnIndex);
         // TODO Auto-generated method stub
         return null;
     }
@@ -567,6 +576,7 @@ public class ResultSet implements java.sql.ResultSet {
      * @see java.sql.ResultSet#getCharacterStream(int)
      */
     public Reader getCharacterStream(int columnIndex) throws SQLException {
+        throwBadCellException(columnIndex);
         // TODO Auto-generated method stub
         return null;
     }
@@ -582,6 +592,7 @@ public class ResultSet implements java.sql.ResultSet {
      * @see java.sql.ResultSet#getClob(int)
      */
     public Clob getClob(int columnIndex) throws SQLException {
+        throwBadCellException(columnIndex);
         // TODO Auto-generated method stub
         return null;
     }
@@ -593,10 +604,11 @@ public class ResultSet implements java.sql.ResultSet {
         return getClob(findColumn(columnName));
     }
 
-    /* (non-Javadoc) g
+    /* (non-Javadoc)
      * @see java.sql.ResultSet#getDate(int)
      */
     public Date getDate(int columnIndex) throws SQLException {
+        throwBadCellException(columnIndex);
         // TODO Auto-generated method stub
         return null;
     }
@@ -612,6 +624,7 @@ public class ResultSet implements java.sql.ResultSet {
      * @see java.sql.ResultSet#getDate(int, java.util.Calendar)
      */
     public Date getDate(int columnIndex, Calendar cal) throws SQLException {
+        throwBadCellException(columnIndex);
         // TODO Auto-generated method stub
         return null;
     }
@@ -627,6 +640,7 @@ public class ResultSet implements java.sql.ResultSet {
      * @see java.sql.ResultSet#getDouble(int)
      */
     public double getDouble(int columnIndex) throws SQLException {
+        throwBadCellException(columnIndex);
         // TODO Auto-generated method stub
         return 0;
     }
@@ -642,6 +656,7 @@ public class ResultSet implements java.sql.ResultSet {
      * @see java.sql.ResultSet#getFloat(int)
      */
     public float getFloat(int columnIndex) throws SQLException {
+        throwBadCellException(columnIndex);
         // TODO Auto-generated method stub
         return 0;
     }
@@ -657,6 +672,7 @@ public class ResultSet implements java.sql.ResultSet {
      * @see java.sql.ResultSet#getInt(int)
      */
     public int getInt(int columnIndex) throws SQLException {
+        throwBadCellException(columnIndex);
         // TODO Auto-generated method stub
         return 0;
     }
@@ -672,6 +688,7 @@ public class ResultSet implements java.sql.ResultSet {
      * @see java.sql.ResultSet#getLong(int)
      */
     public long getLong(int columnIndex) throws SQLException {
+        throwBadCellException(columnIndex);
         // TODO Auto-generated method stub
         return 0;
     }
@@ -687,6 +704,7 @@ public class ResultSet implements java.sql.ResultSet {
      * @see java.sql.ResultSet#getObject(int)
      */
     public Object getObject(int columnIndex) throws SQLException {
+        throwBadCellException(columnIndex);
         // TODO Auto-generated method stub
         return null;
     }
@@ -702,6 +720,7 @@ public class ResultSet implements java.sql.ResultSet {
      * @see java.sql.ResultSet#getObject(int, java.util.Map)
      */
     public Object getObject(int columnIndex, Map map) throws SQLException {
+        throwBadCellException(columnIndex);
         // TODO Auto-generated method stub
         return null;
     }
@@ -717,6 +736,7 @@ public class ResultSet implements java.sql.ResultSet {
      * @see java.sql.ResultSet#getRef(int)
      */
     public Ref getRef(int columnIndex) throws SQLException {
+        throwBadCellException(columnIndex);
         // TODO Auto-generated method stub
         return null;
     }
@@ -725,14 +745,14 @@ public class ResultSet implements java.sql.ResultSet {
      * @see java.sql.ResultSet#getRef(java.lang.String)
      */
     public Ref getRef(String columnName) throws SQLException {
-        // TODO Auto-generated method stub
-        return null;
+        return getRef(findColumn(columnName));
     }
 
     /* (non-Javadoc)
      * @see java.sql.ResultSet#getShort(int)
      */
     public short getShort(int columnIndex) throws SQLException {
+        throwBadCellException(columnIndex);
         // TODO Auto-generated method stub
         return 0;
     }
@@ -748,13 +768,7 @@ public class ResultSet implements java.sql.ResultSet {
      * @see java.sql.ResultSet#getString(int)
      */
     public String getString(int columnIndex) throws SQLException {
-        /* XXX: Row count is based on 1 based index, not 0 based index */
-        if(currentRow < 0 || rows[currentRow] == null) {
-            throw new SQLException("Invalid row");
-        }
-        if(columnIndex > ((Object[])rows[currentRow]).length) {
-            throw new SQLException("Invalid column");
-        }
+        throwBadCellException(columnIndex);
         return ((Object[])rows[currentRow])[columnIndex - 1].toString();
     }
 
@@ -769,6 +783,7 @@ public class ResultSet implements java.sql.ResultSet {
      * @see java.sql.ResultSet#getTime(int)
      */
     public Time getTime(int columnIndex) throws SQLException {
+        throwBadCellException(columnIndex);
         // TODO Auto-generated method stub
         return null;
     }
@@ -784,6 +799,7 @@ public class ResultSet implements java.sql.ResultSet {
      * @see java.sql.ResultSet#getTime(int, java.util.Calendar)
      */
     public Time getTime(int columnIndex, Calendar cal) throws SQLException {
+        throwBadCellException(columnIndex);
         // TODO Auto-generated method stub
         return null;
     }
@@ -799,6 +815,7 @@ public class ResultSet implements java.sql.ResultSet {
      * @see java.sql.ResultSet#getTimestamp(int)
      */
     public Timestamp getTimestamp(int columnIndex) throws SQLException {
+        throwBadCellException(columnIndex);
         // TODO Auto-generated method stub
         return null;
     }
@@ -814,6 +831,7 @@ public class ResultSet implements java.sql.ResultSet {
      * @see java.sql.ResultSet#getTimestamp(int, java.util.Calendar)
      */
     public Timestamp getTimestamp(int columnIndex, Calendar cal) throws SQLException {
+        throwBadCellException(columnIndex);
         // TODO Auto-generated method stub
         return null;
     }
@@ -829,6 +847,7 @@ public class ResultSet implements java.sql.ResultSet {
      * @see java.sql.ResultSet#getUnicodeStream(int)
      */
     public InputStream getUnicodeStream(int columnIndex) throws SQLException {
+        throwBadCellException(columnIndex);
         // TODO Auto-generated method stub
         return null;
     }
@@ -844,6 +863,7 @@ public class ResultSet implements java.sql.ResultSet {
      * @see java.sql.ResultSet#getURL(int)
      */
     public URL getURL(int columnIndex) throws SQLException {
+        throwBadCellException(columnIndex);
         // TODO Auto-generated method stub
         return null;
     }
@@ -878,6 +898,7 @@ public class ResultSet implements java.sql.ResultSet {
         if(currentRow < 0) {
             return 0;
         }
+        /* XXX: getRow() is 1 based */
         return currentRow + 1;
     }
 
@@ -913,6 +934,7 @@ public class ResultSet implements java.sql.ResultSet {
      * @see java.sql.ResultSet#updateArray(int, java.sql.Array)
      */
     public void updateArray(int columnIndex, Array x) throws SQLException {
+        throwBadCellException(columnIndex);
         // TODO Auto-generated method stub
     }
 
@@ -927,6 +949,7 @@ public class ResultSet implements java.sql.ResultSet {
      * @see java.sql.ResultSet#updateAsciiStream(int, java.io.InputStream, int)
      */
     public void updateAsciiStream(int columnIndex, InputStream x, int length) throws SQLException {
+        throwBadCellException(columnIndex);
         // TODO Auto-generated method stub
     }
 
@@ -941,6 +964,7 @@ public class ResultSet implements java.sql.ResultSet {
      * @see java.sql.ResultSet#updateBinaryStream(int, java.io.InputStream, int)
      */
     public void updateBinaryStream(int columnIndex, InputStream x, int length) throws SQLException {
+        throwBadCellException(columnIndex);
         // TODO Auto-generated method stub
     }
 
@@ -955,6 +979,7 @@ public class ResultSet implements java.sql.ResultSet {
      * @see java.sql.ResultSet#updateBigDecimal(int, java.math.BigDecimal)
      */
     public void updateBigDecimal(int columnIndex, BigDecimal x) throws SQLException {
+        throwBadCellException(columnIndex);
         // TODO Auto-generated method stub
     }
 
@@ -969,6 +994,7 @@ public class ResultSet implements java.sql.ResultSet {
      * @see java.sql.ResultSet#updateBlob(int, java.sql.Blob)
      */
     public void updateBlob(int columnIndex, Blob x) throws SQLException {
+        throwBadCellException(columnIndex);
         // TODO Auto-generated method stub
     }
 
@@ -983,6 +1009,7 @@ public class ResultSet implements java.sql.ResultSet {
      * @see java.sql.ResultSet#updateBoolean(int, boolean)
      */
     public void updateBoolean(int columnIndex, boolean x) throws SQLException {
+        throwBadCellException(columnIndex);
         // TODO Auto-generated method stub
     }
 
@@ -997,6 +1024,7 @@ public class ResultSet implements java.sql.ResultSet {
      * @see java.sql.ResultSet#updateByte(int, byte)
      */
     public void updateByte(int columnIndex, byte x) throws SQLException {
+        throwBadCellException(columnIndex);
         // TODO Auto-generated method stub
     }
 
@@ -1011,6 +1039,7 @@ public class ResultSet implements java.sql.ResultSet {
      * @see java.sql.ResultSet#updateBytes(int, byte[])
      */
     public void updateBytes(int columnIndex, byte[] x) throws SQLException {
+        throwBadCellException(columnIndex);
         // TODO Auto-generated method stub
     }
 
@@ -1025,6 +1054,7 @@ public class ResultSet implements java.sql.ResultSet {
      * @see java.sql.ResultSet#updateCharacterStream(int, java.io.Reader, int)
      */
     public void updateCharacterStream(int columnIndex, Reader x, int length) throws SQLException {
+        throwBadCellException(columnIndex);
         // TODO Auto-generated method stub
     }
 
@@ -1039,6 +1069,7 @@ public class ResultSet implements java.sql.ResultSet {
      * @see java.sql.ResultSet#updateClob(int, java.sql.Clob)
      */
     public void updateClob(int columnIndex, Clob x) throws SQLException {
+        throwBadCellException(columnIndex);
         // TODO Auto-generated method stub
     }
 
@@ -1053,6 +1084,7 @@ public class ResultSet implements java.sql.ResultSet {
      * @see java.sql.ResultSet#updateDate(int, java.sql.Date)
      */
     public void updateDate(int columnIndex, Date x) throws SQLException {
+        throwBadCellException(columnIndex);
         // TODO Auto-generated method stub
     }
 
@@ -1067,6 +1099,7 @@ public class ResultSet implements java.sql.ResultSet {
      * @see java.sql.ResultSet#updateDouble(int, double)
      */
     public void updateDouble(int columnIndex, double x) throws SQLException {
+        throwBadCellException(columnIndex);
         // TODO Auto-generated method stub
     }
 
@@ -1081,6 +1114,7 @@ public class ResultSet implements java.sql.ResultSet {
      * @see java.sql.ResultSet#updateFloat(int, float)
      */
     public void updateFloat(int columnIndex, float x) throws SQLException {
+        throwBadCellException(columnIndex);
         // TODO Auto-generated method stub
     }
 
@@ -1095,6 +1129,7 @@ public class ResultSet implements java.sql.ResultSet {
      * @see java.sql.ResultSet#updateInt(int, int)
      */
     public void updateInt(int columnIndex, int x) throws SQLException {
+        throwBadCellException(columnIndex);
         // TODO Auto-generated method stub
     }
 
@@ -1109,6 +1144,7 @@ public class ResultSet implements java.sql.ResultSet {
      * @see java.sql.ResultSet#updateLong(int, long)
      */
     public void updateLong(int columnIndex, long x) throws SQLException {
+        throwBadCellException(columnIndex);
         // TODO Auto-generated method stub
     }
 
@@ -1123,6 +1159,7 @@ public class ResultSet implements java.sql.ResultSet {
      * @see java.sql.ResultSet#updateNull(int)
      */
     public void updateNull(int columnIndex) throws SQLException {
+        throwBadCellException(columnIndex);
         // TODO Auto-generated method stub
     }
 
@@ -1137,6 +1174,7 @@ public class ResultSet implements java.sql.ResultSet {
      * @see java.sql.ResultSet#updateObject(int, java.lang.Object)
      */
     public void updateObject(int columnIndex, Object x) throws SQLException {
+        throwBadCellException(columnIndex);
         // TODO Auto-generated method stub
     }
 
@@ -1151,6 +1189,7 @@ public class ResultSet implements java.sql.ResultSet {
      * @see java.sql.ResultSet#updateObject(int, java.lang.Object, int)
      */
     public void updateObject(int columnIndex, Object x, int scale) throws SQLException {
+        throwBadCellException(columnIndex);
         // TODO Auto-generated method stub
     }
 
@@ -1165,6 +1204,7 @@ public class ResultSet implements java.sql.ResultSet {
      * @see java.sql.ResultSet#updateRef(int, java.sql.Ref)
      */
     public void updateRef(int columnIndex, Ref x) throws SQLException {
+        throwBadCellException(columnIndex);
         // TODO Auto-generated method stub
     }
 
@@ -1179,6 +1219,7 @@ public class ResultSet implements java.sql.ResultSet {
      * @see java.sql.ResultSet#updateShort(int, short)
      */
     public void updateShort(int columnIndex, short x) throws SQLException {
+        throwBadCellException(columnIndex);
         // TODO Auto-generated method stub
     }
 
@@ -1193,6 +1234,7 @@ public class ResultSet implements java.sql.ResultSet {
      * @see java.sql.ResultSet#updateString(int, java.lang.String)
      */
     public void updateString(int columnIndex, String x) throws SQLException {
+        throwBadCellException(columnIndex);
         // TODO Auto-generated method stub
     }
 
@@ -1207,6 +1249,7 @@ public class ResultSet implements java.sql.ResultSet {
      * @see java.sql.ResultSet#updateTime(int, java.sql.Time)
      */
     public void updateTime(int columnIndex, Time x) throws SQLException {
+        throwBadCellException(columnIndex);
         // TODO Auto-generated method stub
     }
 
@@ -1221,6 +1264,7 @@ public class ResultSet implements java.sql.ResultSet {
      * @see java.sql.ResultSet#updateTimestamp(int, java.sql.Timestamp)
      */
     public void updateTimestamp(int columnIndex, Timestamp x) throws SQLException {
+        throwBadCellException(columnIndex);
         // TODO Auto-generated method stub
     }
 
@@ -1295,7 +1339,9 @@ public class ResultSet implements java.sql.ResultSet {
     }
 
 
-    /* Extra Methods */
+ /*****************
+  * Extra Methods *
+  *****************/
     private int getStatementPointer() {
         return statementPointer;
     }
@@ -1304,6 +1350,16 @@ public class ResultSet implements java.sql.ResultSet {
         statementPointer = p;
     }
 
+    private void throwBadCellException(int columnIndex) throws SQLException {
+        /* XXX: Row count is based on 1 based index, not 0 based index */
+        if(currentRow < 0 || rows[currentRow] == null) {
+            throw new SQLException("Invalid row");
+        }
+        if(columnIndex > ((Object[])rows[currentRow]).length) {
+            throw new SQLException("Invalid column");
+        }
+
+    }
     /**
      * Inserts a row into the backend representation of the ResultSet.
      *
