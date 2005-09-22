@@ -688,7 +688,7 @@ public class ResultSet implements java.sql.ResultSet {
                  *        constructor that takes a Throwable argument like
                  *        most exceptions
                  */
-                throw new SQLException(e.getMessage());
+                throw new SQLiteException(e);
             }
         }
         throw new SQLException("Unable to determine source data type.");
