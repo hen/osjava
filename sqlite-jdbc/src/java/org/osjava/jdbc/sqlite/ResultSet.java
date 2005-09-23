@@ -181,6 +181,22 @@ public class ResultSet implements java.sql.ResultSet {
  * ResultSet navigation *
  ************************/
     /* (non-Javadoc)
+     * @see java.sql.ResultSet#absolute(int)
+     */
+    public boolean absolute(int row) throws SQLException {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    /* (non-Javadoc)
+     * @see java.sql.ResultSet#relative(int)
+     */
+    public boolean relative(int rows) throws SQLException {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    /* (non-Javadoc)
      * @see java.sql.ResultSet#next()
      */
     public boolean next() throws SQLException {
@@ -190,15 +206,22 @@ public class ResultSet implements java.sql.ResultSet {
             scrollResultSet(currentRow + 1);
         }
         currentRow++;
-        System.err.println("Current row -- " + currentRow);
         /* If the next row is null, that means that the end of the ResultSet
          * is reached.  Set things properly */
-        System.err.println("rows[currentRow- pageMin] -- " + rows[currentRow - pageMin]);
         if(rows[currentRow - pageMin] == null) {
+            maxRow = currentRow;
             currentRow = -2;
             return false;
         }
         return true;
+    }
+
+    /* (non-Javadoc)
+     * @see java.sql.ResultSet#previous()
+     */
+    public boolean previous() throws SQLException {
+        // TODO Auto-generated method stub
+        return false;
     }
 
     /* (non-Javadoc)
@@ -264,30 +287,6 @@ public class ResultSet implements java.sql.ResultSet {
     }
 
     /* (non-Javadoc)
-     * @see java.sql.ResultSet#absolute(int)
-     */
-    public boolean absolute(int row) throws SQLException {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    /* (non-Javadoc)
-     * @see java.sql.ResultSet#relative(int)
-     */
-    public boolean relative(int rows) throws SQLException {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    /* (non-Javadoc)
-     * @see java.sql.ResultSet#previous()
-     */
-    public boolean previous() throws SQLException {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
-    /* (non-Javadoc)
      * @see java.sql.ResultSet#findColumn(java.lang.String)
      */
     public int findColumn(String columnName) throws SQLException {
@@ -336,7 +335,6 @@ public class ResultSet implements java.sql.ResultSet {
      * @see java.sql.ResultSet#close()
      */
     public void close() throws SQLException {
-        System.err.println("Trying to close ResultSet --" + this);
         if(closed) {
             return;
         }
@@ -1473,12 +1471,9 @@ public class ResultSet implements java.sql.ResultSet {
         /* Repopulate the ResultSet with the current page settings */
         pageMin = start;
         pageMax = end;
-        System.err.println("Populating rows, " + start + "-" + end);
-        System.err.println("Requested start -- " + where);
         populateRows(start, end);
         /* Put the currentRow back to one before the 'where' */
         currentRow = where - 1;
-        System.err.println("Current row from scrollResultSet --  " + currentRow);
     }
 
 
