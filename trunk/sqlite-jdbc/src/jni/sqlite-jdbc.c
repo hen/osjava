@@ -252,12 +252,10 @@ void populateRow(JNIEnv *env, sqlite3_stmt *stmt, jobject resultSet) {
     jclass resultSetClass = (*env)->GetObjectClass(env, resultSet);
     jmethodID method;
 
-    fprintf(stderr, "Number of columns to populate -- %i.\n", numCols);
     for(curCol = 0; curCol < numCols; curCol++) {
         /* What is actually done is dependant upon the column type. */
         switch(sqlite3_column_type(stmt, curCol)) {
             case SQLITE_INTEGER:
-                fprintf(stderr, "Found Number %lld.\n", sqlite3_column_int64(stmt, curCol));
                 method = (*env)->GetMethodID(env,
                                              resultSetClass,
                                              "fillColumnWithNumber",
@@ -275,7 +273,6 @@ void populateRow(JNIEnv *env, sqlite3_stmt *stmt, jobject resultSet) {
                 }
                 break;
             case SQLITE_FLOAT:
-                fprintf(stderr, "Found float.\n");
                 method = (*env)->GetMethodID(env,
                                              resultSetClass,
                                              "fillColumnWithFloat",
@@ -293,7 +290,10 @@ void populateRow(JNIEnv *env, sqlite3_stmt *stmt, jobject resultSet) {
                 }
                 break;
             case SQLITE_TEXT:
-                fprintf(stderr, "Found text.\n");
+                /* XXX: WTF does this have to be here.  Without a statement
+                 *      before the declaration of cstr, I get a parse error.
+                 */
+                ;
                 /* Convert the returned string to a Java String */
                 const char *cstr = sqlite3_column_text(stmt, curCol);
                 jstring str = convertNativeString(env, cstr);
@@ -312,10 +312,8 @@ void populateRow(JNIEnv *env, sqlite3_stmt *stmt, jobject resultSet) {
                 if((*env)->ExceptionOccurred(env)) {
                     return;
                 }
-                fprintf(stderr, "Successfully planted string.\n");
                 break;
             case SQLITE_BLOB:
-                fprintf(stderr, "Found blob.\n");
                 /* FIXME: Wrong method signature */
                 method = (*env)->GetMethodID(env,
                                              resultSetClass,
@@ -334,7 +332,6 @@ void populateRow(JNIEnv *env, sqlite3_stmt *stmt, jobject resultSet) {
                 }
                 break;
             case SQLITE_NULL:
-                fprintf(stderr, "Found null.\n");
                 method = (*env)->GetMethodID(env,
                                              resultSetClass,
                                              "fillColumnWithNull",
@@ -352,17 +349,16 @@ void populateRow(JNIEnv *env, sqlite3_stmt *stmt, jobject resultSet) {
                 break;
             default:
                 /* FIXME: WTF.  Throw an exception here. */
-                fprintf(stderr, "Found uhh..something different WTFO!\n");
                 break;
         }
     }
 }
 
 /* Populate a range of rows for a given sqlite3 statement. */
-JNIEXPORT void JNICALL 
-Java_org_osjava_jdbc_sqlite_ResultSet_populateRows(JNIEnv *env, 
-                                                   jobject resultSet, 
-                                                   jint startRow, 
+JNIEXPORT void JNICALL
+Java_org_osjava_jdbc_sqlite_ResultSet_populateRows(JNIEnv *env,
+                                                   jobject resultSet,
+                                                   jint startRow,
                                                    jint finishRow) {
     int count;
     char *errmsg;
@@ -373,10 +369,8 @@ Java_org_osjava_jdbc_sqlite_ResultSet_populateRows(JNIEnv *env,
         return;
     }
 
-    fprintf(stderr, "Start populate rows.\n");
     /* Get the statement pointer. */
     sqlite3_stmt *stmt = getStatementHandle(env, resultSet);
-    fprintf(stderr, "Start row %i\tEnd row %i\n", (int)startRow, (int)finishRow);
     /* Skip statements up to startRow.  These statements will be ignored. */
     for(count = 0; count < startRow; count++) {
         result = sqlite3_step(stmt);
@@ -414,7 +408,7 @@ Java_org_osjava_jdbc_sqlite_ResultSet_populateRows(JNIEnv *env,
         /* The expected result most of the time.  Work gets done here.*/
         if(result == SQLITE_ROW) {
             /* First insert the representation of the row into the ResultSet */
-            /* Use count - startRow because we need to specify the position in 
+            /* Use count - startRow because we need to specify the position in
              * the page, rather than in the total of the resultset */
             (*env)->CallVoidMethod(env,
                                    resultSet,
@@ -429,15 +423,13 @@ Java_org_osjava_jdbc_sqlite_ResultSet_populateRows(JNIEnv *env,
         }
         /* Done populating the result set.  We're done here. */
         if(result == SQLITE_DONE) {
-            fprintf(stderr, "There is no more to populate, returning.\n");
             return;
         }
         if(result) {
             sqliteThrowSQLException(env, errmsg);
         }
     }
-    fprintf(stderr, "Done populating resultset section.\n");
-    
+
 }
 
 /* Populate the metadata for the ResultSet */
@@ -488,7 +480,6 @@ void populateResultSetMetadata(JNIEnv *env, sqlite3_stmt *stmt, jobject resultSe
         if((*env)->ExceptionOccurred(env)) {
             return;
         }
-        fprintf(stderr, "Already filled metadata.\n");
         /* FIXME: Should probably throw an exception here instead? */
         return;
     }
@@ -504,8 +495,7 @@ void populateResultSetMetadata(JNIEnv *env, sqlite3_stmt *stmt, jobject resultSe
     if((*env)->ExceptionOccurred(env)) {
         return;
     }
-    fprintf(stderr, "Successfully set column width.\n");
-    
+
     /* Set the column names */
     jmethodID setNameID = (*env)->GetMethodID(env,
                                               metaDataClass,
@@ -523,7 +513,7 @@ void populateResultSetMetadata(JNIEnv *env, sqlite3_stmt *stmt, jobject resultSe
                                convertNativeString(env, colName));
         if((*env)->ExceptionOccurred(env)) {
             return;
-        }        
+        }
     }
 }
 

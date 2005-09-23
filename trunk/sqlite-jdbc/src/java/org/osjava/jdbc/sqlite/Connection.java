@@ -188,7 +188,6 @@ public class Connection implements java.sql.Connection {
         Iterator it = statements.iterator();
         while(it.hasNext()) {
             Statement next = (Statement)it.next();
-            System.err.println("Closing Statement -- " + next);
             next.close();
         }
         /* This can throw an exception based upon whether or not the 
