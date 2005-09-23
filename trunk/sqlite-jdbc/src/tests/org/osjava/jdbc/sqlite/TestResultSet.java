@@ -92,7 +92,6 @@ public class TestResultSet extends TestCase {
         assertEquals(count, 1);
         /* Commit before query */
         java.sql.ResultSet result = stmt.executeQuery("SELECT * FROM foo;");
-        result.beforeFirst();
         boolean alreadyPassed = false;
         while(result.next()) {
             if(alreadyPassed) {
@@ -118,7 +117,6 @@ public class TestResultSet extends TestCase {
         assertEquals(count, 1);
         /* Commit before query */
         java.sql.ResultSet result = stmt.executeQuery("SELECT * FROM foo;");
-        result.beforeFirst();
         boolean alreadyPassed = false;
         while(result.next()) {
             if(alreadyPassed) {
@@ -148,7 +146,6 @@ public class TestResultSet extends TestCase {
         assertEquals(count, 1);
         /* Commit before query */
         java.sql.ResultSet result = stmt.executeQuery("SELECT * FROM foo;");
-        result.beforeFirst();
         boolean alreadyPassed = false;
         while(result.next()) {
             if(alreadyPassed) {
@@ -179,7 +176,6 @@ public class TestResultSet extends TestCase {
         assertEquals(count, 1);
         /* Commit before query */
         java.sql.ResultSet result = stmt.executeQuery("SELECT * FROM foo;");
-        result.beforeFirst();
         boolean alreadyPassed = false;
         while(result.next()) {
             if(alreadyPassed) {
@@ -218,7 +214,6 @@ public class TestResultSet extends TestCase {
         assertEquals(count, 1);
         /* Commit before query */
         java.sql.ResultSet result = stmt.executeQuery("SELECT * FROM foo;");
-        result.beforeFirst();
         boolean alreadyPassed = false;
         while(result.next()) {
             if(alreadyPassed) {
@@ -259,7 +254,6 @@ public class TestResultSet extends TestCase {
         assertEquals(count, 1);
         /* Commit before query */
         java.sql.ResultSet result = stmt.executeQuery("SELECT * FROM foo;");
-        result.beforeFirst();
         boolean alreadyPassed = false;
         while(result.next()) {
             if(alreadyPassed) {
@@ -296,7 +290,6 @@ public class TestResultSet extends TestCase {
         assertEquals(count, 1);
         /* Commit before query */
         java.sql.ResultSet result = stmt.executeQuery("SELECT * FROM foo;");
-        result.beforeFirst();
         boolean alreadyPassed = false;
         while(result.next()) {
             if(alreadyPassed) {
@@ -322,7 +315,6 @@ public class TestResultSet extends TestCase {
         assertEquals(count, 1);
         /* Commit before query */
         java.sql.ResultSet result = stmt.executeQuery("SELECT * FROM foo;");
-        result.beforeFirst();
         boolean alreadyPassed = false;
         while(result.next()) {
             if(alreadyPassed) {
@@ -352,7 +344,6 @@ public class TestResultSet extends TestCase {
         assertEquals(count, 1);
         /* Commit before query */
         java.sql.ResultSet result = stmt.executeQuery("SELECT * FROM foo;");
-        result.beforeFirst();
         boolean alreadyPassed = false;
         while(result.next()) {
             if(alreadyPassed) {
@@ -383,7 +374,6 @@ public class TestResultSet extends TestCase {
         assertEquals(count, 1);
         /* Commit before query */
         java.sql.ResultSet result = stmt.executeQuery("SELECT * FROM foo;");
-        result.beforeFirst();
         boolean alreadyPassed = false;
         while(result.next()) {
             if(alreadyPassed) {
@@ -418,7 +408,6 @@ public class TestResultSet extends TestCase {
         assertEquals(count, 1);
         /* Commit before query */
         java.sql.ResultSet result = stmt.executeQuery("SELECT * FROM foo;");
-        result.beforeFirst();
         boolean alreadyPassed = false;
         while(result.next()) {
             if(alreadyPassed) {
@@ -444,7 +433,6 @@ public class TestResultSet extends TestCase {
         assertEquals(count, 1);
         /* Commit before query */
         java.sql.ResultSet result = stmt.executeQuery("SELECT * FROM foo;");
-        result.beforeFirst();
         boolean alreadyPassed = false;
         while(result.next()) {
             if(alreadyPassed) {
@@ -474,7 +462,6 @@ public class TestResultSet extends TestCase {
         assertEquals(count, 1);
         /* Commit before query */
         java.sql.ResultSet result = stmt.executeQuery("SELECT * FROM foo;");
-        result.beforeFirst();
         boolean alreadyPassed = false;
         while(result.next()) {
             if(alreadyPassed) {
@@ -505,7 +492,6 @@ public class TestResultSet extends TestCase {
         assertEquals(count, 1);
         /* Commit before query */
         java.sql.ResultSet result = stmt.executeQuery("SELECT * FROM foo;");
-        result.beforeFirst();
         boolean alreadyPassed = false;
         while(result.next()) {
             if(alreadyPassed) {
@@ -544,7 +530,6 @@ public class TestResultSet extends TestCase {
         assertEquals(count, 1);
         /* Commit before query */
         java.sql.ResultSet result = stmt.executeQuery("SELECT * FROM foo;");
-        result.beforeFirst();
         boolean alreadyPassed = false;
         while(result.next()) {
             if(alreadyPassed) {
@@ -585,7 +570,6 @@ public class TestResultSet extends TestCase {
         assertEquals(count, 1);
         /* Commit before query */
         java.sql.ResultSet result = stmt.executeQuery("SELECT * FROM foo;");
-        result.beforeFirst();
         boolean alreadyPassed = false;
         while(result.next()) {
             if(alreadyPassed) {
@@ -622,7 +606,6 @@ public class TestResultSet extends TestCase {
         assertEquals(count, 1);
         /* Commit before query */
         java.sql.ResultSet result = stmt.executeQuery("SELECT * FROM foo;");
-        result.beforeFirst();
         boolean alreadyPassed = false;
         while(result.next()) {
             if(alreadyPassed) {
@@ -648,7 +631,6 @@ public class TestResultSet extends TestCase {
         assertEquals(count, 1);
         /* Commit before query */
         java.sql.ResultSet result = stmt.executeQuery("SELECT * FROM foo;");
-        result.beforeFirst();
         boolean alreadyPassed = false;
         while(result.next()) {
             if(alreadyPassed) {
@@ -678,7 +660,6 @@ public class TestResultSet extends TestCase {
         assertEquals(count, 1);
         /* Commit before query */
         java.sql.ResultSet result = stmt.executeQuery("SELECT * FROM foo;");
-        result.beforeFirst();
         boolean alreadyPassed = false;
         while(result.next()) {
             if(alreadyPassed) {
@@ -709,7 +690,6 @@ public class TestResultSet extends TestCase {
         assertEquals(count, 1);
         /* Commit before query */
         java.sql.ResultSet result = stmt.executeQuery("SELECT * FROM foo;");
-        result.beforeFirst();
         boolean alreadyPassed = false;
         while(result.next()) {
             if(alreadyPassed) {
@@ -748,7 +728,6 @@ public class TestResultSet extends TestCase {
         assertEquals(count, 1);
         /* Commit before query */
         java.sql.ResultSet result = stmt.executeQuery("SELECT * FROM foo;");
-        result.beforeFirst();
         boolean alreadyPassed = false;
         while(result.next()) {
             if(alreadyPassed) {
@@ -789,7 +768,6 @@ public class TestResultSet extends TestCase {
         assertEquals(count, 1);
         /* Commit before query */
         java.sql.ResultSet result = stmt.executeQuery("SELECT * FROM foo;");
-        result.beforeFirst();
         boolean alreadyPassed = false;
         while(result.next()) {
             if(alreadyPassed) {
@@ -824,7 +802,6 @@ public class TestResultSet extends TestCase {
         assertEquals(count, 1);
         /* Commit before query */
         java.sql.ResultSet result = stmt.executeQuery("SELECT * FROM foo;");
-        result.beforeFirst();
         boolean alreadyPassed = false;
         while(result.next()) {
             if(alreadyPassed) {
@@ -850,7 +827,6 @@ public class TestResultSet extends TestCase {
         assertEquals(count, 1);
         /* Commit before query */
         java.sql.ResultSet result = stmt.executeQuery("SELECT * FROM foo;");
-        result.beforeFirst();
         boolean alreadyPassed = false;
         while(result.next()) {
             if(alreadyPassed) {

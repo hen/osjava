@@ -124,7 +124,6 @@ public class TestStatement extends TestCase {
         assertEquals(count, 1);
         /* Commit before query */
         java.sql.ResultSet result = stmt.executeQuery("SELECT * FROM foo;");
-        result.beforeFirst();
         while(result.next()) {
             String foo = result.getString("TestCol");
             assertEquals("Test", foo);
