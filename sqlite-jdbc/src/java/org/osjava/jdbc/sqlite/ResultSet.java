@@ -203,6 +203,9 @@ public class ResultSet implements java.sql.ResultSet {
      * @see java.sql.ResultSet#afterLast()
      */
     public void afterLast() throws SQLException {
+        if(resultSetType == ResultSet.TYPE_FORWARD_ONLY) {
+            throw new SQLException("Type is java.sql.ResultSet.TYPE_FORWARD_ONLY.  Invalid operation");
+        }
         currentRow = -2;
     }
 
@@ -210,6 +213,9 @@ public class ResultSet implements java.sql.ResultSet {
      * @see java.sql.ResultSet#beforeFirst()
      */
     public void beforeFirst() throws SQLException {
+        if(resultSetType == ResultSet.TYPE_FORWARD_ONLY) {
+            throw new SQLException("Type is java.sql.ResultSet.TYPE_FORWARD_ONLY.  Invalid operation");
+        }
         currentRow = -1;
     }
 
