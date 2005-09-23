@@ -243,15 +243,6 @@ Java_org_osjava_jdbc_sqlite_Statement_executeSQLWithResultSet(JNIEnv *env,
 
     /* Fill the ResultSet Metadata. */
     populateResultSetMetadata(env, stmt, resultSet);
-
-    fprintf(stderr, "From executeStatement, populating rows.\n");
-    Java_org_osjava_jdbc_sqlite_ResultSet_populateRows(env,
-                                                       resultSet,
-                                                       0,
-                                                       numRows);
-    if((*env)->ExceptionOccurred(env)) {
-        return;
-    }
 }
 
 /* Populate a row of the ResultSet */
