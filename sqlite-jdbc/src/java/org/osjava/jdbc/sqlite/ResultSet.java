@@ -119,8 +119,8 @@ public class ResultSet implements java.sql.ResultSet {
     /**
      * The minimum and maximum rows of the current page.
      */
-    private int pageMin;
-    private int pageMax;
+    private int pageMin = -1;
+    private int pageMax = -1;
 
     /**
      * MetaData for this ResultSet.
@@ -169,8 +169,6 @@ public class ResultSet implements java.sql.ResultSet {
 
         /* Create the rows ArrayList, based upon the fetch size */
         rows = new Object[fetchSize];
-        pageMin = 0;
-        pageMax = fetchSize;
 
         /*
          * Create the ResultSetMetadata object for this ResultSet.  It doesn't
@@ -186,12 +184,16 @@ public class ResultSet implements java.sql.ResultSet {
      * @see java.sql.ResultSet#next()
      */
     public boolean next() throws SQLException {
-        if(currentRow == pageMax) {
+        if(currentRow >= pageMax) {
             scrollResultSet(pageMax + 1);
+        } else if(currentRow < pageMin) {
+            scrollResultSet(currentRow + 1);
         }
         currentRow++;
+        System.err.println("Current row -- " + currentRow);
         /* If the next row is null, that means that the end of the ResultSet
          * is reached.  Set things properly */
+        System.err.println("rows[currentRow- pageMin] -- " + rows[currentRow - pageMin]);
         if(rows[currentRow - pageMin] == null) {
             currentRow = -2;
             return false;
@@ -223,13 +225,11 @@ public class ResultSet implements java.sql.ResultSet {
      * @see java.sql.ResultSet#first()
      */
     public boolean first() throws SQLException {
-        int originalRow = currentRow;
         if(resultSetType == ResultSet.TYPE_FORWARD_ONLY) {
             throw new SQLException("Type is java.sql.ResultSet.TYPE_FORWARD_ONLY.  Invalid operation");
         }
         /* Make sure tha tthe row 0 is valid */
         currentRow = 0;
-
         return false;
     }
 
@@ -652,7 +652,7 @@ public class ResultSet implements java.sql.ResultSet {
      */
     public double getDouble(int columnIndex) throws SQLException {
         throwBadCellException(columnIndex);
-        Object raw = ((Object[])rows[currentRow])[columnIndex - 1];
+        Object raw = ((Object[])rows[currentRow - pageMin])[columnIndex - 1];
         if(raw == null) {
             return 0;
         }
@@ -681,7 +681,7 @@ public class ResultSet implements java.sql.ResultSet {
      */
     public float getFloat(int columnIndex) throws SQLException {
         throwBadCellException(columnIndex);
-        Object raw = ((Object[])rows[currentRow])[columnIndex - 1];
+        Object raw = ((Object[])rows[currentRow - pageMin])[columnIndex - 1];
         if(raw == null) {
             return 0;
         }
@@ -820,7 +820,7 @@ public class ResultSet implements java.sql.ResultSet {
      */
     public String getString(int columnIndex) throws SQLException {
         throwBadCellException(columnIndex);
-        return ((Object[])rows[currentRow])[columnIndex - 1].toString();
+        return ((Object[])rows[currentRow- pageMin])[columnIndex - 1].toString();
     }
 
     /* (non-Javadoc)
@@ -1403,16 +1403,16 @@ public class ResultSet implements java.sql.ResultSet {
 
     private void throwBadCellException(int columnIndex) throws SQLException {
         /* XXX: Row count is based on 1 based index, not 0 based index */
-        if(currentRow < 0 || rows[currentRow] == null) {
+        if(currentRow < 0 || rows[currentRow - pageMin] == null) {
             throw new SQLException("Invalid row");
         }
-        if(columnIndex > ((Object[])rows[currentRow]).length) {
+        if(columnIndex > ((Object[])rows[currentRow - pageMin]).length) {
             throw new SQLException("Invalid column");
         }
     }
     
     private long getNumberType(int columnIndex) throws SQLException {
-        Object raw = ((Object[])rows[currentRow])[columnIndex - 1];
+        Object raw = ((Object[])rows[currentRow- pageMin])[columnIndex - 1];
         long ret;
         if(raw == null) {
             return 0;
@@ -1473,7 +1473,12 @@ public class ResultSet implements java.sql.ResultSet {
         /* Repopulate the ResultSet with the current page settings */
         pageMin = start;
         pageMax = end;
+        System.err.println("Populating rows, " + start + "-" + end);
+        System.err.println("Requested start -- " + where);
         populateRows(start, end);
+        /* Put the currentRow back to one before the 'where' */
+        currentRow = where - 1;
+        System.err.println("Current row from scrollResultSet --  " + currentRow);
     }
 
 
@@ -1486,28 +1491,28 @@ public class ResultSet implements java.sql.ResultSet {
 
     /* Fill the the column col of the current row with a String value */
     private void fillColumnWithString(int col, String value) {
-        ((Object[])rows[currentRow])[col] = value;
+        ((Object[])rows[currentRow - pageMin])[col] = value;
     }
 
     /* Fill the the column col of the current row with a Integers value */
     private void fillColumnWithNumber(int col, long value) {
-        ((Object[])rows[currentRow])[col] = new Long(value);
+        ((Object[])rows[currentRow- pageMin])[col] = new Long(value);
     }
 
     /* Fill the the column col of the current row with a Float value */
     private void fillColumnWithFloat(int col, float value) {
-        ((Object[])rows[currentRow])[col] = new Float(value);
+        ((Object[])rows[currentRow - pageMin])[col] = new Float(value);
     }
 
     /* Fill the the column col of the current row with a Blob value */
     /* FIXME: This one's all fucked up at this point */
     private void fillColumnWithBlob(int col, byte[] value) {
-        ((Object[])rows[currentRow])[col] = value;
+        ((Object[])rows[currentRow - pageMin])[col] = value;
     }
 
     /* Fill the the column col of the current row with the NULL value */
     private void fillColumnWithNull(int col) {
-        ((Object[])rows[currentRow])[col] = null;
+        ((Object[])rows[currentRow- pageMin])[col] = null;
     }
 
     /* Native Methods */
