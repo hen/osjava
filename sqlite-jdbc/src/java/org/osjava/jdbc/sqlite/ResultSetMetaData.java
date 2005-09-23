@@ -242,7 +242,6 @@ public class ResultSetMetaData implements java.sql.ResultSetMetaData {
         /* FIXME: Throw a SQLException if the count is changed.  It should
          *        never change.
          */
-        System.err.println("ResultSetMetadata.setColumnCount(" + count + ")");
         columnCount = count;
         columnNames = new String[columnCount];
     }

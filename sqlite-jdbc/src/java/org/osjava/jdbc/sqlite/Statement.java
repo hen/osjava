@@ -168,10 +168,8 @@ public class Statement implements java.sql.Statement {
     public void close() throws SQLException {
         /* Ensure that all of the Statement's ResultSets are closed. */
         Iterator it= results.iterator();
-        System.err.println("Trying to close Statement");
         while (it.hasNext()) {
             ResultSet next = (ResultSet)it.next();
-            System.err.println("Closing ResultSet -- " + next);
             it.remove();
             next.close();
         }
