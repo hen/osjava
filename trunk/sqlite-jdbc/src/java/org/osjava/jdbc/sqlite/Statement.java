@@ -66,15 +66,24 @@ public class Statement implements java.sql.Statement {
      * The fetch direction from the statement. The default is
      * ResultSet.FETCH_FORWARD.
      */
-    private int         fetchDirection = ResultSet.FETCH_FORWARD;
-
-    private int         resultSetType;
-
-    private int         resultSetConcurrency;
-
-    private int         resultSetHoldability;
+    private int fetchDirection = ResultSet.FETCH_FORWARD;
     
-    private int         fetchSize = 1024;
+    /**
+     * The ResultSet type that will be the default for the ResultSets created
+     * from this statement.  The default is ResultSet.TYPE_FORWARD_ONLY;
+     */
+    private int resultSetType;
+
+    private int resultSetConcurrency;
+
+    private int resultSetHoldability;
+    
+    private int fetchSize = 1024;
+    
+    /**
+     * The maximum size of a ResultSet in rows.  0 means there is no maximum.
+     */
+    private int maxRows = 0;
 
     /**
      * Create a new Statement object. ResultSets that are created from this
@@ -201,8 +210,7 @@ public class Statement implements java.sql.Statement {
      * @see java.sql.Statement#getMaxRows()
      */
     public int getMaxRows() throws SQLException {
-        // TODO Auto-generated method stub
-        return 0;
+        return maxRows;
     }
 
     /*
@@ -211,8 +219,10 @@ public class Statement implements java.sql.Statement {
      * @see java.sql.Statement#setMaxRows(int)
      */
     public void setMaxRows(int max) throws SQLException {
-    // TODO Auto-generated method stub
-
+        if(max < 0) {
+            throw new SQLException("Invalid parameter for ResultSet.setMaxRows().  Integer must be >= 0.");
+        }
+        maxRows = max;
     }
 
     /*
@@ -354,8 +364,15 @@ public class Statement implements java.sql.Statement {
      * @see java.sql.Statement#setFetchSize(int)
      */
     public void setFetchSize(int rows) throws SQLException {
-    // TODO Auto-generated method stub
-
+        int max = getMaxRows();
+        if(max == 0) {
+            if(rows < 0) {
+                throw new SQLException("Invalid fetch size.  Value must be greater than 0.");
+            }
+        } else if(rows < 0 || rows > getMaxRows()) {
+            throw new SQLException("Invalid fetch size.  Value must be between 0 and " + getMaxRows() +".");
+        }
+        fetchSize = rows;
     }
 
     /**
