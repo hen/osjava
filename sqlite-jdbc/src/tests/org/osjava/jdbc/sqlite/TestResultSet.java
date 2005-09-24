@@ -167,6 +167,7 @@ public class TestResultSet extends TestCase {
      * More complicated next() test. There are many results in the ResultSet
      * that is created.  Each of the values of these rows are tested in order
      * to ensure that we aren't skipping any rows or getting a row twice. 
+     * This test is explicitely ResultSet.TYPE_FORWARD_ONLY.
      * 
      * @throws Exception
      */
@@ -186,7 +187,68 @@ public class TestResultSet extends TestCase {
         }
         java.sql.ResultSet result = stmt.executeQuery("SELECT * FROM foo;");
         int count = 0;
-        System.out.println("Beginning to read");
+        while(result.next()) {
+            String value = result.getString(1);
+            assertEquals(value, "Test-" + count);
+            count++;
+        }
+    }
+
+    /**
+     * More complicated next() test. There are many results in the ResultSet
+     * that is created.  Each of the values of these rows are tested in order
+     * to ensure that we aren't skipping any rows or getting a row twice. 
+     * This test is explicitely ResultSet.TYPE_SCROLL_INSENSITIVE.
+     * 
+     * @throws Exception
+     */
+    public void testNext5() throws Exception {
+        java.sql.Statement stmt = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, 
+                                                      ResultSet.CONCUR_READ_ONLY);
+        stmt.setFetchSize(10);
+        /* A little overblown, but a reasonable stress test */
+        int rows = stmt.getFetchSize() * 12;
+        stmt.executeUpdate("CREATE TABLE foo (TestCol VARCHAR(12));");
+        /* FIXME: After it's implemented, maybe this should be batched. and 
+         *        turned into a PreparedStatement */
+        for(int i = 0; i < rows; i++) {
+            int count = stmt.executeUpdate("INSERT INTO foo (TestCol) VALUES (\"Test-" + i + "\")");
+            /* Make sure that the row was actually added */
+            assertEquals(count, 1);
+        }
+        java.sql.ResultSet result = stmt.executeQuery("SELECT * FROM foo;");
+        int count = 0;
+        while(result.next()) {
+            String value = result.getString(1);
+            assertEquals(value, "Test-" + count);
+            count++;
+        }
+    }
+
+    /**
+     * More complicated next() test. There are many results in the ResultSet
+     * that is created.  Each of the values of these rows are tested in order
+     * to ensure that we aren't skipping any rows or getting a row twice. 
+     * This test is explicitely ResultSet.TYPE_SCROLL_SENSITIVE.
+     * 
+     * @throws Exception
+     */
+    public void testNext6() throws Exception {
+        java.sql.Statement stmt = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, 
+                                                      ResultSet.CONCUR_READ_ONLY);
+        stmt.setFetchSize(10);
+        /* A little overblown, but a reasonable stress test */
+        int rows = stmt.getFetchSize() * 12;
+        stmt.executeUpdate("CREATE TABLE foo (TestCol VARCHAR(12));");
+        /* FIXME: After it's implemented, maybe this should be batched. and 
+         *        turned into a PreparedStatement */
+        for(int i = 0; i < rows; i++) {
+            int count = stmt.executeUpdate("INSERT INTO foo (TestCol) VALUES (\"Test-" + i + "\")");
+            /* Make sure that the row was actually added */
+            assertEquals(count, 1);
+        }
+        java.sql.ResultSet result = stmt.executeQuery("SELECT * FROM foo;");
+        int count = 0;
         while(result.next()) {
             String value = result.getString(1);
             assertEquals(value, "Test-" + count);
