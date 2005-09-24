@@ -42,6 +42,7 @@
 
     <sourceDirectory>src/java</sourceDirectory>
 
+    <!--
     <unitTestSourceDirectory>src/tests</unitTestSourceDirectory>
 
     <unitTest>
@@ -49,6 +50,7 @@
         <include>**/Test*.java</include>
       </includes>
     </unitTest>
+    -->
 
   </build>
 
