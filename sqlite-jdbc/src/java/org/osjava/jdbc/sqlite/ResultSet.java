@@ -220,8 +220,19 @@ public class ResultSet implements java.sql.ResultSet {
      * @see java.sql.ResultSet#previous()
      */
     public boolean previous() throws SQLException {
-        // TODO Auto-generated method stub
-        return false;
+        if(resultSetType == ResultSet.TYPE_FORWARD_ONLY) {
+            throw new SQLException("Type is java.sql.ResultSet.TYPE_FORWARD_ONLY.  Invalid operation");
+        }
+        if(currentRow <= 0) {
+            currentRow = -1;
+            return false;
+        } else if(currentRow <= pageMin) {
+            scrollResultSet(pageMin - 1);
+        } else if(currentRow > pageMax) {
+            scrollResultSet(currentRow - 1);
+        }
+        currentRow--;
+        return true;
     }
 
     /* (non-Javadoc)
@@ -1445,7 +1456,7 @@ public class ResultSet implements java.sql.ResultSet {
         Object[] row = new Object[colCount];
         rows[index] = row;
         /* XXX: I'm not really all that sure I want the currentRow set here */
-        currentRow = index;
+        currentRow = pageMin + index;
     }
 
     /**
@@ -1466,7 +1477,7 @@ public class ResultSet implements java.sql.ResultSet {
                 start = 0;
             }
         }
-        end = start + fetchSize;
+        end = start + fetchSize -1;
         rows = new Object[fetchSize];
         /* Repopulate the ResultSet with the current page settings */
         pageMin = start;

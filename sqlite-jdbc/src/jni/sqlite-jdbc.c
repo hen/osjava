@@ -368,11 +368,20 @@ Java_org_osjava_jdbc_sqlite_ResultSet_populateRows(JNIEnv *env,
     if((*env)->ExceptionOccurred(env)) {
         return;
     }
+    method = (*env)->GetMethodID(env,
+                                 resultSetClass,
+                                 "insertRowIntoResultSet",
+                                 "(I)V");
+    if((*env)->ExceptionOccurred(env)) {
+        return;
+    }
 
     /* Get the statement pointer. */
     sqlite3_stmt *stmt = getStatementHandle(env, resultSet);
+    /* Reset the statement */
+    sqlite3_reset(stmt);
     /* Skip statements up to startRow.  These statements will be ignored. */
-    for(count = 0; count < startRow; count++) {
+    for(count = 0; count < (int)startRow; count++) {
         result = sqlite3_step(stmt);
         /* Check the result */
         if(result == SQLITE_BUSY) {
@@ -384,20 +393,16 @@ Java_org_osjava_jdbc_sqlite_ResultSet_populateRows(JNIEnv *env,
          * side of things. */
         if(result == SQLITE_DONE) {
             sqliteThrowSQLException(env, SQLITE_OUT_OF_BOUNDS);
+            return;
         }
-        if(result) {
-            sqliteThrowSQLException(env, errmsg);
+        if(result != SQLITE_OK && result != SQLITE_ROW) {
+            /* Find the database pointer */
+            sqlite3 *dbPtr = (sqlite3 *)sqlite3_db_handle(stmt);
+            sqliteThrowSQLException(env, sqlite3_errmsg(dbPtr));
+            return;
         }
     }
 
-    /* Start populating the ResultSet */
-    method = (*env)->GetMethodID(env,
-                                 resultSetClass,
-                                 "insertRowIntoResultSet",
-                                 "(I)V");
-    if((*env)->ExceptionOccurred(env)) {
-        return;
-    }
     for(count = startRow; count <= finishRow; count ++) {
         result = sqlite3_step(stmt);
         /* Check the result */
@@ -427,6 +432,7 @@ Java_org_osjava_jdbc_sqlite_ResultSet_populateRows(JNIEnv *env,
         }
         if(result) {
             sqliteThrowSQLException(env, errmsg);
+            return;
         }
     }
 
