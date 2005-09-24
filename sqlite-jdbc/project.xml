@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<project>
+  
+  <pomVersion>3</pomVersion>
+  
+  <id>sqlite-jdbc</id>
+  <name>sqlite-jdbc</name>
+
+  <currentVersion>0.1</currentVersion>
+
+  <organization>
+    <name>OSJava</name>
+    <url>http://www.osjava.org</url>
+    <logo>http://www.osjava.org/images/osjava.gif</logo>
+  </organization>
+  <inceptionYear>2005</inceptionYear>
+
+  <package>org.osjava.jdbc.sqlite</package>
+
+  <logo>http://www.osjava.org/images/1x1.gif</logo>
+  
+  <description>
+     JDBC Driver for the SQLite database
+  </description>
+  
+  <shortDescription>SQLite JDBC driver</shortDescription>
+
+  <url>http://www.osjava.org/sqlite-jdbc/</url>
+
+  <issueTrackingUrl>http://issues.osjava.org/jira/browse/SQL</issueTrackingUrl>
+
+  <mailingLists>
+    <mailingList>
+        <name>osjava-users</name>
+	<subscribe>http://lists.flamefew.net/mailman/listinfo/osjava-users</subscribe>
+        <unsubscribe>http://lists.flamefew.net/mailman/listinfo/osjava-users</unsubscribe>
+        <archive>http://lists.flamefew.net/mailman/private/osjava-users/</archive>
+    </mailingList>
+  </mailingLists>
+
+  <build>
+
+    <sourceDirectory>src/java</sourceDirectory>
+
+    <unitTestSourceDirectory>src/tests</unitTestSourceDirectory>
+
+    <unitTest>
+      <includes>
+        <include>**/Test*.java</include>
+      </includes>
+    </unitTest>
+
+  </build>
+
+  <reports>
+    <report>maven-jxr-plugin</report>
+    <report>maven-javadoc-plugin</report>
+    <report>maven-license-plugin</report>
+    <report>maven-changes-plugin</report>
+  </reports>
+  
+</project>
+
