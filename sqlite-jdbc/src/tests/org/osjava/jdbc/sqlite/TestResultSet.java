@@ -80,8 +80,124 @@ public class TestResultSet extends TestCase {
     }
 
     /**
+     * Simple next() test. There is only one row in the result.  The first 
+     * call to next() should return true.  The second call to next should
+     * return false.  This test is ResultSet.TYPE_FORWARD_ONLY.
+     * 
+     * @throws Exception
+     */
+    public void testNext1() throws Exception {
+        java.sql.Statement stmt = con.createStatement(ResultSet.TYPE_FORWARD_ONLY, 
+                                                      ResultSet.CONCUR_READ_ONLY);
+        stmt.executeUpdate("CREATE TABLE foo (TestCol VARCHAR(12));");
+        int count = stmt.executeUpdate("INSERT INTO foo (TestCol) VALUES (\"Test\")");
+        /* Make sure that the row was actually added */
+        assertEquals(count, 1);
+        /* Commit before query */
+        java.sql.ResultSet result = stmt.executeQuery("SELECT * FROM foo;");
+        boolean alreadyPassed = false;
+        while(result.next()) {
+            if(alreadyPassed) {
+                fail("Too many rows in ResultSet");
+            }
+            alreadyPassed = true;
+        }
+        if(!alreadyPassed) {
+            fail("No test was run");
+        }
+    }
+
+    /**
+     * Simple next() test. There is only one row in the result.  The first 
+     * call to next() should return true.  The second call to next should
+     * return false.  This test is ResultSet.TYPE_SCROLL_INSENSITIVE.
+     * 
+     * @throws Exception
+     */
+    public void testNext2() throws Exception {
+        java.sql.Statement stmt = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, 
+                                                      ResultSet.CONCUR_READ_ONLY);
+        stmt.executeUpdate("CREATE TABLE foo (TestCol VARCHAR(12));");
+        int count = stmt.executeUpdate("INSERT INTO foo (TestCol) VALUES (\"Test\")");
+        /* Make sure that the row was actually added */
+        assertEquals(count, 1);
+        /* Commit before query */
+        java.sql.ResultSet result = stmt.executeQuery("SELECT * FROM foo;");
+        boolean alreadyPassed = false;
+        while(result.next()) {
+            if(alreadyPassed) {
+                fail("Too many rows in ResultSet");
+            }
+            alreadyPassed = true;
+        }
+        if(!alreadyPassed) {
+            fail("No test was run");
+        }
+    }
+
+    /**
+     * Simple next() test. There is only one row in the result.  The first 
+     * call to next() should return true.  The second call to next should
+     * return false.  This test is ResultSet.TYPE_SCROLL_INSENSITIVE.
+     * 
+     * @throws Exception
+     */
+    public void testNext3() throws Exception {
+        java.sql.Statement stmt = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, 
+                                                      ResultSet.CONCUR_READ_ONLY);
+        stmt.executeUpdate("CREATE TABLE foo (TestCol VARCHAR(12));");
+        int count = stmt.executeUpdate("INSERT INTO foo (TestCol) VALUES (\"Test\")");
+        /* Make sure that the row was actually added */
+        assertEquals(count, 1);
+        /* Commit before query */
+        java.sql.ResultSet result = stmt.executeQuery("SELECT * FROM foo;");
+        boolean alreadyPassed = false;
+        while(result.next()) {
+            if(alreadyPassed) {
+                fail("Too many rows in ResultSet");
+            }
+            alreadyPassed = true;
+        }
+        if(!alreadyPassed) {
+            fail("No test was run");
+        }
+    }
+
+    /**
+     * More complicated next() test. There are many results in the ResultSet
+     * that is created.  Each of the values of these rows are tested in order
+     * to ensure that we aren't skipping any rows or getting a row twice. 
+     * 
+     * @throws Exception
+     */
+    public void testNext4() throws Exception {
+        java.sql.Statement stmt = con.createStatement(ResultSet.TYPE_FORWARD_ONLY, 
+                                                      ResultSet.CONCUR_READ_ONLY);
+        stmt.setFetchSize(10);
+        /* A little overblown, but a reasonable stress test */
+        int rows = stmt.getFetchSize() * 12;
+        stmt.executeUpdate("CREATE TABLE foo (TestCol VARCHAR(12));");
+        /* FIXME: After it's implemented, maybe this should be batched. and 
+         *        turned into a PreparedStatement */
+        for(int i = 0; i < rows; i++) {
+            int count = stmt.executeUpdate("INSERT INTO foo (TestCol) VALUES (\"Test-" + i + "\")");
+            /* Make sure that the row was actually added */
+            assertEquals(count, 1);
+        }
+        java.sql.ResultSet result = stmt.executeQuery("SELECT * FROM foo;");
+        int count = 0;
+        System.out.println("Beginning to read");
+        while(result.next()) {
+            String value = result.getString(1);
+            assertEquals(value, "Test-" + count);
+            count++;
+        }
+    }
+
+    /**
      * Simple test which puts an integer into a column and retrieves it from
      * the ResultSet.  The column number is used instead of the column name.
+     * 
      * @throws Exception
      */
     public void testGetByte1() throws Exception {
