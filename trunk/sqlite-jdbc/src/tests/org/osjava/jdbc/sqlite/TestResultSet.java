@@ -175,8 +175,7 @@ public class TestResultSet extends TestCase {
         java.sql.Statement stmt = con.createStatement(ResultSet.TYPE_FORWARD_ONLY, 
                                                       ResultSet.CONCUR_READ_ONLY);
         stmt.setFetchSize(10);
-        /* A little overblown, but a reasonable stress test */
-        int rows = stmt.getFetchSize() * 12;
+        int rows = stmt.getFetchSize() * 3;
         stmt.executeUpdate("CREATE TABLE foo (TestCol VARCHAR(12));");
         /* FIXME: After it's implemented, maybe this should be batched. and 
          *        turned into a PreparedStatement */
@@ -206,8 +205,7 @@ public class TestResultSet extends TestCase {
         java.sql.Statement stmt = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, 
                                                       ResultSet.CONCUR_READ_ONLY);
         stmt.setFetchSize(10);
-        /* A little overblown, but a reasonable stress test */
-        int rows = stmt.getFetchSize() * 12;
+        int rows = stmt.getFetchSize() * 3;
         stmt.executeUpdate("CREATE TABLE foo (TestCol VARCHAR(12));");
         /* FIXME: After it's implemented, maybe this should be batched. and 
          *        turned into a PreparedStatement */
@@ -237,8 +235,7 @@ public class TestResultSet extends TestCase {
         java.sql.Statement stmt = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, 
                                                       ResultSet.CONCUR_READ_ONLY);
         stmt.setFetchSize(10);
-        /* A little overblown, but a reasonable stress test */
-        int rows = stmt.getFetchSize() * 12;
+        int rows = stmt.getFetchSize() * 3;
         stmt.executeUpdate("CREATE TABLE foo (TestCol VARCHAR(12));");
         /* FIXME: After it's implemented, maybe this should be batched. and 
          *        turned into a PreparedStatement */
