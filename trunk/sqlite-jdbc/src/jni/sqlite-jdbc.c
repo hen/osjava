@@ -168,12 +168,14 @@ Java_org_osjava_jdbc_sqlite_Statement_executeSQL(JNIEnv *env,
     (*env)->ReleaseStringUTFChars(env, query, sql);
 
     /* Check the result */
+    fprintf(stderr, "ResultCode %d.\n", result);
+    fprintf(stderr, "Message '%s.\n", sqlite3_errmsg(dbPtr));
     if(result == SQLITE_BUSY) {
         sqliteThrowSQLException(env, SQLITE_BUSY_MESSAGE);
         return -1;
     }
     if(result) {
-        sqliteThrowSQLException(env, errmsg);
+        sqliteThrowSQLException(env, sqlite3_errmsg(dbPtr));
         return -1;
     }
     return count;
@@ -203,7 +205,6 @@ Java_org_osjava_jdbc_sqlite_Statement_executeSQLWithResultSet(JNIEnv *env,
                                                               jobject resultSet,
                                                               jint numRows) {
     int result;
-    char *errmsg;
     sqlite3_stmt *stmt;
 
     /* Convert the java query into a char array that can be used by the
@@ -219,7 +220,8 @@ Java_org_osjava_jdbc_sqlite_Statement_executeSQLWithResultSet(JNIEnv *env,
         return;
     }
     if(result) {
-        sqliteThrowSQLException(env, errmsg);
+        sqlite3 *dbPtr = (sqlite3 *)sqlite3_db_handle(stmt);
+        sqliteThrowSQLException(env, sqlite3_errmsg(dbPtr));
     }
 
     (*env)->ReleaseStringUTFChars(env, query, sql);
@@ -361,7 +363,6 @@ Java_org_osjava_jdbc_sqlite_ResultSet_populateRows(JNIEnv *env,
                                                    jint startRow,
                                                    jint finishRow) {
     int count;
-    char *errmsg;
     int result;
     jmethodID method;
     jclass resultSetClass = (*env)->GetObjectClass(env, resultSet);
@@ -431,7 +432,8 @@ Java_org_osjava_jdbc_sqlite_ResultSet_populateRows(JNIEnv *env,
             return;
         }
         if(result) {
-            sqliteThrowSQLException(env, errmsg);
+            sqlite3 *dbPtr = (sqlite3 *)sqlite3_db_handle(stmt);
+            sqliteThrowSQLException(env, sqlite3_errmsg(dbPtr));
             return;
         }
     }
@@ -502,10 +504,14 @@ void populateResultSetMetadata(JNIEnv *env, sqlite3_stmt *stmt, jobject resultSe
         return;
     }
 
-    /* Set the column names */
+    /* Set the column names and declared types */
     jmethodID setNameID = (*env)->GetMethodID(env,
                                               metaDataClass,
                                               "setColumnName",
+                                              "(ILjava/lang/String;)V");
+    jmethodID setTypeID = (*env)->GetMethodID(env,
+                                              metaDataClass,
+                                              "setColumnType",
                                               "(ILjava/lang/String;)V");
     if((*env)->ExceptionOccurred(env)) {
         return;
@@ -517,6 +523,15 @@ void populateResultSetMetadata(JNIEnv *env, sqlite3_stmt *stmt, jobject resultSe
                                setNameID,
                                i,
                                convertNativeString(env, colName));
+        if((*env)->ExceptionOccurred(env)) {
+            return;
+        }
+        const char *colType = sqlite3_column_decltype(stmt, i);
+        (*env)->CallVoidMethod(env,
+                               metaData,
+                               setTypeID,
+                               i,
+                               convertNativeString(env, colType));
         if((*env)->ExceptionOccurred(env)) {
             return;
         }
