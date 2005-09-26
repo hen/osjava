@@ -4,7 +4,7 @@
   <pomVersion>3</pomVersion>
   <id>oscube</id>
   <name>oscube</name>
-  <currentVersion>0.3</currentVersion>
+  <currentVersion>0.4</currentVersion>
   <organization>
     <name>OSJava</name>
     <url>http://www.osjava.org/</url>
