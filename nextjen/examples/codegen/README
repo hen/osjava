@@ -1,0 +1,10 @@
+Run NextJen -d output metamodel.xml.
+
+Generated files will be in output/
+
+Files:
+
+metamodel.xml - Description of classes to generate.
+metamodel.xsl - Template to process metamodel.xml into something which can be split up into subdocuments and parsed seperately, adds appropriate processing instructions, output is written as out.xml
+interface.xsl - Template to generate interface code.
+concreate.xsl - Template to generate concreate code.

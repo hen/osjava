@@ -1,0 +1,8 @@
+- Support for FOP.
+- Support for random output plugins, e.g. java style. 
+  [pretty print java, so you don't have to worry about formatting in your 
+  xslts]
+- Write some more examples.
+- Code an ant task.
+- Clean up throw Exception in source code
+- Clean up imports in source code
