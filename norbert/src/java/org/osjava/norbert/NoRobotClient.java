@@ -209,9 +209,8 @@ public class NoRobotClient {
     private static String loadContent(URL url, String userAgent) throws IOException {
         URLConnection urlConn = url.openConnection();
         if(urlConn instanceof HttpURLConnection) {
-            HttpURLConnection httpUrlConn = (HttpURLConnection) url.openConnection();
             if(userAgent != null) {
-                httpUrlConn.addRequestProperty("User-Agent", userAgent);
+                ((HttpURLConnection)urlConn).addRequestProperty("User-Agent", userAgent);
             }
         }
         InputStream in = urlConn.getInputStream();
