@@ -7,6 +7,7 @@
   </properties>
 
   <body>
+  <section><div><a href="index.html">contents</a> - <a href="Downloading.html">next</a></div></section>
 <section name="Why create a scraping engine?"><p>
 
 I needed a system that will allow me to quickly write http scrapers, without having to implement the same code again and again. This pays back in development speed, stability and maintenance.

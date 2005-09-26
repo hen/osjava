@@ -7,6 +7,7 @@
   </properties>
 
   <body>
+  <section><div><a href="GjXml.html">previous</a> - <a href="index.html">contents</a> - <a href="Scheduling.html">next</a></div></section>
   <section name="Storing results">
 <p>Once you've broken the backbone of a scrape by writing the Parser, you're going to want to put the results somewhere. </p>
 

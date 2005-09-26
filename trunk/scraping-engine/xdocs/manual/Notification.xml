@@ -7,6 +7,7 @@
   </properties>
 
   <body>
+  <section><div><a href="Scheduling.html">previous</a> - <a href="index.html">contents</a> - <a href="SubmittingBugs.html">next</a></div></section>
   <section name="Notifications"><p>
 Theoretically notification exists to inform somebody when a scraper has an error, or whenever a scraper successfully runs. In reality it's untested and the only implementation of the <code>org.osjava.oscube.service.notify.Notifier</code> interface is <code>NullNotifier</code>, which does nothing.
 

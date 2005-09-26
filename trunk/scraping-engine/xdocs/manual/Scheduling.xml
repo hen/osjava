@@ -7,6 +7,7 @@
   </properties>
 
   <body>
+  <section><div><a href="Storing.html">previous</a> - <a href="index.html">contents</a> - <a href="Notification.html">next</a></div></section>
   <section name="Scheduling scrapes"><p>
 Scheduling is the art of deciding when to run your scraper. There are two schedulers available by default
 

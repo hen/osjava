@@ -7,6 +7,7 @@
   </properties>
 
   <body>
+  <section><div><a href="GjScrape.html">previous</a> - <a href="index.html">contents</a> - <a href="GjXml.html">next</a></div></section>
   <section name="gj-csv">
 <p>Sometimes life is good and you're scraping a site that returns a CSV file. </p>
 

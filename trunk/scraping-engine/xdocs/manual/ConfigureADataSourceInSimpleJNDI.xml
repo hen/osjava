@@ -7,6 +7,7 @@
   </properties>
 
   <body>
+  <section><div><a href="PluginConfiguration.html">previous</a> - <a href="index.html">contents</a> - <a href="GeneralDesign.html">next</a></div></section>
   <section name="Configuring a DataSource in SimpleJNDI"><p>
 When storing data in a database, you are going to need to setup a <code>javax.sql.DataSource</code> object in the simple-jndi configuration. Here's a brief example:
 
