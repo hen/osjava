@@ -7,6 +7,7 @@
   </properties>
 
   <body>
+  <section><div><a href="GjCsv.html">previous</a> - <a href="index.html">contents</a> - <a href="Storing.html">next</a></div></section>
   <section name="gj-xml">
 <p>XML pages are usually going to be well formed, and less likely to change than HTML as you won't have look &amp; feel noise getting in the way of your scraping; however the strategy discussed for <a href="GjScrape.html">GjScrape</a> still may apply. </p>
 

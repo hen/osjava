@@ -7,6 +7,7 @@
   </properties>
 
   <body>
+  <section><div><a href="Configuring.html">previous</a> - <a href="index.html">contents</a> - <a href="ConfigureADataSourceInSimpleJNDI.html">next</a></div></section>
   <section name="Configuring custom plugins"><p>
 You can plug your own code into many parts of Scraping-Engine/OSCube; and the openness of simple-jndi allows you to easily get your configuration there too.
 

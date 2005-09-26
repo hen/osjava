@@ -7,6 +7,7 @@
   </properties>
 
   <body>
+  <section><div><a href="Parsing.html">previous</a> - <a href="index.html">contents</a> - <a href="GjCsv.html">next</a></div></section>
   <section name="gj-scrape">
 <p>I'm not a believer in trying to convert HTML to XML to parse it. Partly this is because much of the HTML out there is shoddy and it'll take time to find a library that can understand it; but mostly it's because I'm not a believer in scraping XML hierarchically. </p>
 
