@@ -101,7 +101,7 @@ public class QuartzScheduler implements Scheduler {
 
                 Trigger trigger = null;
                 if("cron".equalsIgnoreCase(schedule)) {
-                    String cronTxt = cfg.getString("quartz.cron");
+                    String cronTxt = cfg.getString("cron");
                     logger.debug("Creating cron trigger: "+cronTxt+" for "+ctxt);
                     CronTrigger cron = new CronTrigger(ctxt+"crontrigger", jobgroup, jobName, jobgroup, cronTxt);
                     trigger = cron;
