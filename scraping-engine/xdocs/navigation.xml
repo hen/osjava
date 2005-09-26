@@ -8,7 +8,7 @@
       <item name="Introduction"              href="/index.html"/>
       <item name="Manual"              href="/manual/index.html"/>
       <item name="Download" href="http://dist.osjava.org/releases/official/scraping-engine/"/>
-      <item name="Changes"              href="/changes-report.html"/>
+      <item name="Release Notes"              href="/changes-report.html"/>
       <item name="License"              href="/license.html"/>
     </menu>
     <menu name="Code docs">

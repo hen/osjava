@@ -3,10 +3,17 @@
 
   <properties>
       <author email="bayard@generationjava.com">Henri Yandell</author>
-      <title>Changes</title>
+      <title>Release Notes</title>
   </properties>
 
   <body>
+    <release version="0.5" date="2005-09-26" description="Ease-of-use release">
+      <action dev="hen" type="add">Manual written to make it easier to start using Scraping-Engine</action>
+      <action dev="hen" type="add">Template structure created to make it easier to start using Scraping-Engine</action>
+      <action dev="hen" type="fix">Catch RuntimeExceptions in the ScrapingRunner so that a problem in one scraper does not stop the others from running</action>
+      <action dev="hen" type="add">Basic Authenticationon now supported for http://, and not just https://</action>
+      <action dev="hen" type="fix">Updated to oscube 0.3, scheduling configuration options are affected; to simple-jndi 0.11, which will mean changes to your sj .properties files; and to gj-core 3.1, which will get rid of some pesky warnings</action>
+    </release>
     <release version="0.4" date="2005-08-10" description="Four new features">
       <action dev="hen" type="add" issue="SCB-17">Caches HttpClient object for a scraper, thereby supporting cookies</action>
       <action dev="hen" type="add" issue="SCB-18">Ability to set any HTTP Header for initial request. If a User-Agent header is specified, Scraping-Engine will use this to look for a robots.txt</action>
