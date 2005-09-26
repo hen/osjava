@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+
+<!-- comment this if you don't want to see the intermediate xml in out.xml -->
+<?nextjen template="metamodel.xsl" writeTo="'out.xml'"?>
+<?nextjen template="metamodel.xsl"?>
+
+<metamodel>
+  <!-- Define types used, TODO: workout entity types automagically -->
+  <types>
+    <type name="String" class="java.lang.String"/>
+  </types>
+  <categories>
+    <!-- A Category -->
+    <category name="org.osjava.testing">
+      <!-- An Entity -->
+      <entity name="Test" comment="">
+        <attribute type="String" name="name" comment=""/>
+        <attribute type="String" name="description" comment=""/>
+        <listattribute type="String" name="when" comment=""/>
+        <setattribute type="String" name="location" comment=""/>
+        <mapattribute keytype="String" valuetype="String" name="property" comment=""/>
+      </entity>
+      <!-- An Entity -->
+      <entity name="Test2" comment="">
+        <attribute type="String" name="name" comment=""/>
+        <attribute type="String" name="description" comment=""/>
+        <listattribute type="String" name="when" comment=""/>
+        <setattribute type="String" name="location" comment=""/>
+        <mapattribute keytype="String" valuetype="String" name="property" comment=""/>
+      </entity>
+    </category>
+  </categories>
+</metamodel>
