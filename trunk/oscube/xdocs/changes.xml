@@ -3,10 +3,15 @@
 
   <properties>
       <author email="bayard@generationjava.com">Henri Yandell</author>
-      <title>Changes</title>
+      <title>Release Notes</title>
   </properties>
 
   <body>
+    <release version="0.3" date="2005-09-26" description="Minor fixes driven by scraping-engine usage">
+      <action dev="hen" type="add">ConsoleNotifier added to support a load-tester</action>
+      <action dev="hen" type="fix">Change to configuration keys for scheduling to support new Simple-JNDI release</action>
+    </release>
+
     <release version="0.2" date="2005-08-03" description="Minor fixes driven by scraping-engine usage">
       <action dev="hen" type="fix" issue="OSC-6">NullStore should not print to console</action>
       <action dev="hen" type="fix" issue="OSC-1">Rename PrinterStore to ConsoleStore</action>
