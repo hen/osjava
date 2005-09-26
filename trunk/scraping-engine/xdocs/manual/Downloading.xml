@@ -10,9 +10,9 @@
   <section><div><a href="Justifying.html">previous</a> - <a href="index.html">contents</a> - <a href="Configuring.html">next</a></div></section>
   <section name="Downloading">
 
-<p>The recommended way to download and install Scraping-Engine is to download the latest scraping-template archive from <a href="httphttp://dist.osjava.org/releases/official/scraping-engine/">http://dist.osjava.org/releases/official/scraping-engine/</a>, and after reading the README.txt, executing download.sh and run.sh. </p>
+<p>The recommended way to download and install Scraping-Engine is to download the latest scraping-template archive from <a href="http://dist.osjava.org/releases/official/scraping-engine/">http://dist.osjava.org/releases/official/scraping-engine/</a>, and after reading the README.txt, executing download.sh and run.sh. </p>
 
-<p>If this does not match the latest Scraping-Engine release, you will want to update the scraping-engine jar to the latest from <a href="httphttp://dist.osjava.org/maven/scraping-engine/jars/">http://dist.osjava.org/maven/scraping-engine/jars/</a> and update any of the dependencies by checking the latest pom file, <a href="http://dist.osjava.org/maven/scraping-engine/poms/.html">http://dist.osjava.org/maven/scraping-engine/poms/</a>. </p>
+<p>If this does not match the latest Scraping-Engine release, you will want to update the scraping-engine jar to the latest from <a href="http://dist.osjava.org/maven/scraping-engine/jars/">http://dist.osjava.org/maven/scraping-engine/jars/</a> and update any of the dependencies by checking the latest pom file, <a href="http://dist.osjava.org/maven/scraping-engine/poms/.html">http://dist.osjava.org/maven/scraping-engine/poms/</a>. </p>
 
 <p>A Comics example installation of Scraping-Engine is also available for download. Its version number may not correlate to the latest version of the engine as many changes are transparant to the example. Again you'll need to update the dependencies and scraping-engine jar. </p>
 

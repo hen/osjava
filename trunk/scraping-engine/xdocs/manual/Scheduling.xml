@@ -58,7 +58,7 @@ Xxx.schedule=cron
 Xxx.cron=&lt;cron string&gt;
 </pre>
 
-Quartz's implementation of the UNIX Cron system, their documentation <a href="httphttp://www.opensymphony.com/quartz/tutorial.html#cronTriggers">http://www.opensymphony.com/quartz/tutorial.html#cronTriggers</a> is probably the best place to read up on it.
+Quartz's implementation of the UNIX Cron system, their documentation <a href="http://www.opensymphony.com/quartz/tutorial.html#cronTriggers">http://www.opensymphony.com/quartz/tutorial.html#cronTriggers</a> is probably the best place to read up on it.
 
 Scraping every 5 minutes would be:
 
