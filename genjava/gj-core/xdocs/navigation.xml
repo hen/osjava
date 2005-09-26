@@ -32,7 +32,7 @@
       <item name="Mailing List"              href="/mail-lists.html"/>
       <item name="Jar Dependencies"              href="/dependencies.html"/>
       <item name="SVN Repository"     href="http://www.osjava.org/svn.html?project=genjava/gj-core"/>
-      <item name="Bug Tracking"              href="/issue-tracking.html"/>
+      <item name="Bug tracking"       href="http://issues.osjava.org/jira/browse/GJC"/>
     </menu>
     <links>
         <item name="Genjava"                 href="../../"/>
