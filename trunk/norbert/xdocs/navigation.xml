@@ -8,11 +8,11 @@
       <item name="Introduction"              href="/index.html"/>
       <item name="How To"              href="/HowTo.html"/>
       <item name="Download" href="http://dist.osjava.org/releases/official/norbert/"/>
-      <item name="Changes"              href="/changes-report.html"/>
+      <item name="Release Notes"              href="/changes-report.html"/>
       <item name="License"              href="/license.html"/>
     </menu>
     <menu name="Code docs">              
-      <item name="JavaDocs"              href="/apidocs/index.html"/>
+      <item name="JavaDocs"              href="http://dist.osjava.org/releases/multidoc-jnr/norbert/index.html"/>
       <item name="Source XReference"              href="/xref/index.html"/>
       <item name="Test XReference"              href="/xref-test/index.html"/>
     </menu>
@@ -20,7 +20,7 @@
       <item name="Mailing List"              href="/mail-lists.html"/>
       <item name="Jar Dependencies"              href="/dependencies.html"/>
       <item name="SVN Repository"              href="http://www.osjava.org/svn.html?project=norbert"/>
-      <item name="Bug Tracking"              href="/issue-tracking.html"/>
+      <item name="Bug Tracking"              href="http://issues.osjava.org/jira/browse/NRB"/>
     </menu>
   </body>
 </project>

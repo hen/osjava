@@ -3,12 +3,15 @@
 
   <properties>
       <author email="bayard@generationjava.com">Henri Yandell</author>
-      <title>Changes</title>
+      <title>Release Notes</title>
   </properties>
 
   <body>
+    <release version="0.3.1" date="2005-09-26" description="User-Agent bugfix">
+      <action dev="hen" type="fix" issue="NRB-5">Now correctly sets the User Agent in the request. </action>
+    </release>
     <release version="0.3" date="2005-05-18" description="User-Agent fix">
-      <action dev="hen" type="add">Now sends the User Agent in the request. </action>
+      <action dev="hen" type="add" issue="NRB-4">Now sends the User Agent in the request. </action>
     </release>
 
     <release version="0.2" date="2004-04-13" description="No dependencies">
@@ -18,7 +21,7 @@
     </release>
 
     <release version="0.1.1" date="2003-12-08" description="Bug fix">
-      <action dev="hen" type="fix">No longer fails when the url being tested does not contain a trailing slash, but the base url does. </action>
+      <action dev="hen" type="fix" issue="NRB-1">No longer fails when the url being tested does not contain a trailing slash, but the base url does. </action>
     </release>
 
     <release version="0.1" date="2003-08-23" description="Initial release">
