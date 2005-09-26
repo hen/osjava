@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<document>
+
+  <properties>
+      <author email="bayard@generationjava.com">Henri Yandell</author>
+      <title>Release Notes</title>
+  </properties>
+
+  <body>
+    <release version="3.1" date="2005-09-25" description="Minor update">
+        <action dev="hen" type="add">Added a very basic datasource implementation for prototyping</action>
+        <action dev="hen" type="fix">Documentation fixed in ByteArray, ClassW</action>
+        <action dev="hen" type="fix" issue="GJC-26">Bug in Numerical String comparison, foo1 and foo1a</action>
+        <action dev="hen" type="fix">Moved ClassIndex class to gj-find</action>
+    </release>
+    <release version="3.0" date="2003-12-08" description="Split from the monolithic GenJavaCore">
+        <action dev="hen" type="remove">Many deprecated classes and methods removed. </action>
+    </release>
+    <release version="2.2" date="2003-08-12" description="Old GenJavaCore, minor update">
+        <action dev="hen" type="add">Added first set of unit tests. </action>
+        <action dev="hen" type="add">Added a RunMain class which runs main(String[]) methods in a new Thread. </action>
+        <action dev="hen" type="add">Deprecated various classes and methods and made various other small improvements. </action>
+        <action dev="hen" type="add">Republished under OSJava site. </action>
+    </release>
+</body>
+</document>
