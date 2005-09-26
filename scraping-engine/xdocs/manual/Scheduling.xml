@@ -43,18 +43,18 @@ Xxx.schedule=startup
 <pre>
 Xxx.scheduler=Quartz
 Xxx.schedule=simple
-Xxx.schedule.interval=&lt;integer milliseconds&gt;
-Xxx.schedule.repeat=&lt;integer number of times to repeat&gt;
+Xxx.simple.interval=&lt;integer milliseconds&gt;
+Xxx.simple.repeat=&lt;integer number of times to repeat&gt;
 </pre>
 
-Confusingly the schedule in this case is called <code>simple</code>. The <code>interval</code> is the number of milliseconds to separate each scrape with, and the optional <code>repeat</code> is the number of times to perform the scrape. If unspecified it will go forever.
+Confusingly the schedule in this case is called <code>simple</code> (the name comes from the Quartz SimpleTrigger). The <code>interval</code> is the number of milliseconds to separate each scrape with, and the optional <code>repeat</code> is the number of times to perform the scrape. If unspecified it will go forever.
 
 </p></section><section name="cron"><p>
 
 <pre>
 Xxx.scheduler=Quartz
 Xxx.schedule=cron
-Xxx.schedule.cron=&lt;cron string&gt;
+Xxx.cron=&lt;cron string&gt;
 </pre>
 
 Quartz's implementation of the UNIX Cron system, their documentation <a href="httphttp://www.opensymphony.com/quartz/tutorial.html#cronTriggers">http://www.opensymphony.com/quartz/tutorial.html#cronTriggers</a> is probably the best place to read up on it.
@@ -64,7 +64,7 @@ Scraping every 5 minutes would be:
 <pre>
 Xxx.scheduler=Quartz
 Xxx.schedule=cron
-Xxx.schedule.cron=0 0/5 * * * ?
+Xxx.cron=0 0/5 * * * ?
 </pre>
 
 NOTE: Quartz adds a column to the front of the classic cron text to represent seconds, the above example would have only been <code>0/5 * * * ?</code> in the usual cron syntax.
