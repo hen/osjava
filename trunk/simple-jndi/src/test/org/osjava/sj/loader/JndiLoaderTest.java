@@ -162,7 +162,6 @@ public class JndiLoaderTest extends TestCase {
         try {
             File file = new File("src/test/config/");
             loader.loadDirectory( file, ctxt );
-            System.out.println( "CTXT: "+ctxt.lookup("TopLevelDS") );
             DataSource ds = (DataSource) ctxt.lookup("TopLevelDS");
             assertEquals( dsString, ds.toString() );
         } catch(IOException ioe) {
@@ -220,6 +219,25 @@ public class JndiLoaderTest extends TestCase {
             loader.load( props, ctxt );
 
             assertEquals( new Double(Math.PI), ctxt.lookup("math") );
+        } catch(NamingException ne) {
+            ne.printStackTrace();
+            fail("NamingException: "+ne.getMessage());
+        }
+    }
+
+    public void testBeanConverter() {
+        try {
+            Properties props = new Properties();
+            props.put("bean/type", "org.osjava.sj.loader.TestBean");
+            props.put("bean/converter", "org.osjava.sj.loader.convert.BeanConverter");
+            props.put("bean/text", "Example");
+
+            loader.load( props, ctxt );
+
+            TestBean testBean = new TestBean();
+            testBean.setText("Example");
+
+            assertEquals( testBean, ctxt.lookup("bean") );
         } catch(NamingException ne) {
             ne.printStackTrace();
             fail("NamingException: "+ne.getMessage());
