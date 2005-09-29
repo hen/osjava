@@ -8,7 +8,7 @@
 
   <body>
     <release version="0.11.1" date="2005-09-29" description="Some critical bugfixes">
-        <action dev="hen" type="add">BeanConverter, create empty instance and call setXxx methods</action>
+        <action dev="hen" type="add">BeanConverter, create empty instance and call setXxx(String) methods</action>
         <action dev="hen" type="fix" issue="SJN-69">Can't have 'type' at the top level inside a file</action>
         <action dev="hen" type="fix" issue="SJN-68">Shared memory not working</action>
     </release>
