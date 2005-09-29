@@ -46,7 +46,7 @@
       <li>ConstructorConverter - Default for java.lang.Boolean. The empty String value is required, this converter will create anything with a single String argument to its constructor. </li>
       <li>MapConverter - Loads all values in the properties object into a Map. (TODO: Why not just pass the Properties object straight back, it's a Map?).</li>
       <li>NullConverter - Returns the empty String value. </li>
-      <li>BeanConverter - Creates an empty instance of the type, then calls setXxx for each specified property. </li>
+      <li>BeanConverter - Creates an empty instance of the type, then calls setXxx(String) methods for each specified property. </li>
     </ul>
   </section>
 
