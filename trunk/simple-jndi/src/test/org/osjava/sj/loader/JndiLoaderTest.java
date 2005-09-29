@@ -157,6 +157,23 @@ public class JndiLoaderTest extends TestCase {
         }
     }
 
+    public void testTopLevelDataSource() {
+        String dsString = "org.gjt.mm.mysql.Driver::::jdbc:mysql://127.0.0.1/tmp::::sa";
+        try {
+            File file = new File("src/test/config/");
+            loader.loadDirectory( file, ctxt );
+            System.out.println( "CTXT: "+ctxt.lookup("TopLevelDS") );
+            DataSource ds = (DataSource) ctxt.lookup("TopLevelDS");
+            assertEquals( dsString, ds.toString() );
+        } catch(IOException ioe) {
+            ioe.printStackTrace();
+            fail("IOException: "+ioe.getMessage());
+        } catch(NamingException ne) {
+            ne.printStackTrace();
+            fail("NamingException: "+ne.getMessage());
+        }
+    }
+
     public void testBoolean() {
         try {
             Properties props = new Properties();
