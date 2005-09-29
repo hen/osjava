@@ -7,6 +7,11 @@
   </properties>
 
   <body>
+    <release version="0.11.1" date="2005-09-29" description="Some critical bugfixes">
+        <action dev="hen" type="fix" issue="SJN-70">Cannot unbind subcontexts</action>
+        <action dev="hen" type="fix" issue="SJN-69">Can't have 'type' at the top level inside a file</action>
+        <action dev="hen" type="fix" issue="SJN-68">Shared memory not working</action>
+    </release>
     <release version="0.11" date="2005-09-05" description="Complete rewrite with major improvements">
         <action dev="eric" type="fix" issue="SJN-59">Move from gj-xml to DOM</action>
         <action dev="hen" type="add" issue="SJN-60">Create user manual</action>
