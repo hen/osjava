@@ -101,6 +101,9 @@ public class JndiLoader {
      * Loads all .properties files in a directory into a context
      */
     public void loadDirectory(File directory, Context ctxt) throws NamingException, IOException {
+        loadDirectory(directory, ctxt, null, "");
+    }
+    public void loadDirectory(File directory, Context ctxt, Context parentCtxt, String ctxtName) throws NamingException, IOException {
 // System.err.println("Loading directory. ");
 
         if( !directory.isDirectory() ) {
@@ -134,7 +137,7 @@ public class JndiLoader {
 
 // System.err.println("Is directory. Creating subcontext: "+name);
                 Context tmpCtxt = ctxt.createSubcontext( name );
-                loadDirectory(file, tmpCtxt);
+                loadDirectory(file, tmpCtxt, ctxt, name);
             } else {
                 // TODO: Make this a plugin system
                 String[] extensions = new String[] { ".properties", ".ini", ".xml" };
@@ -147,8 +150,10 @@ public class JndiLoader {
                             name = name.substring(0, name.length() - extension.length());
 // System.err.println("Not default, so creating subcontext: "+name);
                             tmpCtxt = ctxt.createSubcontext( name );
+                            parentCtxt = ctxt;
+                            ctxtName = name;
                         }
-                        load( loadFile(file), tmpCtxt );
+                        load( loadFile(file), tmpCtxt, parentCtxt, ctxtName );
                     }
                 }
             }
@@ -157,6 +162,7 @@ public class JndiLoader {
     }
 
     private Properties loadFile(File file) throws IOException {
+//        System.err.println("LOADING: "+file);
         AbstractProperties p = null;
 
         if(file.getName().endsWith(".xml")) {
@@ -185,7 +191,10 @@ public class JndiLoader {
      * Loads a properties object into a context.
      */
     public void load(Properties properties, Context ctxt) throws NamingException {
-// System.err.println("Loading Properties");
+        load(properties, ctxt, null, "");
+    }
+    public void load(Properties properties, Context ctxt, Context parentCtxt, String ctxtName) throws NamingException {
+ //       System.err.println("Loading Properties: " + properties);
 
         String delimiter = (String) this.table.get(SIMPLE_DELIMITER);
         String typePostfix = delimiter + "type";
@@ -201,14 +210,19 @@ public class JndiLoader {
         while(iterator.hasNext()) {
             String key = (String) iterator.next();
 
-            if(key.endsWith( typePostfix )) {
-// System.err.println("TYPE: "+key);
+            if(key.equals("type") || key.endsWith( typePostfix )) {
                 Properties tmp = new Properties();
                 tmp.put( "type", properties.get(key) );
-                typeMap.put( key.substring(0, key.length() - typePostfix.length()), tmp );
+                if( key.equals( "type" ) ) {
+                    typeMap.put( "", tmp );
+                } else {
+                    typeMap.put( key.substring(0, key.length() - typePostfix.length()), tmp );
+                }
             }
 
         }
+
+//        System.err.println("TypeMap: " + typeMap);
 
 // if it matches a type root, then it should be added to the properties
 // if not, then it should be placed in the context
@@ -221,7 +235,7 @@ public class JndiLoader {
             String key = (String) iterator.next();
             Object value = properties.get(key);
 
-            if(key.endsWith( typePostfix )) {
+            if(key.equals("type") || key.endsWith( typePostfix )) {
                 continue;
             }
 
@@ -234,12 +248,18 @@ public class JndiLoader {
             if(key.indexOf(delimiter) != -1) {
                 String pathText = removeLastElement( key, delimiter );
                 String nodeText = getLastElement( key, delimiter );
+// System.err.println("PathText: "+pathText+" NodeText: "+nodeText);
 
                 if(typeMap.containsKey(pathText)) {
 // System.err.println("Sibling: "+key);
                     ( (Properties) typeMap.get(pathText) ).put(nodeText, value);
                     continue;
                 }
+            } else
+            if(typeMap.containsKey("")) {
+// System.err.println("Empty Sibling: "+key);
+                    ( (Properties) typeMap.get("") ).put(key, value);
+                    continue;
             }
 
 // System.err.println("Putting: "+key);
@@ -253,13 +273,18 @@ public class JndiLoader {
 
             Object value = convert(typeProperties);
 // System.err.println("Putting typed: "+typeKey);
-            jndiPut( ctxt, typeKey, value );
+            if(typeKey.equals("")) {
+                jndiPut( parentCtxt, ctxtName, value );
+            } else {
+                jndiPut( ctxt, typeKey, value );
+            }
         }
 
     }
 
     private void jndiPut(Context ctxt, String key, Object value) throws NamingException {
         // here we need to break by the specified delimiter
+//        System.err.println("Putting "+key+"="+value);
 
         // can't use String.split as the regexp will clash with the types of chars 
         // used in the delimiters. Could use Commons Lang. Quick hack instead.
