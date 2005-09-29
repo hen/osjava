@@ -12,10 +12,10 @@
     </section>
     <section name="Download Latest Stable">
 <ul>
-<li><a href="http://dist.osjava.org/releases/official/simple-jndi/simple-jndi-0.11-src.tar.gz">simple-jndi-0.11-src.tar.gz</a></li>
-<li><a href="http://dist.osjava.org/releases/official/simple-jndi/simple-jndi-0.11-src.zip">simple-jndi-0.11-src.zip</a></li>
-<li><a href="http://dist.osjava.org/releases/official/simple-jndi/simple-jndi-0.11.tar.gz">simple-jndi-0.11.tar.gz</a></li>
-<li><a href="http://dist.osjava.org/releases/official/simple-jndi/simple-jndi-0.11.zip">simple-jndi-0.11.zip</a></li>
+<li><a href="http://dist.osjava.org/releases/official/simple-jndi/simple-jndi-0.11.1-src.tar.gz">simple-jndi-0.11.1-src.tar.gz</a></li>
+<li><a href="http://dist.osjava.org/releases/official/simple-jndi/simple-jndi-0.11.1-src.zip">simple-jndi-0.11.1-src.zip</a></li>
+<li><a href="http://dist.osjava.org/releases/official/simple-jndi/simple-jndi-0.11.1.tar.gz">simple-jndi-0.11.1.tar.gz</a></li>
+<li><a href="http://dist.osjava.org/releases/official/simple-jndi/simple-jndi-0.11.1.zip">simple-jndi-0.11.1.zip</a></li>
 <!--
 <li><a href="http://dist.osjava.org/releases/official/simple-jndi/example-collections-0.8.zip">example-collections-0.8.zip</a> - Collections examples under 0.8 (unchanged in 0.9)</li>
 <li><a href="/releases/official/simple-jndi/example-datasource-0.8.zip">example-datasource-0.8.zip</a> - DataSource examples under 0.8 (unchanged in 0.9)</li>
@@ -33,6 +33,12 @@
      </p>
 </section>
 <section name="Archives">
+<ul>
+<li><a href="http://dist.osjava.org/releases/official/simple-jndi/simple-jndi-0.11-src.tar.gz">simple-jndi-0.11-src.tar.gz</a></li>
+<li><a href="http://dist.osjava.org/releases/official/simple-jndi/simple-jndi-0.11-src.zip">simple-jndi-0.11-src.zip</a></li>
+<li><a href="http://dist.osjava.org/releases/official/simple-jndi/simple-jndi-0.11.tar.gz">simple-jndi-0.11.tar.gz</a></li>
+<li><a href="http://dist.osjava.org/releases/official/simple-jndi/simple-jndi-0.11.zip">simple-jndi-0.11.zip</a></li>
+</ul>
 <ul>
 <li><a href="http://dist.osjava.org/releases/official/simple-jndi/simple-jndi-0.9.1.jar">simple-jndi-0.9.1.jar</a></li>
 </ul>
