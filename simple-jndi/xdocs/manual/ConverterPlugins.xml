@@ -10,7 +10,7 @@
   <section><div><a href="DataFiles.html">previous</a> - <a href="index.html">contents</a> - <a href="AsConfig.html">next</a></div></section>
 
   <section name="Converters">
-    <p>It can't have escaped your attention that JNDI is an object technology while .xml, .properties and .ini files are very noticeably text based. Simple-JNDI solves this via the <i>org.osjava.sj.loader.convert.Conveter</i> interface. </p>
+    <p>It can't have escaped your attention that JNDI is an object technology while .xml, .properties and .ini files are very noticeably text based. Simple-JNDI solves this via the <i>org.osjava.sj.loader.convert.Converter</i> interface. </p>
     <pre>
     /**
      * Turn a String-based tree-structure into an Object. Additionally 
@@ -46,6 +46,7 @@
       <li>ConstructorConverter - Default for java.lang.Boolean. The empty String value is required, this converter will create anything with a single String argument to its constructor. </li>
       <li>MapConverter - Loads all values in the properties object into a Map. (TODO: Why not just pass the Properties object straight back, it's a Map?).</li>
       <li>NullConverter - Returns the empty String value. </li>
+      <li>BeanConverter - Creates an empty instance of the type, then calls setXxx for each specified property. </li>
     </ul>
   </section>
 
