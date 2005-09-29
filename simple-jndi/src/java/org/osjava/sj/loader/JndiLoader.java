@@ -312,6 +312,10 @@ public class JndiLoader {
         }
         
         Object obj = tmpCtxt.lookup(path[lastIndex]);
+        if(obj instanceof Context) {
+            tmpCtxt.destroySubcontext(path[lastIndex]);
+            obj = null;
+        }
         if(obj == null) {
 // System.err.println("Binding: "+path[lastIndex]+" on "+key);
             tmpCtxt.bind( path[lastIndex], value );
