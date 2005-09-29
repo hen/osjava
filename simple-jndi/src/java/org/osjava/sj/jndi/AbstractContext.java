@@ -368,6 +368,9 @@ public abstract class AbstractContext
             if(table.containsKey(name)) {
                 table.remove(name);
             }
+            if(subContexts.containsKey(name)) {
+                subContexts.remove(name);
+            }
             return;
         }
         
