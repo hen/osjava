@@ -60,16 +60,21 @@ public class BeanConverter implements Converter {
             throw new RuntimeException("Specify the value as a pseudo property as Beans have empty constructors");
         }
 
+        String methodName = null;
+
         try {
             Class c = Class.forName(type);
             Object bean = c.newInstance();
             Iterator itr = properties.keySet().iterator();
             while(itr.hasNext()) {
                 String key = (String) itr.next();
+                if("converter".equals(key) || "type".equals(key)) {
+                    continue;
+                }
                 Object property = properties.get(key);
                 if(property instanceof String) {
-                    key = "set" + Character.toTitleCase(key.charAt(0)) + key.substring(1);
-                    Method m = c.getMethod(key, new Class[] { String.class });
+                    methodName = "set" + Character.toTitleCase(key.charAt(0)) + key.substring(1);
+                    Method m = c.getMethod(methodName, new Class[] { String.class });
                     m.invoke(bean, new Object[] { (String) property });
                 } else
                 if(property instanceof List) {
@@ -93,7 +98,7 @@ public class BeanConverter implements Converter {
         } catch(ClassNotFoundException cnfe) {
             throw new RuntimeException("Unable to find class: "+type, cnfe);
         } catch(NoSuchMethodException nsme) {
-            throw new RuntimeException("Unable to find (String) constructor on class: "+type, nsme);
+            throw new RuntimeException("Unable to find method " + methodName + " on class: "+type, nsme);
         } catch(InstantiationException ie) {
             throw new RuntimeException("Unable to instantiate class: "+type, ie);
         } catch(IllegalAccessException ie) {
