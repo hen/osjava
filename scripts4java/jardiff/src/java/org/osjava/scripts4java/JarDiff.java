@@ -1,3 +1,5 @@
+package org.osjava.scripts4java.jardiff;
+
 import java.util.*;
 import java.util.jar.*;
 import java.util.zip.*;
