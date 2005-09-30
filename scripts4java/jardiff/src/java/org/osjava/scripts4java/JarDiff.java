@@ -113,7 +113,7 @@ public class JarDiff {
             return;
         }
         Element classe = doc.createElement("class");
-        classe.setAttribute("name",name);
+        classe.setAttribute("name",format.getClassName(name));
         Element removed = doc.createElement("removed");
         classe.appendChild(removed);
         Element added = doc.createElement("added");
@@ -509,6 +509,7 @@ public class JarDiff {
         public void formatClass(Document doc, Element e, ClassInfo info);
         public void formatMethod(Document doc, Element e, MethodInfo info);
         public void formatField(Document doc, Element e, FieldInfo info);
+        public String getClassName(String internalName);
     }
 
     public static class SimpleNodeFormat implements NodeFormat {
@@ -516,12 +517,12 @@ public class JarDiff {
             /* Bit rough & raw atm */
             Element f = doc.createElement("class");
             addAccessFlags(f,info.getAccess());
-            if(info.getName() != null) f.setAttribute("name",info.getName());
+            if(info.getName() != null) f.setAttribute("name",getClassName(info.getName()));
             if(info.getSignature() != null) f.setAttribute("signature",info.getSignature());
-            if(info.getSupername() != null) f.setAttribute("supername",info.getSupername());
+            if(info.getSupername() != null) f.setAttribute("supername",getClassName(info.getSupername()));
             for(int i=0;i<info.getInterfaces().length;i++) {
                 Element g = doc.createElement("interface");
-                g.setAttribute("name",info.getInterfaces()[i]);
+                g.setAttribute("name",getClassName(info.getInterfaces()[i]));
                 f.appendChild(g);
             }
             e.appendChild(f);
@@ -532,12 +533,12 @@ public class JarDiff {
             Element f = doc.createElement("method");
             addAccessFlags(f,info.getAccess());
             if(info.getName() != null) f.setAttribute("name",info.getName());
-            if(info.getDesc() != null) f.setAttribute("desc",info.getDesc());
+            if(info.getDesc() != null) addMethodNodes(doc,f,info.getDesc());
             if(info.getSignature() != null) f.setAttribute("signature",info.getSignature());
             if(info.getExceptions() != null) {
                 for(int i=0;i<info.getExceptions().length;i++) {
                     Element g = doc.createElement("exception");
-                    g.setAttribute("name",info.getExceptions()[i]);
+                    g.setAttribute("name",getClassName(info.getExceptions()[i]));
                     f.appendChild(g);
                 }
             }
@@ -549,13 +550,109 @@ public class JarDiff {
             Element f = doc.createElement("field");
             addAccessFlags(f,info.getAccess());
             if(info.getName() != null) f.setAttribute("name",info.getName());
-            if(info.getDesc() != null) f.setAttribute("desc",info.getDesc());
+            if(info.getDesc() != null) addTypeNodes(doc,f,info.getDesc());
             if(info.getSignature() != null) f.setAttribute("signature",info.getSignature());
             if(info.getValue() != null) f.setAttribute("value",info.getValue().toString());
             e.appendChild(f);
         }
+        
+        /**
+         * Get the class name for a given java internal name
+         */
+        public String getClassName(String internalName) {
+            StringBuffer ret = new StringBuffer(internalName.length());
+            for(int i=0;i<internalName.length();i++) {
+                char ch = internalName.charAt(i);
+                switch(ch) {
+                    case '/':
+                    case '$':
+                        ret.append('.');
+                        break;
+                    default:
+                        ret.append(ch);
+                }
+            }
+            return ret.toString();
+        }
 
-        protected static void addAccessFlags(Element e, int access) {
+        /**
+         * Add a description of the method desc string to element e
+         */
+        protected void addMethodNodes(
+                final Document doc, final Element e, final String desc) 
+        {
+            Type[] args = Type.getArgumentTypes(desc);
+            Type ret = Type.getReturnType(desc);
+            Element argsElement = doc.createElement("arguments");
+            e.appendChild(argsElement);
+            for(int i=0;i<args.length;i++) {
+                addTypeNodes(doc, argsElement, args[i]);
+            }
+            Element retElement = doc.createElement("return");
+            e.appendChild(retElement);
+            addTypeNodes(doc,retElement,ret);
+        }
+
+        /**
+         * Add a description of the field desc string to element e
+         */
+        protected void addTypeNodes(
+                final Document doc, final Element e, final String desc) 
+        {
+            addTypeNodes(doc, e, Type.getType(desc));
+        }
+
+        /**
+         * Add a description of the asm type to element e
+         */
+        protected void addTypeNodes(
+                final Document doc, final Element e, final Type type) {
+            int i = type.getSort();
+            Element tmp = null;
+            switch(i) {
+                case Type.ARRAY:
+                    tmp = doc.createElement("array");
+                    tmp.setAttribute("dimensions",""+type.getDimensions());
+                    addTypeNodes(doc, tmp, type.getElementType());
+                    break;
+                case Type.BOOLEAN:
+                    tmp = doc.createElement("boolean");
+                    break;
+                case Type.BYTE:
+                    tmp = doc.createElement("byte");
+                    break;
+                case Type.CHAR:
+                    tmp = doc.createElement("char");
+                    break;
+                case Type.DOUBLE:
+                    tmp = doc.createElement("double");
+                    break;
+                case Type.FLOAT:
+                    tmp = doc.createElement("float");
+                    break;
+                case Type.INT:
+                    tmp = doc.createElement("int");
+                    break;
+                case Type.LONG:
+                    tmp = doc.createElement("long");
+                    break;
+                case Type.OBJECT:
+                    tmp = doc.createElement("object");
+                    tmp.setAttribute("class",getClassName(type.getInternalName()));
+                    break;
+                case Type.SHORT:
+                    tmp = doc.createElement("short");
+                    break;
+                case Type.VOID:
+                    tmp = doc.createElement("void");
+                    break;
+            }
+            e.appendChild(tmp);
+        }
+        /**
+         * Add the access flags to the element as attributes
+         */
+        protected void addAccessFlags(Element e, int access) {
             String accType;
             if((access & Opcodes.ACC_PUBLIC) != 0) {
                 accType = "public";
