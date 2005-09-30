@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:noNamespaceSchemaLocation="http://maven.apache.org/xsd/maven-project-3.0.0.xsd" 
+         xmlns:xsi="http://www.w3c.org/2001/XMLSchema-instance">
+  
+  <pomVersion>3</pomVersion>
+  <id>jardiff</id>
+  <name>jardiff</name>
+  <currentVersion>0.1</currentVersion>
+  <organization>
+    <name>OSJava</name>
+    <url>http://www.osjava.org/</url>
+    <logo>http://www.osjava.org/images/osjava.gif</logo>
+  </organization>
+  <inceptionYear>2005</inceptionYear>
+  <package>org.osjava.nextjen</package>
+  <logo>http://www.osjava.org/images/osjava.gif</logo>
+  
+  <description>
+  A java jar API difference generator. Generates descriptive xml of API changes.
+  </description>
+  
+  <shortDescription>A jar diff generator</shortDescription>
+
+  <!-- This stuff need fixing -->
+  <url>http://www.osjava.org/scripts4java/jardiff/</url>
+  <issueTrackingUrl>http://issues.osjava.org/jira/browse/S4J</issueTrackingUrl>
+  <siteAddress>dist.osjava.org/maven/scripts4java/jardiff/</siteAddress>
+  <siteDirectory>/sites/org/osjava/www/maven/scripts4java/jardiff/</siteDirectory>
+  <distributionDirectory>/sites/org/osjava/www/maven/builds/scripts4java/jardiff/</distributionDirectory>
+
+  <mailingLists>
+    <mailingList>
+      <name>osjava-users</name>
+      <subscribe>http://lists.osjava.org/mailman/listinfo/osjava-users</subscribe>
+      <unsubscribe>http://lists.osjava.org/mailman/listinfo/osjava-users</unsubscribe>
+      <archive>http://lists.osjava.org/mailman/private/osjava-users/</archive>
+    </mailingList>
+  </mailingLists>
+
+  <developers>
+    <developer>
+      <name>Antony Riley</name>
+      <id>antony</id>
+      <email>cyberiantiger@gmail.com</email>
+      <organization>osjava</organization>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+  </developers>
+  
+  <contributors>
+  </contributors>
+  
+  <dependencies>
+    <dependency>
+      <groupId>asm</groupId>
+      <artifactId>asm</artifactId>
+      <version>2.1</version>
+    </dependency>
+    <dependency>
+      <groupId>asm</groupId>
+      <artifactId>asm-commons</artifactId>
+      <version>2.1</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+
+    <nagEmailAddress>cyberiantiger@gmail.com</nagEmailAddress>
+
+    <sourceDirectory>src/java</sourceDirectory>
+    <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
+
+    <unitTest>
+      <includes>
+        <include>**/*Test.java</include>
+      </includes>
+      <resources>
+        <resource>
+          <directory>src/test/config</directory>
+          <targetPath>config</targetPath>
+        </resource>
+      </resources>
+    </unitTest>
+
+  </build>
+
+    <reports>
+        <report>maven-jxr-plugin</report>
+        <report>maven-javadoc-plugin</report>
+        <report>maven-license-plugin</report>
+        <report>maven-changes-plugin</report>           
+    </reports>
+
+</project>
