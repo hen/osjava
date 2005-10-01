@@ -1,0 +1,10 @@
+* SQLite3 uses 4 basic types for it's backend.
+  * Strings (the fallback for everything)
+  * Ints (2-8 bytes in 2 byte increments)
+  * Blobs
+  * NULL
+* SQLite3 appears to let you make a column of any arbitrary type.  It's up to 
+  the interfacing library to interpret them otherwise, keeping in mind the
+  fact that the fallback type is a string.
+* Blobs can be stored in any column.
+  
