@@ -37,59 +37,40 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.jms.Queue;
-import javax.jms.JMSException;
-
 // non-API
 import javax.jms.MessageListener;
 import javax.jms.Message;
 
-public class MemoryQueue implements Queue {
+class MessageQueue {
 
-    private String name;
-    private MessageWatcher messageWatcher = null;
-    private MessageQueue messageQueue;
-
-    public MemoryQueue(String name) {
-        this.name = name;
-        this.messageQueue = new MessageQueue();
-    }
-
-    public String getQueueName() throws JMSException {
-        return this.name;
-    }
+    private List messageList = Collections.synchronizedList(new LinkedList());
 
     void push(Message msg) {
-        this.messageQueue.push(msg);
+        this.messageList.add(msg);
     }
 
     Message pop() {
-        return this.messageQueue.pop();
-    }
-
-    Enumeration getEnumeration() {
-        return this.messageQueue.getEnumeration();
-    }
-
-    void setMessageListener(MessageListener listener) {
-
-        // kill the existing listener
-        if (messageWatcher != null){
-            messageWatcher.interrupt();
-            try {
-                messageWatcher.join();
-            } catch (InterruptedException e) {
-                // we don't care so long as the thread dies.
-            }
+        while (this.messageList.isEmpty()) {
+            Thread.yield();
         }
-
-        messageWatcher = new MessageWatcher( this.messageQueue, listener ) ;
-        messageWatcher.start();
+        Message msg = (Message) this.messageList.get(0);
+        this.messageList.remove(0);
+        return msg;
     }
 
-    public String toString() {
-        return getClass()+"["+this.name+"]";
-    }
+    Enumeration getEnumeration () {
+        return new Enumeration () {
+            Iterator i = messageList.iterator();
 
+          public boolean hasMoreElements() {
+                return i.hasNext();
+            }
+
+            public Object nextElement() {
+                return i.next();
+            }
+        
+        };
+   }
 }
 

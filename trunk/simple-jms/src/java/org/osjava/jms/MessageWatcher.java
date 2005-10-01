@@ -31,64 +31,26 @@
  */
 package org.osjava.jms;
 
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-
-import javax.jms.Queue;
-import javax.jms.JMSException;
-
-// non-API
 import javax.jms.MessageListener;
-import javax.jms.Message;
 
-public class MemoryQueue implements Queue {
+/**
+ * Watches a MessageQueue, pulling Messages off and sending them 
+ * to a MessageListener
+ */
+class MessageWatcher extends Thread {
 
-    private String name;
-    private MessageWatcher messageWatcher = null;
-    private MessageQueue messageQueue;
+    private MessageQueue queue;
+    private MessageListener listener;
 
-    public MemoryQueue(String name) {
-        this.name = name;
-        this.messageQueue = new MessageQueue();
+    public MessageWatcher(MessageQueue queue, MessageListener listener) {
+        this.queue= queue;
+        this.listener = listener;
     }
 
-    public String getQueueName() throws JMSException {
-        return this.name;
-    }
-
-    void push(Message msg) {
-        this.messageQueue.push(msg);
-    }
-
-    Message pop() {
-        return this.messageQueue.pop();
-    }
-
-    Enumeration getEnumeration() {
-        return this.messageQueue.getEnumeration();
-    }
-
-    void setMessageListener(MessageListener listener) {
-
-        // kill the existing listener
-        if (messageWatcher != null){
-            messageWatcher.interrupt();
-            try {
-                messageWatcher.join();
-            } catch (InterruptedException e) {
-                // we don't care so long as the thread dies.
-            }
+    public void run() {
+        while(true) {
+            listener.onMessage(queue.pop());
         }
-
-        messageWatcher = new MessageWatcher( this.messageQueue, listener ) ;
-        messageWatcher.start();
-    }
-
-    public String toString() {
-        return getClass()+"["+this.name+"]";
     }
 
 }
