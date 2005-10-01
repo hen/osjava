@@ -50,8 +50,6 @@ import org.osjava.jms.MemoryTopicConnectionFactory;
 
 public class TopicTest extends TestCase implements MessageListener {
 
-    private long startTime;
-
     private Thread lastThread;
     private Message lastMessage;
 
@@ -88,24 +86,15 @@ public class TopicTest extends TestCase implements MessageListener {
     public void testAsyncMessageDelivery() throws JMSException {
         ts.setMessageListener(this);
         Message m = tss.createMessage();
+        TestTimer timer = new TestTimer("Message not received within alloted time", 1000L);
+        timer.startClock();
         tp.send(m);
-        startClock();
         while(this.lastMessage == null) {
             Thread.yield();
-            failIfOverdue("Message not received within alloted time", 1000L);
+            timer.failIfOverdue();
         }
         assertEquals("Asynchronous message damaged", m, this.lastMessage);
         assertTrue("Same thread was used", Thread.currentThread() != this.lastThread);
-    }
-
-    private void startClock() {
-        this.startTime = System.currentTimeMillis();
-    }
-
-    private void failIfOverdue(String message, long timeout) {
-        if(System.currentTimeMillis() - this.startTime > timeout) {
-            fail(message);
-        }
     }
 
 }
