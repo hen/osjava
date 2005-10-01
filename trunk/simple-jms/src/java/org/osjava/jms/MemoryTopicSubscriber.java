@@ -31,34 +31,46 @@
  */
 package org.osjava.jms;
 
+import javax.jms.Message;
+import javax.jms.MessageListener;
 import javax.jms.Topic;
 import javax.jms.TopicSubscriber;
 import javax.jms.JMSException;
 
 public class MemoryTopicSubscriber extends MemoryMessageConsumer implements TopicSubscriber {
 
+    private MemoryTopic topic;
     private String name;
 
-    public MemoryTopicSubscriber(Topic topic, String messageSelector, boolean noLocal) {
+    public MemoryTopicSubscriber(MemoryTopic topic, String messageSelector, boolean noLocal) {
         super(topic, messageSelector, noLocal);
+        this.topic = topic;
     }
 
-    public MemoryTopicSubscriber(Topic topic, String name, String messageSelector, boolean noLocal) {
+    public MemoryTopicSubscriber(MemoryTopic topic, String name, String messageSelector, boolean noLocal) {
         super(topic, messageSelector, noLocal);
         this.name = name;
+        this.topic = topic;
     }
 
-    public MemoryTopicSubscriber(Topic topic) {
+    public MemoryTopicSubscriber(MemoryTopic topic) {
         super(topic);
+        this.topic = topic;
     }
 
-    public MemoryTopicSubscriber(Topic topic, String name) {
+    public MemoryTopicSubscriber(MemoryTopic topic, String name) {
         super(topic);
         this.name = name;
+        this.topic = topic;
+    }
+
+    public void setMessageListener(MessageListener listener) throws JMSException {
+        super.setMessageListener(listener);
+        this.topic.addMessageListener(listener);
     }
 
     public Topic getTopic() throws JMSException {
-        return (Topic) super.getDestination();
+        return this.topic;
     }
 
     public boolean getNoLocal() throws JMSException {

@@ -31,12 +31,24 @@
  */
 package org.osjava.jms;
 
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+
 import javax.jms.Topic;
 import javax.jms.JMSException;
+
+// non-API
+import javax.jms.MessageListener;
+import javax.jms.Message;
 
 public class MemoryTopic implements Topic {
 
     private String name;
+    private List messageList = Collections.synchronizedList(new LinkedList());
+    private List messageListeners = Collections.synchronizedList(new LinkedList());
 
     public MemoryTopic(String name) {
         this.name = name;
@@ -46,9 +58,20 @@ public class MemoryTopic implements Topic {
         return this.name;
     }
 
+    void push(Message msg) {
+        Iterator iter = messageListeners.iterator();
+        while(iter.hasNext()) {
+            MessageListener listener = (MessageListener) iter.next();
+            listener.onMessage(msg);
+        }
+    }
+
+    void addMessageListener(MessageListener listener) {
+        this.messageListeners.add(listener);
+    }
+
     public String toString() {
         return getClass()+"["+this.name+"]";
     }
 
 }
-
