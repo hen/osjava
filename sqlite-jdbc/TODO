@@ -8,19 +8,45 @@
   value of the property and the file does not already exist.)
     
 * Driver.getConnection().  Utilize passed properties where appropriate.
+  * Whether or not to create a database or fail if one doesn't exist.
+  * Whether or not the Connection is auto-commit
+  * Username/password foo.
 
 * Consider extending SQLException in more specific classes so that they are 
   easier to catch without having to parse the message of the exception.
   When this is done, it will be important that the new exception classes 
   extend SQLException, so the spec remains in tact.  Additionally the error
   messages should stay the same as before, for backwards compatability.
+  * One extension has already been made so that a cause could be assigned to
+    the exception.
 
 * Remove the generated .h files from repository and generate them in the
   makefile instead.
   
 * ResultSet.SCROLLTYPE_SENSITIVE not implemented properly.
 
-* ResultSet.getXXX() for number types should detect primitive overflows
+* ResultSet.get* methods not yet implemented.  Some of these may not be
+  appropriate to implement with sqlite3 
+  * getArray
+  * getAsciiStream
+  * getBigDecimal
+  * getBinaryStream
+  * getBlob
+  * getBoolean
+  * getBytes (Possibly not appropriate)
+  * getCharacterStream
+  * getClob (possibly not appropriate)
+  * getDate
+  * getDoublt (needs improvement)
+  * getObject
+  * getRef
+  * getTime
+  * getTimestamp
+  * getUnicodeStream
+  * getURL
+
+* All ResultSet.update* methods need to be implemented.
+  
 
 TESTS TO CREATE
 * closing a connection where the database will be busy
@@ -30,3 +56,4 @@ TESTS TO CREATE
 * ResultSet Paging
 * ResultSet.last();
 * ResultSet.first();
+* Statement.setMaxRows < 0
