@@ -159,11 +159,11 @@ public class MemorySession implements Session {
     }
 
     public TopicSubscriber createDurableSubscriber(Topic topic, String name) throws JMSException {
-        return new MemoryTopicSubscriber(topic, name);
+        return new MemoryTopicSubscriber( (MemoryTopic) topic, name);
     }
 
     public TopicSubscriber createDurableSubscriber(Topic topic, String name, String messageSelector, boolean noLocal) throws JMSException {
-        return new MemoryTopicSubscriber(topic, name, messageSelector, noLocal);
+        return new MemoryTopicSubscriber( (MemoryTopic) topic, name, messageSelector, noLocal);
     }
 
     public QueueBrowser createBrowser(Queue queue) throws JMSException {

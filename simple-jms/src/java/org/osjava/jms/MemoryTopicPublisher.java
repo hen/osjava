@@ -38,9 +38,9 @@ import javax.jms.Message;
 
 public class MemoryTopicPublisher extends MemoryMessageProducer implements TopicPublisher {
 
-    private Topic topic;
+    private MemoryTopic topic;
 
-    public MemoryTopicPublisher(Topic topic) {
+    public MemoryTopicPublisher(MemoryTopic topic) {
         super(topic);
         this.topic = topic;
     }
@@ -50,19 +50,19 @@ public class MemoryTopicPublisher extends MemoryMessageProducer implements Topic
     }
 
     public void publish(Message msg) throws JMSException {
-        // TODO: Implement this
+        this.topic.push(msg);
     }
 
     public void publish(Message message, int deliveryMode, int priority, long timeToLive) throws JMSException {
-        // TODO: Implement this
+        publish(message);
     }
 
     public void publish(Topic topic, Message msg) throws JMSException {
-        // TODO: Implement this
+         ((MemoryTopic) topic).push(msg);
     }
 
     public void publish(Topic topic, Message message, int deliveryMode, int priority, long timeToLive) throws JMSException {
-        // TODO: Implement this
+        publish(topic, message);
     }
 
 

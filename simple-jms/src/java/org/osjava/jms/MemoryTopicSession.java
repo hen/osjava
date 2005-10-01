@@ -48,23 +48,23 @@ public class MemoryTopicSession extends MemorySession implements TopicSession {
     }
 
     public TopicSubscriber createSubscriber(Topic topic) throws JMSException {
-        return new MemoryTopicSubscriber(topic);
+        return new MemoryTopicSubscriber( (MemoryTopic) topic);
     }
 
     public TopicSubscriber createSubscriber(Topic topic, String messageSelector, boolean noLocals) throws JMSException {
-        return new MemoryTopicSubscriber(topic, messageSelector, noLocals);
+        return new MemoryTopicSubscriber( (MemoryTopic) topic, messageSelector, noLocals);
     }
 
     public TopicSubscriber createDurableSubscriber(Topic topic, String name) throws JMSException {
-        return new MemoryTopicSubscriber(topic, name);
+        return new MemoryTopicSubscriber( (MemoryTopic) topic, name);
     }
 
     public TopicSubscriber createDurableSubscriber(Topic topic, String name, String messageSelector, boolean noLocals) throws JMSException {
-        return new MemoryTopicSubscriber(topic, name, messageSelector, noLocals);
+        return new MemoryTopicSubscriber( (MemoryTopic) topic, name, messageSelector, noLocals);
     }
 
     public TopicPublisher createPublisher(Topic topic) throws JMSException {
-        return new MemoryTopicPublisher(topic);
+        return new MemoryTopicPublisher( (MemoryTopic) topic );
     }
 
     public void unsubscribe(String name) throws JMSException {
