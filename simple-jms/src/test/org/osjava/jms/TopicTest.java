@@ -88,7 +88,7 @@ public class TopicTest extends TestCase implements MessageListener {
         Message m = tss.createMessage();
         TestTimer timer = new TestTimer("Message not received within alloted time", 1000L);
         timer.startClock();
-        tp.send(m);
+        tp.publish(m);
         while(this.lastMessage == null) {
             Thread.yield();
             timer.failIfOverdue();
