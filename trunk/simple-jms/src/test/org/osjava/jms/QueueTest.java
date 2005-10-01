@@ -82,9 +82,12 @@ public class QueueTest extends TestCase implements MessageListener {
     public void testAsyncMessageDelivery() throws Exception {
         qr.setMessageListener(this);
         Message m = qss.createMessage();
+        TestTimer timer = new TestTimer("Message not received within alloted time", 1000L);
+        timer.startClock();
         qs.send(m);
         while(this.lastMessage == null) {
             Thread.yield();
+            timer.failIfOverdue();
         }
         assertEquals("Asynchronous message damaged", m, this.lastMessage);
         assertTrue("Same thread was used", Thread.currentThread() != this.lastThread);
