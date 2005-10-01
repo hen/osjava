@@ -130,6 +130,12 @@ public class ResultSet implements java.sql.ResultSet {
     private int statementPointer;
 
     private boolean closed;
+    
+    /** 
+     * Boolean value indicating whether or not the last column read was 
+     * SQL NULL.
+     */
+    private boolean lastNull = false;
 
 /****************
  * Constructors *
@@ -435,8 +441,7 @@ public class ResultSet implements java.sql.ResultSet {
      * @see java.sql.ResultSet#wasNull()
      */
     public boolean wasNull() throws SQLException {
-        // TODO Auto-generated method stub
-        return false;
+        return lastNull;
     }
 
 /**********************************
