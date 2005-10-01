@@ -130,17 +130,7 @@ public class Statement implements java.sql.Statement {
         /* Create a new java.sql.ResultSet object that will be filled. */
         ResultSet rs = new ResultSet(this, resultSetType, resultSetConcurrency, resultSetHoldability, this);
         results.add(rs);
-        try {
-            executeSQLWithResultSet(sql, con, rs, getFetchSize());
-        } catch (SQLException e) {
-            /*
-             * FIXME: We don't want to do this. Once out of debugging mode, what
-             * we really want to do is to rethrow the exception if it's not
-             * something that we can handle here. This will be based upon the
-             * message of the exception.
-             */
-            e.printStackTrace();
-        }
+        executeSQLWithResultSet(sql, con, rs, getFetchSize());
         return rs;
     }
 
@@ -151,21 +141,9 @@ public class Statement implements java.sql.Statement {
      */
     public int executeUpdate(String sql) throws SQLException {
         int count = -1;
-        try {
-            count = executeSQL(sql, con);
-        } catch (SQLException e) {
-            /*
-             * FIXME: We don't want to do this. Once out of debugging mode, what
-             * we really want to do is to rethrow the exception if it's not
-             * something that we can handle here. This will be based upon the
-             * message of the exception.
-             */
-            e.printStackTrace();
-        }
+        count = executeSQL(sql, con);
         /* FIXME: Should look for -1 as the value of count and probably return
-         *        an error (throw exception)
-         */
-        
+         *        an error (throw exception) */        
         return count;
     }
 
