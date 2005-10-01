@@ -43,6 +43,7 @@ package org.osjava.jdbc.sqlite;
 import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 
 import junit.framework.TestCase;
 
@@ -91,7 +92,26 @@ public class TestStatement extends TestCase {
         int count = stmt.executeUpdate("INSERT INTO foo (TestCol) VALUES (\"WHEE\");");
         assertEquals(count, 1);
     }
-    
+
+    public void testExecuteUpdate3() throws Exception {
+        java.sql.Statement stmt = con.createStatement();
+        /* Try to create the table.  This statement has a syntax error */
+        try {
+            stmt.executeUpdate(
+                               "CREATE TABLE foo (" +
+                               "    TinyInt1 TINYINT, " +
+                               ");"
+            );
+        } catch(SQLException e) {
+            /* Only pass if this is a syntax error message.  This is subject 
+             * to change if the underlying error is changed. */
+            if(e.getMessage().endsWith(": syntax error")) {
+                return;
+            }
+        }
+        fail("Expected SQL syntax error and didn't get one.");
+    }
+        
     /**
      * Simple Statement.executeQuery() test.  This particular test creates
      * a new database if it doesn't exist, and then uses 
