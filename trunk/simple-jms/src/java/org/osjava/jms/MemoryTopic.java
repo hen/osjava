@@ -47,8 +47,7 @@ import javax.jms.Message;
 public class MemoryTopic implements Topic {
 
     private String name;
-    private List messageList = Collections.synchronizedList(new LinkedList());
-    private List messageListeners = Collections.synchronizedList(new LinkedList());
+    private List messageQueues = Collections.synchronizedList(new LinkedList());
 
     public MemoryTopic(String name) {
         this.name = name;
@@ -59,15 +58,18 @@ public class MemoryTopic implements Topic {
     }
 
     void push(Message msg) {
-        Iterator iter = messageListeners.iterator();
+        Iterator iter = messageQueues.iterator();
         while(iter.hasNext()) {
-            MessageListener listener = (MessageListener) iter.next();
-            listener.onMessage(msg);
+            MessageQueue mq = (MessageQueue) iter.next();
+            mq.push(msg);
         }
     }
 
     void addMessageListener(MessageListener listener) {
-        this.messageListeners.add(listener);
+        MessageQueue mq = new MessageQueue();
+        this.messageQueues.add(mq);
+        MessageWatcher messageWatcher = new MessageWatcher( mq, listener ) ;
+        messageWatcher.start();
     }
 
     public String toString() {
