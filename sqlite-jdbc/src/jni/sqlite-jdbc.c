@@ -156,7 +156,7 @@ Java_org_osjava_jdbc_sqlite_Statement_executeSQL(JNIEnv *env,
                                                  jobject con) {
     int count;
     int result;
-    char *errmsg;
+    char *errmsg = 0;
     /* Convert the java query into a char array that can be used by the
      * sqlite method */
     /* 'jbyte *' and 'char *' are synonymous? */
@@ -164,12 +164,16 @@ Java_org_osjava_jdbc_sqlite_Statement_executeSQL(JNIEnv *env,
 
     sqlite3 *dbPtr = getSQLiteHandle(env, con);
     result = sqlite3_exec(dbPtr, sql, NULL, NULL, &errmsg);
+    if(errmsg != NULL) {
+        sqliteThrowSQLException(env, errmsg);
+        sqlite3_free(errmsg);
+        return 0;
+    }
+    sqlite3_free(errmsg);
     count = sqlite3_changes(dbPtr);
     (*env)->ReleaseStringUTFChars(env, query, sql);
 
     /* Check the result */
-    fprintf(stderr, "ResultCode %d.\n", result);
-    fprintf(stderr, "Message '%s.\n", sqlite3_errmsg(dbPtr));
     if(result == SQLITE_BUSY) {
         sqliteThrowSQLException(env, SQLITE_BUSY_MESSAGE);
         return -1;
@@ -223,7 +227,7 @@ Java_org_osjava_jdbc_sqlite_Statement_executeSQLWithResultSet(JNIEnv *env,
         sqlite3 *dbPtr = (sqlite3 *)sqlite3_db_handle(stmt);
         sqliteThrowSQLException(env, sqlite3_errmsg(dbPtr));
     }
-
+    
     (*env)->ReleaseStringUTFChars(env, query, sql);
 
     /* Associate the statement pointer to the ResultSet */
@@ -509,6 +513,9 @@ void populateResultSetMetadata(JNIEnv *env, sqlite3_stmt *stmt, jobject resultSe
                                               metaDataClass,
                                               "setColumnName",
                                               "(ILjava/lang/String;)V");
+    if((*env)->ExceptionOccurred(env)) {
+        return;
+    }
     jmethodID setTypeID = (*env)->GetMethodID(env,
                                               metaDataClass,
                                               "setColumnType",
@@ -518,14 +525,19 @@ void populateResultSetMetadata(JNIEnv *env, sqlite3_stmt *stmt, jobject resultSe
     }
     for(i = 0; i < numCols; i++) {
         const char *colName = sqlite3_column_name(stmt, i);
-        (*env)->CallVoidMethod(env,
-                               metaData,
-                               setNameID,
-                               i,
-                               convertNativeString(env, colName));
-        if((*env)->ExceptionOccurred(env)) {
-            return;
+        /* Make sure that there is a name before trying to apply it. */
+        /* XXX: Yes, SQLite3 can allow you to have columns without names. */
+        if(colName != NULL) {
+            (*env)->CallVoidMethod(env,
+                                   metaData,
+                                   setNameID,
+                                   i,
+                                   convertNativeString(env, colName));
+            if((*env)->ExceptionOccurred(env)) {
+                return;
+            }
         }
+        
         const char *colType = sqlite3_column_decltype(stmt, i);
         (*env)->CallVoidMethod(env,
                                metaData,
