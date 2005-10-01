@@ -54,11 +54,9 @@ public class QueueTest extends TestCase implements MessageListener {
     private Message lastMessage;
     private Thread lastThread;
 
-    private QueueConnectionFactory qcf = null;
-    private QueueConnection qc = null;
     private QueueSession qss = null;
-    private Queue q = null;
     private QueueSender qs = null;
+    private Queue q = null;
     private QueueReceiver qr = null;
 
     public QueueTest(String name) {
@@ -66,8 +64,8 @@ public class QueueTest extends TestCase implements MessageListener {
    }
 
     public void setUp() throws Exception {
-        qcf = new MemoryQueueConnectionFactory();
-        qc = qcf.createQueueConnection();
+        QueueConnectionFactory qcf = new MemoryQueueConnectionFactory();
+        QueueConnection qc = qcf.createQueueConnection();
         qss = qc.createQueueSession(false, Session.AUTO_ACKNOWLEDGE);
 
         // NOTE: This is not the correct way to make a Queue, 
