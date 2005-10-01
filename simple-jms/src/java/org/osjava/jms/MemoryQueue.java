@@ -47,7 +47,7 @@ import javax.jms.Message;
 public class MemoryQueue implements Queue {
 
     private String name;
-    private List queueList = Collections.synchronizedList(new LinkedList());
+    private List messageList = Collections.synchronizedList(new LinkedList());
     private Watcher queueWatcher = null;
 
     public MemoryQueue(String name) {
@@ -59,15 +59,15 @@ public class MemoryQueue implements Queue {
     }
 
     void push(Message msg) {
-        this.queueList.add(msg);
+        this.messageList.add(msg);
     }
 
     Message pop() {
-        while (this.queueList.isEmpty()) {
+        while (this.messageList.isEmpty()) {
             Thread.yield();
         }
-        Message msg = (Message) this.queueList.get(0);
-        this.queueList.remove(0);
+        Message msg = (Message) this.messageList.get(0);
+        this.messageList.remove(0);
         return msg;
     }
 
@@ -108,7 +108,7 @@ public class MemoryQueue implements Queue {
     
     Enumeration getEnumeration () {
         return new Enumeration () {
-            Iterator i = queueList.iterator();
+            Iterator i = messageList.iterator();
 
           public boolean hasMoreElements() {
                 return i.hasNext();
