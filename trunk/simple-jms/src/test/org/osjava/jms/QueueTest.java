@@ -54,10 +54,10 @@ public class QueueTest extends TestCase implements MessageListener {
     private Message lastMessage;
     private Thread lastThread;
 
-    private QueueSession qss = null;
-    private QueueSender qs = null;
-    private Queue q = null;
-    private QueueReceiver qr = null;
+    private QueueSession qss;
+    private QueueSender qs;
+    private Queue q;
+    private QueueReceiver qr;
 
     public QueueTest(String name) {
         super(name);
