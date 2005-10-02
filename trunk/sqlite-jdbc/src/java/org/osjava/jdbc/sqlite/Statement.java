@@ -416,8 +416,7 @@ public class Statement implements java.sql.Statement {
      * @see java.sql.Statement#getConnection()
      */
     public Connection getConnection() throws SQLException {
-        // TODO Auto-generated method stub
-        return null;
+        return con;
     }
 
     /*
