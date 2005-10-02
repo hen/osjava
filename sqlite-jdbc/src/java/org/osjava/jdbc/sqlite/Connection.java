@@ -67,6 +67,11 @@ public class Connection implements java.sql.Connection {
      * A boolean value indicating whether or not the connection has been closed.
      */
     private boolean closed = false;
+    
+    /**
+     * Autocommit status
+     */
+    private boolean autoCommit = true;
 
     /**
      * Statements that have been created.
@@ -79,7 +84,7 @@ public class Connection implements java.sql.Connection {
      * @param ptr 
      * @see java.sql.Connection
      */
-    public Connection(int ptr) {
+    public Connection(int ptr) throws SQLException {
         super();
         dbPointer = ptr;
     }
@@ -146,35 +151,6 @@ public class Connection implements java.sql.Connection {
         return stmt;
     }
 
-    public PreparedStatement prepareStatement(String sql) throws SQLException {
-        // TODO Auto-generated method stub
-        return null;
-    }
-    public CallableStatement prepareCall(String sql) throws SQLException {
-        // TODO Auto-generated method stub
-        return null;
-    }
-    public String nativeSQL(String sql) throws SQLException {
-        // TODO Auto-generated method stub
-        return null;
-    }
-    public void setAutoCommit(boolean autoCommit) throws SQLException {
-        // TODO Auto-generated method stub
-        
-    }
-    public boolean getAutoCommit() throws SQLException {
-        // TODO Auto-generated method stub
-        return false;
-    }
-    public void commit() throws SQLException {
-        // TODO Auto-generated method stub
-        
-    }
-    public void rollback() throws SQLException {
-        // TODO Auto-generated method stub
-        
-    }
-    
     /**
      * Close the connection.
      *
@@ -197,6 +173,59 @@ public class Connection implements java.sql.Connection {
         closed = true;
     }
     
+    public PreparedStatement prepareStatement(String sql) throws SQLException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+    public CallableStatement prepareCall(String sql) throws SQLException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+    public String nativeSQL(String sql) throws SQLException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+    public void setAutoCommit(boolean autoCommit) throws SQLException {
+        this.autoCommit = autoCommit;
+        
+    }
+    public boolean getAutoCommit() throws SQLException {
+        return autoCommit;
+    }
+    
+    public void commit() throws SQLException {
+        commit(false);
+    }
+    
+
+    /** 
+     * Commit the current transaction to the database.  If <code>auto</code>
+     * is <code>false</code>, the standard behavior of commit() is done.  If
+     * it is <code>true</code>, the commit will be forced.  This mechanism is 
+     * only intended to be used internally when simulating autocommit.</br>
+     * 
+     * This method is package private and thus not incredibly secure.
+     * 
+     * @param auto boolean value determining whether or not to try to force
+     *        the commit, such as when getAutoCommit() is <code>true</code>
+     * @throws SQLException
+     */
+    void commit(boolean auto) throws SQLException {
+        if(!auto) {
+            if(autoCommit) {
+                throw new SQLException("Cannot commit() when in autocommit mode.");
+            }
+        }
+        // TODO method stub
+    }
+    
+    public void rollback() throws SQLException {
+        if(autoCommit) {
+            throw new SQLException("Cannot commit() when in autocommit mode.");
+        }
+        // TODO method stub
+    }
+   
     /**
      * @see java.sql.Connection#isClosed()
      */
@@ -307,5 +336,4 @@ public class Connection implements java.sql.Connection {
     
     /* Native methods */
     private native void proxyCloseConnection() throws SQLException;
-
 }
