@@ -46,6 +46,8 @@ import javax.jms.QueueSession;
 import javax.jms.Session;
 import javax.jms.TextMessage;
 
+import javax.naming.InitialContext;
+
 import junit.framework.TestCase;
 import org.osjava.jms.MemoryQueueConnectionFactory;
 
@@ -64,14 +66,12 @@ public class QueueTest extends TestCase implements MessageListener {
    }
 
     public void setUp() throws Exception {
-        QueueConnectionFactory qcf = new MemoryQueueConnectionFactory();
+        InitialContext ctxt = new InitialContext();
+        QueueConnectionFactory qcf = (QueueConnectionFactory) ctxt.lookup("org.osjava.jms.QueueConnectionFactory");
         QueueConnection qc = qcf.createQueueConnection();
         qss = qc.createQueueSession(false, Session.AUTO_ACKNOWLEDGE);
 
-        // NOTE: This is not the correct way to make a Queue, 
-        // We should be getting it from JNDI or something
-        // probably by depending on simple-jndi and implementing converters
-        q = new MemoryQueue("Test Q");
+        q = (Queue) ctxt.lookup("Test Q");
         qs = qss.createSender(q);
         qr = qss.createReceiver(q);
     }
