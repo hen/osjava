@@ -47,6 +47,11 @@
       <artifactId>geronimo-spec-jms</artifactId>
       <version>1.1-rc4</version>
     </dependency>
+    <dependency>
+      <groupId>simple-jndi</groupId>
+      <artifactId>simple-jndi</artifactId>
+      <version>0.11.1</version>
+    </dependency>
   </dependencies>
 
   <build>
@@ -59,6 +64,18 @@
       <includes>
         <include>**/*Test.java</include>
       </includes>
+      <resources>
+        <resource>
+          <directory>src/test/config</directory>
+          <targetPath>config</targetPath>
+        </resource>
+        <resource>
+          <directory>src/test</directory>
+          <includes>
+            <include>jndi.properties</include>
+          </includes>
+        </resource>
+      </resources>
     </unitTest>
 
   </build>

@@ -45,6 +45,8 @@ import javax.jms.TopicSession;
 import javax.jms.Session;
 import javax.jms.TextMessage;
 
+import javax.naming.InitialContext;
+
 import junit.framework.TestCase;
 import org.osjava.jms.MemoryTopicConnectionFactory;
 
@@ -63,14 +65,12 @@ public class TopicTest extends TestCase implements MessageListener {
    }
 
     public void setUp() throws Exception {
-        TopicConnectionFactory tcf = new MemoryTopicConnectionFactory();
+        InitialContext ctxt = new InitialContext();
+        TopicConnectionFactory tcf = (TopicConnectionFactory) ctxt.lookup("org.osjava.jms.TopicConnectionFactory");
         TopicConnection tc = tcf.createTopicConnection();
         tss = tc.createTopicSession(false, Session.AUTO_ACKNOWLEDGE);
 
-        // NOTE: This is not the correct way to make a Topic, 
-        // We should be getting it from JNDI or something
-        // probably by depending on simple-jndi and implementing converters
-        t = new MemoryTopic("Test Topic");
+        t = (Topic) ctxt.lookup("Test Topic");
         tp = tss.createPublisher(t);
         ts = tss.createSubscriber(t);
     }
