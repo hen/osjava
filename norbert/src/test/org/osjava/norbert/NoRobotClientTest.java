@@ -160,7 +160,6 @@ public class NoRobotClientTest extends TestCase {
         assertTrue( nrc.isUrlAllowed( new URL(this.hardCode + "basic" ) ) );
     }
 
-
     // Tests NRB-6
     // http://issues.osjava.org/jira/secure/ViewIssue.jspa?key=NRB-6
     public void testNrb6() throws MalformedURLException, NoRobotException {
@@ -173,6 +172,15 @@ public class NoRobotClientTest extends TestCase {
         nrc = new NoRobotClient("Scabies-1.0");
         nrc.parse( new URL(base) );
         assertTrue( "Wildcard then Specific not working as expected", nrc.isUrlAllowed( new URL(base + "order/" ) ) );
+    }      
+
+    // Tests NRB-9
+    // http://issues.osjava.org/jira/secure/ViewIssue.jspa?key=NRB-9
+    public void testNrb9() throws MalformedURLException, NoRobotException {
+        String base = this.hardCode + "disallow-empty/";
+        NoRobotClient nrc = new NoRobotClient("test");
+        nrc.parse( new URL(base) );
+        assertTrue( "'Disallow: ' should mean to disallow nothing", nrc.isUrlAllowed( new URL(base + "index.html" ) ) );
     }      
 
 }
