@@ -44,7 +44,7 @@ class DisallowedRule extends AbstractRule {
 
     public Boolean isAllowed(String query) {
         if("".equals(super.getPath())) {
-            return null;
+            return Boolean.TRUE;
         }
         boolean test = query.startsWith( super.getPath() );
         if(!test) {
