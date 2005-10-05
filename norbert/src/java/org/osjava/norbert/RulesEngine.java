@@ -63,21 +63,21 @@ class RulesEngine {
     /**
      * Run each Rule in series on the path. 
      * If a Rule returns a Boolean, return that.
-     * If null is returned, move on.
-     * When no more rules are left, return true. 
+     * When no more rules are left, return null to indicate there were 
+     * no rules for this path.. 
      */
-    public boolean isAllowed(String path) {
+    public Boolean isAllowed(String path) {
 
         Iterator iterator = this.rules.iterator();
         while(iterator.hasNext()) {
             Rule rule = (Rule)iterator.next();
             Boolean test = rule.isAllowed(path);
             if(test != null) {
-                return test.booleanValue();
+                return test;
             }
         }
 
-        return true;
+        return null;
     }
 
     public boolean isEmpty() {
