@@ -54,7 +54,7 @@ do
         echo "<TD COLSPAN=3><FONT SIZE=\"+2\">" >> $diff_file
         echo "<B>Changes Summary</B></FONT></TD></TR>" >> $diff_file
 #        java -jar clirr-core-0.5-uber.jar -o $old -n $new 2>&1 | sed 's/[^:]*:[^:]*: //' | sed 's/^/<tr class="TableRowColor"><td width="15%">/' | sed 's/:/<\/td><td>/' | sed 's/$/<\/td><\/tr>/' >> $diff_file
-        jardiff $old $new 2>&1 | sed 's/[^:]*:[^:]*: //' >> $diff_file
+        jardiff.pl $old $new 2>&1 | sed 's/[^:]*:[^:]*: //' >> $diff_file
         echo "</table>" >> $diff_file
         echo "<font class=\"FrameItemFont\"><a href=\"diff-report-${lastV}_${v}.html\" target="classFrame">(diff to ${v})</a></font>" >> $i/versions.html
       fi
