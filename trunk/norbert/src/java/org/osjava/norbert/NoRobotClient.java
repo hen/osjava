@@ -121,7 +121,7 @@ public class NoRobotClient {
                     continue;
                 }
 
-                // TODO: Make comparisons case-insensitive
+                // TODO: Make User-agent comparisons case-insensitive?
 
                 // if User-agent == this.userAgent or *, then 
                 // record the rest up until end or next User-agent
