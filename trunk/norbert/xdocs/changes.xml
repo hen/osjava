@@ -7,6 +7,11 @@
   </properties>
 
   <body>
+    <release version="0.3.2" date="2005-10-05" description="Assortment of bugfixes">
+      <action dev="hen" type="fix" issue="NRB-6">Checks specified user agents first, and then wildcards now; prior to this it was just checking in the order they appeared in the robots.txt file. </action>
+      <action dev="hen" type="fix" issue="NRB-8">User-agent name comparisons should be case-insensitive. </action>
+      <action dev="hen" type="fix" issue="NRB-9">"Disallow: " implies that nothing is disallowed; prior to this it was effectively being ignored. </action>
+    </release>
     <release version="0.3.1" date="2005-09-26" description="User-Agent bugfix">
       <action dev="hen" type="fix" issue="NRB-5">Now correctly sets the User Agent in the request. </action>
     </release>
