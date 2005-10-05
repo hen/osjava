@@ -129,8 +129,6 @@ public class NoRobotClient {
                     continue;
                 }
 
-                // TODO: Make User-agent comparisons case-insensitive?
-
                 // if User-agent == userAgent 
                 // record the rest up until end or next User-agent
                 // then quit (? check spec)
@@ -148,7 +146,7 @@ public class NoRobotClient {
                     }
 
                     value = line.substring("User-agent:".length()).trim();
-                    if(value.equals(userAgent)) {
+                    if(value.equalsIgnoreCase(userAgent)) {
                         parsingAllowBlock = true;
                         continue;
                     }
