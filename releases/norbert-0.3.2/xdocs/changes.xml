@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<document>
+
+  <properties>
+      <author email="bayard@generationjava.com">Henri Yandell</author>
+      <title>Release Notes</title>
+  </properties>
+
+  <body>
+    <release version="0.3.2" date="2005-10-05" description="Assortment of bugfixes">
+      <action dev="hen" type="fix" issue="NRB-6">Checks specified user agents first, and then wildcards now; prior to this it was just checking in the order they appeared in the robots.txt file. </action>
+      <action dev="hen" type="fix" issue="NRB-8">User-agent name comparisons should be case-insensitive. </action>
+      <action dev="hen" type="fix" issue="NRB-9">"Disallow: " implies that nothing is disallowed; prior to this it was effectively being ignored. </action>
+    </release>
+    <release version="0.3.1" date="2005-09-26" description="User-Agent bugfix">
+      <action dev="hen" type="fix" issue="NRB-5">Now correctly sets the User Agent in the request. </action>
+    </release>
+    <release version="0.3" date="2005-05-18" description="User-Agent fix">
+      <action dev="hen" type="add" issue="NRB-4">Now sends the User Agent in the request. </action>
+    </release>
+
+    <release version="0.2" date="2004-04-13" description="No dependencies">
+      <action dev="hen" type="add">An application level exception added, NoRobotException. </action>
+      <action dev="hen" type="remove">Log4j dependency removed. Throwing Exceptions means no logging needed. </action>
+      <action dev="hen" type="remove">Genjava-core and commons-lang dependencies removed by inlining a method. </action>
+    </release>
+
+    <release version="0.1.1" date="2003-12-08" description="Bug fix">
+      <action dev="hen" type="fix" issue="NRB-1">No longer fails when the url being tested does not contain a trailing slash, but the base url does. </action>
+    </release>
+
+    <release version="0.1" date="2003-08-23" description="Initial release">
+    </release>
+</body>
+</document>
