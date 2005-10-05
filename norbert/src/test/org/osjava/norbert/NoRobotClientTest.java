@@ -42,7 +42,7 @@ import java.net.MalformedURLException;
 
 public class NoRobotClientTest extends TestCase {
 
-    private String hardCode = "file://"+new File("data/").getAbsoluteFile()+File.separator;
+    private String hardCode = "file://"+new File("data/").getAbsoluteFile()+"/";
 
     public NoRobotClientTest(String name) {
         super(name);
@@ -58,7 +58,7 @@ public class NoRobotClientTest extends TestCase {
         nrc.parse( new URL(base) );
         assertTrue( nrc.isUrlAllowed( new URL(base+"index.html") ) );
         assertFalse( nrc.isUrlAllowed( new URL(base+"view-cvs/") ) );
-}
+    }
 
     // Tests the example given in the RFC
     public void testRfcExampleUnhipbot() throws MalformedURLException, NoRobotException {
@@ -68,17 +68,17 @@ public class NoRobotClientTest extends TestCase {
         nrc.parse( new URL(base) );
 
         // Start of rfc test
-        assertEquals( false,  nrc.isUrlAllowed( new URL(base) ) );
-        assertEquals( false,  nrc.isUrlAllowed( new URL(base+"index.html") ) );
-        assertEquals( true,  nrc.isUrlAllowed( new URL(base+"robots.txt") ) );
-        assertEquals( false,  nrc.isUrlAllowed( new URL(base+"server.html") ) );
-        assertEquals( false,  nrc.isUrlAllowed( new URL(base+"services/fast.html") ) );
-        assertEquals( false,  nrc.isUrlAllowed( new URL(base+"services/slow.html") ) );
-        assertEquals( false,  nrc.isUrlAllowed( new URL(base+"orgo.gif") ) );
-        assertEquals( false,  nrc.isUrlAllowed( new URL(base+"org/about.html") ) );
-        assertEquals( false,  nrc.isUrlAllowed( new URL(base+"org/plans.html") ) );
-        assertEquals( false,  nrc.isUrlAllowed( new URL(base+"%7Ejim/jim.html") ) );
-        assertEquals( false,  nrc.isUrlAllowed( new URL(base+"%7Emak/mak.html") ) );
+        assertFalse( nrc.isUrlAllowed( new URL(base) ) );
+        assertFalse( nrc.isUrlAllowed( new URL(base+"index.html") ) );
+        assertTrue( nrc.isUrlAllowed( new URL(base+"robots.txt") ) );
+        assertFalse( nrc.isUrlAllowed( new URL(base+"server.html") ) );
+        assertFalse( nrc.isUrlAllowed( new URL(base+"services/fast.html") ) );
+        assertFalse( nrc.isUrlAllowed( new URL(base+"services/slow.html") ) );
+        assertFalse( nrc.isUrlAllowed( new URL(base+"orgo.gif") ) );
+        assertFalse( nrc.isUrlAllowed( new URL(base+"org/about.html") ) );
+        assertFalse( nrc.isUrlAllowed( new URL(base+"org/plans.html") ) );
+        assertFalse( nrc.isUrlAllowed( new URL(base+"%7Ejim/jim.html") ) );
+        assertFalse( nrc.isUrlAllowed( new URL(base+"%7Emak/mak.html") ) );
         // End of rfc test
     }
 
@@ -88,17 +88,17 @@ public class NoRobotClientTest extends TestCase {
         NoRobotClient nrc = new NoRobotClient("webcrawler");
         nrc.parse( new URL(base) );
         // Start of rfc test
-        assertEquals( true,  nrc.isUrlAllowed( new URL(base) ) );
-        assertEquals( true,  nrc.isUrlAllowed( new URL(base+"index.html") ) );
-        assertEquals( true,  nrc.isUrlAllowed( new URL(base+"robots.txt") ) );
-        assertEquals( true,  nrc.isUrlAllowed( new URL(base+"server.html") ) );
-        assertEquals( true,  nrc.isUrlAllowed( new URL(base+"services/fast.html") ) );
-        assertEquals( true,  nrc.isUrlAllowed( new URL(base+"services/slow.html") ) );
-        assertEquals( true,  nrc.isUrlAllowed( new URL(base+"orgo.gif") ) );
-        assertEquals( true,  nrc.isUrlAllowed( new URL(base+"org/about.html") ) );
-        assertEquals( true,  nrc.isUrlAllowed( new URL(base+"org/plans.html") ) );
-        assertEquals( true,  nrc.isUrlAllowed( new URL(base+"%7Ejim/jim.html") ) );
-        assertEquals( true,  nrc.isUrlAllowed( new URL(base+"%7Emak/mak.html") ) );
+        assertTrue( nrc.isUrlAllowed( new URL(base) ) );
+        assertTrue( nrc.isUrlAllowed( new URL(base+"index.html") ) );
+        assertTrue( nrc.isUrlAllowed( new URL(base+"robots.txt") ) );
+        assertTrue( nrc.isUrlAllowed( new URL(base+"server.html") ) );
+        assertTrue( nrc.isUrlAllowed( new URL(base+"services/fast.html") ) );
+        assertTrue( nrc.isUrlAllowed( new URL(base+"services/slow.html") ) );
+        assertTrue( nrc.isUrlAllowed( new URL(base+"orgo.gif") ) );
+        assertTrue( nrc.isUrlAllowed( new URL(base+"org/about.html") ) );
+        assertTrue( nrc.isUrlAllowed( new URL(base+"org/plans.html") ) );
+        assertTrue( nrc.isUrlAllowed( new URL(base+"%7Ejim/jim.html") ) );
+        assertTrue( nrc.isUrlAllowed( new URL(base+"%7Emak/mak.html") ) );
         // End of rfc test
     }
 
@@ -108,17 +108,17 @@ public class NoRobotClientTest extends TestCase {
         NoRobotClient nrc = new NoRobotClient("excite");
         nrc.parse( new URL(base) );
         // Start of rfc test
-        assertEquals( true,  nrc.isUrlAllowed( new URL(base) ) );
-        assertEquals( true,  nrc.isUrlAllowed( new URL(base+"index.html") ) );
-        assertEquals( true,  nrc.isUrlAllowed( new URL(base+"robots.txt") ) );
-        assertEquals( true,  nrc.isUrlAllowed( new URL(base+"server.html") ) );
-        assertEquals( true,  nrc.isUrlAllowed( new URL(base+"services/fast.html") ) );
-        assertEquals( true,  nrc.isUrlAllowed( new URL(base+"services/slow.html") ) );
-        assertEquals( true,  nrc.isUrlAllowed( new URL(base+"orgo.gif") ) );
-        assertEquals( true,  nrc.isUrlAllowed( new URL(base+"org/about.html") ) );
-        assertEquals( true,  nrc.isUrlAllowed( new URL(base+"org/plans.html") ) );
-        assertEquals( true,  nrc.isUrlAllowed( new URL(base+"%7Ejim/jim.html") ) );
-        assertEquals( true,  nrc.isUrlAllowed( new URL(base+"%7Emak/mak.html") ) );
+        assertTrue( nrc.isUrlAllowed( new URL(base) ) );
+        assertTrue( nrc.isUrlAllowed( new URL(base+"index.html") ) );
+        assertTrue( nrc.isUrlAllowed( new URL(base+"robots.txt") ) );
+        assertTrue( nrc.isUrlAllowed( new URL(base+"server.html") ) );
+        assertTrue( nrc.isUrlAllowed( new URL(base+"services/fast.html") ) );
+        assertTrue( nrc.isUrlAllowed( new URL(base+"services/slow.html") ) );
+        assertTrue( nrc.isUrlAllowed( new URL(base+"orgo.gif") ) );
+        assertTrue( nrc.isUrlAllowed( new URL(base+"org/about.html") ) );
+        assertTrue( nrc.isUrlAllowed( new URL(base+"org/plans.html") ) );
+        assertTrue( nrc.isUrlAllowed( new URL(base+"%7Ejim/jim.html") ) );
+        assertTrue( nrc.isUrlAllowed( new URL(base+"%7Emak/mak.html") ) );
         // End of rfc test
     }
 
@@ -128,17 +128,17 @@ public class NoRobotClientTest extends TestCase {
         NoRobotClient nrc = new NoRobotClient("other");
         nrc.parse( new URL(base) );
         // Start of rfc test
-        assertEquals( false,  nrc.isUrlAllowed( new URL(base) ) );
-        assertEquals( false,  nrc.isUrlAllowed( new URL(base+"index.html") ) );
-        assertEquals( true,  nrc.isUrlAllowed( new URL(base+"robots.txt") ) );
-        assertEquals( true,  nrc.isUrlAllowed( new URL(base+"server.html") ) );
-        assertEquals( true,  nrc.isUrlAllowed( new URL(base+"services/fast.html") ) );
-        assertEquals( true,  nrc.isUrlAllowed( new URL(base+"services/slow.html") ) );
-        assertEquals( false,  nrc.isUrlAllowed( new URL(base+"orgo.gif") ) );
-        assertEquals( true,  nrc.isUrlAllowed( new URL(base+"org/about.html") ) );
-        assertEquals( false,  nrc.isUrlAllowed( new URL(base+"org/plans.html") ) );
-        assertEquals( false,  nrc.isUrlAllowed( new URL(base+"%7Ejim/jim.html") ) );
-        assertEquals( true,  nrc.isUrlAllowed( new URL(base+"%7Emak/mak.html") ) );
+        assertFalse( nrc.isUrlAllowed( new URL(base) ) );
+        assertFalse( nrc.isUrlAllowed( new URL(base+"index.html") ) );
+        assertTrue( nrc.isUrlAllowed( new URL(base+"robots.txt") ) );
+        assertTrue( nrc.isUrlAllowed( new URL(base+"server.html") ) );
+        assertTrue( nrc.isUrlAllowed( new URL(base+"services/fast.html") ) );
+        assertTrue( nrc.isUrlAllowed( new URL(base+"services/slow.html") ) );
+        assertFalse( nrc.isUrlAllowed( new URL(base+"orgo.gif") ) );
+        assertTrue( nrc.isUrlAllowed( new URL(base+"org/about.html") ) );
+        assertFalse( nrc.isUrlAllowed( new URL(base+"org/plans.html") ) );
+        assertFalse( nrc.isUrlAllowed( new URL(base+"%7Ejim/jim.html") ) );
+        assertTrue( nrc.isUrlAllowed( new URL(base+"%7Emak/mak.html") ) );
         // End of rfc test
     }
 
@@ -148,7 +148,7 @@ public class NoRobotClientTest extends TestCase {
         NoRobotClient nrc = new NoRobotClient("other");
         nrc.parse( new URL(base) );
 
-        assertEquals( true,  nrc.isUrlAllowed( new URL(base+"%7Etest/%7Efoo.html") ) );
+        assertTrue( nrc.isUrlAllowed( new URL(base+"%7Etest/%7Efoo.html") ) );
     }
 
     // Tests NRB-3
