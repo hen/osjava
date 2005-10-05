@@ -207,4 +207,19 @@ public class NoRobotClientTest extends TestCase {
         }
     }
 
+
+    // Tests NRB-6
+    // http://issues.osjava.org/jira/secure/ViewIssue.jspa?key=NRB-6
+    public void testNrb6() throws MalformedURLException, NoRobotException {
+        String base = this.hardCode + "order/";
+        NoRobotClient nrc = new NoRobotClient("Scabies-1.0");
+        nrc.parse( new URL(base) );
+        assertTrue( "Specific then Wildcard not working as expected", nrc.isUrlAllowed( new URL(base + "order/" ) ) );
+
+        base = this.hardCode + "order-reverse/";
+        nrc = new NoRobotClient("Scabies-1.0");
+        nrc.parse( new URL(base) );
+        assertTrue( "Wildcard then Specific not working as expected", nrc.isUrlAllowed( new URL(base + "order/" ) ) );
+    }      
+
 }
