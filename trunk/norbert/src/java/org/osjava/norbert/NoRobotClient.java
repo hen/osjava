@@ -52,6 +52,7 @@ public class NoRobotClient {
 
     private String userAgent;
     private RulesEngine rules;
+    private RulesEngine wildcardRules;
     private URL baseUrl;
 
     /**
@@ -102,6 +103,13 @@ public class NoRobotClient {
     }
 
     public void parseText(String txt) throws NoRobotException {
+        this.rules = parseTextForUserAgent(txt, this.userAgent);
+        this.wildcardRules = parseTextForUserAgent(txt, "*");
+    }
+
+    private RulesEngine parseTextForUserAgent(String txt, String userAgent) throws NoRobotException {
+
+        RulesEngine engine = new RulesEngine();
 
         // Classic basic parser style, read an element at a time, 
         // changing a state variable [parsingAllowBlock]
@@ -123,14 +131,14 @@ public class NoRobotClient {
 
                 // TODO: Make User-agent comparisons case-insensitive?
 
-                // if User-agent == this.userAgent or *, then 
+                // if User-agent == userAgent 
                 // record the rest up until end or next User-agent
                 // then quit (? check spec)
                 if(line.startsWith("User-agent:")) {
 
                     if(parsingAllowBlock) {
                         // we've just finished reading allows/disallows
-                        if(this.rules.isEmpty()) {
+                        if(engine.isEmpty()) {
                             // multiple user agents in a line, let's 
                             // wait til we get rules
                             continue;
@@ -140,7 +148,7 @@ public class NoRobotClient {
                     }
 
                     value = line.substring("User-agent:".length()).trim();
-                    if(value.equals("*") || value.equals(this.userAgent)) {
+                    if(value.equals(userAgent)) {
                         parsingAllowBlock = true;
                         continue;
                     }
@@ -150,12 +158,12 @@ public class NoRobotClient {
                         if(line.startsWith("Allow:")) {
                             value = line.substring("Allow:".length()).trim();
                             value = URLDecoder.decode(value);
-                            this.rules.allowPath( value );
+                            engine.allowPath( value );
                         } else 
                         if(line.startsWith("Disallow:")) {
                             value = line.substring("Disallow:".length()).trim();
                             value = URLDecoder.decode(value);
-                            this.rules.disallowPath( value );
+                            engine.disallowPath( value );
                         } else {
                             // ignore
                             continue;
@@ -170,6 +178,8 @@ public class NoRobotClient {
             // As this is parsing a String, it should not have an IOE
             throw new NoRobotException("Problem while parsing text. ", ioe);
         }
+
+        return engine;
     }
 
     /**
@@ -201,7 +211,15 @@ public class NoRobotClient {
             return true;
         }
         urlStr = URLDecoder.decode( urlStr );
-        return this.rules.isAllowed( urlStr );
+        Boolean allowed = this.rules.isAllowed( urlStr );
+        if(allowed == null) {
+            allowed = this.wildcardRules.isAllowed( urlStr );
+        }
+        if(allowed == null) {
+            allowed = Boolean.TRUE;
+        }
+
+        return allowed.booleanValue();
     }
 
     // INLINE: as such from genjava/gj-core's net package. Simple method 
