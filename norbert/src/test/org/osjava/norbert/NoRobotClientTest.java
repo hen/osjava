@@ -52,159 +52,112 @@ public class NoRobotClientTest extends TestCase {
     // To test: 
     // create -> parse -> isUrlAllowed?
 
-    public void testAllowed() {
-        try {
-            String base = this.hardCode + "basic/";
-            NoRobotClient nrc = new NoRobotClient("Scabies-1.0");
-            nrc.parse( new URL(base) );
-            assertTrue( nrc.isUrlAllowed( new URL(base+"index.html") ) );
-            assertFalse( nrc.isUrlAllowed( new URL(base+"view-cvs/") ) );
-        } catch(MalformedURLException murle) {
-            throw new RuntimeException("Test failed: "+murle.getMessage());
-        } catch(NoRobotException nre) {
-            throw new RuntimeException("Test failed: "+nre.getMessage());
-        }
-    }
+    public void testAllowed() throws MalformedURLException, NoRobotException {
+        String base = this.hardCode + "basic/";
+        NoRobotClient nrc = new NoRobotClient("Scabies-1.0");
+        nrc.parse( new URL(base) );
+        assertTrue( nrc.isUrlAllowed( new URL(base+"index.html") ) );
+        assertFalse( nrc.isUrlAllowed( new URL(base+"view-cvs/") ) );
+}
 
     // Tests the example given in the RFC
-    public void testRfcExampleUnhipbot() {
-        try {
-            // pretend that http://www.fict.org/ is our base
-            String base = this.hardCode + "rfc/";
+    public void testRfcExampleUnhipbot() throws MalformedURLException, NoRobotException {
+        String base = this.hardCode + "rfc/";
 
-            NoRobotClient nrc = new NoRobotClient("unhipbot");
-            nrc.parse( new URL(base) );
+        NoRobotClient nrc = new NoRobotClient("unhipbot");
+        nrc.parse( new URL(base) );
 
-            // Start of rfc test
-            assertEquals( false,  nrc.isUrlAllowed( new URL(base) ) );
-            assertEquals( false,  nrc.isUrlAllowed( new URL(base+"index.html") ) );
-            assertEquals( true,  nrc.isUrlAllowed( new URL(base+"robots.txt") ) );
-            assertEquals( false,  nrc.isUrlAllowed( new URL(base+"server.html") ) );
-            assertEquals( false,  nrc.isUrlAllowed( new URL(base+"services/fast.html") ) );
-            assertEquals( false,  nrc.isUrlAllowed( new URL(base+"services/slow.html") ) );
-            assertEquals( false,  nrc.isUrlAllowed( new URL(base+"orgo.gif") ) );
-            assertEquals( false,  nrc.isUrlAllowed( new URL(base+"org/about.html") ) );
-            assertEquals( false,  nrc.isUrlAllowed( new URL(base+"org/plans.html") ) );
-            assertEquals( false,  nrc.isUrlAllowed( new URL(base+"%7Ejim/jim.html") ) );
-            assertEquals( false,  nrc.isUrlAllowed( new URL(base+"%7Emak/mak.html") ) );
-            // End of rfc test
-        } catch(MalformedURLException murle) {
-            throw new RuntimeException("Test failed: "+murle.getMessage());
-        } catch(NoRobotException nre) {
-            throw new RuntimeException("Test failed: "+nre.getMessage());
-        }
+        // Start of rfc test
+        assertEquals( false,  nrc.isUrlAllowed( new URL(base) ) );
+        assertEquals( false,  nrc.isUrlAllowed( new URL(base+"index.html") ) );
+        assertEquals( true,  nrc.isUrlAllowed( new URL(base+"robots.txt") ) );
+        assertEquals( false,  nrc.isUrlAllowed( new URL(base+"server.html") ) );
+        assertEquals( false,  nrc.isUrlAllowed( new URL(base+"services/fast.html") ) );
+        assertEquals( false,  nrc.isUrlAllowed( new URL(base+"services/slow.html") ) );
+        assertEquals( false,  nrc.isUrlAllowed( new URL(base+"orgo.gif") ) );
+        assertEquals( false,  nrc.isUrlAllowed( new URL(base+"org/about.html") ) );
+        assertEquals( false,  nrc.isUrlAllowed( new URL(base+"org/plans.html") ) );
+        assertEquals( false,  nrc.isUrlAllowed( new URL(base+"%7Ejim/jim.html") ) );
+        assertEquals( false,  nrc.isUrlAllowed( new URL(base+"%7Emak/mak.html") ) );
+        // End of rfc test
     }
 
-    public void testRfcExampleWebcrawler() {
-        try {
-            // pretend that http://www.fict.org/ is our base
-            String base = this.hardCode + "rfc/";
+    public void testRfcExampleWebcrawler() throws MalformedURLException, NoRobotException {
+        String base = this.hardCode + "rfc/";
 
-            NoRobotClient nrc = new NoRobotClient("webcrawler");
-            nrc.parse( new URL(base) );
-            // Start of rfc test
-            assertEquals( true,  nrc.isUrlAllowed( new URL(base) ) );
-            assertEquals( true,  nrc.isUrlAllowed( new URL(base+"index.html") ) );
-            assertEquals( true,  nrc.isUrlAllowed( new URL(base+"robots.txt") ) );
-            assertEquals( true,  nrc.isUrlAllowed( new URL(base+"server.html") ) );
-            assertEquals( true,  nrc.isUrlAllowed( new URL(base+"services/fast.html") ) );
-            assertEquals( true,  nrc.isUrlAllowed( new URL(base+"services/slow.html") ) );
-            assertEquals( true,  nrc.isUrlAllowed( new URL(base+"orgo.gif") ) );
-            assertEquals( true,  nrc.isUrlAllowed( new URL(base+"org/about.html") ) );
-            assertEquals( true,  nrc.isUrlAllowed( new URL(base+"org/plans.html") ) );
-            assertEquals( true,  nrc.isUrlAllowed( new URL(base+"%7Ejim/jim.html") ) );
-            assertEquals( true,  nrc.isUrlAllowed( new URL(base+"%7Emak/mak.html") ) );
-            // End of rfc test
-        } catch(MalformedURLException murle) {
-            throw new RuntimeException("Test failed: "+murle.getMessage());
-        } catch(NoRobotException nre) {
-            throw new RuntimeException("Test failed: "+nre.getMessage());
-        }
+        NoRobotClient nrc = new NoRobotClient("webcrawler");
+        nrc.parse( new URL(base) );
+        // Start of rfc test
+        assertEquals( true,  nrc.isUrlAllowed( new URL(base) ) );
+        assertEquals( true,  nrc.isUrlAllowed( new URL(base+"index.html") ) );
+        assertEquals( true,  nrc.isUrlAllowed( new URL(base+"robots.txt") ) );
+        assertEquals( true,  nrc.isUrlAllowed( new URL(base+"server.html") ) );
+        assertEquals( true,  nrc.isUrlAllowed( new URL(base+"services/fast.html") ) );
+        assertEquals( true,  nrc.isUrlAllowed( new URL(base+"services/slow.html") ) );
+        assertEquals( true,  nrc.isUrlAllowed( new URL(base+"orgo.gif") ) );
+        assertEquals( true,  nrc.isUrlAllowed( new URL(base+"org/about.html") ) );
+        assertEquals( true,  nrc.isUrlAllowed( new URL(base+"org/plans.html") ) );
+        assertEquals( true,  nrc.isUrlAllowed( new URL(base+"%7Ejim/jim.html") ) );
+        assertEquals( true,  nrc.isUrlAllowed( new URL(base+"%7Emak/mak.html") ) );
+        // End of rfc test
     }
 
-    public void testRfcExampleExcite() {
-        try {
-            // pretend that http://www.fict.org/ is our base
-            String base = this.hardCode + "rfc/";
+    public void testRfcExampleExcite() throws MalformedURLException, NoRobotException {
+        String base = this.hardCode + "rfc/";
 
-            NoRobotClient nrc = new NoRobotClient("excite");
-            nrc.parse( new URL(base) );
-            // Start of rfc test
-            assertEquals( true,  nrc.isUrlAllowed( new URL(base) ) );
-            assertEquals( true,  nrc.isUrlAllowed( new URL(base+"index.html") ) );
-            assertEquals( true,  nrc.isUrlAllowed( new URL(base+"robots.txt") ) );
-            assertEquals( true,  nrc.isUrlAllowed( new URL(base+"server.html") ) );
-            assertEquals( true,  nrc.isUrlAllowed( new URL(base+"services/fast.html") ) );
-            assertEquals( true,  nrc.isUrlAllowed( new URL(base+"services/slow.html") ) );
-            assertEquals( true,  nrc.isUrlAllowed( new URL(base+"orgo.gif") ) );
-            assertEquals( true,  nrc.isUrlAllowed( new URL(base+"org/about.html") ) );
-            assertEquals( true,  nrc.isUrlAllowed( new URL(base+"org/plans.html") ) );
-            assertEquals( true,  nrc.isUrlAllowed( new URL(base+"%7Ejim/jim.html") ) );
-            assertEquals( true,  nrc.isUrlAllowed( new URL(base+"%7Emak/mak.html") ) );
-            // End of rfc test
-        } catch(MalformedURLException murle) {
-            throw new RuntimeException("Test failed: "+murle.getMessage());
-        } catch(NoRobotException nre) {
-            throw new RuntimeException("Test failed: "+nre.getMessage());
-        }
+        NoRobotClient nrc = new NoRobotClient("excite");
+        nrc.parse( new URL(base) );
+        // Start of rfc test
+        assertEquals( true,  nrc.isUrlAllowed( new URL(base) ) );
+        assertEquals( true,  nrc.isUrlAllowed( new URL(base+"index.html") ) );
+        assertEquals( true,  nrc.isUrlAllowed( new URL(base+"robots.txt") ) );
+        assertEquals( true,  nrc.isUrlAllowed( new URL(base+"server.html") ) );
+        assertEquals( true,  nrc.isUrlAllowed( new URL(base+"services/fast.html") ) );
+        assertEquals( true,  nrc.isUrlAllowed( new URL(base+"services/slow.html") ) );
+        assertEquals( true,  nrc.isUrlAllowed( new URL(base+"orgo.gif") ) );
+        assertEquals( true,  nrc.isUrlAllowed( new URL(base+"org/about.html") ) );
+        assertEquals( true,  nrc.isUrlAllowed( new URL(base+"org/plans.html") ) );
+        assertEquals( true,  nrc.isUrlAllowed( new URL(base+"%7Ejim/jim.html") ) );
+        assertEquals( true,  nrc.isUrlAllowed( new URL(base+"%7Emak/mak.html") ) );
+        // End of rfc test
     }
 
-    public void testRfcExampleOther() {
-        try {
-            // pretend that http://www.fict.org/ is our base
-            String base = this.hardCode + "rfc/";
+    public void testRfcExampleOther() throws MalformedURLException, NoRobotException {
+        String base = this.hardCode + "rfc/";
 
-            NoRobotClient nrc = new NoRobotClient("other");
-            nrc.parse( new URL(base) );
-            // Start of rfc test
-            assertEquals( false,  nrc.isUrlAllowed( new URL(base) ) );
-            assertEquals( false,  nrc.isUrlAllowed( new URL(base+"index.html") ) );
-            assertEquals( true,  nrc.isUrlAllowed( new URL(base+"robots.txt") ) );
-            assertEquals( true,  nrc.isUrlAllowed( new URL(base+"server.html") ) );
-            assertEquals( true,  nrc.isUrlAllowed( new URL(base+"services/fast.html") ) );
-            assertEquals( true,  nrc.isUrlAllowed( new URL(base+"services/slow.html") ) );
-            assertEquals( false,  nrc.isUrlAllowed( new URL(base+"orgo.gif") ) );
-            assertEquals( true,  nrc.isUrlAllowed( new URL(base+"org/about.html") ) );
-            assertEquals( false,  nrc.isUrlAllowed( new URL(base+"org/plans.html") ) );
-            assertEquals( false,  nrc.isUrlAllowed( new URL(base+"%7Ejim/jim.html") ) );
-            assertEquals( true,  nrc.isUrlAllowed( new URL(base+"%7Emak/mak.html") ) );
-            // End of rfc test
-        } catch(MalformedURLException murle) {
-            throw new RuntimeException("Test failed: "+murle.getMessage());
-        } catch(NoRobotException nre) {
-            throw new RuntimeException("Test failed: "+nre.getMessage());
-        }
+        NoRobotClient nrc = new NoRobotClient("other");
+        nrc.parse( new URL(base) );
+        // Start of rfc test
+        assertEquals( false,  nrc.isUrlAllowed( new URL(base) ) );
+        assertEquals( false,  nrc.isUrlAllowed( new URL(base+"index.html") ) );
+        assertEquals( true,  nrc.isUrlAllowed( new URL(base+"robots.txt") ) );
+        assertEquals( true,  nrc.isUrlAllowed( new URL(base+"server.html") ) );
+        assertEquals( true,  nrc.isUrlAllowed( new URL(base+"services/fast.html") ) );
+        assertEquals( true,  nrc.isUrlAllowed( new URL(base+"services/slow.html") ) );
+        assertEquals( false,  nrc.isUrlAllowed( new URL(base+"orgo.gif") ) );
+        assertEquals( true,  nrc.isUrlAllowed( new URL(base+"org/about.html") ) );
+        assertEquals( false,  nrc.isUrlAllowed( new URL(base+"org/plans.html") ) );
+        assertEquals( false,  nrc.isUrlAllowed( new URL(base+"%7Ejim/jim.html") ) );
+        assertEquals( true,  nrc.isUrlAllowed( new URL(base+"%7Emak/mak.html") ) );
+        // End of rfc test
     }
 
-    public void testRfcBadWebDesigner() {
-        try {
-            // pretend that http://www.fict.org/ is our base
-            String base = this.hardCode + "bad/";
+    public void testRfcBadWebDesigner() throws MalformedURLException, NoRobotException {
+        String base = this.hardCode + "bad/";
 
-            NoRobotClient nrc = new NoRobotClient("other");
-            nrc.parse( new URL(base) );
+        NoRobotClient nrc = new NoRobotClient("other");
+        nrc.parse( new URL(base) );
 
-            assertEquals( true,  nrc.isUrlAllowed( new URL(base+"%7Etest/%7Efoo.html") ) );
-        } catch(MalformedURLException murle) {
-            throw new RuntimeException("Test failed: "+murle.getMessage());
-        } catch(NoRobotException nre) {
-            throw new RuntimeException("Test failed: "+nre.getMessage());
-        }
+        assertEquals( true,  nrc.isUrlAllowed( new URL(base+"%7Etest/%7Efoo.html") ) );
     }
 
     // Tests NRB-3
     // http://www.osjava.org:8080/jira/secure/ViewIssue.jspa?key=NRB-3
-    public void testNrb3() {
-        try {
-            String base = this.hardCode + "basic/";
-            NoRobotClient nrc = new NoRobotClient("Scabies-1.0");
-            nrc.parse( new URL(base) );
-            assertTrue( nrc.isUrlAllowed( new URL(this.hardCode + "basic" ) ) );
-        } catch(MalformedURLException murle) {
-            throw new RuntimeException("Test failed: "+murle.getMessage());
-        } catch(NoRobotException nre) {
-            throw new RuntimeException("Test failed: "+nre.getMessage());
-        }
+    public void testNrb3() throws MalformedURLException, NoRobotException {
+        String base = this.hardCode + "basic/";
+        NoRobotClient nrc = new NoRobotClient("Scabies-1.0");
+        nrc.parse( new URL(base) );
+        assertTrue( nrc.isUrlAllowed( new URL(this.hardCode + "basic" ) ) );
     }
 
 
