@@ -104,13 +104,13 @@ public class NoRobotClient {
     public void parseText(String txt) throws NoRobotException {
 
         // Classic basic parser style, read an element at a time, 
-        // changing a state variable [checkAllows]
+        // changing a state variable [parsingAllowBlock]
 
         // take each line, one at a time
         BufferedReader rdr = new BufferedReader( new StringReader(txt) );
         String line = "";
         String value = null;
-        boolean checkAllows = false;
+        boolean parsingAllowBlock = false;
         try {
             while( (line = rdr.readLine()) != null ) {
                 // trim whitespace from either side
@@ -128,7 +128,7 @@ public class NoRobotClient {
                 // then quit (? check spec)
                 if(line.startsWith("User-agent:")) {
 
-                    if(checkAllows) {
+                    if(parsingAllowBlock) {
                         // we've just finished reading allows/disallows
                         if(this.rules.isEmpty()) {
                             // multiple user agents in a line, let's 
@@ -141,12 +141,12 @@ public class NoRobotClient {
 
                     value = line.substring("User-agent:".length()).trim();
                     if(value.equals("*") || value.equals(this.userAgent)) {
-                        checkAllows = true;
+                        parsingAllowBlock = true;
                         continue;
                     }
                 } else {
                     // if not, then store if we're currently the user agent
-                    if(checkAllows) {
+                    if(parsingAllowBlock) {
                         if(line.startsWith("Allow:")) {
                             value = line.substring("Allow:".length()).trim();
                             value = URLDecoder.decode(value);
