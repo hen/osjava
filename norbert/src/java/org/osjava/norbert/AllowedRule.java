@@ -44,9 +44,7 @@ class AllowedRule extends AbstractRule {
 
     public Boolean isAllowed(String query) {
         if("".equals(super.getPath())) {
-            // What does the spec say here? 
-            // I think it says to ignore any 
-            // line without a match
+            // What does the spec say here? Until I know, I'll just ignore this.
             return null;
         }
         boolean test = query.startsWith( super.getPath() );
