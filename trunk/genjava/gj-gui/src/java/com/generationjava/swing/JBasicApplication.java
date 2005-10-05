@@ -39,7 +39,9 @@ abstract public class JBasicApplication extends JFrame
        implements WindowListener, ActionListener 
 {
 
-    public final int LOAD = FileDialog.LOAD;
+    public static final int LOAD = FileDialog.LOAD;
+    public static final int MENU_END = -2;
+    public static final int MENU_START = -1;
     
     private String currentDir;
     private Object currentObj;
@@ -85,10 +87,12 @@ abstract public class JBasicApplication extends JFrame
                 addTopLevelMenu(m);
             } else {
                 JMenu parent = getMenu(parentName);
-                // parent can't be null
                 parent.add(m);
             }
             menus.put(fqname,m);
+        }
+        if(m == null) {
+            throw new RuntimeException("Unable to create menu: " + fqname);
         }
         return m;
     }
@@ -111,13 +115,13 @@ abstract public class JBasicApplication extends JFrame
         return getMenu(subMenuName);
     }
     protected Object registerMenu(String menuName, String subMenuName, String mnemonic) {
-        return registerMenu(menuName, subMenuName, -2, null);
+        return registerMenu(menuName, subMenuName, MENU_END, null);
     }
     protected Object registerMenu(String menuName, String subMenuName, int block, String mnemonic) {
         JMenu parent = getMenu(menuName);
         int idx = getBlockIndex(parent,block);
         JMenu menu = createMenu( getLabel(subMenuName) );
-        if(mnemonic != null) {
+        if(mnemonic != null && mnemonic.length() > 0) {
             menu.setMnemonic((int)mnemonic.charAt(0));
         }
         parent.insert(menu, idx);
@@ -125,17 +129,19 @@ abstract public class JBasicApplication extends JFrame
     }
     private JMenu createMenu(String menuName) {
         JMenu menu = new JMenu( menuName);
-        menu.setMnemonic( (int)menuName.charAt(0) );
+        if(menuName != null && menuName.length() > 0) {
+            menu.setMnemonic( (int)menuName.charAt(0) );
+        }
         return menu;
     }
     protected Object registerMenuItem(String menuName, String itemName) {
-        return registerMenuItem(menuName, itemName, -2, null);
+        return registerMenuItem(menuName, itemName, MENU_END, null);
     }
     protected Object registerMenuItem(String menuName, String itemName, String ch) {
-        return registerMenuItem(menuName, itemName, -2, ch);
+        return registerMenuItem(menuName, itemName, MENU_END, ch);
     }
     protected Object registerMenuItem(String menuName, String itemName, int block) {
-        return registerMenuItem(menuName, itemName, -2, null);
+        return registerMenuItem(menuName, itemName, MENU_END, null);
     }
     protected Object registerMenuItem(String menuName, String itemName, int block, String ch) {
         String label = getLabel(itemName);
@@ -156,19 +162,18 @@ abstract public class JBasicApplication extends JFrame
         return registerMenuItem(menuName, mi, block);
     }
     protected Object registerMenuItem(String menuName, JMenuItem item, int block) {
-        JMenu m = (JMenu)getMenu(menuName);
+        JMenu m = (JMenu) getMenu(menuName);
         int idx = getBlockIndex(m, block);
         m.insert(item,idx);
         return m;
     }
 
-    // -2 implies the end, -1 means right at the front
     private int getBlockIndex(JMenu menu, int block) {
-        if(block == -1) {
+        if(block == MENU_START) {
             return 0;
         }
         Component[] comps = menu.getMenuComponents();
-        if(block == -2) {
+        if(block == MENU_END) {
             return comps.length;
         }
         int i;
