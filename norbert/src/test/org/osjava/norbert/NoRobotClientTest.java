@@ -183,4 +183,16 @@ public class NoRobotClientTest extends TestCase {
         assertTrue( "'Disallow: ' should mean to disallow nothing", nrc.isUrlAllowed( new URL(base + "index.html" ) ) );
     }      
 
+    // Tests NRB-8
+    // http://issues.osjava.org/jira/secure/ViewIssue.jspa?key=NRB-8
+    public void testNrb8() throws MalformedURLException, NoRobotException {
+        String base = this.hardCode + "ua-case-insensitive/";
+        String[] names = new String[] { "test", "TEST", "tEsT" };
+        for(int i=0; i<names.length; i++) {
+            NoRobotClient nrc = new NoRobotClient(names[i]);
+            nrc.parse( new URL(base) );
+            assertFalse( "User-Agent names should be case insensitive", nrc.isUrlAllowed( new URL(base + "index.html" ) ) );
+        }
+    }      
+
 }
