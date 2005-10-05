@@ -4,7 +4,7 @@
   <pomVersion>3</pomVersion>
   <id>norbert</id>
   <name>norbert</name>
-  <currentVersion>0.3.1</currentVersion>
+  <currentVersion>0.3.2</currentVersion>
   <organization>
     <name>OSJava</name>
     <url>http://www.osjava.org/</url>
