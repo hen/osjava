@@ -1,0 +1,3 @@
+User-agent: test
+Disallow: 
+Disallow: /index.html
