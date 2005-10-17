@@ -1,0 +1,82 @@
+* @author: Henri Yandell
+* @creation: 20050921
+* @state: draft
+* @version: 1.0.0
+
+!!Introduction
+
+!Purpose
+
+We want to see what static tables look like at any point in time. The system needs to be transparant to both the table being controlled and the code that users the table being controlled.
+
+!Scope
+
+Frequency Monitor project will probably utilize a prototype of the ORCS system. 
+
+!Parties
+
+Dev@genscape
+
+!Definition of terms
+
+static table - a small (< 10,000 rows) database table with data pertaining to a piece of configuration, or a physical entity. Its size is increased by a person's actions and not by the software.
+value table - a table which has infinite scope in size if the software is left to its own devices.
+
+!References
+
+!!ORCS - Oracle Revision Control System
+
+The heart of the system is the ORCS table. It will apply to used for all tables in a schema that want to be controlled. It's schema is:
+
+!!!ORCS table
+
+orcs_id         LONG
+revision        INT
+tablename       VARCHAR
+deleted         BOOLEAN    (default false)
+row             ROW
+insertion_time  TIMESTAMP(3)   (default CURRENT_TIMESTAMP)
+transaction_id  VARCHAR(?)
+archived_time   TIMESTAMP(3)   (default NULL)
+
+(NB: archived_time is an optimization for the select stored procedure - may or may not be implemented)
+
+!!!Stored Procedures
+
+Automatic:
+* insert(tablename, new-row): insert orcs (orcs_id, revision, tablename, transaction_id) VALUES(orcs-sequence.nextval, 1, tablename, new-row, dbms_transaction.local_transaction_id)
+* update(tablename, old-row, new-row): update orcs row=new-row, revision = revision + 1 where row=old-row
+* delete(tablename, old-row): update orcs row=NULL, deleted=1, revision = revision + 1 where row=old-row
+
+(TODO: Not really going to use update above, it should clone the row then update. need to figure out the actual implementation)
+(TODO: Should also be an update after cloning to set the archived_time on a row so we know it is not the latest.)
+
+API:
+* select(tablename, required_time): 
+     SELECT row FROM orcs WHERE tablename = tablename AND insertion_date < required_time AND insertion
+* import(tablename)
+
+!!!Controlling a table
+
+Table T wants to be controlled. It needs to be imported into the system, this means:
+
+* add insert trigger pointing to insert(tablename, new-row)
+* add update trigger pointing to update(tablename, old-row, new-row)
+* add delete trigger pointing to delete(tablename, old-row)
+* for each row in Table T, insert(tablename, new-row)
+
+!!!Requirements
+
+The table must have unique rows. Probably ORCS will require that a table have primary keys before importing.
+
+!!!ORCS Terminal
+
+Java GUI. Shows the list of tables in ORCS, the rows, the revision per row, allows you to do imports of new tables, to stop controlling, to dump the revision history, and most excitingly, to rollback a revision. As transactions are recorded, it will tell the user when other revisions need to be rolled back.
+One question is what rolling back means. Does it mean that the revision history goes away, or is it really a case of applying the inverse of the revision as a new revision.
+
+It'll have cool sounds.
+
+!!!OSJava DB Connection Wizard
+
+Generic wizard for connecting to databases. First version however will be Oracle specific. It will contain a TNS names parser, but let you not use that. Can choose between thin and OCI.
+
