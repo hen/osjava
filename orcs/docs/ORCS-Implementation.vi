@@ -1,0 +1,172 @@
+CREATE TABLE FM_UNIT_$ORCS
+(
+  orcs_id              LONG                     NOT NULL,
+  orcs_revision        INTEGER                  NOT NULL,
+  orcs_deleted         INTEGER,
+  orcs_insertion_time  DATE                     DEFAULT CURRENT_TIMESTAMP     NOT NULL,
+  orcs_transaction_id  VARCHAR2(100)            NOT NULL,
+  fm_unit_id           NUMBER(10),
+  unit_code            VARCHAR2(10),
+  latitude             FLOAT,
+  longitude            FLOAT,
+  last_modified        DATE
+);
+
+
+
+CREATE OR REPLACE TRIGGER orcs_insert_fm_unit 
+AFTER INSERT ON fm_unit 
+FOR EACH ROW
+DECLARE 
+   v_orcs_row_id               NUMBER(11); 
+   v_orcs_revision             INTEGER; 
+BEGIN 
+  SELECT orcs_row_id, MAX(orcs_revision) 
+  INTO v_orcs_row_id, v_orcs_revision 
+  FROM fm_unit_$orcs WHERE fm_unit_id=:new.fm_unit_id 
+  GROUP BY orcs_row_id;
+  
+  v_orcs_revision := v_orcs_revision + 1; 
+  
+  INSERT INTO fm_unit_$orcs (orcs_id, orcs_revision, orcs_transaction_id, orcs_row_id, fm_unit_id, unit_code, latitude, longitude, last_modified) 
+  VALUES (seq_orcs_id.nextval, v_orcs_revision, dbms_transaction.local_transaction_id, v_orcs_row_id, 
+		  :new.fm_unit_id, :new.unit_code, :new.latitude, :new.longitude, :new.last_modified 
+		 );
+		 
+  EXCEPTION
+    WHEN no_data_found THEN
+	  DBMS_OUTPUT.PUT_LINE('NO DATA FOUND');
+      INSERT INTO fm_unit_$orcs (orcs_id, orcs_revision, orcs_transaction_id, orcs_row_id, fm_unit_id, unit_code, latitude, longitude, last_modified) 
+      VALUES (seq_orcs_id.nextval, 1, dbms_transaction.local_transaction_id, seq_orcs_row_id.nextval, 
+	  	      :new.fm_unit_id, :new.unit_code, :new.latitude, :new.longitude, :new.last_modified 
+		     );
+END;
+/
+
+
+
+CREATE OR REPLACE TRIGGER orcs_update_fm_unit 
+AFTER UPDATE ON fm_unit 
+FOR EACH ROW
+DECLARE 
+   v_orcs_row_id               NUMBER(11); 
+   v_orcs_revision             INTEGER; 
+BEGIN 
+  SELECT orcs_row_id, MAX(orcs_revision) 
+  INTO v_orcs_row_id, v_orcs_revision 
+  FROM fm_unit_$orcs WHERE fm_unit_id=:old.fm_unit_id 
+  GROUP BY orcs_row_id;
+  v_orcs_revision := v_orcs_revision + 1; 
+  INSERT INTO fm_unit_$orcs (orcs_id, orcs_revision, orcs_transaction_id, orcs_row_id, fm_unit_id, unit_code, latitude, longitude, last_modified) 
+  VALUES (seq_orcs_id.nextval, v_orcs_revision, dbms_transaction.local_transaction_id, v_orcs_row_id, 
+		  :new.fm_unit_id, :new.unit_code, :new.latitude, :new.longitude, :new.last_modified 
+		 ); 
+END;
+/
+
+CREATE OR REPLACE TRIGGER GENSCAPE.orcs_delete_fm_unit
+AFTER DELETE ON fm_unit
+FOR EACH ROW
+DECLARE
+   v_orcs_row_id               NUMBER(11);
+   v_orcs_revision             INTEGER;
+BEGIN
+  SELECT orcs_row_id, MAX(orcs_revision) 
+  INTO v_orcs_row_id, v_orcs_revision 
+  FROM fm_unit_$orcs WHERE fm_unit_id=:old.fm_unit_id 
+  GROUP BY orcs_row_id;
+  v_orcs_revision := v_orcs_revision + 1;
+  INSERT INTO fm_unit_$orcs (orcs_id, orcs_revision, orcs_transaction_id, orcs_row_id, orcs_deleted)
+  VALUES (seq_orcs_id.nextval, v_orcs_revision, dbms_transaction.local_transaction_id, v_orcs_row_id, 1);   
+END;
+/
+
+CREATE OR REPLACE PACKAGE orcs
+AS
+   PROCEDURE import (v_table_name IN VARCHAR2);
+END orcs;
+/
+
+
+
+
+CREATE OR REPLACE PACKAGE BODY orcs
+AS
+   PROCEDURE import (v_table_name IN VARCHAR2)
+   IS
+      v_orcs_table  VARCHAR2(255);
+	  v_columns VARCHAR2(255);   
+	  v_row user_tab_cols%ROWTYPE;
+   BEGIN
+      v_orcs_table := v_table_name || '_$ORCS';
+      FOR v_row IN (SELECT column_name FROM user_tab_cols WHERE table_name=UPPER(v_table_name))
+      LOOP
+        v_columns := v_columns || ',' || v_row.column_name;
+      END LOOP;
+      v_columns := LTRIM(v_columns,',');
+
+	  EXECUTE IMMEDIATE 'INSERT INTO ' || v_orcs_table || '(orcs_id, orcs_revision, orcs_transaction_id, orcs_row_id, ' || v_columns || ') ' ||
+	  'SELECT seq_orcs_id.nextval, 1, dbms_transaction.local_transaction_id, seq_orcs_row_id.nextval, ' || 
+	  v_columns || ' FROM ' || v_table_name;	  
+		 
+   END;
+
+   PROCEDURE test(v_table_name IN VARCHAR2)
+   IS
+      c_rs result_set; 
+   BEGIN
+      c_rs := fetch_table_at_date(v_table_name, TO_DATE('2005-10-10 14:50:41', 'YYYY-MM-DD HH24:MI:SS'));
+   END;
+
+   FUNCTION fetch_table_at_date(v_table_name IN VARCHAR2, v_specified_date IN DATE)
+     RETURN result_set
+   IS
+	  rs result_set;
+      v_orcs_table  VARCHAR2(255);
+	  v_columns VARCHAR2(255);   
+	  v_row user_tab_cols%ROWTYPE;
+   BEGIN
+   
+      v_orcs_table := v_table_name || '_$ORCS';
+      FOR v_row IN (SELECT column_name FROM user_tab_cols WHERE table_name=UPPER(v_table_name))
+      LOOP
+        v_columns := v_columns || ',' || v_row.column_name;
+      END LOOP;
+      v_columns := LTRIM(v_columns,',');
+	  
+      OPEN rs FOR 
+	  'SELECT ' || v_columns ||   
+      '  FROM ' || v_orcs_table || 
+      ' WHERE (orcs_row_id, orcs_revision) IN ( ' ||
+      '    SELECT orcs_row_id, MAX(orcs_revision) FROM ' || v_orcs_table || 
+      '     WHERE orcs_insertion_time <= CURRENT_DATE ' ||
+      '     GROUP BY orcs_row_id ' ||
+      '    ) AND orcs_deleted IS NULL';
+		  		  
+      RETURN rs;
+   END;
+	 
+   
+END orcs;
+/
+
+
+
+  -- HEAD 
+  SELECT fm_unit_id, unit_code, latitude, longitude, last_modified  
+    FROM fm_unit_$orcs
+   WHERE (orcs_row_id, orcs_revision) IN (
+  SELECT orcs_row_id, MAX(orcs_revision) FROM fm_unit_$orcs GROUP BY orcs_row_id
+  ) AND orcs_deleted IS NULL
+
+
+  -- DATE
+    SELECT fm_unit_id, unit_code, latitude, longitude, last_modified  
+    FROM fm_unit_$orcs
+   WHERE (orcs_row_id, orcs_revision) IN (
+  SELECT orcs_row_id, MAX(orcs_revision) FROM fm_unit_$orcs 
+   WHERE orcs_insertion_time <= TO_DATE('2005-10-10 14:50:41', 'YYYY-MM-DD HH24:MI:SS')
+	GROUP BY orcs_row_id
+  ) AND orcs_deleted IS NULL
+
+ -- ie) the only difference between HEAD and DATE is the extra WHERE clause
