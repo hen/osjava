@@ -3,7 +3,7 @@
  */
 package org.osjava.dswiz;
 
-import javax.swing.JComponent;;
+import javax.swing.JComponent;
 
 /**
  * @author hyandell
