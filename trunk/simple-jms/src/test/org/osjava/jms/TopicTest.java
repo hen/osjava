@@ -31,8 +31,6 @@
  */
 package org.osjava.jms;
 
-import java.util.Enumeration;
-
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageListener;
@@ -43,12 +41,10 @@ import javax.jms.TopicSubscriber;
 import javax.jms.TopicPublisher;
 import javax.jms.TopicSession;
 import javax.jms.Session;
-import javax.jms.TextMessage;
 
 import javax.naming.InitialContext;
 
 import junit.framework.TestCase;
-import org.osjava.jms.MemoryTopicConnectionFactory;
 
 public class TopicTest extends TestCase implements MessageListener {
 
