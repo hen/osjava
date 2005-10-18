@@ -49,7 +49,6 @@ import javax.jms.TextMessage;
 import javax.naming.InitialContext;
 
 import junit.framework.TestCase;
-import org.osjava.jms.MemoryQueueConnectionFactory;
 
 public class QueueTest extends TestCase implements MessageListener {
 

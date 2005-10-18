@@ -33,12 +33,10 @@ package org.osjava.jms;
 
 import java.util.Enumeration;
 
-import javax.jms.Queue;
 import javax.jms.JMSException;
-
-// non-API
-import javax.jms.MessageListener;
 import javax.jms.Message;
+import javax.jms.MessageListener;
+import javax.jms.Queue;
 
 public class MemoryQueue implements Queue {
 
