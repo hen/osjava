@@ -1,0 +1,84 @@
+<?xml version="1.0"?>
+<project>
+  
+  <pomVersion>3</pomVersion>
+  
+  <id>OrcsTerminal</id>
+  <name>OrcsTerminal</name>
+
+  <currentVersion>1.0.0</currentVersion>
+
+  <organization>
+    <name>OSJava</name>
+    <url>http://www.osjava.org</url>
+    <logo>http://www.osjava.org/images/osjava.gif</logo>
+  </organization>
+  <inceptionYear>2005</inceptionYear>
+
+  <package>org.osjava.orcs.terminal</package>
+
+  <logo>http://www.osjava.org/images/1x1.gif</logo>
+  
+  <description>
+    Database data auditing tool. The Orcs Terminal is the management interface to the system.
+  </description>
+  
+  <shortDescription>ORCS management interface</shortDescription>
+
+  <url>http://www.osjava.org/OrcsTerminal/</url>
+
+  <!-- TODO
+  <issueTrackingUrl>http://www.osjava.org:8080/jira/secure/BrowseProject.jspa?id=YOUR_ID</issueTrackingUrl>
+  -->
+
+  <mailingLists>
+    <mailingList>
+        <name>osjava-users</name>
+	<subscribe>http://lists.flamefew.net/mailman/listinfo/osjava-users</subscribe>
+        <unsubscribe>http://lists.flamefew.net/mailman/listinfo/osjava-users</unsubscribe>
+        <archive>http://lists.flamefew.net/mailman/private/osjava-users/</archive>
+    </mailingList>
+  </mailingLists>
+
+
+  <dependencies>
+    <dependency>
+      <groupId>genjava</groupId>
+      <artifactId>gj-gui</artifactId>
+      <version>0.1</version>
+    </dependency>
+    <dependency>
+      <groupId>commons-dbutils</groupId>
+      <artifactId>commons-dbutils</artifactId>
+      <version>1.0</version>
+    </dependency>
+    <dependency>
+      <groupId>commons-lang</groupId>
+      <artifactId>commons-lang</artifactId>
+      <version>2.1</version>
+    </dependency>
+    <dependency>
+      <groupId>genjava</groupId>
+      <artifactId>gj-core</artifactId>
+      <version>3.1</version>
+    </dependency>
+    <dependency>
+      <groupId>genjava</groupId>
+      <artifactId>gj-csv</artifactId>
+      <version>1.0</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <sourceDirectory>src/java</sourceDirectory>
+  </build>
+
+  <reports>
+    <report>maven-jxr-plugin</report>
+    <report>maven-javadoc-plugin</report>
+    <report>maven-license-plugin</report>
+    <report>maven-changes-plugin</report>
+  </reports>
+  
+</project>
+
