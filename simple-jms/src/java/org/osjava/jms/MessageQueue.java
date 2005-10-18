@@ -38,7 +38,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 // non-API
-import javax.jms.MessageListener;
 import javax.jms.Message;
 
 class MessageQueue {

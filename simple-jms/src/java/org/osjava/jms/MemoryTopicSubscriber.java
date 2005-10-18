@@ -31,7 +31,6 @@
  */
 package org.osjava.jms;
 
-import javax.jms.Message;
 import javax.jms.MessageListener;
 import javax.jms.Topic;
 import javax.jms.TopicSubscriber;
