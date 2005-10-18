@@ -69,7 +69,6 @@ public class AutoOptionDialog extends JDialog {
         };
         //JDialog jd = new AutoOptionDialog(jf,"TEST",true,map,new java.awt.FlowLayout());
         JDialog jd = new AutoOptionDialog(jf,adl,"TEST",true,map);
-        jd.pack();
         jd.show();
     }
 
@@ -81,6 +80,7 @@ public class AutoOptionDialog extends JDialog {
         myData   = preParse(data);   // bother storing this?
         myListener = adl;
         initDialog(myData, layout);
+        pack();
     }
 
     public AutoOptionDialog(JFrame owner, AutoDialogListener adl, String title, boolean modal, Map data) {
@@ -178,7 +178,7 @@ public class AutoOptionDialog extends JDialog {
     }
 
     public Object getData(Object key) {
-        return myData.get(key);
+        return getDataMap().get(key);
     }
 
     public Map getDataMap() {
