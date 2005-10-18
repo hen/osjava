@@ -47,6 +47,7 @@ abstract public class JBasicApplication extends JFrame
     private Object currentObj;
     private Hashtable openList;
     private JMenu openMenu;
+    private JMenu helpMenu;
     private Hashtable menus;
     
     private Vector listeners;
@@ -63,10 +64,11 @@ abstract public class JBasicApplication extends JFrame
         this.setJMenuBar(bar);
 
         registerMenuItem("File","Open","O");
-        registerMenuItem("File","Close","Q");
+        registerMenuItem("File","Close","W");
         createNewBlock("File",0);
-        registerMenuItem("File","Exit","E");
+        registerMenuItem("File","Exit","Q");
         openMenu = (JMenu)registerMenu("Opened");
+        helpMenu = (JMenu)registerMenu("Help");
         registerMenuItem("Help","About","Shift-A");
         registerMenuItem("Help","Licence","Shift-L");
         registerMenuItem("Help","QuickHelp","Shift-H");
@@ -74,8 +76,19 @@ abstract public class JBasicApplication extends JFrame
 
     // Menu Handling Code
     private void addTopLevelMenu(JMenu menu) {
-        // push after help menu
+        if(helpMenu != null) {
+            getJMenuBar().remove(helpMenu);
+        }
+        if(openMenu != null) {
+            getJMenuBar().remove(openMenu);
+        }
         getJMenuBar().add(menu);
+        if(openMenu != null) {
+            getJMenuBar().add(openMenu);
+        }
+        if(helpMenu != null) {
+            getJMenuBar().add(helpMenu);
+        }
     }
     // will not return null
     private JMenu getMenu(String fqname) {
@@ -83,7 +96,7 @@ abstract public class JBasicApplication extends JFrame
         if(m == null) {
             m = createMenu(getLabel(getMenuName(fqname)));
             String parentName = StringUtils.substringBefore(fqname,".");
-            if("".equals(parentName)) {
+            if(fqname.equals(parentName)) {
                 addTopLevelMenu(m);
             } else {
                 JMenu parent = getMenu(parentName);
@@ -97,7 +110,12 @@ abstract public class JBasicApplication extends JFrame
         return m;
     }
     private String getMenuName(String fqname) {
-        return StringUtils.substringAfter(fqname,".");
+        String after = StringUtils.substringAfter(fqname,".");
+        if("".equals(after)) {
+            return fqname;
+        } else {
+            return after;
+        }
     }
     // basically inserts a JSeparator
     protected void createNewBlock(String menuName, int block) {
@@ -106,18 +124,18 @@ abstract public class JBasicApplication extends JFrame
         menu.insertSeparator(idx);
     }
     // Creates a sub-menu. If menuName is "", then goes in root.
-    protected Object registerMenu(String subMenuName, char mnemonic) {
+    protected JMenu registerMenu(String subMenuName, char mnemonic) {
         JMenu menu = getMenu(subMenuName);
         menu.setMnemonic( (int)mnemonic );
         return menu;
     }
-    protected Object registerMenu(String subMenuName) {
+    protected JMenu registerMenu(String subMenuName) {
         return getMenu(subMenuName);
     }
-    protected Object registerMenu(String menuName, String subMenuName, String mnemonic) {
+    protected JMenu registerMenu(String menuName, String subMenuName, String mnemonic) {
         return registerMenu(menuName, subMenuName, MENU_END, null);
     }
-    protected Object registerMenu(String menuName, String subMenuName, int block, String mnemonic) {
+    protected JMenu registerMenu(String menuName, String subMenuName, int block, String mnemonic) {
         JMenu parent = getMenu(menuName);
         int idx = getBlockIndex(parent,block);
         JMenu menu = createMenu( getLabel(subMenuName) );
@@ -371,6 +389,14 @@ abstract public class JBasicApplication extends JFrame
         selection( getCurrent() );
     }
     
+    protected void select(Object obj) {
+        if( openList.get(getTitle(obj)) == null) {
+            addToOpenList(obj);
+        }
+        setCurrent(obj);
+        selection();
+    }
+    
     public Object popFromOpenList() {
         Enumeration enum = openList.keys();
         if(enum.hasMoreElements()) {
@@ -403,6 +429,8 @@ abstract public class JBasicApplication extends JFrame
                 }
         }*/
     
+    // TODO: Allow extension type to be set
+    // TODO: Create a TitleDialog class that looks like a JDialog but uses the title bar
     protected String getFileName(int mode) {
         String prompt;
 
@@ -446,7 +474,7 @@ abstract public class JBasicApplication extends JFrame
     }
 
     public void windowClosing(WindowEvent event) {
-                this.dispose();
+        this.dispose();
     }
 
 }
