@@ -1,6 +1,5 @@
 package com.generationjava.swing;
 
-import java.awt.Dimension;
 import javax.swing.JTable;
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
@@ -17,21 +16,14 @@ import java.awt.event.InputEvent;
 import javax.swing.JPopupMenu;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenuItem;
-import javax.swing.JLabel;
 import java.util.Iterator;
-import java.util.Enumeration;
 import java.util.HashMap;
 import org.apache.commons.collections.MultiHashMap;
-import javax.swing.table.TableModel;
 import javax.swing.table.TableColumn;
-import javax.swing.table.JTableHeader;
 
 // tmp
 import java.util.ArrayList;
 import java.util.List;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import javax.swing.DefaultCellEditor;
 
 public class GJTable extends JTable implements MouseListener, ActionListener {
 
