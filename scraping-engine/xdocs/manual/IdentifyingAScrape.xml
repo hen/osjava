@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<document>
+
+  <properties>
+    <author email="bayard@generationjava.com">Henri Yandell</author>
+    <title>Identifying a Scrape</title>
+  </properties>
+
+  <body>
+  <section name="Questions">
+    <p>A good way to prepare to create a scrape is to ensure you have answers to the following questions. </p>
+    <ol>
+      <li>What is the entry point for the scraped data (usually a URL)?</li>
+      <li>How many pages need to be scraped?</li>
+      <li>How does the user get to thoe pages?</li>
+      <li>At what times in the day should the pages be scraped; which days?</li>
+      <li>Any login/passwords needed to get to the scraped pages?</li>
+      <li>Any business constraints? ie) trying to get the scraped data out in very aggressive timely manner</li>
+      <li>How often is the data posted?</li>
+      <li>Is the scraper expected to get historical data to fill in missing gaps of data due to downtime?</li>
+      <li>It cna be very useful to ask your domain expert for a print up of the pages in question, with the desired data highlighted. </li>
+    </ol>
+  </section>
+  </body>
+
+</document>
