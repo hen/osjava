@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<project>
+  
+  <pomVersion>3</pomVersion>
+  
+  <id>DataSourceWizard</id>
+  <name>DataSourceWizard</name>
+
+  <currentVersion>1.0.0</currentVersion>
+
+  <organization>
+    <name>OSJava</name>
+    <url>http://www.osjava.org</url>
+    <logo>http://www.osjava.org/images/osjava.gif</logo>
+  </organization>
+  <inceptionYear>2005</inceptionYear>
+
+  <package>org.osjava.dswiz</package>
+
+  <logo>http://www.osjava.org/images/1x1.gif</logo>
+  
+  <description>
+    A generic Swing dialog for selecting a javax.sql.DataSource object.
+  </description>
+  
+  <shortDescription>JDBC Dialog</shortDescription>
+
+  <url>http://www.osjava.org/DataSourceWizard/</url>
+
+  <!-- TODO
+  <issueTrackingUrl>http://www.osjava.org:8080/jira/secure/BrowseProject.jspa?id=YOUR_ID</issueTrackingUrl>
+  -->
+
+  <mailingLists>
+    <mailingList>
+        <name>osjava-users</name>
+	<subscribe>http://lists.flamefew.net/mailman/listinfo/osjava-users</subscribe>
+        <unsubscribe>http://lists.flamefew.net/mailman/listinfo/osjava-users</unsubscribe>
+        <archive>http://lists.flamefew.net/mailman/private/osjava-users/</archive>
+    </mailingList>
+  </mailingLists>
+
+
+  <dependencies>
+    <dependency>
+      <groupId>genjava</groupId>
+      <artifactId>gj-gui</artifactId>
+      <version>0.1</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <sourceDirectory>src/java</sourceDirectory>
+  </build>
+
+  <reports>
+    <report>maven-jxr-plugin</report>
+    <report>maven-javadoc-plugin</report>
+    <report>maven-license-plugin</report>
+    <report>maven-changes-plugin</report>
+  </reports>
+  
+</project>
+
