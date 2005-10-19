@@ -44,8 +44,4 @@ public class NullStore implements Store {
         if(false) throw new StoringException(null,null);
     }
 
-    public boolean exists(Header header, Config cfg, Session session) throws StoringException {
-        return false;
-    }
-
 }

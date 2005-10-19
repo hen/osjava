@@ -32,8 +32,4 @@ public class ConsoleStore implements Store {
         }
     }
 
-    public boolean exists(Header header, Config cfg, Session session) throws StoringException {
-        return false;
-    }
-
 }

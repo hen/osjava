@@ -97,8 +97,4 @@ try {
         return queryRunner.update( conn, sql, row );
     }
 
-    public boolean exists(Header header, Config cfg, Session session) throws StoringException {
-        // need to write some kind of checking in here
-        return false;
-    }
 }
