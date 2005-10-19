@@ -86,6 +86,8 @@ public class OrcsTerminal extends JFrame {
         });
     }
     
+    private static final String TITLE = "ORCS Terminal";
+    
     // widgets that need to be seen by anonymous listeners
     private JList tableList; 
     private JTable revisionTable;
@@ -101,7 +103,7 @@ public class OrcsTerminal extends JFrame {
     private boolean currentDeleted;
     
     public OrcsTerminal() {
-        super("Orcs Terminal");
+        super(TITLE);
         
         JPanel schemaTablePanel = new JPanel();
         schemaTablePanel.setLayout(new BorderLayout());
@@ -192,6 +194,9 @@ public class OrcsTerminal extends JFrame {
     }
     
     private void fireTableChanged() {
+        
+        setTitle(TITLE + " - " + this.currentDate);
+        
         List list = null;
         String[] headers = null;
         try {
