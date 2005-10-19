@@ -22,6 +22,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JList;
@@ -49,25 +50,40 @@ import net.sf.nachocalendar.components.DateField;
  */
 public class OrcsTerminal extends JFrame {
     
-    public static void main(String[] args) throws Exception {
+    private static void createAndShowGUI() {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception e) {
             throw new RuntimeException("Unable to set system look & feel");
         }
-        
-        JFrame frame = new JFrame("DataSourceWizard Example");
+       
+        //Make sure we have nice window decorations.
+        JFrame.setDefaultLookAndFeelDecorated(true);
+        JDialog.setDefaultLookAndFeelDecorated(true);
+
+        JFrame frame = new JFrame("TMP");
         DataSourceWizard dsw = new DataSourceWizard(frame);
         WindowUtilities.centreWindowOnScreen(dsw);
         dsw.show();
         DataSource ds = dsw.getDataSource();
         frame.dispose();
-        
+            
         OrcsProcedures.setDataSource(ds);
-        
+            
         OrcsTerminal ot = new OrcsTerminal();
+        ot.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         WindowUtilities.centreWindowOnScreen(ot);
         ot.show();
+    }
+
+    public static void main(String[] args) {
+        //Schedule a job for the event-dispatching thread:
+        //creating and showing this application's GUI.
+        javax.swing.SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                createAndShowGUI();
+            }
+        });
     }
     
     // widgets that need to be seen by anonymous listeners
@@ -112,9 +128,9 @@ public class OrcsTerminal extends JFrame {
               GuiHelper.horizontalSplit(
                   createRevisionPanel(),
                   rowDataPanel,
-                  150
+                  175, 125, 600
               ),
-              650
+              700, 300, 600
           )
         );
         
