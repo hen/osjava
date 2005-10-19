@@ -106,15 +106,14 @@ public class OrcsTerminal extends JFrame {
           GuiHelper.horizontalSplit(
               GuiHelper.horizontalSplit(
                   schemaTablePanel,
-                  commandDataPanel,
-                  0
+                  commandDataPanel
               ),
               GuiHelper.horizontalSplit(
                   createRevisionPanel(),
                   rowDataPanel,
-                  100
+                  200
               ),
-             100
+              600
           )
         );
         
@@ -170,7 +169,9 @@ public class OrcsTerminal extends JFrame {
                 }
             } 
         });
-        return new JScrollPane(this.tableList);
+        JScrollPane jsp = new JScrollPane();
+        jsp.getViewport().add(this.tableList);
+        return jsp;
     }
     
     private void fireTableChanged() {
@@ -317,7 +318,9 @@ public class OrcsTerminal extends JFrame {
         this.dataTable = new JTable(new OrcsTableModel(), new DefaultTableColumnModel(), lsm);
         GuiHelper.calcColumnWidths(this.dataTable);
         
-        return new JScrollPane(this.dataTable);
+        JScrollPane jsp = new JScrollPane();
+        jsp.getViewport().add(this.dataTable);
+        return jsp;
     }
     
     void fireSelectedRowChanged() {
@@ -370,7 +373,9 @@ public class OrcsTerminal extends JFrame {
         this.revisionTable = new JTable(new OrcsTableModel(), dcm, lsm);
         GuiHelper.calcColumnWidths(this.revisionTable);
                         
-        return new JScrollPane(this.revisionTable);
+        JScrollPane jsp = new JScrollPane();
+        jsp.getViewport().add(this.revisionTable);
+        return jsp;
     }
     
     void fireSelectedRevisionChanged() {
@@ -396,11 +401,15 @@ public class OrcsTerminal extends JFrame {
 
         this.rowDataTable = new JTable(new OrcsTableModel(), dcm);
         GuiHelper.calcColumnWidths(this.rowDataTable);
-        return new JScrollPane(this.rowDataTable);
+        JScrollPane jsp = new JScrollPane();
+        jsp.getViewport().add(this.rowDataTable);
+        return jsp;
     }
     
     private JComponent createRollbackPanel() {
         JButton button = new JButton("Rollback");
+        JPanel panel = new JPanel();
+        panel.add(button);
         button.addActionListener( new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 // TODO: Handle transactions
@@ -437,7 +446,7 @@ public class OrcsTerminal extends JFrame {
                 fireSelectedRowChanged();
             } 
         });
-        return button;
+        return panel;
     }
     
 }

@@ -27,9 +27,9 @@ public class GuiHelper {
         return jsp;
     }
         
-    public static JSplitPane verticalSplit(JComponent jc1, JComponent jc2, int weight) {
+    public static JSplitPane verticalSplit(JComponent jc1, JComponent jc2, int pixels) {
         JSplitPane jsp = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
-        jsp.setResizeWeight(weight/100);
+        jsp.setDividerLocation(pixels);
         jsp.add(jc1);
         jsp.add(jc2);
         return jsp;
@@ -41,9 +41,9 @@ public class GuiHelper {
         jsp.add(jc2);
         return jsp;
     }
-    public static JSplitPane horizontalSplit(JComponent jc1, JComponent jc2, int weight) {
+    public static JSplitPane horizontalSplit(JComponent jc1, JComponent jc2, int pixels) {
         JSplitPane jsp = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
-        jsp.setResizeWeight(weight/100);
+        jsp.setDividerLocation(pixels);
         jsp.add(jc1);
         jsp.add(jc2);
         return jsp;
