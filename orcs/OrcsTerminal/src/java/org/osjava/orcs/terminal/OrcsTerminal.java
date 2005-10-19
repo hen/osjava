@@ -4,6 +4,7 @@
 package org.osjava.orcs.terminal;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -111,9 +112,9 @@ public class OrcsTerminal extends JFrame {
               GuiHelper.horizontalSplit(
                   createRevisionPanel(),
                   rowDataPanel,
-                  200
+                  150
               ),
-              600
+              650
           )
         );
         
@@ -318,7 +319,7 @@ public class OrcsTerminal extends JFrame {
         this.dataTable = new JTable(new OrcsTableModel(), new DefaultTableColumnModel(), lsm);
         GuiHelper.calcColumnWidths(this.dataTable);
         
-        JScrollPane jsp = new JScrollPane();
+        JScrollPane jsp = new JScrollPane(this.dataTable);
         jsp.getViewport().add(this.dataTable);
         return jsp;
     }
