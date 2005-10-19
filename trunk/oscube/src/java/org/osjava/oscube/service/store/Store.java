@@ -45,11 +45,4 @@ public interface Store {
      */
     public void store(Result result, Config cfg, Session session) throws StoringException;
 
-    /**
-     * Does this Header for a possible Result exist already?
-     * This is designed to try and stop parsing of stuff 
-     * already parsed, though it's not implemented yet. 
-     */
-    public boolean exists(Header header, Config cfg, Session session) throws StoringException;
-
 }

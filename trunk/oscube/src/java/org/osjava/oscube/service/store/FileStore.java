@@ -90,11 +90,6 @@ try {
 }
     }
 
-    public boolean exists(Header header, Config cfg, Session session) throws StoringException {
-        // need to write some kind of checking in here
-        return false;
-    }
-
     private InputStream open(Object obj) throws IOException {
         if(obj instanceof URL) {
             URL url = (URL) obj;
