@@ -7,22 +7,22 @@ public final class MethodInfo extends AbstractInfo
     private String[] exceptions;
     
     public MethodInfo(int access, String name, String desc, String signature,
-		      String[] exceptions) {
-	super(access, name);
-	this.desc = desc;
-	this.signature = signature;
-	this.exceptions = exceptions;
+                      String[] exceptions) {
+        super(access, name);
+        this.desc = desc;
+        this.signature = signature;
+        this.exceptions = exceptions;
     }
     
     public final String getDesc() {
-	return desc;
+        return desc;
     }
     
     public final String getSignature() {
-	return signature;
+        return signature;
     }
     
     public final String[] getExceptions() {
-	return exceptions;
+        return exceptions;
     }
 }

@@ -11,38 +11,38 @@ public final class ClassInfo extends AbstractInfo
     private Map fieldMap;
     
     public ClassInfo(int version, int access, String name, String signature,
-		     String supername, String[] interfaces, Map methodMap,
-		     Map fieldMap) {
-	super(access, name);
-	this.version = version;
-	this.signature = signature;
-	this.supername = supername;
-	this.interfaces = interfaces;
-	this.methodMap = methodMap;
-	this.fieldMap = fieldMap;
+                     String supername, String[] interfaces, Map methodMap,
+                     Map fieldMap) {
+        super(access, name);
+        this.version = version;
+        this.signature = signature;
+        this.supername = supername;
+        this.interfaces = interfaces;
+        this.methodMap = methodMap;
+        this.fieldMap = fieldMap;
     }
     
     public final int getVersion() {
-	return version;
+        return version;
     }
     
     public final String getSignature() {
-	return signature;
+        return signature;
     }
     
     public final String getSupername() {
-	return supername;
+        return supername;
     }
     
     public final String[] getInterfaces() {
-	return interfaces;
+        return interfaces;
     }
     
     public final Map getMethodMap() {
-	return methodMap;
+        return methodMap;
     }
     
     public final Map getFieldMap() {
-	return fieldMap;
+        return fieldMap;
     }
 }

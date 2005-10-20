@@ -3,7 +3,7 @@ package org.osjava.scripts4java;
 public interface DiffHandler
 {
     public void startDiff(String string, String string_0_)
-	throws DiffException;
+        throws DiffException;
     
     public void startRemoved() throws DiffException;
     
@@ -30,13 +30,13 @@ public interface DiffHandler
     public void methodAdded(MethodInfo methodinfo) throws DiffException;
     
     public void classChanged(ClassInfo classinfo, ClassInfo classinfo_1_)
-	throws DiffException;
+        throws DiffException;
     
     public void fieldChanged(FieldInfo fieldinfo, FieldInfo fieldinfo_2_)
-	throws DiffException;
+        throws DiffException;
     
     public void methodChanged
-	(MethodInfo methodinfo, MethodInfo methodinfo_3_) throws DiffException;
+        (MethodInfo methodinfo, MethodInfo methodinfo_3_) throws DiffException;
     
     public void endClassChanged() throws DiffException;
     
