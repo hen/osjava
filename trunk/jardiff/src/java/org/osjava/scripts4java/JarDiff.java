@@ -1,6 +1,3 @@
-/* JarDiff - Decompiled by JODE
- * Visit http://jode.sourceforge.net/
- */
 package org.osjava.scripts4java;
 import java.io.File;
 import java.io.IOException;
