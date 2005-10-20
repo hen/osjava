@@ -186,5 +186,27 @@ public class SetupProcedures {
       "      INSERT INTO ${table}_$orcs (orcs_id, orcs_revision, orcs_transaction_id, orcs_row_id, ${columns}) " +  
       "      VALUES (seq_orcs_id.nextval, 1, dbms_transaction.local_transaction_id, seq_orcs_row_id.nextval, ${new:columns} ); " + 
       "END; ";
+ 
+    
+    /*
+   PROCEDURE import (v_table_name IN VARCHAR2)
+   IS
+      v_orcs_table  VARCHAR2(255);
+      v_columns VARCHAR2(255);   
+      v_row user_tab_cols%ROWTYPE;
+   BEGIN
+      v_orcs_table := v_table_name || '_$ORCS';
+      FOR v_row IN (SELECT column_name FROM user_tab_cols WHERE table_name=UPPER(v_table_name))
+      LOOP
+        v_columns := v_columns || ',' || v_row.column_name;
+      END LOOP;
+      v_columns := LTRIM(v_columns,',');
+
+      EXECUTE IMMEDIATE 'INSERT INTO ' || v_orcs_table || '(orcs_id, orcs_revision, orcs_transaction_id, orcs_row_id, ' || v_columns || ') ' ||
+      'SELECT seq_orcs_id.nextval, 1, dbms_transaction.local_transaction_id, seq_orcs_row_id.nextval, ' || 
+      v_columns || ' FROM ' || v_table_name;      
+         
+   END;
+     */
     
 }
