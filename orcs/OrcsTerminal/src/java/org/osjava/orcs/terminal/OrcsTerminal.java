@@ -25,7 +25,9 @@ import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -439,7 +441,7 @@ public class OrcsTerminal extends JFrame {
                 // don't allow rollbacks to the latest revision               
                 int row = revisionTable.getSelectedRow();
                 if(row == revisionTable.getModel().getRowCount() - 1) {
-                    System.out.println("Illegal to rollback to the latest revision. ");
+                    JOptionPane.showMessageDialog(OrcsTerminal.this, "Illegal to rollback to the latest revision. ", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
                 
@@ -447,7 +449,7 @@ public class OrcsTerminal extends JFrame {
                 // TODO: Fix this hack. This is actually orcs_deleted
                 Object deleted = ((OrcsTableModel)revisionTable.getModel()).getOrcsRowId(row);
                 if(deleted != null) {
-                    System.out.println("Illegal to rollback to a deleted revision. ");
+                    JOptionPane.showMessageDialog(OrcsTerminal.this, "Illegal to rollback to a deleted revision. ", "Error", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
                     
