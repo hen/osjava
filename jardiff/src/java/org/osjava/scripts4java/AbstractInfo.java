@@ -1,5 +1,7 @@
 package org.osjava.scripts4java;
 
+import org.objectweb.asm.Opcodes;
+
 public abstract class AbstractInfo
 {
     public final String ACCESS_PUBLIC = "public";
@@ -23,92 +25,93 @@ public abstract class AbstractInfo
     }
     
     public final boolean isPublic() {
-        return (access & 0x1) != 0;
+        return (access & Opcodes.ACC_PUBLIC) != 0;
     }
     
     public final boolean isProtected() {
-        return (access & 0x4) != 0;
+        return (access & Opcodes.ACC_PROTECTED) != 0;
     }
     
     public final boolean isPackagePrivate() {
-        return (access & 0x7) == 0;
+        return (access & (Opcodes.ACC_PUBLIC | Opcodes.ACC_PROTECTED | 
+                    Opcodes.ACC_PRIVATE)) == 0;
     }
     
     public final boolean isPrivate() {
-        return (access & 0x2) != 0;
+        return (access & Opcodes.ACC_PRIVATE) != 0;
     }
     
     public final boolean isAbstract() {
-        return (access & 0x400) != 0;
+        return (access & Opcodes.ACC_ABSTRACT) != 0;
     }
     
     public final boolean isAnnotation() {
-        return (access & 0x2000) != 0;
+        return (access & Opcodes.ACC_ANNOTATION) != 0;
     }
     
     public final boolean isBridge() {
-        return (access & 0x40) != 0;
+        return (access & Opcodes.ACC_BRIDGE) != 0;
     }
     
     public final boolean isDeprecated() {
-        return (access & 0x20000) != 0;
+        return (access & Opcodes.ACC_DEPRECATED) != 0;
     }
     
     public final boolean isEnum() {
-        return (access & 0x4000) != 0;
+        return (access & Opcodes.ACC_ENUM) != 0;
     }
     
     public final boolean isFinal() {
-        return (access & 0x10) != 0;
+        return (access & Opcodes.ACC_FINAL) != 0;
     }
     
     public final boolean isInterface() {
-        return (access & 0x200) != 0;
+        return (access & Opcodes.ACC_INTERFACE) != 0;
     }
     
     public final boolean isNative() {
-        return (access & 0x100) != 0;
+        return (access & Opcodes.ACC_NATIVE) != 0;
     }
     
     public final boolean isStatic() {
-        return (access & 0x8) != 0;
+        return (access & Opcodes.ACC_STATIC) != 0;
     }
     
     public final boolean isStrict() {
-        return (access & 0x800) != 0;
+        return (access & Opcodes.ACC_STRICT) != 0;
     }
     
     public final boolean isSuper() {
-        return (access & 0x20) != 0;
+        return (access & Opcodes.ACC_SUPER) != 0;
     }
     
     public final boolean isSynchronized() {
-        return (access & 0x20) != 0;
+        return (access & Opcodes.ACC_SYNCHRONIZED) != 0;
     }
     
     public final boolean isSynthetic() {
-        return (access & 0x1000) != 0;
+        return (access & Opcodes.ACC_SYNTHETIC) != 0;
     }
     
     public final boolean isTransient() {
-        return (access & 0x80) != 0;
+        return (access & Opcodes.ACC_TRANSIENT) != 0;
     }
     
     public final boolean isVarargs() {
-        return (access & 0x80) != 0;
+        return (access & Opcodes.ACC_VARARGS) != 0;
     }
     
     public final boolean isVolatile() {
-        return (access & 0x40) != 0;
+        return (access & Opcodes.ACC_VOLATILE) != 0;
     }
     
     public final String getAccessType() {
         if (isPublic())
-            return "public";
+            return ACCESS_PUBLIC;
         if (isProtected())
-            return "protected";
+            return ACCESS_PROTECTED;
         if (isPrivate())
-            return "private";
-        return "package";
+            return ACCESS_PRIVATE;
+        return ACCESS_PACKAGE;
     }
 }
