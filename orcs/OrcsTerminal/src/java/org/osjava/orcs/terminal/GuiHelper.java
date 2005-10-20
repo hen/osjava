@@ -4,6 +4,7 @@
 package org.osjava.orcs.terminal;
 
 import java.awt.Component;
+import java.awt.Dimension;
 
 import javax.swing.JComponent;
 import javax.swing.JSplitPane;
@@ -41,11 +42,12 @@ public class GuiHelper {
         jsp.add(jc2);
         return jsp;
     }
-    public static JSplitPane horizontalSplit(JComponent jc1, JComponent jc2, int pixels) {
+    public static JSplitPane horizontalSplit(JComponent jc1, JComponent jc2, int width1, int width2, int height) {
         JSplitPane jsp = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
-        jsp.setDividerLocation(pixels);
+        jsp.setDividerLocation(width1);
         jsp.add(jc1);
         jsp.add(jc2);
+        jsp.setPreferredSize(new Dimension(width1 + width2, height));
         return jsp;
     }
 
