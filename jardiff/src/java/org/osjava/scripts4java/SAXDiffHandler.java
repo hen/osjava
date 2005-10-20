@@ -1,6 +1,3 @@
-/* SAXDiffHandler - Decompiled by JODE
- * Visit http://jode.sourceforge.net/
- */
 package org.osjava.scripts4java;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerFactory;
@@ -38,8 +35,7 @@ public class SAXDiffHandler implements DiffHandler
     public void startDiff(String oldJar, String newJar) throws DiffException {
 	try {
 	    handler.startDocument();
-	    handler.startElement("http://www.osjava.org/jardiff/0.1", "",
-				 "diff", attr);
+	    handler.startElement(XML_URI, "", "diff", attr);
 	} catch (SAXException se) {
 	    throw new DiffException(se);
 	}
@@ -47,8 +43,7 @@ public class SAXDiffHandler implements DiffHandler
     
     public void startRemoved() throws DiffException {
 	try {
-	    handler.startElement("http://www.osjava.org/jardiff/0.1", "",
-				 "removed", attr);
+	    handler.startElement(XML_URI, "", "removed", attr);
 	} catch (SAXException se) {
 	    throw new DiffException(se);
 	}
@@ -64,8 +59,7 @@ public class SAXDiffHandler implements DiffHandler
     
     public void endRemoved() throws DiffException {
 	try {
-	    handler.endElement("http://www.osjava.org/jardiff/0.1", "",
-			       "removed");
+	    handler.endElement(XML_URI, "", "removed");
 	} catch (SAXException se) {
 	    throw new DiffException(se);
 	}
@@ -73,8 +67,7 @@ public class SAXDiffHandler implements DiffHandler
     
     public void startAdded() throws DiffException {
 	try {
-	    handler.startElement("http://www.osjava.org/jardiff/0.1", "",
-				 "added", attr);
+	    handler.startElement(XML_URI, "", "added", attr);
 	} catch (SAXException se) {
 	    throw new DiffException(se);
 	}
@@ -90,8 +83,7 @@ public class SAXDiffHandler implements DiffHandler
     
     public void endAdded() throws DiffException {
 	try {
-	    handler.endElement("http://www.osjava.org/jardiff/0.1", "",
-			       "added");
+	    handler.endElement(XML_URI, "", "added");
 	} catch (SAXException se) {
 	    throw new DiffException(se);
 	}
@@ -99,8 +91,7 @@ public class SAXDiffHandler implements DiffHandler
     
     public void startChanged() throws DiffException {
 	try {
-	    handler.startElement("http://www.osjava.org/jardiff/0.1", "",
-				 "changed", attr);
+	    handler.startElement(XML_URI, "", "changed", attr);
 	} catch (SAXException se) {
 	    throw new DiffException(se);
 	}
@@ -108,10 +99,9 @@ public class SAXDiffHandler implements DiffHandler
     
     public void startClassChanged(String internalName) throws DiffException {
 	try {
-	    attr.addAttribute("http://www.osjava.org/jardiff/0.1", "", "name",
-			      "CDATA", Tools.getClassName(internalName));
-	    handler.startElement("http://www.osjava.org/jardiff/0.1", "",
-				 "classchanged", attr);
+	    attr.addAttribute(XML_URI, "", "name", "CDATA", 
+                                 Tools.getClassName(internalName));
+	    handler.startElement(XML_URI, "", "classchanged", attr);
 	    attr.clear();
 	} catch (SAXException se) {
 	    throw new DiffException(se);
@@ -153,19 +143,14 @@ public class SAXDiffHandler implements DiffHandler
     public void classChanged(ClassInfo oldInfo, ClassInfo newInfo)
 	throws DiffException {
 	try {
-	    handler.startElement("http://www.osjava.org/jardiff/0.1", "",
-				 "classchange", attr);
-	    handler.startElement("http://www.osjava.org/jardiff/0.1", "",
-				 "from", attr);
+	    handler.startElement(XML_URI, "", "classchange", attr);
+	    handler.startElement(XML_URI, "", "from", attr);
 	    writeClassInfo(oldInfo);
-	    handler.endElement("http://www.osjava.org/jardiff/0.1", "",
-			       "from");
-	    handler.startElement("http://www.osjava.org/jardiff/0.1", "", "to",
-				 attr);
+	    handler.endElement(XML_URI, "", "from");
+	    handler.startElement(XML_URI, "", "to", attr);
 	    writeClassInfo(newInfo);
-	    handler.endElement("http://www.osjava.org/jardiff/0.1", "", "to");
-	    handler.endElement("http://www.osjava.org/jardiff/0.1", "",
-			       "classchange");
+	    handler.endElement(XML_URI, "", "to");
+	    handler.endElement(XML_URI, "", "classchange");
 	} catch (SAXException se) {
 	    throw new DiffException(se);
 	}
@@ -174,19 +159,14 @@ public class SAXDiffHandler implements DiffHandler
     public void fieldChanged(FieldInfo oldInfo, FieldInfo newInfo)
 	throws DiffException {
 	try {
-	    handler.startElement("http://www.osjava.org/jardiff/0.1", "",
-				 "fieldchange", attr);
-	    handler.startElement("http://www.osjava.org/jardiff/0.1", "",
-				 "from", attr);
+	    handler.startElement(XML_URI, "", "fieldchange", attr);
+	    handler.startElement(XML_URI, "", "from", attr);
 	    writeFieldInfo(oldInfo);
-	    handler.endElement("http://www.osjava.org/jardiff/0.1", "",
-			       "from");
-	    handler.startElement("http://www.osjava.org/jardiff/0.1", "", "to",
-				 attr);
+	    handler.endElement(XML_URI, "", "from");
+	    handler.startElement(XML_URI, "", "to", attr);
 	    writeFieldInfo(newInfo);
-	    handler.endElement("http://www.osjava.org/jardiff/0.1", "", "to");
-	    handler.endElement("http://www.osjava.org/jardiff/0.1", "",
-			       "fieldchange");
+	    handler.endElement(XML_URI, "", "to");
+	    handler.endElement(XML_URI, "", "fieldchange");
 	} catch (SAXException se) {
 	    throw new DiffException(se);
 	}
@@ -195,19 +175,14 @@ public class SAXDiffHandler implements DiffHandler
     public void methodChanged(MethodInfo oldInfo, MethodInfo newInfo)
 	throws DiffException {
 	try {
-	    handler.startElement("http://www.osjava.org/jardiff/0.1", "",
-				 "methodchange", attr);
-	    handler.startElement("http://www.osjava.org/jardiff/0.1", "",
-				 "from", attr);
+	    handler.startElement(XML_URI, "", "methodchange", attr);
+	    handler.startElement(XML_URI, "", "from", attr);
 	    writeMethodInfo(oldInfo);
-	    handler.endElement("http://www.osjava.org/jardiff/0.1", "",
-			       "from");
-	    handler.startElement("http://www.osjava.org/jardiff/0.1", "", "to",
-				 attr);
+	    handler.endElement(XML_URI, "", "from");
+	    handler.startElement(XML_URI, "", "to", attr);
 	    writeMethodInfo(newInfo);
-	    handler.endElement("http://www.osjava.org/jardiff/0.1", "", "to");
-	    handler.endElement("http://www.osjava.org/jardiff/0.1", "",
-			       "methodchange");
+	    handler.endElement(XML_URI, "", "to");
+	    handler.endElement(XML_URI, "", "methodchange");
 	} catch (SAXException se) {
 	    throw new DiffException(se);
 	}
@@ -215,7 +190,7 @@ public class SAXDiffHandler implements DiffHandler
     
     public void endClassChanged() throws DiffException {
 	try {
-	    handler.endElement("http://www.osjava.org/jardiff/0.1", "",
+	    handler.endElement(XML_URI, "",
 			       "classchanged");
 	} catch (SAXException se) {
 	    throw new DiffException(se);
@@ -224,7 +199,7 @@ public class SAXDiffHandler implements DiffHandler
     
     public void endChanged() throws DiffException {
 	try {
-	    handler.endElement("http://www.osjava.org/jardiff/0.1", "",
+	    handler.endElement(XML_URI, "",
 			       "changed");
 	} catch (SAXException se) {
 	    throw new DiffException(se);
@@ -233,7 +208,7 @@ public class SAXDiffHandler implements DiffHandler
     
     public void endDiff() throws DiffException {
 	try {
-	    handler.endElement("http://www.osjava.org/jardiff/0.1", "",
+	    handler.endElement(XML_URI, "",
 			       "diff");
 	    handler.endDocument();
 	} catch (SAXException se) {
@@ -244,145 +219,118 @@ public class SAXDiffHandler implements DiffHandler
     protected void writeClassInfo(ClassInfo info) throws SAXException {
 	addAccessFlags(info);
 	if (info.getName() != null)
-	    attr.addAttribute("http://www.osjava.org/jardiff/0.1", "", "name",
-			      "CDATA", Tools.getClassName(info.getName()));
+	    attr.addAttribute(XML_URI, "", "name", "CDATA", 
+                              Tools.getClassName(info.getName()));
 	if (info.getSignature() != null)
-	    attr.addAttribute("http://www.osjava.org/jardiff/0.1", "",
-			      "signature", "CDATA", info.getSignature());
+	    attr.addAttribute(XML_URI, "", "signature", "CDATA", 
+                              info.getSignature());
 	if (info.getSupername() != null)
-	    attr.addAttribute("http://www.osjava.org/jardiff/0.1", "",
-			      "superclass", "CDATA",
+	    attr.addAttribute(XML_URI, "", "superclass", "CDATA",
 			      Tools.getClassName(info.getSupername()));
-	handler.startElement("http://www.osjava.org/jardiff/0.1", "", "class",
-			     attr);
+	handler.startElement(XML_URI, "", "class", attr);
 	attr.clear();
 	String[] interfaces = info.getInterfaces();
 	for (int i = 0; i < interfaces.length; i++) {
-	    attr.addAttribute("http://www.osjava.org/jardiff/0.1", "", "name",
-			      "CDATA", Tools.getClassName(interfaces[i]));
-	    handler.startElement("http://www.osjava.org/jardiff/0.1", "",
-				 "implements", attr);
+	    attr.addAttribute(XML_URI, "", "name", "CDATA", 
+                              Tools.getClassName(interfaces[i]));
+	    handler.startElement(XML_URI, "", "implements", attr);
 	    attr.clear();
-	    handler.endElement("http://www.osjava.org/jardiff/0.1", "",
-			       "implements");
+	    handler.endElement(XML_URI, "", "implements");
 	}
-	handler.endElement("http://www.osjava.org/jardiff/0.1", "", "class");
+	handler.endElement(XML_URI, "", "class");
     }
     
     protected void writeMethodInfo(MethodInfo info) throws SAXException {
 	addAccessFlags(info);
 	if (info.getName() != null)
-	    attr.addAttribute("http://www.osjava.org/jardiff/0.1", "", "name",
-			      "CDATA", info.getName());
+	    attr.addAttribute(XML_URI, "", "name", "CDATA", info.getName());
 	if (info.getSignature() != null)
-	    attr.addAttribute("http://www.osjava.org/jardiff/0.1", "",
-			      "signature", "CDATA", info.getSignature());
-	handler.startElement("http://www.osjava.org/jardiff/0.1", "", "method",
-			     attr);
+	    attr.addAttribute(XML_URI, "", "signature", "CDATA", 
+                              info.getSignature());
+	handler.startElement(XML_URI, "", "method", attr);
 	attr.clear();
 	if (info.getDesc() != null)
 	    addMethodNodes(info.getDesc());
 	String[] exceptions = info.getExceptions();
 	if (exceptions != null) {
 	    for (int i = 0; i < exceptions.length; i++) {
-		attr.addAttribute("http://www.osjava.org/jardiff/0.1", "",
-				  "name", "CDATA",
+		attr.addAttribute(XML_URI, "", "name", "CDATA",
 				  Tools.getClassName(exceptions[i]));
-		handler.startElement("http://www.osjava.org/jardiff/0.1", "",
-				     "exception", attr);
-		handler.endElement("http://www.osjava.org/jardiff/0.1", "",
-				   "exception");
+		handler.startElement(XML_URI, "", "exception", attr);
+		handler.endElement(XML_URI, "", "exception");
 		attr.clear();
 	    }
 	}
-	handler.endElement("http://www.osjava.org/jardiff/0.1", "", "method");
+	handler.endElement(XML_URI, "", "method");
     }
     
     protected void writeFieldInfo(FieldInfo info) throws SAXException {
 	addAccessFlags(info);
 	if (info.getName() != null)
-	    attr.addAttribute("http://www.osjava.org/jardiff/0.1", "", "name",
-			      "CDATA", info.getName());
+	    attr.addAttribute(XML_URI, "", "name", "CDATA", info.getName());
 	if (info.getSignature() != null)
-	    attr.addAttribute("http://www.osjava.org/jardiff/0.1", "",
-			      "signature", "CDATA", info.getSignature());
+	    attr.addAttribute(XML_URI, "", "signature", "CDATA", 
+                              info.getSignature());
 	if (info.getValue() != null)
-	    attr.addAttribute("http://www.osjava.org/jardiff/0.1", "", "value",
-			      "CDATA", info.getValue().toString());
-	handler.startElement("http://www.osjava.org/jardiff/0.1", "", "field",
-			     attr);
+	    attr.addAttribute(XML_URI, "", "value", "CDATA", 
+                              info.getValue().toString());
+	handler.startElement(XML_URI, "", "field", attr);
 	attr.clear();
 	if (info.getDesc() != null)
 	    addTypeNode(info.getDesc());
-	handler.endElement("http://www.osjava.org/jardiff/0.1", "", "field");
+	handler.endElement(XML_URI, "", "field");
     }
     
     protected void addAccessFlags(AbstractInfo info) throws SAXException {
-	attr.addAttribute("http://www.osjava.org/jardiff/0.1", "", "access",
-			  "CDATA", info.getAccessType());
-	if (info.isAbstract())
-	    attr.addAttribute("http://www.osjava.org/jardiff/0.1", "",
-			      "abstract", "CDATA", "yes");
+	attr.addAttribute(XML_URI, "", "access", "CDATA", 
+                              info.getAccessType());
+        if (info.isAbstract())
+	    attr.addAttribute(XML_URI, "", "abstract", "CDATA", "yes");
 	if (info.isAnnotation())
-	    attr.addAttribute("http://www.osjava.org/jardiff/0.1", "",
-			      "annotation", "CDATA", "yes");
+	    attr.addAttribute(XML_URI, "", "annotation", "CDATA", "yes");
 	if (info.isBridge())
-	    attr.addAttribute("http://www.osjava.org/jardiff/0.1", "",
-			      "bridge", "CDATA", "yes");
+	    attr.addAttribute(XML_URI, "", "bridge", "CDATA", "yes");
 	if (info.isDeprecated())
-	    attr.addAttribute("http://www.osjava.org/jardiff/0.1", "",
-			      "deprecated", "CDATA", "yes");
+	    attr.addAttribute(XML_URI, "", "deprecated", "CDATA", "yes");
 	if (info.isEnum())
-	    attr.addAttribute("http://www.osjava.org/jardiff/0.1", "", "enum",
-			      "CDATA", "yes");
+	    attr.addAttribute(XML_URI, "", "enum", "CDATA", "yes");
 	if (info.isFinal())
-	    attr.addAttribute("http://www.osjava.org/jardiff/0.1", "", "final",
-			      "CDATA", "yes");
+	    attr.addAttribute(XML_URI, "", "final", "CDATA", "yes");
 	if (info.isInterface())
-	    attr.addAttribute("http://www.osjava.org/jardiff/0.1", "",
-			      "interface", "CDATA", "yes");
+	    attr.addAttribute(XML_URI, "", "interface", "CDATA", "yes");
 	if (info.isNative())
-	    attr.addAttribute("http://www.osjava.org/jardiff/0.1", "",
-			      "native", "CDATA", "yes");
+	    attr.addAttribute(XML_URI, "", "native", "CDATA", "yes");
 	if (info.isStatic())
-	    attr.addAttribute("http://www.osjava.org/jardiff/0.1", "",
-			      "static", "CDATA", "yes");
+	    attr.addAttribute(XML_URI, "", "static", "CDATA", "yes");
 	if (info.isStrict())
-	    attr.addAttribute("http://www.osjava.org/jardiff/0.1", "",
-			      "strict", "CDATA", "yes");
+	    attr.addAttribute(XML_URI, "", "strict", "CDATA", "yes");
 	if (info.isSuper())
-	    attr.addAttribute("http://www.osjava.org/jardiff/0.1", "", "super",
-			      "CDATA", "yes");
+	    attr.addAttribute(XML_URI, "", "super", "CDATA", "yes");
 	if (info.isSynchronized())
-	    attr.addAttribute("http://www.osjava.org/jardiff/0.1", "",
-			      "synchronized", "CDATA", "yes");
+	    attr.addAttribute(XML_URI, "", "synchronized", "CDATA", "yes");
 	if (info.isSynthetic())
-	    attr.addAttribute("http://www.osjava.org/jardiff/0.1", "",
-			      "synthetic", "CDATA", "yes");
+	    attr.addAttribute(XML_URI, "", "synthetic", "CDATA", "yes");
 	if (info.isTransient())
-	    attr.addAttribute("http://www.osjava.org/jardiff/0.1", "",
-			      "transient", "CDATA", "yes");
+	    attr.addAttribute(XML_URI, "", "transient", "CDATA", "yes");
 	if (info.isVarargs())
-	    attr.addAttribute("http://www.osjava.org/jardiff/0.1", "",
-			      "varargs", "CDATA", "yes");
+	    attr.addAttribute(XML_URI, "", "varargs", "CDATA", "yes");
 	if (info.isVolatile())
-	    attr.addAttribute("http://www.osjava.org/jardiff/0.1", "",
-			      "volatile", "CDATA", "yes");
+	    attr.addAttribute(XML_URI, "", "volatile", "CDATA", "yes");
     }
     
     protected void addMethodNodes(String desc) throws SAXException {
 	Type[] args = Type.getArgumentTypes(desc);
 	Type ret = Type.getReturnType(desc);
-	handler.startElement("http://www.osjava.org/jardiff/0.1", "",
+	handler.startElement(XML_URI, "",
 			     "arguments", attr);
 	for (int i = 0; i < args.length; i++)
 	    addTypeNode(args[i]);
-	handler.endElement("http://www.osjava.org/jardiff/0.1", "",
+	handler.endElement(XML_URI, "",
 			   "arguments");
-	handler.startElement("http://www.osjava.org/jardiff/0.1", "", "return",
+	handler.startElement(XML_URI, "", "return",
 			     attr);
 	addTypeNode(ret);
-	handler.endElement("http://www.osjava.org/jardiff/0.1", "", "return");
+	handler.endElement(XML_URI, "", "return");
     }
     
     protected void addTypeNode(String desc) throws SAXException {
@@ -392,78 +340,57 @@ public class SAXDiffHandler implements DiffHandler
     protected void addTypeNode(Type type) throws SAXException {
 	int i = type.getSort();
 	if (i == 9) {
-	    attr.addAttribute("http://www.osjava.org/jardiff/0.1", "", "array",
-			      "CDATA", "yes");
-	    attr.addAttribute("http://www.osjava.org/jardiff/0.1", "",
-			      "dimensions", "CDATA",
+	    attr.addAttribute(XML_URI, "", "array", "CDATA", "yes");
+	    attr.addAttribute(XML_URI, "", "dimensions", "CDATA",
 			      "" + type.getDimensions());
 	    type = type.getElementType();
 	    i = type.getSort();
 	}
 	switch (i) {
 	case 1:
-	    attr.addAttribute("http://www.osjava.org/jardiff/0.1", "",
-			      "primitive", "CDATA", "yes");
-	    attr.addAttribute("http://www.osjava.org/jardiff/0.1", "", "name",
-			      "CDATA", "boolean");
+	    attr.addAttribute(XML_URI, "", "primitive", "CDATA", "yes");
+	    attr.addAttribute(XML_URI, "", "name", "CDATA", "boolean");
 	    break;
 	case 3:
-	    attr.addAttribute("http://www.osjava.org/jardiff/0.1", "",
-			      "primitive", "CDATA", "yes");
-	    attr.addAttribute("http://www.osjava.org/jardiff/0.1", "", "name",
-			      "CDATA", "byte");
+	    attr.addAttribute(XML_URI, "", "primitive", "CDATA", "yes");
+	    attr.addAttribute(XML_URI, "", "name", "CDATA", "byte");
 	    break;
 	case 2:
-	    attr.addAttribute("http://www.osjava.org/jardiff/0.1", "",
-			      "primitive", "CDATA", "yes");
-	    attr.addAttribute("http://www.osjava.org/jardiff/0.1", "", "name",
-			      "CDATA", "char");
+	    attr.addAttribute(XML_URI, "", "primitive", "CDATA", "yes");
+	    attr.addAttribute(XML_URI, "", "name", "CDATA", "char");
 	    break;
 	case 8:
-	    attr.addAttribute("http://www.osjava.org/jardiff/0.1", "",
+	    attr.addAttribute(XML_URI, "",
 			      "primitive", "CDATA", "yes");
-	    attr.addAttribute("http://www.osjava.org/jardiff/0.1", "", "name",
-			      "CDATA", "double");
+	    attr.addAttribute(XML_URI, "", "name", "CDATA", "double");
 	    break;
 	case 6:
-	    attr.addAttribute("http://www.osjava.org/jardiff/0.1", "",
-			      "primitive", "CDATA", "yes");
-	    attr.addAttribute("http://www.osjava.org/jardiff/0.1", "", "name",
-			      "CDATA", "float");
+	    attr.addAttribute(XML_URI, "", "primitive", "CDATA", "yes");
+	    attr.addAttribute(XML_URI, "", "name", "CDATA", "float");
 	    break;
 	case 5:
-	    attr.addAttribute("http://www.osjava.org/jardiff/0.1", "",
-			      "primitive", "CDATA", "yes");
-	    attr.addAttribute("http://www.osjava.org/jardiff/0.1", "", "name",
-			      "CDATA", "int");
+	    attr.addAttribute(XML_URI, "", "primitive", "CDATA", "yes");
+	    attr.addAttribute(XML_URI, "", "name", "CDATA", "int");
 	    break;
 	case 7:
-	    attr.addAttribute("http://www.osjava.org/jardiff/0.1", "",
-			      "primitive", "CDATA", "yes");
-	    attr.addAttribute("http://www.osjava.org/jardiff/0.1", "", "name",
-			      "CDATA", "long");
+	    attr.addAttribute(XML_URI, "", "primitive", "CDATA", "yes");
+	    attr.addAttribute(XML_URI, "", "name", "CDATA", "long");
 	    break;
 	case 10:
-	    attr.addAttribute("http://www.osjava.org/jardiff/0.1", "", "name",
-			      "CDATA",
+	    attr.addAttribute(XML_URI, "", "name", "CDATA",
 			      Tools.getClassName(type.getInternalName()));
 	    break;
 	case 4:
-	    attr.addAttribute("http://www.osjava.org/jardiff/0.1", "",
-			      "primitive", "CDATA", "yes");
-	    attr.addAttribute("http://www.osjava.org/jardiff/0.1", "", "name",
-			      "CDATA", "short");
+	    attr.addAttribute(XML_URI, "", "primitive", "CDATA", "yes");
+	    attr.addAttribute(XML_URI, "", "name", "CDATA", "short");
 	    break;
 	case 0:
-	    attr.addAttribute("http://www.osjava.org/jardiff/0.1", "",
-			      "primitive", "CDATA", "yes");
-	    attr.addAttribute("http://www.osjava.org/jardiff/0.1", "", "name",
-			      "CDATA", "void");
+	    attr.addAttribute(XML_URI, "", "primitive", "CDATA", "yes");
+	    attr.addAttribute(XML_URI, "", "name", "CDATA", "void");
 	    break;
 	}
-	handler.startElement("http://www.osjava.org/jardiff/0.1", "", "type",
-			     attr);
-	handler.endElement("http://www.osjava.org/jardiff/0.1", "", "type");
+	handler.startElement(XML_URI, "", "type", attr);
+	handler.endElement(XML_URI, "", "type");
 	attr.clear();
     }
 }

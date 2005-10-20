@@ -1,6 +1,3 @@
-/* DiffCriteria - Decompiled by JODE
- * Visit http://jode.sourceforge.net/
- */
 package org.osjava.scripts4java;
 
 public interface DiffCriteria
