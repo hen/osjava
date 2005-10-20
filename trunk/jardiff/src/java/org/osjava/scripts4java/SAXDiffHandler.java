@@ -321,14 +321,11 @@ public class SAXDiffHandler implements DiffHandler
     protected void addMethodNodes(String desc) throws SAXException {
         Type[] args = Type.getArgumentTypes(desc);
         Type ret = Type.getReturnType(desc);
-        handler.startElement(XML_URI, "",
-                             "arguments", attr);
+        handler.startElement(XML_URI, "", "arguments", attr);
         for (int i = 0; i < args.length; i++)
             addTypeNode(args[i]);
-        handler.endElement(XML_URI, "",
-                           "arguments");
-        handler.startElement(XML_URI, "", "return",
-                             attr);
+        handler.endElement(XML_URI, "", "arguments");
+        handler.startElement(XML_URI, "", "return", attr);
         addTypeNode(ret);
         handler.endElement(XML_URI, "", "return");
     }
@@ -339,7 +336,7 @@ public class SAXDiffHandler implements DiffHandler
     
     protected void addTypeNode(Type type) throws SAXException {
         int i = type.getSort();
-        if (i == 9) {
+        if (i == Type.ARRAY) {
             attr.addAttribute(XML_URI, "", "array", "CDATA", "yes");
             attr.addAttribute(XML_URI, "", "dimensions", "CDATA",
                               "" + type.getDimensions());
@@ -347,44 +344,43 @@ public class SAXDiffHandler implements DiffHandler
             i = type.getSort();
         }
         switch (i) {
-        case 1:
+        case Type.BOOLEAN:
             attr.addAttribute(XML_URI, "", "primitive", "CDATA", "yes");
             attr.addAttribute(XML_URI, "", "name", "CDATA", "boolean");
             break;
-        case 3:
+        case Type.BYTE:
             attr.addAttribute(XML_URI, "", "primitive", "CDATA", "yes");
             attr.addAttribute(XML_URI, "", "name", "CDATA", "byte");
             break;
-        case 2:
+        case Type.CHAR:
             attr.addAttribute(XML_URI, "", "primitive", "CDATA", "yes");
             attr.addAttribute(XML_URI, "", "name", "CDATA", "char");
             break;
-        case 8:
-            attr.addAttribute(XML_URI, "",
-                              "primitive", "CDATA", "yes");
+        case Type.DOUBLE:
+            attr.addAttribute(XML_URI, "", "primitive", "CDATA", "yes");
             attr.addAttribute(XML_URI, "", "name", "CDATA", "double");
             break;
-        case 6:
+        case Type.FLOAT:
             attr.addAttribute(XML_URI, "", "primitive", "CDATA", "yes");
             attr.addAttribute(XML_URI, "", "name", "CDATA", "float");
             break;
-        case 5:
+        case Type.INT:
             attr.addAttribute(XML_URI, "", "primitive", "CDATA", "yes");
             attr.addAttribute(XML_URI, "", "name", "CDATA", "int");
             break;
-        case 7:
+        case Type.LONG:
             attr.addAttribute(XML_URI, "", "primitive", "CDATA", "yes");
             attr.addAttribute(XML_URI, "", "name", "CDATA", "long");
             break;
-        case 10:
+        case Type.OBJECT:
             attr.addAttribute(XML_URI, "", "name", "CDATA",
                               Tools.getClassName(type.getInternalName()));
             break;
-        case 4:
+        case Type.SHORT:
             attr.addAttribute(XML_URI, "", "primitive", "CDATA", "yes");
             attr.addAttribute(XML_URI, "", "name", "CDATA", "short");
             break;
-        case 0:
+        case Type.VOID:
             attr.addAttribute(XML_URI, "", "primitive", "CDATA", "yes");
             attr.addAttribute(XML_URI, "", "name", "CDATA", "void");
             break;
