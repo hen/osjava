@@ -10,16 +10,11 @@
               location="src/jni" />
     <property name="tests"
               location="src/tests" />
-    <!-- XXX: This needs to be changed -->
-    <property name="junit.location"
-              location="/Users/rzigweid/jars/junit-3.8.1.jar"/>
     
     <path id="build.classpath">
         <pathelement path="${dest}" />
     </path>
-    <path id="junit.classpath">
-        <pathelement path="${junit.location}"/>
-    </path>
+
     <!-- - - - - - - - - - - - - - - - - -
           target: build
           Default build target, which is to build everything
@@ -65,8 +60,10 @@
             
     <target name="run.all.tests"
             depends="build">
-        <classpath refid="junit.classpath" />
-        <junit>
+        <junit filtertrace="no"
+               printsummary="yes"
+               showoutput="yes">
+            <classpath refid="build.classpath" />
             <batchtest fork="yes" todir="${reports.tests}">
               <fileset dir="${tests}">
                 <include name="**/*Test*.java"/>
