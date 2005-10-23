@@ -163,13 +163,17 @@ Java_org_osjava_jdbc_sqlite_Statement_executeSQL(JNIEnv *env,
     char *sql = (char *)(*env)->GetStringUTFChars(env, query, 0);
 
     sqlite3 *dbPtr = getSQLiteHandle(env, con);
+    fprintf(stderr, "JNI: executeSQL Statement '%s'.\n", sql);
+    fprintf(stderr, "JNI: Ping 1.\n");
     result = sqlite3_exec(dbPtr, sql, NULL, NULL, &errmsg);
+    fprintf(stderr, "JNI: Ping 2.\n");
     if(errmsg != NULL) {
         sqliteThrowSQLException(env, errmsg);
+        fprintf(stderr, "JNI: Ping 3.\n");
         sqlite3_free(errmsg);
         return 0;
     }
-    sqlite3_free(errmsg);
+    
     count = sqlite3_changes(dbPtr);
     (*env)->ReleaseStringUTFChars(env, query, sql);
 

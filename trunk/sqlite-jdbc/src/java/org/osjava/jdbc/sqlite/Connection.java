@@ -87,6 +87,22 @@ public class Connection implements java.sql.Connection {
     public Connection(int ptr) throws SQLException {
         super();
         dbPointer = ptr;
+        /* Start the initial transaction. */
+        /* XXX: Initially we are guaranteed things start out in autocommit
+         *      mode.  This will have to be changed if we make a property 
+         *      which can affect this.
+         */
+        System.err.println("Creating connection");
+        Statement stmt = (Statement)createStatement();
+        System.err.println("Statement created.");
+        try {
+            System.err.println("Trying to start autocommit transaction");
+            stmt.forceBegin();            
+        } catch(SQLException e) {
+            System.err.println("Got an exception trying to begin transaction.");
+            e.printStackTrace();
+        }
+        stmt.close();
     }
     
     /**
@@ -166,6 +182,15 @@ public class Connection implements java.sql.Connection {
             Statement next = (Statement)it.next();
             next.close();
         }
+        /* Make sure that the last transaction is closed. */
+        Statement stmt = (Statement)createStatement();
+        try {
+            stmt.forceCommit();            
+        } catch(SQLException e) {
+            System.err.println("Got an exception trying to commit.");
+            e.printStackTrace();
+        }
+        stmt.close();
         /* This can throw an exception based upon whether or not the 
          * connection is busy, or possibly an error if there is another 
          * circumstance. */ 
@@ -196,7 +221,6 @@ public class Connection implements java.sql.Connection {
     public void commit() throws SQLException {
         commit(false);
     }
-    
 
     /** 
      * Commit the current transaction to the database.  If <code>auto</code>
@@ -213,15 +237,25 @@ public class Connection implements java.sql.Connection {
     void commit(boolean auto) throws SQLException {
         if(!auto) {
             if(autoCommit) {
-                throw new SQLException("Cannot commit() when in autocommit mode.");
+               throw new SQLException("Cannot commit() when in autocommit mode.");
             }
         }
-        // TODO method stub
+        /* Create the statement object that will be committing (and possibly 
+         * issuing a new 'BEGIN' if in auto commit mode)
+         */
+        Statement stmt = (Statement)createStatement();
+        try {
+            stmt.forceCommit();            
+        } catch(SQLException e) {
+            System.err.println("Got an exception trying to commit.");
+            e.printStackTrace();
+        }
+        stmt.close();
     }
     
     public void rollback() throws SQLException {
         if(autoCommit) {
-            throw new SQLException("Cannot commit() when in autocommit mode.");
+            throw new SQLException("Cannot rollback() when in autocommit mode.");
         }
         // TODO method stub
     }
