@@ -10,15 +10,22 @@
               location="src/jni" />
     <property name="tests"
               location="src/tests" />
+    <!-- XXX: This needs to be changed -->
+    <property name="junit.location"
+              location="/Users/rzigweid/jars/junit-3.8.1.jar"/>
+    
     <path id="build.classpath">
         <pathelement path="${dest}" />
+    </path>
+    <path id="junit.classpath">
+        <pathelement path="${junit.location}"/>
     </path>
     <!-- - - - - - - - - - - - - - - - - -
           target: build
           Default build target, which is to build everything
          - - - - - - - - - - - - - - - - - -->
     <target name="build"
-            depends="init, build_java, build_jni" />
+            depends="init, build.java, build.jni" />
     <!-- - - - - - - - - - - - - - - - - -
           target: init
          - - - - - - - - - - - - - - - - - -->
@@ -26,16 +33,16 @@
         <mkdir dir="${dest}" />
     </target>
     <!-- - - - - - - - - - - - - - - - - -
-          target: build_java
+          target: build.java
          - - - - - - - - - - - - - - - - - -->
-    <target name="build_java">
+    <target name="build.java">
         <javac srcdir="${java_src}"
                destdir="${dest}" />
     </target>
     <!-- - - - - - - - - - - - - - - - - -
-          target: build_jni_headers
+          target: build.jni_headers
          - - - - - - - - - - - - - - - - - -->
-    <target name="build_jni_headers">
+    <target name="build.jni_headers">
         <javah destdir="${jni_src}">
             <classpath refid="build.classpath" />
             <class name="org.osjava.jdbc.sqlite.Connection" />
@@ -45,13 +52,26 @@
         </javah>
     </target>
     <!-- - - - - - - - - - - - - - - - - -
-          target: build_jni
+          target: build.jni
          - - - - - - - - - - - - - - - - - -->
-    <target name="build_jni"
-            depends="build_jni_headers"></target>
+    <target name="build.jni"
+            depends="build.jni_headers"></target>
     <!-- - - - - - - - - - - - - - - - - -
-          target: build_tests
+          target: build.tests
          - - - - - - - - - - - - - - - - - -->
-    <target name="build_tests"
-            depends="build_java, build_jni"></target>
+    <target name="build.tests"
+            depends="build.java, build.jni">
+    </target>
+            
+    <target name="run.all.tests"
+            depends="build">
+        <classpath refid="junit.classpath" />
+        <junit>
+            <batchtest fork="yes" todir="${reports.tests}">
+              <fileset dir="${tests}">
+                <include name="**/*Test*.java"/>
+              </fileset>
+            </batchtest>
+        </junit>
+    </target>
 </project>

@@ -59,6 +59,11 @@ public class ResultSetMetaData implements java.sql.ResultSetMetaData {
     * Array containing the names of columns for the ResultSet
     */
     String[] columnNames = null;
+    
+    /**
+     * Array containing the declared types of columns for the ResultSet.
+     */
+    String[] columnTypes = null;
 
     public ResultSetMetaData(ResultSet rs) {
         super();
@@ -244,6 +249,7 @@ public class ResultSetMetaData implements java.sql.ResultSetMetaData {
          */
         columnCount = count;
         columnNames = new String[columnCount];
+        columnTypes = new String[columnCount];
     }
     
     /* Ugh, package private */
@@ -273,5 +279,17 @@ public class ResultSetMetaData implements java.sql.ResultSetMetaData {
             throw new SQLException("Invalid column");
         }
         columnNames[col] = name;
+    }
+    
+    /**
+     * Set the type of a column.  The value stored is a string directly from
+     * the declared type and will need to be parsed. 
+     */
+    private void setColumnType(int col, String type) throws SQLException {
+        /* XXX: Note that column counts are 1 based in the api and 0 based here. */
+        if(col >= columnCount) {
+            throw new SQLException("Invalid column");
+        }
+        columnTypes[col] = type;        
     }
 }

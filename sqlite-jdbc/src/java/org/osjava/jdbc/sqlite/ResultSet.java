@@ -217,6 +217,14 @@ public class ResultSet implements java.sql.ResultSet {
         if(rows[currentRow - pageMin] == null) {
             maxRow = currentRow;
             currentRow = -2;
+            /* If the ResultSet is TYPEL_FORWARD_ONLY and the underlying
+             * Connection is auto-commit true, next() returning false should
+             * close the current transaction.
+             * Specified by Section 9.1 of the JDBC 4.0 spec. */
+            if(stmt.getConnection().getAutoCommit() && 
+               getType() == ResultSet.TYPE_FORWARD_ONLY) {
+                ((org.osjava.jdbc.sqlite.Connection)stmt.getConnection()).commit(true);
+            }
             return false;
         }
         return true;

@@ -57,3 +57,6 @@ TESTS TO CREATE
 * ResultSet.last();
 * ResultSet.first();
 * Statement.setMaxRows < 0
+* ResultSet.next() when type is TYPE_FORWARD_ONLY.  Ensure that a commit is 
+  made.  This is required by the JDBC 4.0 spec (Section 9.1, Page 72)
+  
