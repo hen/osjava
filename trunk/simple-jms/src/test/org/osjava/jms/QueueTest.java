@@ -111,6 +111,7 @@ public class QueueTest extends TestCase implements MessageListener {
      */
     public void testTimedSyncMessageDelivery() throws Exception {
         final int timeout = 100;
+        int error = 10;
             
         Thread thread = new Thread () {
             public void run () {
@@ -122,10 +123,11 @@ public class QueueTest extends TestCase implements MessageListener {
             }
         };
         thread.start();
-        thread.join(timeout); // a bit spurious, I know..
+        thread.join( timeout + error ); // a bit spurious, I know..
         // the problem is that I'm waitingthe same timeout as the receive method,
         // however, this thread has done other things in the mean time so there's no
         // accuracy here..
+        // error therefore allows the test to pass 
         
         assertFalse ("Thread should have timed out", thread.isAlive());
         thread.interrupt();
