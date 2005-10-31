@@ -32,18 +32,30 @@
 package org.osjava.jms;
 
 import javax.jms.JMSException;
+import javax.jms.Connection;
 import javax.jms.TopicConnection;
 import javax.jms.TopicConnectionFactory;
 
-public class MemoryTopicConnectionFactory extends MemoryConnectionFactory implements TopicConnectionFactory {
+public class MemoryTopicConnectionFactory implements TopicConnectionFactory {
+
+    public Connection createConnection() throws JMSException {
+        return createTopicConnection();
+    }
+
+    // TODO: Handle user/passwd at a later date. Obviously needs configuration.
+    public Connection createConnection(String user, String passwd) throws JMSException {
+        return createTopicConnection(user, passwd);
+    }
 
     public TopicConnection createTopicConnection() throws JMSException {
-        return new MemoryTopicConnection();
+        TopicConnection conn = new MemoryTopicConnection();
+        String clientId = "" + Math.random(); 
+        conn.setClientID(clientId);
+        return conn;
     }
 
     public TopicConnection createTopicConnection(String user, String passwd) throws JMSException {
-        return new MemoryTopicConnection();
+        return createTopicConnection();
     }
 
 }
-
