@@ -41,14 +41,12 @@ import javax.jms.ServerSessionPool;
 import javax.jms.Session;
 import javax.jms.Topic;
 
-public class MemoryConnection implements Connection {
+public abstract class MemoryConnection implements Connection {
 
     private ExceptionListener listener;
     private String clientId;
 
-    public Session createSession(boolean transacted, int acknowledgeMode) throws JMSException {
-        return new MemorySession(transacted, acknowledgeMode);
-    }
+    public abstract Session createSession(boolean transacted, int acknowledgeMode) throws JMSException;
 
     public String getClientID() throws JMSException {
         return this.clientId;
