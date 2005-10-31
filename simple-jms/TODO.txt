@@ -15,9 +15,7 @@ Questions:
 
 Delete or Abstract:
 
-MemoryConnection
 MemoryMessage
 MemoryMessageConsumer
 MemoryMessageProducer
-MemorySession
 
