@@ -32,6 +32,9 @@
 package org.osjava.jms;
 
 import javax.jms.JMSException;
+import javax.jms.Destination;
+import javax.jms.MessageConsumer;
+import javax.jms.MessageProducer;
 import javax.jms.Topic;
 import javax.jms.TopicSubscriber;
 import javax.jms.TopicPublisher;
@@ -47,12 +50,25 @@ public class MemoryTopicSession extends MemorySession implements TopicSession {
         return new MemoryTopic(name);
     }
 
+    public MessageConsumer createConsumer(Destination destination) throws JMSException {
+        return createSubscriber( (Topic) destination );
+    }
+
     public TopicSubscriber createSubscriber(Topic topic) throws JMSException {
         return new MemoryTopicSubscriber( (MemoryTopic) topic);
     }
 
+    public MessageConsumer createConsumer(Destination destination, String messageSelector, boolean noLocal) throws JMSException {
+        return createSubscriber( (Topic) destination, messageSelector, noLocal);
+    }
+
     public TopicSubscriber createSubscriber(Topic topic, String messageSelector, boolean noLocals) throws JMSException {
         return new MemoryTopicSubscriber( (MemoryTopic) topic, messageSelector, noLocals);
+    }
+
+    // TODO: messageSelector or name??
+    public MessageConsumer createConsumer(Destination destination, String messageSelector) throws JMSException {
+        return createDurableSubscriber( (Topic) destination, messageSelector );
     }
 
     public TopicSubscriber createDurableSubscriber(Topic topic, String name) throws JMSException {
@@ -61,6 +77,10 @@ public class MemoryTopicSession extends MemorySession implements TopicSession {
 
     public TopicSubscriber createDurableSubscriber(Topic topic, String name, String messageSelector, boolean noLocals) throws JMSException {
         return new MemoryTopicSubscriber( (MemoryTopic) topic, name, messageSelector, noLocals);
+    }
+
+    public MessageProducer createProducer(Destination destination) throws JMSException {
+        return createPublisher( (Topic) destination );
     }
 
     public TopicPublisher createPublisher(Topic topic) throws JMSException {

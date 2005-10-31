@@ -51,7 +51,7 @@ import javax.jms.TextMessage;
 import javax.jms.Topic;
 import javax.jms.TopicSubscriber;
 
-public class MemorySession implements Session {
+public abstract class MemorySession implements Session {
 
     private boolean transacted;
     private int acknowledgeMode;
@@ -134,21 +134,13 @@ public class MemorySession implements Session {
         // TODO: Implement this
     }
 
-    public MessageProducer createProducer(Destination destination) throws JMSException {
-        return new MemoryMessageProducer(destination);
-    }
+    public abstract MessageProducer createProducer(Destination destination) throws JMSException;
 
-    public MessageConsumer createConsumer(Destination destination) throws JMSException {
-        return new MemoryMessageConsumer(destination);
-    }
+    public abstract MessageConsumer createConsumer(Destination destination) throws JMSException;
 
-    public MessageConsumer createConsumer(Destination destination, String messageSelector) throws JMSException {
-        return new MemoryMessageConsumer(destination, messageSelector);
-    }
+    public abstract MessageConsumer createConsumer(Destination destination, String messageSelector) throws JMSException;
 
-    public MessageConsumer createConsumer(Destination destination, String messageSelector, boolean noLocal) throws JMSException {
-        return new MemoryMessageConsumer(destination, messageSelector, noLocal);
-    }
+    public abstract MessageConsumer createConsumer(Destination destination, String messageSelector, boolean noLocal) throws JMSException;
 
     public Queue createQueue(String name) throws JMSException {
         return new MemoryQueue(name);

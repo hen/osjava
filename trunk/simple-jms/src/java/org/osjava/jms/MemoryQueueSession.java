@@ -32,6 +32,9 @@
 package org.osjava.jms;
 
 import javax.jms.JMSException;
+import javax.jms.Destination;
+import javax.jms.MessageConsumer;
+import javax.jms.MessageProducer;
 import javax.jms.QueueSession;
 import javax.jms.Queue;
 import javax.jms.QueueReceiver;
@@ -44,6 +47,14 @@ public class MemoryQueueSession extends MemorySession implements QueueSession {
         super(transacted, acknowledgeMode);
     }
 
+    public MessageConsumer createConsumer(Destination destination, String messageSelector, boolean noLocal) throws JMSException {
+        throw new RuntimeException("TODO: Huh?");
+    }
+
+    public MessageConsumer createConsumer(Destination destination) throws JMSException {
+        return createReceiver( (Queue) destination );
+    }
+
     /**
      * @throw ClassCastException if not given a MemoryQueue
      */
@@ -51,11 +62,19 @@ public class MemoryQueueSession extends MemorySession implements QueueSession {
         return createReceiver(queue, null);
     }
 
+    public MessageConsumer createConsumer(Destination destination, String messageSelector) throws JMSException {
+        return createReceiver( (Queue) destination, messageSelector );
+    }
+
     /**
      * @throw ClassCastException if not given a MemoryQueue
      */
     public QueueReceiver createReceiver(Queue queue, String messageSelector) throws JMSException {
         return new MemoryQueueReceiver( (MemoryQueue) queue, messageSelector);
+    }
+
+    public MessageProducer createProducer(Destination destination) throws JMSException {
+        return createSender( (Queue) destination );
     }
 
     /**
