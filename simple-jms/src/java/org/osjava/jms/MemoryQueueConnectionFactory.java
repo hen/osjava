@@ -31,19 +31,31 @@
  */
 package org.osjava.jms;
 
+import javax.jms.JMSException;
+import javax.jms.Connection;
 import javax.jms.QueueConnection;
 import javax.jms.QueueConnectionFactory;
-import javax.jms.JMSException;
 
-public class MemoryQueueConnectionFactory extends MemoryConnectionFactory implements QueueConnectionFactory {
+public class MemoryQueueConnectionFactory implements QueueConnectionFactory {
+
+    public Connection createConnection() throws JMSException {
+        return createQueueConnection();
+    }
+
+    // TODO: Handle user/passwd at a later date. Obviously needs configuration.
+    public Connection createConnection(String user, String passwd) throws JMSException {
+        return createQueueConnection(user, passwd);
+    }
 
     public QueueConnection createQueueConnection() throws JMSException {
-        return new MemoryQueueConnection();
+        QueueConnection conn = new MemoryQueueConnection();
+        String clientId = "" + Math.random(); 
+        conn.setClientID(clientId);
+        return conn;
     }
 
     public QueueConnection createQueueConnection(String user, String passwd) throws JMSException {
-        return new MemoryQueueConnection();
+        return createQueueConnection();
     }
 
 }
-
