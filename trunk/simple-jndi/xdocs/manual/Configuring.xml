@@ -22,8 +22,8 @@ java.naming.factory.initial=org.osjava.sj.SimpleContextFactory
 </pre>
 <p>This property, <i>java.naming.factory.initial</i>, is a part of the jndi specification. </p>
 <p>
-There are two optional, simple-jndi specific parameters. <br />
-The first, org.osjava.sj.root, is the location of your simple-jndi root, which is the location in which simple-jndi looks for values when code asks for them. The following code block details a few examples with explanatory comments.
+There are three simple-jndi specific parameters. <br />
+The first (required) parameter, org.osjava.sj.root, is the location of your simple-jndi root, which is the location in which simple-jndi looks for values when code asks for them. The following code block details a few examples with explanatory comments.
 </p>
 <pre>
 # absolute directory, using the default file protocol
@@ -44,10 +44,10 @@ org.osjava.sj.root=classpath://config
 -->
 </pre>
 <p>
-If no org.osjava.sj.root is specified, then a classpath root is chosen, with no package.
+If no org.osjava.sj.root is specified, an Exception is thrown. When classpath support is re-implemented, then a classpath root will be chosen, with no package.
 </p>
 <p>
-The second optional parameter is the delimiter used to separate elements in a lookup value. This allows code to get closer to pretending to be another JNDI implementation, such as DNS or LDAP.</p>
+The second (optional) parameter is the delimiter used to separate elements in a lookup value. This allows code to get closer to pretending to be another JNDI implementation, such as DNS or LDAP.</p>
 <pre>
 # DNS/Java like delimiters
 org.osjava.sj.delimiter=.
@@ -60,18 +60,7 @@ If no org.osjava.sj.delimiter is specified, then a '.' (dot) is chosen.
 </p>
 </section>
 <section name="Additional JNDI parameters">
- <p>In addition to the parameters mentioned above, shared-memory may be turned on with the following parameter.</p>
- <pre>
-  # jndi contexts share the same back-end
-  org.osjava.sj.jndi.shared=true
- </pre>
- <!--
- <p>Also, an org.osjava.sj.root may be a http url.</p>
- <pre>
-  # Grab values from a web server
-  org.osjava.sj.root=http://www.osjava.org/simple-jndi/db/
- </pre>
- -->
+ <p>In addition to the parameters mentioned above there are various others that may be usable....FINISH THIS</p>
 </section>
 </body>
 </document>
