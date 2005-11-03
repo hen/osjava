@@ -23,28 +23,28 @@ java.naming.factory.initial=org.osjava.sj.SimpleContextFactory
 <p>This property, <i>java.naming.factory.initial</i>, is a part of the jndi specification. </p>
 <p>
 There are two optional, simple-jndi specific parameters. <br />
-The first, org.osjava.jndi.root, is the location of your simple-jndi root, which is the location in which simple-jndi looks for values when code asks for them. The following code block details a few examples with explanatory comments.
+The first, org.osjava.sj.root, is the location of your simple-jndi root, which is the location in which simple-jndi looks for values when code asks for them. The following code block details a few examples with explanatory comments.
 </p>
 <pre>
 # absolute directory, using the default file protocol
-org.osjava.jndi.root=/home/hen/gj/simple-jndi/config/
+org.osjava.sj.root=/home/hen/gj/simple-jndi/config/
 
 # relative directory, using the default file protocol
-org.osjava.jndi.root=config/
+org.osjava.sj.root=config/
 
 # specified file protocol with an absolute directory
-org.osjava.jndi.root=file:///home/hen/gj/simple-jndi/config/
+org.osjava.sj.root=file:///home/hen/gj/simple-jndi/config/
 
 # specified file protocol with a relative directory
-org.osjava.jndi.root=file://config/
+org.osjava.sj.root=file://config/
 <!--
 
 # classpath protocol with a package 'config'
-org.osjava.jndi.root=classpath://config
+org.osjava.sj.root=classpath://config
 -->
 </pre>
 <p>
-If no org.osjava.jndi.root is specified, then a classpath root is chosen, with no package.
+If no org.osjava.sj.root is specified, then a classpath root is chosen, with no package.
 </p>
 <p>
 The second optional parameter is the delimiter used to separate elements in a lookup value. This allows code to get closer to pretending to be another JNDI implementation, such as DNS or LDAP.</p>
@@ -66,10 +66,10 @@ If no org.osjava.jndi.delimiter is specified, then a '.' (dot) is chosen.
   org.osjava.sj.jndi.shared=true
  </pre>
  <!--
- <p>Also, an org.osjava.jndi.root may be a http url.</p>
+ <p>Also, an org.osjava.sj.root may be a http url.</p>
  <pre>
   # Grab values from a web server
-  org.osjava.jndi.root=http://www.osjava.org/simple-jndi/db/
+  org.osjava.sj.root=http://www.osjava.org/simple-jndi/db/
  </pre>
  -->
 </section>
