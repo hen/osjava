@@ -36,6 +36,11 @@ import java.io.Serializable;
 import javax.jms.ObjectMessage;
 import javax.jms.JMSException;
 
+// TODO: Should we actually be serializing this?
+// a) to prove the object serializes correctly
+// b) to get a clone so we don't damage the original
+// and should we be serializing here, or do we need to serialize so that 
+// N listeners get individually different versions?
 public class MemoryObjectMessage extends MemoryMessage implements ObjectMessage {
 
     private Serializable ser;
