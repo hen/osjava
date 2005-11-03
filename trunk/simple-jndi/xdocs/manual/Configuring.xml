@@ -50,13 +50,13 @@ If no org.osjava.sj.root is specified, then a classpath root is chosen, with no 
 The second optional parameter is the delimiter used to separate elements in a lookup value. This allows code to get closer to pretending to be another JNDI implementation, such as DNS or LDAP.</p>
 <pre>
 # DNS/Java like delimiters
-org.osjava.jndi.delimiter=.
+org.osjava.sj.delimiter=.
 
 # LDAP/XPath like delimiters
-org.osjava.jndi.delimiter=/
+org.osjava.sj.delimiter=/
 </pre>
 <p>
-If no org.osjava.jndi.delimiter is specified, then a '.' (dot) is chosen. 
+If no org.osjava.sj.delimiter is specified, then a '.' (dot) is chosen. 
 </p>
 </section>
 <section name="Additional JNDI parameters">
