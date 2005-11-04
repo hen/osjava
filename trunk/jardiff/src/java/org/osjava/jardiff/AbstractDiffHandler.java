@@ -38,8 +38,18 @@
  */
 package org.osjava.jardiff;
 
+/**
+ * An abstract implementation of DiffHandler which provides utility methods.
+ *
+ * @author Antony Riley <antony@cyberiantiger.org>
+ */
 public abstract class AbstractDiffHandler implements DiffHandler
 {
+    /**
+     * Get the java classname given the internal class name internalName.
+     *
+     * @return the classname for internalName
+     */
     protected final String getClassName(String internalName) {
         StringBuffer ret = new StringBuffer(internalName.length());
         for (int i = 0; i < internalName.length(); i++) {
