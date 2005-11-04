@@ -12,7 +12,7 @@
     <logo>http://www.osjava.org/images/osjava.gif</logo>
   </organization>
   <inceptionYear>2005</inceptionYear>
-  <package>org.osjava.nextjen</package>
+  <package>org.osjava.jardiff</package>
   <logo>http://www.osjava.org/images/osjava.gif</logo>
   
   <description>
@@ -22,11 +22,11 @@
   <shortDescription>A jar diff generator</shortDescription>
 
   <!-- This stuff need fixing -->
-  <url>http://www.osjava.org/scripts4java/jardiff/</url>
-  <issueTrackingUrl>http://issues.osjava.org/jira/browse/S4J</issueTrackingUrl>
-  <siteAddress>dist.osjava.org/maven/scripts4java/jardiff/</siteAddress>
-  <siteDirectory>/sites/org/osjava/www/maven/scripts4java/jardiff/</siteDirectory>
-  <distributionDirectory>/sites/org/osjava/www/maven/builds/scripts4java/jardiff/</distributionDirectory>
+  <url>http://www.osjava.org/jardiff/</url>
+  <issueTrackingUrl>http://issues.osjava.org/jira/browse/JD</issueTrackingUrl>
+  <siteAddress>dist.osjava.org/maven/jardiff/</siteAddress>
+  <siteDirectory>/sites/org/osjava/www/maven/jardiff/</siteDirectory>
+  <distributionDirectory>/sites/org/osjava/www/maven/builds/jardiff/</distributionDirectory>
 
   <mailingLists>
     <mailingList>
