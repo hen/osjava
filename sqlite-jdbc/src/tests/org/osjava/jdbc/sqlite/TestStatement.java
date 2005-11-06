@@ -90,6 +90,7 @@ public class TestStatement extends TestCase {
         java.sql.Statement stmt = con.createStatement();
         stmt.executeUpdate("CREATE TABLE foo (TestCol VARCHAR(10));");
         int count = stmt.executeUpdate("INSERT INTO foo (TestCol) VALUES (\"WHEE\");");
+        System.err.println("JAVA: Count returned -- " + count);
         assertEquals(count, 1);
     }
 
@@ -99,10 +100,11 @@ public class TestStatement extends TestCase {
         try {
             stmt.executeUpdate(
                                "CREATE TABLE foo (" +
-                               "    TinyInt1 TINYINT, " +
+                               "    TinyInt1 TINYINT,  " +
                                ");"
             );
         } catch(SQLException e) {
+            System.out.println("PING!");
             /* Only pass if this is a syntax error message.  This is subject 
              * to change if the underlying error is changed. */
             if(e.getMessage().endsWith(": syntax error")) {

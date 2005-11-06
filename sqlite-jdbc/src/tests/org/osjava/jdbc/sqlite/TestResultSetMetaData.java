@@ -59,17 +59,12 @@ public class TestResultSetMetaData extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
         try {
-            System.err.println("Ping1");
             Class.forName("org.osjava.jdbc.sqlite.Driver");
-            System.err.println("Ping2");
             con = DriverManager.getConnection("jdbc:sqlite:local.db");
-            System.err.println("Ping3");
         } catch (ClassNotFoundException e) {
             fail();
         }
-        System.err.println("Ping4");
         java.sql.Statement stmt = con.createStatement();
-        System.err.println("Ping5");
         /* Create the table */
         try {
             System.err.println("Trying to create table");
@@ -192,7 +187,7 @@ public class TestResultSetMetaData extends TestCase {
         } catch(SQLException e) {
             fail("Failed to populate table : " + e.getMessage());
         }
-        /* Put some data in the table */
+        /* Put some data in the ResultSet */
         try {
            result = stmt.executeQuery("SELECT * FROM foo;");
            meta = result.getMetaData();
@@ -218,7 +213,7 @@ public class TestResultSetMetaData extends TestCase {
 
     public void testGetColumnCount2() throws Exception {
         java.sql.Statement stmt = con.createStatement();
-        java.sql.ResultSet res = stmt.executeQuery("SELECT Real1, VarChar2, Integer1, Bit1, Text1 FROM foo;");
+        java.sql.ResultSet res = stmt.executeQuery("SELECT Real1, VarChar2, Integer1, Bit1, Char1 FROM foo;");
         assertEquals(5, meta.getColumnCount());
     }
 }
