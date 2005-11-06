@@ -8,3 +8,8 @@
   fact that the fallback type is a string.
 * Blobs can be stored in any column.
   
+  
+Current test results
+Total: 42
+Errors: 1
+Failures: 33
