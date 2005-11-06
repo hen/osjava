@@ -161,15 +161,10 @@ Java_org_osjava_jdbc_sqlite_Statement_executeSQL(JNIEnv *env,
      * sqlite method */
     /* 'jbyte *' and 'char *' are synonymous? */
     char *sql = (char *)(*env)->GetStringUTFChars(env, query, 0);
-
     sqlite3 *dbPtr = getSQLiteHandle(env, con);
-    fprintf(stderr, "JNI: executeSQL Statement '%s'.\n", sql);
-    fprintf(stderr, "JNI: Ping 1.\n");
     result = sqlite3_exec(dbPtr, sql, NULL, NULL, &errmsg);
-    fprintf(stderr, "JNI: Ping 2.\n");
     if(errmsg != NULL) {
         sqliteThrowSQLException(env, errmsg);
-        fprintf(stderr, "JNI: Ping 3.\n");
         sqlite3_free(errmsg);
         return 0;
     }
@@ -228,8 +223,8 @@ Java_org_osjava_jdbc_sqlite_Statement_executeSQLWithResultSet(JNIEnv *env,
         return;
     }
     if(result) {
-        sqlite3 *dbPtr = (sqlite3 *)sqlite3_db_handle(stmt);
         sqliteThrowSQLException(env, sqlite3_errmsg(dbPtr));
+        return;
     }
     
     (*env)->ReleaseStringUTFChars(env, query, sql);
