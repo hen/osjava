@@ -127,10 +127,11 @@ public class Statement implements java.sql.Statement {
      * @see java.sql.Statement#executeQuery(java.lang.String)
      */
     public java.sql.ResultSet executeQuery(String sql) throws SQLException {
-        /* If the Connection is in autocommit mode, always commit before
-         * a new statement is executed. */
         if(con.getAutoCommit()) {
-            ((org.osjava.jdbc.sqlite.Connection)con).commit(true);
+            /* If the Connection is in autocommit mode, always commit before
+             * a new statement is executed. */
+            forceCommit();
+            forceBegin();
         }
         /* Create a new java.sql.ResultSet object that will be filled. */
         ResultSet rs = new ResultSet(this, resultSetType, resultSetConcurrency, resultSetHoldability, this);
@@ -145,52 +146,14 @@ public class Statement implements java.sql.Statement {
      * @see java.sql.Statement#executeUpdate(java.lang.String)
      */
     public int executeUpdate(String sql) throws SQLException {
-        /* If the Connection is in autocommit mode, always commit before
-         * a new statement is executed. */
         if(con.getAutoCommit()) {
-            /* Do not allow BEGIN, COMMIT, or ROLLBACK statements in
-             * autoCommit mode. */
-            try {
-                executeSQL(sql, con);
-            } catch (SQLException e) {
-                /* Squash the exception raised about starting a transaction from
-                 * within another transaction if and only if the statement starts
-                 * with BEGIN and we are in auto-commit mode */
-                /* XXX: There is probably a better way to do this */
-                if(    e.getMessage().equals("cannot start a transaction within a transaction")
-                    && sql.startsWith("BEGIN")
-                    && con.getAutoCommit()) {
-                    System.err.println("Found a begin in the middle of a transaction.");
-                    return 0;
-                }
-                e.printStackTrace();
-            }
-            /* Even in autocommit if the statement begins with 'BEGIN' 
-             * or 'COMMIT' don't try to commit it afterwards */
-            if(!sql.startsWith("COMMIT") && !sql.startsWith("BEGIN")) {
-                ((org.osjava.jdbc.sqlite.Connection)con).commit(true);
-            }
-            System.err.println("Found a commit or begin statement while in autocommit mode.");
-            return 0;
+            /* If the Connection is in autocommit mode, always commit before
+             * a new statement is executed. */
+            forceCommit();
+            forceBegin();
         }
         int count = -1;
-        try {
-            count = executeSQL(sql, con);
-        } catch (SQLException e) {
-            System.err.println("Error executing statement -- " + e.getMessage());
-            /* Squash the exception raised about starting a transaction from
-             * within another transaction if and only if the statement starts
-             * with BEGIN and we are in auto-commit mode */
-            /* XXX: There is probably a better way to do this */
-            if(    e.getMessage().equals("cannot start a transaction within a transaction")
-                && sql.startsWith("BEGIN")
-                && con.getAutoCommit()) {
-                System.err.println("Found a begin in the middle of a transaction.");
-                return 0;
-            }
-            e.printStackTrace();
-        }
-        System.err.println("DONE!");
+        count = executeSQL(sql, con);
         /* FIXME: Should look for -1 as the value of count and probably return
          *        an error (throw exception) */        
         return count;
@@ -592,11 +555,7 @@ public class Statement implements java.sql.Statement {
         if(!con.getAutoCommit()) {
             throw new SQLException("Cannot forceBegin when not in autocommit mode.");
         }
-        try {
-            executeSQL("BEGIN;", con);
-        } catch(SQLException e) {
-            System.err.println("failed to begin transaction");
-        }
+        executeSQL("BEGIN;", con);
     }
     
     /**
