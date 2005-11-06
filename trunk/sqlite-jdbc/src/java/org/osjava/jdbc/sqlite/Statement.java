@@ -131,7 +131,6 @@ public class Statement implements java.sql.Statement {
             /* If the Connection is in autocommit mode, always commit before
              * a new statement is executed. */
             forceCommit();
-            forceBegin();
         }
         /* Create a new java.sql.ResultSet object that will be filled. */
         ResultSet rs = new ResultSet(this, resultSetType, resultSetConcurrency, resultSetHoldability, this);
@@ -150,7 +149,6 @@ public class Statement implements java.sql.Statement {
             /* If the Connection is in autocommit mode, always commit before
              * a new statement is executed. */
             forceCommit();
-            forceBegin();
         }
         int count = -1;
         count = executeSQL(sql, con);
@@ -555,7 +553,15 @@ public class Statement implements java.sql.Statement {
         if(!con.getAutoCommit()) {
             throw new SQLException("Cannot forceBegin when not in autocommit mode.");
         }
-        executeSQL("BEGIN;", con);
+        try {
+            executeSQL("BEGIN;", con);
+        } catch(SQLException e) {
+            /* The assumption here is that if we get an error here, it's
+             * because we're already in a transaction.  End it and begin 
+             * a new one, just to be on the safe side */
+            e.printStackTrace();
+            forceCommit();
+        }
     }
     
     /**
