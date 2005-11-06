@@ -44,27 +44,82 @@ import org.objectweb.asm.FieldVisitor;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.commons.EmptyVisitor;
 
+/**
+ * A reusable class which uses the ASM to build up ClassInfo about a 
+ * java class file.
+ *
+ * @author Antony Riley <antony@cyberiantiger.org>
+ */
 public class ClassInfoVisitor extends EmptyVisitor
 {
+    /**
+     * The class file version.
+     */
     private int version;
+
+    /**
+     * The access flags for the class.
+     */
+
     private int access;
+
+    /**
+     * The internal name of the class.
+     */
     private String name;
+
+    /**
+     * The signature of the class
+     */
     private String signature;
+    
+    /**
+     * The internal name of the superclass.
+     */
     private String supername;
+
+    /**
+     * An array of internal names of interfaces implemented by this class.
+     */
     private String[] interfaces;
+
+    /**
+     * A map of method signature to a MethodInfo describing the method.
+     */
     private Map methodMap;
+
+    /**
+     * A map of field signature to a FieldInfo describing the field.
+     */
     private Map fieldMap;
     
+    /**
+     * Reset this ClassInfoVisitor so that it can be used to visit another
+     * class.
+     */
     public void reset() {
         methodMap = new HashMap();
         fieldMap = new HashMap();
     }
     
+    /**
+     * The the classInfo this ClassInfoVisitor has built up about a class
+     */
     public ClassInfo getClassInfo() {
         return new ClassInfo(version, access, name, signature, supername,
                              interfaces, methodMap, fieldMap);
     }
     
+    /**
+     * Receive notification of information about a class from ASM.
+     *
+     * @param version the class file version number.
+     * @param access the access flags for the class.
+     * @param name the internal name of the class.
+     * @param signature the signature of the class.
+     * @param supername the internal name of the super class.
+     * @param interfaces the internal names of interfaces implemented.
+     */
     public void visit(int version, int access, String name, String signature,
                       String supername, String[] interfaces) {
         this.version = version;
