@@ -62,14 +62,8 @@ public class Driver implements java.sql.Driver {
     /* Load the proxy driver */
     static {
         System.loadLibrary("sqlite-jdbc");
-    }
-    
-    /**
-     * Creates a new SQLite-JDBC driver object.
-     */
-    public Driver() {
         try {
-            DriverManager.registerDriver(this);
+            DriverManager.registerDriver(new Driver());
         } catch (SQLException e) {
             /* 
              * I'm not really sure why this is throwing an SQLException.  
@@ -81,7 +75,7 @@ public class Driver implements java.sql.Driver {
             e.printStackTrace();
         }
     }
-
+    
     /** 
      * Connect to a database and return the resultant Connection object.
      * The <code>url</code> must contain a target that the underlying 
