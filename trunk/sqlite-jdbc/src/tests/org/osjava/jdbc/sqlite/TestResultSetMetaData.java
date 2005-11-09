@@ -45,13 +45,12 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import junit.framework.TestCase;
 
 public class TestResultSetMetaData extends TestCase {
     private Connection con = null;
-    private java.sql.ResultSet result = null;
-    private ResultSetMetaData meta = null;
 
     /**
      * Setup the Connection and table
@@ -67,7 +66,6 @@ public class TestResultSetMetaData extends TestCase {
         java.sql.Statement stmt = con.createStatement();
         /* Create the table */
         try {
-            System.err.println("Trying to create table");
             stmt.executeUpdate(
                                "CREATE TABLE foo (" +
                                "    TinyInt1 TINYINT, " +
@@ -104,7 +102,6 @@ public class TestResultSetMetaData extends TestCase {
 //                             "    SQLXML1 SQLXML, " +
                                ");"
             );
-            System.err.println("Table created");
         } catch(SQLException e) {
             fail("Failed to create table : " + e.getMessage());
         }
@@ -187,14 +184,6 @@ public class TestResultSetMetaData extends TestCase {
         } catch(SQLException e) {
             fail("Failed to populate table : " + e.getMessage());
         }
-        /* Put some data in the ResultSet */
-        try {
-           result = stmt.executeQuery("SELECT * FROM foo;");
-           meta = result.getMetaData();
-        } catch(SQLException e) {
-            fail(e.getMessage());
-        }
-        stmt.close();
     }
 
     protected void tearDown() throws Exception {
@@ -208,12 +197,24 @@ public class TestResultSetMetaData extends TestCase {
     }
     
     public void testGetColumnCount1() throws Exception {
+        java.sql.Statement stmt = con.createStatement();
+        java.sql.ResultSet result = null;
+        java.sql.ResultSetMetaData meta = null;
+        try {
+            result = stmt.executeQuery("SELECT * FROM foo;");
+            meta = result.getMetaData();
+         } catch(SQLException e) {
+             fail(e.getMessage());
+         }
+         stmt.close();
         assertEquals(25, meta.getColumnCount());
     }
 
     public void testGetColumnCount2() throws Exception {
         java.sql.Statement stmt = con.createStatement();
+        java.sql.ResultSetMetaData meta = null;
         java.sql.ResultSet res = stmt.executeQuery("SELECT Real1, VarChar2, Integer1, Bit1, Char1 FROM foo;");
+        meta = res.getMetaData();
         assertEquals(5, meta.getColumnCount());
     }
 }
