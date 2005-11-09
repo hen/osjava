@@ -113,5 +113,17 @@ public class MemoryMessageProducer implements MessageProducer {
         // TODO: Implement this
     }
 
+    protected void setJMSHeaders(Destination destination, Message msg, int deliveryMode, int priority, long timeToLive) throws JMSException {
+        msg.setJMSDestination(destination);
+        msg.setJMSDeliveryMode(deliveryMode);
+        if(!getDisableMessageID()) {
+            msg.setJMSMessageID("ID:"+System.currentTimeMillis());  // for want of a better ID system
+        }
+        if(!getDisableMessageTimestamp()) {
+            msg.setJMSTimestamp(System.currentTimeMillis());
+        }
+        msg.setJMSPriority(priority);
+        msg.setJMSExpiration(timeToLive);
+    }
 
 }

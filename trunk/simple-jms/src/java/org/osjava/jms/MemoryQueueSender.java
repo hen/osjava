@@ -50,22 +50,22 @@ public class MemoryQueueSender extends MemoryMessageProducer implements QueueSen
     }
 
     public void send(Message msg) throws JMSException {
-        this.queue.push(msg);
+        send(this.queue, msg);
     }
 
     // TODO: Implement options?
     public void send(Message msg, int deliveryMode, int priority, long timeToLive) throws JMSException {
-        send(msg);
+        send(this.queue, msg, deliveryMode, priority, timeToLive);
     }
 
     public void send(Queue queue, Message msg) throws JMSException {
-        MemoryQueue mq = (MemoryQueue) queue;
-        mq.push(msg);
+        send(queue, msg, -1, 0, 0);    // TODO: What's the default delivery mode?
     }
 
     // TODO: Implement options?
     public void send(Queue queue, Message msg, int deliveryMode, int priority, long timeToLive) throws JMSException {
-        send(queue, msg);
+        super.setJMSHeaders(queue, msg, deliveryMode, priority, timeToLive);
+        ((MemoryQueue)queue).push(msg);
     }
 
 }

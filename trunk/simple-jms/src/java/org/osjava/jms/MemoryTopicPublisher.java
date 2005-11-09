@@ -49,20 +49,21 @@ public class MemoryTopicPublisher extends MemoryMessageProducer implements Topic
         return this.topic;
     }
 
-    public void publish(Message msg) throws JMSException {
-        this.topic.push(msg);
+    public void publish(Message message) throws JMSException {
+        publish(this.topic, message);
     }
 
     public void publish(Message message, int deliveryMode, int priority, long timeToLive) throws JMSException {
-        publish(message);
+        publish(this.topic, message, deliveryMode, priority, timeToLive);
     }
 
-    public void publish(Topic topic, Message msg) throws JMSException {
-         ((MemoryTopic) topic).push(msg);
+    public void publish(Topic topic, Message message) throws JMSException {
+        publish(topic, message, -1, 0, 0);
     }
 
     public void publish(Topic topic, Message message, int deliveryMode, int priority, long timeToLive) throws JMSException {
-        publish(topic, message);
+        super.setJMSHeaders(topic, message, deliveryMode, priority, timeToLive);
+        ((MemoryTopic) topic).push(message);
     }
 
 
