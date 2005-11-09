@@ -364,7 +364,6 @@ public class ResultSet implements java.sql.ResultSet {
             return;
         }
         proxyCloseStatement();
-        stmt.removeResult(this);
         closed = true;
     }
 

@@ -58,9 +58,9 @@ public class Statement implements java.sql.Statement {
     private Connection con;
     
     /**
-     * LinkedList of ResultSets created by the statement.
+     * ResultSets last created by the statement.
      */
-    private Collection results = new LinkedList();
+    private ResultSet result = null;
 
     /**
      * The fetch direction from the statement. The default is
@@ -132,11 +132,15 @@ public class Statement implements java.sql.Statement {
              * a new statement is executed. */
             forceCommit();
         }
+        /* If there is a resultSet, close it */
+        if(result != null) {
+            result.close();
+            result = null;
+        }
         /* Create a new java.sql.ResultSet object that will be filled. */
-        ResultSet rs = new ResultSet(this, resultSetType, resultSetConcurrency, resultSetHoldability, this);
-        results.add(rs);
-        executeSQLWithResultSet(sql, con, rs, getFetchSize());
-        return rs;
+        result = new ResultSet(this, resultSetType, resultSetConcurrency, resultSetHoldability, this);
+        executeSQLWithResultSet(sql, con, result, getFetchSize());
+        return result;
     }
 
     /*
@@ -149,6 +153,11 @@ public class Statement implements java.sql.Statement {
             /* If the Connection is in autocommit mode, always commit before
              * a new statement is executed. */
             forceCommit();
+        }
+        /* If there is a resultSet, close it */
+        if(result != null) {
+            result.close();
+            result = null;
         }
         int count = -1;
         count = executeSQL(sql, con);
@@ -168,6 +177,11 @@ public class Statement implements java.sql.Statement {
         if(con.getAutoCommit()) {
             ((org.osjava.jdbc.sqlite.Connection)con).commit(true);
         }
+        /* If there is a resultSet, close it */
+        if(result != null) {
+            result.close();
+            result = null;
+        }
         // TODO Auto-generated method stub
         return 0;
     }
@@ -182,6 +196,11 @@ public class Statement implements java.sql.Statement {
          * a new statement is executed. */
         if(con.getAutoCommit()) {
             ((org.osjava.jdbc.sqlite.Connection)con).commit(true);
+        }
+        /* If there is a resultSet, close it */
+        if(result != null) {
+            result.close();
+            result = null;
         }
         // TODO Auto-generated method stub
         return 0;
@@ -199,6 +218,11 @@ public class Statement implements java.sql.Statement {
         if(con.getAutoCommit()) {
             ((org.osjava.jdbc.sqlite.Connection)con).commit(true);
         }
+        /* If there is a resultSet, close it */
+        if(result != null) {
+            result.close();
+            result = null;
+        }
         // TODO Auto-generated method stub
         return 0;
     }
@@ -209,12 +233,10 @@ public class Statement implements java.sql.Statement {
      * @see java.sql.Statement#close()
      */
     public void close() throws SQLException {
-        /* Ensure that all of the Statement's ResultSets are closed. */
-        Iterator it= results.iterator();
-        while (it.hasNext()) {
-            ResultSet next = (ResultSet)it.next();
-            it.remove();
-            next.close();
+        /* Ensure that the result set is closed if necessary */
+        if(result != null) {
+            result.close();
+            result = null;
         }
     }
 
@@ -535,21 +557,13 @@ public class Statement implements java.sql.Statement {
         return 0;
     }
     
-    /* Helper methods */
-    /**
-     * Remove a ResultSet from the list of tracked results
-     */
-    void removeResult(ResultSet rs) {
-        results.remove(rs);
-    }
-    
+    /* Helper methods */    
     /**
      * Begin a new transaction.  This method can only be used in autocommit
      * mode and is designed only to be used by the Connection object.
      * @throws SQLException
      */
     void forceBegin() throws SQLException {
-        System.err.println("ForceBegin");
         if(!con.getAutoCommit()) {
             throw new SQLException("Cannot forceBegin when not in autocommit mode.");
         }
@@ -575,7 +589,6 @@ public class Statement implements java.sql.Statement {
      * @throws SQLException if an exception occurs.  
      */ 
     void forceCommit() throws SQLException {
-        System.err.println("Force Commit");
         executeSQL("COMMIT;", con);
         /* If in auto-commit mode, always start a new transaction immediately */
         if(con.getAutoCommit())  {

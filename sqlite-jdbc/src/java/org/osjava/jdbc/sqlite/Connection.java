@@ -92,14 +92,10 @@ public class Connection implements java.sql.Connection {
          *      mode.  This will have to be changed if we make a property 
          *      which can affect this.
          */
-        System.err.println("Creating connection");
         Statement stmt = (Statement)createStatement();
-        System.err.println("Statement created.");
         try {
-            System.err.println("Trying to start autocommit transaction");
             stmt.forceBegin();            
         } catch(SQLException e) {
-            System.err.println("Got an exception trying to begin transaction.");
             e.printStackTrace();
         }
         stmt.close();
@@ -187,7 +183,6 @@ public class Connection implements java.sql.Connection {
         try {
             stmt.forceCommit();            
         } catch(SQLException e) {
-            System.err.println("Got an exception trying to commit.");
             e.printStackTrace();
         }
         stmt.close();
@@ -247,7 +242,6 @@ public class Connection implements java.sql.Connection {
         try {
             stmt.forceCommit();            
         } catch(SQLException e) {
-            System.err.println("Got an exception trying to commit.");
             e.printStackTrace();
         }
         stmt.close();
