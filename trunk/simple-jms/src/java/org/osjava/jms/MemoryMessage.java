@@ -58,6 +58,9 @@ public class MemoryMessage implements Message {
     }
 
     public void setJMSMessageID(String id) throws JMSException {
+        if(id == null || !id.startsWith("ID:")) {
+            throw new JMSException("ID must start with the text 'ID:'");
+        }
         this.jmsMessageId = id;
     }
 
