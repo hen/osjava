@@ -145,8 +145,8 @@ public class ResultSetMetaData implements java.sql.ResultSetMetaData {
      * @see java.sql.ResultSetMetaData#getColumnName(int)
      */
     public String getColumnName(int column) throws SQLException {
-        // TODO Auto-generated method stub
-        return null;
+        /* column is 1 based, column names are 0 based. */
+        return columnNames[column - 1];
     }
 
     /* (non-Javadoc)
