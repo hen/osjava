@@ -218,7 +218,7 @@ public class TestResultSetMetaData extends TestCase {
         assertEquals(5, meta.getColumnCount());
     }
 
-    public void testGetColumnCount3() throws Exception {
+    public void testGetColumnName1() throws Exception {
         java.sql.Statement stmt = con.createStatement();
         java.sql.ResultSetMetaData meta = null;
         java.sql.ResultSet res = stmt.executeQuery("SELECT Real1, VarChar2, Integer1, Bit1, Char1 FROM foo;");
@@ -226,7 +226,7 @@ public class TestResultSetMetaData extends TestCase {
         assertEquals("Real1", meta.getColumnName(1));
     }
 
-    public void testGetColumnCount4() throws Exception {
+    public void testGetColumnName2() throws Exception {
         java.sql.Statement stmt = con.createStatement();
         java.sql.ResultSetMetaData meta = null;
         java.sql.ResultSet res = stmt.executeQuery("SELECT Real1 as A, VarChar2 as B, Integer1 AS C, Bit1, Char1 FROM foo;");
