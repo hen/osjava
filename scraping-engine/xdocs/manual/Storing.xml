@@ -64,7 +64,7 @@ Xxx.table=Foo
 
 <p>Storing data in a database is hard to get away from when scraping. <code>JdbcStore</code> makes it easy. </p>
 
-<p>The first configuration option is the DataSource; this should be obtained via JNDI as a <code>javax.sql.DataSource</code> object and for most of us this means knowing how to <a href="configure a DataSource in Simple-JNDI.html">configure a DataSource in Simple-JNDI</a>. </p>
+<p>The first configuration option is the DataSource; this should be obtained via JNDI as a <code>javax.sql.DataSource</code> object and for most of us this means knowing how to <a href="ConfigureADataSourceInSimpleJNDI.html">configure a DataSource in Simple-JNDI</a>. </p>
 
 <p>Then you can either specify the INSERT statement to use, in <code>java.sql.PreparedStatement</code> notation, or for the exceptionally lazy you can simply specify the table to INSERT into, which will result in a generic statement of the type <code>INSERT INTO Foo VALUES(?, ?)</code> where the number of question marks inside VALUES is dependent on the length of the row in the results. </p>
 
