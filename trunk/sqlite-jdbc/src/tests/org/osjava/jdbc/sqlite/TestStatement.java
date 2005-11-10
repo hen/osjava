@@ -134,7 +134,6 @@ public class TestStatement extends TestCase {
     
     /**
      * Make a statement that executes a query and examine its resultSet.
-     * 
      */
     public void testExecuteQuery2() throws Exception {
         java.sql.Statement stmt = con.createStatement();
