@@ -41,7 +41,7 @@ package org.osjava.jardiff;
 /**
  * An abstract implementation of DiffHandler which provides utility methods.
  *
- * @author Antony Riley <antony@cyberiantiger.org>
+ * @author <a href="mailto:antony@cyberiantiger.org">Antony Riley</a>
  */
 public abstract class AbstractDiffHandler implements DiffHandler
 {

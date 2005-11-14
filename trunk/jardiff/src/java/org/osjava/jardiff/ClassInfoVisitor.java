@@ -48,7 +48,7 @@ import org.objectweb.asm.commons.EmptyVisitor;
  * A reusable class which uses the ASM to build up ClassInfo about a 
  * java class file.
  *
- * @author Antony Riley <antony@cyberiantiger.org>
+ * @author <a href="mailto:antony@cyberiantiger.org">Antony Riley</a>
  */
 public class ClassInfoVisitor extends EmptyVisitor
 {
