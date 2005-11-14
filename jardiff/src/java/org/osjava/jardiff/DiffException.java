@@ -38,8 +38,19 @@
  */
 package org.osjava.jardiff;
 
+/**
+ * A wrapper exception classes for various exceptions that can happen
+ * whilst performing a diff.
+ *
+ * @author <a href="mailto:antony@cyberiantiger.org">Antony Riley</a>
+ */
 public class DiffException extends Exception
 {
+    /**
+     * Create a new DiffException wrapping another exception.
+     *
+     * @param toWrap the wrapped exception
+     */
     public DiffException(Exception toWrap) {
         super((Throwable) toWrap);
     }

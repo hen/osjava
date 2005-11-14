@@ -47,12 +47,37 @@ import org.objectweb.asm.Type;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.AttributesImpl;
 
+/**
+ * A specific type of DiffHandler which uses SAX to create an XML document
+ * describing the changes in the diff.
+ *
+ * @author <a href="mailto:antony@cyberiantiger.org">Antony Riley</a>
+ */
 public class SAXDiffHandler implements DiffHandler
 {
+    /**
+     * The XML namespace used.
+     */
     public static final String XML_URI = "http://www.osjava.org/jardiff/0.1";
+
+    /**
+     * The javax.xml.transform.sax.TransformerHandler used to convert
+     * SAX events to text.
+     */
     private final TransformerHandler handler;
-    private final AttributesImpl attr;
     
+    /**
+     * A reusable AttributesImpl to avoid having to instantiate this class
+     * all over the place throughout the handler.
+     */
+    protected final AttributesImpl attr;
+    
+    /**
+     * Create a new SAXDiffHandler which writes to System.out
+     *
+     * @throws DiffException when there is an underlying exception, e.g.
+     *                       writing to a file caused an IOException
+     */
     public SAXDiffHandler() throws DiffException {
         attr = new AttributesImpl();
         try {
@@ -65,11 +90,29 @@ public class SAXDiffHandler implements DiffHandler
         }
     }
     
+    /**
+     * Create a new SAXDiffHandler with the specified TransformerHandler.
+     * This method allows the user to choose what they are going to do with
+     * the output in a flexible manner, and allows anything from forwarding
+     * the events to their own SAX contenthandler to building a DOM tree to
+     * writing to an OutputStream.
+     *
+     * @param handler The SAX transformer handler to send SAX events to.
+     */
     public SAXDiffHandler(TransformerHandler handler) {
         attr = new AttributesImpl();
         this.handler = handler;
     }
     
+    /**
+     * Start the diff.
+     * This writes out the start of a &lt;diff&gt; node.
+     *
+     * @param oldJar ignored
+     * @param newJar ignored
+     * @throws DiffException when there is an underlying exception, e.g.
+     *                       writing to a file caused an IOException
+     */
     public void startDiff(String oldJar, String newJar) throws DiffException {
         try {
             handler.startDocument();
@@ -79,6 +122,13 @@ public class SAXDiffHandler implements DiffHandler
         }
     }
     
+    /**
+     * Start the removed node.
+     * This writes out a &lt;removed&gt; node.
+     *
+     * @throws DiffException when there is an underlying exception, e.g.
+     *                       writing to a file caused an IOException
+     */
     public void startRemoved() throws DiffException {
         try {
             handler.startElement(XML_URI, "", "removed", attr);
@@ -87,6 +137,14 @@ public class SAXDiffHandler implements DiffHandler
         }
     }
     
+    /**
+     * Write out class info for a removed class.
+     * This writes out the nodes describing a class
+     *
+     * @param info The info to write out.
+     * @throws DiffException when there is an underlying exception, e.g.
+     *                       writing to a file caused an IOException
+     */
     public void classRemoved(ClassInfo info) throws DiffException {
         try {
             writeClassInfo(info);
@@ -95,6 +153,13 @@ public class SAXDiffHandler implements DiffHandler
         }
     }
     
+    /**
+     * End the removed section.
+     * This closes the &lt;removed&gt; tag.
+     *
+     * @throws DiffException when there is an underlying exception, e.g.
+     *                       writing to a file caused an IOException
+     */
     public void endRemoved() throws DiffException {
         try {
             handler.endElement(XML_URI, "", "removed");
@@ -103,6 +168,13 @@ public class SAXDiffHandler implements DiffHandler
         }
     }
     
+    /**
+     * Start the added section.
+     * This opens the &lt;added&gt; tag.
+     *
+     * @throws DiffException when there is an underlying exception, e.g.
+     *                       writing to a file caused an IOException
+     */
     public void startAdded() throws DiffException {
         try {
             handler.startElement(XML_URI, "", "added", attr);
@@ -111,6 +183,14 @@ public class SAXDiffHandler implements DiffHandler
         }
     }
     
+    /**
+     * Write out the class info for an added class.
+     * This writes out the nodes describing an added class.
+     *
+     * @param info The class info describing the added class.
+     * @throws DiffException when there is an underlying exception, e.g.
+     *                       writing to a file caused an IOException
+     */
     public void classAdded(ClassInfo info) throws DiffException {
         try {
             writeClassInfo(info);
@@ -119,6 +199,13 @@ public class SAXDiffHandler implements DiffHandler
         }
     }
     
+    /**
+     * End the added section.
+     * This closes the &lt;added&gt; tag.
+     *
+     * @throws DiffException when there is an underlying exception, e.g.
+     *                       writing to a file caused an IOException
+     */
     public void endAdded() throws DiffException {
         try {
             handler.endElement(XML_URI, "", "added");
@@ -127,6 +214,13 @@ public class SAXDiffHandler implements DiffHandler
         }
     }
     
+    /**
+     * Start the changed section.
+     * This writes out the &lt;changed&gt; node.
+     *
+     * @throws DiffException when there is an underlying exception, e.g.
+     *                       writing to a file caused an IOException
+     */
     public void startChanged() throws DiffException {
         try {
             handler.startElement(XML_URI, "", "changed", attr);
@@ -135,6 +229,15 @@ public class SAXDiffHandler implements DiffHandler
         }
     }
     
+    /**
+     * Start a changed section for an individual class.
+     * This writes out an &lt;classchanged&gt; node with the real class
+     * name as the name attribute.
+     *
+     * @param internalName the internal name of the class that has changed.
+     * @throws DiffException when there is an underlying exception, e.g.
+     *                       writing to a file caused an IOException
+     */
     public void startClassChanged(String internalName) throws DiffException {
         try {
             attr.addAttribute(XML_URI, "", "name", "CDATA", 
@@ -146,6 +249,15 @@ public class SAXDiffHandler implements DiffHandler
         }
     }
     
+    /**
+     * Write out info about a removed field.
+     * This just writes out the field info, it will be inside a start/end
+     * removed section.
+     *
+     * @param info Info about the field that's been removed.
+     * @throws DiffException when there is an underlying exception, e.g.
+     *                       writing to a file caused an IOException
+     */
     public void fieldRemoved(FieldInfo info) throws DiffException {
         try {
             writeFieldInfo(info);
@@ -154,6 +266,15 @@ public class SAXDiffHandler implements DiffHandler
         }
     }
     
+    /**
+     * Write out info about a removed method.
+     * This just writes out the method info, it will be inside a start/end 
+     * removed section.
+     *
+     * @param info Info about the method that's been removed.
+     * @throws DiffException when there is an underlying exception, e.g.
+     *                       writing to a file caused an IOException
+     */
     public void methodRemoved(MethodInfo info) throws DiffException {
         try {
             writeMethodInfo(info);
@@ -162,6 +283,15 @@ public class SAXDiffHandler implements DiffHandler
         }
     }
     
+    /**
+     * Write out info about an added field.
+     * This just writes out the field info, it will be inside a start/end 
+     * added section.
+     *
+     * @param info Info about the added field.
+     * @throws DiffException when there is an underlying exception, e.g.
+     *                       writing to a file caused an IOException
+     */
     public void fieldAdded(FieldInfo info) throws DiffException {
         try {
             writeFieldInfo(info);
@@ -170,6 +300,15 @@ public class SAXDiffHandler implements DiffHandler
         }
     }
     
+    /**
+     * Write out info about a added method.
+     * This just writes out the method info, it will be inside a start/end
+     * added section.
+     *
+     * @param info Info about the added method.
+     * @throws DiffException when there is an underlying exception, e.g.
+     *                       writing to a file caused an IOException
+     */
     public void methodAdded(MethodInfo info) throws DiffException {
         try {
             writeMethodInfo(info);
@@ -178,6 +317,18 @@ public class SAXDiffHandler implements DiffHandler
         }
     }
     
+    /**
+     * Write out info aboout a changed class.
+     * This writes out a &lt;classchange&gt; node, followed by a 
+     * &lt;from&gt; node, with the old information about the class
+     * followed by a &lt;to&gt; node with the new information about the
+     * class.
+     *
+     * @param oldInfo Info about the old class.
+     * @param newInfo Info about the new class.
+     * @throws DiffException when there is an underlying exception, e.g.
+     *                       writing to a file caused an IOException
+     */
     public void classChanged(ClassInfo oldInfo, ClassInfo newInfo)
         throws DiffException {
         try {
@@ -194,6 +345,18 @@ public class SAXDiffHandler implements DiffHandler
         }
     }
     
+    /**
+     * Write out info aboout a changed field.
+     * This writes out a &lt;fieldchange&gt; node, followed by a 
+     * &lt;from&gt; node, with the old information about the field
+     * followed by a &lt;to&gt; node with the new information about the
+     * field.
+     *
+     * @param oldInfo Info about the old field.
+     * @param newInfo Info about the new field.
+     * @throws DiffException when there is an underlying exception, e.g.
+     *                       writing to a file caused an IOException
+     */
     public void fieldChanged(FieldInfo oldInfo, FieldInfo newInfo)
         throws DiffException {
         try {
@@ -210,6 +373,18 @@ public class SAXDiffHandler implements DiffHandler
         }
     }
     
+    /**
+     * Write out info aboout a changed method.
+     * This writes out a &lt;methodchange&gt; node, followed by a 
+     * &lt;from&gt; node, with the old information about the method
+     * followed by a &lt;to&gt; node with the new information about the
+     * method.
+     *
+     * @param oldInfo Info about the old method.
+     * @param newInfo Info about the new method.
+     * @throws DiffException when there is an underlying exception, e.g.
+     *                       writing to a file caused an IOException
+     */
     public void methodChanged(MethodInfo oldInfo, MethodInfo newInfo)
         throws DiffException {
         try {
@@ -226,6 +401,13 @@ public class SAXDiffHandler implements DiffHandler
         }
     }
     
+    /**
+     * End the changed section for an individual class.
+     * This closes the &lt;classchanged&gt; node.
+     *
+     * @throws DiffException when there is an underlying exception, e.g.
+     *                       writing to a file caused an IOException
+     */
     public void endClassChanged() throws DiffException {
         try {
             handler.endElement(XML_URI, "",
@@ -235,6 +417,13 @@ public class SAXDiffHandler implements DiffHandler
         }
     }
     
+    /**
+     * End the changed section.
+     * This closes the &lt;changed&gt; node.
+     *
+     * @throws DiffException when there is an underlying exception, e.g.
+     *                       writing to a file caused an IOException
+     */
     public void endChanged() throws DiffException {
         try {
             handler.endElement(XML_URI, "",
@@ -244,6 +433,13 @@ public class SAXDiffHandler implements DiffHandler
         }
     }
     
+    /**
+     * End the diff.
+     * This closes the &lt;diff&gt; node.
+     *
+     * @throws DiffException when there is an underlying exception, e.g.
+     *                       writing to a file caused an IOException
+     */
     public void endDiff() throws DiffException {
         try {
             handler.endElement(XML_URI, "",
@@ -254,6 +450,14 @@ public class SAXDiffHandler implements DiffHandler
         }
     }
     
+    /**
+     * Write out information about a class.
+     * This writes out a &lt;class&gt; node, which contains information about
+     * what interfaces are implemented each in a &lt;implements&gt; node.
+     *
+     * @param info Info about the class to write out.
+     * @throws SAXException If a SAX exception is thrown by the SAX API.
+     */
     protected void writeClassInfo(ClassInfo info) throws SAXException {
         addAccessFlags(info);
         if (info.getName() != null)
@@ -278,6 +482,15 @@ public class SAXDiffHandler implements DiffHandler
         handler.endElement(XML_URI, "", "class");
     }
     
+    /**
+     * Write out information about a method.
+     * This writes out a &lt;method&gt; node which contains information about
+     * the arguments, the return type, and the exceptions thrown by the 
+     * method.
+     *
+     * @param info Info about the method.
+     * @throws SAXException If a SAX exception is thrown by the SAX API.
+     */
     protected void writeMethodInfo(MethodInfo info) throws SAXException {
         addAccessFlags(info);
         if (info.getName() != null)
@@ -302,6 +515,14 @@ public class SAXDiffHandler implements DiffHandler
         handler.endElement(XML_URI, "", "method");
     }
     
+    /**
+     * Write out information about a field.
+     * This writes out a &lt;field&gt; node with attributes describing the
+     * field.
+     *
+     * @param info Info about the field.
+     * @throws SAXException If a SAX exception is thrown by the SAX API.
+     */
     protected void writeFieldInfo(FieldInfo info) throws SAXException {
         addAccessFlags(info);
         if (info.getName() != null)
@@ -319,6 +540,14 @@ public class SAXDiffHandler implements DiffHandler
         handler.endElement(XML_URI, "", "field");
     }
     
+    /**
+     * Add attributes describing some access flags.
+     * This adds the attributes to the attr field.
+     *
+     * @see #attr
+     * @param info Info describing the access flags.
+     * @throws SAXException If a SAX exception is thrown by the SAX API.
+     */
     protected void addAccessFlags(AbstractInfo info) throws SAXException {
         attr.addAttribute(XML_URI, "", "access", "CDATA", 
                               info.getAccessType());
@@ -356,6 +585,15 @@ public class SAXDiffHandler implements DiffHandler
             attr.addAttribute(XML_URI, "", "volatile", "CDATA", "yes");
     }
     
+    /**
+     * Add the method nodes for the method descriptor.
+     * This writes out an &lt;arguments&gt; node containing the 
+     * argument types for the method, followed by a &lt;return&gt; node
+     * containing the return type.
+     *
+     * @param desc The descriptor for the method to write out.
+     * @throws SAXException If a SAX exception is thrown by the SAX API.
+     */
     protected void addMethodNodes(String desc) throws SAXException {
         Type[] args = Type.getArgumentTypes(desc);
         Type ret = Type.getReturnType(desc);
@@ -368,10 +606,24 @@ public class SAXDiffHandler implements DiffHandler
         handler.endElement(XML_URI, "", "return");
     }
     
+    /**
+     * Add a type node for the specified descriptor.
+     *
+     * @param desc A type descriptor.
+     * @throws SAXException If a SAX exception is thrown by the SAX API.
+     */
     protected void addTypeNode(String desc) throws SAXException {
         addTypeNode(Type.getType(desc));
     }
     
+    /**
+     * Add a type node for the specified type.
+     * This writes out a &lt;type&gt; node with attributes describing
+     * the type.
+     *
+     * @param type The type to describe.
+     * @throws SAXException If a SAX exception is thrown by the SAX API.
+     */
     protected void addTypeNode(Type type) throws SAXException {
         int i = type.getSort();
         if (i == Type.ARRAY) {

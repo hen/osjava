@@ -38,12 +38,37 @@
  */
 package org.osjava.jardiff;
 
+/**
+ * Information about a field of a class.
+ *
+ * @author <a href="mailto:antony@cyberiantiger.org">Antony Riley</a>
+ */
 public final class FieldInfo extends AbstractInfo
 {
+    /**
+     * The field descriptor for this field.
+     */
     private String desc;
+    
+    /**
+     * The signature for this field.
+     */
     private String signature;
+    
+    /**
+     * The initial value of this field.
+     */
     private Object value;
     
+    /**
+     * Create a new FieldInfo
+     *
+     * @param access The access flags.
+     * @param name The name of the field.
+     * @param desc The field discriptor.
+     * @param signature The signature of this field.
+     * @param value The initial value of the field.
+     */
     public FieldInfo(int access, String name, String desc, String signature,
                      Object value) {
         super(access, name);
@@ -52,14 +77,29 @@ public final class FieldInfo extends AbstractInfo
         this.value = value;
     }
     
+    /**
+     * Get the descriptor for this FieldInfo.
+     *
+     * @return The field descriptor.
+     */
     public final String getDesc() {
         return desc;
     }
     
+    /**
+     * Get the signature for this fieldinfo.
+     *
+     * @return The signature.
+     */
     public final String getSignature() {
         return signature;
     }
     
+    /**
+     * Get the initial value for this fieldinfo
+     *
+     * @return The initial value.
+     */
     public final Object getValue() {
         return value;
     }

@@ -42,7 +42,7 @@ import java.util.Map;
 /**
  * Information about a class file.
  *
- * @author Antony Riley <antony@cyberiantiger.org>
+ * @author <a href="mailto:antony@cyberiantiger.org">Antony Riley</a>
  */
 public final class ClassInfo extends AbstractInfo
 {

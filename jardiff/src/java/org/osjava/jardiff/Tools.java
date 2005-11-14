@@ -38,12 +38,30 @@
  */
 package org.osjava.jardiff;
 
+/**
+ * A set of Tools which do not belong anywhere else in the API at this time.
+ * This is nasty, but for now, useful.
+ *
+ * @author <a href="mailto:antony@cyberiantiger.org">Antony Riley</a>
+ */
 public final class Tools
 {
+    /**
+     * Private constructor so this class can't be instantiated.
+     */
     private Tools() {
         /* empty */
     }
     
+    /**
+     * Get the java class name given an internal class name.
+     * This method currently replaces all instances of $ and / with . this
+     * may not be according to the java language spec, and will almost
+     * certainly fail for some inner classes.
+     * 
+     * @param internalName The internal name of the class.
+     * @return The java class name.
+     */
     public static final String getClassName(String internalName) {
         StringBuffer ret = new StringBuffer(internalName.length());
         for (int i = 0; i < internalName.length(); i++) {

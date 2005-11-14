@@ -49,12 +49,39 @@ import java.util.jar.JarFile;
 
 import org.objectweb.asm.ClassReader;
 
+/**
+ * A class to perform a diff between two jar files.
+ *
+ * @author <a href="mailto:antony@cyberiantiger.org">Antony Riley</a>
+ */
 public class JarDiff
 {
+    /**
+     * A map containing information about classes in the old jar file.
+     * Keys are internal class names.
+     * Values are instances of ClassInfo.
+     */
     protected Map oldClassInfo = new HashMap();
+
+    /**
+     * A map containing information about classes in the new jar file.
+     * Keys are internal class names.
+     * Values are instances of ClassInfo.
+     */
     protected Map newClassInfo = new HashMap();
     
-    public static void main(String[] args) throws Exception {
+    /**
+     * Main method to allow this to be run from the command line.
+     * This needs work, currently only takes two arguments, which are
+     * the old jar file and the new jar file.
+     *
+     * @param args A string array of length two containing the filenames of
+     *             two jar files, the first of which being the older of the
+     *             two.
+     * @throws DiffException when there is an underlying exception, e.g.
+     *                       writing to a file caused an IOException
+     */
+    public static void main(String[] args) throws DiffException {
         if (args.length != 2)
             System.out.println("Usage: JarDiff <oldjar> <newjar>");
         else {
@@ -63,6 +90,15 @@ public class JarDiff
         }
     }
     
+    /**
+     * Create a new JarDiff object to calculate the diffs between the two
+     * specified jar files.
+     *
+     * @param oldJarFile The old jar file.
+     * @param newJarFile The new jar file.
+     * @throws DiffException when there is an underlying exception, e.g.
+     *                       writing to a file caused an IOException
+     */
     public JarDiff(File oldJarFile, File newJarFile) throws DiffException {
         try {
             ClassInfoVisitor infoVisitor = new ClassInfoVisitor();
@@ -99,6 +135,15 @@ public class JarDiff
         }
     }
     
+    /**
+     * Perform a diff sending the output to the specified handler, using
+     * the specified criteria to select diffs.
+     *
+     * @param handler The handler to receive and handle differences.
+     * @param criteria The criteria we use to select differences.
+     * @throws DiffException when there is an underlying exception, e.g.
+     *                       writing to a file caused an IOException
+     */
     public void diff(DiffHandler handler, DiffCriteria criteria)
         throws DiffException {
         java.util.Set onlyOld = new TreeSet(oldClassInfo.keySet());

@@ -38,12 +38,36 @@
  */
 package org.osjava.jardiff;
 
+/**
+ * A class to hold information about a method.
+ *
+ * @author <a href="mailto:antony@cyberiantiger.org">Antony Riley</a>
+ */
 public final class MethodInfo extends AbstractInfo
 {
+    /**
+     * The method descriptor.
+     */
     private String desc;
+
+    /**
+     * The signature of the method.
+     */
     private String signature;
+
+    /**
+     * An array of the exceptions thrown by this method.
+     */
     private String[] exceptions;
     
+    /**
+     * Create a new MethodInfo with the specified parameters.
+     *
+     * @param access The access flags for the method.
+     * @param name The name of the method.
+     * @param signature The signature of the method.
+     * @param exceptions The exceptions thrown by the method.
+     */
     public MethodInfo(int access, String name, String desc, String signature,
                       String[] exceptions) {
         super(access, name);
@@ -52,14 +76,29 @@ public final class MethodInfo extends AbstractInfo
         this.exceptions = exceptions;
     }
     
+    /**
+     * Get the descriptor for the method.
+     *
+     * @return the descriptor
+     */
     public final String getDesc() {
         return desc;
     }
     
+    /**
+     * Get the signature for the method.
+     *
+     * @return the signature
+     */
     public final String getSignature() {
         return signature;
     }
     
+    /**
+     * Get the array of exceptions which can be thrown by the method.
+     *
+     * @return the exceptions as a String[] of internal names.
+     */
     public final String[] getExceptions() {
         return exceptions;
     }

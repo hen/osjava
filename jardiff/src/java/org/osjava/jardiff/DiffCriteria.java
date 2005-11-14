@@ -41,7 +41,7 @@ package org.osjava.jardiff;
 /**
  * An interface for choosing which API differences are interesting.
  *
- * @author Antony Riley <antony@cyberiantiger.org>
+ * @author <a href="mailto:antony@cyberiantiger.org">Antony Riley</a>
  */
 public interface DiffCriteria
 {

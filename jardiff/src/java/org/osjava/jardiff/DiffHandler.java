@@ -38,47 +38,185 @@
  */
 package org.osjava.jardiff;
 
+/**
+ * An interface for classes which wish to receive information about
+ * differences in class files between two different jar file version to
+ * implement.
+ *
+ * @author <a href="mailto:antony@cyberiantiger.org">Antony Riley</a>
+ */
 public interface DiffHandler
 {
-    public void startDiff(String string, String string_0_)
+    /**
+     * Start a diff between two versions, where string a is the old version
+     * and string b is the new version.
+     * 
+     * @param a the name of the old version
+     * @param b the name of the new version
+     * @throws DiffException when there is an underlying exception, e.g.
+     *                       writing to a file caused an IOException
+     */
+    public void startDiff(String a, String b)
         throws DiffException;
     
+    /**
+     * Start the list of removed classes.
+     *
+     * @throws DiffException when there is an underlying exception, e.g.
+     *                       writing to a file caused an IOException
+     */
     public void startRemoved() throws DiffException;
     
+    /**
+     * Notification that a class was removed.
+     *
+     * @param classinfo information about the class that has been removed.
+     * @throws DiffException when there is an underlying exception, e.g.
+     *                       writing to a file caused an IOException
+     */
     public void classRemoved(ClassInfo classinfo) throws DiffException;
     
+    /**
+     * End of list of removed classes.
+     *
+     * @throws DiffException when there is an underlying exception, e.g.
+     *                       writing to a file caused an IOException
+     */
     public void endRemoved() throws DiffException;
     
+    /**
+     * Start of list of added classes.
+     *
+     * @throws DiffException when there is an underlying exception, e.g.
+     *                       writing to a file caused an IOException
+     */
     public void startAdded() throws DiffException;
     
+    /**
+     * Notification that a class was added.
+     *
+     * @param classinfo information about the class that has been removed.
+     * @throws DiffException when there is an underlying exception, e.g.
+     *                       writing to a file caused an IOException
+     */
     public void classAdded(ClassInfo classinfo) throws DiffException;
     
+    /**
+     * End of list of removed classes.
+     *
+     * @throws DiffException when there is an underlying exception, e.g.
+     *                       writing to a file caused an IOException
+     */
     public void endAdded() throws DiffException;
     
+    /**
+     * Start list of changed classes.
+     *
+     * @throws DiffException when there is an underlying exception, e.g.
+     *                       writing to a file caused an IOException
+     */
     public void startChanged() throws DiffException;
     
+    /**
+     * Start information about class changes for the classname passed.
+     *
+     * @throws DiffException when there is an underlying exception, e.g.
+     *                       writing to a file caused an IOException
+     */
     public void startClassChanged(String string) throws DiffException;
     
+    /**
+     * The field was removed for the current class that has changed.
+     *
+     * @param fieldinfo Information about the field removed.
+     * @throws DiffException when there is an underlying exception, e.g.
+     *                       writing to a file caused an IOException
+     */
     public void fieldRemoved(FieldInfo fieldinfo) throws DiffException;
     
+    /**
+     * The method was removed for the current class that has changed.
+     *
+     * @param methodinfo Information about the method removed.
+     * @throws DiffException when there is an underlying exception, e.g.
+     *                       writing to a file caused an IOException
+     */
     public void methodRemoved(MethodInfo methodinfo) throws DiffException;
     
+    /**
+     * The field was added for the current class that has changed.
+     *
+     * @param fieldinfo Information about the field added.
+     * @throws DiffException when there is an underlying exception, e.g.
+     *                       writing to a file caused an IOException
+     */
     public void fieldAdded(FieldInfo fieldinfo) throws DiffException;
     
+    /**
+     * The method was added for the current class that has changed.
+     *
+     * @param methodinfo Information about the method added.
+     * @throws DiffException when there is an underlying exception, e.g.
+     *                       writing to a file caused an IOException
+     */
     public void methodAdded(MethodInfo methodinfo) throws DiffException;
     
-    public void classChanged(ClassInfo classinfo, ClassInfo classinfo_1_)
+    /**
+     * The current class has changed.
+     * This is called when a class's interfaces or superclass or access
+     * flags have changed.
+     *
+     * @param oldClassinfo Information about the old class.
+     * @param newClassinfo Information about the new class.
+     * @throws DiffException when there is an underlying exception, e.g.
+     *                       writing to a file caused an IOException
+     */
+    public void classChanged(ClassInfo oldClassinfo, ClassInfo newClassinfo)
         throws DiffException;
     
-    public void fieldChanged(FieldInfo fieldinfo, FieldInfo fieldinfo_2_)
+    /**
+     * A field on the current class has changed.
+     *
+     * @param oldFieldinfo Information about the old field.
+     * @param newFieldinfo Information about the new field.
+     * @throws DiffException when there is an underlying exception, e.g.
+     *                       writing to a file caused an IOException
+     */
+    public void fieldChanged(FieldInfo oldFieldinfo, FieldInfo newFieldinfo)
         throws DiffException;
     
+    /**
+     * A method on the current class has changed.
+     *
+     * @param oldMethodinfo Information about the old method.
+     * @param newMethodinfo Information about the new method.
+     * @throws DiffException when there is an underlying exception, e.g.
+     *                       writing to a file caused an IOException
+     */
     public void methodChanged
         (MethodInfo methodinfo, MethodInfo methodinfo_3_) throws DiffException;
     
+    /**
+     * End of changes for the current class.
+     *
+     * @throws DiffException when there is an underlying exception, e.g.
+     *                       writing to a file caused an IOException
+     */
     public void endClassChanged() throws DiffException;
     
+    /**
+     * End of class changes.
+     *
+     * @throws DiffException when there is an underlying exception, e.g.
+     *                       writing to a file caused an IOException
+     */
     public void endChanged() throws DiffException;
     
+    /**
+     * End of the diff.
+     *
+     * @throws DiffException when there is an underlying exception, e.g.
+     *                       writing to a file caused an IOException
+     */
     public void endDiff() throws DiffException;
 }

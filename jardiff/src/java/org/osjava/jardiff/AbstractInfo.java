@@ -43,7 +43,7 @@ import org.objectweb.asm.Opcodes;
 /**
  * An abstract class representing information about a class, method or field.
  *
- * @author Antony Riley <antony@cyberiantiger.org>
+ * @author <a href="mailto:antony@cyberiantiger.org">Antony Riley</a>
  */
 public abstract class AbstractInfo
 {
