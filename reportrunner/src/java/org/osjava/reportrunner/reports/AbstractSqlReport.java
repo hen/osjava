@@ -121,6 +121,9 @@ public abstract class AbstractSqlReport extends AbstractReport {
         boolean[] columns = new boolean[sz];
         boolean found = false;
         for(int i=0; i<sz; i++) {
+
+            if(firstRow[i] == null) continue;
+
             if("oracle.sql.TIMESTAMP".equals(firstRow[i].getClass().getName())) {
                 if(method == null) {
                     try {
