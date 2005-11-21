@@ -7,9 +7,8 @@
   the interfacing library to interpret them otherwise, keeping in mind the
   fact that the fallback type is a string.
 * Blobs can be stored in any column.
+* sqlite3_column_type() does not return appropriate results from a prepared 
+  statement unless it's been stepped into.  The concern here is that this is
+  then based upon the data in the current row, rather than on the column
+  itself, and thus will vary based upon what row the statement is in.
   
-  
-Current test results
-Total: 42
-Errors: 1
-Failures: 33
