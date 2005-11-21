@@ -168,7 +168,7 @@ Java_org_osjava_jdbc_sqlite_Statement_executeSQL(JNIEnv *env,
         sqlite3_free(errmsg);
         return 0;
     }
-    
+
     count = sqlite3_changes(dbPtr);
     (*env)->ReleaseStringUTFChars(env, query, sql);
 
@@ -226,7 +226,7 @@ Java_org_osjava_jdbc_sqlite_Statement_executeSQLWithResultSet(JNIEnv *env,
         sqliteThrowSQLException(env, sqlite3_errmsg(dbPtr));
         return;
     }
-    
+
     (*env)->ReleaseStringUTFChars(env, query, sql);
 
     /* Associate the statement pointer to the ResultSet */
@@ -515,14 +515,16 @@ void populateResultSetMetadata(JNIEnv *env, sqlite3_stmt *stmt, jobject resultSe
     if((*env)->ExceptionOccurred(env)) {
         return;
     }
-    jmethodID setTypeID = (*env)->GetMethodID(env,
-                                              metaDataClass,
-                                              "setColumnType",
-                                              "(ILjava/lang/String;)V");
+    jmethodID setTypeNameID = (*env)->GetMethodID(env,
+                                                  metaDataClass,
+                                                  "setColumnTypeName",
+                                                  "(ILjava/lang/String;)V");
     if((*env)->ExceptionOccurred(env)) {
         return;
     }
+
     for(i = 0; i < numCols; i++) {
+        /* Column Names */
         const char *colName = sqlite3_column_name(stmt, i);
         /* Make sure that there is a name before trying to apply it. */
         /* XXX: Yes, SQLite3 can allow you to have columns without names. */
@@ -536,11 +538,12 @@ void populateResultSetMetadata(JNIEnv *env, sqlite3_stmt *stmt, jobject resultSe
                 return;
             }
         }
-        
+
+        /* Column TypeNames (SQL Type) */
         const char *colType = sqlite3_column_decltype(stmt, i);
         (*env)->CallVoidMethod(env,
                                metaData,
-                               setTypeID,
+                               setTypeNameID,
                                i,
                                convertNativeString(env, colType));
         if((*env)->ExceptionOccurred(env)) {
