@@ -1,4 +1,4 @@
-/*
+ /*
  * org.osjava.jdbc.sqlite.TestResultSetMetaData
  * $Id$
  * $Rev$ 
@@ -43,9 +43,7 @@ package org.osjava.jdbc.sqlite;
 import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 import junit.framework.TestCase;
 
@@ -232,5 +230,21 @@ public class TestResultSetMetaData extends TestCase {
         java.sql.ResultSet res = stmt.executeQuery("SELECT Real1 as A, VarChar2 as B, Integer1 AS C, Bit1, Char1 FROM foo;");
         meta = res.getMetaData();
         assertEquals("A", meta.getColumnName(1));
+    }
+    
+    public void testGetColumnType1() throws Exception {
+        java.sql.Statement stmt = con.createStatement();
+        java.sql.ResultSetMetaData meta = null;
+        java.sql.ResultSet res = stmt.executeQuery("SELECT * FROM foo;");
+        meta = res.getMetaData();
+        assertEquals(java.sql.Types.TINYINT, meta.getColumnType(1));
+    }
+
+    public void testGetColumnTypeName1() throws Exception {
+        java.sql.Statement stmt = con.createStatement();
+        java.sql.ResultSetMetaData meta = null;
+        java.sql.ResultSet res = stmt.executeQuery("SELECT * FROM foo;");
+        meta = res.getMetaData();
+        assertEquals("TINYINT", meta.getColumnTypeName(1));
     }
 }
