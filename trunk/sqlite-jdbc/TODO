@@ -53,7 +53,8 @@ TESTS TO CREATE
 * closing a connection when it's already closed (There's java in place to 
   prevent this though)
 * ResultSetMetadata tests.
-* ResultSet Paging
+  * getCatalogName().  This test is being put off for a while as it's not
+    going to be properly implemented in a while.
 * ResultSet.last();
 * ResultSet.first();
 * Statement.setMaxRows < 0
