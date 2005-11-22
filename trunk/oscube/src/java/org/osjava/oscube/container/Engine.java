@@ -62,8 +62,23 @@ public class Engine {
         // test and how schedule=startup will be handled
         List list = cfg.getList(prefix);
 
+        int sz = args.length;
+
         for(int i=0; i<list.size(); i++) {
             String key = (String)list.get(i);
+
+            if(sz > 0) {
+                boolean skip = true;
+                for(int j=0; j<sz; j++) {
+                    if(key != null && key.equals(args[j])) {
+                        skip = false;
+                        break;
+                    }
+                }
+                if(skip) {
+                    continue;
+                }
+            }
 
             Session session = new NamespaceSession();
             session.put(prefix, key);
