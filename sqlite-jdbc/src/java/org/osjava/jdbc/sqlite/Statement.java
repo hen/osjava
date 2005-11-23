@@ -43,10 +43,6 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.SQLWarning;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.LinkedList;
-
 /**
  * @author rzigweid
  * 
