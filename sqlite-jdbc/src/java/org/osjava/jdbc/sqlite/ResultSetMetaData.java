@@ -108,7 +108,7 @@ public class ResultSetMetaData implements java.sql.ResultSetMetaData {
             throw new SQLException("Invalid column");
         }
         // TODO Auto-generated method stub
-        return false;
+        return true;
     }
 
     /* (non-Javadoc)
