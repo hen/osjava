@@ -93,11 +93,7 @@ public class Connection implements java.sql.Connection {
          *      which can affect this.
          */
         Statement stmt = (Statement)createStatement();
-        try {
-            stmt.forceBegin();            
-        } catch(SQLException e) {
-            e.printStackTrace();
-        }
+        stmt.forceBegin();            
         stmt.close();
     }
     
