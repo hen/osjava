@@ -96,7 +96,88 @@ public class Connection implements java.sql.Connection {
         stmt.forceBegin();            
         stmt.close();
     }
+
+    /**
+     * Close the connection.
+     *
+     * @see java.sql.Connection#close()
+     */
+    public void close() throws SQLException {
+        if(isClosed()) {
+            throw new SQLException("Cannot close Connection. Connection is already closed.");
+        }
+        /* Ensure that all of the Connection's statements are closed. */
+        Iterator it = statements.iterator();
+        while(it.hasNext()) {
+            Statement next = (Statement)it.next();
+            next.close();
+        }
+        /* Make sure that the last transaction is closed. */
+        Statement stmt = (Statement)createStatement();
+        try {
+            stmt.forceCommit();            
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+        stmt.close();
+        /* This can throw an exception based upon whether or not the 
+         * connection is busy, or possibly an error if there is another 
+         * circumstance. */ 
+        proxyCloseConnection();
+        closed = true;
+    }
     
+/**
+     * @see java.sql.Connection#isClosed()
+     */
+    public boolean isClosed() throws SQLException {
+        return closed;
+    }
+
+    public void rollback() throws SQLException {
+        if(autoCommit) {
+            throw new SQLException("Cannot rollback() when in autocommit mode.");
+        }
+        // TODO method stub
+    }
+
+    /** 
+     * Commit the current transaction to the database.  If <code>auto</code>
+     * is <code>false</code>, the standard behavior of commit() is done.  If
+     * it is <code>true</code>, the commit will be forced.  This mechanism is 
+     * only intended to be used internally when simulating autocommit.</br>
+     * 
+     * This method is package private and thus not incredibly secure.
+     * 
+     * @param auto boolean value determining whether or not to try to force
+     *        the commit, such as when getAutoCommit() is <code>true</code>
+     * @throws SQLException
+     */
+    void commit(boolean auto) throws SQLException {
+        if(!auto) {
+            if(autoCommit) {
+               throw new SQLException("Cannot commit() when in autocommit mode.");
+            }
+        }
+        /* Create the statement object that will be committing (and possibly 
+         * issuing a new 'BEGIN' if in auto commit mode)
+         */
+        Statement stmt = (Statement)createStatement();
+        try {
+            stmt.forceCommit();            
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+        stmt.close();
+    }
+
+    public void commit() throws SQLException {
+        commit(false);
+    }
+
+    /* ********************
+ * STATEMENT CREATION *
+ * ********************/
     /**
      * Create a Statement Object. The Statement will produce ResultSets with a
      * result set type of {@link java.sql.ResultSet#TYPE_FORWARD_ONLY}, a
@@ -159,44 +240,51 @@ public class Connection implements java.sql.Connection {
         return stmt;
     }
 
-    /**
-     * Close the connection.
-     *
-     * @see java.sql.Connection#close()
-     */
-    public void close() throws SQLException {
-        if(isClosed()) {
-            throw new SQLException("Cannot close Connection. Connection is already closed.");
-        }
-        /* Ensure that all of the Connection's statements are closed. */
-        Iterator it = statements.iterator();
-        while(it.hasNext()) {
-            Statement next = (Statement)it.next();
-            next.close();
-        }
-        /* Make sure that the last transaction is closed. */
-        Statement stmt = (Statement)createStatement();
-        try {
-            stmt.forceCommit();            
-        } catch(SQLException e) {
-            e.printStackTrace();
-        }
-        stmt.close();
-        /* This can throw an exception based upon whether or not the 
-         * connection is busy, or possibly an error if there is another 
-         * circumstance. */ 
-        proxyCloseConnection();
-        closed = true;
-    }
-    
-    public PreparedStatement prepareStatement(String sql) throws SQLException {
+    public CallableStatement prepareCall(String sql, int resultSetType, int resultSetConcurrency, int resultSetHoldability) throws SQLException {
         // TODO Auto-generated method stub
         return null;
     }
+
+    public CallableStatement prepareCall(String sql, int resultSetType, int resultSetConcurrency) throws SQLException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
     public CallableStatement prepareCall(String sql) throws SQLException {
         // TODO Auto-generated method stub
         return null;
     }
+
+    public PreparedStatement prepareStatement(String sql) throws SQLException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public PreparedStatement prepareStatement(String sql, int resultSetType, int resultSetConcurrency) throws SQLException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public PreparedStatement prepareStatement(String sql, int autoGeneratedKeys) throws SQLException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public PreparedStatement prepareStatement(String sql, int resultSetType, int resultSetConcurrency, int resultSetHoldability) throws SQLException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public PreparedStatement prepareStatement(String sql, int[] columnIndexes) throws SQLException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public PreparedStatement prepareStatement(String sql, String[] columnNames) throws SQLException {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
     public String nativeSQL(String sql) throws SQLException {
         // TODO Auto-generated method stub
         return null;
@@ -209,53 +297,6 @@ public class Connection implements java.sql.Connection {
         return autoCommit;
     }
     
-    public void commit() throws SQLException {
-        commit(false);
-    }
-
-    /** 
-     * Commit the current transaction to the database.  If <code>auto</code>
-     * is <code>false</code>, the standard behavior of commit() is done.  If
-     * it is <code>true</code>, the commit will be forced.  This mechanism is 
-     * only intended to be used internally when simulating autocommit.</br>
-     * 
-     * This method is package private and thus not incredibly secure.
-     * 
-     * @param auto boolean value determining whether or not to try to force
-     *        the commit, such as when getAutoCommit() is <code>true</code>
-     * @throws SQLException
-     */
-    void commit(boolean auto) throws SQLException {
-        if(!auto) {
-            if(autoCommit) {
-               throw new SQLException("Cannot commit() when in autocommit mode.");
-            }
-        }
-        /* Create the statement object that will be committing (and possibly 
-         * issuing a new 'BEGIN' if in auto commit mode)
-         */
-        Statement stmt = (Statement)createStatement();
-        try {
-            stmt.forceCommit();            
-        } catch(SQLException e) {
-            e.printStackTrace();
-        }
-        stmt.close();
-    }
-    
-    public void rollback() throws SQLException {
-        if(autoCommit) {
-            throw new SQLException("Cannot rollback() when in autocommit mode.");
-        }
-        // TODO method stub
-    }
-   
-    /**
-     * @see java.sql.Connection#isClosed()
-     */
-    public boolean isClosed() throws SQLException {
-        return closed;
-    }
     public DatabaseMetaData getMetaData() throws SQLException {
         // TODO Auto-generated method stub
         return null;
@@ -292,14 +333,6 @@ public class Connection implements java.sql.Connection {
         // TODO Auto-generated method stub
         
     }
-    public PreparedStatement prepareStatement(String sql, int resultSetType, int resultSetConcurrency) throws SQLException {
-        // TODO Auto-generated method stub
-        return null;
-    }
-    public CallableStatement prepareCall(String sql, int resultSetType, int resultSetConcurrency) throws SQLException {
-        // TODO Auto-generated method stub
-        return null;
-    }
     public Map getTypeMap() throws SQLException {
         // TODO Auto-generated method stub
         return null;
@@ -332,27 +365,6 @@ public class Connection implements java.sql.Connection {
         // TODO Auto-generated method stub
         
     }
-    public PreparedStatement prepareStatement(String sql, int resultSetType, int resultSetConcurrency, int resultSetHoldability) throws SQLException {
-        // TODO Auto-generated method stub
-        return null;
-    }
-    public CallableStatement prepareCall(String sql, int resultSetType, int resultSetConcurrency, int resultSetHoldability) throws SQLException {
-        // TODO Auto-generated method stub
-        return null;
-    }
-    public PreparedStatement prepareStatement(String sql, int autoGeneratedKeys) throws SQLException {
-        // TODO Auto-generated method stub
-        return null;
-    }
-    public PreparedStatement prepareStatement(String sql, int[] columnIndexes) throws SQLException {
-        // TODO Auto-generated method stub
-        return null;
-    }
-    public PreparedStatement prepareStatement(String sql, String[] columnNames) throws SQLException {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
     /* Extra Methods */
     int getDBPointer() {
         return dbPointer;
