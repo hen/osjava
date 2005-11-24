@@ -134,7 +134,7 @@ public class Statement implements java.sql.Statement {
             result = null;
         }
         /* Create a new java.sql.ResultSet object that will be filled. */
-        result = new ResultSet(this, resultSetType, resultSetConcurrency, resultSetHoldability, this);
+        result = new ResultSet(this, resultSetType, resultSetConcurrency, resultSetHoldability);
         executeSQLWithResultSet(sql, con, result, getFetchSize());
         return result;
     }

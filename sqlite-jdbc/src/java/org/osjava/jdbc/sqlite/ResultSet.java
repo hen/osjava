@@ -149,7 +149,7 @@ public class ResultSet implements java.sql.ResultSet {
      * @param resultSetHoldability the result set type of the ResultSet.
      * @throws SQLException if any of the parameter values are out of range.
      */
-    ResultSet(Statement st, int resultSetType, int resultSetConcurrency, int resultSetHoldability, Statement parent)
+    ResultSet(Statement st, int resultSetType, int resultSetConcurrency, int resultSetHoldability)
             throws SQLException {
         super();
         if (   resultSetType != java.sql.ResultSet.TYPE_FORWARD_ONLY
@@ -171,7 +171,7 @@ public class ResultSet implements java.sql.ResultSet {
         this.resultSetHoldability = resultSetHoldability;
 
         /* Set the fetch size based upon the Statement's fetchSize */
-        fetchSize = parent.getFetchSize();
+        fetchSize = stmt.getFetchSize();
 
         /* Create the rows ArrayList, based upon the fetch size */
         rows = new Object[fetchSize];
@@ -289,7 +289,6 @@ public class ResultSet implements java.sql.ResultSet {
             throw new SQLException("Type is java.sql.ResultSet.TYPE_FORWARD_ONLY.  Invalid operation");
         }
         /* Scroll from current all the way to the end.  */
-        int pageStart = pageMin;
         if(currentRow < 0) {
             scrollResultSet(0);
         }
@@ -1407,7 +1406,7 @@ public class ResultSet implements java.sql.ResultSet {
      * @see java.sql.ResultSet#getStatement()
      */
     public java.sql.Statement getStatement() throws SQLException {
-        return (java.sql.Statement)stmt;
+        return stmt;
     }
 
 
