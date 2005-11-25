@@ -20,7 +20,7 @@
   </xsl:template>
 
   <xsl:template name="removed-class">
-    <tr bgcolor="ffaaaa"><td>Class removed</td><td><xsl:value-of select="@name"/></td><td>nbsp;</td></tr>
+    <tr bgcolor="ffaaaa"><td>Class removed</td><td colspan="2"><xsl:value-of select="@name"/></td></tr>
   </xsl:template>
 
   <xsl:template match="added">
@@ -30,7 +30,7 @@
   </xsl:template>
 
   <xsl:template name="added-class">
-    <tr bgcolor="aaffaa"><td>Class added</td><td><xsl:value-of select="@name"/></td><td>nbsp;</td></tr>
+    <tr bgcolor="aaffaa"><td>Class added</td><td colspan="2"><xsl:value-of select="@name"/></td></tr>
   </xsl:template>
 
   <xsl:template match="changed">
