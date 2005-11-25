@@ -66,24 +66,8 @@
   </dependencies>
 
   <build>
-
     <nagEmailAddress>cyberiantiger@gmail.com</nagEmailAddress>
-
     <sourceDirectory>src/java</sourceDirectory>
-    <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
-
-    <unitTest>
-      <includes>
-        <include>**/*Test.java</include>
-      </includes>
-      <resources>
-        <resource>
-          <directory>src/test/config</directory>
-          <targetPath>config</targetPath>
-        </resource>
-      </resources>
-    </unitTest>
-
   </build>
 
     <reports>
