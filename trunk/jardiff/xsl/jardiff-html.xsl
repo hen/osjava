@@ -4,7 +4,7 @@
   <xsl:template match="diff">
      <html>
       <body>
-       <h2>Comparing $X to $Y</h2>
+       <h2>Comparing <xsl:value-of select="@old"/> to <xsl:value-of select="@new"/></h2>
        <TABLE BORDER="1" WIDTH="100%" CELLPADDING="3" CELLSPACING="0">
         <TR BGCOLOR="#CCCCFF" CLASS="TableHeadingColor"> <TD COLSPAN="3"><FONT SIZE="+2"> <B>Changes Summary</B></FONT></TD></TR>
         <xsl:apply-templates/>
