@@ -69,6 +69,9 @@ public class JarDiff
      * Values are instances of ClassInfo.
      */
     protected Map newClassInfo = new HashMap();
+
+    private File oldJarFile;
+    private File newJarFile;
     
     /**
      * Main method to allow this to be run from the command line.
@@ -100,6 +103,8 @@ public class JarDiff
      *                       writing to a file caused an IOException
      */
     public JarDiff(File oldJarFile, File newJarFile) throws DiffException {
+        this.oldJarFile = oldJarFile;
+        this.newJarFile = newJarFile;
         try {
             ClassInfoVisitor infoVisitor = new ClassInfoVisitor();
             JarFile oldJar = new JarFile(oldJarFile);
@@ -152,7 +157,8 @@ public class JarDiff
         onlyOld.removeAll(newClassInfo.keySet());
         onlyNew.removeAll(oldClassInfo.keySet());
         both.retainAll(newClassInfo.keySet());
-        handler.startDiff(null, null);
+        // TODO: Build the name from the MANIFEST rather than the filename
+        handler.startDiff(this.oldJarFile.getName(), this.newJarFile.getName());
         handler.startRemoved();
         Iterator i = onlyOld.iterator();
         while (i.hasNext()) {
