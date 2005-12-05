@@ -41,6 +41,22 @@
       <xsl:for-each select="removed/method">
         <xsl:call-template name="removed-method"/>
       </xsl:for-each>
+      <xsl:for-each select="changed/methodchange">
+        <tr bgcolor="ccccff">
+          <td>Method changed</td>
+          <td><xsl:value-of select="../../@name"/></td>
+          <td>
+          <xsl:for-each select="from/method">
+            <xsl:call-template name="print-method"/>
+          </xsl:for-each>
+          <br/>
+          <xsl:for-each select="to/method">
+            <xsl:call-template name="print-method"/>
+          </xsl:for-each>
+          </td>
+        </tr>
+      </xsl:for-each>
+      <!-- TODO: handle classchange -->
     </xsl:for-each>
   </xsl:template>
 
@@ -48,18 +64,21 @@
   <xsl:template name="added-method">
     <tr bgcolor="ccffcc">
      <td>Method added</td>
-     <td><xsl:value-of select="../../@name"/></td><td><code style="white-space:pre"><xsl:value-of select="@access"/> <xsl:if test="@static='yes'">static </xsl:if><xsl:value-of select="return/type/@name"/> <xsl:value-of select="@name"/>(<xsl:for-each select="arguments/type"><xsl:value-of select="@name"/>, </xsl:for-each>)</code></td>
+     <td><xsl:value-of select="../../@name"/></td>
+     <td><xsl:call-template name="print-method"/></td>
     </tr>
   </xsl:template>
 
   <xsl:template name="removed-method">
     <tr bgcolor="ffcccc">
      <td>Method removed</td>
-     <td><xsl:value-of select="../../@name"/></td><td><code style="white-space:pre"><xsl:value-of select="@access"/> <xsl:if test="@static='yes'">static </xsl:if><xsl:value-of select="return/type/@name"/> <xsl:value-of select="@name"/>(<xsl:for-each select="arguments/type"><xsl:value-of select="@name"/>, </xsl:for-each>)</code></td>
+     <td><xsl:value-of select="../../@name"/></td>
+     <td><xsl:call-template name="print-method"/></td>
     </tr>
   </xsl:template>
 
-  <xsl:template name="changed-method">
+  <xsl:template name="print-method">
+     <code style="white-space:pre"><xsl:if test="@deprecated='yes'"><i>deprecated: </i></xsl:if><xsl:value-of select="@access"/>.<xsl:if test="@static='yes'">static </xsl:if><xsl:value-of select="return/type/@name"/>.<xsl:value-of select="@name"/>(<xsl:for-each select="arguments/type"><xsl:value-of select="@name"/>, </xsl:for-each>)</code>
   </xsl:template>
 
   <!-- pass unrecognized nodes along unchanged -->
