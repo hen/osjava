@@ -20,7 +20,7 @@
   </xsl:template>
 
   <xsl:template name="removed-class">
-    <tr bgcolor="ffaaaa"><td>Class removed</td><td colspan="2"><xsl:value-of select="@name"/></td></tr>
+    <tr bgcolor="ffaaaa"><td>Class removed</td><td><xsl:value-of select="@name"/></td><xsl:call-template name="print-class"/></tr>
   </xsl:template>
 
   <xsl:template match="added">
@@ -30,10 +30,25 @@
   </xsl:template>
 
   <xsl:template name="added-class">
-    <tr bgcolor="aaffaa"><td>Class added</td><td colspan="2"><xsl:value-of select="@name"/></td></tr>
+    <tr bgcolor="aaffaa"><td>Class added</td><td><xsl:value-of select="@name"/></td><td><xsl:call-template name="print-class"/></td></tr>
   </xsl:template>
 
   <xsl:template match="changed">
+    <xsl:for-each select="classchanged/changed/classchange">
+      <tr bgcolor="aaaaff">
+        <td>Class changed</td>
+        <td><xsl:value-of select="../../@name"/></td>
+        <td>
+        <xsl:for-each select="from/class">
+          <xsl:call-template name="print-class"/>
+        </xsl:for-each>
+        <br/>
+        <xsl:for-each select="to/class">
+          <xsl:call-template name="print-class"/>
+        </xsl:for-each>
+        </td>
+      </tr>
+    </xsl:for-each>
     <xsl:for-each select="classchanged">
       <xsl:for-each select="added/method">
         <xsl:call-template name="added-method"/>
@@ -56,11 +71,9 @@
           </td>
         </tr>
       </xsl:for-each>
-      <!-- TODO: handle classchange -->
     </xsl:for-each>
   </xsl:template>
 
-  <!-- NOTE: need a function to output a method to eliminate duplication here -->
   <xsl:template name="added-method">
     <tr bgcolor="ccffcc">
      <td>Method added</td>
@@ -77,8 +90,12 @@
     </tr>
   </xsl:template>
 
+  <xsl:template name="print-class">
+     <code style="white-space:pre"><xsl:if test="@deprecated='yes'"><i>deprecated: </i></xsl:if><xsl:value-of select="@access"/>.<xsl:if test="@synchronized='yes'">synchronized </xsl:if><xsl:if test="@abstract='yes'">abstract </xsl:if><xsl:if test="@static='yes'">static </xsl:if><xsl:value-of select="return/type/@name"/>.<xsl:value-of select="@name"/><xsl:if test="@superclass!='java.lang.Object'"> extends <xsl:value-of select="@superclass"/></xsl:if><xsl:for-each select="implements"><xsl:if test="position()=1"> implements </xsl:if><xsl:value-of select="@name"/><xsl:if test="position()!=last()">, </xsl:if></xsl:for-each></code>
+  </xsl:template>
+
   <xsl:template name="print-method">
-     <code style="white-space:pre"><xsl:if test="@deprecated='yes'"><i>deprecated: </i></xsl:if><xsl:value-of select="@access"/>.<xsl:if test="@static='yes'">static </xsl:if><xsl:value-of select="return/type/@name"/>.<xsl:value-of select="@name"/>(<xsl:for-each select="arguments/type"><xsl:value-of select="@name"/>, </xsl:for-each>)</code>
+     <code style="white-space:pre"><xsl:if test="@deprecated='yes'"><i>deprecated: </i></xsl:if><xsl:value-of select="@access"/>.<xsl:if test="@static='yes'">static </xsl:if><xsl:value-of select="return/type/@name"/>.<xsl:value-of select="@name"/>(<xsl:for-each select="arguments/type"><xsl:value-of select="@name"/><xsl:if test="position()!=last()">, </xsl:if></xsl:for-each>)</code>
   </xsl:template>
 
   <!-- pass unrecognized nodes along unchanged -->
