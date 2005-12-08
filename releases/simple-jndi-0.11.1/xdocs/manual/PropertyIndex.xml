@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<document>
+
+  <properties>
+    <author email="bayard@generationjava.com">Henri Yandell</author>
+    <title>Property Index</title>
+  </properties>
+
+  <body>
+  <section><div><a href="DataSources.html">previous</a> - <a href="index.html">contents</a> - <a href="Todo.html">next</a></div></section>
+  <section name="Index of supported properties for jndi.properties">
+    <ul>
+      <li>org.osjava.sj.root - Location at which to find data files to load into JNDI. Protocol based, but currently only the file:// protocol is supported. </li>
+      <li>org.osjava.sj.delimiter - The character, or characters, to use to separate Contexts in a lookup key. Automatically sets the standard "jndi.syntax.separator" property to the same thing. </li>
+      <li>org.osjava.sj.jndi.shared - Whether the in-memory implementation uses the same piece of memory for each MemoryContext. The default is "false". </li>
+      <li>org.osjava.sj.factory - The JNDI implementation to load the data files into; the default is "org.osjava.sj.memory.MemoryContextFactory". </li>
+      <li>org.osjava.sj.space - A prefix to apply to all loaded datums. If the prefix contains the delimiter, a tree of Contexts will be created. </li>
+      <li>org.osjava.sj.colon.replace - As Windows cannot support the ':' character in a filenames, this property allows Windows users to specify a character, or characters, to use instead of ':'. From within the code, the ':' should be used. </li>
+    </ul>
+  </section>
+  </body>
+
+</document>

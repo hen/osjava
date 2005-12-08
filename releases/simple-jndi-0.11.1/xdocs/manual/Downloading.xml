@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<document>
+
+  <properties>
+    <author email="bayard@generationjava.com">Henri Yandell</author>
+    <title>Downloading</title>
+  </properties>
+
+  <body>
+  <section><div><a href="Justifying.html">previous</a> - <a href="index.html">contents</a> - <a href="Configuring.html">next</a></div></section>
+  <section name="Downloading Simple-JNDI">
+    <p>For most Simple-JNDI functionality, you'll just need to download the simple-jndi-x.x.x.jar, either from <a href="http://www.ibiblio.org/maven/simple-jndi/jars/">ibiblio.org</a> or from <a href="http://dist.osjava.org/maven/simple-jndi/jars/">dist.osjava.org</a>. </p>
+    <p>Alternatively, you could download the full distribution (source and javadoc) from <a href="http://dist.osjava.org/releases/official/simple-jndi/">dist.osjava.org/releases/official</a>, as listed on the <a href="../Download.html">download</a> page. </p>
+  </section>
+  </body>
+
+</document>
