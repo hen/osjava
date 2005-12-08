@@ -1,0 +1,21 @@
+Features:
+
+User/password
+Transactions
+Acknowledge mode
+Message selectors
+
+Not Yet:
+
+Session Pooling
+Connection Consumers
+
+
+Questions:
+
+Delete or Abstract:
+
+MemoryMessage
+MemoryMessageConsumer
+MemoryMessageProducer
+
