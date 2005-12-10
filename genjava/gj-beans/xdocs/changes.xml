@@ -3,12 +3,11 @@
 
   <properties>
       <author email="bayard@generationjava.com">Henri Yandell</author>
-      <title>How to use gj-config</title>
+      <title>Release Notes</title>
   </properties>
 
   <body>
-  <section name="Using gj-config">
-  </section>
-
- </body>
+    <release version="1.0" date="2003-12-08">
+    </release>
+</body>
 </document>

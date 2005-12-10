@@ -1,0 +1,41 @@
+
+!special text;<table>;3<tr>;4<td>;=<td>
+
+move-to-comment 'special text'; move-to-tag 'table'; 3 move-to-tag 'tr'; 4 move-to-tag 'td'; get-tag 'td';                  
+
+move-to-comment 'special text'; \
+move-to-tag 'table';            \
+3 move-to-tag 'tr';             \
+4 move-to-tag 'td';             \
+get-tag 'td';
+
+
+Object scrapeScript(String script, String text)
+
+
+HtmlScraper scrapeTag(String tag)
+boolean move(String tag)
+boolean moveToTagWith(String name, String value)
+boolean moveTo(String get, String value)
+boolean moveToText(String text)
+boolean moveToComment(String comment)
+String getContentToText(String text)
+String[] getChildren(String parent, String child)
+String get(String tag)
+Object[] scrapeTable(Object[] pattern)
+
+scrape-tag   (replaces the current scraper)
+move-to-tag
+move-to-any-tag-with
+move-to-tag-with
+move-to-text
+move-to-comment
+get-tag
+(get-children not supported)
+(scrape-table not supported (pattern argument is tricky))
+
+; separated
+newlines ignored (whitespace)
+trim whitespace on each side
+repeat-number can start a line (a la vi)
+
