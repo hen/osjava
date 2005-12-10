@@ -7,7 +7,6 @@
     <menu name="Overview">
       <item name="Introduction"              href="/index.html"/>
       <item name="How To"              href="/HowTo.html"/>
-      <item name="News"              href="/News.html"/>
       <item name="Future Plans"              href="/Tasks.html"/>
       <item name="Download" href="http://dist.osjava.org/releases/official/trail-taglib/"/>
       <item name="Changes"              href="/changes-report.html"/>
