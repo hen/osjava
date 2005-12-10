@@ -6,7 +6,6 @@
   <body>
     <menu name="Overview">
       <item name="Introduction"              href="/index.html"/>
-      <item name="News"              href="/News.html"/>
       <item name="Builder.com article"              href="http://builder.com.com/article.jhtml?id=u00220020318yan01.htm&amp;page=1&amp;vf=tt"/>
       <item name="Design"              href="/Design.html"/>
       <item name="How to use"              href="/Using.html"/>
