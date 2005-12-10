@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="genjava">
+
+  <title>genjava</title>
+
+  <body>
+    <menu name="Genjava">
+      <item href="../../index.html" name="Component list"/>
+      <item href="../../Genjava.html" name="What is Genjava?"/>
+      <item name="Downloads"   href="http://dist.osjava.org/releases/official/genjava/"/>
+      <item name="License"       href="../../license.html"/>
+    </menu>
+    <menu name="Resources">
+      <item name="Mailing list"       href="../../mail-lists.html"/>
+      <item name="Bug tracking"       href="http://issues.osjava.org/jira/browse/GJC"/>
+      <item name="SVN Repository"     href="http://www.osjava.org/svn.html?project=genjava"/>
+    </menu>
+  </body>
+</project>
