@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<document>
+
+  <properties>
+      <author email="bayard@generationjava.com">Henri Yandell</author>
+      <title>Release Notes</title>
+  </properties>
+
+  <body>
+    <release version="1.0" date="2003-12-08" description="'gj-gui' has long existed but never been released, so this is the first showing of this code">
+    </release>
+</body>
+</document>

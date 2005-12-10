@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<document>
+
+  <properties>
+      <author email="bayard@generationjava.com">Henri Yandell</author>
+      <title>Scrape Path</title>
+  </properties>
+
+  <body>
+    <section name="ScrapePath">
+      <p>ScrapePath is a simple scripting language that maps to the gj-scrape library. Having it as a language allows scraping to be configured entirely in a configuration file and not need tiny bits of code. </p>
+      <p>ScrapePath is pragmatically created because it's needed, and not based on language-creation experience. To that end, much criticism will be valid. </p>
+    </section>
+    <section name="The Basics">
+      <p>The language consists of semi-colon separated operations. Each operation consists of an optional times to repeat number, a operator character and following argument text. Newlines are treated as spaces and any whitespace at the start or end of an operation is ignored. </p>
+      <p>The format of the argument text is defined by the operator in question. </p>
+    </section>
+    <section name="Operations">
+      <dl>
+        <dt>&lt;</dt>
+        <dd>The move operator. The argument text is the tag to move to which may end with an optional closing &gt;. For example <code>&lt;table&gt;</code> will move to the next table tag. </dd>
+        <dt>!</dt>
+        <dd>The move-to-comment operator. The argument text is treated as a single comment to move to. For example, <code>!special text</code> will move to the html comment &lt;!-- special text --&gt;. </dd>
+        <dt>=</dt>
+        <dd>The return operator. The argument text is the tag[attr] value to return. The scrape path script will end as soon as it sees this. </dd>
+        <dt>#</dt>
+        <dd>A Scrape Path comment. Everything up until the ; will be ignored. Alternatively, move to tag with id/name equal to?</dd>
+        <dt>.</dt>
+        <dd>Move to tag with class equal?</dd>
+      </dl>
+    </section>
+</body>
+</document>
