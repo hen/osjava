@@ -32,6 +32,7 @@
 package org.osjava.jms;
 
 import javax.jms.MessageListener;
+import javax.jms.Message;
 import javax.jms.Topic;
 import javax.jms.TopicSubscriber;
 import javax.jms.JMSException;
@@ -74,6 +75,11 @@ public class MemoryTopicSubscriber extends MemoryMessageConsumer implements Topi
 
     public boolean getNoLocal() throws JMSException {
         return this.noLocal;
+    }
+
+    // TODO: Implement this
+    public Message receive() throws JMSException  {
+        return null;
     }
 
 }
