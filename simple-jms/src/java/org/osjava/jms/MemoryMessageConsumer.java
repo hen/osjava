@@ -37,7 +37,7 @@ import javax.jms.MessageConsumer;
 import javax.jms.MessageListener;
 import javax.jms.Destination;
 
-public class MemoryMessageConsumer implements MessageConsumer {
+public abstract class MemoryMessageConsumer implements MessageConsumer {
 
     private MessageListener listener;
     private Destination destination;
@@ -75,10 +75,7 @@ public class MemoryMessageConsumer implements MessageConsumer {
         this.listener = listener;
     }
 
-    // TODO Make this abstract?
-    public Message receive() throws JMSException {
-        return null;
-    }
+    public abstract Message receive() throws JMSException;
 
     // TODO: Implement timeout?
     public Message receive(long timeout) throws JMSException {
