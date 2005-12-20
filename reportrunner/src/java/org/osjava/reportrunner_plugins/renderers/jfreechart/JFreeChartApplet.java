@@ -67,7 +67,8 @@ public class JFreeChartApplet extends JApplet {
             hidePanel.setLayout( new BoxLayout(hidePanel, BoxLayout.Y_AXIS) );
 
             for(int i=0; i<sz; i++) {
-                String name = plot.getDataset().getSeriesName(i);
+                //String name = plot.getDataset().getSeriesName(i);
+                String name = "" + plot.getDataset().getSeriesKey(i);
                 JCheckBox box = new JCheckBox(name, true);
                 box.setBackground( new Color( 0xff, 0xff, 0xff ) );
                 final int n = i;
