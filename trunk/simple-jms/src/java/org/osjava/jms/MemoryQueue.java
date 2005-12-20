@@ -77,7 +77,7 @@ public class MemoryQueue implements Queue {
             }
         }
 
-        messageWatcher = new MessageWatcher( this.messageQueue, listener ) ;
+        messageWatcher = new MessageWatcher( this.messageQueue, listener, this.name ) ;
         messageWatcher.start();
     }
 

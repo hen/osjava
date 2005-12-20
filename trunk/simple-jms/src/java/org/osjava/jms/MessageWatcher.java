@@ -42,7 +42,8 @@ class MessageWatcher extends Thread {
     private MessageQueue queue;
     private MessageListener listener;
 
-    public MessageWatcher(MessageQueue queue, MessageListener listener) {
+    public MessageWatcher(MessageQueue queue, MessageListener listener, String name) {
+        super("MessageWatcher: " + name);
         this.queue= queue;
         this.listener = listener;
     }
