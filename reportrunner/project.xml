@@ -150,12 +150,12 @@
     <dependency>
       <groupId>jfree</groupId>
       <artifactId>jfreechart</artifactId>
-      <version>0.9.21</version>
+      <version>1.0.0-rc1</version>
     </dependency>
     <dependency>
       <groupId>jfree</groupId>
       <artifactId>jcommon</artifactId>
-      <version>0.9.6</version>
+      <version>1.0.0-rc1</version>
     </dependency>
     <dependency>
       <groupId>velocity</groupId>
@@ -166,6 +166,10 @@
       <groupId>velocity-tools</groupId>
       <artifactId>velocity-tools</artifactId>
       <version>1.1</version>
+    </dependency>
+    <dependency>
+  	  <id>log4j</id>
+	  <version>1.2.8</version>
     </dependency>
   </dependencies>
   <build>

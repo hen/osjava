@@ -19,6 +19,7 @@ import org.osjava.reportrunner.Report;
 import org.osjava.reportrunner.Result;
 import org.osjava.reportrunner_plugins.renderers.jfreechart.JFreeChartCreator;
 
+
 public class BarChartCreator implements JFreeChartCreator {
 
     private double itemMargin = 0.0;        // margin between series in a category
@@ -41,6 +42,9 @@ public class BarChartCreator implements JFreeChartCreator {
     private int categoryColumn = 0;
     private int seriesColumn = 1;
     private int valueColumn = 2;
+    
+    private boolean textured = false;
+    private boolean showCategories = true;
     
     private void initSettings(Report report, Renderer renderer) {
         // These are the variables that can be configured
@@ -82,7 +86,17 @@ public class BarChartCreator implements JFreeChartCreator {
         String titleFontStr = (String) variableMap.get("titleFont");
         if (titleFontStr != null) {
             this.titleFont = Font.decode(titleFontStr);
-        }                   
+        }     
+        
+        String texturedStr = (String) variableMap.get("textured");
+        if (texturedStr != null) {
+            this.textured = Boolean.valueOf(texturedStr).booleanValue();
+        }
+        
+        String categoriesStr = (String) variableMap.get("showCategories");
+        if (categoriesStr != null) {
+            this.showCategories = Boolean.valueOf(categoriesStr).booleanValue();
+        }        
     }
     
     public JFreeChart createChart(Result result, Report report, Renderer renderer) {
@@ -108,17 +122,25 @@ public class BarChartCreator implements JFreeChartCreator {
         
         chart.setBackgroundPaint(Color.WHITE);              
         
-        CategoryPlot plot = chart.getCategoryPlot();
+        CategoryPlot plot = chart.getCategoryPlot();        
         
         // Set margins for categories
         CategoryAxis domainAxis = plot.getDomainAxis();
         domainAxis.setLowerMargin(this.lowerMargin);
         domainAxis.setCategoryMargin(this.categoryMargin);
-        domainAxis.setUpperMargin(this.upperMargin);
+        domainAxis.setUpperMargin(this.upperMargin);        
+        domainAxis.setTickLabelsVisible(this.showCategories);
         
+        BarRenderer renderer = null;
         // Set margins for series        
-        BarRenderer renderer = (BarRenderer) plot.getRenderer();
-        renderer.setItemMargin(0.0);
+        if (this.textured) {
+            renderer = new TexturedBarRenderer();
+            plot.setRenderer(renderer);
+        } else {
+            renderer = (BarRenderer) plot.getRenderer();
+        }
+        
+        renderer.setItemMargin(0.0);        
         
         // Fonts
         if (this.domainAxisFont != null) {

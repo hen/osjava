@@ -2,6 +2,9 @@ package org.osjava.reportrunner_plugins.renderers.jfreechart.creators;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Rectangle;
+import java.awt.Shape;
+import java.awt.geom.Ellipse2D;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.FieldPosition;
@@ -15,6 +18,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.AxisLocation;
@@ -24,15 +28,21 @@ import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.axis.NumberTickUnit;
 import org.jfree.chart.labels.StandardXYToolTipGenerator;
 import org.jfree.chart.labels.XYToolTipGenerator;
+import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
+import org.jfree.chart.renderer.xy.StackedXYAreaRenderer;
 import org.jfree.chart.renderer.xy.StandardXYItemRenderer;
+import org.jfree.chart.renderer.xy.XYAreaRenderer;
+import org.jfree.chart.renderer.xy.XYItemRenderer;
+import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.chart.title.TextTitle;
 import org.jfree.chart.urls.StandardXYURLGenerator;
 import org.jfree.chart.urls.XYURLGenerator;
 import org.jfree.data.time.Minute;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
-import org.jfree.data.xy.XYDataset;
+import org.jfree.data.xy.TableXYDataset;
+import org.jfree.util.ShapeUtilities;
 import org.osjava.reportrunner.Choice;
 import org.osjava.reportrunner.Column;
 import org.osjava.reportrunner.Param;
@@ -42,7 +52,9 @@ import org.osjava.reportrunner.Result;
 import org.osjava.reportrunner_plugins.renderers.jfreechart.JFreeChartCreator;
 
 public class TimeChartCreator implements JFreeChartCreator {
-        
+    
+    private static final Logger log = Logger.getLogger(TimeChartCreator.class);
+    
     private int timeUnit = DateTickUnit.DAY;       // default chart units to day
     private int xAxisColumn = 0;                   // x axis defaults to using first column from the Result
     private String xLabel = null;
@@ -60,11 +72,13 @@ public class TimeChartCreator implements JFreeChartCreator {
     
     // Date Axis labelling
     private String dateAxisLabelFormat = "M/d/yy"; // default format for the date axis labels
-    private int dateAxisTicksSkip = 1;             // default to labelling for every date
+    private int dateAxisLabelSkip = 1;             // default to labelling for every tick
+    private int dateAxisTickSkip = 1;              // default to labelling for every date
       
     // Chart defaults
     private String title = null;   
     private boolean showLegend = true;
+    private String showDataPointsForSeriesStr;     // Comma separated list of series numbers to show data points on the graph
     
     private double lowerMargin = 0.02;
     private double upperMargin = 0.02;
@@ -74,10 +88,16 @@ public class TimeChartCreator implements JFreeChartCreator {
     private Font valueAxisFont = null;
     private Font titleFont = null;
     
+    private boolean areaChart = false;
+    
     private Column[] columns;
     
     private Map constantsMap;
     
+    // If showing data points, which shapes do we use for each series?
+    private Shape[] shapes;
+    private Map shapeMap;
+       
     public TimeChartCreator() {       
         this.constantsMap = new HashMap();
         constantsMap.put("MILLISECOND", new Integer(DateTickUnit.MILLISECOND));
@@ -87,11 +107,18 @@ public class TimeChartCreator implements JFreeChartCreator {
         constantsMap.put("DAY", new Integer(DateTickUnit.DAY));
         constantsMap.put("MONTH", new Integer(DateTickUnit.MONTH));
         constantsMap.put("YEAR", new Integer(DateTickUnit.YEAR));          
+        
+        // Shapes that can be chosen
+        this.shapeMap = new HashMap();
+        shapeMap.put("CROSS", ShapeUtilities.createRegularCross(3.0f, 1.0f));
+        shapeMap.put("UP_TRIANGLE", ShapeUtilities.createUpTriangle(3.0f));
+        shapeMap.put("DOWN_TRIANGLE", ShapeUtilities.createDownTriangle(3.0f));
+        shapeMap.put("SQUARE", new Rectangle(3, 3));
+        shapeMap.put("CIRCLE", new Ellipse2D.Double (0.0, 0.0, 3.0, 3.0));
+        shapeMap.put("DIAMOND", ShapeUtilities.createDiamond(3.0f));              
     }
        
-    private void initSettings(Report report, Renderer renderer) {
-        this.columns = report.getColumns();
-        
+    private void initSettings(Report report, Renderer renderer) {        
         // These are the variables that can be configured
         Map variableMap = renderer.getVariables();
         String timeUnit = (String) variableMap.get("timeUnit");
@@ -104,7 +131,8 @@ public class TimeChartCreator implements JFreeChartCreator {
         String y1AxisZero = (String) variableMap.get("y1AxisIncludesZero");
         String y2AxisZero = (String) variableMap.get("y2AxisIncludesZero");        
         String timeFormat = (String) variableMap.get("timeFormat");
-        String timeLabelsSkip = (String) variableMap.get("timeUnitLabelSkip");
+        String timeLabelSkip = (String) variableMap.get("timeUnitLabelSkip");
+        String timeTickSkip = (String) variableMap.get("timeUnitTickSkip");
         String title = (String) variableMap.get("title");        
         String legendStr = (String) variableMap.get("legend");
         String seriesColorsStr = (String) variableMap.get("seriesColors");
@@ -119,6 +147,10 @@ public class TimeChartCreator implements JFreeChartCreator {
         yAxisTickUnitStr[0] = (String) variableMap.get("y1AxisTickUnit");
         yAxisTickUnitStr[1] = (String) variableMap.get("y2AxisTickUnit");
         
+        String areaChartStr = (String) variableMap.get("areaChart");
+        String showDataPointsStr = (String) variableMap.get("showDataPoints");
+        String shapesStr = (String) variableMap.get("dataPointShapes");
+       
         if (timeUnit != null) {
             Integer unit = (Integer) this.constantsMap.get(timeUnit);
             if (unit != null) {
@@ -192,7 +224,7 @@ public class TimeChartCreator implements JFreeChartCreator {
         
         int i = 0;
         for (Iterator iter = this.yAxisColumns[0].iterator(); iter.hasNext(); i++) {        
-            int columnIdx = ((Integer) iter.next()).intValue();            
+            int columnIdx = ((Integer) iter.next()).intValue();                        
             this.yLabels[0][i] = columns[columnIdx].getLabel();
         }
         
@@ -209,9 +241,13 @@ public class TimeChartCreator implements JFreeChartCreator {
             this.dateAxisLabelFormat = timeFormat;
         }
         
-        if (timeLabelsSkip != null) {
-            this.dateAxisTicksSkip = Integer.parseInt(timeLabelsSkip);
+        if (timeLabelSkip != null) {
+            this.dateAxisLabelSkip = Integer.parseInt(timeLabelSkip);
         }    
+        
+        if (timeTickSkip != null) {
+            this.dateAxisTickSkip = Integer.parseInt(timeTickSkip);
+        }
         
         this.title = this.processTokens(title, report);                
               
@@ -246,7 +282,7 @@ public class TimeChartCreator implements JFreeChartCreator {
                 Class clazz = TimeChartCreator.class.getClassLoader().loadClass(customDateFormatterStr);
                 this.customDateFormatter = (DateFormat) clazz.newInstance();
             } catch (Exception e) {
-                e.printStackTrace();                
+                log.error("Error instantiating custom date format: ", e);
             }
         }
         
@@ -268,10 +304,31 @@ public class TimeChartCreator implements JFreeChartCreator {
         
         if (valueAxisFontStr != null) {
             this.valueAxisFont = Font.decode(valueAxisFontStr);
-        }                  
+        }            
+        
+        if (areaChartStr != null) {
+            this.areaChart = Boolean.valueOf(areaChartStr).booleanValue();
+        }
+        
+        if (showDataPointsStr != null) {
+            this.showDataPointsForSeriesStr = showDataPointsStr;          
+        }        
+        
+        if (shapesStr != null) {
+            String[] seriesShapes = shapesStr.split(",");
+            this.shapes = new Shape[seriesShapes.length];
+            for (int j = 0; j < seriesShapes.length; j++) {
+                this.shapes[j] = (Shape) this.shapeMap.get(seriesShapes[j]);
+            }
+        }
     }
    
     public JFreeChart createChart(Result result, Report report, Renderer renderer) {
+        this.columns = result.getHeader();
+        if (this.columns == null) {
+            this.columns = report.getColumns();
+        }
+        
         this.initSettings(report, renderer);       
         return this.createChart(result);        
     }
@@ -297,7 +354,7 @@ public class TimeChartCreator implements JFreeChartCreator {
             for (int axis = 0; axis < 2; axis++) {   
                 int i = 0;
                 for (Iterator iter = yData[axis].iterator(); iter.hasNext(); i++) {
-                    Number num = (Number) row[((Integer) this.yAxisColumns[axis].get(i)).intValue()];                                        
+                    Number num = (Number) row[((Integer) this.yAxisColumns[axis].get(i)).intValue()];                    
                     TimeSeries ts = (TimeSeries) iter.next();
                     
                     if (num != null) {
@@ -307,13 +364,13 @@ public class TimeChartCreator implements JFreeChartCreator {
             }
             
         }       
-        
+              
         TimeSeriesCollection y1Tsc = new TimeSeriesCollection();
         for(int i=0; i< yData[0].size(); i++) {
             y1Tsc.addSeries((TimeSeries) yData[0].get(i));            
         }        
         
-        TimeSeriesCollection y2Tsc = null;
+        TimeSeriesCollection y2Tsc = null;        
         if (yData[1].size() > 0) {
             y2Tsc = new TimeSeriesCollection();
             for(int i=0; i< yData[1].size(); i++) {
@@ -326,7 +383,7 @@ public class TimeChartCreator implements JFreeChartCreator {
         return chart;
     }
     
-    private JFreeChart createTimeSeriesChart(XYDataset data, XYDataset y2data, boolean tooltips, boolean urls) {                        
+    private JFreeChart createTimeSeriesChart(TimeSeriesCollection data, TimeSeriesCollection y2data, boolean tooltips, boolean urls) {                        
         DateAxis timeAxis = new DateAxis(this.xLabel);
         
         DateFormat df = null;
@@ -337,8 +394,8 @@ public class TimeChartCreator implements JFreeChartCreator {
         }
         
         // only show midnight ticks        
-        timeAxis.setTickUnit(new DateTickUnit(this.timeUnit, 1, 
-                new DateTickUnitFormatter(df, this.dateAxisTicksSkip)));
+        timeAxis.setTickUnit(new DateTickUnit(this.timeUnit, this.dateAxisTickSkip, 
+                new DateTickUnitFormatter(df, this.dateAxisLabelSkip)));
         if (this.timeAxisFont != null) {
             timeAxis.setLabelFont(this.timeAxisFont);
             timeAxis.setTickLabelFont(this.timeAxisFont);
@@ -371,13 +428,45 @@ public class TimeChartCreator implements JFreeChartCreator {
             urlGenerator = new StandardXYURLGenerator();
         }
         
-        JFreeChart chart = ChartFactory.createTimeSeriesChart(title,this.xLabel,this.y1AxisTitle,data,this.showLegend,tooltips,urls);     
+        JFreeChart chart = null;
+        XYItemRenderer renderer1 = null;       
+        if (this.areaChart) {           
+            TableXYDataset wrappedData = new TableXYDatasetWrapper(data);
+            chart = ChartFactory.createStackedXYAreaChart(title,this.xLabel,this.y1AxisTitle,wrappedData,PlotOrientation.VERTICAL,this.showLegend,tooltips,urls);            
+            renderer1 = new StackedXYAreaRenderer(XYAreaRenderer.AREA_AND_SHAPES, tooltipGenerator, urlGenerator);                                  
+        } else {
+            chart = ChartFactory.createTimeSeriesChart(title,this.xLabel,this.y1AxisTitle,data,this.showLegend,tooltips,urls);                                  
+            renderer1 = new XYLineAndShapeRenderer();
+            XYLineAndShapeRenderer rr = (XYLineAndShapeRenderer) renderer1;
+                       
+            // By default, don't show shapes
+            int seriesCount = data.getSeriesCount();
+            for (int i = 0; i < seriesCount; i++) {
+                rr.setSeriesShapesVisible(i, false);
+            }
+            
+            if (this.showDataPointsForSeriesStr != null) {
+                String[] seriesNums = this.showDataPointsForSeriesStr.split(",");
+                int shapeCount = 0;
+                for (int i = 0; i < seriesNums.length; i++) {
+                    rr.setSeriesShapesVisible(Integer.parseInt(seriesNums[i]), true);
+                    rr.setSeriesShapesFilled(Integer.parseInt(seriesNums[i]), true);
+                    
+                    if (this.shapes != null) {                       
+                        if  (this.shapes[shapeCount] != null) {
+                            rr.setSeriesShape(i, this.shapes[shapeCount]);
+                        }                        
+                        shapeCount++;                        
+                        if (shapeCount >= this.shapes.length) {
+                            shapeCount = 0;
+                        }
+                    }
+                }                                      
+            }            
+        }        
+        
         XYPlot plot = chart.getXYPlot();
-        StandardXYItemRenderer renderer1 = new StandardXYItemRenderer(
-                StandardXYItemRenderer.LINES,
-                tooltipGenerator,
-                urlGenerator);
-
+           
         // Colors
         boolean customColors = false;
         int y1SeriesCount = data.getSeriesCount();
@@ -393,8 +482,8 @@ public class TimeChartCreator implements JFreeChartCreator {
                 renderer1.setSeriesPaint(i, this.seriesColors[i]);               
             }
         }
-        
-        plot.setRenderer(renderer1);
+                
+        plot.setRenderer(renderer1);        
         plot.setRangeAxis(valueAxis);
         plot.setDomainAxis(timeAxis);
                      
@@ -429,11 +518,14 @@ public class TimeChartCreator implements JFreeChartCreator {
             plot.setRangeAxisLocation(1, AxisLocation.TOP_OR_RIGHT);
             plot.setDataset(1, y2data);
             plot.mapDatasetToRangeAxis(1, 1);
-            StandardXYItemRenderer renderer2 = new StandardXYItemRenderer(
-                    StandardXYItemRenderer.LINES,
-                    tooltipGenerator,
-                    urlGenerator);
             
+            XYItemRenderer renderer2 = null;
+            if (areaChart) {
+                renderer2 = new StackedXYAreaRenderer(XYAreaRenderer.AREA_AND_SHAPES, tooltipGenerator, urlGenerator);
+            } else {
+                renderer2 = new StandardXYItemRenderer(StandardXYItemRenderer.LINES, tooltipGenerator, urlGenerator);                   
+            }
+
             if (customColors) {
                 for (int i = 0; i < y2SeriesCount; i++) {
                     renderer2.setSeriesPaint(i, this.seriesColors[i + y1SeriesCount]);                    
@@ -476,6 +568,31 @@ public class TimeChartCreator implements JFreeChartCreator {
                        
         return input;
     }    
+    
+    private class TableXYDatasetWrapper extends TimeSeriesCollection implements TableXYDataset {
+        
+        public TableXYDatasetWrapper(TimeSeriesCollection data) {
+            super();
+            
+            int numSeries = data.getSeriesCount();
+            for (int i = 0; i < numSeries; i++) {
+                TimeSeries ts = data.getSeries(i);
+                this.addSeries(ts);
+            }
+        }
+        
+        public int getItemCount() {
+            int numSeries = this.getSeriesCount();
+            int itemCount = 0;
+            
+            for (int i = 0; i < numSeries; i++) {
+                TimeSeries ts = this.getSeries(i);
+                itemCount += ts.getItemCount();
+            }
+            
+            return itemCount;
+        }
+    }
     
     private class DateTickUnitFormatter extends DateFormat {            
         private DateFormat format = null;     
