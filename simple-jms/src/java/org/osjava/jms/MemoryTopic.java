@@ -67,7 +67,7 @@ public class MemoryTopic implements Topic {
     void addMessageListener(MessageListener listener) {
         MessageQueue mq = new MessageQueue();
         this.messageQueues.add(mq);
-        MessageWatcher messageWatcher = new MessageWatcher( mq, listener ) ;
+        MessageWatcher messageWatcher = new MessageWatcher( mq, listener, this.name ) ;
         messageWatcher.start();
     }
 
