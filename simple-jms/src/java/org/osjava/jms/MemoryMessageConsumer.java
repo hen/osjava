@@ -104,6 +104,7 @@ public abstract class MemoryMessageConsumer implements MessageConsumer {
     class TimedReceiver extends Thread {
         public Message msg = null;
         public JMSException jmsEx = null;
+        public TimedReceiver() { super("Temporary receive(timeout) timer"); }
         public void run () {
             try {
                 msg = receive();
