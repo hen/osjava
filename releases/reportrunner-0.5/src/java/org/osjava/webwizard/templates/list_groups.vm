@@ -1,0 +1,13 @@
+#include( "org/osjava/webwizard/templates/header.inc" )
+
+<div class="input">
+<p>What kind of report would you like to run? </p>
+
+<table>
+#foreach( $group in $groups )
+    <tr><td><a href="list_reports?$RRR.GROUP=$group.name">$group.label</a></td><td>$group.description</td></tr>
+#end
+
+</table>
+</div>
+#include( "org/osjava/webwizard/templates/footer.inc" )

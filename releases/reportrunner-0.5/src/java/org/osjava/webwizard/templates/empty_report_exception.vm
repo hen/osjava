@@ -1,0 +1,5 @@
+#include( "org/osjava/webwizard/templates/header.inc" )
+
+The report has returned no data. 
+
+#include( "org/osjava/webwizard/templates/footer.inc" )
