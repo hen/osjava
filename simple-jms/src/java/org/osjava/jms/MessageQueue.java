@@ -52,9 +52,7 @@ class MessageQueue {
         while (this.messageList.isEmpty()) {
             Thread.yield();
         }
-        Message msg = (Message) this.messageList.get(0);
-        this.messageList.remove(0);
-        return msg;
+        return (Message) this.messageList.remove(0);
     }
 
     Enumeration getEnumeration () {
