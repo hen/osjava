@@ -188,13 +188,13 @@ public interface DiffHandler
     /**
      * A method on the current class has changed.
      *
-     * @param oldMethodinfo Information about the old method.
-     * @param newMethodinfo Information about the new method.
+     * @param oldMethodInfo Information about the old method.
+     * @param newMethodInfo Information about the new method.
      * @throws DiffException when there is an underlying exception, e.g.
      *                       writing to a file caused an IOException
      */
     public void methodChanged
-        (MethodInfo methodinfo, MethodInfo methodinfo_3_) throws DiffException;
+        (MethodInfo oldMethodInfo, MethodInfo newMethodInfo) throws DiffException;
     
     /**
      * End of changes for the current class.
