@@ -38,7 +38,12 @@
  */
 package org.osjava.jardiff;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -57,6 +62,13 @@ import org.objectweb.asm.ClassReader;
 public class JarDiff
 {
     /**
+     * A map containing information about classes which are dependencies.
+     * Keys are internal class names.
+     * Values are instances of ClassInfo.
+     */
+    protected Map depClassInfo = new HashMap();
+
+    /**
      * A map containing information about classes in the old jar file.
      * Keys are internal class names.
      * Values are instances of ClassInfo.
@@ -70,8 +82,30 @@ public class JarDiff
      */
     protected Map newClassInfo = new HashMap();
 
-    private File oldJarFile;
-    private File newJarFile;
+    /**
+     * An array of dependencies which are jar files, or urls.
+     */
+    private URL[] deps;
+
+    /**
+     * A class loader used for loading dependency classes.
+     */
+    private URLClassLoader depLoader;
+
+    /**
+     * The name of the old version.
+     */
+    private String oldVersion;
+
+    /**
+     * The name of the new version.
+     */
+    private String newVersion;
+    
+    /**
+     * Class info visitor, used to load information about classes.
+     */
+    private ClassInfoVisitor infoVisitor = new ClassInfoVisitor();
     
     /**
      * Main method to allow this to be run from the command line.
@@ -88,56 +122,198 @@ public class JarDiff
         if (args.length != 2)
             System.out.println("Usage: JarDiff <oldjar> <newjar>");
         else {
-            JarDiff jd = new JarDiff(new File(args[0]), new File(args[1]));
+            JarDiff jd = new JarDiff();
+            File oldFile = new File(args[0]);
+            File newFile = new File(args[1]);
+            jd.setOldVersion(oldFile.getName());
+            jd.setNewVersion(newFile.getName());
+            jd.loadOldClasses(oldFile);
+            jd.loadNewClasses(newFile);
             jd.diff(new SAXDiffHandler(), new SimpleDiffCriteria());
         }
     }
+
+    /**
+     * Create a new JarDiff object.
+     */
+    public JarDiff() {
+    }
+
+    /**
+     * Set the name of the old version.
+     *
+     * @param oldVersion the name
+     */
+    public void setOldVersion(String oldVersion) {
+        this.oldVersion = oldVersion;
+    }
+
+    /**
+     * Get the name of the old version.
+     *
+     * @return the name
+     */
+    public String getOldVersion() {
+        return oldVersion;
+    }
+
+    /**
+     * Set the name of the new version.
+     *
+     * @param newVersion
+     */
+    public void setNewVersion(String newVersion) {
+        this.newVersion = newVersion;
+    }
+
+    /**
+     * Get the name of the new version.
+     *
+     * @return the name
+     */
+    public String getNewVersion() {
+        return newVersion;
+    }
+
+    /**
+     * Set the dependencies.
+     *
+     * @param deps an array of urls pointing to jar files or directories
+     *             containing classes which are required dependencies.
+     */
+    public void setDependencies(URL[] deps) {
+        this.deps = deps;
+    }
+
+    /**
+     * Get the dependencies.
+     *
+     * @return the dependencies as an array of URLs
+     */
+    public URL[] getDependencies() {
+        return deps;
+    }
+
+    /**
+     * Load classinfo given a ClassReader.
+     *
+     * @param reader the ClassReader
+     * @return the ClassInfo
+     */
+    private synchronized ClassInfo loadClassInfo(ClassReader reader) 
+        throws IOException 
+    {
+        infoVisitor.reset();
+        reader.accept(infoVisitor, false);
+        return infoVisitor.getClassInfo();
+    }
     
     /**
-     * Create a new JarDiff object to calculate the diffs between the two
-     * specified jar files.
+     * Load all the classes from the specified URL and store information
+     * about them in the specified map.
+     * This currently only works for jar files, <b>not</b> directories
+     * which contain classes in subdirectories or in the current directory.
      *
-     * @param oldJarFile The old jar file.
-     * @param newJarFile The new jar file.
-     * @throws DiffException when there is an underlying exception, e.g.
-     *                       writing to a file caused an IOException
+     * @param infoMap the map to store the ClassInfo in.
+     * @throws DiffException if there is an exception reading info about a 
+     *                       class.
      */
-    public JarDiff(File oldJarFile, File newJarFile) throws DiffException {
-        this.oldJarFile = oldJarFile;
-        this.newJarFile = newJarFile;
+    private void loadClasses(Map infoMap, URL path) throws DiffException {
         try {
-            ClassInfoVisitor infoVisitor = new ClassInfoVisitor();
-            JarFile oldJar = new JarFile(oldJarFile);
-            JarFile newJar = new JarFile(newJarFile);
-            Enumeration e = oldJar.entries();
-            while (e.hasMoreElements()) {
-                JarEntry entry = (JarEntry) e.nextElement();
-                String name = entry.getName();
-                if (!entry.isDirectory() && name.endsWith(".class")) {
-                    ClassReader reader
-                        = new ClassReader(oldJar.getInputStream(entry));
-                    infoVisitor.reset();
-                    reader.accept(infoVisitor, false);
-                    ClassInfo ci = infoVisitor.getClassInfo();
-                    oldClassInfo.put(ci.getName(), ci);
+            File jarFile = null;
+            if(path.getProtocol() != "file" || path.getHost() != null) {
+                // If it's not a local file, store it as a temporary jar file.
+                // java.util.jar.JarFile requires a local file handle.
+                jarFile = File.createTempFile("jardiff","jar");
+                // Mark it to be deleted on exit.
+                jarFile.deleteOnExit();
+                InputStream in = path.openStream();
+                OutputStream out = new FileOutputStream(jarFile);
+                byte[] buffer = new byte[4096];
+                int i;
+                while( (i = in.read(buffer,0,buffer.length)) != -1) {
+                    out.write(buffer, 0, i);
                 }
+                in.close();
+                out.close();
+            } else {
+                // Else it's a local file, nothing special to do.
+                jarFile = new File(path.getPath());
             }
-            e = newJar.entries();
-            while (e.hasMoreElements()) {
-                JarEntry entry = (JarEntry) e.nextElement();
-                String name = entry.getName();
-                if (!entry.isDirectory() && name.endsWith(".class")) {
-                    ClassReader reader
-                        = new ClassReader(newJar.getInputStream(entry));
-                    infoVisitor.reset();
-                    reader.accept(infoVisitor, false);
-                    ClassInfo ci = infoVisitor.getClassInfo();
-                    newClassInfo.put(ci.getName(), ci);
-                }
-            }
-        } catch (IOException io) {
-            throw new DiffException(io);
+            loadClasses(infoMap, jarFile);
+        } catch (IOException ioe) {
+            throw new DiffException(ioe);
         }
+    }
+
+    /**
+     * Load all the classes from the specified URL and store information
+     * about them in the specified map.
+     * This currently only works for jar files, <b>not</b> directories
+     * which contain classes in subdirectories or in the current directory.
+     *
+     * @param infoMap the map to store the ClassInfo in.
+     * @param file the jarfile to load classes from.
+     * @throws IOException if there is an IOException reading info about a 
+     *                     class.
+     */
+    private void loadClasses(Map infoMap, File file) throws DiffException {
+        try {
+            JarFile jar = new JarFile(file);
+            Enumeration e = jar.entries();
+            while (e.hasMoreElements()) {
+                JarEntry entry = (JarEntry) e.nextElement();
+                String name = entry.getName();
+                if (!entry.isDirectory() && name.endsWith(".class")) {
+                    ClassReader reader
+                        = new ClassReader(jar.getInputStream(entry));
+                    ClassInfo ci = loadClassInfo(reader);
+                    infoMap.put(ci.getName(), ci);
+                }
+            }
+        } catch (IOException ioe) {
+            throw new DiffException(ioe);
+        }
+    }
+
+    /**
+     * Load old classes from the specified URL.
+     *
+     * @param loc The location of a jar file to load classes from.
+     * @throws DiffException if there is an IOException.
+     */
+    public void loadOldClasses(URL loc) throws DiffException {
+        loadClasses(oldClassInfo, loc);
+    }
+
+    /**
+     * Load new classes from the specified URL.
+     *
+     * @param loc The location of a jar file to load classes from.
+     * @throws DiffException if there is an IOException.
+     */
+    public void loadNewClasses(URL loc) throws DiffException {
+        loadClasses(newClassInfo, loc);
+    }
+
+    /**
+     * Load old classes from the specified File.
+     *
+     * @param file The location of a jar file to load classes from.
+     * @throws DiffException if there is an IOException
+     */
+    public void loadOldClasses(File file) throws DiffException {
+        loadClasses(oldClassInfo, file);
+    }
+
+    /**
+     * Load new classes from the specified File.
+     *
+     * @param file The location of a jar file to load classes from.
+     * @throws DiffExeption if there is an IOException
+     */
+    public void loadNewClasses(File file) throws DiffException {
+        loadClasses(newClassInfo, file);
     }
     
     /**
@@ -158,7 +334,7 @@ public class JarDiff
         onlyNew.removeAll(oldClassInfo.keySet());
         both.retainAll(newClassInfo.keySet());
         // TODO: Build the name from the MANIFEST rather than the filename
-        handler.startDiff(this.oldJarFile.getName(), this.newJarFile.getName());
+        handler.startDiff(oldVersion, newVersion);
         handler.startRemoved();
         Iterator i = onlyOld.iterator();
         while (i.hasNext()) {
