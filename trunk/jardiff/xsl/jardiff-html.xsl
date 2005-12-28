@@ -129,7 +129,7 @@ span.type { text: normal; }
       <xsl:if test="@final='yes'">final </xsl:if>
       <xsl:if test="@static='yes'">static </xsl:if>
       <xsl:if test="@synchronized='yes'">synchronized </xsl:if>
-      <xsl:if test="@abstract='yes'">abstract</xsl:if>
+      <xsl:if test="@abstract='yes'">abstract </xsl:if>
       <xsl:choose>
         <xsl:when test="@name='&lt;init&gt;'">
           <xsl:call-template name="print-short-name">
@@ -142,7 +142,7 @@ span.type { text: normal; }
           </xsl:for-each>
           <xsl:value-of select="' '"/><xsl:value-of select="@name"/>
         </xsl:otherwise>
-      </xsl:choose>(<xsl:for-each select="jd:arguments/jd:type"><xsl:call-template name="print-type"/><xsl:if test="position()!=last()">, </xsl:if></xsl:for-each>)</code>
+      </xsl:choose>(<xsl:for-each select="jd:arguments/jd:type"><xsl:call-template name="print-type"/><xsl:if test="position()!=last()">, </xsl:if></xsl:for-each>)<xsl:for-each select="jd:exception"><xsl:if test="position() = 1"> throws </xsl:if><xsl:value-of select="@name"/><xsl:if test="position()!=last">, </xsl:if></xsl:for-each></code>
   </xsl:template>
 
   <xsl:template name="print-type">
