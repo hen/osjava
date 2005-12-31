@@ -30,6 +30,11 @@
   <siteDirectory>/</siteDirectory>
   <distributionDirectory></distributionDirectory>
 
+  <repository>
+    <connection>scm:svn:http://svn.osjava.org/svn/osjava/trunk/xmlwriter</connection>
+    <url>http://svn.osjava.org/svn/osjava/trunk/xmlwriter</url>
+  </repository>
+  
   <mailingLists>
     <mailingList>
       <name>osjava-users</name>
