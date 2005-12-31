@@ -40,6 +40,11 @@
   <!-- This stuff contains OSJava linked bits. Only change the capitals -->
   <url>http://www.osjava.org/payload/</url>
 
+  <repository>
+    <connection>scm:svn:http://svn.osjava.org/svn/osjava/trunk/payload</connection>
+    <url>http://svn.osjava.org/svn/osjava/trunk/payload</url>
+  </repository>
+  
   <!-- You'll need to log into JIRA and find out what your ID is -->
   <issueTrackingUrl>http://issues.osjava.org/jira/browse/BrowseProject.jspa?id=10040</issueTrackingUrl>
 
