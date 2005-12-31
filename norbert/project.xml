@@ -28,8 +28,10 @@
 
   <repository>
     <connection>scm:subversion:http:/svn.osjava.org/svn/osjava/trunk/norbert/</connection>
+    <url>http://svn.osjava.org/svn/osjava/trunk/norbert</url>
   </repository>
 
+  
   <mailingLists>
     <mailingList>
       <name>osjava-users</name>
