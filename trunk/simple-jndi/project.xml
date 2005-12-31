@@ -22,8 +22,8 @@
   </description>
 
   <repository>
-    <connection>scm:svn:http://svn.osjava/org/svn/osjava/trunk/simple-jndi</connection>
-    <connection>http://svn.osjava/org/svn/osjava/trunk/simple-jndi</connection>
+    <connection>scm:svn:http://svn.osjava.org/svn/osjava/trunk/simple-jndi</connection>
+    <url>http://svn.osjava.org/svn/osjava/trunk/simple-jndi</url>
   </repository>
   
   <shortDescription>A JNDI implementation using .properties</shortDescription>
