@@ -109,17 +109,6 @@
       </includes>
     </unitTest>
 
-    <!-- J A R  R E S O U R C E S -->
-    <!-- Resources that are packaged up inside the JAR file -->
-
-    <!--
-    <jarResources>
-        <jarResource>include = *.properties</jarResource>
-    </jarResources>
-    -->
-
-    <jars>
-    </jars>
   </build>
 
     <reports>
