@@ -43,6 +43,11 @@
   <!-- You'll need to log into JIRA and find out what your ID is -->
   <issueTrackingUrl>http://www.osjava.org:8080/jira/browse/BrowseProject.jspa?id=10070</issueTrackingUrl>
 
+  <repository>
+    <connection>scm:svn:http://svn.osjava.org/svn/osjava/trunk/reportrunner</connection>
+    <url>http://svn.osjava.org/svn/osjava/trunk/reportrunner</url>
+  </repository>
+  
   <mailingLists>
     <mailingList>
         <name>osjava-users</name>
