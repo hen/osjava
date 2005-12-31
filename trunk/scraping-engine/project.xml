@@ -26,6 +26,11 @@
   <siteDirectory>/sites/org/osjava/www/maven/scraping-engine/</siteDirectory>
   <distributionDirectory>/sites/org/osjava/www/releases/official/</distributionDirectory>
 
+  <repository>
+    <connection>scm:svn:http://svn.osjava.org/svn/osjava/trunk/scraping-engine</connection>
+    <url>http://svn.osjava.org/svn/osjava/trunk/scraping-engine</url>
+  </repository>
+  
   <mailingLists>
     <mailingList>
       <name>osjava-users</name>
