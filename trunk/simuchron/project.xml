@@ -26,6 +26,11 @@
   <siteDirectory>/sites/org/osjava/www/maven/simuchron/</siteDirectory>
   <distributionDirectory>/sites/org/osjava/www/releases/official/</distributionDirectory>
 
+  <repository>
+    <connection>scm:svn:http://svn.osjava.org/svn/osjava/trunk/simuchron</connection>
+    <url>http://svn.osjava.org/svn/osjava/trunk/simuchron</url>
+  </repository>
+  
   <mailingLists>
     <mailingList>
       <name>osjava-users</name>
