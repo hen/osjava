@@ -29,6 +29,11 @@
 
   <issueTrackingUrl>http://issues.osjava.org/jira/browse/SQL</issueTrackingUrl>
 
+  <repository>
+    <connection>scm:svn:http://svn.osjava.org/svn/osjava/trunk/sqlite-jdbc</connection>
+    <url>http://svn.osjava.org/svn/osjava/trunk/sqlite-jdbc</url>
+  </repository>
+
   <mailingLists>
     <mailingList>
         <name>osjava-users</name>
