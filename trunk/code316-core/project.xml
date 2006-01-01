@@ -14,6 +14,11 @@
   <shortDescription>code316 core components. Programmer utility classes that depend only on core java SE APIs.</shortDescription>
   <description>code316 core components. Programmer utility classes that depend only on core java SE APIs.</description>
   
+  <repository>
+    <connection>scm:svn:http://svn.osjava.org/svn/osjava/trunk/code316-core</connection>
+    <url>http://svn.osjava.org/svn/osjava/trunk/code316-core</url>
+  </repository>
+
   <developers>
     <developer>
       <name>David Petersheim</name>

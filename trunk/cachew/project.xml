@@ -30,6 +30,11 @@
   <issueTrackingUrl>http://www.osjava.org:8080/jira/secure/BrowseProject.jspa?id=YOUR_ID</issueTrackingUrl>
   -->
 
+  <repository>
+    <connection>scm:svn:http://svn.osjava.org/svn/osjava/trunk/cachew</connection>
+    <url>http://svn.osjava.org/svn/osjava/trunk/cachew</url>
+  </repository>
+
   <mailingLists>
     <mailingList>
         <name>osjava-users</name>

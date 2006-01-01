@@ -34,6 +34,11 @@
         /Users/rzigweid/Sites/tigransoft.org/html/OSJava-Threads/builds
     </distributionDirectory>
 
+  <repository>
+    <connection>scm:svn:http://svn.osjava.org/svn/osjava/trunk/osjava-threads</connection>
+    <url>http://svn.osjava.org/svn/osjava/trunk/osjava-threads</url>
+  </repository>
+
 	<mailingLists>
 	    <mailingList>
 	        <name>osjava-users</name>

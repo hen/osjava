@@ -28,6 +28,11 @@
   <siteDirectory>/sites/org/osjava/www/maven/nextjen/</siteDirectory>
   <distributionDirectory>/sites/org/osjava/www/maven/builds/</distributionDirectory>
 
+  <repository>
+    <connection>scm:svn:http://svn.osjava.org/svn/osjava/trunk/nextjen</connection>
+    <url>http://svn.osjava.org/svn/osjava/trunk/nextjen</url>
+  </repository>
+
   <mailingLists>
     <mailingList>
       <name>osjava-users</name>

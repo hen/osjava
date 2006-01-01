@@ -31,6 +31,11 @@
   <!-- Or provide your own if you have a logo -->
   <logo>http://www.osjava.org/images/1x1.gif</logo>
   
+  <repository>
+    <connection>scm:svn:http://svn.osjava.org/svn/osjava/trunk/trail-taglib</connection>
+    <url>http://svn.osjava.org/svn/osjava/trunk/trail-taglib</url>
+  </repository>
+
   <description>
     Trail Taglib allows a dynamic breadcrumbs trail to be built up and records a user's movements for the entire session, while providing a normalized version to display to the user. 
   </description>

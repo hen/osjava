@@ -25,6 +25,11 @@
   <siteDirectory>/sites/org/osjava/www/runsql/</siteDirectory>
   <distributionDirectory>/sites/org/osjava/www/builds/releases/runsql/</distributionDirectory>
 
+  <repository>
+    <connection>scm:svn:http://svn.osjava.org/svn/osjava/trunk/runsql</connection>
+    <url>http://svn.osjava.org/svn/osjava/trunk/runsql</url>
+  </repository>
+
   <developers>
 
     <developer>
