@@ -28,6 +28,11 @@
   <siteDirectory>/sites/org/osjava/www/maven/jardiff/</siteDirectory>
   <distributionDirectory>/sites/org/osjava/www/maven/builds/jardiff/</distributionDirectory>
 
+  <repository>
+    <connection>scm:svn:http://svn.osjava.org/svn/osjava/trunk/jardiff</connection>
+    <url>http://svn.osjava.org/svn/osjava/trunk/jardiff</url>
+  </repository>
+
   <mailingLists>
     <mailingList>
       <name>osjava-users</name>

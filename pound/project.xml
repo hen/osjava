@@ -27,6 +27,11 @@
 
   <url>http://www.osjava.org/pound/</url>
 
+  <repository>
+    <connection>scm:svn:http://svn.osjava.org/svn/osjava/trunk/pound</connection>
+    <url>http://svn.osjava.org/svn/osjava/trunk/pound</url>
+  </repository>
+
   <mailingLists>
     <mailingList>
         <name>osjava-users</name>
