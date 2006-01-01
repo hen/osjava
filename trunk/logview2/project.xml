@@ -87,7 +87,7 @@
     <dependency>
       <groupId>reportrunner</groupId>
       <artifactId>reportrunner</artifactId>
-      <version>dev</version>
+      <version>0.5.0</version>
       <properties>
         <multidoc.url>http://dist.osjava.org/releases/multidoc-jnr</multidoc.url>
       </properties>
