@@ -32,8 +32,8 @@
   -->
 
   <repository>
-    <connection>scm:svn:http://svn.osjava.org/svn/osjava/trunk/OrcsTerminal</connection>
-    <url>http://svn.osjava.org/svn/osjava/trunk/OrcsTerminal</url>
+    <connection>scm:svn:http://svn.osjava.org/svn/osjava/trunk/orcs/OrcsTerminal</connection>
+    <url>http://svn.osjava.org/svn/osjava/trunk/orcs/OrcsTerminal</url>
   </repository>
 
   <mailingLists>

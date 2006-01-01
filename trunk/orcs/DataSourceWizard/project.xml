@@ -32,8 +32,8 @@
   -->
 
   <repository>
-    <connection>scm:svn:http://svn.osjava.org/svn/osjava/trunk/DataSourceWizard</connection>
-    <url>http://svn.osjava.org/svn/osjava/trunk/DataSourceWizard</url>
+    <connection>scm:svn:http://svn.osjava.org/svn/osjava/trunk/orcs/DataSourceWizard</connection>
+    <url>http://svn.osjava.org/svn/osjava/trunk/orcs/DataSourceWizard</url>
   </repository>
 
   <mailingLists>
