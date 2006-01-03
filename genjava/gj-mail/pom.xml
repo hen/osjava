@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<project>
+  <parent>
+    <groupId>genjava</groupId>
+    <artifactId>genjava</artifactId>
+    <version>UNUSED</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>gj-mail</artifactId>
+  <name>GenJava-Mail</name>
+  <version>1.0</version>
+  <inceptionYear>2002</inceptionYear>
+  
+  <description>
+    Mail component of GenJava-Core. Adds some helper functionality around JavaMail.
+  </description>
+  
+  <!-- <shortDescription>Mail helpers</shortDescription> -->
+
+  <dependencies>
+    <dependency>
+      <groupId>geronimo-spec</groupId>
+      <artifactId>geronimo-spec-javamail</artifactId>
+      <version>1.3.1-rc3</version>
+    </dependency>
+    <dependency>
+      <artifactId>gj-core</artifactId>
+      <groupId>genjava</groupId>
+      <version>3.0</version>
+      <!-- <properties>
+        <multidoc.url>http://dist.osjava.org/releases/multidoc-jnr</multidoc.url>
+      </properties> -->
+    </dependency>
+    <dependency>
+      <artifactId>commons-lang</artifactId>
+      <groupId>commons-lang</groupId>
+      <version>2.0</version>
+      <!-- <url>http://jakarta.apache.org/commons/lang.html</url> -->
+    </dependency>
+  </dependencies>
+
+</project>
+
