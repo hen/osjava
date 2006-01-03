@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<project>
+  <parent>
+    <groupId>genjava</groupId>
+    <artifactId>genjava</artifactId>
+    <version>UNUSED</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>gj-config</artifactId>
+  <name>GenJava-Config</name>
+  <version>2.0</version>
+  <inceptionYear>2003</inceptionYear>
+  
+  <description>
+    Simple configuration system, mainly for use with a JNDI implementation such as simple-jndi.
+  </description>
+  
+  <!-- <shortDescription>Simple configuration system</shortDescription> -->
+
+</project>
+
