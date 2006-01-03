@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <artifactId>genjava</artifactId>
   <groupId>genjava</groupId>
-  <name>genjava</name>
+  <name>GenJava Components</name>
   <version>UNUSED</version>
   <packaging>pom</packaging>
 
