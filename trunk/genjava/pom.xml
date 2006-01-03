@@ -22,6 +22,11 @@
   <!-- <siteDirectory>/sites/org/osjava/www/releases/official/genjava/${pom.artifactId}/</siteDirectory> -->
   <!-- <distributionDirectory>/sites/org/osjava/www/releases/official/genjava/${pom.artifactId}/</distributionDirectory> -->
 
+  <scm>
+    <connection>scm:svn:http://svn.osjava.org/svn/osjava/trunk/genjava</connection>
+    <url>http://svn.osjava.org/svn/osjava/trunk/genjava</url>
+  </scm>
+
   <mailingLists>
     <mailingList>
       <name>osjava-users</name>
