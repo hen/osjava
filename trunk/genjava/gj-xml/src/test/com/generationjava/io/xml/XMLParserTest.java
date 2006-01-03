@@ -19,7 +19,7 @@ public class XMLParserTest extends TestCase {
     }
 
     private void use(String filename) throws IOException {
-        InputStream in = this.getClass().getClassLoader().getResourceAsStream("/"+filename);
+        InputStream in = this.getClass().getClassLoader().getResourceAsStream(filename);
         Reader reader = new InputStreamReader(in);
         XMLParser parser = new XMLParser();
         node = parser.parseXML(reader);
