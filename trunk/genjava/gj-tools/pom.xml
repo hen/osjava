@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<project>
+  <parent>
+    <groupId>genjava</groupId>
+    <artifactId>genjava</artifactId>
+    <version>UNUSED</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>gj-tools</artifactId>
+  <name>GenJava-Tools</name>
+  <version>1.0</version>
+  <inceptionYear>2002</inceptionYear>
+  
+  <description>
+    A Tools API to make it simpler to write command line tools.
+  </description>
+  
+  <!-- <shortDescription>Tools API</shortDescription> -->
+
+  <dependencies>
+    <dependency>
+      <artifactId>commons-lang</artifactId>
+      <groupId>commons-lang</groupId>
+      <version>2.0</version>
+      <!-- <url>http://jakarta.apache.org/commons/lang.html</url> -->
+    </dependency>
+    <dependency>
+      <artifactId>commons-cli</artifactId>
+      <groupId>commons-cli</groupId>
+      <version>1.0</version>
+      <!-- <url>http://jakarta.apache.org/commons/cli/</url> -->
+    </dependency>
+    <dependency>
+      <artifactId>commons-collections</artifactId>
+      <groupId>commons-collections</groupId>
+      <version>2.1</version>
+      <!-- <url>http://jakarta.apache.org/commons/collections.html</url> -->
+    </dependency>
+    <dependency>
+      <artifactId>gj-core</artifactId>
+      <groupId>genjava</groupId>
+      <version>3.0</version>
+      <!-- <properties>
+        <multidoc.url>http://dist.osjava.org/releases/multidoc-jnr</multidoc.url>
+      </properties> -->
+    </dependency>
+  </dependencies>
+
+</project>
+
