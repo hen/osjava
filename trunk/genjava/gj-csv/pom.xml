@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<project>
+  <parent>
+    <groupId>genjava</groupId>
+    <artifactId>genjava</artifactId>
+    <version>UNUSED</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>gj-csv</artifactId>
+  <name>GenJava-CSV</name>
+  <version>1.0</version>
+  <inceptionYear>2002</inceptionYear>
+  
+  <description>
+    CSV component of GenJava-Core. Reads and writes CSV files.
+  </description>
+  
+  <!-- <shortDescription>CSV Reader/Writers</shortDescription> -->
+
+</project>
+
