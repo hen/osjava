@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<project>
+  <parent>
+    <groupId>genjava</groupId>
+    <artifactId>genjava</artifactId>
+    <version>UNUSED</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>gj-xml</artifactId>
+  <name>GenJava-XML</name>
+  <version>1.2</version>
+  <inceptionYear>2002</inceptionYear>
+  
+  <description>
+    XML parser component of GenJava-Core. 
+  </description>
+  
+  <!-- <shortDescription>XML Parser</shortDescription> -->
+
+  <build>
+    <!-- <unitTest> -->
+      <testResources>
+        <testResource>
+          <directory>src/test/data</directory>
+        </testResource>
+      </testResources>
+    <!-- </unitTest> -->
+  </build>
+
+</project>
+
