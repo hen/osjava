@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<project>
+  <parent>
+    <groupId>genjava</groupId>
+    <artifactId>genjava</artifactId>
+    <version>UNUSED</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>gj-servlet</artifactId>
+  <name>GenJava-Servlet</name>
+  <version>1.0</version>
+  <inceptionYear>2002</inceptionYear>
+  
+  <description>
+    Servlet Components
+  </description>
+  
+  <!-- <shortDescription>Servlet Components</shortDescription> -->
+
+  <dependencies>
+    <dependency>
+      <artifactId>servletapi</artifactId>
+      <groupId>servletapi</groupId>
+      <version>2.3</version>
+    </dependency>
+    <dependency>
+      <artifactId>commons-collections</artifactId>
+      <groupId>commons-collections</groupId>
+      <version>2.1</version>
+      <!-- <url>http://jakarta.apache.org/commons/collections.html</url> -->
+    </dependency>
+    <dependency>
+      <artifactId>gj-core</artifactId>
+      <groupId>genjava</groupId>
+      <version>3.0</version>
+      <!-- <properties>
+        <multidoc.url>http://dist.osjava.org/releases/multidoc-jnr</multidoc.url>
+      </properties> -->
+    </dependency>
+  </dependencies>
+
+</project>
+
