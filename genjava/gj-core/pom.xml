@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<project>
+  <parent>
+    <groupId>genjava</groupId>
+    <artifactId>genjava</artifactId>
+    <version>UNUSED</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>gj-core</artifactId>
+  <name>GenJava-Core</name>
+  <version>3.2</version>
+  <inceptionYear>2000</inceptionYear>
+  
+  <description>
+     A re-usable library of Java classes. Originally stand-alone, many of the classes have since gone into various parts of the Jakarta Commons project, and thus this package contains various dependencies. 
+  </description>
+  
+  <!-- <shortDescription>Core code</shortDescription> -->
+
+  <dependencies>
+    <dependency>
+      <artifactId>commons-lang</artifactId>
+      <groupId>commons-lang</groupId>
+      <version>2.1</version>
+      <!-- <url>http://jakarta.apache.org/commons/lang.html</url> -->
+    </dependency>
+    <dependency>
+      <artifactId>commons-collections</artifactId>
+      <groupId>commons-collections</groupId>
+      <version>3.1</version>
+      <!-- <url>http://jakarta.apache.org/commons/collections.html</url> -->
+    </dependency>
+  </dependencies>
+
+</project>
+
