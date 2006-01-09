@@ -56,20 +56,6 @@
     <sourceDirectory>src/java</sourceDirectory>
     <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
 
-    <!-- Unit test classes -->
-    <unitTest>
-      <includes>
-        <include>**/*Test.java</include>
-      </includes>
-    </unitTest>
-
-    <resources>
-      <includes>
-        <include>**/*.properties</include>
-      </includes>
-    </resources>
-    
-    <jars></jars>
   </build>
 
     <reports>
