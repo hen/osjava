@@ -42,6 +42,11 @@ public class WildcardUtils {
     /**
      * See if a particular piece of text, often a filename, 
      * matches to a specified wildcard. 
+     *
+     * @param String text to search upon
+     * @param String wildcard to use in the search
+     *
+     * @return boolean whether the wildcard matched the text or not
      */
     public static boolean match(String text, String wildcard) {
         // split wildcard on ? and *
