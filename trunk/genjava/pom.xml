@@ -8,6 +8,20 @@
   <version>UNUSED</version>
   <packaging>pom</packaging>
 
+  <modules>
+    <module>gj-beans</module>
+    <module>gj-config</module>
+    <module>gj-core</module>
+    <module>gj-csv</module>
+    <module>gj-find</module>
+    <module>gj-gui</module>
+    <module>gj-mail</module>
+    <module>gj-scrape</module>
+    <module>gj-servlet</module>
+    <module>gj-tools</module>
+    <module>gj-xml</module>
+  </modules>
+
   <organization>
     <name>OSJava</name>
     <!-- <url>http://www.osjava.org/</url> -->
