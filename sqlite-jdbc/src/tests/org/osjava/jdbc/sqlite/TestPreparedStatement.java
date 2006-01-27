@@ -43,7 +43,6 @@ package org.osjava.jdbc.sqlite;
 import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import junit.framework.TestCase;
@@ -99,7 +98,7 @@ public class TestPreparedStatement extends TestCase {
         } catch(SQLException e) {
             return;
         }
-
+        fail();
     }
 
     /**
@@ -124,6 +123,7 @@ public class TestPreparedStatement extends TestCase {
         } catch (SQLException e) {
             return;
         }
+        fail();
     }
 
     /**
@@ -136,11 +136,37 @@ public class TestPreparedStatement extends TestCase {
         } catch (SQLException e) {
             return;
         }
+        fail();
+    }
+    
+    /**
+     * Construct a prepared statement, populate one of the two fields and try
+     * to execute it.  This statement should succeed.
+     */
+    public void testPreparedStatementExecute1() throws Exception {
+        java.sql.PreparedStatement stmt = con.prepareStatement("INSERT INTO foo ('a', 'b') VALUES ('?', '?');");
+        stmt.setInt(1, 12345);
+        stmt.setInt(2, 67890);
+        try {
+            stmt.execute();
+        } catch (SQLException e) {
+            return;
+        }
     }
 
     /**
-     * Construct statements to create a small table and then populate a row 
-     * in the table partially.
+     * Construct a prepared statement, populate one of the two fields and try
+     * to execute it.  An exception should be thrown.
      */
+    public void testPreparedStatementExecute2() throws Exception {
+        java.sql.PreparedStatement stmt = con.prepareStatement("INSERT INTO foo ('a', 'b') VALUES ('?', '?');");
+        stmt.setInt(1, 12345);
+        try {
+            stmt.execute();
+        } catch (SQLException e) {
+            return;
+        }
+        fail();
+    }
 
 }
