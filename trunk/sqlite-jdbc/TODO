@@ -1,3 +1,8 @@
+* Break the C portion into various components.  PreparedStatements in 
+  particular should have their native methods broken out into their own file.
+  While this is not important in and of itself, it is a maintenance and
+  organization issue.
+
 * Java_org_osjava_jdbc_sqlite_Statement_executeSQLWithResultSet needs to 
   be improved to not generate a new sqlite3_stmt object if there is already 
   on associated with the ResultSet.  

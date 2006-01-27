@@ -148,4 +148,15 @@ public class TestStatement extends TestCase {
             assertEquals("Test", foo);
         }
     }
+    
+    public void testExecuteBatch1() throws Exception {
+        java.sql.Statement stmt = con.createStatement();
+        stmt.addBatch("CREATE TABLE foo1 (TestCol VARCHAR(10));");
+        stmt.addBatch("CREATE TABLE foo2 (TestCol VARCHAR(10));");
+        try {
+            stmt.executeBatch();
+        } catch(SQLException e) {
+            fail(e.getMessage());
+        }
+    }
 }

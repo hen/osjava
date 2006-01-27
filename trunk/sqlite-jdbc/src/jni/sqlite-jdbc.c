@@ -39,6 +39,10 @@
  */
 #include "sqlite-jdbc.h"
 
+
+/**************
+ * Connection *
+ **************/
 /*
  * Class:     org_osjava_jdbc_sqlite_Driver
  * Method:    proxyConnect

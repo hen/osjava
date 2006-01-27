@@ -79,6 +79,11 @@ public class PreparedStatement extends Statement implements java.sql.PreparedSta
      */
     private Object[] parameters = null;
     
+    /**
+     * Array of parameter arrays that have been batched;
+     */
+    private Object[] batched;
+    
 /* **************
  * CONSTRUCTORS *
  * **************/
@@ -97,10 +102,27 @@ public class PreparedStatement extends Statement implements java.sql.PreparedSta
 /* *********************
  * STATEMENT EXECUTION *
  * *********************/
+    /**
+     * Determine whether or not all of the parameters that are expected
+     * in a statement have been filled.  This is done by checking all of the
+     * elements of the array for null.  
+     */
+    protected boolean checkParametersFilled() {
+        for(int i = 0; i < parameters.length; i++) {
+            if(parameters[i] == null) {
+                return false;
+            }
+        }
+        return true;
+    }
+    
     /* (non-Javadoc)
      * @see java.sql.PreparedStatement#addBatch()
      */
     public void addBatch() throws SQLException {
+        if(!checkParametersFilled()) {
+            throw new SQLException("Not all statement parameters have been filled.");
+        }
         // TODO Auto-generated method stub
     }
 
@@ -108,6 +130,14 @@ public class PreparedStatement extends Statement implements java.sql.PreparedSta
      * @see java.sql.PreparedStatement#execute()
      */
     public boolean execute() throws SQLException {
+        if(!checkParametersFilled()) {
+            throw new SQLException("Not all statement parameters have been filled.");
+        }
+        if(con.getAutoCommit()) {
+            /* If the Connection is in autocommit mode, always commit before
+             * a new statement is executed. */
+            forceCommit();
+        }
         // TODO Auto-generated method stub
         return false;
     }
@@ -116,6 +146,14 @@ public class PreparedStatement extends Statement implements java.sql.PreparedSta
      * @see java.sql.PreparedStatement#executeQuery()
      */
     public ResultSet executeQuery() throws SQLException {
+        if(con.getAutoCommit()) {
+            /* If the Connection is in autocommit mode, always commit before
+             * a new statement is executed. */
+            forceCommit();
+        }
+        if(!checkParametersFilled()) {
+            throw new SQLException("Not all statement parameters have been filled.");
+        }
         // TODO Auto-generated method stub
         return null;
     }
@@ -124,6 +162,14 @@ public class PreparedStatement extends Statement implements java.sql.PreparedSta
      * @see java.sql.PreparedStatement#executeUpdate()
      */
     public int executeUpdate() throws SQLException {
+        if(!checkParametersFilled()) {
+            throw new SQLException("Not all statement parameters have been filled.");
+        }
+        if(con.getAutoCommit()) {
+            /* If the Connection is in autocommit mode, always commit before
+             * a new statement is executed. */
+            forceCommit();
+        }
         // TODO Auto-generated method stub
         return 0;
     }
