@@ -73,6 +73,17 @@
   <build>
     <nagEmailAddress>cyberiantiger@gmail.com</nagEmailAddress>
     <sourceDirectory>src/java</sourceDirectory>
+
+    <resources>
+      <resource>
+        <targetPath>style</targetPath>
+        <directory>xsl</directory>
+        <includes>
+          <include>jardiff-html.xsl</include>
+        </includes>
+      </resource>
+    </resources>   
+
   </build>
 
     <reports>
