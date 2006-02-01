@@ -116,6 +116,7 @@ public class SAXDiffHandler implements DiffHandler
     public void startDiff(String oldJar, String newJar) throws DiffException {
         try {
             handler.startDocument();
+            handler.startPrefixMapping("", XML_URI);
             attr.addAttribute(XML_URI, "", "old", "CDATA", oldJar); 
             attr.addAttribute(XML_URI, "", "new", "CDATA", newJar); 
             handler.startElement(XML_URI, "", "diff", attr);
@@ -447,6 +448,7 @@ public class SAXDiffHandler implements DiffHandler
         try {
             handler.endElement(XML_URI, "",
                                "diff");
+            handler.endPrefixMapping("");
             handler.endDocument();
         } catch (SAXException se) {
             throw new DiffException(se);
