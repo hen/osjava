@@ -221,7 +221,7 @@ public class JarDiff
     private void loadClasses(Map infoMap, URL path) throws DiffException {
         try {
             File jarFile = null;
-            if(path.getProtocol() != "file" || path.getHost() != null) {
+            if(!"file".equals(path.getProtocol()) || path.getHost() != null) {
                 // If it's not a local file, store it as a temporary jar file.
                 // java.util.jar.JarFile requires a local file handle.
                 jarFile = File.createTempFile("jardiff","jar");
