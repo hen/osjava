@@ -42,7 +42,13 @@ public class Engine {
         // load the config
         Config cfg = ConfigFactory.getConfig(args);
         String runStr = cfg.getString("org.osjava.oscube.runner");
+        if(runStr == null) {
+            throw new RuntimeException("Unable to find org.osjava.oscube.runner. Check your jndi.properties. ");
+        }
         Class cl = Class.forName(runStr);
+        if(cl == null) {
+            throw new RuntimeException("Unable to load " + runStr + ", is it in your classpath? ");
+        }
         Runner runner = (Runner) cl.newInstance();
         engine.run(runner, args);
     }
