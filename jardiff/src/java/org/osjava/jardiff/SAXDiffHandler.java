@@ -37,6 +37,10 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 package org.osjava.jardiff;
+
+/* Not in 1.4.2 
+import javax.xml.XMLConstants;
+*/
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.sax.SAXTransformerFactory;
@@ -119,6 +123,21 @@ public class SAXDiffHandler implements DiffHandler
             handler.startPrefixMapping("", XML_URI);
             attr.addAttribute(XML_URI, "", "old", "CDATA", oldJar); 
             attr.addAttribute(XML_URI, "", "new", "CDATA", newJar); 
+            // XXX: This should not be needed, workaround for java 1.4.2 
+            // bug, which means the namespace is not written out.
+            /* XMLConstants not in 1.4.2 
+               attr.addAttribute(
+               XMLConstants.XMLNS_ATTRIBUTE_NS_URI,
+               "",
+               XMLConstants.XMLNS_ATTRIBUTE,
+               XML_URI);
+               */
+            attr.addAttribute(
+                    "http://www.w3.org/2000/xmlns/",
+                    "",
+                    "xmlns",
+                    "CDATA",
+                    XML_URI);
             handler.startElement(XML_URI, "", "diff", attr);
             attr.clear();
         } catch (SAXException se) {
