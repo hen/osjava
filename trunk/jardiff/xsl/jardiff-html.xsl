@@ -30,7 +30,7 @@ span.type { text: normal; }
   </xsl:template>
 
   <xsl:template name="removed-class">
-    <tr bgcolor="ffaaaa"><td>Class removed</td><td><xsl:value-of select="@name"/></td><xsl:call-template name="print-class"/></tr>
+    <tr bgcolor="ffaaaa"><td>Class removed</td><td><xsl:value-of select="@name"/></td><td><xsl:call-template name="print-class"/></td></tr>
   </xsl:template>
 
   <xsl:template match="jd:added">
