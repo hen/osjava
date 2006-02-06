@@ -39,9 +39,14 @@
 
 package org.osjava.jdbc.sqlite;
 
+import java.sql.BatchUpdateException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.SQLWarning;
+
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @author rzigweid
@@ -58,6 +63,11 @@ public class Statement implements java.sql.Statement {
      */
     private ResultSet result = null;
 
+    /**
+     * The current batch of statements
+     */
+    List batch = new LinkedList();
+    
     /**
      * The fetch direction from the statement. The default is
      * ResultSet.FETCH_FORWARD.
@@ -221,6 +231,63 @@ public class Statement implements java.sql.Statement {
         }
         // TODO Auto-generated method stub
         return 0;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.sql.Statement#addBatch(java.lang.String)
+     */
+    public void addBatch(String sql) throws SQLException {
+        batch.add(sql);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.sql.Statement#executeBatch()
+     */
+    public int[] executeBatch() throws SQLException {
+        /* Exceptions that are caught in the call */
+        List exceptions = new LinkedList();
+        int resultSize = batch.size();
+        int results[] = new int[resultSize];
+        for(int i = 0; i < resultSize; i++) {
+            boolean result;
+            try {
+                result = execute((String)batch.get(i));
+            } catch(SQLException e) {
+                /* If a SQLException is thrown, the exception needs to be 
+                 * caught so that later a BatchUpdateException can be thrown
+                 * with the relavent information */
+                exceptions.add(e);
+                results[i] = EXECUTE_FAILED;
+                continue;
+            }
+            /* Use the result to determine whether or not te result of the 
+             * statement is a count, or a result set. */
+            if(result) {
+                results[i] = SUCCESS_NO_INFO;
+            } else {
+                results[i] = getUpdateCount();
+            }
+        }
+        /* If there were any exceptions caught, throw a BatchUpdateException
+         * instead of returning the actual result set.*/
+        if(exceptions.size() > 0) {
+            /* Properly chain the exceptions */
+            Iterator it = exceptions.iterator();
+            BatchUpdateException ex = new BatchUpdateException("At least one of the statements in the batch threw an exception",
+                                                               results);
+            SQLException previous = ex;
+            while(it.hasNext()) {
+                SQLException next = (SQLException)it.next();
+                previous.setNextException(next);
+                previous = next;
+            }
+            throw ex;
+        }
+        return results;
     }
 
     /*
@@ -487,31 +554,11 @@ public class Statement implements java.sql.Statement {
     /*
      * (non-Javadoc)
      * 
-     * @see java.sql.Statement#addBatch(java.lang.String)
-     */
-    public void addBatch(String sql) throws SQLException {
-    // TODO Auto-generated method stub
-
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
      * @see java.sql.Statement#clearBatch()
      */
     public void clearBatch() throws SQLException {
     // TODO Auto-generated method stub
 
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.sql.Statement#executeBatch()
-     */
-    public int[] executeBatch() throws SQLException {
-        // TODO Auto-generated method stub
-        return null;
     }
 
     /*
