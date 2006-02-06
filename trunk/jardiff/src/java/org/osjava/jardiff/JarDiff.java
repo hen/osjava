@@ -46,14 +46,30 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeSet;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+import javax.xml.transform.ErrorListener;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.sax.SAXTransformerFactory;
+import javax.xml.transform.sax.TransformerHandler;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
 
 import org.objectweb.asm.ClassReader;
 
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.GnuParser;
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Option;
+import org.apache.commons.cli.Parser;
+import org.apache.commons.cli.ParseException;
+import org.apache.commons.cli.Options;
 /**
  * A class to perform a diff between two jar files.
  *
@@ -101,12 +117,39 @@ public class JarDiff
      * The name of the new version.
      */
     private String newVersion;
-    
+
     /**
      * Class info visitor, used to load information about classes.
      */
     private ClassInfoVisitor infoVisitor = new ClassInfoVisitor();
-    
+
+    /**
+     * Define set of valid formats.
+     * This is here to make maintenance more easy.
+     */
+    private final static Set FORMATS = new HashSet();
+
+    /**
+     * Can you javadoc static code, I think not, but lets try anyway.
+     */
+    static {
+        FORMATS.add("html");
+        FORMATS.add("xhtml");
+    }
+
+    /**
+     * Utility function for showing help using commons-cli.
+     * @param options Command line options.
+     * @param msg Optional message to show.
+     */
+    private static void showHelp(Options options, String msg) {
+        if(msg != null) {
+            System.out.println(msg);
+        }
+        HelpFormatter hf = new HelpFormatter();
+        hf.printHelp("JarDiff -f <from jar> -t <to jar> [-F <from name>] [-T <to name>] [-d <dependency path>] [-o <xml|html|xhtml>] [-O <file>]", options);
+    }
+
     /**
      * Main method to allow this to be run from the command line.
      * This needs work, currently only takes two arguments, which are
@@ -115,21 +158,110 @@ public class JarDiff
      * @param args A string array of length two containing the filenames of
      *             two jar files, the first of which being the older of the
      *             two.
-     * @throws DiffException when there is an underlying exception, e.g.
-     *                       writing to a file caused an IOException
+     * @throws Exception when there is an underlying exception, e.g.
+     *                   writing to a file caused an IOException
      */
-    public static void main(String[] args) throws DiffException {
-        if (args.length != 2)
-            System.out.println("Usage: JarDiff <oldjar> <newjar>");
-        else {
+    public static void main(String[] args) throws Exception {
+        try {
+            Options options = new Options();
+            Option tmp;
+            tmp = new Option("f","from",true,"from jar file");
+            tmp.setRequired(true);
+            options.addOption(tmp);
+            tmp = new Option("t","to",true,"to jar file");
+            tmp.setRequired(true);
+            options.addOption(tmp);
+            tmp = new Option("F","from-name",true,"from name");
+            options.addOption(tmp);
+            tmp = new Option("T","to-name",true,"to name");
+            options.addOption(tmp);
+            tmp = new Option("d","dep",true,"dependency path");
+            options.addOption(tmp);
+            tmp = new Option("o","output-format",true,"output format, xml or html");
+            options.addOption(tmp);
+            tmp = new Option("O","out",true,"output file");
+            options.addOption(tmp);
+            tmp = new Option("h","help",false,"print help on command line arguments");
+            options.addOption(tmp);
+            Parser parser = new GnuParser();
+            CommandLine cli = null;
+            try {
+                cli = parser.parse(options, args);
+            } catch (ParseException pe) {
+                showHelp(options, pe.getMessage());
+                return;
+            }
+            args = cli.getArgs();
+            if(cli.hasOption('h'))
+            {
+                showHelp(options, null);
+                return;
+            }
+            if(args.length > 0) {
+                showHelp(options, "Additional arguments specified");
+                return;
+            }
+
+            SAXTransformerFactory stf =
+                (SAXTransformerFactory) TransformerFactory.newInstance();
+            stf.setErrorListener(
+                    new ErrorListener() {
+                        public void warning(TransformerException te) {
+                            System.err.println("xslt warning: "+te.getMessageAndLocation());
+                        }
+                        public void error(TransformerException te) {
+                            System.err.println("xslt error: "+te.getMessageAndLocation());
+                        }
+                        public void fatalError(TransformerException te) {
+                            System.err.println("xslt fatal error: "+te.getMessageAndLocation());
+                        }
+                    });
+
+            TransformerHandler oth;
+            if(cli.hasOption('o')) {
+                String val = cli.getOptionValue('o');
+                if("xml".equals(val)) {
+                    oth = stf.newTransformerHandler();
+                } else if(FORMATS.contains(val)) {
+                    URL url = JarDiff.class.getClassLoader()
+                        .getResource("style/jardiff-"+val+".xsl");
+
+                    oth = stf.newTransformerHandler(
+                            stf.newTemplates( new StreamSource( url.toString() ) )
+                            );
+                } else {
+                    showHelp(options, "Invalid output format: "+val);
+                    return;
+                }
+            } else {
+                oth = stf.newTransformerHandler();
+            }
+            OutputStream out;
+            if(cli.hasOption('O')) {
+                out = new FileOutputStream(cli.getOptionValue('O'));
+            } else {
+                out = System.out;
+            }
+            oth.setResult(new StreamResult(out));
             JarDiff jd = new JarDiff();
-            File oldFile = new File(args[0]);
-            File newFile = new File(args[1]);
-            jd.setOldVersion(oldFile.getName());
-            jd.setNewVersion(newFile.getName());
+            File oldFile = new File(cli.getOptionValue('f'));
+            File newFile = new File(cli.getOptionValue('t'));
+            if(cli.hasOption('F')) {
+                jd.setOldVersion(cli.getOptionValue('F'));
+            } else {
+                jd.setOldVersion(oldFile.getName());
+            }
+            if(cli.hasOption('T')) {
+                jd.setNewVersion(cli.getOptionValue('T'));
+            } else {
+                jd.setNewVersion(newFile.getName());
+            }
             jd.loadOldClasses(oldFile);
             jd.loadNewClasses(newFile);
-            jd.diff(new SAXDiffHandler(), new SimpleDiffCriteria());
+            jd.diff(new SAXDiffHandler(oth), new SimpleDiffCriteria());
+            out.close();
+        } catch (Exception e) {
+            e.printStackTrace(System.err);
         }
     }
 
@@ -207,7 +339,7 @@ public class JarDiff
         reader.accept(infoVisitor, false);
         return infoVisitor.getClassInfo();
     }
-    
+
     /**
      * Load all the classes from the specified URL and store information
      * about them in the specified map.
@@ -315,7 +447,7 @@ public class JarDiff
     public void loadNewClasses(File file) throws DiffException {
         loadClasses(newClassInfo, file);
     }
-    
+
     /**
      * Perform a diff sending the output to the specified handler, using
      * the specified criteria to select diffs.
@@ -326,7 +458,8 @@ public class JarDiff
      *                       writing to a file caused an IOException
      */
     public void diff(DiffHandler handler, DiffCriteria criteria)
-        throws DiffException {
+        throws DiffException 
+    {
         java.util.Set onlyOld = new TreeSet(oldClassInfo.keySet());
         java.util.Set onlyNew = new TreeSet(newClassInfo.keySet());
         java.util.Set both = new TreeSet(oldClassInfo.keySet());
@@ -420,9 +553,9 @@ public class JarDiff
                 }
                 boolean classchanged = criteria.differs(oci, nci);
                 if (classchanged || !removedMethods.isEmpty()
-                    || !removedFields.isEmpty() || !addedMethods.isEmpty()
-                    || !addedFields.isEmpty() || !changedMethods.isEmpty()
-                    || !changedFields.isEmpty()) {
+                        || !removedFields.isEmpty() || !addedMethods.isEmpty()
+                        || !addedFields.isEmpty() || !changedMethods.isEmpty()
+                        || !changedFields.isEmpty()) {
                     handler.startClassChanged(s);
                     handler.startRemoved();
                     j = removedFields.iterator();
@@ -432,7 +565,7 @@ public class JarDiff
                     j = removedMethods.iterator();
                     while (j.hasNext())
                         handler.methodRemoved((MethodInfo)
-                                              oldMethods.get(j.next()));
+                                oldMethods.get(j.next()));
                     handler.endRemoved();
                     handler.startAdded();
                     j = addedFields.iterator();
@@ -442,7 +575,7 @@ public class JarDiff
                     j = addedMethods.iterator();
                     while (j.hasNext())
                         handler.methodAdded((MethodInfo)
-                                            newMethods.get(j.next()));
+                                newMethods.get(j.next()));
                     handler.endAdded();
                     handler.startChanged();
                     if (classchanged)
@@ -451,14 +584,14 @@ public class JarDiff
                     while (j.hasNext()) {
                         Object tmp = j.next();
                         handler.fieldChanged((FieldInfo) oldFields.get(tmp),
-                                             (FieldInfo) newFields.get(tmp));
+                                (FieldInfo) newFields.get(tmp));
                     }
                     j = changedMethods.iterator();
                     while (j.hasNext()) {
                         Object tmp = j.next();
                         handler.methodChanged((MethodInfo) oldMethods.get(tmp),
-                                              ((MethodInfo)
-                                               newMethods.get(tmp)));
+                                ((MethodInfo)
+                                 newMethods.get(tmp)));
                     }
                     handler.endChanged();
                     handler.endClassChanged();
