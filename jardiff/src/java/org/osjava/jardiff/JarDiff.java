@@ -167,10 +167,8 @@ public class JarDiff
             Options options = new Options();
             Option tmp;
             tmp = new Option("f","from",true,"from jar file");
-            tmp.setRequired(true);
             options.addOption(tmp);
             tmp = new Option("t","to",true,"to jar file");
-            tmp.setRequired(true);
             options.addOption(tmp);
             tmp = new Option("F","from-name",true,"from name");
             options.addOption(tmp);
@@ -183,6 +181,8 @@ public class JarDiff
             tmp = new Option("O","out",true,"output file");
             options.addOption(tmp);
             tmp = new Option("h","help",false,"print help on command line arguments");
+            options.addOption(tmp);
+            tmp = new Option("x","xsl",true,"custom xsl sheet to format output with");
             options.addOption(tmp);
             Parser parser = new GnuParser();
             CommandLine cli = null;
@@ -200,6 +200,14 @@ public class JarDiff
             }
             if(args.length > 0) {
                 showHelp(options, "Additional arguments specified");
+                return;
+            }
+            if(!cli.hasOption('f')) {
+                showHelp(options, "Missing required argument: -f");
+                return;
+            }
+            if(!cli.hasOption('t')) {
+                showHelp(options, "Missing required argument: -t");
                 return;
             }
 
@@ -262,6 +270,10 @@ public class JarDiff
 
             Transformer ot;
             if(cli.hasOption('o')) {
+                if(cli.hasOption('x')) {
+                    showHelp(options, "Cannot use both -x and -o");
+                    return;
+                }
                 String val = cli.getOptionValue('o');
                 if("xml".equals(val)) {
                     ot = tf.newTransformer();
@@ -275,6 +287,9 @@ public class JarDiff
                     showHelp(options, "Invalid output format: "+val);
                     return;
                 }
+            } else if(cli.hasOption('x')) {
+                File xsl = new File(cli.getOptionValue('x'));
+                ot = tf.newTransformer(new StreamSource(xsl));
             } else {
                 ot = tf.newTransformer();
             }
