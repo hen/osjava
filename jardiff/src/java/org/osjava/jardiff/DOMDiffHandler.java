@@ -74,20 +74,20 @@ public class DOMDiffHandler implements DiffHandler
      */
     private final Transformer transformer;
 
-	/**
-	 * Where we write the result to.
-	 */
-	private final Result result;
+    /**
+     * Where we write the result to.
+     */
+    private final Result result;
 
-	/**
-	 * The document object we're building
-	 */
-	private final Document doc;
+    /**
+     * The document object we're building
+     */
+    private final Document doc;
 
-	/**
-	 * The current Node.
-	 */
-	private Node currentNode;
+    /**
+     * The current Node.
+     */
+    private Node currentNode;
     
     /**
      * Create a new DOMDiffHandler which writes to System.out
@@ -100,16 +100,16 @@ public class DOMDiffHandler implements DiffHandler
             TransformerFactory tf = TransformerFactory.newInstance();
             this.transformer = tf.newTransformer();
             this.result = new StreamResult(System.out);
-			this.currentNode = null;
-			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-			dbf.setNamespaceAware(true);
-			DocumentBuilder db = dbf.newDocumentBuilder();
-			this.doc = db.newDocument();
+            this.currentNode = null;
+            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+            dbf.setNamespaceAware(true);
+            DocumentBuilder db = dbf.newDocumentBuilder();
+            this.doc = db.newDocument();
         } catch (TransformerConfigurationException tce) {
             throw new DiffException(tce);
         } catch (ParserConfigurationException pce) {
-			throw new DiffException(pce);
-		}
+            throw new DiffException(pce);
+        }
     }
     
     /**
@@ -122,8 +122,8 @@ public class DOMDiffHandler implements DiffHandler
      * @param handler The SAX transformer handler to send SAX events to.
      */
     public DOMDiffHandler(Transformer transformer, Result result) 
-		throws DiffException
-	{
+        throws DiffException
+    {
         try {
             this.transformer = transformer;
             this.result = result;
@@ -249,7 +249,7 @@ public class DOMDiffHandler implements DiffHandler
      *                       writing to a file caused an IOException
      */
     public void startClassChanged(String internalName) throws DiffException 
-	{
+    {
         Element tmp = doc.createElementNS(XML_URI, "classchanged");
         tmp.setAttribute( "name", Tools.getClassName(internalName));
         currentNode.appendChild(tmp);
@@ -322,7 +322,7 @@ public class DOMDiffHandler implements DiffHandler
      */
     public void classChanged(ClassInfo oldInfo, ClassInfo newInfo)
         throws DiffException 
-	{
+    {
         Node currentNode = this.currentNode;
         Element tmp = doc.createElementNS(XML_URI, "classchange");
         Element from = doc.createElementNS(XML_URI, "from");
@@ -351,7 +351,7 @@ public class DOMDiffHandler implements DiffHandler
      */
     public void fieldChanged(FieldInfo oldInfo, FieldInfo newInfo)
         throws DiffException 
-	{
+    {
         Node currentNode = this.currentNode;
         Element tmp = doc.createElementNS(XML_URI, "fieldchange");
         Element from = doc.createElementNS(XML_URI, "from");
@@ -379,8 +379,8 @@ public class DOMDiffHandler implements DiffHandler
      *                       writing to a file caused an IOException
      */
     public void methodChanged(MethodInfo oldInfo, MethodInfo newInfo)
-		throws DiffException
-	{
+        throws DiffException
+    {
         Node currentNode = this.currentNode;
         Element tmp = doc.createElementNS(XML_URI, "methodchange");
         Element from = doc.createElementNS(XML_URI, "from");
@@ -426,11 +426,11 @@ public class DOMDiffHandler implements DiffHandler
      */
     public void endDiff() throws DiffException {
         DOMSource source = new DOMSource(doc);
-		try {
+        try {
         transformer.transform(source, result);
-		} catch (TransformerException te) {
-			throw new DiffException(te);
-		}
+        } catch (TransformerException te) {
+            throw new DiffException(te);
+        }
     }
     
     /**
@@ -514,16 +514,16 @@ public class DOMDiffHandler implements DiffHandler
 
         if (info.getName() != null)
             tmp.setAttribute( "name", 
-					info.getName());
+                    info.getName());
         if (info.getSignature() != null)
             tmp.setAttribute( "signature", 
-					info.getSignature());
+                    info.getSignature());
         if (info.getValue() != null)
             tmp.setAttribute( "value",
-					info.getValue().toString());
+                    info.getValue().toString());
         if (info.getDesc() != null)
             addTypeNode(info.getDesc());
-		this.currentNode = currentNode;
+        this.currentNode = currentNode;
     }
     
     /**
@@ -534,8 +534,8 @@ public class DOMDiffHandler implements DiffHandler
      * @param info Info describing the access flags.
      */
     protected void addAccessFlags(AbstractInfo info) {
-		Element currentNode = (Element) this.currentNode;
-		currentNode.setAttribute( "access", info.getAccessType());
+        Element currentNode = (Element) this.currentNode;
+        currentNode.setAttribute( "access", info.getAccessType());
         if (info.isAbstract())
             currentNode.setAttribute( "abstract", "yes");
         if (info.isAnnotation())
@@ -581,17 +581,17 @@ public class DOMDiffHandler implements DiffHandler
     protected void addMethodNodes(String desc) {
         Type[] args = Type.getArgumentTypes(desc);
         Type ret = Type.getReturnType(desc);
-		Node currentNode = this.currentNode;
-		Element tmp = doc.createElementNS(XML_URI,"arguments");
-		currentNode.appendChild(tmp);
-		this.currentNode = tmp;
+        Node currentNode = this.currentNode;
+        Element tmp = doc.createElementNS(XML_URI,"arguments");
+        currentNode.appendChild(tmp);
+        this.currentNode = tmp;
         for (int i = 0; i < args.length; i++)
             addTypeNode(args[i]);
-		tmp = doc.createElementNS(XML_URI,"return");
-		this.currentNode.appendChild(tmp);
-		this.currentNode = tmp;
+        tmp = doc.createElementNS(XML_URI,"return");
+        this.currentNode.appendChild(tmp);
+        this.currentNode = tmp;
         addTypeNode(ret);
-		this.currentNode = currentNode;
+        this.currentNode = currentNode;
     }
     
     /**
@@ -611,8 +611,8 @@ public class DOMDiffHandler implements DiffHandler
      * @param type The type to describe.
      */
     protected void addTypeNode(Type type) {
-		Element tmp = doc.createElementNS(XML_URI, "type");
-		currentNode.appendChild(tmp);
+        Element tmp = doc.createElementNS(XML_URI, "type");
+        currentNode.appendChild(tmp);
         int i = type.getSort();
         if (i == Type.ARRAY) {
             tmp.setAttribute( "array", "yes");
@@ -635,33 +635,33 @@ public class DOMDiffHandler implements DiffHandler
             tmp.setAttribute( "name", "char");
             break;
         case Type.DOUBLE:
-			tmp.setAttribute( "primitive", "yes");
-			tmp.setAttribute( "name", "double");
-			break;
-		case Type.FLOAT:
-			tmp.setAttribute( "primitive", "yes");
-			tmp.setAttribute( "name", "float");
-			break;
-		case Type.INT:
-			tmp.setAttribute( "primitive", "yes");
-			tmp.setAttribute( "name", "int");
-			break;
-		case Type.LONG:
-			tmp.setAttribute( "primitive", "yes");
-			tmp.setAttribute( "name", "long");
-			break;
-		case Type.OBJECT:
-			tmp.setAttribute( "name",
-					Tools.getClassName(type.getInternalName()));
-			break;
-		case Type.SHORT:
-			tmp.setAttribute( "primitive", "yes");
-			tmp.setAttribute( "name", "short");
-			break;
-		case Type.VOID:
-			tmp.setAttribute( "primitive", "yes");
-			tmp.setAttribute( "name", "void");
-			break;
+            tmp.setAttribute( "primitive", "yes");
+            tmp.setAttribute( "name", "double");
+            break;
+        case Type.FLOAT:
+            tmp.setAttribute( "primitive", "yes");
+            tmp.setAttribute( "name", "float");
+            break;
+        case Type.INT:
+            tmp.setAttribute( "primitive", "yes");
+            tmp.setAttribute( "name", "int");
+            break;
+        case Type.LONG:
+            tmp.setAttribute( "primitive", "yes");
+            tmp.setAttribute( "name", "long");
+            break;
+        case Type.OBJECT:
+            tmp.setAttribute( "name",
+                    Tools.getClassName(type.getInternalName()));
+            break;
+        case Type.SHORT:
+            tmp.setAttribute( "primitive", "yes");
+            tmp.setAttribute( "name", "short");
+            break;
+        case Type.VOID:
+            tmp.setAttribute( "primitive", "yes");
+            tmp.setAttribute( "name", "void");
+            break;
         }
     }
 }

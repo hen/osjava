@@ -203,7 +203,7 @@ public class JarDiff
                 return;
             }
 
-			/* This is left commented out, moved back to using DOM for now.
+            /* This is left commented out, moved back to using DOM for now.
             SAXTransformerFactory stf =
                 (SAXTransformerFactory) TransformerFactory.newInstance();
             stf.setErrorListener(
@@ -245,7 +245,7 @@ public class JarDiff
                 out = System.out;
             }
             oth.setResult(new StreamResult(out));
-			*/
+            */
             TransformerFactory tf = TransformerFactory.newInstance();
             tf.setErrorListener(
                     new ErrorListener() {
@@ -268,9 +268,9 @@ public class JarDiff
                 } else if(FORMATS.contains(val)) {
                     URL url = JarDiff.class.getClassLoader()
                         .getResource("style/jardiff-"+val+".xsl");
-					ot = tf.newTransformer(
-							new StreamSource( url.toString() )
-							);
+                    ot = tf.newTransformer(
+                            new StreamSource( url.toString() )
+                            );
                 } else {
                     showHelp(options, "Invalid output format: "+val);
                     return;
@@ -300,9 +300,9 @@ public class JarDiff
             jd.loadOldClasses(oldFile);
             jd.loadNewClasses(newFile);
             jd.diff(
-					new DOMDiffHandler(ot, new StreamResult(out)), 
-					new SimpleDiffCriteria()
-					);
+                    new DOMDiffHandler(ot, new StreamResult(out)), 
+                    new SimpleDiffCriteria()
+                    );
             out.close();
         } catch (Exception e) {
             e.printStackTrace(System.err);

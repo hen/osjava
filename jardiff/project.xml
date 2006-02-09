@@ -68,11 +68,11 @@
       <artifactId>asm-commons</artifactId>
       <version>2.1</version>
     </dependency>
-	<dependency>
-	  <id>commons-cli</id>
-	  <version>1.0</version>
-	  <url>http://www.ibiblio.org/maven/commons-cli/jars/commons-cli-1.0.jar</url>
-	</dependency>
+    <dependency>
+      <id>commons-cli</id>
+      <version>1.0</version>
+      <url>http://www.ibiblio.org/maven/commons-cli/jars/commons-cli-1.0.jar</url>
+    </dependency>
   </dependencies>
 
   <build>
