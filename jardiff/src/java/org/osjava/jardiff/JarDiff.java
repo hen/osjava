@@ -54,8 +54,9 @@ import java.util.TreeSet;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import javax.xml.transform.ErrorListener;
-import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.sax.SAXTransformerFactory;
 import javax.xml.transform.sax.TransformerHandler;
 import javax.xml.transform.stream.StreamResult;
@@ -202,6 +203,7 @@ public class JarDiff
                 return;
             }
 
+			/* This is left commented out, moved back to using DOM for now.
             SAXTransformerFactory stf =
                 (SAXTransformerFactory) TransformerFactory.newInstance();
             stf.setErrorListener(
@@ -243,6 +245,45 @@ public class JarDiff
                 out = System.out;
             }
             oth.setResult(new StreamResult(out));
+			*/
+            TransformerFactory tf = TransformerFactory.newInstance();
+            tf.setErrorListener(
+                    new ErrorListener() {
+                        public void warning(TransformerException te) {
+                            System.err.println("xslt warning: "+te.getMessageAndLocation());
+                        }
+                        public void error(TransformerException te) {
+                            System.err.println("xslt error: "+te.getMessageAndLocation());
+                        }
+                        public void fatalError(TransformerException te) {
+                            System.err.println("xslt fatal error: "+te.getMessageAndLocation());
+                        }
+                    });
+
+            Transformer ot;
+            if(cli.hasOption('o')) {
+                String val = cli.getOptionValue('o');
+                if("xml".equals(val)) {
+                    ot = tf.newTransformer();
+                } else if(FORMATS.contains(val)) {
+                    URL url = JarDiff.class.getClassLoader()
+                        .getResource("style/jardiff-"+val+".xsl");
+					ot = tf.newTransformer(
+							new StreamSource( url.toString() )
+							);
+                } else {
+                    showHelp(options, "Invalid output format: "+val);
+                    return;
+                }
+            } else {
+                ot = tf.newTransformer();
+            }
+            OutputStream out;
+            if(cli.hasOption('O')) {
+                out = new FileOutputStream(cli.getOptionValue('O'));
+            } else {
+                out = System.out;
+            }
             JarDiff jd = new JarDiff();
             File oldFile = new File(cli.getOptionValue('f'));
             File newFile = new File(cli.getOptionValue('t'));
@@ -258,7 +299,10 @@ public class JarDiff
             }
             jd.loadOldClasses(oldFile);
             jd.loadNewClasses(newFile);
-            jd.diff(new SAXDiffHandler(oth), new SimpleDiffCriteria());
+            jd.diff(
+					new DOMDiffHandler(ot, new StreamResult(out)), 
+					new SimpleDiffCriteria()
+					);
             out.close();
         } catch (Exception e) {
             e.printStackTrace(System.err);
