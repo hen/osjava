@@ -136,6 +136,7 @@ public class JarDiff
     static {
         FORMATS.add("html");
         FORMATS.add("xhtml");
+        FORMATS.add("text");
     }
 
     /**
@@ -148,7 +149,7 @@ public class JarDiff
             System.out.println(msg);
         }
         HelpFormatter hf = new HelpFormatter();
-        hf.printHelp("JarDiff -f <from jar> -t <to jar> [-F <from name>] [-T <to name>] [-d <dependency path>] [-o <xml|html|xhtml>] [-O <file>]", options);
+        hf.printHelp("JarDiff -f <from jar> -t <to jar> [-F <from name>] [-T <to name>] [[-o <xml|html|xhtml|text>]|[-x <xsl file>]] [-O <file>]", options);
     }
 
     /**
@@ -174,8 +175,8 @@ public class JarDiff
             options.addOption(tmp);
             tmp = new Option("T","to-name",true,"to name");
             options.addOption(tmp);
-            tmp = new Option("d","dep",true,"dependency path");
-            options.addOption(tmp);
+            //tmp = new Option("d","dep",true,"dependency path");
+            //options.addOption(tmp);
             tmp = new Option("o","output-format",true,"output format, xml or html");
             options.addOption(tmp);
             tmp = new Option("O","out",true,"output file");

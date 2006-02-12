@@ -85,6 +85,7 @@
         <directory>xsl</directory>
         <includes>
           <include>jardiff-html.xsl</include>
+          <include>jardiff-text.xsl</include>
           <include>jardiff-xhtml.xsl</include>
           <include>jardiff-html-base.xsl</include>
         </includes>

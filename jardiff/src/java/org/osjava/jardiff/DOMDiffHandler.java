@@ -588,7 +588,7 @@ public class DOMDiffHandler implements DiffHandler
         for (int i = 0; i < args.length; i++)
             addTypeNode(args[i]);
         tmp = doc.createElementNS(XML_URI,"return");
-        this.currentNode.appendChild(tmp);
+        currentNode.appendChild(tmp);
         this.currentNode = tmp;
         addTypeNode(ret);
         this.currentNode = currentNode;
