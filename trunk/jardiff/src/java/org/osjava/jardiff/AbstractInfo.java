@@ -267,21 +267,27 @@ public abstract class AbstractInfo
     }
     
     /**
-     * Test if this class, method or field is transient.
+     * Test if this class or field is transient.
+     * If this flag is set on a method it means something different.
      *
      * @return true if it is transient.
      */
     public final boolean isTransient() {
-        return (access & Opcodes.ACC_TRANSIENT) != 0;
+        return !(this instanceof MethodInfo) &&
+            ((access & Opcodes.ACC_TRANSIENT) != 0);
     }
     
     /**
-     * Test if this class, method or field is varargs.
+     * Test if this method is varargs.
+     * If this flag is set on a class or field it means something different.
+     * Well, it probably shouldn't be set on a class as it would make
+     * no sense, it only really makes sense on fields and methods.
      *
      * @return true if it is vargargs.
      */
     public final boolean isVarargs() {
-        return (access & Opcodes.ACC_VARARGS) != 0;
+        return (this instanceof MethodInfo) && 
+            ((access & Opcodes.ACC_VARARGS) != 0);
     }
     
     /**
