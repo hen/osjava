@@ -93,8 +93,14 @@ public class SimpleDiffCriteria implements DiffCriteria
     public boolean differs(ClassInfo oldInfo, ClassInfo newInfo) {
         if (oldInfo.getAccess() != newInfo.getAccess())
             return true;
-        if (!oldInfo.getSupername().equals(newInfo.getSupername()))
+        // Yes classes can have a null supername, e.g. java.lang.Object !
+        if(oldInfo.getSupername() == null) {
+            if(newInfo.getSupername() != null) {
+                return true;
+            }
+        } else if (!oldInfo.getSupername().equals(newInfo.getSupername())) {
             return true;
+        }
         java.util.Set oldInterfaces
             = new HashSet(Arrays.asList(oldInfo.getInterfaces()));
         java.util.Set newInterfaces

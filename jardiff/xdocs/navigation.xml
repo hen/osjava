@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="mudclient">
+
+  <title>mudclient</title>
+
+  <body>
+    <links>
+      <item name="Maven" href="http://maven.apache.org/"/>
+    </links>
+    <menu name="Overview">
+      <item name="Introduction" href="/index.html"/>
+      <item name="How To" href="/HowTo.html"/>
+      <item name="Download" href="http://dist.osjava.org/releases/official/jardiff/"/>
+      <item name="License" href="/license.html"/>
+    </menu>
+    <menu name="Code docs">
+      <item name="Java Docs" href="http://dist.osjava.org/releases/multidoc-jnr/jardiff/index.html"/>
+      <item name="Source XReference" href="/xref/index.html"/>
+    </menu>
+    <menu name="Resources">
+      <item name="Mailing List" href="/mail-lists.html"/>
+      <item name="Jar dependencies" href="/dependencies.html"/>
+      <item name="SVN Repository" href="http://www.osjava.org/svn.html?project=jardiff"/>
+      <item name="Bug Tracking" href="http://issues.osjava.org/jira/browse/JD"/>
+    </menu>
+  </body>
+</project>
