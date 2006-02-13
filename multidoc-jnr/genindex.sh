@@ -59,10 +59,7 @@ do
 #        echo "<B>Changes Summary</B></FONT></TD></TR>" >> $diff_file
 ##        java -jar clirr-core-0.5-uber.jar -o $old -n $new 2>&1 | sed 's/[^:]*:[^:]*: //' | sed 's/^/<tr class="TableRowColor"><td width="15%">/' | sed 's/:/<\/td><td>/' | sed 's/$/<\/td><\/tr>/' >> $diff_file
 #        jardiff.pl $old $new 2>&1 | sed 's/[^:]*:[^:]*: //' >> $diff_file
-        java -jar jardiff-0.1-uber.jar $old $new > DIFF.xml
-        ant -q | grep -v 'BUILD SUCCESSFUL' | grep -v 'Total time:'
-        cat DIFF.html > $diff_file
-        rm DIFF.xml DIFF.html
+        java -jar jardiff-0.1-uber.jar -o html -f $old -t $new -O $diff_file
 #        echo "</table>" >> $diff_file
         echo "<font class=\"FrameItemFont\"><a href=\"diff-report-${lastV}_${v}.html\" target="classFrame">(diff to ${v})</a></font>" >> $i/versions.html
       fi
