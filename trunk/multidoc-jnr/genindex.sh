@@ -3,6 +3,9 @@ INPUT=$1
 # OUTPUT should be the location of the unzipped javadoc
 OUTPUT=$2
 
+if [ $# -ne 2 -o -z "$INPUT" -o -z "$OUTPUT" ]; then
+  echo "Usage: genindex.sh <maven repository> <javadoc>"
+else
 mkdir -p $OUTPUT
 
 cp header-index-template.html $OUTPUT/index.html
@@ -88,3 +91,4 @@ do
 done
 
 cat footer-index-template.html >> $OUTPUT/index.html
+fi
