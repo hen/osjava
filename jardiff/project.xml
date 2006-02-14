@@ -19,7 +19,7 @@
   A tool to help visualise API differences between two different versions of
   a project. Jardiff takes two jar files and outputs all the public API changes
   as xml, html or plain text. Currently this is command line driven, though 
-  we are working on an ant plugin.
+  we are working on an ant plugin. It requires java 1.4 to run.
   <h2>Motivation</h2>
   At OSjava, we were using a shell script to work out API differences between
   our release versions. This unfortunately doesn't scale very well to larger
