@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:noNamespaceSchemaLocation="http://maven.apache.org/xsd/maven-project-3.0.0.xsd" 
+         xmlns:xsi="http://www.w3c.org/2001/XMLSchema-instance">
+  
+  <pomVersion>3</pomVersion>
+  <id>jardiff</id>
+  <name>jardiff</name>
+  <currentVersion>0.1</currentVersion>
+  <organization>
+    <name>OSJava</name>
+    <url>http://www.osjava.org/</url>
+    <logo>http://www.osjava.org/images/osjava.gif</logo>
+  </organization>
+  <inceptionYear>2005</inceptionYear>
+  <package>org.osjava.jardiff</package>
+  <logo>http://www.osjava.org/images/osjava.gif</logo>
+  
+  <description><![CDATA[
+  A tool to help visualise API differences between two different versions of
+  a project. Jardiff takes two jar files and outputs all the public API changes
+  as xml, html or plain text. Currently this is command line driven, though 
+  we are working on an ant plugin. It requires java 1.4 to run.
+  <h2>Motivation</h2>
+  At OSjava, we were using a shell script to work out API differences between
+  our release versions. This unfortunately doesn't scale very well to larger
+  projects, the main reason for jardiff was to do the same in a much shorter
+  time (From memory it was taking minutes to get the API diff from two fairly
+  small jars). In it's current state, jardiff can generate the api differences
+  between rt.jar for java 1.4 and java 1.5 in under 20 seconds, so it should 
+  scale to even the largest of projects.
+  <h2>Aims</h2>
+  To generate a report on public API differences between two different releases
+  of a java project.
+  <h2>Future</h2>
+  There's a whole bunch of things I'd like to see added in future
+  <ul>
+  <li>A prettier html output format</li>
+  <li>Ability to provide change compatability information</li>
+  <li>Ability to show non public API changes</li>
+  <li>Plugins for various tools, e.g. maven, eclipse, ant.</li>
+  <li>Ability to link html output to javadoc.</li>
+  </ul>
+  ]]></description>
+  
+  <shortDescription>A jar diff generator</shortDescription>
+
+  <!-- This stuff need fixing -->
+  <url>http://www.osjava.org/jardiff/</url>
+  <issueTrackingUrl>http://issues.osjava.org/jira/browse/JDF</issueTrackingUrl>
+  <siteAddress>dist.osjava.org/maven/jardiff/</siteAddress>
+  <siteDirectory>/sites/org/osjava/www/maven/jardiff/</siteDirectory>
+  <distributionDirectory>/sites/org/osjava/www/maven/builds/jardiff/</distributionDirectory>
+
+  <repository>
+    <connection>scm:svn:http://svn.osjava.org/svn/osjava/trunk/jardiff</connection>
+    <url>http://svn.osjava.org/svn/osjava/trunk/jardiff</url>
+  </repository>
+
+  <mailingLists>
+    <mailingList>
+      <name>osjava-users</name>
+      <subscribe>http://lists.osjava.org/mailman/listinfo/osjava-users</subscribe>
+      <unsubscribe>http://lists.osjava.org/mailman/listinfo/osjava-users</unsubscribe>
+      <archive>http://lists.osjava.org/mailman/private/osjava-users/</archive>
+    </mailingList>
+  </mailingLists>
+
+  <developers>
+    <developer>
+      <name>Antony Riley</name>
+      <id>antony</id>
+      <email>cyberiantiger@gmail.com</email>
+      <organization>osjava</organization>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+  </developers>
+  
+  <contributors>
+  </contributors>
+  
+  <dependencies>
+    <dependency>
+      <groupId>asm</groupId>
+      <artifactId>asm</artifactId>
+      <version>2.1</version>
+      <url>http://asm.objectweb.org/</url>
+    </dependency>
+    <dependency>
+      <groupId>asm</groupId>
+      <artifactId>asm-commons</artifactId>
+      <version>2.1</version>
+      <url>http://asm.objectweb.org/</url>
+    </dependency>
+    <dependency>
+      <id>commons-cli</id>
+      <version>1.0</version>
+      <url>http://jakarta.apache.org/commons/cli/</url>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <nagEmailAddress>cyberiantiger@gmail.com</nagEmailAddress>
+    <sourceDirectory>src/java</sourceDirectory>
+
+    <resources>
+      <resource>
+        <targetPath>style</targetPath>
+        <directory>xsl</directory>
+        <includes>
+          <include>jardiff-html.xsl</include>
+          <include>jardiff-text.xsl</include>
+          <include>jardiff-xhtml.xsl</include>
+          <include>jardiff-html-base.xsl</include>
+        </includes>
+      </resource>
+    </resources>   
+
+  </build>
+
+    <reports>
+        <report>maven-jxr-plugin</report>
+        <report>maven-javadoc-plugin</report>
+        <report>maven-license-plugin</report>
+        <report>maven-changes-plugin</report>           
+    </reports>
+
+</project>

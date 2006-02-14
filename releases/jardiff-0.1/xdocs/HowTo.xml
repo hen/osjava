@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+
+<document>
+  <properties>
+    <author email="antony@cyberiantiger.org">Antony Riley</author>
+    <title>Examples</title>
+  </properties>
+  <body>
+    <section name="Using jardiff">
+      <p>
+      Using jardiff is relatively simple, I suggest just grabbing the
+      jardiff-0.1-uber.jar, as this is executable from the command line, 
+      and includes all the dependencies.
+      </p>
+      <p>If you ever need to list the options that jardiff understands</p>
+      <code>java -jar jardiff-0.1-uber.jar --help</code>
+      <p>This lists all the options as follows:</p>
+      <pre>
+usage: JarDiff -f &lt;from jar> -t &lt;to jar> [-F &lt;from name>] [-T &lt;to name>]
+               [[-o &lt;xml|html|xhtml|text>]|[-x &lt;xsl file>]] [-O &lt;file>]
+ -o,--output-format    output format, xml or html
+ -F,--from-name        from name
+ -T,--to-name          to name
+ -O,--out              output file
+ -f,--from             from jar file
+ -h,--help             print help on command line arguments
+ -t,--to               to jar file
+ -x,--xsl              custom xsl sheet to format output with
+      </pre>
+      <p>
+      For instance, the following would be a typical invocation:
+      </p>
+      <code>java -jar jardiff-0.1-uber.jar -f jardiff-0.1.jar -t jardiff-0.2.jar -o text</code>
+      <p>
+      This will print out in text the public API changes between jardiff-0.1.jar and jardiff-0.2.jar<br/>
+      Another typical invocation would be to write a html report on the differences between two versions of a project, for example:
+      </p>
+      <code>java -jar jardiff-0.1-uber.jar -f myproject-0.1.jar -t myproject-0.2.jar -o html -O diff-0.1-0.2.html</code>
+      <p>
+      This will write a file called "diff-0.1-0.2.html" in the current directory.<br/>
+      If you want to read the raw xml report. (Jardiff uses xml for it's own 
+      internal format, and uses built in stylesheets to convert output to 
+      text, html and xhtml) you would use <code>-o xml</code>.</p>
+      <p>
+      If you're brave enough to build your own style sheet for jardiff. (It's
+      probably a good idea to use one of the built in stylesheets and build
+      upon it if you want to do this, the built in xml format is not that
+      easy to deal with), you would specify <code>-x mystylesheet.xsl</code>.
+      </p>
+    </section>
+  </body>
+</document>
