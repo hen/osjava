@@ -5,7 +5,7 @@
   <pomVersion>3</pomVersion>
   <id>jardiff</id>
   <name>jardiff</name>
-  <currentVersion>0.1</currentVersion>
+  <currentVersion>0.2</currentVersion>
   <organization>
     <name>OSJava</name>
     <url>http://www.osjava.org/</url>
