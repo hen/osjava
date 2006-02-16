@@ -103,6 +103,9 @@
       <artifactId>ant</artifactId>
       <version>1.6.5</version>
       <url>http://ant.apache.org/</url>
+      <properties>
+        <uberjar.bundle>false</uberjar.bundle>
+      </properties>
     </dependency>
   </dependencies>
 
