@@ -66,21 +66,6 @@ import javax.xml.transform.stream.StreamSource;
 public class JarDiffTask extends Task {
 
     /**
-     * Set of supported formats.
-     */
-    private final static Set FORMATS = new HashSet();
-
-    /**
-     * Populate the set with some supported formats.
-     */
-    static {
-        FORMATS.add("html");
-        FORMATS.add("xhtml");
-        FORMATS.add("text");
-    }
-
-
-    /**
      * The jarfile this diff is from.
      */
     File fromJar = null;
