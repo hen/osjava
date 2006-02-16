@@ -116,7 +116,7 @@
     <resources>
       <resource>
         <targetPath>style</targetPath>
-        <directory>xsl</directory>
+        <directory>src/xsl</directory>
         <includes>
           <include>jardiff-html.xsl</include>
           <include>jardiff-text.xsl</include>
