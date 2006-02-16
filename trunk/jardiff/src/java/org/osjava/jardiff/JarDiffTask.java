@@ -68,27 +68,33 @@ public class JarDiffTask extends Task {
     /**
      * The jarfile this diff is from.
      */
-    File fromJar = null;
+    private File fromJar = null;
 
     /**
      * The jarfile this diff is to.
      */
-    File toJar = null;
+    private File toJar = null;
 
     /**
      * The file to write the report to.
      */
-    File out = null;
+    private File out = null;
 
     /**
      * The name to use for the from version.
      */
-    String fromName = null;
+    private String fromName = null;
 
     /**
      * The name to use for the to verison.
      */
-    String toName = null;
+    private String toName = null;
+
+    /**
+     * Force output, even if the existing output is newer than
+     * the jar files.
+     */
+    private boolean force = false;
 
     /**
      * Run the task, generating the jardiff report.
@@ -115,15 +121,22 @@ public class JarDiffTask extends Task {
             if(toName == null) {
                 toName = toJar.getName();
             }
-            JarDiff jd = new JarDiff();
-            jd.setOldVersion(fromName);
-            jd.setNewVersion(toName);
-            jd.loadOldClasses(fromJar);
-            jd.loadNewClasses(toJar);
-            jd.diff(
-                    new StreamDiffHandler(new FileOutputStream(out)),
-                    new SimpleDiffCriteria()
-                   );
+            long outModified = out.lastModified();
+            long oldModified = fromJar.lastModified();
+            long newModified = toJar.lastModified();
+            if(force || oldModified > outModified || newModified > outModified)
+            {
+                log("Writing xml api diff to "+outFile);
+                JarDiff jd = new JarDiff();
+                jd.setOldVersion(fromName);
+                jd.setNewVersion(toName);
+                jd.loadOldClasses(fromJar);
+                jd.loadNewClasses(toJar);
+                jd.diff(
+                        new StreamDiffHandler(new FileOutputStream(out)),
+                        new SimpleDiffCriteria()
+                       );
+            }
         } catch (DiffException de) {
             throw new BuildException(de);
         } catch (IOException ioe) {
@@ -180,5 +193,17 @@ public class JarDiffTask extends Task {
      */
     public void setToname(String toName) {
         this.toName = toName;
+    }
+
+    /**
+     * Force output even if there is an existing diff file which is
+     * newer than the source jar files.
+     * Optional attribute.
+     * Defaults to false.
+     *
+     * @param force true to force output, false otherwise
+     */
+    public void setForce(boolean force) {
+        this.force = force;
     }
 }
