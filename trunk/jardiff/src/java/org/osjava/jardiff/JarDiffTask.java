@@ -41,6 +41,8 @@ package org.osjava.jardiff;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.URL;
 import java.util.Set;
 import java.util.HashSet;
@@ -104,16 +106,6 @@ public class JarDiffTask extends Task {
     String toName = null;
 
     /**
-     * The output format.
-     */
-    String format = null;
-
-    /**
-     * A custom xslt to use to format the output.
-     */
-    File xslt = null;
-
-    /**
      * Run the task, generating the jardiff report.
      *
      * @throws BuildException When there is an error creating the diff,
@@ -132,52 +124,11 @@ public class JarDiffTask extends Task {
             if(out == null) {
                 throw new BuildException("no out file specified");
             }
-            if(format != null && xslt != null) {
-                throw new BuildException("cannot specify both format and xslt");
-            }
             if(fromName == null) {
                 fromName = fromJar.getName();
             }
             if(toName == null) {
                 toName = toJar.getName();
-            }
-            // XXX: Ant comes with it's own XML/XSLT wrappers
-            // We should use them in here (and possibly in other classes)
-            // This may involve wrapping the xml/xslt stuff in our own
-            // classes to ensure we don't have a dependency on ant from the
-            // commandline verson.
-            TransformerFactory tf = TransformerFactory.newInstance();
-            tf.setErrorListener(
-                    new ErrorListener() {
-                        public void warning(TransformerException te) {
-                            System.err.println("xslt warning: "+te.getMessageAndLocation());
-                        }
-                        public void error(TransformerException te) {
-                            System.err.println("xslt error: "+te.getMessageAndLocation());
-                        }
-                        public void fatalError(TransformerException te) {
-                            System.err.println("xslt fatal error: "+te.getMessageAndLocation());
-                        }
-                    });
-            Transformer outputTransformer;
-            if(format != null) {
-                if("xml".equals(format)) {
-                    outputTransformer = tf.newTransformer();
-                } else if(FORMATS.contains(format)) {
-                    URL url = JarDiffTask.class.getClassLoader()
-                        .getResource("style/jardiff-"+format+".xsl");
-                    outputTransformer = tf.newTransformer(
-                            new StreamSource( url.toString() )
-                            );
-                } else {
-                    throw new BuildException("unknown output format: "+format);
-                }
-            } else if(xslt != null) {
-                outputTransformer = tf.newTransformer(
-                        new StreamSource(xslt)
-                        );
-            } else {
-                outputTransformer = tf.newTransformer();
             }
             JarDiff jd = new JarDiff();
             jd.setOldVersion(fromName);
@@ -185,13 +136,13 @@ public class JarDiffTask extends Task {
             jd.loadOldClasses(fromJar);
             jd.loadNewClasses(toJar);
             jd.diff(
-                    new DOMDiffHandler(outputTransformer, new StreamResult(out)),
+                    new StreamDiffHandler(new FileOutputStream(out)),
                     new SimpleDiffCriteria()
                    );
-        } catch (TransformerConfigurationException tce) {
-            throw new BuildException(tce);
         } catch (DiffException de) {
             throw new BuildException(de);
+        } catch (IOException ioe) {
+            throw new BuildException(ioe);
         }
     }
 
@@ -244,25 +195,5 @@ public class JarDiffTask extends Task {
      */
     public void setToname(String toName) {
         this.toName = toName;
-    }
-
-    /**
-     * Set the output format, must be one of xml, html, xhtml, text.
-     * Optional attribute, mutually exclusive with xslt.
-     *
-     * @param format one of xml, html, xhtml, text.
-     */
-    public void setFormat(String format) {
-        this.format = format;
-    }
-
-    /**
-     * Set a custom xslt to process output with.
-     * Optional attribute, mutually exclusive with format.
-     *
-     * @param xslt An xslt file.
-     */
-    public void setXslt(File xslt) {
-        this.xslt = xslt;
     }
 }
