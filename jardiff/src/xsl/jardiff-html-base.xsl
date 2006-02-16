@@ -24,6 +24,10 @@ span.type { text: normal; }
      </html>
   </xsl:template>
 
+  <xsl:template match="jd:oldcontents"/>
+
+  <xsl:template match="jd:newcontents"/>
+
   <xsl:template match="jd:removed">
     <xsl:for-each select="jd:class">
       <xsl:call-template name="removed-class"/>

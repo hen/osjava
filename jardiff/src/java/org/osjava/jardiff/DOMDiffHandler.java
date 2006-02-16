@@ -113,13 +113,13 @@ public class DOMDiffHandler implements DiffHandler
     }
     
     /**
-     * Create a new SAXDiffHandler with the specified TransformerHandler.
+     * Create a new DOMDiffHandler with the specified Transformer and Result.
      * This method allows the user to choose what they are going to do with
-     * the output in a flexible manner, and allows anything from forwarding
-     * the events to their own SAX contenthandler to building a DOM tree to
-     * writing to an OutputStream.
+     * the output in a flexible manner, allowing a stylesheet to be specified
+     * and some result object.
      *
-     * @param handler The SAX transformer handler to send SAX events to.
+     * @param transformer The transformer to transform the output with.
+     * @param result Where to put the result.
      */
     public DOMDiffHandler(Transformer transformer, Result result) 
         throws DiffException
@@ -152,6 +152,63 @@ public class DOMDiffHandler implements DiffHandler
         tmp.setAttribute( "new", newJar);
         doc.appendChild(tmp);
         currentNode = tmp;
+    }
+
+    /**
+     * Start the list of old contents.
+     *
+     * @throws DiffException when there is an underlying exception, e.g.
+     *                       writing to a file caused an IOException
+     */
+    public void startOldContents() throws DiffException {
+        Element tmp = doc.createElementNS(XML_URI, "oldcontents");
+        currentNode.appendChild(tmp);
+        currentNode = tmp;
+    }
+
+    /**
+     * Start the list of old contents.
+     *
+     * @throws DiffException when there is an underlying exception, e.g.
+     *                       writing to a file caused an IOException
+     */
+    public void startNewContents() throws DiffException {
+        Element tmp = doc.createElementNS(XML_URI, "newcontents");
+        currentNode.appendChild(tmp);
+        currentNode = tmp;
+    }
+
+    /**
+     * Add a contained class.
+     *
+     * @param info information about a class
+     * @throws DiffException when there is an underlying exception, e.g.
+     *                       writing to a file caused an IOException
+     */
+    public void contains(ClassInfo info) throws DiffException {
+        Element tmp = doc.createElementNS(XML_URI, "class");
+        tmp.setAttribute("name", Tools.getClassName(info.getName()));
+        currentNode.appendChild(tmp);
+    }
+
+    /**
+     * End the list of old contents.
+     *
+     * @throws DiffException when there is an underlying exception, e.g.
+     *                       writing to a file caused an IOException
+     */
+    public void endOldContents() throws DiffException {
+        currentNode = currentNode.getParentNode();
+    }
+
+    /**
+     * End the list of new contents.
+     *
+     * @throws DiffException when there is an underlying exception, e.g.
+     *                       writing to a file caused an IOException
+     */
+    public void endNewContents() throws DiffException {
+        currentNode = currentNode.getParentNode();
     }
     
     /**

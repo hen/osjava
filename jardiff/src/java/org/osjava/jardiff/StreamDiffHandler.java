@@ -1,8 +1,8 @@
 /*
- * org.osjava.jardiff.SAXDiffHandler
+ * org.osjava.jardiff.StreamDiffHandler
  *
  * $Id: IOThread.java 1952 2005-08-28 18:03:41Z cybertiger $
- * $URL: https://svn.osjava.org/svn/osjava/trunk/osjava-nio/src/java/org/osjava/nio/IOThread.java $
+ * $URL: https://svn.osjava.org/svn/osjava/trunk/jardiff/src/ava/org/osjava/jardiff/DOMDiffHandler.java $
  * $Rev: 1952 $
  * $Date: 2005-08-28 18:03:41 +0000 (Sun, 28 Aug 2005) $
  * $Author: cybertiger $
@@ -38,26 +38,21 @@
  */
 package org.osjava.jardiff;
 
-/* Not in 1.4.2 
-import javax.xml.XMLConstants;
-*/
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.sax.SAXTransformerFactory;
-import javax.xml.transform.sax.TransformerHandler;
-import javax.xml.transform.stream.StreamResult;
-
+import java.io.BufferedOutputStream;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import org.objectweb.asm.Type;
-import org.xml.sax.SAXException;
-import org.xml.sax.helpers.AttributesImpl;
 
 /**
- * A specific type of DiffHandler which uses SAX to create an XML document
- * describing the changes in the diff.
+ * A specific type of DiffHandler which uses an OutputStream to create an 
+ * XML document describing the changes in the diff.
+ * This is needed for java 1.2 compatibility for the ant task.
  *
  * @author <a href="mailto:antony@cyberiantiger.org">Antony Riley</a>
  */
-public class SAXDiffHandler implements DiffHandler
+public class StreamDiffHandler implements DiffHandler
 {
     /**
      * The XML namespace used.
@@ -65,83 +60,138 @@ public class SAXDiffHandler implements DiffHandler
     public static final String XML_URI = "http://www.osjava.org/jardiff/0.1";
 
     /**
-     * The javax.xml.transform.sax.TransformerHandler used to convert
-     * SAX events to text.
+     * The javax.xml.transform.sax.Transformer used to convert
+     * the DOM to text.
      */
-    private final TransformerHandler handler;
-    
+    private final BufferedWriter out;
+
     /**
-     * A reusable AttributesImpl to avoid having to instantiate this class
-     * all over the place throughout the handler.
-     */
-    protected final AttributesImpl attr;
-    
-    /**
-     * Create a new SAXDiffHandler which writes to System.out
+     * Create a new StreamDiffHandler which writes to System.out
      *
      * @throws DiffException when there is an underlying exception, e.g.
      *                       writing to a file caused an IOException
      */
-    public SAXDiffHandler() throws DiffException {
-        attr = new AttributesImpl();
+    public StreamDiffHandler() throws DiffException {
         try {
-            SAXTransformerFactory stf
-                = (SAXTransformerFactory) TransformerFactory.newInstance();
-            handler = stf.newTransformerHandler();
-            handler.setResult(new StreamResult(System.out));
-        } catch (TransformerConfigurationException tce) {
-            throw new DiffException(tce);
+            out = new BufferedWriter(
+                    new OutputStreamWriter(System.out, "UTF-8")
+                    );
+        } catch (IOException ioe) {
+            throw new DiffException(ioe);
         }
     }
     
     /**
-     * Create a new SAXDiffHandler with the specified TransformerHandler.
-     * This method allows the user to choose what they are going to do with
-     * the output in a flexible manner, and allows anything from forwarding
-     * the events to their own SAX contenthandler to building a DOM tree to
-     * writing to an OutputStream.
+     * Create a new StreamDiffHandler with the specified OutputStream.
      *
-     * @param handler The SAX transformer handler to send SAX events to.
+     * @param out Where to write output.
      */
-    public SAXDiffHandler(TransformerHandler handler) {
-        attr = new AttributesImpl();
-        this.handler = handler;
+    public StreamDiffHandler(OutputStream out)
+        throws DiffException
+    {
+        try {
+            this.out = new BufferedWriter(
+                    new OutputStreamWriter(out, "UTF-8")
+                    );
+        } catch (IOException ioe) {
+            throw new DiffException(ioe);
+        }
     }
     
     /**
      * Start the diff.
      * This writes out the start of a &lt;diff&gt; node.
      *
-     * @param oldJar ignored
-     * @param newJar ignored
+     * @param oldJar name of old jar file.
+     * @param newJar name of new jar file.
      * @throws DiffException when there is an underlying exception, e.g.
      *                       writing to a file caused an IOException
      */
     public void startDiff(String oldJar, String newJar) throws DiffException {
         try {
-            handler.startDocument();
-            handler.startPrefixMapping("", XML_URI);
-            attr.addAttribute(XML_URI, "", "old", "CDATA", oldJar); 
-            attr.addAttribute(XML_URI, "", "new", "CDATA", newJar); 
-            // XXX: This should not be needed, workaround for java 1.4.2 
-            // bug, which means the namespace is not written out.
-            /* XMLConstants not in 1.4.2 
-               attr.addAttribute(
-               XMLConstants.XMLNS_ATTRIBUTE_NS_URI,
-               "",
-               XMLConstants.XMLNS_ATTRIBUTE,
-               XML_URI);
-               */
-            attr.addAttribute(
-                    "http://www.w3.org/2000/xmlns/",
-                    "",
-                    "xmlns",
-                    "CDATA",
-                    XML_URI);
-            handler.startElement(XML_URI, "", "diff", attr);
-            attr.clear();
-        } catch (SAXException se) {
-            throw new DiffException(se);
+            out.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+            out.write("<diff xmlns=\"");
+            out.write(xmlEscape(XML_URI));
+            out.write("\" old=\"");
+            out.write(xmlEscape(oldJar));
+            out.write("\" new=\"");
+            out.write(xmlEscape(newJar));
+            out.write("\">");
+        } catch (IOException ioe) {
+            throw new DiffException(ioe);
+        }
+    }
+
+    /**
+     * Start the list of old contents.
+     *
+     * @throws DiffException when there is an underlying exception, e.g.
+     *                       writing to a file caused an IOException
+     */
+    public void startOldContents() throws DiffException {
+        try {
+            out.write("<oldcontents>");
+        } catch (IOException ioe) {
+            throw new DiffException(ioe);
+        }
+    }
+
+    /**
+     * Start the list of old contents.
+     *
+     * @throws DiffException when there is an underlying exception, e.g.
+     *                       writing to a file caused an IOException
+     */
+    public void startNewContents() throws DiffException {
+        try {
+            out.write("<newcontents>");
+        } catch (IOException ioe) {
+            throw new DiffException(ioe);
+        }
+    }
+
+    /**
+     * Add a contained class.
+     *
+     * @param info information about a class
+     * @throws DiffException when there is an underlying exception, e.g.
+     *                       writing to a file caused an IOException
+     */
+    public void contains(ClassInfo info) throws DiffException {
+        try {
+            out.write("<class name=\"");
+            out.write(xmlEscape(Tools.getClassName(info.getName())));
+            out.write("\">");
+        } catch (IOException ioe) {
+            throw new DiffException(ioe);
+        }
+    }
+
+    /**
+     * End the list of old contents.
+     *
+     * @throws DiffException when there is an underlying exception, e.g.
+     *                       writing to a file caused an IOException
+     */
+    public void endOldContents() throws DiffException {
+        try {
+            out.write("</oldcontents>");
+        } catch (IOException ioe) {
+            throw new DiffException(ioe);
+        }
+    }
+
+    /**
+     * End the list of new contents.
+     *
+     * @throws DiffException when there is an underlying exception, e.g.
+     *                       writing to a file caused an IOException
+     */
+    public void endNewContents() throws DiffException {
+        try {
+            out.write("</newcontents>");
+        } catch (IOException ioe) {
+            throw new DiffException(ioe);
         }
     }
     
@@ -154,9 +204,9 @@ public class SAXDiffHandler implements DiffHandler
      */
     public void startRemoved() throws DiffException {
         try {
-            handler.startElement(XML_URI, "", "removed", attr);
-        } catch (SAXException se) {
-            throw new DiffException(se);
+            out.write("<removed>");
+        } catch (IOException ioe) {
+            throw new DiffException(ioe);
         }
     }
     
@@ -171,8 +221,8 @@ public class SAXDiffHandler implements DiffHandler
     public void classRemoved(ClassInfo info) throws DiffException {
         try {
             writeClassInfo(info);
-        } catch (SAXException se) {
-            throw new DiffException(se);
+        } catch (IOException ioe) {
+            throw new DiffException(ioe);
         }
     }
     
@@ -185,9 +235,9 @@ public class SAXDiffHandler implements DiffHandler
      */
     public void endRemoved() throws DiffException {
         try {
-            handler.endElement(XML_URI, "", "removed");
-        } catch (SAXException se) {
-            throw new DiffException(se);
+            out.write("</removed>");
+        } catch (IOException ioe) {
+            throw new DiffException(ioe);
         }
     }
     
@@ -200,9 +250,9 @@ public class SAXDiffHandler implements DiffHandler
      */
     public void startAdded() throws DiffException {
         try {
-            handler.startElement(XML_URI, "", "added", attr);
-        } catch (SAXException se) {
-            throw new DiffException(se);
+            out.write("<added>");
+        } catch (IOException ioe) {
+            throw new DiffException(ioe);
         }
     }
     
@@ -217,8 +267,8 @@ public class SAXDiffHandler implements DiffHandler
     public void classAdded(ClassInfo info) throws DiffException {
         try {
             writeClassInfo(info);
-        } catch (SAXException se) {
-            throw new DiffException(se);
+        } catch (IOException ioe) {
+            throw new DiffException(ioe);
         }
     }
     
@@ -231,9 +281,9 @@ public class SAXDiffHandler implements DiffHandler
      */
     public void endAdded() throws DiffException {
         try {
-            handler.endElement(XML_URI, "", "added");
-        } catch (SAXException se) {
-            throw new DiffException(se);
+            out.write("</added>");
+        } catch (IOException ioe) {
+            throw new DiffException(ioe);
         }
     }
     
@@ -246,9 +296,9 @@ public class SAXDiffHandler implements DiffHandler
      */
     public void startChanged() throws DiffException {
         try {
-            handler.startElement(XML_URI, "", "changed", attr);
-        } catch (SAXException se) {
-            throw new DiffException(se);
+            out.write("<changed>");
+        } catch (IOException ioe) {
+            throw new DiffException(ioe);
         }
     }
     
@@ -261,14 +311,14 @@ public class SAXDiffHandler implements DiffHandler
      * @throws DiffException when there is an underlying exception, e.g.
      *                       writing to a file caused an IOException
      */
-    public void startClassChanged(String internalName) throws DiffException {
+    public void startClassChanged(String internalName) throws DiffException 
+    {
         try {
-            attr.addAttribute(XML_URI, "", "name", "CDATA", 
-                                 Tools.getClassName(internalName));
-            handler.startElement(XML_URI, "", "classchanged", attr);
-            attr.clear();
-        } catch (SAXException se) {
-            throw new DiffException(se);
+            out.write("<classchanged name=\"");
+            out.write(xmlEscape(Tools.getClassName(internalName)));
+            out.write("\">");
+        } catch (IOException ioe) {
+            throw new DiffException(ioe);
         }
     }
     
@@ -284,8 +334,8 @@ public class SAXDiffHandler implements DiffHandler
     public void fieldRemoved(FieldInfo info) throws DiffException {
         try {
             writeFieldInfo(info);
-        } catch (SAXException se) {
-            throw new DiffException(se);
+        } catch (IOException ioe) {
+            throw new DiffException(ioe);
         }
     }
     
@@ -301,8 +351,8 @@ public class SAXDiffHandler implements DiffHandler
     public void methodRemoved(MethodInfo info) throws DiffException {
         try {
             writeMethodInfo(info);
-        } catch (SAXException se) {
-            throw new DiffException(se);
+        } catch (IOException ioe) {
+            throw new DiffException(ioe);
         }
     }
     
@@ -318,8 +368,8 @@ public class SAXDiffHandler implements DiffHandler
     public void fieldAdded(FieldInfo info) throws DiffException {
         try {
             writeFieldInfo(info);
-        } catch (SAXException se) {
-            throw new DiffException(se);
+        } catch (IOException ioe) {
+            throw new DiffException(ioe);
         }
     }
     
@@ -335,8 +385,8 @@ public class SAXDiffHandler implements DiffHandler
     public void methodAdded(MethodInfo info) throws DiffException {
         try {
             writeMethodInfo(info);
-        } catch (SAXException se) {
-            throw new DiffException(se);
+        } catch (IOException ioe) {
+            throw new DiffException(ioe);
         }
     }
     
@@ -353,18 +403,16 @@ public class SAXDiffHandler implements DiffHandler
      *                       writing to a file caused an IOException
      */
     public void classChanged(ClassInfo oldInfo, ClassInfo newInfo)
-        throws DiffException {
+        throws DiffException 
+    {
         try {
-            handler.startElement(XML_URI, "", "classchange", attr);
-            handler.startElement(XML_URI, "", "from", attr);
+            out.write("<classchange><from>");
             writeClassInfo(oldInfo);
-            handler.endElement(XML_URI, "", "from");
-            handler.startElement(XML_URI, "", "to", attr);
+            out.write("</from><to>");
             writeClassInfo(newInfo);
-            handler.endElement(XML_URI, "", "to");
-            handler.endElement(XML_URI, "", "classchange");
-        } catch (SAXException se) {
-            throw new DiffException(se);
+            out.write("</to></classchange>");
+        } catch (IOException ioe) {
+            throw new DiffException(ioe);
         }
     }
     
@@ -381,18 +429,16 @@ public class SAXDiffHandler implements DiffHandler
      *                       writing to a file caused an IOException
      */
     public void fieldChanged(FieldInfo oldInfo, FieldInfo newInfo)
-        throws DiffException {
+        throws DiffException 
+    {
         try {
-            handler.startElement(XML_URI, "", "fieldchange", attr);
-            handler.startElement(XML_URI, "", "from", attr);
+            out.write("<fieldchange><from>");
             writeFieldInfo(oldInfo);
-            handler.endElement(XML_URI, "", "from");
-            handler.startElement(XML_URI, "", "to", attr);
+            out.write("</from><to>");
             writeFieldInfo(newInfo);
-            handler.endElement(XML_URI, "", "to");
-            handler.endElement(XML_URI, "", "fieldchange");
-        } catch (SAXException se) {
-            throw new DiffException(se);
+            out.write("</to></fieldchange>");
+        } catch (IOException ioe) {
+            throw new DiffException(ioe);
         }
     }
     
@@ -409,18 +455,16 @@ public class SAXDiffHandler implements DiffHandler
      *                       writing to a file caused an IOException
      */
     public void methodChanged(MethodInfo oldInfo, MethodInfo newInfo)
-        throws DiffException {
+        throws DiffException
+    {
         try {
-            handler.startElement(XML_URI, "", "methodchange", attr);
-            handler.startElement(XML_URI, "", "from", attr);
+            out.write("<methodchange><from>");
             writeMethodInfo(oldInfo);
-            handler.endElement(XML_URI, "", "from");
-            handler.startElement(XML_URI, "", "to", attr);
+            out.write("</from><to>");
             writeMethodInfo(newInfo);
-            handler.endElement(XML_URI, "", "to");
-            handler.endElement(XML_URI, "", "methodchange");
-        } catch (SAXException se) {
-            throw new DiffException(se);
+            out.write("</to></methodchange>");
+        } catch (IOException ioe) {
+            throw new DiffException(ioe);
         }
     }
     
@@ -433,10 +477,9 @@ public class SAXDiffHandler implements DiffHandler
      */
     public void endClassChanged() throws DiffException {
         try {
-            handler.endElement(XML_URI, "",
-                               "classchanged");
-        } catch (SAXException se) {
-            throw new DiffException(se);
+            out.write("</classchanged>");
+        } catch (IOException ioe) {
+            throw new DiffException(ioe);
         }
     }
     
@@ -449,10 +492,9 @@ public class SAXDiffHandler implements DiffHandler
      */
     public void endChanged() throws DiffException {
         try {
-            handler.endElement(XML_URI, "",
-                               "changed");
-        } catch (SAXException se) {
-            throw new DiffException(se);
+            out.write("</changed>");
+        } catch (IOException ioe) {
+            throw new DiffException(ioe);
         }
     }
     
@@ -465,12 +507,11 @@ public class SAXDiffHandler implements DiffHandler
      */
     public void endDiff() throws DiffException {
         try {
-            handler.endElement(XML_URI, "",
-                               "diff");
-            handler.endPrefixMapping("");
-            handler.endDocument();
-        } catch (SAXException se) {
-            throw new DiffException(se);
+            out.write("</diff>");
+            out.newLine();
+            out.close();
+        } catch (IOException ioe) {
+            throw new DiffException(ioe);
         }
     }
     
@@ -480,30 +521,33 @@ public class SAXDiffHandler implements DiffHandler
      * what interfaces are implemented each in a &lt;implements&gt; node.
      *
      * @param info Info about the class to write out.
-     * @throws SAXException If a SAX exception is thrown by the SAX API.
+     * @throws IOException when there is an underlying IOException.
      */
-    protected void writeClassInfo(ClassInfo info) throws SAXException {
+    protected void writeClassInfo(ClassInfo info) throws IOException {
+        out.write("<class");
         addAccessFlags(info);
-        if (info.getName() != null)
-            attr.addAttribute(XML_URI, "", "name", "CDATA", 
-                              Tools.getClassName(info.getName()));
-        if (info.getSignature() != null)
-            attr.addAttribute(XML_URI, "", "signature", "CDATA", 
-                              info.getSignature());
-        if (info.getSupername() != null)
-            attr.addAttribute(XML_URI, "", "superclass", "CDATA",
-                              Tools.getClassName(info.getSupername()));
-        handler.startElement(XML_URI, "", "class", attr);
-        attr.clear();
+        if(info.getName() != null) {
+            out.write(" name=\"");
+            out.write(xmlEscape(Tools.getClassName(info.getName())));
+            out.write("\"");
+        }
+        if(info.getSignature() != null) {
+            out.write(" signature=\"");
+            out.write(xmlEscape(info.getSignature()));
+            out.write("\"");
+        }
+        if(info.getSupername() != null) {
+            out.write(" superclass=\"");
+            out.write(xmlEscape(Tools.getClassName(info.getSupername())));
+            out.write("\">");
+        }
         String[] interfaces = info.getInterfaces();
         for (int i = 0; i < interfaces.length; i++) {
-            attr.addAttribute(XML_URI, "", "name", "CDATA", 
-                              Tools.getClassName(interfaces[i]));
-            handler.startElement(XML_URI, "", "implements", attr);
-            attr.clear();
-            handler.endElement(XML_URI, "", "implements");
+            out.write("<implements name=\"");
+            out.write(Tools.getClassName(interfaces[i]));
+            out.write("\"/>");
         }
-        handler.endElement(XML_URI, "", "class");
+        out.write("</class>");
     }
     
     /**
@@ -513,30 +557,36 @@ public class SAXDiffHandler implements DiffHandler
      * method.
      *
      * @param info Info about the method.
-     * @throws SAXException If a SAX exception is thrown by the SAX API.
+     * @throws IOException when there is an underlying IOException.
      */
-    protected void writeMethodInfo(MethodInfo info) throws SAXException {
+    protected void writeMethodInfo(MethodInfo info) throws IOException {
+        out.write("<method");
+
         addAccessFlags(info);
-        if (info.getName() != null)
-            attr.addAttribute(XML_URI, "", "name", "CDATA", info.getName());
-        if (info.getSignature() != null)
-            attr.addAttribute(XML_URI, "", "signature", "CDATA", 
-                              info.getSignature());
-        handler.startElement(XML_URI, "", "method", attr);
-        attr.clear();
-        if (info.getDesc() != null)
+
+        if (info.getName() != null) {
+            out.write(" name=\"");
+            out.write(xmlEscape(info.getName()));
+            out.write("\"");
+        }
+        if (info.getSignature() != null) {
+            out.write(" signature=\"");
+            out.write(xmlEscape(info.getSignature()));
+            out.write("\"");
+        }
+        out.write(">");
+        if (info.getDesc() != null) {
             addMethodNodes(info.getDesc());
+        }
         String[] exceptions = info.getExceptions();
         if (exceptions != null) {
             for (int i = 0; i < exceptions.length; i++) {
-                attr.addAttribute(XML_URI, "", "name", "CDATA",
-                                  Tools.getClassName(exceptions[i]));
-                handler.startElement(XML_URI, "", "exception", attr);
-                handler.endElement(XML_URI, "", "exception");
-                attr.clear();
+                out.write("<exception name=\"");
+                out.write(xmlEscape(Tools.getClassName(exceptions[i])));
+                out.write("\"/>");
             }
         }
-        handler.endElement(XML_URI, "", "method");
+        out.write("</method>");
     }
     
     /**
@@ -545,68 +595,79 @@ public class SAXDiffHandler implements DiffHandler
      * field.
      *
      * @param info Info about the field.
-     * @throws SAXException If a SAX exception is thrown by the SAX API.
+     * @throws IOException when there is an underlying IOException.
      */
-    protected void writeFieldInfo(FieldInfo info) throws SAXException {
+    protected void writeFieldInfo(FieldInfo info) throws IOException {
+        out.write("<field");
+
         addAccessFlags(info);
-        if (info.getName() != null)
-            attr.addAttribute(XML_URI, "", "name", "CDATA", info.getName());
-        if (info.getSignature() != null)
-            attr.addAttribute(XML_URI, "", "signature", "CDATA", 
-                              info.getSignature());
-        if (info.getValue() != null)
-            attr.addAttribute(XML_URI, "", "value", "CDATA", 
-                              info.getValue().toString());
-        handler.startElement(XML_URI, "", "field", attr);
-        attr.clear();
-        if (info.getDesc() != null)
+
+        if(info.getName() != null) {
+            out.write(" name=\"");
+            out.write(xmlEscape(info.getName()));
+            out.write("\"");
+        }
+        if (info.getSignature() != null) {
+            out.write(" signature=\"");
+            out.write(xmlEscape(info.getSignature()));
+            out.write("\"");
+        }
+        if (info.getValue() != null) {
+            out.write(" value=\"");
+            out.write(xmlEscape(info.getValue().toString()));
+            out.write("\"");
+        }
+        out.write(">");
+        if (info.getDesc() != null) {
             addTypeNode(info.getDesc());
-        handler.endElement(XML_URI, "", "field");
+        }
+        out.write("</field>");
     }
     
     /**
      * Add attributes describing some access flags.
      * This adds the attributes to the attr field.
      *
-     * @see #attr
      * @param info Info describing the access flags.
-     * @throws SAXException If a SAX exception is thrown by the SAX API.
+     * @throws IOException when there is an underlying IOException.
      */
-    protected void addAccessFlags(AbstractInfo info) throws SAXException {
-        attr.addAttribute(XML_URI, "", "access", "CDATA", 
-                              info.getAccessType());
+    protected void addAccessFlags(AbstractInfo info) throws IOException {
+        out.write(" access=\"");
+        // Doesn't need escaping.
+        out.write(info.getAccessType());
+        out.write("\"");
         if (info.isAbstract())
-            attr.addAttribute(XML_URI, "", "abstract", "CDATA", "yes");
+            out.write(" abstract=\"yes\"");
         if (info.isAnnotation())
-            attr.addAttribute(XML_URI, "", "annotation", "CDATA", "yes");
+            out.write(" annotation=\"yes\"");
         if (info.isBridge())
-            attr.addAttribute(XML_URI, "", "bridge", "CDATA", "yes");
+            out.write(" bridge=\"yes\"");
         if (info.isDeprecated())
-            attr.addAttribute(XML_URI, "", "deprecated", "CDATA", "yes");
+            out.write(" deprecated=\"yes\"");
         if (info.isEnum())
-            attr.addAttribute(XML_URI, "", "enum", "CDATA", "yes");
+            out.write(" enum=\"yes\"");
         if (info.isFinal())
-            attr.addAttribute(XML_URI, "", "final", "CDATA", "yes");
+            out.write(" final=\"yes\"");
         if (info.isInterface())
-            attr.addAttribute(XML_URI, "", "interface", "CDATA", "yes");
+            out.write(" interface=\"yes\"");
         if (info.isNative())
-            attr.addAttribute(XML_URI, "", "native", "CDATA", "yes");
+            out.write(" native=\"yes\"");
         if (info.isStatic())
-            attr.addAttribute(XML_URI, "", "static", "CDATA", "yes");
+            out.write(" static=\"yes\"");
         if (info.isStrict())
-            attr.addAttribute(XML_URI, "", "strict", "CDATA", "yes");
+            out.write(" strict=\"yes\"");
         if (info.isSuper())
-            attr.addAttribute(XML_URI, "", "super", "CDATA", "yes");
+            out.write(" super=\"yes\"");
         if (info.isSynchronized())
-            attr.addAttribute(XML_URI, "", "synchronized", "CDATA", "yes");
+            out.write(" synchronized=\"yes\"");
         if (info.isSynthetic())
-            attr.addAttribute(XML_URI, "", "synthetic", "CDATA", "yes");
+            out.write(" synthetic=\"yes\"");
         if (info.isTransient())
-            attr.addAttribute(XML_URI, "", "transient", "CDATA", "yes");
+            out.write(" transient=\"yes\"");
         if (info.isVarargs())
-            attr.addAttribute(XML_URI, "", "varargs", "CDATA", "yes");
+            out.write(" varargs=\"yes\"");
         if (info.isVolatile())
-            attr.addAttribute(XML_URI, "", "volatile", "CDATA", "yes");
+            out.write(" volatile=\"yes\"");
     }
     
     /**
@@ -616,27 +677,27 @@ public class SAXDiffHandler implements DiffHandler
      * containing the return type.
      *
      * @param desc The descriptor for the method to write out.
-     * @throws SAXException If a SAX exception is thrown by the SAX API.
+     * @throws IOException when there is an underlying IOException.
      */
-    protected void addMethodNodes(String desc) throws SAXException {
+    protected void addMethodNodes(String desc) throws IOException {
         Type[] args = Type.getArgumentTypes(desc);
         Type ret = Type.getReturnType(desc);
-        handler.startElement(XML_URI, "", "arguments", attr);
+        out.write("<arguments>");
         for (int i = 0; i < args.length; i++)
             addTypeNode(args[i]);
-        handler.endElement(XML_URI, "", "arguments");
-        handler.startElement(XML_URI, "", "return", attr);
+        out.write("</arguments>");
+        out.write("<return>");
         addTypeNode(ret);
-        handler.endElement(XML_URI, "", "return");
+        out.write("</return>");
     }
     
     /**
      * Add a type node for the specified descriptor.
      *
      * @param desc A type descriptor.
-     * @throws SAXException If a SAX exception is thrown by the SAX API.
+     * @throws IOException when there is an underlying IOException.
      */
-    protected void addTypeNode(String desc) throws SAXException {
+    protected void addTypeNode(String desc) throws IOException {
         addTypeNode(Type.getType(desc));
     }
     
@@ -646,61 +707,78 @@ public class SAXDiffHandler implements DiffHandler
      * the type.
      *
      * @param type The type to describe.
-     * @throws SAXException If a SAX exception is thrown by the SAX API.
+     * @throws IOException when there is an underlying IOException.
      */
-    protected void addTypeNode(Type type) throws SAXException {
+    protected void addTypeNode(Type type) throws IOException {
+        out.write("<type");
         int i = type.getSort();
         if (i == Type.ARRAY) {
-            attr.addAttribute(XML_URI, "", "array", "CDATA", "yes");
-            attr.addAttribute(XML_URI, "", "dimensions", "CDATA",
-                              "" + type.getDimensions());
+            out.write(" array=\"yes\" dimensions=\"");
+            out.write(""+type.getDimensions());
+            out.write("\"");
             type = type.getElementType();
             i = type.getSort();
         }
         switch (i) {
         case Type.BOOLEAN:
-            attr.addAttribute(XML_URI, "", "primitive", "CDATA", "yes");
-            attr.addAttribute(XML_URI, "", "name", "CDATA", "boolean");
+            out.write(" primitive=\"yes\" name=\"boolean\"/>");
             break;
         case Type.BYTE:
-            attr.addAttribute(XML_URI, "", "primitive", "CDATA", "yes");
-            attr.addAttribute(XML_URI, "", "name", "CDATA", "byte");
+            out.write(" primitive=\"yes\" name=\"byte\"/>");
             break;
         case Type.CHAR:
-            attr.addAttribute(XML_URI, "", "primitive", "CDATA", "yes");
-            attr.addAttribute(XML_URI, "", "name", "CDATA", "char");
+            out.write(" primitive=\"yes\" name=\"char\"/>");
             break;
         case Type.DOUBLE:
-            attr.addAttribute(XML_URI, "", "primitive", "CDATA", "yes");
-            attr.addAttribute(XML_URI, "", "name", "CDATA", "double");
+            out.write(" primitive=\"yes\" name=\"double\"/>");
             break;
         case Type.FLOAT:
-            attr.addAttribute(XML_URI, "", "primitive", "CDATA", "yes");
-            attr.addAttribute(XML_URI, "", "name", "CDATA", "float");
+            out.write(" primitive=\"yes\" name=\"float\"/>");
             break;
         case Type.INT:
-            attr.addAttribute(XML_URI, "", "primitive", "CDATA", "yes");
-            attr.addAttribute(XML_URI, "", "name", "CDATA", "int");
+            out.write(" primitive=\"yes\" name=\"int\"/>");
             break;
         case Type.LONG:
-            attr.addAttribute(XML_URI, "", "primitive", "CDATA", "yes");
-            attr.addAttribute(XML_URI, "", "name", "CDATA", "long");
+            out.write(" primitive=\"yes\" name=\"long\"/>");
             break;
         case Type.OBJECT:
-            attr.addAttribute(XML_URI, "", "name", "CDATA",
-                              Tools.getClassName(type.getInternalName()));
+            out.write(" name=\"");
+            out.write(xmlEscape(Tools.getClassName(type.getInternalName())));
+            out.write("\"/>");
             break;
         case Type.SHORT:
-            attr.addAttribute(XML_URI, "", "primitive", "CDATA", "yes");
-            attr.addAttribute(XML_URI, "", "name", "CDATA", "short");
+            out.write(" primitive=\"yes\" name=\"short\"/>");
             break;
         case Type.VOID:
-            attr.addAttribute(XML_URI, "", "primitive", "CDATA", "yes");
-            attr.addAttribute(XML_URI, "", "name", "CDATA", "void");
+            out.write(" primitive=\"yes\" name=\"void\"/>");
             break;
         }
-        handler.startElement(XML_URI, "", "type", attr);
-        handler.endElement(XML_URI, "", "type");
-        attr.clear();
+    }
+
+    /**
+     * Escape some text into a format suitable for output as xml.
+     *
+     * @param str the text to format
+     * @return the formatted text
+     */
+    private final String xmlEscape(final String str) {
+        StringBuffer ret = new StringBuffer(str.length());
+        for(int i=0;i<str.length();i++) {
+            char ch = str.charAt(i);
+            switch(ch) {
+                case '<':
+                    ret.append("&lt;");
+                    break;
+                case '&':
+                    ret.append("&amp;");
+                    break;
+                case '>':
+                    ret.append("&gt;");
+                    break;
+                default:
+                    ret.append(ch);
+            }
+        }
+        return ret.toString();
     }
 }

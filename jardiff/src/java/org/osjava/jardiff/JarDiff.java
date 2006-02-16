@@ -53,6 +53,7 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+/*
 import javax.xml.transform.ErrorListener;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
@@ -61,16 +62,10 @@ import javax.xml.transform.sax.SAXTransformerFactory;
 import javax.xml.transform.sax.TransformerHandler;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
+*/
 
 import org.objectweb.asm.ClassReader;
 
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.GnuParser;
-import org.apache.commons.cli.HelpFormatter;
-import org.apache.commons.cli.Option;
-import org.apache.commons.cli.Parser;
-import org.apache.commons.cli.ParseException;
-import org.apache.commons.cli.Options;
 /**
  * A class to perform a diff between two jar files.
  *
@@ -123,207 +118,6 @@ public class JarDiff
      * Class info visitor, used to load information about classes.
      */
     private ClassInfoVisitor infoVisitor = new ClassInfoVisitor();
-
-    /**
-     * Define set of valid formats.
-     * This is here to make maintenance more easy.
-     */
-    private final static Set FORMATS = new HashSet();
-
-    /**
-     * Can you javadoc static code, I think not, but lets try anyway.
-     */
-    static {
-        FORMATS.add("html");
-        FORMATS.add("xhtml");
-        FORMATS.add("text");
-    }
-
-    /**
-     * Utility function for showing help using commons-cli.
-     * @param options Command line options.
-     * @param msg Optional message to show.
-     */
-    private static void showHelp(Options options, String msg) {
-        if(msg != null) {
-            System.out.println(msg);
-        }
-        HelpFormatter hf = new HelpFormatter();
-        hf.printHelp("JarDiff -f <from jar> -t <to jar> [-F <from name>] [-T <to name>] [[-o <xml|html|xhtml|text>]|[-x <xsl file>]] [-O <file>]", options);
-    }
-
-    /**
-     * Main method to allow this to be run from the command line.
-     * This needs work, currently only takes two arguments, which are
-     * the old jar file and the new jar file.
-     *
-     * @param args A string array of length two containing the filenames of
-     *             two jar files, the first of which being the older of the
-     *             two.
-     * @throws Exception when there is an underlying exception, e.g.
-     *                   writing to a file caused an IOException
-     */
-    public static void main(String[] args) throws Exception {
-        try {
-            Options options = new Options();
-            Option tmp;
-            tmp = new Option("f","from",true,"from jar file");
-            options.addOption(tmp);
-            tmp = new Option("t","to",true,"to jar file");
-            options.addOption(tmp);
-            tmp = new Option("F","from-name",true,"from name");
-            options.addOption(tmp);
-            tmp = new Option("T","to-name",true,"to name");
-            options.addOption(tmp);
-            //tmp = new Option("d","dep",true,"dependency path");
-            //options.addOption(tmp);
-            tmp = new Option("o","output-format",true,"output format, xml or html");
-            options.addOption(tmp);
-            tmp = new Option("O","out",true,"output file");
-            options.addOption(tmp);
-            tmp = new Option("h","help",false,"print help on command line arguments");
-            options.addOption(tmp);
-            tmp = new Option("x","xsl",true,"custom xsl sheet to format output with");
-            options.addOption(tmp);
-            Parser parser = new GnuParser();
-            CommandLine cli = null;
-            try {
-                cli = parser.parse(options, args);
-            } catch (ParseException pe) {
-                showHelp(options, pe.getMessage());
-                return;
-            }
-            args = cli.getArgs();
-            if(cli.hasOption('h'))
-            {
-                showHelp(options, null);
-                return;
-            }
-            if(args.length > 0) {
-                showHelp(options, "Additional arguments specified");
-                return;
-            }
-            if(!cli.hasOption('f')) {
-                showHelp(options, "Missing required argument: -f");
-                return;
-            }
-            if(!cli.hasOption('t')) {
-                showHelp(options, "Missing required argument: -t");
-                return;
-            }
-
-            /* This is left commented out, moved back to using DOM for now.
-            SAXTransformerFactory stf =
-                (SAXTransformerFactory) TransformerFactory.newInstance();
-            stf.setErrorListener(
-                    new ErrorListener() {
-                        public void warning(TransformerException te) {
-                            System.err.println("xslt warning: "+te.getMessageAndLocation());
-                        }
-                        public void error(TransformerException te) {
-                            System.err.println("xslt error: "+te.getMessageAndLocation());
-                        }
-                        public void fatalError(TransformerException te) {
-                            System.err.println("xslt fatal error: "+te.getMessageAndLocation());
-                        }
-                    });
-
-            TransformerHandler oth;
-            if(cli.hasOption('o')) {
-                String val = cli.getOptionValue('o');
-                if("xml".equals(val)) {
-                    oth = stf.newTransformerHandler();
-                } else if(FORMATS.contains(val)) {
-                    URL url = JarDiff.class.getClassLoader()
-                        .getResource("style/jardiff-"+val+".xsl");
-
-                    oth = stf.newTransformerHandler(
-                            stf.newTemplates( new StreamSource( url.toString() ) )
-                            );
-                } else {
-                    showHelp(options, "Invalid output format: "+val);
-                    return;
-                }
-            } else {
-                oth = stf.newTransformerHandler();
-            }
-            OutputStream out;
-            if(cli.hasOption('O')) {
-                out = new FileOutputStream(cli.getOptionValue('O'));
-            } else {
-                out = System.out;
-            }
-            oth.setResult(new StreamResult(out));
-            */
-            TransformerFactory tf = TransformerFactory.newInstance();
-            tf.setErrorListener(
-                    new ErrorListener() {
-                        public void warning(TransformerException te) {
-                            System.err.println("xslt warning: "+te.getMessageAndLocation());
-                        }
-                        public void error(TransformerException te) {
-                            System.err.println("xslt error: "+te.getMessageAndLocation());
-                        }
-                        public void fatalError(TransformerException te) {
-                            System.err.println("xslt fatal error: "+te.getMessageAndLocation());
-                        }
-                    });
-
-            Transformer ot;
-            if(cli.hasOption('o')) {
-                if(cli.hasOption('x')) {
-                    showHelp(options, "Cannot use both -x and -o");
-                    return;
-                }
-                String val = cli.getOptionValue('o');
-                if("xml".equals(val)) {
-                    ot = tf.newTransformer();
-                } else if(FORMATS.contains(val)) {
-                    URL url = JarDiff.class.getClassLoader()
-                        .getResource("style/jardiff-"+val+".xsl");
-                    ot = tf.newTransformer(
-                            new StreamSource( url.toString() )
-                            );
-                } else {
-                    showHelp(options, "Invalid output format: "+val);
-                    return;
-                }
-            } else if(cli.hasOption('x')) {
-                File xsl = new File(cli.getOptionValue('x'));
-                ot = tf.newTransformer(new StreamSource(xsl));
-            } else {
-                ot = tf.newTransformer();
-            }
-            OutputStream out;
-            if(cli.hasOption('O')) {
-                out = new FileOutputStream(cli.getOptionValue('O'));
-            } else {
-                out = System.out;
-            }
-            JarDiff jd = new JarDiff();
-            File oldFile = new File(cli.getOptionValue('f'));
-            File newFile = new File(cli.getOptionValue('t'));
-            if(cli.hasOption('F')) {
-                jd.setOldVersion(cli.getOptionValue('F'));
-            } else {
-                jd.setOldVersion(oldFile.getName());
-            }
-            if(cli.hasOption('T')) {
-                jd.setNewVersion(cli.getOptionValue('T'));
-            } else {
-                jd.setNewVersion(newFile.getName());
-            }
-            jd.loadOldClasses(oldFile);
-            jd.loadNewClasses(newFile);
-            jd.diff(
-                    new DOMDiffHandler(ot, new StreamResult(out)), 
-                    new SimpleDiffCriteria()
-                    );
-            out.close();
-        } catch (Exception e) {
-            e.printStackTrace(System.err);
-        }
-    }
 
     /**
      * Create a new JarDiff object.
@@ -520,16 +314,34 @@ public class JarDiff
     public void diff(DiffHandler handler, DiffCriteria criteria)
         throws DiffException 
     {
+        // TODO: Build the name from the MANIFEST rather than the filename
+        handler.startDiff(oldVersion, newVersion);
+        Iterator i;
+
+        handler.startOldContents();
+        i = oldClassInfo.values().iterator();
+        while(i.hasNext()) {
+            ClassInfo ci = (ClassInfo) i.next();
+            handler.contains(ci);
+        }
+        handler.endOldContents();
+
+        handler.startNewContents();
+        i = newClassInfo.values().iterator();
+        while(i.hasNext()) {
+            ClassInfo ci = (ClassInfo) i.next();
+            handler.contains(ci);
+        }
+        handler.endNewContents();
+
         java.util.Set onlyOld = new TreeSet(oldClassInfo.keySet());
         java.util.Set onlyNew = new TreeSet(newClassInfo.keySet());
         java.util.Set both = new TreeSet(oldClassInfo.keySet());
         onlyOld.removeAll(newClassInfo.keySet());
         onlyNew.removeAll(oldClassInfo.keySet());
         both.retainAll(newClassInfo.keySet());
-        // TODO: Build the name from the MANIFEST rather than the filename
-        handler.startDiff(oldVersion, newVersion);
         handler.startRemoved();
-        Iterator i = onlyOld.iterator();
+        i = onlyOld.iterator();
         while (i.hasNext()) {
             String s = (String) i.next();
             ClassInfo ci = (ClassInfo) oldClassInfo.get(s);

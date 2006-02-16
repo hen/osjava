@@ -58,7 +58,48 @@ public interface DiffHandler
      */
     public void startDiff(String a, String b)
         throws DiffException;
-    
+
+    /**
+     * Start the list of old contents.
+     *
+     * @throws DiffException when there is an underlying exception, e.g.
+     *                       writing to a file caused an IOException
+     */
+    public void startOldContents() throws DiffException;
+
+    /**
+     * Start the list of new contents.
+     *
+     * @throws DiffException when there is an underlying exception, e.g.
+     *                       writing to a file caused an IOException
+     */
+    public void startNewContents() throws DiffException;
+
+    /**
+     * Add a contained class.
+     *
+     * @param info information about a class
+     * @throws DiffException when there is an underlying exception, e.g.
+     *                       writing to a file caused an IOException
+     */
+    public void contains(ClassInfo info) throws DiffException;
+
+    /**
+     * End the list of old contents.
+     *
+     * @throws DiffException when there is an underlying exception, e.g.
+     *                       writing to a file caused an IOException
+     */
+    public void endOldContents() throws DiffException;
+
+    /**
+     * End the list of new contents.
+     *
+     * @throws DiffException when there is an underlying exception, e.g.
+     *                       writing to a file caused an IOException
+     */
+    public void endNewContents() throws DiffException;
+
     /**
      * Start the list of removed classes.
      *
