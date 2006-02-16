@@ -98,6 +98,12 @@
       <version>1.0</version>
       <url>http://jakarta.apache.org/commons/cli/</url>
     </dependency>
+    <dependency>
+      <groupId>ant</groupId>
+      <artifactId>ant</artifactId>
+      <version>1.6.5</version>
+      <url>http://ant.apache.org/</url>
+    </dependency>
   </dependencies>
 
   <build>
