@@ -1,7 +1,0 @@
-<project name="build-index" default="docs" basedir=".">
-
-  <target name="docs">
-    <xslt in="DIFF.xml" out="DIFF.html" style="jardiff-html.xsl" force='true' />
-  </target>  
-
-</project>
