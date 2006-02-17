@@ -1,5 +1,5 @@
 /*
- * org.osjava.jardiff.JarDiffTask
+ * org.osjava.jardiff.ant.JarDiffTask
  *
  * $Id: IOThread.java 1952 2005-08-28 18:03:41Z cybertiger $
  * $URL: https://svn.osjava.org/svn/osjava/trunk/osjava-nio/src/java/org/osjava/nio/IOThread.java $
@@ -36,7 +36,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
-package org.osjava.jardiff;
+package org.osjava.jardiff.ant;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
@@ -55,6 +55,11 @@ import javax.xml.transform.sax.SAXTransformerFactory;
 import javax.xml.transform.sax.TransformerHandler;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
+
+import org.osjava.jardiff.JarDiff;
+import org.osjava.jardiff.DiffException;
+import org.osjava.jardiff.StreamDiffHandler;
+import org.osjava.jardiff.SimpleDiffCriteria;
 
 /**
  * Process two jarfiles generating a public API difference report.
@@ -126,7 +131,7 @@ public class JarDiffTask extends Task {
             long newModified = toJar.lastModified();
             if(force || oldModified > outModified || newModified > outModified)
             {
-                log("Writing xml api diff to "+outFile);
+                log("Writing xml api diff to "+out);
                 JarDiff jd = new JarDiff();
                 jd.setOldVersion(fromName);
                 jd.setNewVersion(toName);

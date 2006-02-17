@@ -161,7 +161,7 @@ public class StreamDiffHandler implements DiffHandler
         try {
             out.write("<class name=\"");
             out.write(xmlEscape(Tools.getClassName(info.getName())));
-            out.write("\">");
+            out.write("\"/>");
         } catch (IOException ioe) {
             throw new DiffException(ioe);
         }
