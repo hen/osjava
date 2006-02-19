@@ -100,7 +100,7 @@ public class Main {
             System.out.println(msg);
         }
         HelpFormatter hf = new HelpFormatter();
-        hf.printHelp("JarDiff -f <from jar> -t <to jar> [-F <from name>] [-T <to name>] [[-o <xml|html|xhtml|text>]|[-x <xsl file>]] [-O <file>]", options);
+        hf.printHelp("JarDiff -f <from jar> -t <to jar> [-F <from name>] [-T <to name>] [[-o <xml|html|xhtml|text>]|[-x <xsl file>]] [-O <file>] [-s <href>] [-fa <href>] [-ta <href>]", options);
     }
 
     /**
@@ -135,6 +135,12 @@ public class Main {
             tmp = new Option("h","help",false,"print help on command line arguments");
             options.addOption(tmp);
             tmp = new Option("x","xsl",true,"custom xsl sheet to format output with");
+            options.addOption(tmp);
+            tmp = new Option("s","stylesheet",true,"stylesheet to link to when generating html");
+            options.addOption(tmp);
+            tmp = new Option("fa","from-api",true,"relative location of from api");
+            options.addOption(tmp);
+            tmp = new Option("ta","to-api",true,"relative location of to api");
             options.addOption(tmp);
             Parser parser = new GnuParser();
             CommandLine cli = null;
@@ -176,7 +182,6 @@ public class Main {
                             System.err.println("xslt fatal error: "+te.getMessageAndLocation());
                         }
                     });
-
             Transformer ot;
             if(cli.hasOption('o')) {
                 if(cli.hasOption('x')) {
@@ -201,6 +206,15 @@ public class Main {
                 ot = tf.newTransformer(new StreamSource(xsl));
             } else {
                 ot = tf.newTransformer();
+            }
+            if(cli.hasOption("s")) {
+                ot.setParameter("stylesheet", cli.getOptionValue("s"));
+            }
+            if(cli.hasOption("fa")) {
+                ot.setParameter("from-api", cli.getOptionValue("fa"));
+            }
+            if(cli.hasOption("ta")) {
+                ot.setParameter("to-api", cli.getOptionValue("ta"));
             }
             OutputStream out;
             if(cli.hasOption('O')) {

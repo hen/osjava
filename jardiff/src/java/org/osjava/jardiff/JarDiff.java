@@ -51,6 +51,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.TreeMap;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 /*
@@ -85,14 +86,14 @@ public class JarDiff
      * Keys are internal class names.
      * Values are instances of ClassInfo.
      */
-    protected Map oldClassInfo = new HashMap();
+    protected Map oldClassInfo = new TreeMap();
 
     /**
      * A map containing information about classes in the new jar file.
      * Keys are internal class names.
      * Values are instances of ClassInfo.
      */
-    protected Map newClassInfo = new HashMap();
+    protected Map newClassInfo = new TreeMap();
 
     /**
      * An array of dependencies which are jar files, or urls.
@@ -319,18 +320,24 @@ public class JarDiff
         Iterator i;
 
         handler.startOldContents();
-        i = oldClassInfo.values().iterator();
+        i = oldClassInfo.entrySet().iterator();
         while(i.hasNext()) {
-            ClassInfo ci = (ClassInfo) i.next();
-            handler.contains(ci);
+            Map.Entry entry = (Map.Entry) i.next();
+            ClassInfo ci = (ClassInfo) entry.getValue();
+            if(criteria.validClass(ci)) {
+                handler.contains(ci);
+            }
         }
         handler.endOldContents();
 
         handler.startNewContents();
-        i = newClassInfo.values().iterator();
+        i = newClassInfo.entrySet().iterator();
         while(i.hasNext()) {
-            ClassInfo ci = (ClassInfo) i.next();
-            handler.contains(ci);
+            Map.Entry entry = (Map.Entry) i.next();
+            ClassInfo ci = (ClassInfo) entry.getValue();
+            if(criteria.validClass(ci)) {
+                handler.contains(ci);
+            }
         }
         handler.endNewContents();
 
