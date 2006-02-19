@@ -187,7 +187,7 @@ public class DOMDiffHandler implements DiffHandler
      */
     public void contains(ClassInfo info) throws DiffException {
         Element tmp = doc.createElementNS(XML_URI, "class");
-        tmp.setAttribute("name", Tools.getClassName(info.getName()));
+        tmp.setAttribute("name", info.getName());
         currentNode.appendChild(tmp);
     }
 
@@ -308,7 +308,7 @@ public class DOMDiffHandler implements DiffHandler
     public void startClassChanged(String internalName) throws DiffException 
     {
         Element tmp = doc.createElementNS(XML_URI, "classchanged");
-        tmp.setAttribute( "name", Tools.getClassName(internalName));
+        tmp.setAttribute( "name", internalName);
         currentNode.appendChild(tmp);
         currentNode = tmp;
     }
@@ -505,19 +505,19 @@ public class DOMDiffHandler implements DiffHandler
         addAccessFlags(info);
         if (info.getName() != null)
             tmp.setAttribute( "name",
-                    Tools.getClassName(info.getName()));
+                    info.getName());
         if (info.getSignature() != null)
             tmp.setAttribute( "signature",
                     info.getSignature());
         if (info.getSupername() != null)
             tmp.setAttribute( "superclass",
-                              Tools.getClassName(info.getSupername()));
+                              info.getSupername());
         String[] interfaces = info.getInterfaces();
         for (int i = 0; i < interfaces.length; i++) {
             Element iface = doc.createElementNS(XML_URI, "implements");
             tmp.appendChild(iface);
             iface.setAttribute( "name", 
-                    Tools.getClassName(interfaces[i]));
+                    interfaces[i]);
         }
         this.currentNode = currentNode;
     }
@@ -547,8 +547,7 @@ public class DOMDiffHandler implements DiffHandler
         if (exceptions != null) {
             for (int i = 0; i < exceptions.length; i++) {
                 Element excep = doc.createElementNS(XML_URI, "exception");
-                excep.setAttribute( "name", 
-                        Tools.getClassName(exceptions[i]));
+                excep.setAttribute( "name", exceptions[i]);
                 tmp.appendChild(excep);
             }
         }
@@ -708,8 +707,7 @@ public class DOMDiffHandler implements DiffHandler
             tmp.setAttribute( "name", "long");
             break;
         case Type.OBJECT:
-            tmp.setAttribute( "name",
-                    Tools.getClassName(type.getInternalName()));
+            tmp.setAttribute( "name", type.getInternalName());
             break;
         case Type.SHORT:
             tmp.setAttribute( "primitive", "yes");

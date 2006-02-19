@@ -160,7 +160,7 @@ public class StreamDiffHandler implements DiffHandler
     public void contains(ClassInfo info) throws DiffException {
         try {
             out.write("<class name=\"");
-            out.write(xmlEscape(Tools.getClassName(info.getName())));
+            out.write(xmlEscape(info.getName()));
             out.write("\"/>");
         } catch (IOException ioe) {
             throw new DiffException(ioe);
@@ -315,7 +315,7 @@ public class StreamDiffHandler implements DiffHandler
     {
         try {
             out.write("<classchanged name=\"");
-            out.write(xmlEscape(Tools.getClassName(internalName)));
+            out.write(xmlEscape(internalName));
             out.write("\">");
         } catch (IOException ioe) {
             throw new DiffException(ioe);
@@ -528,7 +528,7 @@ public class StreamDiffHandler implements DiffHandler
         addAccessFlags(info);
         if(info.getName() != null) {
             out.write(" name=\"");
-            out.write(xmlEscape(Tools.getClassName(info.getName())));
+            out.write(xmlEscape(info.getName()));
             out.write("\"");
         }
         if(info.getSignature() != null) {
@@ -538,13 +538,13 @@ public class StreamDiffHandler implements DiffHandler
         }
         if(info.getSupername() != null) {
             out.write(" superclass=\"");
-            out.write(xmlEscape(Tools.getClassName(info.getSupername())));
+            out.write(xmlEscape(info.getSupername()));
             out.write("\">");
         }
         String[] interfaces = info.getInterfaces();
         for (int i = 0; i < interfaces.length; i++) {
             out.write("<implements name=\"");
-            out.write(Tools.getClassName(interfaces[i]));
+            out.write(xmlEscape(interfaces[i]));
             out.write("\"/>");
         }
         out.write("</class>");
@@ -582,7 +582,7 @@ public class StreamDiffHandler implements DiffHandler
         if (exceptions != null) {
             for (int i = 0; i < exceptions.length; i++) {
                 out.write("<exception name=\"");
-                out.write(xmlEscape(Tools.getClassName(exceptions[i])));
+                out.write(xmlEscape(exceptions[i]));
                 out.write("\"/>");
             }
         }
@@ -743,7 +743,7 @@ public class StreamDiffHandler implements DiffHandler
             break;
         case Type.OBJECT:
             out.write(" name=\"");
-            out.write(xmlEscape(Tools.getClassName(type.getInternalName())));
+            out.write(xmlEscape(type.getInternalName()));
             out.write("\"/>");
             break;
         case Type.SHORT:
