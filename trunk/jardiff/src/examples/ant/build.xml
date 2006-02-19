@@ -1,20 +1,31 @@
-<project name="test" default="test" basedir=".">
+<project name="jardiff" default="jardiff" basedir=".">
 
-  <property name="lib" value="target/uberjar/WORLDS-INF/lib"/>
+  <!-- Lib directory (this is correct if you run maven uberjar) -->
+  <property name="lib" value="../../../target/uberjar/WORLDS-INF/lib"/>
+  <!-- Classpath for jardiff -->
   <property name="jardifflibs" value="${lib}/jardiff-0.2.jar:${lib}/asm-2.1.jar:${lib}/asm-commons-2.1.jar"/>
+  <!-- Define jardiff and jdxslt tasks from properties file in jar -->
+  <typedef resource="ant/jardiff.properties" classpath="${jardifflibs}"/>
+  <!-- Location of jardiff xslt stylesheets -->
   <whichresource classpath="${jardifflibs}" property="jardiff-html" resource="style/jardiff-html.xsl"/>
   <whichresource classpath="${jardifflibs}" property="jardiff-xhtml" resource="style/jardiff-xhtml.xsl"/>
   <whichresource classpath="${jardifflibs}" property="jardiff-text" resource="style/jardiff-text.xsl"/>
-  <typedef name="jardiff" classname="org.osjava.jardiff.ant.JarDiffTask" classpath="${jardifflibs}"/>
-  <typedef name="jdxslt" classname="org.osjava.jardiff.ant.JDXSLTProcess" classpath="${jardifflibs}"/>
 
-  <target name="test">
-    <jardiff fromjar="commons-collections-3.0.jar" tojar="commons-collections-3.1.jar" out="commons-collections-3.0-3.1.xml"/>
-    <jdxslt in="commons-collections-3.0-3.1.xml" out="commons-collections-3.0-3.1.xhtml" styleurl="${jardiff-xhtml}">
+
+  <target name="jardiff">
+    <jardiff fromjar="jardiff-0.1.jar" tojar="jardiff-0.2.jar" 
+    out="jardiff-0.1-0.2.xml"/>
+    <jdxslt in="jardiff-0.1-0.2.xml" out="jardiff-0.1-0.2.html" styleurl="${jardiff-xhtml}">
       <param name="stylesheet" expression="diff.css"/>
-      <param name="from-api" expression="from-api"/>
-      <param name="to-api" expression="to-api"/>
+      <param name="from-api" expression="jardiff-0.1"/>
+      <param name="to-api" expression="jardiff-0.2"/>
     </jdxslt>
+  </target>
+
+  <target name="clean">
+    <delete>
+      <fileset dir="." includes="jardiff-0.1-0.2.*"/>
+    </delete>
   </target>
 
 </project>
