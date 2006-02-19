@@ -1,0 +1,20 @@
+<project name="test" default="test" basedir=".">
+
+  <property name="lib" value="target/uberjar/WORLDS-INF/lib"/>
+  <property name="jardifflibs" value="${lib}/jardiff-0.2.jar:${lib}/asm-2.1.jar:${lib}/asm-commons-2.1.jar"/>
+  <whichresource classpath="${jardifflibs}" property="jardiff-html" resource="style/jardiff-html.xsl"/>
+  <whichresource classpath="${jardifflibs}" property="jardiff-xhtml" resource="style/jardiff-xhtml.xsl"/>
+  <whichresource classpath="${jardifflibs}" property="jardiff-text" resource="style/jardiff-text.xsl"/>
+  <typedef name="jardiff" classname="org.osjava.jardiff.ant.JarDiffTask" classpath="${jardifflibs}"/>
+  <typedef name="jdxslt" classname="org.osjava.jardiff.ant.JDXSLTProcess" classpath="${jardifflibs}"/>
+
+  <target name="test">
+    <jardiff fromjar="commons-collections-3.0.jar" tojar="commons-collections-3.1.jar" out="commons-collections-3.0-3.1.xml"/>
+    <jdxslt in="commons-collections-3.0-3.1.xml" out="commons-collections-3.0-3.1.xhtml" styleurl="${jardiff-xhtml}">
+      <param name="stylesheet" expression="diff.css"/>
+      <param name="from-api" expression="from-api"/>
+      <param name="to-api" expression="to-api"/>
+    </jdxslt>
+  </target>
+
+</project>
