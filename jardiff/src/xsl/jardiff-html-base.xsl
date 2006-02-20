@@ -132,7 +132,7 @@
           <ul>
             <xsl:for-each select="jd:added/jd:field">
               <li>
-                <xsl:call-template name="link-from-anchor">
+                <xsl:call-template name="link-to-anchor">
                   <xsl:with-param name="class" select="$class"/>
                   <xsl:with-param name="anchor" select="@name"/>
                   <xsl:with-param name="data">
