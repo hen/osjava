@@ -1,7 +1,7 @@
 <project name="jardiff" default="jardiff" basedir=".">
 
-  <!-- Lib directory (this is correct if you run maven uberjar) -->
-  <property name="lib" value="../../../target/uberjar/WORLDS-INF/lib"/>
+  <!-- Lib directory (this is correct if you run maven uberjar first) -->
+  <property name="lib" value="../../target/uberjar/WORLDS-INF/lib"/>
   <!-- Classpath for jardiff -->
   <property name="jardifflibs" value="${lib}/jardiff-0.2.jar:${lib}/asm-2.1.jar:${lib}/asm-commons-2.1.jar"/>
   <!-- Define jardiff and jdxslt tasks from properties file in jar -->
