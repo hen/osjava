@@ -20,7 +20,7 @@
   a project. Jardiff takes two jar files and outputs all the public API changes
   as xml, html or plain text. Currently this is command line driven, though 
   we are working on an ant plugin. It requires java 1.4 to run.
-  <h2>Motivation</h2>
+  <h2>Background</h2>
   At OSjava, we were using a shell script to work out API differences between
   our release versions. This unfortunately doesn't scale very well to larger
   projects, the main reason for jardiff was to do the same in a much shorter
@@ -28,18 +28,6 @@
   small jars). In it's current state, jardiff can generate the api differences
   between rt.jar for java 1.4 and java 1.5 in under 20 seconds, so it should 
   scale to even the largest of projects.
-  <h2>Aims</h2>
-  To generate a report on public API differences between two different releases
-  of a java project.
-  <h2>Future</h2>
-  There's a whole bunch of things I'd like to see added in future
-  <ul>
-  <li>A prettier html output format</li>
-  <li>Ability to provide change compatability information</li>
-  <li>Ability to show non public API changes</li>
-  <li>Plugins for various tools, e.g. maven, eclipse, ant.</li>
-  <li>Ability to link html output to javadoc.</li>
-  </ul>
   ]]></description>
   
   <shortDescription>A jar diff generator</shortDescription>

@@ -9,7 +9,9 @@
     </links>
     <menu name="Overview">
       <item name="Introduction" href="/index.html"/>
-      <item name="How To" href="/HowTo.html"/>
+      <item name="Road Map" href="/RoadMap.html"/>
+      <item name="Command Line Usage" href="/CLI.html"/>
+      <item name="Ant Usage" href="/ant.html"/>
       <item name="Download" href="http://dist.osjava.org/releases/official/jardiff/"/>
       <item name="License" href="/license.html"/>
     </menu>

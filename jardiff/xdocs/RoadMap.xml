@@ -1,0 +1,83 @@
+<?xml version="1.0"?>
+
+<document>
+  <properties>
+    <author email="antony@cyberiantiger.org">Antony Riley</author>
+    <title>Examples</title>
+  </properties>
+  <body>
+    <section name="Introduction">
+      <p>
+      What follows is a rough plan of what will be implemented in what order
+      when it comes to JarDiff, unfortunately I cannot give concrete release
+      dates for any of these, as often my spare time is at a premium.
+      </p>
+    </section>
+    <section name="Version 0.1">
+      <p>
+      Version 0.1 included the following features.
+      </p>
+      <ul>
+        <li>BSD style license</li>
+        <li>XML output format</li>
+        <li>Text output format</li>
+        <li>(x)html output format</li>
+        <li>Lightweight and fast</li>
+        <li>Good command line interface</li>
+        <li>Simple extensible API</li>
+        <li>Supports JDK 1.4 or higher</li>
+      </ul>
+    </section>
+    <section name="Version 0.2">
+      <p>
+      Version 0.2 includes the following additional features.
+      </p>
+      <ul>
+        <li>Ant task interface (supports JDK 1.2 or higher)</li>
+        <li>Better formatted html output</li>
+        <li>Ability to specify a custom stylesheet for html output</li>
+        <li>Abillty to link html output to javadocs</li>
+      </ul>
+    </section>
+    <section name="Version 0.3">
+      <p>
+      Version 0.3 will include the following additional features.
+      </p>
+      <ul>
+        <li>Maven interface</li>
+        <li>Ability to specify permissions to produce diff for.<br/>
+        (private, package, protected, or public, and/or synthetic)</li>
+        <li>Major change to API to mirror java class loading.
+        (needed for dependency loading, which is needed to generate compatability information).</li>
+      </ul>
+    </section>
+    <section name="Version 0.4">
+      <p>
+      Version 0.4 will include the following additional features.
+      </p>
+      <ul>
+        <li>Change compatability information (unknown, none, source, binary, all)</li>
+        <li>Ability to fail maven and ant tasks if jars are not compatible.</li>
+      </ul>
+    </section>
+    <section name="Version 0.5">
+      <p>
+      Version 0.5 will include the following additional features.
+      </p>
+      <ul>
+        <li>Eclipse plugin</li>
+        <li>JDK 1.5 features (Enums, generics, varargs)</li>
+      </ul>
+    </section>
+    <section name="Version 1.0">
+      <p>
+      Version 1.0 will include the following additional features.
+      </p>
+      <ul>
+        <li>Stabilised API</li>
+        <li>Bug fixes</li>
+        <li>XML Schema for diff output</li>
+      </ul>
+    </section>
+  </body>
+</document>
