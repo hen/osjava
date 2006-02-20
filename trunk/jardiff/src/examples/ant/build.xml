@@ -13,18 +13,24 @@
 
 
   <target name="jardiff">
+    <get src="http://www.ibiblio.org/maven/jardiff/jars/jardiff-0.1.jar"
+      dest="jardiff-0.1.jar"/>
+    <get src="http://www.ibiblio.org/maven/jardiff/jars/jardiff-0.2.jar"
+      dest="jardiff-0.2.jar"/>
     <jardiff fromjar="jardiff-0.1.jar" tojar="jardiff-0.2.jar" 
     out="jardiff-0.1-0.2.xml"/>
     <jdxslt in="jardiff-0.1-0.2.xml" out="jardiff-0.1-0.2.html" styleurl="${jardiff-xhtml}">
       <param name="stylesheet" expression="diff.css"/>
-      <param name="from-api" expression="jardiff-0.1"/>
-      <param name="to-api" expression="jardiff-0.2"/>
+      <param name="from-api" 
+        expression="http://dist.osjava.org/releases/multidoc-jnr/jardiff/0.1"/>
+      <param name="to-api" 
+        expression="http://dist.osjava.org/releases/multidoc-jnr/jardiff/0.2"/>
     </jdxslt>
   </target>
 
   <target name="clean">
     <delete>
-      <fileset dir="." includes="jardiff-0.1-0.2.*"/>
+      <fileset dir="." includes="jardiff-*.*"/>
     </delete>
   </target>
 
