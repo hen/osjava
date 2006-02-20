@@ -29,7 +29,7 @@ Class added:
 
   <xsl:template match="jd:changed">
     <xsl:for-each select="jd:classchanged">
-Class changed: <xsl:value-of select="@name"/>
+Class changed: <xsl:call-template name="print-class-name"><xsl:with-param name="class" select="@name"/></xsl:call-template>
       <xsl:if test="jd:removed/jd:method">
   Methods removed:
 <xsl:for-each select="jd:removed/jd:method">
@@ -109,11 +109,15 @@ Class changed: <xsl:value-of select="@name"/>
      <xsl:if test="@abstract='yes'">abstract<xsl:value-of select="' '"/></xsl:if>
      <xsl:if test="@static='yes'">static<xsl:value-of select="' '"/></xsl:if>
      <xsl:if test="@final='yes'">final<xsl:value-of select="' '"/></xsl:if>
-     <xsl:value-of select="@name"/>
-     <xsl:if test="@superclass!='java.lang.Object'"> extends <xsl:value-of select="@superclass"/></xsl:if>
+     <xsl:call-template name="print-class-name">
+       <xsl:with-param name="class" select="@name"/>
+     </xsl:call-template>
+     <xsl:if test="@superclass and @superclass!='java.lang.Object'"> extends <xsl:call-template name="print-class-name"><xsl:with-param name="class" select="@superclass"/></xsl:call-template></xsl:if>
      <xsl:for-each select="jd:implements">
        <xsl:if test="position()=1"> implements </xsl:if>
-       <xsl:value-of select="@name"/>
+       <xsl:call-template name="print-class-name">
+         <xsl:with-param name="class" select="@name"/>
+       </xsl:call-template>
        <xsl:if test="position()!=last()">, </xsl:if>
      </xsl:for-each>
   </xsl:template>
@@ -130,7 +134,7 @@ Class changed: <xsl:value-of select="@name"/>
     <xsl:choose>
       <xsl:when test="@name='&lt;init&gt;'">
         <xsl:call-template name="print-short-name">
-          <xsl:with-param name="classname" select="$classname"/>
+          <xsl:with-param name="class" select="$classname"/>
         </xsl:call-template>
       </xsl:when>
       <xsl:otherwise>
@@ -139,7 +143,7 @@ Class changed: <xsl:value-of select="@name"/>
         </xsl:for-each>
         <xsl:value-of select="' '"/><xsl:value-of select="@name"/>
       </xsl:otherwise>
-    </xsl:choose>(<xsl:for-each select="jd:arguments/jd:type"><xsl:call-template name="print-type"/><xsl:if test="position()!=last()">, </xsl:if></xsl:for-each>)<xsl:for-each select="jd:exception"><xsl:if test="position() = 1"> throws </xsl:if><xsl:value-of select="@name"/><xsl:if test="position()!=last()">, </xsl:if></xsl:for-each>;
+    </xsl:choose>(<xsl:for-each select="jd:arguments/jd:type"><xsl:call-template name="print-type"/><xsl:if test="position()!=last()">, </xsl:if></xsl:for-each>)<xsl:for-each select="jd:exception"><xsl:if test="position() = 1"> throws </xsl:if><xsl:call-template name="print-class-name"><xsl:with-param name="class" select="@name"/></xsl:call-template><xsl:if test="position()!=last()">, </xsl:if></xsl:for-each>;
 </xsl:template>
   
   <xsl:template name="print-field">
@@ -159,7 +163,16 @@ Class changed: <xsl:value-of select="@name"/>
 </xsl:template>
 
   <xsl:template name="print-type">
-    <xsl:value-of select="@name"/>
+    <xsl:choose>
+      <xsl:when test="@primitive = 'yes'">
+        <xsl:value-of select="@name"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:call-template name="print-class-name">
+          <xsl:with-param name="class" select="@name"/>
+        </xsl:call-template>
+      </xsl:otherwise>
+    </xsl:choose>
     <xsl:if test="@array='yes'">
       <xsl:call-template name="array-subscript">
         <xsl:with-param name="dimensions" select="@dimensions"/>
@@ -169,15 +182,16 @@ Class changed: <xsl:value-of select="@name"/>
 
   <xsl:template name="array-subscript"><xsl:param name="dimensions"/>[]<xsl:if test="$dimensions > 1"><xsl:call-template name="array-subscript"><xsl:with-param name="dimensions" select="$dimensions - 1"/></xsl:call-template></xsl:if></xsl:template>
 
+  <!-- Print out the short name of a class (used to create constructor text) -->
   <xsl:template name="print-short-name">
-    <xsl:param name="classname"/>
+    <xsl:param name="class"/>
     <xsl:choose>
-      <xsl:when test="contains($classname,'.')">
+      <xsl:when test="contains($class,'/')">
         <xsl:call-template name="print-short-name">
-          <xsl:with-param name="classname" select="substring-after($classname,'.')"/>
+          <xsl:with-param name="class" select="substring-after($class,'/')"/>
         </xsl:call-template>
       </xsl:when>
-      <xsl:otherwise><xsl:value-of select="$classname"/></xsl:otherwise>
+      <xsl:otherwise><xsl:value-of select="translate($class,'$','.')"/></xsl:otherwise>
     </xsl:choose>
   </xsl:template>
 
@@ -187,5 +201,11 @@ Class changed: <xsl:value-of select="@name"/>
       <xsl:apply-templates select="node()|@*"/>
     </xsl:copy>
   </xsl:template>  
+
+  <!-- Print a class name -->
+  <xsl:template name="print-class-name">
+    <xsl:param name="class"/>
+    <xsl:value-of select="translate($class, '/$', '..')"/>
+  </xsl:template>
 
 </xsl:stylesheet>
