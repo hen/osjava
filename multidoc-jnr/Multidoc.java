@@ -60,6 +60,44 @@ public class Multidoc {
             pkg.generateAPIDiffs();
             pkg.generateIndexes();
         }
+        generateIndex(packages);
+    }
+
+    private static void generateIndex(Set packages) throws Exception {
+        System.out.println("Writing master index file.");
+        byte[] buffer = new byte[2048];
+        InputStream in;
+        OutputStream out;
+        BufferedWriter writer;
+        int len;
+
+        File index = new File(multidoc, "index.html");
+
+        in = new FileInputStream("header-index-template.html");
+        out = new FileOutputStream(index);
+        while( (len = in.read(buffer)) != -1) { out.write(buffer,0,len); }
+        in.close();
+        writer = new BufferedWriter(new OutputStreamWriter(out));
+        Iterator i = packages.iterator();
+        while(i.hasNext()) {
+            OSJPackage pkg = (OSJPackage) i.next();
+            Map subpackages = pkg.getSubpackages();
+            Iterator j = subpackages.values().iterator();
+            while(j.hasNext()) {
+                OSJPackage.OSJSubPackage subpkg = 
+                    (OSJPackage.OSJSubPackage) j.next();
+                if(subpkg.javadocs.isEmpty()) {
+                    continue;
+                }
+                writer.write("<li><a href=\""+subpkg.subname+"/index.html\">"+subpkg.subname+"</a></li>");
+                writer.newLine();
+            }
+        }
+        writer.flush();
+        in = new FileInputStream("footer-index-template.html");
+        while( (len = in.read(buffer)) != -1) { out.write(buffer,0,len); }
+        in.close();
+        out.close();
     }
 
     private static void prettyPrint(Set packages) {
@@ -138,7 +176,6 @@ public class Multidoc {
                     (OSJSubPackage) i.next();
                 subPackage.generateIndexes();
             }
-            // TODO: Generate master index.
         }
 
         public int compareTo(Object o) {
