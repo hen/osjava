@@ -1,0 +1,90 @@
+<?xml version="1.0"?>
+
+<document>
+  <properties>
+    <author email="antony@cyberiantiger.org">Antony Riley</author>
+    <title>Examples</title>
+  </properties>
+  <body>
+    <section name="Ant task usage">
+      <p>
+      To use JarDiff from an ant build script, is relatively trivial, 
+      here is an example:
+      </p>
+      <pre><![CDATA[
+<project name="jardiff" default="jardiff" basedir=".">
+
+  <!-- Lib directory (this is where your jar files live) -->
+  <property name="lib" value="libs"/>
+  <!-- Classpath for jardiff -->
+  <property name="jardifflibs" value="${lib}/jardiff-0.2.jar:${lib}/asm-2.1.jar:${lib}/asm-commons-2.1.jar"/>
+  <!-- Define jardiff and jdxslt tasks from properties file in jar -->
+  <typedef resource="ant/jardiff.properties" classpath="${jardifflibs}"/>
+  <!-- Location of jardiff xslt stylesheets -->
+  <whichresource classpath="${jardifflibs}" property="jardiff-html" resource="style/jardiff-html.xsl"/>
+  <whichresource classpath="${jardifflibs}" property="jardiff-xhtml" resource="style/jardiff-xhtml.xsl"/>
+  <whichresource classpath="${jardifflibs}" property="jardiff-text" resource="style/jardiff-text.xsl"/>
+
+
+  <target name="jardiff">
+    <jardiff fromjar="jardiff-0.1.jar" tojar="jardiff-0.2.jar" 
+      out="jardiff-0.1-0.2.xml"/>
+    <jdxslt in="jardiff-0.1-0.2.xml" out="jardiff-0.1-0.2.html" styleurl="${jardiff-xhtml}">
+      <param name="stylesheet" expression="diff.css"/>
+      <param name="from-api" 
+        expression="http://dist.osjava.org/releases/multidoc-jnr/jardiff/0.1"/>
+      <param name="to-api" 
+        expression="http://dist.osjava.org/releases/multidoc-jnr/jardiff/0.2"/>
+    </jdxslt>
+  </target>
+
+</project>
+]]></pre>
+      <p>
+      There is a fully functional ant build script in src/examples in the
+      distribution.
+      </p>
+    </section>
+    <section name="Jardiff Task">
+      <p>
+      The jardiff task generates an xml document describing the changes
+      between two jar files.
+      </p>
+      <p>
+      The jardiff task takes the following options:
+      </p>
+      <table>
+      <tr><th>Attribute</th><th>Type</th><th>Meaning</th><th>Required</th><th>default</th></tr>
+      <tr><td>fromjar</td><td>file</td><td>From jar file</td><td>Yes</td><td>none</td></tr>
+      <tr><td>tojar</td><td>file</td><td>To jar file</td><td>Yes</td><td>none</td></tr>
+      <tr><td>out</td><td>file</td><td>Output xml file</td><td>Yes</td><td>none</td></tr>
+      <tr><td>fromname</td><td>string</td><td>Name of from version</td><td>No</td><td>fromjar filename</td></tr>
+      <tr><td>toname</td><td>string</td><td>Name of to version</td><td>No</td><td>tojar filename</td></tr>
+      <tr><td>force</td><td>boolean</td><td>Overwrite output file if it already exists, and is newer than both source jar files.</td><td>No</td><td>No</td></tr>
+      </table>
+    </section>
+    <section name="Jdxslt Task">
+      <p>
+      The jdxslt task is an extension of the built in and xslt task, which 
+      allows a stylesheet to be specified as a URL (in the example, we use
+      an xslt contained in the jardiff jar file, which can be resolved
+      to a url, and then passed into an xslt task as the style).
+      </p>
+      <p>
+      It is fine to use the built in ant xslt task, as the only modification
+      I made was to allow specifying the stylesheet as a url, as I see
+      no reason to have to extract a stylesheet from a jarfile before using
+      it.
+      </p>
+      <p>
+      The jdxslt task takes exactly the same arguments as the xslt core task
+      with the following modifications.
+      </p>
+      <table>
+      <tr><th>Attribute</th><th>Type</th><th>Meaning</th><th>Required</th><th>default</th></tr>
+      <tr><td>style</td><td>file</td><td>Stylesheet to use</td><td>Yes, or styleurl</td><td>none</td></tr>
+      <tr><td>styleurl</td><td>string</td><td>URL of stylesheet to use</td><td>Yes, or style</td><td>none</td></tr>
+      </table>
+    </section>
+  </body>
+</document>

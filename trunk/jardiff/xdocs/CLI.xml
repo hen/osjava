@@ -3,10 +3,10 @@
 <document>
   <properties>
     <author email="antony@cyberiantiger.org">Antony Riley</author>
-    <title>How To</title>
+    <title>Examples</title>
   </properties>
   <body>
-    <section name="Using jardiff">
+    <section name="Command line usage">
       <p>
       Using jardiff is relatively simple, I suggest just grabbing the
       jardiff-0.1-uber.jar, as this is executable from the command line, 
@@ -18,6 +18,8 @@
       <pre>
 usage: JarDiff -f &lt;from jar> -t &lt;to jar> [-F &lt;from name>] [-T &lt;to name>]
                [[-o &lt;xml|html|xhtml|text>]|[-x &lt;xsl file>]] [-O &lt;file>]
+               [-s &lt;href>] [-fa &lt;href>] [-ta &lt;href>]
+
  -o,--output-format    output format, xml or html
  -F,--from-name        from name
  -T,--to-name          to name
@@ -26,6 +28,9 @@ usage: JarDiff -f &lt;from jar> -t &lt;to jar> [-F &lt;from name>] [-T &lt;to na
  -h,--help             print help on command line arguments
  -t,--to               to jar file
  -x,--xsl              custom xsl sheet to format output with
+ -fa,--from-api        relative location of from api
+ -ta,--to-api          relative location of to api
+ -s,--stylesheet       stylesheet to link to when generating html
       </pre>
       <p>
       For instance, the following would be a typical invocation:
@@ -46,6 +51,18 @@ usage: JarDiff -f &lt;from jar> -t &lt;to jar> [-F &lt;from name>] [-T &lt;to na
       probably a good idea to use one of the built in stylesheets and build
       upon it if you want to do this, the built in xml format is not that
       easy to deal with), you would specify <code>-x mystylesheet.xsl</code>.
+      </p>
+      <p>
+      The stylesheet argument specifies a relative href to a stylesheet to
+      be used, this is used instead of the generated style information.
+      </p>
+      <p>
+      The from-api and to-api arguments specify hrefs to the api docs for the
+      from api, and api docs for the to api.
+      </p>
+      <p>
+      An example of command line execute is included in the distribution
+      in the src/examples directory.
       </p>
     </section>
   </body>
