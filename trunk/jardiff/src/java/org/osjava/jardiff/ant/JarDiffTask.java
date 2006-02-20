@@ -112,19 +112,30 @@ public class JarDiffTask extends Task {
     public void execute() throws BuildException {
         try {
             if(fromJar == null) {
-                throw new BuildException("no fromjar file specified");
+                throw new BuildException("no fromjar file specified",
+                        getLocation());
             }
             if(toJar == null) {
-                throw new BuildException("no tojar file specified");
+                throw new BuildException("no tojar file specified",
+                        getLocation());
             }
             if(out == null) {
-                throw new BuildException("no out file specified");
+                throw new BuildException("no out file specified", 
+                        getLocation());
             }
             if(fromName == null) {
                 fromName = fromJar.getName();
             }
             if(toName == null) {
                 toName = toJar.getName();
+            }
+            if(!fromJar.exists() || !fromJar.isFile() || !fromJar.canRead()) {
+                String msg = "fromjar is not a file, or cannot be read";
+                throw new BuildException(msg, getLocation());
+            }
+            if(!toJar.exists() || !toJar.isFile() || !toJar.canRead()) {
+                String msg = "tojar is not a file, or cannot be read";
+                throw new BuildException(msg, getLocation());
             }
             long outModified = out.lastModified();
             long oldModified = fromJar.lastModified();

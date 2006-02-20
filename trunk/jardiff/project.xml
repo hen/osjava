@@ -133,6 +133,13 @@
           <include>jardiff-html-base.xsl</include>
         </includes>
       </resource>
+      <resource>
+        <targetPath>ant</targetPath>
+        <directory>src/resources</directory>
+        <includes>
+          <include>jardiff.properties</include>
+        </includes>
+      </resource>
     </resources>   
 
   </build>
