@@ -25,6 +25,19 @@ public class Multidoc {
             System.out.println("Usage: Multidoc <maven path> <releases path>");
             System.exit(1);
         }
+		System.out.println("Performing version numbers test");
+		TreeSet testSet = new TreeSet();
+		testSet.add(new Version("0.1"));
+		testSet.add(new Version("0.2"));
+		testSet.add(new Version("0.2-alpha"));
+		testSet.add(new Version("0.2-beta"));
+		testSet.add(new Version("0.2-rc1"));
+		testSet.add(new Version("0.2-rc2"));
+		testSet.add(new Version("0.2.1"));
+		testSet.add(new Version("0.3"));
+		testSet.add(new Version("0.3.1"));
+		System.out.println("The following should be in newest-oldest order");
+		System.out.println(testSet);
         maven = new File(args[0]);
         releases = new File(args[1]);
         multidoc = new File(releases, "multidoc-jnr");
@@ -404,11 +417,13 @@ public class Multidoc {
                 char ch = version.charAt(i);
                 switch(ch) {
                     case '.':
-						try {
-							versionParts.add(new Integer(tmp.toString()));
-						} catch (NumberFormatException nfe) {
-							versionParts.add(tmp.toString());
-						}
+					case '-':
+						versionParts.add(
+								VersionPart.newVersionPart(
+									tmp.toString(),
+									new Character(ch)
+									)
+								);
                         tmp.setLength(0);
                         break;
                     default:
@@ -416,11 +431,12 @@ public class Multidoc {
                         break;
                 }
             }
-			try {
-				versionParts.add(new Integer(tmp.toString()));
-			} catch (NumberFormatException nfe) {
-				versionParts.add(tmp.toString());
-			}
+			versionParts.add(
+				VersionPart.newVersionPart(
+					tmp.toString(),
+					null
+					)
+				);
         }
 
         public int compareTo(Object o) {
@@ -431,33 +447,21 @@ public class Multidoc {
             Iterator i = this.versionParts.iterator();
             Iterator j = o.versionParts.iterator();
             while(i.hasNext() && j.hasNext()) {
-                Comparable thisVal = (Comparable) i.next();
-                Comparable oVal = (Comparable) j.next();
-				if(thisVal instanceof Integer && oVal instanceof Integer) {
-					int ret = oVal.compareTo(thisVal);
-					if(ret != 0) {
-						return ret;
-					}
-				} else if(thisVal instanceof String && oVal instanceof String) {
-					int ret = oVal.compareTo(thisVal);
-					if(ret != 0) {
-						return ret;
-					}
-				} else if(thisVal instanceof Integer) { /* String oVal */
-					return 1;
-				} else { /* String thisVal, Integer oVal */
-					return -1;
+                VersionPart thisVal = (VersionPart) i.next();
+                VersionPart oVal = (VersionPart) j.next();
+				int ret = thisVal.compareTo(oVal);
+				if(ret != 0) {
+					return ret;
 				}
-
             }
             if(i.hasNext()) {
-				if(i.next() instanceof String) {
+				if(((VersionPart)i.next()).isString()) {
 					return 1;
 				} else {
 					return -1;
 				}
             } else if(j.hasNext()) {
-				if(j.next() instanceof String) {
+				if(((VersionPart)j.next()).isString()) {
 					return -1;
 				} else {
 					return 1;
@@ -472,13 +476,65 @@ public class Multidoc {
             Iterator i = versionParts.iterator();
             while(i.hasNext()) {
                 ret.append(i.next());
-                if(i.hasNext()) {
-                    ret.append('.');
-                }
             }
             return ret.toString();
         }
     }
+
+	private static class VersionPart implements Comparable {
+
+		public static VersionPart 
+			newVersionPart(String data, Character seperator) 
+		{
+			try {
+				return new VersionPart(new Integer(data), seperator);
+			} catch (NumberFormatException nfe) {
+				return new VersionPart(data, seperator);
+			}
+		}
+
+		private Comparable data;
+		private Character separator;
+
+		public VersionPart(Comparable data, Character separator) {
+			this.data = data;
+			this.separator = separator;
+		}
+
+		public int compareTo(Object o) {
+			return compareTo((VersionPart)o);
+		}
+
+		public int compareTo(VersionPart o) {
+			if( 
+					(isString() && o.isString()) || 
+					(isInteger() && o.isInteger())
+			  ) 
+			{
+				return - data.compareTo(o.data);
+			} else if(isString()) {
+				return 1;
+			} else {
+				return -1;
+			}
+		}
+
+		public boolean isString() {
+			return data instanceof String;
+		}
+
+		public boolean isInteger() {
+			return data instanceof Integer;
+		}
+
+		public String toString() {
+			if(separator != null) {
+				return data.toString() + separator;
+			} else {
+				return data.toString();
+			}
+		}
+	}
 
     public static void extractZipEntry(ZipFile file, ZipEntry entry, File to) throws Exception {
         if(entry.isDirectory()) {
