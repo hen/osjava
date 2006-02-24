@@ -11,6 +11,8 @@ import java.util.zip.*;
 import java.util.*;
 import java.util.regex.*;
 import org.osjava.jardiff.Main;
+import org.w3c.dom.*;
+import javax.xml.parsers.*;
 
 public class Multidoc {
 
@@ -117,12 +119,12 @@ public class Multidoc {
 
     public static class OSJPackage implements Comparable {
 
-        private static final Pattern POMFILE = Pattern.compile("^(.*)-([0-9\\.]+)\\.pom$");
+        private static final Pattern POMFILE = Pattern.compile("^(.*)\\.pom$");
 
         private String name;
         private TreeMap subpackages = new TreeMap();
 
-        public OSJPackage(String name) {
+        public OSJPackage(String name) throws Exception {
             this.name = name;
             File mavenJars = new File(maven, name);
             mavenJars = new File(mavenJars, "poms");
@@ -130,8 +132,25 @@ public class Multidoc {
             for(int i=0;i<tmp.length;i++) {
                 Matcher m = POMFILE.matcher(tmp[i]);
                 if(m.matches()) {
-                    String subname = m.group(1);
-                    String version = m.group(2);
+                    String nameAndVersion = m.group(1);
+					Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new File(mavenJars, tmp[i]));
+
+					Node root = doc.getDocumentElement();
+					root = root.getFirstChild();
+
+					String version = null;
+					String subname = null;
+
+					// This is not how to write good java kids.
+					while(root != null) {
+						if("id".equals(root.getNodeName())) {
+							subname = root.getFirstChild().getNodeValue();
+						} else if("currentVersion".equals(root.getNodeName())) {
+							version = root.getFirstChild().getNodeValue();
+						}
+						root = root.getNextSibling();
+					}
+
                     OSJSubPackage subPackage = 
                         (OSJSubPackage) subpackages.get(subname);
                     if(subPackage == null) {
@@ -385,7 +404,11 @@ public class Multidoc {
                 char ch = version.charAt(i);
                 switch(ch) {
                     case '.':
-                        versionParts.add(new Integer(tmp.toString()));
+						try {
+							versionParts.add(new Integer(tmp.toString()));
+						} catch (NumberFormatException nfe) {
+							versionParts.add(tmp.toString());
+						}
                         tmp.setLength(0);
                         break;
                     default:
@@ -393,7 +416,11 @@ public class Multidoc {
                         break;
                 }
             }
-            versionParts.add(new Integer(tmp.toString()));
+			try {
+				versionParts.add(new Integer(tmp.toString()));
+			} catch (NumberFormatException nfe) {
+				versionParts.add(tmp.toString());
+			}
         }
 
         public int compareTo(Object o) {
@@ -404,17 +431,37 @@ public class Multidoc {
             Iterator i = this.versionParts.iterator();
             Iterator j = o.versionParts.iterator();
             while(i.hasNext() && j.hasNext()) {
-                Integer thisVal = (Integer) i.next();
-                Integer oVal = (Integer) j.next();
-                int ret = oVal.compareTo(thisVal);
-                if(ret != 0) {
-                    return ret;
-                }
+                Comparable thisVal = (Comparable) i.next();
+                Comparable oVal = (Comparable) j.next();
+				if(thisVal instanceof Integer && oVal instanceof Integer) {
+					int ret = oVal.compareTo(thisVal);
+					if(ret != 0) {
+						return ret;
+					}
+				} else if(thisVal instanceof String && oVal instanceof String) {
+					int ret = oVal.compareTo(thisVal);
+					if(ret != 0) {
+						return ret;
+					}
+				} else if(thisVal instanceof Integer) { /* String oVal */
+					return 1;
+				} else { /* String thisVal, Integer oVal */
+					return -1;
+				}
+
             }
             if(i.hasNext()) {
-                return -1;
+				if(i.next() instanceof String) {
+					return 1;
+				} else {
+					return -1;
+				}
             } else if(j.hasNext()) {
-                return 1;
+				if(j.next() instanceof String) {
+					return -1;
+				} else {
+					return 1;
+				}
             } else {
                 return 0;
             }
