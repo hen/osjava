@@ -14,7 +14,7 @@ public class FileFinderTest extends TestCase {
 
     private HashMap options;
     private FileFinder finder;
-    private String dirStr = "src/test/find-data/";
+    private String dirStr =  System.getProperty("basedir") + "/" + "src/test/find-data/";
     private File dir = new File(dirStr);
 
     public FileFinderTest(String name) {
