@@ -45,9 +45,12 @@
 </div>
 
 <div class="feedback">
-<p>You have chosen the <span class="chosen-data"><%= report.getLabel() %></span> report from the <span class="chosen-data"><%= report.getReportGroup().getLabel() %></span> report group. </p>
-<p>"<%= report.getReportGroup().getDescription() %>"</p>
-<p>"<%= report.getDescription() %>"</p>
+<p>You have chosen to run from the <span class="chosen-data">$group.label</span> report group. </p>
+<p>You have chosen the <span class="chosen-data">$label</span> report from the <span class="chosen-data">$group.label</span> report group. </p>
+<p>"$group.description"</p>
+<p>"$description"</p>
+</div>
+
 <%
     if(params != null && params.length != 0) {
 %>

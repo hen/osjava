@@ -22,6 +22,8 @@ public class ControllerServlet extends VelocityServlet {
 
         ctxt.put("RRR", new FieldMethodizer( new Constants() ) );
 
+        ctxt.put("request", request);
+
         String groupName = request.getParameter(Constants.GROUP);
         if(groupName == null || "".equals(groupName)) {
             ReportGroup[] groups = ReportFactory.getReportGroups();
