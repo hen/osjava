@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<toolbox>
+  <tool>
+    <key>rrr</key>
+    <scope>application</scope>
+    <class>org.osjava.reportrunner.webwizard.ReportRunnerTool</class>
+  </tool>
+</toolbox>

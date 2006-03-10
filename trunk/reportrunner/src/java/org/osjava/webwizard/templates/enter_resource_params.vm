@@ -12,8 +12,7 @@
 <p>This report may be run against the following resources; would you please select from the following: </p>
 
 <form action="choosereport">
-<!-- need a velocity macro of some kind -->
-<%= ReportRunnerServlet.parametersToHiddens(request, params) %>
+$rrr.parametersToHiddens($request, $reports.reportGroup.resourceParams )
 <input type="hidden" name="z" value="1">
 <table>
 #foreach( $param in $reports.reportGroup.resourceParams )
