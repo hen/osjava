@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<document>
+
+  <properties>
+      <author email="bayard@generationjava.com">Henri Yandell</author>
+      <title>Genjava</title>
+  </properties>
+
+  <body>
+    <section name="Legacy releases">
+      <p>For those looking for 'genjava-core' v2.2, the release is available at <a href="http://dist.osjava.org/releases/official/genjava-core/">http://dist.osjava.org/releases/official/genjava-core/</a>. </p>
+    </section>
+  </body>
+</document>

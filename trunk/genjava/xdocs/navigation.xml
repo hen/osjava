@@ -5,10 +5,15 @@
 
   <body>
     <menu name="Genjava">
-      <item href="index.html" name="Component list"/>
-      <item href="Genjava.html" name="What is Genjava?"/>
+      <item href="Genjava.html" name="About Genjava"/>
       <item name="Downloads"   href="http://dist.osjava.org/releases/official/genjava/"/>
       <item name="License"       href="/license.html"/>
+    </menu>
+    <menu name="Components">
+      <item href="index.html" name="Released Components"/>
+      <item href="dormant.html" name="Dormant Components"/>
+      <item href="sandbox.html" name="Unreleased Components"/>
+      <item href="legacy.html" name="Legacy Components"/>
     </menu>
     <menu name="Resources">
       <item name="Mailing list"       href="/mail-lists.html"/>

@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<document>
+
+  <properties>
+      <author email="bayard@generationjava.com">Henri Yandell</author>
+      <title>Genjava</title>
+  </properties>
+
+  <body>
+    <section name="Additional components">
+      <p>Additionally, the following components have been released but are not considered active: </p>
+      <table>
+        <tr><th>Component</th><th>Version</th><th>Description</th><th>javadoc</th><th>viewable source</th><th>dependencies</th><th>release notes</th><th>download</th></tr>
+        <tr><td>gj-beans</td><td>1.0</td><td>A bean introspection library. Unlikely to be worth choosing over Jakarta BeanUtils. </td><td><a href="multiproject/gj-beans/apidocs/">api</a></td><td><a href="multiproject/gj-beans/xref/">src</a>/<a href="multiproject/gj-beans/xref-test/">test</a></td><td><a href="multiproject/gj-beans/dependencies.html">jars</a></td><td><a href="multiproject/gj-beans/changes-report.html">release notes</a></td><td><a href="http://dist.osjava.org/releases/official/genjava/gj-beans/">download</a></td></tr>
+        <tr><td>gj-gui</td><td>0.1</td><td>An assortment of widgets and other GUI components. Needs polishing. </td><td><a href="multiproject/gj-gui/apidocs/">api</a></td><td><a href="multiproject/gj-gui/xref/">src</a>/<a href="multiproject/gj-gui/xref-test/">test</a></td><td><a href="multiproject/gj-gui/dependencies.html">jars</a></td><td><a href="multiproject/gj-gui/changes-report.html">release notes</a></td><td><a href="http://dist.osjava.org/releases/official/genjava/gj-gui/">download</a></td></tr>
+        <tr><td>gj-servlet</td><td>1.0</td><td>A little bit of Servlet helping code, sadly little bit is the right phrase. </td><td><a href="multiproject/gj-servlet/apidocs/">api</a></td><td><a href="multiproject/gj-servlet/xref/">src</a>/<a href="multiproject/gj-servlet/xref-test/">test</a></td><td><a href="multiproject/gj-servlet/dependencies.html">jars</a></td><td><a href="multiproject/gj-servlet/changes-report.html">release notes</a></td><td><a href="http://dist.osjava.org/releases/official/genjava/gj-servlet/">download</a></td></tr>
+        <tr><td>gj-tools</td><td>1.0</td><td>Command line tools framework, with a couple of tools. Designed to make it simpler to push out a command line program but probably not too exciting. </td><td><a href="multiproject/gj-tools/apidocs/">api</a></td><td><a href="multiproject/gj-tools/xref/">src</a>/<a href="multiproject/gj-tools/xref-test/">test</a></td><td><a href="multiproject/gj-tools/dependencies.html">jars</a></td><td><a href="multiproject/gj-tools/changes-report.html">release notes</a></td><td><a href="http://dist.osjava.org/releases/official/genjava/gj-tools/">download</a></td></tr>
+      </table>
+    </section>
+  </body>
+</document>
