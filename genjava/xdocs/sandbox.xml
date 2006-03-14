@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<document>
+
+  <properties>
+      <author email="bayard@generationjava.com">Henri Yandell</author>
+      <title>Genjava</title>
+  </properties>
+
+  <body>
+    <section name="Unreleased components">
+      <p>Currently there are no unreleased components. </p>
+    </section>
+  </body>
+</document>
