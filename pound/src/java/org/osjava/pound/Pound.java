@@ -3,12 +3,17 @@
  */
 package org.osjava.pound;
  
-import java.awt.Canvas;
 import java.awt.Color;
-import java.awt.Frame;
+import javax.swing.*;
 import java.awt.HeadlessException;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.KeyAdapter;
+import java.awt.Canvas;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
  
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MetaEventListener;
@@ -36,7 +41,7 @@ import javax.sound.midi.Transmitter;
  * 
  * @author hyandell
  */
-public class Pound extends Frame implements KeyListener {
+public class Pound extends JFrame {
  
     public static void main(String[] args) {
         Pound p = new Pound();
@@ -50,43 +55,47 @@ public class Pound extends Frame implements KeyListener {
      */
     public Pound() throws HeadlessException {
         super("Pound");
-        this.addKeyListener(this);
+        this.addKeyListener(new KeyL());
+
         canvas = new SimpleCanvas();
-        canvas.addKeyListener(this);
-        this.add(canvas);
-        this.pack();
-        this.setSize(100, 200);
-       
+        getContentPane().add(canvas);
+
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
+        setSize(640, 480);
+        setVisible(true);
     }
- 
-    public void keyPressed(KeyEvent ke) {
-        int keyCode = ke.getKeyCode();
-        int modifiers = ke.getModifiers();
- 
-        if (keyCode == KeyEvent.VK_SHIFT) {
-            return;
+
+    class KeyL extends KeyAdapter {
+        public void keyPressed(KeyEvent ke) {
+            int keyCode = ke.getKeyCode();
+            int modifiers = ke.getModifiers();
+     
+            if (keyCode == KeyEvent.VK_SHIFT) {
+                return;
+            }
+     
+            if (keyCode == KeyEvent.VK_ESCAPE && ke.isShiftDown()) {
+                System.err.println("ESCAPE");
+                System.exit(0);
+            }
+     
+            System.err.println("Key: " + KeyEvent.getKeyText(keyCode) + " " + keyCode + " " + modifiers);
+           
+           
+            canvas.setBackground(chooseColor(canvas.getBackground(), normalize(keyCode, 20, 110, 0, 255)));
+            if (Character.isLetterOrDigit(ke.getKeyChar())) {
+                canvas.setMsg(String.valueOf(ke.getKeyChar()));
+            }
+           
+            playNote(normalize(keyCode, 20, 110, 10, 127));
         }
- 
-        if (keyCode == KeyEvent.VK_ESCAPE && ke.isShiftDown()) {
-            System.err.println("ESCAPE");
-            this.dispose();
-            System.exit(0);
-        }
- 
-        System.err.println("Key: " + KeyEvent.getKeyText(keyCode) + " " + keyCode + " " + modifiers);
-       
-       
-        this.canvas.setBackground(chooseColor(this.canvas.getBackground(), normalize(keyCode, 20, 110, 0, 255)));
-       
-        playNote(normalize(keyCode, 20, 110, 10, 127));
     }
    
-    public static int normalize(int keyCode, int min, int max, int new_min,
-int new_max) {
+    public static int normalize(int keyCode, int min, int max, int new_min, int new_max) {
         if(keyCode < min) keyCode = min;
         if(keyCode > max) keyCode = max;
-        return new_min + (new_max - new_min) * (keyCode - min) / (max
-- min);
+        return new_min + (new_max - new_min) * (keyCode - min) / (max - min);
     }
    
     private Color olderColor = Color.BLACK;
@@ -247,17 +256,43 @@ int new_max) {
 }
  
 class SimpleCanvas extends Canvas {
- 
+    private String msg = ""; 
     private Color color = Color.BLACK;
- 
+    private Font charFont;
+    private Dimension lastSize;
+    
     public Color getBackground() {
         return this.color;
     }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }  
  
     public void setBackground(Color color) {
         this.color = color;
         this.invalidate();
         this.repaint();
+    }
+
+    public void paint(Graphics g) {
+        Dimension d = getSize();
+
+        if (this.lastSize == null || this.lastSize.height != d.height) {
+            this.charFont = new Font("Courier", Font.BOLD, d.height);
+            this.lastSize = d;
+        }  
+              
+        g.setFont(this.charFont);
+
+        FontMetrics fm = g.getFontMetrics();
+
+        // TODO draw in the inverse color? that might be to hard on the eyes.
+        g.setColor(Color.WHITE);
+        int y = fm.getAscent() - (int) (d.height / 4);
+        int x = (int) (d.width / 2) - (int) (fm.charWidth('w') / 2);
+
+        g.drawString(this.msg, x, y);
     }
 }
 
