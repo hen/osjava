@@ -25,3 +25,6 @@ Game #7:
 
 Game #8: 
   Object Pound. Kid hits keyboard, sees picture of object starting with letter (A is for pound).
+
+Game #9
+  Voice pound. Kid pounds letter, hears himself or his mommy saying the letter that was pressed.
