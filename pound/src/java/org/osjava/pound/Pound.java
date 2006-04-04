@@ -15,6 +15,9 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import javax.imageio.ImageIO;
  
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MetaEventListener;
@@ -56,9 +59,11 @@ public class Pound extends JFrame {
      */
     public Pound() throws HeadlessException {
         super("Pound");
-        this.addKeyListener(new KeyL());
+        KeyL kl = new KeyL();
+        this.addKeyListener(kl);
 
         canvas = new SimpleCanvas();
+        canvas.addKeyListener(kl);
         getContentPane().add(canvas);
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -261,6 +266,17 @@ class SimpleCanvas extends Canvas {
     private Color color = Color.BLACK;
     private Font charFont;
     private Dimension lastSize;
+    BufferedImage img;
+
+
+    public SimpleCanvas() {
+       try {
+         img = ImageIO.read(new File("test.jpg"));
+       }
+       catch(Exception e) {
+         e.printStackTrace();
+       }
+    }
     
     public Color getBackground() {
         return this.color;
@@ -278,6 +294,9 @@ class SimpleCanvas extends Canvas {
 
     public void paint(Graphics g) {
         Dimension d = getSize();
+        if (img != null) {
+            g.drawImage(img, 0, 0, null);
+        }  
 
         if (this.lastSize == null || this.lastSize.height != d.height) {
             this.charFont = new Font("Courier", Font.BOLD, d.height);
