@@ -4,7 +4,8 @@
 package org.osjava.pound;
  
 import java.awt.Color;
-import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.WindowConstants;
 import java.awt.HeadlessException;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
