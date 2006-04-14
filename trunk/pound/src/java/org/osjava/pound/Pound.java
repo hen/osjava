@@ -11,12 +11,19 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.KeyAdapter;
 import java.awt.Canvas;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.awt.Image;
 import java.io.File;
+import java.text.NumberFormat;
+import java.io.FileFilter;
+import java.io.FileInputStream;
+import java.io.IOException;
 import javax.imageio.ImageIO;
  
 import javax.sound.midi.InvalidMidiDataException;
@@ -46,6 +53,8 @@ import javax.sound.midi.Transmitter;
  * @author hyandell
  */
 public class Pound extends JFrame {
+    private boolean playSound = true;
+    private boolean updateColor = true;
  
     public static void main(String[] args) {
         Pound p = new Pound();
@@ -68,7 +77,7 @@ public class Pound extends JFrame {
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        setSize(640, 480);
+        setSize(1280, 1024);
         setVisible(true);
     }
 
@@ -77,24 +86,62 @@ public class Pound extends JFrame {
             int keyCode = ke.getKeyCode();
             int modifiers = ke.getModifiers();
      
-            if (keyCode == KeyEvent.VK_SHIFT) {
-                return;
-            }
-     
-            if (keyCode == KeyEvent.VK_ESCAPE && ke.isShiftDown()) {
-                System.err.println("ESCAPE");
-                System.exit(0);
-            }
      
             System.err.println("Key: " + KeyEvent.getKeyText(keyCode) + " " + keyCode + " " + modifiers);
-           
-           
-            canvas.setBackground(chooseColor(canvas.getBackground(), normalize(keyCode, 20, 110, 0, 255)));
-            if (Character.isLetterOrDigit(ke.getKeyChar())) {
-                canvas.setMsg(String.valueOf(ke.getKeyChar()));
+
+            if (ke.isControlDown()) {
+                System.out.println("ctrl is down");
+                switch (keyCode) {
+                    case KeyEvent.VK_Q:
+                        System.exit(0);
+                        break;
+    
+                    case KeyEvent.VK_C:
+                        updateColor = !updateColor;
+                        break;
+    
+                    case KeyEvent.VK_D:
+                        canvas.debug = !canvas.debug;
+                        canvas.repaint();
+                        break;
+    
+                    case KeyEvent.VK_M:
+                        canvas.showMessage = !canvas.showMessage;
+                        canvas.repaint();
+                        break;
+    
+                    case KeyEvent.VK_S:
+                        playSound = !playSound;
+                        break;
+    
+                    case KeyEvent.VK_I:
+                        canvas.showImage = !canvas.showImage;
+                        canvas.repaint();
+                        break;
+    
+                    case KeyEvent.VK_R:
+                        canvas.initImages();
+                        canvas.repaint();
+                        break;
+                }
+
+                return;
+
             }
            
-            playNote(normalize(keyCode, 20, 110, 10, 127));
+            if (updateColor) {
+                canvas.setBackground(chooseColor(canvas.getBackground(), normalize(keyCode, 20, 110, 0, 255)));
+            }
+
+            if (Character.isDefined(ke.getKeyChar())) {
+                canvas.setMsg(String.valueOf(ke.getKeyChar()));
+            }
+
+            canvas.click();
+           
+            if (playSound) {
+                playNote(normalize(keyCode, 20, 110, 10, 127));
+            }    
         }
     }
    
@@ -265,13 +312,43 @@ class SimpleCanvas extends Canvas {
     private String msg = ""; 
     private Color color = Color.BLACK;
     private Font charFont;
+    private Font debugFont = new Font("Arial", Font.PLAIN, 12);
     private Dimension lastSize;
-    BufferedImage img;
-
+    private int imageIndex;
+    private Image currentImage;
+    boolean showImage = true;
+    private int imageCacheSize = 25;
+    private String imagePath = "images";
+    boolean debug;
+    boolean showMessage = true;
+    private ImageSource il;
+    private boolean paintInitialized = false;
+    
 
     public SimpleCanvas() {
+       addComponentListener(new ComponentListener() {
+         public void componentHidden(ComponentEvent ce) {}
+
+         public void componentResized(ComponentEvent ce) {
+           il.setCanvasSize(getSize());
+           if (!paintInitialized) {
+             il.load(imagePath, imageCacheSize);
+             paintInitialized = true;
+           }
+         }
+         public void componentMoved(ComponentEvent ce) {}
+
+         public void componentShown(ComponentEvent ce) {
+           il.setCanvasSize(getSize());
+           if (!paintInitialized) {
+             il.load(imagePath, imageCacheSize);
+             paintInitialized = true;
+           }
+         }
+       });  
+
        try {
-         img = ImageIO.read(new File("test.jpg"));
+           il = new ImageSource();
        }
        catch(Exception e) {
          e.printStackTrace();
@@ -284,7 +361,8 @@ class SimpleCanvas extends Canvas {
 
     public void setMsg(String msg) {
         this.msg = msg;
-    }  
+    }
+
  
     public void setBackground(Color color) {
         this.color = color;
@@ -292,11 +370,80 @@ class SimpleCanvas extends Canvas {
         this.repaint();
     }
 
+    void initImages() {
+      il.load(imagePath, imageCacheSize);
+    }
+
+    private void drawImage(Graphics g, Dimension size) {
+        if (!this.showImage || currentImage == null) {
+          return;
+        }
+        
+        int iw = currentImage.getWidth(null);
+        int ih = currentImage.getHeight(null);
+
+        float y = size.height / 2 - currentImage.getHeight(null) / 2;
+        float x = size.width / 2 - currentImage.getWidth(null) / 2;
+        g.drawImage(currentImage, (int) x, (int) y, null);
+    }
+
+
+    private void drawDebug(Graphics g) {
+        Dimension d = getSize();
+        float x = d.width / 2;
+        float y = d.height / 2;
+
+        g.setColor(Color.WHITE);
+
+        g.drawLine((int) x, 0, (int) x, d.height);
+        g.drawLine(0, (int) y, d.width, (int) y);
+
+        g.setFont(debugFont);
+        FontMetrics fm = g.getFontMetrics();
+
+        int yadvance = fm.getHeight();
+        int dy = yadvance;
+        int dx = (int) x + 2;
+
+        g.drawString("Canvas Size: " + d, dx, dy);
+
+        dy += yadvance;
+        g.drawString("Canvas Ratio: " + (float) ((float) d.width / (float) d.height), dx, dy);
+
+        if (currentImage != null) {
+          Dimension id = new Dimension(currentImage.getWidth(null), currentImage.getHeight(null));
+
+          dy += yadvance;
+          g.drawString("Image: " + id, dx, dy);
+
+          dy += yadvance;
+          g.drawString("Image Ratio: " + (float) id.width / (float) id.height, dx, dy);
+        }
+
+        NumberFormat nf = NumberFormat.getInstance();
+
+        dy += yadvance;
+        g.drawString("Free Memory: " + nf.format(Runtime.getRuntime().freeMemory()) + " bytes", dx, dy);
+
+        dy += yadvance;
+        g.drawString("Max Memory: " + nf.format(Runtime.getRuntime().maxMemory()) + " bytes", dx, dy);
+
+        dy += yadvance;
+        g.drawString("Total Memory: " + nf.format(Runtime.getRuntime().totalMemory()) + " bytes", dx, dy);
+
+    }
+
+    public void click() {
+        if (showImage) {
+            currentImage = il.nextImage();
+        }    
+    }
+
     public void paint(Graphics g) {
         Dimension d = getSize();
-        if (img != null) {
-            g.drawImage(img, 0, 0, null);
-        }  
+
+
+        drawImage(g, d);
 
         if (this.lastSize == null || this.lastSize.height != d.height) {
             this.charFont = new Font("Courier", Font.BOLD, d.height);
@@ -312,7 +459,10 @@ class SimpleCanvas extends Canvas {
         int y = fm.getAscent() - (int) (d.height / 4);
         int x = (int) (d.width / 2) - (int) (fm.charWidth('w') / 2);
 
-        g.drawString(this.msg, x, y);
+        if (this.showMessage) {
+            g.drawString(this.msg, x, y);
+        }
+
+        if (this.debug) drawDebug(g);
     }
 }
-
