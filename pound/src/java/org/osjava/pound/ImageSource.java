@@ -40,6 +40,9 @@ public class ImageSource implements Runnable {
               }
           });
 
+	if (this.files.length == 0) {
+	  this.files = null;
+	}
         if (this.files == null) {
           return;
         }  
