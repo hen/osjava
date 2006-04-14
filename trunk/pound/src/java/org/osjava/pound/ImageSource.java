@@ -17,6 +17,7 @@ public class ImageSource implements Runnable {
     private List images = new ArrayList();
     private Thread thread;
     private Dimension canvasSize;
+    private boolean noImages;
 
 
     public void load(String imagePath, int cacheSize) {
@@ -39,6 +40,11 @@ public class ImageSource implements Runnable {
               }
           });
 
+        if (this.files == null) {
+          return;
+        }  
+         
+
         index = 0;  
  
         if (!started) {
@@ -59,6 +65,9 @@ public class ImageSource implements Runnable {
 
     public synchronized Image nextImage() {
         log("next image requested");
+        if (this.files == null) {
+          return null;
+        }  
 
         if (images.size() == 0) {
             try {
