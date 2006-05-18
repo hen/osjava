@@ -108,6 +108,12 @@
     <sourceDirectory>src/java</sourceDirectory>
     <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
 
+    <resources>
+      <resource>
+        <directory>src/resources</directory>
+      </resource>
+    </resources>
+
     <unitTest>
       <resources>
         <resource>
@@ -128,9 +134,6 @@
 
     <!-- J A R  R E S O U R C E S -->
     <!-- Resources that are packaged up inside the JAR file -->
-
-    <jarResources>
-    </jarResources>
 
     <jars>
     </jars>
