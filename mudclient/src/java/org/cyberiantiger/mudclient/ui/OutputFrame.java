@@ -21,7 +21,7 @@ public class OutputFrame extends JFrame {
     }
 
     private void initComponents() {
-	setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+	setDefaultCloseOperation(HIDE_ON_CLOSE);
 
 	getContentPane().setLayout(new BorderLayout());
 

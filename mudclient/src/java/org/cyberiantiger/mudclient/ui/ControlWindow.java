@@ -1,6 +1,10 @@
 package org.cyberiantiger.mudclient.ui;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.AWTEvent;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
@@ -26,6 +30,7 @@ public class ControlWindow extends JFrame {
     private JTextField inputField;
     private Map views = new HashMap();
     private ConsoleWriter defaultView;
+    private List otherFrames = new ArrayList();
 
     public ControlWindow(Connection client) {
 	super("Elephant Mud Client");
@@ -34,8 +39,6 @@ public class ControlWindow extends JFrame {
     }
 
     private void initComponents() {
-	setDefaultCloseOperation(EXIT_ON_CLOSE);
-
 	menuBar = new JMenuBar();
 	fileMenu = new JMenu("File");
 	helpMenu = new JMenu("Help");
@@ -71,9 +74,7 @@ public class ControlWindow extends JFrame {
 	exitMenuItem.addActionListener(
 		new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
-			client.disconnect();
-			hide();
-			System.exit(0); // Not needed in most cases.
+			exit();
 		    }
 		});
 	helpMenuItem.setEnabled(false);
@@ -228,8 +229,7 @@ public class ControlWindow extends JFrame {
     public void processWindowEvent(WindowEvent we) {
 	super.processWindowEvent(we);
 	if(we.getID() == WindowEvent.WINDOW_CLOSING) {
-	    client.disconnect();
-	    hide();
+	    exit();
 	}
 	if(we.getID() == WindowEvent.WINDOW_ACTIVATED) {
 	    inputField.requestFocus();
@@ -266,7 +266,9 @@ public class ControlWindow extends JFrame {
     public void makeVisible(MudClientUI ui) {
 	OutputConfiguration config = ui.getConfiguration();
 	if(config.getFloating()) {
-	    new OutputFrame(ui).show();
+	    OutputFrame out = new OutputFrame(ui);
+	    otherFrames.add(out);
+	    out.show();
 	} else {
 	    tabbedOutputPane.addTab(config.getName(), (Component) ui);
 	}
@@ -288,5 +290,17 @@ public class ControlWindow extends JFrame {
 		connectMenuItem.setEnabled(true);
 		break;
 	}
+    }
+
+    protected void exit() {
+	client.disconnect();
+	Iterator i = otherFrames.iterator();
+	while(i.hasNext()) {
+	    JFrame other = (JFrame) i.next();
+	    other.hide();
+	    other.dispose();
+	}
+	hide();
+	dispose();
     }
 }
