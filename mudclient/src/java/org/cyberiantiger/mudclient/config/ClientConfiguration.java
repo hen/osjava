@@ -5,6 +5,8 @@ import java.io.*;
 import javax.swing.InputMap;
 import javax.swing.KeyStroke;
 
+import org.cyberiantiger.mudclient.input.Alias;
+
 public class ClientConfiguration {
 
     public static final String DEFAULT_VIEW = "DEFAULT";
@@ -18,6 +20,7 @@ public class ClientConfiguration {
     private Map redirects;
     private Map outputConfigs;
     private InputMap keyBindings;
+    private Map aliases;
 
 
     public ClientConfiguration() {
@@ -97,6 +100,26 @@ public class ClientConfiguration {
 		}
 	    }
 	}
+
+	/* Load aliases */
+	aliases = new HashMap();
+	i = outputConfigs.keySet().iterator();
+	while (i.hasNext()) {
+	    String keyName = (String) i.next();
+	    int count = Integer.parseInt(props.getProperty("alias."+keyName+".count", "0"));
+	    if (count == 0) {
+		continue;
+	    }
+	    int c = 0;
+	    List aliases = new ArrayList();
+	    while(c++ < count) {
+		String regexp = props.getProperty("alias."+keyName+"."+c+".regexp");
+		String replace = props.getProperty("alias."+keyName+"."+c+".replace");
+		boolean terminate = "yes".equals(props.getProperty("alias."+keyName+"."+c+".terminate"));
+		aliases.add(new Alias(regexp, replace, terminate));
+	    }
+	    this.aliases.put(keyName, aliases);
+	}
     }
 
     /**
@@ -154,5 +177,12 @@ public class ClientConfiguration {
      */
     public InputMap getKeyBindings() {
 	return keyBindings;
+    }
+
+    /**
+     * Get a list of aliases for a specific input id.
+     */
+    public List getAliases(String sourceId) {
+	return (List) aliases.get(sourceId);
     }
 }
