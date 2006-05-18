@@ -13,4 +13,7 @@ public interface Display {
 
     public ConsoleWriter getConsoleWriter();
 
+    public boolean getEcho();
+
+    public void localEcho(String msg);
 }

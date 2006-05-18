@@ -128,7 +128,7 @@ public class MudConnection extends Thread {
 	    Writer out = sock.getWriter();
 	    if(out != null) {
 		try {
-		    out.write(text+'\n');
+		    out.write(text);
 		    out.flush();
 		} catch (IOException ioe) {
 		    ioe.printStackTrace();

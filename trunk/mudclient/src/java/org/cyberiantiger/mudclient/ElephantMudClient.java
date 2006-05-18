@@ -6,6 +6,7 @@ import org.cyberiantiger.console.*;
 import org.cyberiantiger.mudclient.config.*;
 import org.cyberiantiger.mudclient.parser.*;
 import org.cyberiantiger.mudclient.net.*;
+import org.cyberiantiger.mudclient.input.InputProcessor;
 import org.cyberiantiger.mudclient.ui.ControlWindow;
 import org.cyberiantiger.mudclient.ui.Connection;
 
@@ -15,14 +16,16 @@ public class ElephantMudClient implements Display, Connection {
     private ControlWindow control;
     private MudConnection connection;
     private ConsoleWriter writer;
+    private InputProcessor processor;
 
     private ClientConfiguration config;
 
     public ElephantMudClient(ClientConfiguration config) {
 	this.config = config;
 	writer = new ElephantConsoleWriter();
+	processor = new InputProcessor(this, this);
 	connection = new MudConnection(this);
-	control = new ControlWindow(this);
+	control = new ControlWindow(processor);
 	control.show();
     }
 
@@ -45,18 +48,6 @@ public class ElephantMudClient implements Display, Connection {
 
     public void command(String sourceId, String msg) {
 	connection.command(msg);
-	if(echo) {
-	    ConsoleWriter ui = control.getCurrentView();
-	    ui.consoleAction(
-		    new StringConsoleAction(msg.toCharArray(),0,msg.length())
-		    );
-	    ui.consoleAction(
-		    new SetCursorXConsoleAction(0)
-		    );
-	    ui.consoleAction(
-		    new MoveCursorYConsoleAction(1)
-		    );
-	}
     }
 
     public void setWindowSize(int w, int h) {
@@ -71,12 +62,31 @@ public class ElephantMudClient implements Display, Connection {
 	this.echo = echo;
     }
 
+    public boolean getEcho() {
+	return echo;
+    }
+
     public ClientConfiguration getConfiguration() {
 	return config;
     }
 
     public ConsoleWriter getConsoleWriter() {
 	return writer;
+    }
+
+    public void localEcho(String msg) {
+	if(echo) {
+	    ConsoleWriter ui = control.getCurrentView();
+	    ui.consoleAction(
+		    new StringConsoleAction(msg.toCharArray(),0,msg.length())
+		    );
+	    ui.consoleAction(
+		    new SetCursorXConsoleAction(0)
+		    );
+	    ui.consoleAction(
+		    new MoveCursorYConsoleAction(1)
+		    );
+	}
     }
 
     private class ElephantConsoleWriter implements ConsoleWriter {
@@ -122,6 +132,7 @@ public class ElephantMudClient implements Display, Connection {
 		control.getDefaultView().consoleAction(action);
 	    }
 	}
+
     }
 
     public static void main(String[] args) {
