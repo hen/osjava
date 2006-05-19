@@ -51,13 +51,13 @@ public abstract class AbstractInfo
      * The string used to represent a class, method or field with public 
      * access.
      */
-    public final String ACCESS_PUBLIC = "public";
+    public final static String ACCESS_PUBLIC = "public";
     
     /**
      * The string used to represent a class, method or field with protected 
      * access.
      */
-    public final String ACCESS_PROTECTED = "protected";
+    public final static String ACCESS_PROTECTED = "protected";
 
     /**
      * The string used to represent a class, method or field with package
@@ -65,13 +65,13 @@ public abstract class AbstractInfo
      * Package private access is the default access level used by java when
      * you do not specify one of public, protected or private.
      */
-    public final String ACCESS_PACKAGE = "package";
+    public final static String ACCESS_PACKAGE = "package";
 
     /**
      * The string used to represent a class, method or field with private
      * access.
      */
-    public final String ACCESS_PRIVATE = "private";
+    public final static String ACCESS_PRIVATE = "private";
 
     /**
      * The access flags for this class, method or field.
