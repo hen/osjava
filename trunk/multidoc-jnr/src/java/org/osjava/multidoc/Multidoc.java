@@ -24,7 +24,7 @@ public class Multidoc {
 
     public static void main(String[] args) throws Exception {
         if(args.length != 2) {
-            System.out.println("Usage: Multidoc <maven path> <releases path>");
+            System.out.println("Usage: Multidoc <maven path> <multidoc path>");
             System.exit(1);
         }
 /*
@@ -48,7 +48,7 @@ public class Multidoc {
         multidoc = new File(releases, "multidoc-jnr");
         releases = new File(releases, "official");
 */
-        multidoc = new File(args[1], "multidoc-jnr");
+        multidoc = new File(args[1]);
         if(!maven.exists() || !maven.isDirectory() || !maven.canRead()) {
             System.out.println("maven is not a directory or readable.");
             System.exit(1);
@@ -81,6 +81,7 @@ public class Multidoc {
         while(i.hasNext()) {
             OSJPackage pkg = (OSJPackage) i.next();
 //            pkg.extractJavadocs();
+            pkg.loadJavadocs();
             pkg.generateAPIDiffs();
             pkg.generateIndexes();
         }
@@ -97,7 +98,7 @@ public class Multidoc {
 
         File index = new File(multidoc, "index.html");
 
-        in = new FileInputStream("header-index-template.html");
+        in = new FileInputStream("src/resources/header-index-template.html");
         out = new FileOutputStream(index);
         while( (len = in.read(buffer)) != -1) { out.write(buffer,0,len); }
         in.close();
@@ -118,7 +119,7 @@ public class Multidoc {
             }
         }
         writer.flush();
-        in = new FileInputStream("footer-index-template.html");
+        in = new FileInputStream("src/resources/footer-index-template.html");
         while( (len = in.read(buffer)) != -1) { out.write(buffer,0,len); }
         in.close();
         out.close();
@@ -202,6 +203,14 @@ public class Multidoc {
             }
         }
 */
+        public void loadJavadocs() throws Exception {
+            Iterator i = subpackages.values().iterator();
+            while(i.hasNext()) {
+                OSJSubPackage subPackage =
+                    (OSJSubPackage) i.next();
+                subPackage.loadJavadocs();
+            }
+        }
 
         public void generateAPIDiffs() throws Exception {
             Iterator i = subpackages.values().iterator();
@@ -290,6 +299,18 @@ public class Multidoc {
             }
 */
 
+            public void loadJavadocs() throws Exception {
+                File multiDocDir = new File(multidoc, subname);
+                Iterator i = versions.iterator();
+                while(i.hasNext()) {
+                    Version v = (Version) i.next();
+                    File javaDocDir = new File(multiDocDir, v.toString());
+                    if(javaDocDir.exists()) {
+                        javadocs.add(v);
+                    }
+                }
+            }
+
             public void generateAPIDiffs() throws Exception {
                 File multiDocDir = new File(multidoc, subname);
                 Iterator i = javadocs.iterator();
@@ -333,13 +354,13 @@ public class Multidoc {
                     boolean first = true;
 
                     tmp = new File(multiDocDir, "index.html");
-                    in = new FileInputStream("index-template.html");
+                    in = new FileInputStream("src/resources/index-template.html");
                     out = new FileOutputStream(tmp);
                     while( (len = in.read(buffer)) != -1) {out.write(buffer,0,len);}
                     in.close();
                     out.close();
                     tmp = new File(multiDocDir, "versions.html");
-                    in = new FileInputStream("header-template.html");
+                    in = new FileInputStream("src/resources/header-template.html");
                     out = new FileOutputStream(tmp);
                     while( (len = in.read(buffer)) != -1) {out.write(buffer,0,len);}
                     in.close();
