@@ -6,6 +6,8 @@
  * missing pom files).
  */
 
+package org.osjava.multidoc;
+
 import java.io.*;
 import java.util.zip.*;
 import java.util.*;
