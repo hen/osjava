@@ -73,7 +73,7 @@ public class Multidoc {
         Iterator i = packages.iterator();
         while(i.hasNext()) {
             OSJPackage pkg = (OSJPackage) i.next();
-            pkg.extractJavadocs();
+//            pkg.extractJavadocs();
             pkg.generateAPIDiffs();
             pkg.generateIndexes();
         }
@@ -185,6 +185,7 @@ public class Multidoc {
             return name;
         }
 
+/*
         public void extractJavadocs() throws Exception {
             Iterator i = subpackages.values().iterator();
             while(i.hasNext()) {
@@ -193,6 +194,7 @@ public class Multidoc {
                 subPackage.extractJavadocs();
             }
         }
+*/
 
         public void generateAPIDiffs() throws Exception {
             Iterator i = subpackages.values().iterator();
@@ -239,6 +241,7 @@ public class Multidoc {
                 versions.add(version);
             }
 
+/*
             public void extractJavadocs() throws Exception {
                 File multiDocDir = new File(multidoc, subname);
                 Iterator i = versions.iterator();
@@ -278,6 +281,7 @@ public class Multidoc {
                     }
                 }
             }
+*/
 
             public void generateAPIDiffs() throws Exception {
                 File multiDocDir = new File(multidoc, subname);
@@ -368,6 +372,7 @@ public class Multidoc {
                 }
             }
 
+/*
             private ZipFile findZipRelease(Version v) throws Exception {
                 File guess;
                 File baseReleaseDir = new File(releases, name);
@@ -385,7 +390,9 @@ public class Multidoc {
                 // Give up.
                 return null;
             }
+*/
 
+/*
             private String findAPIBase(ZipFile zipFile) {
                 Enumeration e = zipFile.entries();
                 while(e.hasMoreElements()) {
@@ -397,6 +404,7 @@ public class Multidoc {
                 }
                 return null;
             }
+*/
 
             public int compareTo(Object o) {
                 return compareTo((OSJSubPackage)o);
@@ -538,6 +546,7 @@ public class Multidoc {
 		}
 	}
 
+/*
     public static void extractZipEntry(ZipFile file, ZipEntry entry, File to) throws Exception {
         if(entry.isDirectory()) {
             to.mkdirs();
@@ -551,6 +560,7 @@ public class Multidoc {
             out.close();
         }
     }
+*/
 
     public static String findPackageListFrame(File dir) {
         File tmp = new File(dir, "overview-frame.html");
