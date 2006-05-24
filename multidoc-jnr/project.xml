@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:noNamespaceSchemaLocation="http://maven.apache.org/xsd/maven-project-3.0.0.xsd" 
+         xmlns:xsi="http://www.w3c.org/2001/XMLSchema-instance">
+  
+  <pomVersion>3</pomVersion>
+  <id>multidoc</id>
+  <name>multidoc</name>
+  <currentVersion>0.2</currentVersion>
+  <organization>
+    <name>OSJava</name>
+    <url>http://www.osjava.org/</url>
+    <logo>http://www.osjava.org/images/osjava.gif</logo>
+  </organization>
+  <inceptionYear>2005</inceptionYear>
+  <package>org.osjava.multidoc</package>
+  <logo>http://www.osjava.org/images/osjava.gif</logo>
+  
+  <description><![CDATA[
+    Create a multi-versioning handling wrapper around pre-existing javadoc. 
+  ]]></description>
+  
+  <shortDescription>Multi javadoc</shortDescription>
+
+  <!-- This stuff need fixing -->
+  <url>http://www.osjava.org/multidoc/</url>
+  <issueTrackingUrl>http://issues.osjava.org/jira/browse/JDF</issueTrackingUrl>
+  <siteAddress>dist.osjava.org/maven/multidoc/</siteAddress>
+  <siteDirectory>/sites/org/osjava/www/maven/multidoc/</siteDirectory>
+  <distributionDirectory>/sites/org/osjava/www/maven/builds/multidoc/</distributionDirectory>
+
+  <repository>
+    <connection>scm:svn:http://svn.osjava.org/svn/osjava/trunk/multidoc-jnr</connection>
+    <url>http://svn.osjava.org/svn/osjava/trunk/multidoc-jnr</url>
+  </repository>
+
+  <mailingLists>
+    <mailingList>
+      <name>osjava-users</name>
+      <subscribe>http://lists.osjava.org/mailman/listinfo/osjava-users</subscribe>
+      <unsubscribe>http://lists.osjava.org/mailman/listinfo/osjava-users</unsubscribe>
+      <archive>http://lists.osjava.org/mailman/private/osjava-users/</archive>
+    </mailingList>
+  </mailingLists>
+
+  <developers>
+    <developer>
+      <name>Antony Riley</name>
+      <id>antony</id>
+      <email>cyberiantiger@gmail.com</email>
+      <organization>osjava</organization>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Henri Yandell</name>
+      <id>bayard</id>
+      <email>bayard at generationjava dot com</email>
+      <organization>osjava</organization>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+  </developers>
+  
+  <dependencies>
+    <dependency>
+      <id>jardiff</id>
+      <version>0.2</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <nagEmailAddress>bayard@generationjava.com</nagEmailAddress>
+    <sourceDirectory>src/java</sourceDirectory>
+  </build>
+
+    <reports>
+        <report>maven-jxr-plugin</report>
+        <report>maven-javadoc-plugin</report>
+        <report>maven-license-plugin</report>
+        <report>maven-changes-plugin</report>           
+    </reports>
+
+</project>
