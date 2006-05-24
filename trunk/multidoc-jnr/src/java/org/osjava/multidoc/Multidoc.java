@@ -19,7 +19,7 @@ import javax.xml.parsers.*;
 public class Multidoc {
 
     public static File maven;
-    public static File releases;
+//    public static File releases;
     public static File multidoc;
 
     public static void main(String[] args) throws Exception {
@@ -27,6 +27,7 @@ public class Multidoc {
             System.out.println("Usage: Multidoc <maven path> <releases path>");
             System.exit(1);
         }
+/*
 		System.out.println("Performing version numbers test");
 		TreeSet testSet = new TreeSet();
 		testSet.add(new Version("0.1"));
@@ -40,18 +41,24 @@ public class Multidoc {
 		testSet.add(new Version("0.3.1"));
 		System.out.println("The following should be in newest-oldest order");
 		System.out.println(testSet);
+*/
         maven = new File(args[0]);
+/*
         releases = new File(args[1]);
         multidoc = new File(releases, "multidoc-jnr");
         releases = new File(releases, "official");
+*/
+        multidoc = new File(args[1], "multidoc-jnr");
         if(!maven.exists() || !maven.isDirectory() || !maven.canRead()) {
             System.out.println("maven is not a directory or readable.");
             System.exit(1);
         }
+/*
         if(!releases.exists() || !releases.isDirectory() || !releases.canRead()) {
             System.out.println("releases is not a directory or readable.");
             System.exit(1);
         }
+*/
         if(!multidoc.exists() || !multidoc.isDirectory() || !multidoc.canRead())
         {
             System.out.println("multidoc is not a directory or readable.");
