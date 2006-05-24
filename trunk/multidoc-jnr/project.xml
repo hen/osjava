@@ -23,7 +23,7 @@
 
   <!-- This stuff need fixing -->
   <url>http://www.osjava.org/multidoc/</url>
-  <issueTrackingUrl>http://issues.osjava.org/jira/browse/JDF</issueTrackingUrl>
+  <issueTrackingUrl>http://issues.osjava.org/jira/browse/MLT</issueTrackingUrl>
   <siteAddress>dist.osjava.org/maven/multidoc/</siteAddress>
   <siteDirectory>/sites/org/osjava/www/maven/multidoc/</siteDirectory>
   <distributionDirectory>/sites/org/osjava/www/maven/builds/multidoc/</distributionDirectory>
