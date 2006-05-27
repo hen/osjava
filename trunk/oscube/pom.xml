@@ -1,0 +1,83 @@
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+         http://maven.apache.org/maven-v4_0_0.xsd">
+  
+  <modelVersion>4.0.0</modelVersion>
+  
+  <groupId>org.osjava</groupId>
+
+  <artifactId>oscube</artifactId>
+
+  <name>OSCube</name>
+
+  <version>0.4.0</version>
+
+  <organization>
+    <name>OSJava</name>
+    <url>http://www.osjava.org</url>
+  </organization>
+  <inceptionYear>2003</inceptionYear>
+
+  <description>
+      OSCube is a framework of sorts. I find myself writing a particular type of application, some kind of job engine, repeatedly and OSCube is the generic version there-of. It uses Simple-JNDI, and therefore really just basic JNDI, as its configuration system, and the Quartz scheduler for Cron-work. 
+  </description>
+  
+  <url>http://www.osjava.org/oscube/</url>
+
+  <mailingLists>
+    <mailingList>
+        <name>osjava-users</name>
+	<subscribe>http://lists.flamefew.net/mailman/listinfo/osjava-users</subscribe>
+        <unsubscribe>http://lists.flamefew.net/mailman/listinfo/osjava-users</unsubscribe>
+        <archive>http://lists.flamefew.net/mailman/private/osjava-users/</archive>
+    </mailingList>
+  </mailingLists>
+
+
+  <dependencies>
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+      <version>1.2.12</version>
+    </dependency>
+    <dependency>
+      <groupId>commons-lang</groupId>
+      <artifactId>commons-lang</artifactId>
+      <version>2.1</version>
+    </dependency>
+    <dependency>
+      <groupId>commons-collections</groupId>
+      <artifactId>commons-collections</artifactId>
+      <version>3.1</version>
+    </dependency>
+    <dependency>
+      <groupId>commons-dbutils</groupId>
+      <artifactId>commons-dbutils</artifactId>
+      <version>1.0</version>
+    </dependency>
+    <dependency>
+      <groupId>genjava</groupId>
+      <artifactId>gj-core</artifactId>
+      <version>3.1</version>
+    </dependency>
+    <dependency>
+      <groupId>genjava</groupId>
+      <artifactId>gj-config</artifactId>
+      <version>1.1</version>
+    </dependency>
+    <dependency>
+      <groupId>simple-jndi</groupId>
+      <artifactId>simple-jndi</artifactId>
+      <version>0.11.1</version>
+    </dependency>
+    <dependency>
+      <groupId>quartz</groupId>
+      <artifactId>quartz</artifactId>
+      <version>1.4.5</version>
+    </dependency>
+  </dependencies>
+
+</project>
+
