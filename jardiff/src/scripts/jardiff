@@ -1,0 +1,2 @@
+#!/bin/sh
+java -jar ~/bin/lib/jardiff-0.2-uber.jar
