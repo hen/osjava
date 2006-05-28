@@ -1,0 +1,159 @@
+ReportRunner Tutorial
+---------------------
+
+This will serve as a brief guide to getting up and running with ReportRunner.
+
+1.  DataSource Configuration
+----------------------------
+
+ReportRunner gets its DataSources from JNDI.  The DataSources are configured and managed by the container (Tomcat).  For Tomcat 4.x, this is setup in the <Context> element of the server.xml under the conf/ directory.  An example to setup GdrDev looks like the following:
+
+<Resource name="jdbc/GdrDevDS" auth="SERVLET" type="javax.sql.DataSource"/>
+<ResourceParams name="jdbc/GdrDevDS">
+  <parameter><name>factory</name><value>org.apache.commons.dbcp.BasicDataSourceFactory</value></parameter>
+  <parameter><name>maxActive</name><value>30</value></parameter>
+  <parameter><name>maxIdle</name><value>10</value></parameter>
+  <parameter><name>maxWait</name><value>-1</value></parameter>
+  <parameter><name>username</name><value>genview</value></parameter>
+  <parameter><name>password</name><value>icugen</value></parameter>
+  <parameter><name>driverClassName</name><value>oracle.jdbc.driver.OracleDriver</value></parameter>
+  <parameter><name>url</name><value>jdbc:oracle:thin:@216.26.136.150:1822:gdrdev</value></parameter>
+</ResourceParams>  
+
+Next, the DataSource has to be added to the application's web.xml located under webapps/reports/WEB-INF/.
+
+<resource-ref>
+  <description>GdrDevDS</description>
+  <res-ref-name>jdbc/GdrDevDS</res-ref-name>
+  <res-type>javax.sql.DataSource</res-type>
+  <res-auth>Container</res-auth>
+</resource-ref>
+
+Finally, the DataSource has to be added to ReportRunner's resources.xml located under 
+webapps/reports/WEB-INF/classes/
+
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<resources>
+  <resource name="gdrdev" label="GdrDev" uri="jdbc/GdrDevDS" type="javax.sql.DataSource" description="GdrDev" />
+</resources>
+
+At this point, the DataSource is available for use in ReportRunner reports.  Configuration is done in the reportrunner.xml located under webapps/reports/WEB-INF/classes/:
+
+<?xml version="1.0" encoding=ISO-8859-1" ?>
+<reportrunner>
+  <reports name="coaltransport" label="GDR Coal Transport Reports" filename="classpath:coal-transport.xml" description="Used to produce Coal Transport Report">
+    <resource-param name="SqlReportDS" label="Database" value="gdrdev"/>
+  </reports>
+</reportrunner>
+
+
+2.  Report Configuration
+------------------------
+
+In the example discussed above, the actual reports are defined in the coal-transport.xml file.  The actual configuration says:
+filename="classpath:coal-transport.xml".  
+The classpath: modifier will cause ReportRunner to look for the coal-transport.xml in the classpath.  Alternatively, one could use a fully qualified filename to a file located on disk.  
+
+In the example sent, the coal-transport.xml is under the src/reports folder in the gdr-reportrunner project.  When the project is built using maven, the coal-transport.xml is packaged inside the JAR file produced.  To deploy, this JAR is copied under the webapps/reports/WEB-INF/lib/ folder, which allows ReportRunner to pick up the file from the classpath (all JARs in this folder are in the classpath).
+
+A very basic report to pull some time-based data for a date range could look like this:
+
+<report label="Basic Chart" name="chart1" description="Basic Chart Example" class="org.osjava.reportrunner.reports.NamedSqlReport">
+  <sql>
+    select time_stamp, value from tablename where time_stamp between trunc( :start ) and trunc( :end )
+  </sql>
+  <param name="start" label="Start Date" type="java.sql.Date" pattern="MM/dd/yyyy" parser="org.osjava.reportrunner.parsers.DateTimeParser"/>        
+  <param name="end" label="End Date" type="java.sql.Date" pattern="MM/dd/yyyy" parser="org.osjava.reportrunner.parsers.DateTimeParser"/>        
+  <columns>Timestamp,Value</columns>
+  <renderers>html,csv,excel</renderers>  
+  <renderer name="jfreechart-png" width="500" height="300" creator="com.genscape.reportrunner.creators.TimeChartCreator">  	
+    <variable name="timeFormat" value="M/d" />    
+    <variable name="timeValueColumn" value="0" />
+    <variable name="y1AxisTitle" value="Values" />
+    <variable name="y1AxisColumns" value="1" />
+    <variable name="y1AxisTickUnit" value="2,Integer" />
+    <variable name="title" value="Data Plot" />    
+    <variable name="legend" value="true" />
+    <variable name="seriesColors" value="#32428B" /> 
+    <variable name="timeAxisFont" value="Lucida Sans Regular-PLAIN-10" />    
+    <variable name="valueAxisFont" value="Lucida Sans Regular-PLAIN-10" />              
+  </renderer>
+</report>
+
+When the report is accessed via the ReportRunner web interface, the user is prompted to select the start and end dates.  These are passed to the query when the report is run to pull back the data.  The data returned can be viewed with the user's choice of the defined renderers.  The html renderer presents the data as an HTML table which can be sorted.  The csv renderer presents the data as a comma separated text file.  The excel renderer presents the data as a Microsoft Excel document.  
+
+The final renderer, jfreechart-png, uses the data to create a chart using the JFreeChart library.  This renderer requires some additional attributes, such as the width and height of the chart, as well as a creator to use.  The creator takes the data and actually builds the JFreeChart object.  Currently, the creators available are the TimeChartCreator for time series plots and the BarChartCreator for bar charts.  These creators have a number of optional variables which can be supplied as shown above to customize the creation of the chart.
+
+Often, a report may be needed that does manipulation on the data before rendering it, in which case a custom report must be created.  Many examples of this can be found in the gdr-reportrunner project.  See:
+
+Coal Transport Reports
+Source: com.genscape.reportrunner.reports.coal_transport
+Report Definitions: src/reports/coal-transport.xml
+
+European Emissions Reports
+Source: com.genscape.reportrunner.reports.europe_emissions
+Report Definitions: src/reports/europe-emissions.xml
+
+
+3.  Renderers
+-------------
+
+On occasion, a new type of Renderer may be needed beyond what is available out of the box.  In this case, create a class which extends 
+org.osjava.reportrunner.AbstractRenderer.  Examples of this can be seen in the com.genscape.reportrunner.renderers package in the gdr-reportrunner project.  To use the renderer, it must then be added to the renderers.xml file located under webapps/reports/WEB-INF/classes/.  
+
+Here is the configuration used for the CompositeImageRenderer which is a custom renderer in the gdr-reportrunner project:
+<renderer name="compositeimage" label="Composite Image" class="com.genscape.reportrunner.renderers.CompositeImageRenderer">
+  <inline>true</inline>
+  <extension>jpg</extension>
+  <mimeType>image/jpeg</mimeType>
+</renderer>
+
+Inline - True if the output of the renderer be shown inline as part of the webpage, or False if sent to the browser as a file to be saved/opened by an external program.
+Extension - File extension.  jpg for Jpeg, txt for text files, csv, xls, etc.
+Mime Type - The MIME type of the report output, required by the browser.
+
+4.  Using ReportRunner to create PDF Reports
+--------------------------------------------
+
+Once all of the reports are created in ReportRunner, the process of using them to create a PDF report which can be published is as follows:
+
+1) Write a .BAT (or other script which can be easily executed) which downloads the output of each required report and saves it to disk.
+2) Create an Adobe InDesign template which is linked to the report files in the disk (images, excel files, etc).
+
+Now, the report can be published each time simply by running the .BAT file, opening the InDesign file and exporting to PDF.
+
+Here is an example .BAT file which is used for the European Emissions reports:
+
+@ECHO OFF
+
+SET WGET=J:\PublicDepartments\IT\wget
+SET TARGET=C:\US Publications\European Emissions Report
+SET BASE_URL=http://gasesttest.genscape.com:12980
+
+del "%TARGET%\*.xls"
+del "%TARGET%\*.png"
+del "%TARGET%\*.jpg"
+
+"%WGET%\wget" -O "%TARGET%\e_by_country.xls" "%BASE_URL%/reports/reportrunner?_group=europeemissions&_report=table1&y=1&date-clause=current&_renderer=newexcel"
+"%WGET%\wget" -O "%TARGET%\g_by_fuel.xls" "%BASE_URL%/reports/reportrunner?_group=europeemissions&_report=table2&y=1&date-clause=current&_renderer=newexcel"
+"%WGET%\wget" -O "%TARGET%\de.jpg" "%BASE_URL%/reports/reportrunner?date-clause=current&_group=europeemissions&_report=weekonweekchange&y=1&country_code=DE&_renderer=compositeimage"
+"%WGET%\wget" -O "%TARGET%\nl.jpg" "%BASE_URL%/reports/reportrunner?date-clause=current&_group=europeemissions&_report=weekonweekchange&y=1&country_code=NL&_renderer=compositeimage"
+"%WGET%\wget" -O "%TARGET%\fr.jpg" "%BASE_URL%/reports/reportrunner?date-clause=current&_group=europeemissions&_report=weekonweekchange&y=1&country_code=FR&_renderer=compositeimage"
+"%WGET%\wget" -O "%TARGET%\be.jpg" "%BASE_URL%/reports/reportrunner?date-clause=current&_group=europeemissions&_report=weekonweekchange&y=1&country_code=BE&_renderer=compositeimage"
+"%WGET%\wget" -O "%TARGET%\fuel_gen.png" "%BASE_URL%/reports/reportrunner?_group=europeemissions&_report=barchart&y=1&date-clause=current&_renderer=jfreechart-png"
+"%WGET%\wget" -O "%TARGET%\de.png" "%BASE_URL%/reports/reportrunner?date-clause=current&_group=europeemissions&_report=weeklycharts&y=1&country_code=DE&_renderer=jfreechart-png"
+"%WGET%\wget" -O "%TARGET%\nl.png" "%BASE_URL%/reports/reportrunner?date-clause=current&_group=europeemissions&_report=weeklycharts2&y=1&country_code=NL&_renderer=jfreechart-png"
+"%WGET%\wget" -O "%TARGET%\fr.png" "%BASE_URL%/reports/reportrunner?date-clause=current&_group=europeemissions&_report=weeklycharts&y=1&country_code=FR&_renderer=jfreechart-png"
+"%WGET%\wget" -O "%TARGET%\be.png" "%BASE_URL%/reports/reportrunner?date-clause=current&_group=europeemissions&_report=weeklycharts&y=1&country_code=BE&_renderer=jfreechart-png"
+"%WGET%\wget" -O "%TARGET%\e_by_company.xls" "%BASE_URL%/reports/reportrunner?_group=europeemissions&_report=table3&y=1&date-clause=current&_renderer=customexcel"
+
+This .BAT file uses wget.exe for Windows to download the reports over HTTP.  Each report's URL is given to wget as the file to be downloaded, and the -O parameter to wget tells wget the filename to be used when storing the file locally.  These are the filename which are linked to the Adobe InDesign document.
+
+5.  Stored Procedures
+---------------------
+
+Currently, ReportRunner cannot be used with stored procedures and requires basic SQL queries.  Support for the stored procedures will be added very shortly.
+
+
+
+
