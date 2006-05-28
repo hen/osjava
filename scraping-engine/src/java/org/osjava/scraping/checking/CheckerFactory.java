@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2005, Henri Yandell
+ * Copyright (c) 2005, Henri Yandell
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or 
@@ -31,33 +31,20 @@
  */
 package org.osjava.scraping.checking;
 
+import org.osjava.oscube.util.FactoryUtils;
+
 import com.generationjava.config.Config;
 import org.osjava.oscube.container.Session;
-import org.osjava.oscube.container.Result;
-import org.osjava.oscube.container.NullResult;
 
-import org.osjava.oscube.container.Header;
+public class CheckerFactory {
 
-import org.osjava.scraping.*;
-
-public abstract class CheckingParser extends AbstractParser {
-
-    public Result parse(Page page, Config cfg, Session session) throws ParsingException {
-        Header header = parseHeader(page, cfg, session);
-        Checker checker = CheckerFactory.getChecker(cfg, session);
-        try {
-            boolean found = checker.exists(header, cfg, session);
-            if(found) {
-                return new NullResult();
-            } else {
-                return parseBody(page, header, cfg, session);
-            }
-        } catch(CheckingException ce) {
-            throw new ParsingException("Unable to check if header exists", ce);
+    static public Checker getChecker(Config cfg, Session session) {
+        String name = cfg.getString("checker");
+        Checker checker = (Checker)FactoryUtils.getObject(name, "Checker", "org.osjava.scraping.checker");
+        if(checker == null) {
+            throw new RuntimeException("Unable to find Checker. ");
         }
+        return checker;
     }
-
-    public abstract Header parseHeader(Page page, Config cfg, Session session) throws ParsingException;
-    public abstract Result parseBody(Page page, Header header, Config cfg, Session session) throws ParsingException;
 
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2005, Henri Yandell
+ * Copyright (c) 2005, Henri Yandell
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or 
@@ -31,33 +31,47 @@
  */
 package org.osjava.scraping.checking;
 
+import java.util.Iterator;
+import javax.sql.DataSource;
+import java.sql.*;
+import org.apache.commons.dbutils.DbUtils;
+import org.apache.commons.dbutils.QueryRunner;
+import org.apache.commons.lang.StringUtils;
+
+import org.apache.log4j.Logger;
+
 import com.generationjava.config.Config;
 import org.osjava.oscube.container.Session;
-import org.osjava.oscube.container.Result;
-import org.osjava.oscube.container.NullResult;
-
 import org.osjava.oscube.container.Header;
+import org.osjava.oscube.container.Result;
 
-import org.osjava.scraping.*;
+public class JdbcChecker implements Checker {
 
-public abstract class CheckingParser extends AbstractParser {
+    private static Logger logger = Logger.getLogger(JdbcChecker.class);
 
-    public Result parse(Page page, Config cfg, Session session) throws ParsingException {
-        Header header = parseHeader(page, cfg, session);
-        Checker checker = CheckerFactory.getChecker(cfg, session);
+    public boolean exists(Header header, Config cfg, Session session) throws CheckingException {
+        Connection conn = null;
         try {
-            boolean found = checker.exists(header, cfg, session);
-            if(found) {
-                return new NullResult();
-            } else {
-                return parseBody(page, header, cfg, session);
+            String dsname = cfg.getString("jdbc.DS");
+            DataSource ds = (DataSource)cfg.getAbsolute(dsname);
+            conn = ds.getConnection();
+            String sql = cfg.getString("jdbc.sql");
+            if(sql == null) {
+                throw new CheckingException(cfg.getContext()+".jdbc.sql or "+cfg.getContext()+".jdbc.table must be specified. ");
             }
-        } catch(CheckingException ce) {
-            throw new ParsingException("Unable to check if header exists", ce);
+
+            QueryRunner queryRunner = new QueryRunner();
+            Object[] value = (Object[]) header.getValue();
+            return executeSql( conn, sql, value, queryRunner );
+        } catch(SQLException sqle) {
+            throw new CheckingException("JDBC Checking Error: "+sqle.getMessage(), sqle);
+        } finally {
+            DbUtils.closeQuietly( conn );
         }
     }
 
-    public abstract Header parseHeader(Page page, Config cfg, Session session) throws ParsingException;
-    public abstract Result parseBody(Page page, Header header, Config cfg, Session session) throws ParsingException;
+    protected boolean executeSql(Connection conn, String sql, Object[] header, QueryRunner queryRunner ) throws SQLException {
+        return ((Boolean) queryRunner.query( conn, sql, header, new ExistsHandler() )).booleanValue();
+    }
 
 }
