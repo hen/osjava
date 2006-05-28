@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2005, Henri Yandell
+ * Copyright (c) 2005, Henri Yandell
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or 
@@ -33,31 +33,14 @@ package org.osjava.scraping.checking;
 
 import com.generationjava.config.Config;
 import org.osjava.oscube.container.Session;
-import org.osjava.oscube.container.Result;
-import org.osjava.oscube.container.NullResult;
-
 import org.osjava.oscube.container.Header;
+import org.osjava.oscube.container.Result;
 
-import org.osjava.scraping.*;
+public interface Checker {
 
-public abstract class CheckingParser extends AbstractParser {
-
-    public Result parse(Page page, Config cfg, Session session) throws ParsingException {
-        Header header = parseHeader(page, cfg, session);
-        Checker checker = CheckerFactory.getChecker(cfg, session);
-        try {
-            boolean found = checker.exists(header, cfg, session);
-            if(found) {
-                return new NullResult();
-            } else {
-                return parseBody(page, header, cfg, session);
-            }
-        } catch(CheckingException ce) {
-            throw new ParsingException("Unable to check if header exists", ce);
-        }
-    }
-
-    public abstract Header parseHeader(Page page, Config cfg, Session session) throws ParsingException;
-    public abstract Result parseBody(Page page, Header header, Config cfg, Session session) throws ParsingException;
+    /**
+     * Check to see if this Header is already in the store
+     */
+    public boolean exists(Header header, Config cfg, Session session) throws CheckingException;
 
 }
