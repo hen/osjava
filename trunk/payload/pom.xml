@@ -1,0 +1,79 @@
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+         http://maven.apache.org/maven-v4_0_0.xsd">
+  
+  <modelVersion>4.0.0</modelVersion>
+  
+  <groupId>org.osjava</groupId>
+  <artifactId>payload</artifactId>
+  <name>payload</name>
+
+  <version>0.5.0</version>
+
+  <organization>
+    <name>OSJava</name>
+    <url>http://www.osjava.org</url>
+  </organization>
+  <inceptionYear>2004</inceptionYear>
+
+  <description>
+    Payload is a tool to create self-extracting jars. It begins by contracting a series of files into the new target jar, then that jar may be self-executed, ie) java -jar or double-clicking, to unpack it. In addition a .properties file may be provided which specifies search and replace operations to perform on unpacked files. 
+  </description>
+  
+  <url>http://www.osjava.org/payload/</url>
+
+<!--  <issueTrackingUrl>http://www.osjava.org:8080/jira/secure/BrowseProject.jspa?id=10040</issueTrackingUrl>  -->
+
+<!--
+  <repository>
+    <connection>scm:svn:http://svn.osjava.org/svn/osjava/trunk/payload</connection>
+    <url>http://svn.osjava.org/svn/osjava/trunk/payload</url>
+  </repository>
+-->
+
+  <mailingLists>
+    <mailingList>
+        <name>osjava-users</name>
+	<subscribe>http://lists.flamefew.net/mailman/listinfo/osjava-users</subscribe>
+        <unsubscribe>http://lists.flamefew.net/mailman/listinfo/osjava-users</unsubscribe>
+        <archive>http://lists.flamefew.net/mailman/private/osjava-users/</archive>
+    </mailingList>
+  </mailingLists>
+
+
+  <developers>
+    <developer>
+      <name>Henri Yandell</name>
+      <id>hen</id>
+      <email>bayard@generationjava.com</email>
+      <organization>GenerationJava</organization>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+  </developers>
+
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <sourceDirectory>src/java</sourceDirectory>
+    <testSourceDirectory>src/test</testSourceDirectory>
+  </build>
+
+  <reports>
+    <report>maven-jxr-plugin</report>
+    <report>maven-javadoc-plugin</report>
+    <report>maven-license-plugin</report>
+    <report>maven-changes-plugin</report>
+  </reports>
+  
+</project>
+
