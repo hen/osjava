@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:noNamespaceSchemaLocation="http://maven.apache.org/xsd/maven-project-3.0.0.xsd" 
+         xmlns:xsi="http://www.w3c.org/2001/XMLSchema-instance">
+  
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.osjava</groupId>
+  <artifactId>xmlwriter</artifactId>
+  <name>xmlwriter</name>
+  <version>2.2</version>
+  <organization>
+    <name>OSJava</name>
+    <!-- <url>http://www.osjava.org/</url> -->
+    <!-- <logo>/images/osjava.gif</logo> -->
+  </organization>
+  <inceptionYear>2000</inceptionYear>
+  <!--<logo>/images/xmlwriter-logo2.png</logo> -->
+  
+  <description>
+    A great way to output Xml. Far easier to code with than painful DOM or 
+    SAX like solutions and much nicer in terms of speed and memory usage. 
+    &lt;br/&gt;
+    &lt;br/&gt;
+   While XmlWriter contains its own xml outputter, it has the ability to sit on top of other core Xml writing products, such as &lt;a href="http://xmlenc.sf.net/"&gt;XmlEnc&lt;/a&gt;. In addition, the user may layer &lt;a href="Optional.html"&gt;other functionalities&lt;/a&gt; on top of the core writing, such as on the fly schema checking, date/number formatting, specific empty-element handling and pretty-printing. 
+  </description>
+  
+  <!-- <shortDescription>A JNDI implementation using .properties</shortDescription> -->
+
+  <!-- <url>http://www.osjava.org/xmlwriter/</url> -->
+  <!-- <issueTrackingUrl>http://issues.osjava.org:8080/jira/browse/BrowseProject.jspa?id=10024</issueTrackingUrl> -->
+  <!-- <siteAddress>www.osjava.org/xmlwriter</siteAddress> -->
+  <!-- <siteDirectory>/</siteDirectory> -->
+  <!-- <distributionDirectory></distributionDirectory> -->
+
+<!--
+  <repository>
+    <connection>scm:svn:http://svn.osjava.org/svn/osjava/trunk/xmlwriter</connection>
+    <url>http://svn.osjava.org/svn/osjava/trunk/xmlwriter</url>
+  </repository>
+-->
+
+  <mailingLists>
+    <mailingList>
+      <name>osjava-users</name>
+      <subscribe>http://lists.osjava.org/mailman/listinfo/osjava-users</subscribe>
+      <unsubscribe>http://lists.osjava.org/mailman/listinfo/osjava-users</unsubscribe>
+      <archive>http://lists.osjava.org/mailman/private/osjava-users/</archive>
+    </mailingList>
+  </mailingLists>
+
+  <developers>
+
+    <developer>
+      <name>Henri Yandell</name>
+      <id>hen</id>
+      <email>bayard@generationjava.com</email>
+      <organization>GenerationJava</organization>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+    <developer>
+      <name>Peter Casssetta</name>
+      <id>petecassetta</id>
+      <email>pete@fingertipsoft.com</email>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+
+  </developers>
+  
+  <!-- <contributors>
+  </contributors> -->
+  
+  <dependencies>
+    <dependency>
+      <groupId>xmlenc</groupId>
+      <artifactId>xmlenc</artifactId>
+      <version>0.33</version>
+<!--      <url>http://xmlenc.sf.net</url> -->
+    </dependency>
+<!--
+    <dependency>
+      <groupId>xerces</groupId>
+      <artifactId>xerces</artifactId>
+      <version>2.0.2</version>
+      <url>http://xml.apache.org/xerces/</url> 
+      <jar>xmlParserAPIs-2.0.0.jar</jar>
+    </dependency>
+-->
+    <dependency>
+      <groupId>msv</groupId>
+      <artifactId>isorelax</artifactId>
+      <version>20030807</version>
+<!--      <url>http://isorelax.sourceforge.net/</url> -->
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+
+    <!-- <nagEmailAddress>bayard@www.osjava.org</nagEmailAddress> -->
+    <sourceDirectory>src/java</sourceDirectory>
+    <testSourceDirectory>src/test</testSourceDirectory>
+
+  </build>
+
+    <reports>
+        <report>maven-jxr-plugin</report>
+        <report>maven-javadoc-plugin</report>
+        <report>maven-license-plugin</report>
+        <report>maven-changes-plugin</report>           
+    </reports>
+
+
+</project>
+
