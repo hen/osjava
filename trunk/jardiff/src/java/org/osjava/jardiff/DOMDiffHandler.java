@@ -512,6 +512,7 @@ public class DOMDiffHandler implements DiffHandler
         if (info.getSupername() != null)
             tmp.setAttribute( "superclass",
                               info.getSupername());
+        tmp.setAttribute( "signatureSize", Integer.toString(info.getSignatureSize()) );
         String[] interfaces = info.getInterfaces();
         for (int i = 0; i < interfaces.length; i++) {
             Element iface = doc.createElementNS(XML_URI, "implements");
@@ -541,6 +542,7 @@ public class DOMDiffHandler implements DiffHandler
             tmp.setAttribute( "name", info.getName());
         if (info.getSignature() != null)
             tmp.setAttribute( "signature", info.getSignature());
+        tmp.setAttribute( "signatureSize", "1" );
         if (info.getDesc() != null)
             addMethodNodes(info.getDesc());
         String[] exceptions = info.getExceptions();
@@ -577,6 +579,7 @@ public class DOMDiffHandler implements DiffHandler
         if (info.getValue() != null)
             tmp.setAttribute( "value",
                     info.getValue().toString());
+        tmp.setAttribute( "signatureSize", "1" );
         if (info.getDesc() != null)
             addTypeNode(info.getDesc());
         this.currentNode = currentNode;

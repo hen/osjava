@@ -156,4 +156,23 @@ public final class ClassInfo extends AbstractInfo
     public final Map getFieldMap() {
         return fieldMap;
     }
+
+    /**
+     * Get the signature size of this class. 
+     * The size is defined as the number of signatures in a class, 
+     * namely methods + fields + 1.
+     *
+     * @return an integer representing an abstract concept of size
+     */
+    public final int getSignatureSize() {
+        int n = 1;
+        if( fieldMap != null ) {
+            n += fieldMap.size();
+        }
+        if( methodMap != null ) {
+            n += methodMap.size();
+        }
+        return n;
+    }
+
 }
