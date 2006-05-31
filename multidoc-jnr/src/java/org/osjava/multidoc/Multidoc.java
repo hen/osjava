@@ -152,11 +152,20 @@ public class Multidoc {
             File mavenJars = new File(maven, name);
             mavenJars = new File(mavenJars, "poms");
             String [] tmp = mavenJars.list();
+if( tmp == null ) {
+System.err.println("Empty directory: " + mavenJars);
+} else {
             for(int i=0;i<tmp.length;i++) {
                 Matcher m = POMFILE.matcher(tmp[i]);
                 if(m.matches()) {
                     String nameAndVersion = m.group(1);
-					Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new File(mavenJars, tmp[i]));
+Document doc = null;
+try {
+					doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new File(mavenJars, tmp[i]));
+} catch(Exception e) {
+System.err.println("Error parsing "+new File(mavenJars, tmp[i]));
+continue;
+}
 
 					Node root = doc.getDocumentElement();
 					root = root.getFirstChild();
@@ -174,15 +183,24 @@ public class Multidoc {
 						root = root.getNextSibling();
 					}
 
+if(subname != null) {
                     OSJSubPackage subPackage = 
                         (OSJSubPackage) subpackages.get(subname);
                     if(subPackage == null) {
                         subPackage = new OSJSubPackage(subname);
                         subpackages.put(subname, subPackage);
                     }
+if(version != null) {
                     subPackage.addVersion(new Version(version));
+} else {
+System.err.println("Null version: " + name);
+}
+} else {
+System.err.println("Null subname: " + name);
+}
                 }
             }
+}
         }
 
         public Map getSubpackages() {
