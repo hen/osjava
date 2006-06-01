@@ -59,7 +59,7 @@ public class CreateChart {
         JFreeChart chart = createChart(args[1], data);
         // render chart to png
         FileOutputStream out = new FileOutputStream(new File(args[2]));
-        ChartUtilities.writeChartAsPNG(out, chart, 600, 400);
+        ChartUtilities.writeChartAsPNG(out, chart, 600, 200);
     }
 
     private static CategoryTableXYDataset createDataset(String filename) throws Exception {
