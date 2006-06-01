@@ -10,9 +10,9 @@ do
         echo "Skipping ${name} - only one jar"
     else
         echo "Generating data for ${name}"
-        ./gen.rb $i/*.jar > osjava/${name}.xml
+        ./gen.rb $i/*.jar > multijardiff/${name}.xml
         echo "Rendering chart for ${name}"
-        java -classpath lib/jfreechart-1.0.1.jar:lib/jcommon-1.0.4.jar:. -Djava.awt.headless=true CreateChart osjava/${name}.xml "${name}" osjava/${name}.png
+        java -classpath lib/jfreechart-1.0.1.jar:lib/jcommon-1.0.4.jar:. -Djava.awt.headless=true CreateChart multijardiff/${name}.xml "${name}" multijardiff/${name}.png
     fi
 done
 
