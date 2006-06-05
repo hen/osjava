@@ -22,7 +22,7 @@ public class CreateBar {
         tmp = tmp[1].trim().split(", ");
         int total = Integer.parseInt(tmp[0].trim());
 
-        Color[] colors = new Color[] { Color.red, Color.yellow, Color.green, Color.black };
+        Color[] colors = new Color[] { Color.red, Color.yellow, Color.green, Color.gray };
 
         while (( line = input.readLine()) != null) {  // read diff
             tmp = line.split("=")[1].split(", ");
@@ -32,14 +32,15 @@ public class CreateBar {
             int unchanged = total - removed - changed/2;
 
             Bar bar = new Bar(new int[] { removed, changed, added, unchanged }, colors);
-            System.out.println("Creating bar for " + name);
-            bar.writeImage( new File(targetDir, name+".png") );
 
             line = input.readLine();  // read next total
             tmp = line.split("=");
             name = tmp[0].trim();
             tmp = tmp[1].trim().split(", ");
             total = Integer.parseInt(tmp[0].trim());
+
+            System.out.println("Creating bar for " + name);
+            bar.writeImage( new File(targetDir, name+".png") );
         }
 
     }
