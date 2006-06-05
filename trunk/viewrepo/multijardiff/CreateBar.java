@@ -47,8 +47,8 @@ public class CreateBar {
 
 class Bar {
     
-    private static final int WIDTH = 20;
-    private static final int HEIGHT = 100;
+    private static final int WIDTH = 100;
+    private static final int HEIGHT = 20;
     
     private int[] values;
     private int total;
@@ -69,12 +69,12 @@ class Bar {
         // Create a graphics contents on the buffered image
         Graphics2D g2d = bufferedImage.createGraphics();
     
-        int y = 0;
+        int x = 0;
         for(int i=0; i < this.values.length; i++) {
             g2d.setPaint( this.colors[i] );
-            int h = HEIGHT * this.values[i] / total;
-            g2d.fill( new Rectangle2D.Double(0, y, WIDTH, h ) );
-            y += h;
+            int w = WIDTH * this.values[i] / total;
+            g2d.fill( new Rectangle2D.Double(x, 0, w, HEIGHT ) );
+            x += w;
         }
     
         g2d.dispose();
