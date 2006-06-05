@@ -57,14 +57,21 @@ end
 
 # Expects an ordered list of jars to be passed in
 
-prev_jar = ARGV.shift
+  f = File.open(ARGV[0]) or die "Unable to open file #{ARGV[0]}"
+  jars=[]
+  f.each_line { |line|
+    jars.push line.chomp
+  }
+
+prev_jar = jars.shift
+
 prev_txt = `jardiff -t #{prev_jar} -f empty.jar`
 release_date = `unzip -l #{prev_jar}  | grep MANIFEST.MF | sed 's/ *META.*$//' | sed 's/^ *[0-9]* *//'`
 (total, added, removed, changed) = count(prev_txt)
 prev_name = File.basename(prev_jar).sub(/^.*-([0-9].*).jar$/, '\1')
 puts "#{prev_name} = #{total}, #{release_date}"
 
-ARGV.each { |jar|
+jars.each { |jar|
     diff_txt = `jardiff -f #{prev_jar} -t #{jar}`
     (total, added, removed, changed) = count(diff_txt)
     puts "diff = #{added}, #{removed}, #{changed}"
