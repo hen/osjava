@@ -10,6 +10,8 @@ public class CreateBar {
 
     public static void main(String[] args) throws Exception {
         String filename = args[0];
+        String targetDir = args[1];
+        new File(targetDir).mkdirs();
 
         BufferedReader input = new BufferedReader( new FileReader(filename) );
 
@@ -31,7 +33,7 @@ public class CreateBar {
 
             Bar bar = new Bar(new int[] { removed, changed, added, unchanged }, colors);
             System.out.println("Creating bar for " + name);
-            bar.writeImage(name+".png");
+            bar.writeImage( new File(targetDir, name+".png") );
 
             line = input.readLine();  // read next total
             tmp = line.split("=");
@@ -62,7 +64,7 @@ class Bar {
         this.colors = colors;
     }
 
-    public void writeImage(String filename) {
+    public void writeImage(File file) {
         // Create a buffered image in which to draw
         BufferedImage bufferedImage = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
     
@@ -80,7 +82,6 @@ class Bar {
         g2d.dispose();
     
         try {
-            File file = new File(filename);
             ImageIO.write(bufferedImage, "png", file);
         } catch (IOException e) {
         }
