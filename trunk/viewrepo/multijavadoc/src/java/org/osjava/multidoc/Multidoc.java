@@ -81,6 +81,7 @@ public class Multidoc {
         while(i.hasNext()) {
             OSJPackage pkg = (OSJPackage) i.next();
 //            pkg.extractJavadocs();
+            pkg.generateJarIndex();
             pkg.loadJavadocs();
             pkg.generateAPIDiffs();
             pkg.generateIndexes();
@@ -230,6 +231,15 @@ System.err.println("Null subname: " + name);
             }
         }
 
+        public void generateJarIndex() throws Exception {
+            Iterator i = subpackages.values().iterator();
+            while(i.hasNext()) {
+                OSJSubPackage subPackage =
+                    (OSJSubPackage) i.next();
+                subPackage.generateJarIndex();
+            }
+        }
+
         public void generateAPIDiffs() throws Exception {
             Iterator i = subpackages.values().iterator();
             while(i.hasNext()) {
@@ -273,6 +283,24 @@ System.err.println("Null subname: " + name);
 
             public void addVersion(Version version) {
                 versions.add(version);
+            }
+
+            public void generateJarIndex() throws Exception {
+                File mavenJars = new File(maven, name);
+                mavenJars = new File(mavenJars, "jars");
+                File multiDocDir = new File(multidoc, subname);
+                FileWriter writer = new FileWriter(new File(multiDocDir, "jars.list"));
+                List tmp = new ArrayList(versions);
+                for(int i=tmp.size()-1; i>=0; i--) {
+                    Version v = (Version) tmp.get(i);
+                    File jarFile = new File(mavenJars, subname+"-"+v+".jar");
+                    if(jarFile.exists()) {
+                        String jarFilename = jarFile.toString();
+                        writer.write(jarFilename);
+                        writer.write("\n");
+                    }
+                }
+                writer.close();
             }
 
 /*
@@ -391,6 +419,9 @@ System.err.println("Null subname: " + name);
                         v = (Version) i.next();
                         File versionDir = new File(multiDocDir, v.toString());
 
+                        writer.write("<tr>");
+                        writer.newLine();
+
                         String packageListFrame = v.toString() + "/" + findPackageListFrame(versionDir);
                         String packageFrame = v.toString() + "/" + findPackageFrame(versionDir);
                         String classFrame = v.toString() + "/" + findClassFrame(versionDir);
@@ -403,17 +434,20 @@ System.err.println("Null subname: " + name);
                             first = false;
                         }
 
-                        writer.write("<nobr><a name=\""+v+"\"><font class=\"FrameItemFont\"><a href=\"javascript:"+javascript+"\">"+subname+" "+v+"</a>");
+                        writer.write("<td><a name=\""+v+"\"><font class=\"FrameItemFont\"><a href=\"javascript:"+javascript+"\">"+subname+" "+v+"</a></font></td>");
                         writer.newLine();
                         Object[] diff = (Object[]) diffs.get(v);
                         if(diff != null) {
-                            writer.write("<a href=\""+diff[2]+"\" target=\"classFrame\">(diff to "+diff[0]+")</a>");
+                            writer.write("<td><a href=\""+diff[2]+"\" target=\"classFrame\"><img src=\"bars/"+diff[1]+".png\" title=\"diff to "+diff[0]+"\"></a>");
+                            writer.newLine();
+                        } else {
+                            writer.write("<td></td>");
                             writer.newLine();
                         }
-                        writer.write("</font></nobr><br/>");
+                        writer.write("</tr>");
                         writer.newLine();
                     }
-                    writer.write("</body></html>");
+                    writer.write("</table></body></html>");
                     writer.close();
                 }
             }
