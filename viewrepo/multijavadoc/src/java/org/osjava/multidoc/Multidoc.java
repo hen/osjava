@@ -438,7 +438,7 @@ System.err.println("Null subname: " + name);
                         writer.newLine();
                         Object[] diff = (Object[]) diffs.get(v);
                         if(diff != null) {
-                            writer.write("<td><a href=\""+diff[2]+"\" target=\"classFrame\"><img src=\"bars/"+diff[1]+".png\" title=\"diff to "+diff[0]+"\"></a>");
+                            writer.write("<td><a href=\""+diff[2]+"\" target=\"classFrame\"><img src=\"bars/"+diff[1]+".png\" border=\"0\" title=\"diff to "+diff[0]+"\"></a>");
                             writer.newLine();
                         } else {
                             writer.write("<td></td>");
