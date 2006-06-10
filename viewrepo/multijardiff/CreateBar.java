@@ -22,7 +22,7 @@ public class CreateBar {
         tmp = tmp[1].trim().split(", ");
         int total = Integer.parseInt(tmp[0].trim());
 
-        Color[] colors = new Color[] { Color.red, Color.yellow, Color.green, Color.gray };
+        Color[] colors = new Color[] { Color.red, Color.yellow, Color.green, new Color(240, 240, 240) };
 
         while (( line = input.readLine()) != null) {  // read diff
             tmp = line.split("=")[1].split(", ");
@@ -78,6 +78,10 @@ class Bar {
             int w = WIDTH * this.values[i] / total;
             g2d.fill( new Rectangle2D.Double(x, 0, w, HEIGHT ) );
             x += w;
+        }
+
+        if(x != WIDTH) {
+            g2d.fill( new Rectangle2D.Double(x, 0, WIDTH, HEIGHT) );
         }
     
         g2d.dispose();

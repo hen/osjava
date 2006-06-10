@@ -180,34 +180,10 @@ private static boolean odd = false;
         // set the background color for the chart...
         chart.setBackgroundPaint(Color.white);
 
-        // get a reference to the plot for further customisation...
-        //XYPlot plot = chart.getXYPlot();
-        plot.setBackgroundPaint(Color.lightGray);
-        plot.setDomainGridlinePaint(Color.white);
-        plot.setDomainGridlinesVisible(true);
-        plot.setRangeGridlinePaint(Color.white);
-
-        // set up gradient paints for series...
-        GradientPaint gp0 = new GradientPaint(
-            0.0f, 0.0f, Color.white,
-            0.0f, 0.0f, new Color(0, 0, 64)
-        );
-        GradientPaint gp1 = new GradientPaint(
-            0.0f, 0.0f, Color.green,
-            0.0f, 0.0f, new Color(0, 64, 0)
-        );
-        GradientPaint gp2 = new GradientPaint(
-            0.0f, 0.0f, Color.yellow,
-            0.0f, 0.0f, new Color(64, 0, 0)
-        );
-        GradientPaint gp3 = new GradientPaint(
-            0.0f, 0.0f, Color.red,
-            0.0f, 0.0f, new Color(64, 0, 0)
-        );
-        renderer.setSeriesPaint(0, gp0);
-        renderer.setSeriesPaint(1, gp1);
-        renderer.setSeriesPaint(2, gp2);
-        renderer.setSeriesPaint(3, gp3);
+        renderer.setSeriesPaint(0, new Color(240, 240, 240));
+        renderer.setSeriesPaint(1, Color.green);
+        renderer.setSeriesPaint(2, Color.yellow);
+        renderer.setSeriesPaint(3, Color.red);
 
         return chart;
 
