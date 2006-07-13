@@ -38,6 +38,9 @@ import java.io.OutputStream;
 
 public class StreamW {
 
+    /**
+     * @deprecated as now IOUtils.copy
+     */
     static public void pushStream(InputStream in, OutputStream out) 
         throws IOException 
     {
@@ -70,10 +73,16 @@ public class StreamW {
         return in;
     }
 
+    /**
+     * @deprecated as now found in Commons IO
+     */
     static public void closeQuietly(InputStream in) {
         try { if(in != null) in.close(); } catch(IOException ioe) { ; }
     }
 
+    /**
+     * @deprecated as now found in Commons IO
+     */
     static public void closeQuietly(OutputStream out) {
         try { if(out != null) out.close(); } catch(IOException ioe) { ; }
     }
