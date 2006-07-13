@@ -35,6 +35,9 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.FilterOutputStream;
 
+/**
+ * @deprecated as it's now found in Commons IO
+ */
 public class TeeOutputStream extends FilterOutputStream {
 
     protected OutputStream branch;
