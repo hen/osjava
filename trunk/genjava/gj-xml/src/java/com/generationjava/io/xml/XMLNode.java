@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003, Henri Yandell
+ * Copyright (c) 2006, Henri Yandell
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or 
@@ -31,9 +31,9 @@
  */
 package com.generationjava.io.xml;
 
-import java.util.Hashtable;
-import java.util.Enumeration;
-import java.util.Vector;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.ArrayList;
 
 /**
  * An xml tag. It can be a processing instructon, an empty tag or 
@@ -43,11 +43,11 @@ import java.util.Vector;
  */
 public class XMLNode {
 
-    private static final Enumeration EMPTY = new NullEnumeration();
+    private static final Iterator EMPTY = new NullIterator();
 
-    private Hashtable myAttrs;
-    private Hashtable myNodes;  // allows quick lookup
-    private Vector myNodeList;  // maintains order of myNodes
+    private HashMap myAttrs;
+    private HashMap myNodes;  // allows quick lookup
+    private ArrayList myNodeList;  // maintains order of myNodes
     private String name;
     private String value;
     private boolean pi;
@@ -73,8 +73,8 @@ public class XMLNode {
      */
     public void addNode(XMLNode node) {
         if(this.myNodes == null) {
-            this.myNodes = new Hashtable();
-            this.myNodeList = new Vector();
+            this.myNodes = new HashMap();
+            this.myNodeList = new ArrayList();
         }
         this.myNodeList.add(node);
         Object obj = this.myNodes.get( node.getName() );
@@ -82,23 +82,23 @@ public class XMLNode {
             this.myNodes.put( node.getName(), node );
         } else
         if(obj instanceof XMLNode) {
-            Vector vec = new Vector();
-            vec.addElement(obj);
-            vec.addElement(node);
-            this.myNodes.put( node.getName(), vec );
+            ArrayList list = new ArrayList();
+            list.add(obj);
+            list.add(node);
+            this.myNodes.put( node.getName(), list );
         } else
-        if(obj instanceof Vector) {
-            Vector vec = (Vector)obj;
-            vec.addElement(node);
+        if(obj instanceof ArrayList) {
+            ArrayList list = (ArrayList)obj;
+            list.add(node);
         }
     }
 
-    // Enumerates a child node. Possibly needs renaming.
-    // That is, it enumerates a child nodes value.
+    // Iterates a child node. Possibly needs renaming.
+    // That is, it iterates a child nodes value.
     /**
      *
      */
-    public Enumeration enumerateNode(String name) {
+    public Iterator iterateNode(String name) {
         if(this.myNodes == null) {
             return EMPTY;
         }
@@ -106,10 +106,10 @@ public class XMLNode {
         if(obj == null) {
             return EMPTY;
         } else 
-        if(obj instanceof Vector) {
-            return ((Vector)obj).elements();
+        if(obj instanceof ArrayList) {
+            return ((ArrayList)obj).iterator();
         } else {
-            return new SingleEnumeration(obj);
+            return new SingleIterator(obj);
         }
     }
 
@@ -118,7 +118,7 @@ public class XMLNode {
      */
     public void addAttr(String name, String value) {
         if(this.myAttrs == null) {
-            this.myAttrs = new Hashtable();
+            this.myAttrs = new HashMap();
         }
         value = unescapeXml(value);
         this.myAttrs.put( name, value );
@@ -135,14 +135,14 @@ public class XMLNode {
     }
     
     /**
-     * Enumerate over all the attributes of this node.
+     * Iterate over all the attributes of this node.
      * In the order they were added.
      */
-    public Enumeration enumerateAttr() {
+    public Iterator iterateAttr() {
         if(this.myAttrs == null) {
             return EMPTY;
         } else {
-            return this.myAttrs.keys();
+            return this.myAttrs.keySet().iterator();
         }
     }
 
@@ -161,14 +161,14 @@ public class XMLNode {
     }
     
     /**
-     * Enumerate over all of this node's children nodes.
+     * Iterate over all of this node's children nodes.
      */
-    public Enumeration enumerateNode() {
+    public Iterator iterateNode() {
         if(this.myNodes == null) {
             return EMPTY;
         } else {
-//        return this.myNodes.elements();
-        return this.myNodeList.elements();
+//        return this.myNodes.iterator();
+        return this.myNodeList.iterator();
         }
     }
     
@@ -221,9 +221,9 @@ public class XMLNode {
         // QUERY: shouldn't call toString. Needs to improve
         if(this.myNodeList != null) {
             StringBuffer buffer = new StringBuffer();
-            Enumeration enum = enumerateNode();
-            while(enum.hasMoreElements()) {
-                buffer.append(enum.nextElement().toString());
+            Iterator iter = iterateNode();
+            while(iter.hasNext()) {
+                buffer.append(iter.next().toString());
             }
             return buffer.toString();
         }
@@ -348,10 +348,10 @@ public class XMLNode {
             tmp.append(name);
         }
         
-        Enumeration enum = enumerateAttr();
-        while(enum.hasMoreElements()) {
+        Iterator iter = iterateAttr();
+        while(iter.hasNext()) {
             tmp.append(" ");
-            String obj = (String)enum.nextElement();
+            String obj = (String)iter.next();
             tmp.append(obj);
             tmp.append("=\"");
             tmp.append(getAttr(obj));
@@ -384,18 +384,18 @@ public class XMLNode {
      */
     public String bodyToString() {
         StringBuffer tmp = new StringBuffer();
-        Enumeration enum = enumerateNode();
-        while(enum.hasMoreElements()) {
-            Object obj = enum.nextElement();
+        Iterator iter = iterateNode();
+        while(iter.hasNext()) {
+            Object obj = iter.next();
             if(obj instanceof XMLNode) {
                 XMLNode node = (XMLNode)obj;
                 tmp.append(node);
             } else
-            if(obj instanceof Vector) {
-                Vector nodelist = (Vector)obj;
-                Enumeration nodeEnum = nodelist.elements();
-                while(nodeEnum.hasMoreElements()) {
-                    XMLNode node = (XMLNode)nodeEnum.nextElement();
+            if(obj instanceof ArrayList) {
+                ArrayList nodelist = (ArrayList)obj;
+                Iterator nodeItr = nodelist.iterator();
+                while(nodeItr.hasNext()) {
+                    XMLNode node = (XMLNode)nodeItr.next();
                     tmp.append(node);
                 }
             }                
@@ -436,35 +436,43 @@ public class XMLNode {
 }
 
 /**
- * An empty enumeration. Nicer to return than just plain null. 
+ * An empty iterator. Nicer to return than just plain null. 
  */
-class NullEnumeration implements Enumeration {
-    public Object nextElement() {
+class NullIterator implements Iterator {
+    public Object next() {
         return null;
     }
  
-    public boolean hasMoreElements() {
+    public boolean hasNext() {
         return false;
     }   
+
+    public void remove() {
+        throw new UnsupportedOperationException("There is nothing to remove");
+    }
 }
 /**
- * A single enumeration. Saves time on making a Vector.
+ * A single iterator. Saves time on making an ArrayList.
  */
-class SingleEnumeration implements Enumeration {
+class SingleIterator implements Iterator {
 
     private Object obj;
 
-    public SingleEnumeration(Object obj) {
+    public SingleIterator(Object obj) {
         this.obj = obj;
     }
 
-    public Object nextElement() {
+    public Object next() {
         Object tmp = this.obj;
         this.obj = null;
         return tmp;
     }
  
-    public boolean hasMoreElements() {
+    public boolean hasNext() {
         return (obj != null);
     }   
+
+    public void remove() {
+        throw new UnsupportedOperationException("This is an immutable iterator");
+    }
 }
