@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.util.Enumeration;
+import java.util.Iterator;
 
 public class XMLParserTest extends TestCase {
 
@@ -32,19 +32,19 @@ public class XMLParserTest extends TestCase {
     public void testSimple() throws IOException {
         use("test.xml");
         assertEquals("one", node.getName());
-        Enumeration enum = node.enumerateNode();
-        XMLNode child = (XMLNode) enum.nextElement();
+        Iterator iter = node.iterateNode();
+        XMLNode child = (XMLNode) iter.next();
         assertEquals("two", child.getName());
         XMLNode child2 = node.getNode("two");
         assertEquals(child, child2);
     }
 
-    public void testSingleEnumeration() throws IOException {
+    public void testSingleIterator() throws IOException {
         use("test.xml");
-        Enumeration nodeEnum = node.enumerateNode("two");
+        Iterator nodeIter = node.iterateNode("two");
         int count = 0;
-        while(nodeEnum.hasMoreElements()) {
-            XMLNode subnode = (XMLNode) nodeEnum.nextElement();
+        while(nodeIter.hasNext()) {
+            XMLNode subnode = (XMLNode) nodeIter.next();
             assertEquals("two", subnode.getName());
             count++;
         }
