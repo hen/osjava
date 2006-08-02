@@ -1,0 +1,41 @@
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+
+sub by_version {
+#    $a and $b
+    my $a_copy = $a;
+    my $b_copy = $b;
+    $a_copy =~ s/[^0-9.]//g;
+    $b_copy =~ s/[^0-9.]//g;
+    my @a_array = split(/\./, $a_copy);
+    my @b_array = split(/\./, $b_copy);
+    my $min = scalar(@a_array);
+    if(@b_array < $min) {
+        $min = scalar(@b_array);
+    }
+    my $i;
+    for($i=0; $i<$min; $i++) {
+        my $comp = $a_array[$i] <=> $b_array[$i];
+        if($comp) {
+            return $comp;
+        }
+    }
+    return @a_array <=> @b_array;
+}
+
+my @list;
+
+while(<>) {
+    chomp;
+    push @list, $_;
+}
+
+# this version takes the input all on one line
+@list = split(/ /, $list[0]);
+
+@list = sort by_version @list;
+
+print join(" ", @list);
+
