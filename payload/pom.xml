@@ -24,14 +24,23 @@
   
   <url>http://www.osjava.org/payload/</url>
 
-<!--  <issueTrackingUrl>http://www.osjava.org:8080/jira/secure/BrowseProject.jspa?id=10040</issueTrackingUrl>  -->
+  <issueManagement>
+    <system>jira</system>
+    <url>http://www.osjava.org:8080/jira/secure/BrowseProject.jspa?id=10040</url>
+  </issueManagement>
 
-<!--
-  <repository>
+  <licenses>
+    <license>
+      <name>New BSD License</name>
+      <url>http://svn.osjava.org/svn/osjava/trunk/payload/LICENSE.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <scm>
     <connection>scm:svn:http://svn.osjava.org/svn/osjava/trunk/payload</connection>
     <url>http://svn.osjava.org/svn/osjava/trunk/payload</url>
-  </repository>
--->
+  </scm>
 
   <mailingLists>
     <mailingList>
@@ -41,6 +50,11 @@
         <archive>http://lists.flamefew.net/mailman/private/osjava-users/</archive>
     </mailingList>
   </mailingLists>
+
+  <ciManagement>
+    <system>continuum</system>
+    <url>http://bonobo.flamefew.net:8080/continuum/servlet/continuum</url>
+  </ciManagement>
 
 
   <developers>
