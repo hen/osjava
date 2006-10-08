@@ -35,6 +35,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.FilterInputStream;
 
+/**
+ * @deprecated Now in Commons IO
+ */
 public class CountingInputStream extends FilterInputStream {
 
     private int count;
