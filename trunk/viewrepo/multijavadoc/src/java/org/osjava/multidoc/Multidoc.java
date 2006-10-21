@@ -289,6 +289,9 @@ System.err.println("Null subname: " + name);
                 File mavenJars = new File(maven, name);
                 mavenJars = new File(mavenJars, "jars");
                 File multiDocDir = new File(multidoc, subname);
+                if(!multiDocDir.exists()) {
+                    return;
+                }
                 FileWriter writer = new FileWriter(new File(multiDocDir, "jars.list"));
                 List tmp = new ArrayList(versions);
                 for(int i=tmp.size()-1; i>=0; i--) {
