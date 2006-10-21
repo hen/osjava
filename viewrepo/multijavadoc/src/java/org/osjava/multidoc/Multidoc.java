@@ -176,7 +176,7 @@ public class Multidoc {
 
                         // This is not how to write good java kids.
                         while(root != null) {
-                            if("id".equals(root.getNodeName())) {
+                            if("id".equals(root.getNodeName()) || "artifactId".equals(root.getNodeName())) {
                                 subname = root.getFirstChild().getNodeValue();
                             } else if("currentVersion".equals(root.getNodeName())) {
                                 version = root.getFirstChild().getNodeValue();
