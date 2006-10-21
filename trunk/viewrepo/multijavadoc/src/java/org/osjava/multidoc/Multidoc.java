@@ -153,59 +153,59 @@ public class Multidoc {
             File mavenJars = new File(maven, name);
             mavenJars = new File(mavenJars, "poms");
             String [] tmp = mavenJars.list();
-if( tmp == null ) {
-System.err.println("Empty directory: " + mavenJars);
-} else {
-            for(int i=0;i<tmp.length;i++) {
-                Matcher m = POMFILE.matcher(tmp[i]);
-                if(m.matches()) {
-                    String nameAndVersion = m.group(1);
-Document doc = null;
-try {
-					doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new File(mavenJars, tmp[i]));
-} catch(Exception e) {
-System.err.println("Error parsing "+new File(mavenJars, tmp[i]));
-continue;
-}
+            if( tmp == null ) {
+                System.err.println("Empty directory: " + mavenJars);
+            } else {
+                for(int i=0;i<tmp.length;i++) {
+                    Matcher m = POMFILE.matcher(tmp[i]);
+                    if(m.matches()) {
+                        String nameAndVersion = m.group(1);
+                        Document doc = null;
+                        try {
+                            doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new File(mavenJars, tmp[i]));
+                        } catch(Exception e) {
+                            System.err.println("Error parsing "+new File(mavenJars, tmp[i]));
+                            continue;
+                        }
 
-					Node root = doc.getDocumentElement();
-					root = root.getFirstChild();
+                        Node root = doc.getDocumentElement();
+                        root = root.getFirstChild();
 
-					String version = null;
-					String subname = null;
+                        String version = null;
+                        String subname = null;
 
-					// This is not how to write good java kids.
-					while(root != null) {
-						if("id".equals(root.getNodeName())) {
-							subname = root.getFirstChild().getNodeValue();
-						} else if("currentVersion".equals(root.getNodeName())) {
-							version = root.getFirstChild().getNodeValue();
-						}
-						root = root.getNextSibling();
-					}
+                        // This is not how to write good java kids.
+                        while(root != null) {
+                            if("id".equals(root.getNodeName())) {
+                                subname = root.getFirstChild().getNodeValue();
+                            } else if("currentVersion".equals(root.getNodeName())) {
+                                version = root.getFirstChild().getNodeValue();
+                            }
+                            root = root.getNextSibling();
+                        }
 
-if(subname != null) {
-                    OSJSubPackage subPackage = 
-                        (OSJSubPackage) subpackages.get(subname);
-                    if(subPackage == null) {
-                        subPackage = new OSJSubPackage(subname);
-                        subpackages.put(subname, subPackage);
+                        if(subname != null) {
+                            OSJSubPackage subPackage = 
+                                (OSJSubPackage) subpackages.get(subname);
+                            if(subPackage == null) {
+                                subPackage = new OSJSubPackage(subname);
+                                subpackages.put(subname, subPackage);
+                            }
+                            if(version != null) {
+                                subPackage.addVersion(new Version(version));
+                            } else {
+                                System.err.println("Null version: " + name);
+                            }
+                        } else {
+                            System.err.println("Null subname: " + name);
+                        }
                     }
-if(version != null) {
-                    subPackage.addVersion(new Version(version));
-} else {
-System.err.println("Null version: " + name);
-}
-} else {
-System.err.println("Null subname: " + name);
-}
                 }
             }
-}
         }
 
         public Map getSubpackages() {
-            return subpackages;
+                return subpackages;
         }
 
         public String toString() {
