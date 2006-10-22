@@ -94,4 +94,8 @@ public class InputProcessor implements Connection {
 	output.append('\n');
 	display.localEcho(command);
     }
+
+    public void exit() {
+        conn.exit();
+    }
 }
