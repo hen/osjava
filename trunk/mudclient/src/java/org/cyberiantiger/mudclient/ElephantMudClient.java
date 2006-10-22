@@ -31,6 +31,7 @@ public class ElephantMudClient implements Display, Connection {
 
     public void exit() {
 	connection.stop(); // Deprecated.
+        System.exit(0); // Evil, but necessary.
     }
 
     public void connect() {
