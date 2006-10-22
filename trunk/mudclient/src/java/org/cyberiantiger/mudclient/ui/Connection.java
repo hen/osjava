@@ -14,4 +14,6 @@ public interface Connection {
 
     public ClientConfiguration getConfiguration();
 
+    public void exit();
+
 }

@@ -56,7 +56,10 @@ public class MudConnection extends Thread {
 	    }
 	};
 	try {
-	    sock = new TelnetSocket(destination, port, session);
+	    sock = new TelnetSocket(
+                    SocketFactory.getSocket(client.getConfiguration()), 
+                    session,
+                    client.getConfiguration().getCharacterEncoding());
 	    status = CONNECTED;
 	    client.connectionStatusChanged(CONNECTED);
 	    notify();

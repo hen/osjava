@@ -23,19 +23,23 @@ public class ControlWindow extends JFrame {
     private JMenu helpMenu;
     private JMenuItem connectMenuItem;
     private JMenuItem disconnectMenuItem;
+    private JMenuItem optionsMenuItem;
     private JMenuItem exitMenuItem;
     private JMenuItem helpMenuItem;
     private JMenuItem aboutMenuItem;
     private JTabbedPane tabbedOutputPane;
     private JTextField inputField;
+    private OptionsDialog options;
     private Map views = new HashMap();
     private ConsoleWriter defaultView;
     private List otherFrames = new ArrayList();
+
 
     public ControlWindow(Connection client) {
 	super("Elephant Mud Client");
 	this.client = client;
 	initComponents();
+        options = new OptionsDialog(this);
     }
 
     private void initComponents() {
@@ -44,6 +48,7 @@ public class ControlWindow extends JFrame {
 	helpMenu = new JMenu("Help");
 	connectMenuItem = new JMenuItem("Connect");
 	disconnectMenuItem= new JMenuItem("Disconnect");
+        optionsMenuItem = new JMenuItem("Options");
 	exitMenuItem = new JMenuItem("Exit");
 	helpMenuItem = new JMenuItem("Help");
 	aboutMenuItem = new JMenuItem("About");
@@ -53,6 +58,7 @@ public class ControlWindow extends JFrame {
 
 	fileMenu.add(connectMenuItem);
 	fileMenu.add(disconnectMenuItem);
+        fileMenu.add(optionsMenuItem);
 	fileMenu.add(exitMenuItem);
 
 	helpMenu.add(helpMenuItem);
@@ -71,6 +77,12 @@ public class ControlWindow extends JFrame {
 			client.disconnect();
 		    }
 		});
+        optionsMenuItem.addActionListener(
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        options.show();
+                    }
+                });
 	exitMenuItem.addActionListener(
 		new ActionListener() {
 		    public void actionPerformed(ActionEvent e) {
@@ -99,7 +111,7 @@ public class ControlWindow extends JFrame {
 	getContentPane().add(tabbedOutputPane,BorderLayout.CENTER);
 
 	inputField = new JTextField();
-	inputField.setFont(new Font("monospaced",Font.PLAIN,14));
+	inputField.setFont(new Font("Monospaced",Font.PLAIN,14));
 
 	ActionMap actionMap = new ActionMap();
 
@@ -300,7 +312,14 @@ public class ControlWindow extends JFrame {
 	    other.hide();
 	    other.dispose();
 	}
+        options.hide();
+        options.dispose();
 	hide();
 	dispose();
+        client.exit();
+    }
+
+    public ClientConfiguration getConfiguration() {
+        return client.getConfiguration();
     }
 }

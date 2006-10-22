@@ -7,20 +7,22 @@ public class TelnetSocket {
 
     private TelnetSession session;
     private Socket connection;
+    private String encoding;
     private OutputStream out;
     private InputStream in;
     private InputStreamReader reader;
     private OutputStreamWriter writer;
 
-    public TelnetSocket(String dest,int port,TelnetSession session) 
-    throws IOException 
+    public TelnetSocket(Socket connection,TelnetSession session,String encoding) 
+        throws IOException 
     {
 	this.session = session;
-	connection = new Socket(dest,port);
+	this.connection = connection;
+        this.encoding = encoding;
 	in = connection.getInputStream();
 	out = connection.getOutputStream();
-	reader = new InputStreamReader(new MyTelnetInputStream(in));
-	writer = new OutputStreamWriter(out);
+	reader = new InputStreamReader(new MyTelnetInputStream(in), encoding);
+	writer = new OutputStreamWriter(out, encoding);
 	session.setOutputStream(out);
     }
 
