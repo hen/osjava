@@ -1,6 +1,7 @@
 package org.cyberiantiger.mudclient.ui;
 
 import javax.swing.*;
+import javax.swing.event.*;
 import java.awt.*;
 import java.awt.event.*;
 
@@ -101,6 +102,23 @@ public class OptionsDialog extends JDialog {
                         updateEnabled();
                     }
                 });
+        DocumentListener updateListener = 
+            new DocumentListener() {
+                public void changedUpdate(DocumentEvent e) {
+                    updateEnabled();
+                }
+                public void removeUpdate(DocumentEvent e) {
+                    updateEnabled();
+                }
+                public void insertUpdate(DocumentEvent e) {
+                    updateEnabled();
+                }
+            };
+        host.getDocument().addDocumentListener(updateListener);
+        port.getDocument().addDocumentListener(updateListener);
+        proxyHost.getDocument().addDocumentListener(updateListener);
+        proxyPort.getDocument().addDocumentListener(updateListener);
+
         loadConfig();
     }
 
