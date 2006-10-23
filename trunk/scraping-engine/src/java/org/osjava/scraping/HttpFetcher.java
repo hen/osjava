@@ -48,24 +48,21 @@ public class HttpFetcher extends AbstractHttpFetcher {
         return 80;
     }
 
-    protected void startSession(URL url, int port, HttpClient client, Config cfg, Session session) {
-            String user = cfg.getString("username");
-
-            if(user != null) {
-                Credentials defaultcreds = new UsernamePasswordCredentials(user, cfg.getString("password"));
-                String realm = cfg.getString("realm");
-                /* HttpClient 3.0
-                if(realm == null) {
-                    realm = AuthScope.ANY_REALM;
-                }
-                client.getState().setCredentials(new AuthScope(url.getHost(), port, realm), defaultcreds);
-                */
-                client.getState().setCredentials(realm, url.getHost(), defaultcreds);
-            }
-
-            client.startSession( url.getHost(), 
-                                 port
+    protected void startSession(URL url, int port, HttpClient client, Config cfg, Session session) throws FetchingException {
+        try {
+            client.getHostConfiguration().setHost(
+                new HttpURL(
+                    cfg.getString("username"), 
+                    cfg.getString("password"), 
+                    url.getHost(), 
+                    port, 
+                    url.getPath(),
+                    url.getQuery()
+                ) 
             );
+        } catch(URIException urie) {
+            throw new FetchingException("Unable to start session", urie);
+        }
     }
 
 }

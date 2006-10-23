@@ -47,15 +47,21 @@ public class HttpsFetcher extends AbstractHttpFetcher {
         return 443;
     }
 
-    protected void startSession(URL url, int port, HttpClient client, Config cfg, Session session) {
-            UsernamePasswordCredentials upc = new UsernamePasswordCredentials(
-                cfg.getString("username"), cfg.getString("password") 
+    protected void startSession(URL url, int port, HttpClient client, Config cfg, Session session) throws FetchingException {
+        try {
+            client.getHostConfiguration().setHost(
+                new HttpsURL(
+                    cfg.getString("username"), 
+                    cfg.getString("password"), 
+                    url.getHost(), 
+                    port, 
+                    url.getPath(),
+                    url.getQuery()
+                ) 
             );
-            client.startSession( url.getHost(), 
-                                 port,
-                                 upc,
-                                 true
-            );
+        } catch(URIException urie) {
+            throw new FetchingException("Unable to start session", urie);
+        }
     }
 
 }
