@@ -55,7 +55,7 @@ public abstract class AbstractHttpFetcher implements Fetcher {
 
     public abstract int getDefaultPort();
 
-    protected abstract void startSession(URL url, int port, HttpClient client, Config cfg, Session session);
+    protected abstract void startSession(URL url, int port, HttpClient client, Config cfg, Session session) throws FetchingException;
 
     public Page fetch(String uri, Config cfg, Session session) throws FetchingException {
         try {
