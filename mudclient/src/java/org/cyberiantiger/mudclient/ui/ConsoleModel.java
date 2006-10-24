@@ -397,8 +397,8 @@ public class ConsoleModel implements Console {
 		if(tmpLine != null)
 		{
 		    tmpString = tmpLine.toString();
-		    if(start.x < tmpString.length()) {
-			ret.append(tmpString.substring(0,start.x));
+		    if(end.x < tmpString.length()) {
+			ret.append(tmpString.substring(0,end.x));
 		    } else {
 			ret.append(tmpString);
 		    }
