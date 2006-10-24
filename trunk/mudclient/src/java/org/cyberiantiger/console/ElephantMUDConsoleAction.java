@@ -148,7 +148,7 @@ public class ElephantMUDConsoleAction extends AbstractConsoleAction {
 		if(action != null) {
 		    action.apply(con);
 		} else {
-		    con.drawString(token);
+                    wrapString(token, con);
 		}
 	    }
 	    // After all but last line
@@ -178,4 +178,43 @@ public class ElephantMUDConsoleAction extends AbstractConsoleAction {
     public void appendToBuffer(StringBuffer buffer) {
     }
 
+    private void wrapString(String str, Console con) {
+        int w = con.getWidth();
+        int x;
+        char[] c = str.toCharArray();
+        int i = 0;
+LOOP:
+        while (i < c.length) {
+            x = con.getCursorX();
+            if ( c.length - i <= w - x ) {
+                con.drawString(c, i, c.length - i);
+                break LOOP;
+            }
+            for (int j = i + w - x; j > i; j--) {
+                if (c[j] == ' ') {
+                    con.drawString(c, i, j - i);
+                    i = j + 1;
+                    con.setCursorX(0);
+                    con.moveCursorY(1);
+                    continue LOOP;
+                }
+            }
+            if ( x != 0 ) {
+                con.setCursorX(0);
+                con.moveCursorY(1);
+                continue LOOP;
+            }
+            for (int j = i + w - x + 1; j < c.length; j++) {
+                if (c[j] == ' ') {
+                    con.drawString(c, i, j - i);
+                    i = j + 1;
+                    con.setCursorX(0);
+                    con.moveCursorY(1);
+                    continue LOOP;
+                }
+            }
+            con.drawString(c, i, c.length - i);
+            break LOOP;
+        }
+    }
 }
