@@ -25,11 +25,11 @@ public class ControlWindow extends JFrame {
     private JMenuItem disconnectMenuItem;
     private JMenuItem optionsMenuItem;
     private JMenuItem exitMenuItem;
-    private JMenuItem helpMenuItem;
     private JMenuItem aboutMenuItem;
     private JTabbedPane tabbedOutputPane;
     private JTextField inputField;
     private OptionsDialog options;
+    private AboutDialog about;
     private Map views = new HashMap();
     private ConsoleWriter defaultView;
     private List otherFrames = new ArrayList();
@@ -40,6 +40,7 @@ public class ControlWindow extends JFrame {
 	this.client = client;
 	initComponents();
         options = new OptionsDialog(this);
+        about = new AboutDialog(this);
     }
 
     private void initComponents() {
@@ -50,7 +51,6 @@ public class ControlWindow extends JFrame {
 	disconnectMenuItem= new JMenuItem("Disconnect");
         optionsMenuItem = new JMenuItem("Options");
 	exitMenuItem = new JMenuItem("Exit");
-	helpMenuItem = new JMenuItem("Help");
 	aboutMenuItem = new JMenuItem("About");
 
 	menuBar.add(fileMenu);
@@ -61,7 +61,6 @@ public class ControlWindow extends JFrame {
         fileMenu.add(optionsMenuItem);
 	fileMenu.add(exitMenuItem);
 
-	helpMenu.add(helpMenuItem);
 	helpMenu.add(aboutMenuItem);
 
 	connectMenuItem.addActionListener(
@@ -89,8 +88,12 @@ public class ControlWindow extends JFrame {
 			exit();
 		    }
 		});
-	helpMenuItem.setEnabled(false);
-	aboutMenuItem.setEnabled(false);
+	aboutMenuItem.addActionListener(
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        about.show();
+                    }
+                });
 	setJMenuBar(menuBar);
 
 	getContentPane().setLayout(new BorderLayout());
