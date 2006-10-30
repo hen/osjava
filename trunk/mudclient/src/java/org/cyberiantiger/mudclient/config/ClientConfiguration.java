@@ -158,6 +158,117 @@ public class ClientConfiguration {
 	}
     }
 
+    public void write(OutputStream out) throws IOException {
+        Iterator i;
+	Properties props = new Properties();
+        props.setProperty("net.host", host);
+        props.setProperty("net.port", "" + port);
+        props.setProperty("net.terminal", term);
+        props.setProperty("net.useProxy", useProxy ? "yes" : "no");
+        props.setProperty("net.useJvmProxy", useJvmProxy ? "yes" : "no");
+        props.setProperty("net.proxyHost", proxyHost);
+        props.setProperty("net.proxyPort", "" + proxyPort);
+        props.setProperty("net.characterEncoding", characterEncoding);
+
+        StringBuffer tmp = new StringBuffer();
+        i = outputs.iterator();
+        while (i.hasNext()) {
+            String name = (String) i.next();
+            tmp.append(name);
+            if (i.hasNext()) {
+                tmp.append(',');
+            }
+            ((OutputConfiguration) outputConfigs.get(name)).save(props);
+        }
+
+        props.setProperty("output", tmp.toString());
+        props.setProperty("output.default", defaultOutput);
+
+        tmp.setLength(0);
+
+        i = redirects.keySet().iterator();
+        while (i.hasNext()) {
+            tmp.append(i.next());
+            if (i.hasNext()) {
+                tmp.append(",");
+            }
+        }
+        
+        props.setProperty("redirect", tmp.toString());
+
+        tmp.setLength(0);
+
+        i = redirects.entrySet().iterator();
+        while (i.hasNext()) {
+            Map.Entry e = (Map.Entry) i.next();
+            Iterator j = ((Set)e.getValue()).iterator();
+            while (j.hasNext()) {
+                tmp.append(j.next());
+                if (j.hasNext()) {
+                    tmp.append(",");
+                }
+            }
+            props.put("redirect." + e.getKey(), tmp.toString());
+            tmp.setLength(0);
+        }
+
+        KeyStroke[] keys = keyBindings.keys();
+        Map actions = new HashMap();
+        for (int a = 0; a < keys.length; a++) {
+            String action = (String) keyBindings.get(keys[a]);
+            Set keyStrokes;
+            if (actions.containsKey(action)) {
+                keyStrokes = (Set) actions.get(action);
+            } else {
+                keyStrokes = new HashSet();
+                actions.put(action, keyStrokes);
+            }
+            keyStrokes.add(keys[a]);
+        }
+
+        i = actions.keySet().iterator();
+        while (i.hasNext()) {
+            tmp.append(i.next());
+            if (i.hasNext()) {
+                tmp.append(",");
+            }
+        }
+        props.setProperty("action", tmp.toString());
+        tmp.setLength(0);
+        i = actions.entrySet().iterator();
+        while (i.hasNext()) {
+            Map.Entry e = (Map.Entry) i.next();
+            Iterator j = ((Set)e.getValue()).iterator();
+            while (j.hasNext()) {
+                tmp.append(j.next());
+                if (j.hasNext()) {
+                    tmp.append(",");
+                }
+            }
+            props.setProperty("action." + e.getKey(), tmp.toString());
+            tmp.setLength(0);
+        }
+
+        i = aliases.entrySet().iterator();
+        while (i.hasNext()) {
+            Map.Entry e = (Map.Entry) i.next();
+            List aliases = (List) e.getValue();
+            props.setProperty("alias."+e.getKey()+".count", ""+aliases.size());
+            Iterator j = aliases.iterator();
+            int c = 1;
+            while (j.hasNext()) {
+                Alias alias = (Alias) j.next();
+                String key = "alias."+e.getKey()+"."+c;
+                props.setProperty(key + ".regexp", alias.getRegexp());
+                props.setProperty(key + ".replace", alias.getReplace());
+                props.setProperty(key + ".terminate", alias.getTerminate() ? "yes" : "no");
+                c++;
+            }
+        }
+        props.store(out, "Mudclient Configuration");
+        out.close();
+    }
+
     /**
      * Get the hostname to connect to
      */

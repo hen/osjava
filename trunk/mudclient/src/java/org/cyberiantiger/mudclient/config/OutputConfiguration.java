@@ -34,6 +34,16 @@ public class OutputConfiguration {
 		props.getProperty("output."+name+".keepInput","no"));
     }
 
+    public void save(Properties props) {
+        props.setProperty("output."+name+".width", "" + width);
+        props.setProperty("output."+name+".height", "" + height);
+        props.setProperty("output."+name+".buffer", "" + buffer);
+        props.setProperty("output."+name+".float", floating ? "yes" : "no");
+        props.setProperty("output."+name+".visible", visible ? "yes" : "no");
+        props.setProperty("output."+name+".visibleOnOutput", visibleOnOutput ? "yes" : "no");
+        props.setProperty("output."+name+".keepInput", keepInput ? "yes" : "no");
+    }
+
     public String getName() {
 	return name;
     }

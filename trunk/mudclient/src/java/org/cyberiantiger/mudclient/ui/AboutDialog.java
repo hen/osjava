@@ -20,7 +20,7 @@ public class AboutDialog extends JDialog {
     private void initComponents() {
         icon = new ImageIcon(
                 AboutDialog.class.getClassLoader().getResource(
-                    "org/cyberiantiger/mudclient/about.jpg"
+                    "org/cyberiantiger/mudclient/about.gif"
                     ));
         logoLabel = new JLabel(icon);
 

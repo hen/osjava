@@ -31,6 +31,12 @@ public class ElephantMudClient implements Display, Connection {
 
     public void exit() {
 	connection.stop(); // Deprecated.
+        File configFile = getConfigFile();
+        try {
+            config.write(new FileOutputStream(configFile));
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
         System.exit(0); // Evil, but necessary.
     }
 
@@ -133,6 +139,11 @@ public class ElephantMudClient implements Display, Connection {
 
     }
 
+    public static final File getConfigFile() {
+        File userHome = new File(System.getProperty("user.home"));
+        return new File(userHome, ".mudclientrc");
+    }
+
     public static void main(String[] args) {
 	if(args.length == 1) {
 	    try {
@@ -145,11 +156,16 @@ public class ElephantMudClient implements Display, Connection {
 	}  else {
 	    try {
 		ClientConfiguration config = new ClientConfiguration();
-		config.load(
-			ElephantMudClient.class.getResourceAsStream(
-			    "/org/cyberiantiger/mudclient/config.properties"
-			    )
-			);
+                File configFile = getConfigFile();
+                if (configFile.exists()) {
+                    config.load(new FileInputStream(configFile));
+                } else {
+                    config.load(
+                            ElephantMudClient.class.getResourceAsStream(
+                                "/org/cyberiantiger/mudclient/config.properties"
+                                )
+                            );
+                }
 		new ElephantMudClient(config);
 	    } catch (IOException ioe) {
 		ioe.printStackTrace();

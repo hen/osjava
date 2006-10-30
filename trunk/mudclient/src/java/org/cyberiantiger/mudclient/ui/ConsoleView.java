@@ -60,12 +60,15 @@ public class ConsoleView extends JComponent implements ConsoleModelListener
 	    borderArea.right = getWidth() - width * charWidth - borderArea.left;
 	    borderArea.bottom = getHeight() - height * rowHeight - borderArea.top;
 
-	    synchronized(this) {
-		model.addAction(new ResizeConsoleAction(width,height));
-		if(connection != null) {
-		    connection.setWindowSize(width,height);
-		}
-	    }
+            /* Double synchronize to avoid deadlocks */
+            synchronized(getTreeLock()) {
+                synchronized(this) {
+                    model.addAction(new ResizeConsoleAction(width,height));
+                    if(connection != null) {
+                        connection.setWindowSize(width,height);
+                    }
+                }
+            }
 	}
     }
 
@@ -73,60 +76,65 @@ public class ConsoleView extends JComponent implements ConsoleModelListener
 	this.connection = connection;
     }
 
-    public synchronized void paintComponent(Graphics g) {
-	int width = getWidth();
-	int height = getHeight();
-	g.setFont(getFont());
-	FontMetrics fm = g.getFontMetrics();
-	{
-	    g.setColor(getBackground());
-	    g.fillRect(0,0,width,borderArea.top);
-	    g.fillRect(0,height-borderArea.bottom,width,borderArea.bottom);
-	    g.fillRect(0,borderArea.top,borderArea.left,height-borderArea.top-borderArea.bottom);
-	    g.fillRect(width-borderArea.right,borderArea.top,borderArea.right,height-borderArea.top-borderArea.bottom);
-	    g.translate(borderArea.left,borderArea.top);
-	}
-	int text_offset = rowHeight - fm.getDescent();
-	int y = 0;
+    public void paintComponent(Graphics g) {
+        /* Double synchronize to avoid deadlocks */
+        synchronized(getTreeLock()) {
+            synchronized(this) {
+                int width = getWidth();
+                int height = getHeight();
+                g.setFont(getFont());
+                FontMetrics fm = g.getFontMetrics();
+                {
+                    g.setColor(getBackground());
+                    g.fillRect(0,0,width,borderArea.top);
+                    g.fillRect(0,height-borderArea.bottom,width,borderArea.bottom);
+                    g.fillRect(0,borderArea.top,borderArea.left,height-borderArea.top-borderArea.bottom);
+                    g.fillRect(width-borderArea.right,borderArea.top,borderArea.right,height-borderArea.top-borderArea.bottom);
+                    g.translate(borderArea.left,borderArea.top);
+                }
+                int text_offset = rowHeight - fm.getDescent();
+                int y = 0;
 
-	for(int i=0;i<model.getHeight();i++) {
-	    Line line = model.getViewLine(i);
-	    if(line == null) {
-		g.setColor(getBackground());
-		g.fillRect(0,y,width,y+rowHeight);
-	    } else {
-		LineSegment segment = line.first;
-		int x = 0;
-		while(segment != null) {
-		    int chars_width = 
-		    fm.charsWidth(segment.data,segment.offset,segment.len);
-		    g.setColor(getBackgroundColor(segment.attr));
-		    g.fillRect(x,y,chars_width,rowHeight);
-		    g.setColor(getForegroundColor(segment.attr));
-		    g.drawChars(segment.data,segment.offset,segment.len,x,y+text_offset);
-		    x += chars_width;
-		    segment = segment.next;
-		}
-		g.setColor(getBackground());
-		g.fillRect(x,y,width-x,rowHeight);
-	    }
-	    y+=rowHeight;
-	}
-	if(model.hasSelection()) {
-	    Point start = model.getSelectionStart();
-	    Point end = model.getSelectionEnd();
-	    g.setXORMode(getBackground());
-	    g.setColor(getForeground());
-	    if(start.y == end.y) {
-		g.fillRect(start.x * charWidth, start.y * rowHeight, (end.x - start.x) * charWidth, rowHeight);
-	    } else {
-		g.fillRect(start.x * charWidth, start.y * rowHeight, (model.getWidth() - start.x) * charWidth, rowHeight);
-		g.fillRect(0,end.y * rowHeight, end.x * charWidth, rowHeight);
-		if(end.y - start.y > 1) {
-		    g.fillRect(0,(start.y+1)*rowHeight,model.getWidth()*charWidth, (end.y-start.y-1)*rowHeight);
-		}
-	    }
-	}
+                for(int i=0;i<model.getHeight();i++) {
+                    Line line = model.getViewLine(i);
+                    if(line == null) {
+                        g.setColor(getBackground());
+                        g.fillRect(0,y,width,y+rowHeight);
+                    } else {
+                        LineSegment segment = line.first;
+                        int x = 0;
+                        while(segment != null) {
+                            int chars_width = 
+                                fm.charsWidth(segment.data,segment.offset,segment.len);
+                            g.setColor(getBackgroundColor(segment.attr));
+                            g.fillRect(x,y,chars_width,rowHeight);
+                            g.setColor(getForegroundColor(segment.attr));
+                            g.drawChars(segment.data,segment.offset,segment.len,x,y+text_offset);
+                            x += chars_width;
+                            segment = segment.next;
+                        }
+                        g.setColor(getBackground());
+                        g.fillRect(x,y,width-x,rowHeight);
+                    }
+                    y+=rowHeight;
+                }
+                if(model.hasSelection()) {
+                    Point start = model.getSelectionStart();
+                    Point end = model.getSelectionEnd();
+                    g.setXORMode(getBackground());
+                    g.setColor(getForeground());
+                    if(start.y == end.y) {
+                        g.fillRect(start.x * charWidth, start.y * rowHeight, (end.x - start.x) * charWidth, rowHeight);
+                    } else {
+                        g.fillRect(start.x * charWidth, start.y * rowHeight, (model.getWidth() - start.x) * charWidth, rowHeight);
+                        g.fillRect(0,end.y * rowHeight, end.x * charWidth, rowHeight);
+                        if(end.y - start.y > 1) {
+                            g.fillRect(0,(start.y+1)*rowHeight,model.getWidth()*charWidth, (end.y-start.y-1)*rowHeight);
+                        }
+                    }
+                }
+            }
+        }
     }
 
     public Color getForegroundColor(int attr) {
@@ -188,8 +196,13 @@ public class ConsoleView extends JComponent implements ConsoleModelListener
     /**
      * Write something to our model
      */
-    public synchronized void consoleAction(ConsoleAction action) {
-	model.addAction(action);
+    public void consoleAction(ConsoleAction action) {
+        /* Double synchronize to avoid deadlocks */
+        synchronized(getTreeLock()) {
+            synchronized(this) {
+                model.addAction(action);
+            }
+        }
     }
 
     public Point getCharacterAt(Point p) {
@@ -243,6 +256,10 @@ public class ConsoleView extends JComponent implements ConsoleModelListener
 			    new StringSelection(selection),
 			    getClipboardOwner()
 			    );
+                    getToolkit().getSystemClipboard().setContents(
+                            new StringSelection(selection),
+                            getClipboardOwner()
+                            );
 		}
 	    }
 	} else if(me.getID() == MouseEvent.MOUSE_CLICKED) {
