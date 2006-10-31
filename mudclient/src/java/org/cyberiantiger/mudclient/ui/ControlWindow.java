@@ -6,6 +6,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.AWTEvent;
 import java.awt.event.*;
+import java.awt.EventQueue;
+import java.awt.Toolkit;
 import javax.swing.*;
 import javax.swing.event.*;
 import java.util.*;
@@ -33,14 +35,20 @@ public class ControlWindow extends JFrame {
     private Map views = new HashMap();
     private ConsoleWriter defaultView;
     private List otherFrames = new ArrayList();
+    private EQ eq = new EQ();
 
 
     public ControlWindow(Connection client) {
 	super("Elephant Mud Client");
 	this.client = client;
+        installEventQueue();
 	initComponents();
         options = new OptionsDialog(this);
         about = new AboutDialog(this);
+    }
+
+    private void installEventQueue() {
+        Toolkit.getDefaultToolkit().getSystemEventQueue().push(eq);
     }
 
     private void initComponents() {
@@ -177,6 +185,14 @@ public class ControlWindow extends JFrame {
 		tabbedOutputPane.setSelectedIndex(i);
 	    }
 	});
+
+        List macros = client.getConfiguration().getMacros();
+        {
+            for (int i = 0; i < macros.size(); i++) {
+                actionMap.put("macro" + i, 
+                        new MacroAction((String)macros.get(i)));
+            }
+        }
 
 	InputMap inputMap = client.getConfiguration().getKeyBindings();
 	inputMap.setParent(inputField.getInputMap());
@@ -324,5 +340,46 @@ public class ControlWindow extends JFrame {
 
     public ClientConfiguration getConfiguration() {
         return client.getConfiguration();
+    }
+
+    private class MacroAction extends AbstractAction {
+
+        private String cmd;
+
+        public MacroAction(String cmd) {
+            this.cmd = cmd;
+        }
+
+        public void actionPerformed(ActionEvent e) {
+            eq.dropSubsequentKeyTyped();
+            client.command(getCurrentViewName(), cmd);
+        }
+
+    }
+
+    private static class EQ extends EventQueue {
+        /* XXX: Evil hack to stop macros from generating a key code 
+         * Check event queue and if the next event in the queue is 
+         * a key typed event, drop it, This may not work on some
+         * platforms, it assumes that the key typed event immediately
+         * follows the key pressed event. Some platforms may send
+         * key typed events before key pressed events, or a bunch
+         * of other circumstances which might break this. */
+        private volatile boolean flag = false;
+        public void dropSubsequentKeyTyped() {
+            flag = true;
+        }
+        protected void dispatchEvent(AWTEvent e) {
+            if (flag) {
+                switch (e.getID()) {
+                    case KeyEvent.KEY_TYPED:
+                        flag = false;
+                        return;
+                    case KeyEvent.KEY_PRESSED:
+                        flag = false;
+                }
+            }
+            super.dispatchEvent(e);
+        }
     }
 }

@@ -20,6 +20,7 @@ public class ClientConfiguration {
     private Map redirects;
     private Map outputConfigs;
     private InputMap keyBindings;
+    private List macros;
     private Map aliases;
     private boolean useProxy;
     private boolean useJvmProxy;
@@ -57,11 +58,9 @@ public class ClientConfiguration {
         return "yes".equals(props.getProperty(key));
     }
 
-    public void load(InputStream in) throws IOException {
+    public void load(Properties props) {
 	StringTokenizer tmp;
 	Iterator i;
-	Properties props = new Properties();
-	props.load(in);
 	host = getString(props,"net.host","elephant.org");
 	port = getInt(props,"net.port",4444);
 	term = getString(props,"net.terminal","ansi");
@@ -137,12 +136,21 @@ public class ClientConfiguration {
 	    }
 	}
 
+        /* Load macros */
+        {
+            macros = new ArrayList();
+            int count = getInt(props, "macro.count", 0);
+            for (int a = 0; a < count; a++) {
+                macros.add(getString(props, "macro." + a, ""));
+            }
+        }
+
 	/* Load aliases */
 	aliases = new HashMap();
 	i = outputConfigs.keySet().iterator();
 	while (i.hasNext()) {
 	    String keyName = (String) i.next();
-	    int count = Integer.parseInt(props.getProperty("alias."+keyName+".count", "0"));
+	    int count = getInt(props,"alias."+keyName+".count", 0);
 	    if (count == 0) {
 		continue;
 	    }
@@ -158,7 +166,7 @@ public class ClientConfiguration {
 	}
     }
 
-    public void write(OutputStream out) throws IOException {
+    public Properties save() {
         Iterator i;
 	Properties props = new Properties();
         props.setProperty("net.host", host);
@@ -249,6 +257,11 @@ public class ClientConfiguration {
             tmp.setLength(0);
         }
 
+        props.setProperty("macro.count", "" + macros.size());
+        for (int a = 0; a < macros.size(); a++) {
+            props.setProperty("macro."+a, (String)macros.get(a));
+        }
+
         i = aliases.entrySet().iterator();
         while (i.hasNext()) {
             Map.Entry e = (Map.Entry) i.next();
@@ -265,8 +278,7 @@ public class ClientConfiguration {
                 c++;
             }
         }
-        props.store(out, "Mudclient Configuration");
-        out.close();
+        return props;
     }
 
     /**
@@ -426,5 +438,12 @@ public class ClientConfiguration {
      */
     public List getAliases(String sourceId) {
 	return (List) aliases.get(sourceId);
+    }
+
+    /**
+     * Get a list of macros.
+     */
+    public List getMacros() {
+        return macros;
     }
 }

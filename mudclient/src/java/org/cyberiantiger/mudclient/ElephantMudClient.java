@@ -33,7 +33,8 @@ public class ElephantMudClient implements Display, Connection {
 	connection.stop(); // Deprecated.
         File configFile = getConfigFile();
         try {
-            config.write(new FileOutputStream(configFile));
+            Properties props = config.save();
+            props.store(new FileOutputStream(configFile),"Elephant Mud Client");
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
@@ -139,37 +140,47 @@ public class ElephantMudClient implements Display, Connection {
 
     }
 
-    public static final File getConfigFile() {
+    private static final File getConfigFile() {
         File userHome = new File(System.getProperty("user.home"));
         return new File(userHome, ".mudclientrc");
     }
 
+    private static final InputStream getDefaultConfig() {
+        return ElephantMudClient.class.getResourceAsStream(
+                "/org/cyberiantiger/mudclient/config.properties"
+                );
+    }
+
+
+
     public static void main(String[] args) {
+        Properties props = new Properties();
+        /* Load defaults */
+        try {
+            props.load(getDefaultConfig());
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
 	if(args.length == 1) {
-	    try {
-		ClientConfiguration config = new ClientConfiguration();
-		config.load(new FileInputStream(args[0]));
-		new ElephantMudClient(config);
-	    } catch (IOException ioe) {
-		ioe.printStackTrace();
-	    }
-	}  else {
-	    try {
-		ClientConfiguration config = new ClientConfiguration();
-                File configFile = getConfigFile();
-                if (configFile.exists()) {
-                    config.load(new FileInputStream(configFile));
-                } else {
-                    config.load(
-                            ElephantMudClient.class.getResourceAsStream(
-                                "/org/cyberiantiger/mudclient/config.properties"
-                                )
-                            );
+            /* Load args[0] if set */
+            try {
+                props.load(new FileInputStream(args[0]));
+            } catch (IOException ioe) {
+                ioe.printStackTrace();
+            }
+        } else {
+            /* Load config file if exists */
+            File configFile = getConfigFile();
+            if (configFile.exists()) {
+                try {
+                    props.load(new FileInputStream(configFile));
+                } catch (IOException ioe) {
+                    ioe.printStackTrace();
                 }
-		new ElephantMudClient(config);
-	    } catch (IOException ioe) {
-		ioe.printStackTrace();
-	    }
-	}
+            }
+        }
+        ClientConfiguration config = new ClientConfiguration();
+        config.load(props);
+        new ElephantMudClient(config);
     }
 }
