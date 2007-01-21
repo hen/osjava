@@ -26,7 +26,7 @@
   <inceptionYear>2002</inceptionYear>
 
   <!-- The Java package. Javadoc will not build without this. -->
-  <package>org.osjava.reportrunner</package>
+  <package>org.osjava</package>
 
   <!-- Or provide your own if you have a logo -->
   <logo>http://www.osjava.org/images/1x1.gif</logo>
@@ -113,6 +113,12 @@
       <groupId>servletapi</groupId>
       <artifactId>servletapi</artifactId>
       <version>2.3</version>
+    </dependency>
+    <!-- plugin deps -->
+    <dependency>
+      <groupId>jfreechart</groupId>
+      <artifactId>jfreechart</artifactId>
+      <version>0.9.20</version>
     </dependency>
   </dependencies>
   <build>

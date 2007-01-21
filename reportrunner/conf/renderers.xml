@@ -18,4 +18,10 @@
  <renderer name="excel" label="Excel file" class="org.osjava.reportrunner.renderers.ExcelRenderer">
    <mimeType>application/excel</mimeType>
  </renderer>
+
+ <!-- plugin renderers -->
+ <renderer name="datetime-chart" label="Time chart" class="org.osjava.reportrunner_plugins.renderers.TimeGraphRenderer">
+   <mimeType>image/png</mimeType>
+ </renderer>
+
 </renderers>
