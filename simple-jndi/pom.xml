@@ -104,11 +104,11 @@
     <!-- <unitTest> -->
       <testResources>
         <testResource>
-          <directory>src/test/config</directory>
+          <directory>${basedir}/src/test/config</directory>
           <targetPath>config</targetPath>
         </testResource>
         <testResource>
-          <directory>src/test</directory>
+          <directory>${basedir}/src/test</directory>
           <includes>
             <include>jndi.properties</include>
           </includes>
