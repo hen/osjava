@@ -78,7 +78,7 @@
   <dependencies>
     <dependency>
       <id>xmlenc</id>
-      <version>0.33</version>
+      <version>0.52</version>
       <url>http://xmlenc.sf.net</url>
     </dependency>
     <dependency>
