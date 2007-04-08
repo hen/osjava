@@ -80,18 +80,36 @@
       <id>xmlenc</id>
       <version>0.52</version>
       <url>http://xmlenc.sf.net</url>
+      <properties>
+        <optional>true</optional>
+        <comment>
+          &lt;strong&gt;Optional&lt;/strong&gt;
+        </comment>
+      </properties>
     </dependency>
     <dependency>
       <id>xerces</id>
       <version>2.0.2</version>
       <url>http://xml.apache.org/xerces/</url>
       <jar>xmlParserAPIs-2.0.0.jar</jar>
+      <properties>
+        <optional>true</optional>
+        <comment>
+          &lt;strong&gt;Optional&lt;/strong&gt;
+        </comment>
+      </properties>
     </dependency>
     <dependency>
       <groupId>msv</groupId>
       <artifactId>isorelax</artifactId>
       <version>20030807</version>
       <url>http://isorelax.sourceforge.net/</url>
+      <properties>
+        <optional>true</optional>
+        <comment>
+          &lt;strong&gt;Optional&lt;/strong&gt;
+        </comment>
+      </properties>
     </dependency>
   </dependencies>
 
