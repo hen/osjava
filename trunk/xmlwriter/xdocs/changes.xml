@@ -7,6 +7,10 @@
   </properties>
 
   <body>
+    <release version="2.2.1" date="2007-04-07">
+         <action dev="hen" type="update">Upgrading to depend on xmlenc 0.52 (as that is on maven central)</action>
+         <action dev="hen" type="update"></action>
+    </release>
     <release version="2.2" date="2003-12-17">
          <action dev="hen" type="update">Modified code so the dependency on Commons-Lang is no longer necessary. This did mean moving to JDK 1.4 as the dependent JVM. </action>
          <action dev="hen" type="update">Removed unnecessary throwing of IOException in the FormattingXmlWriter. </action>
