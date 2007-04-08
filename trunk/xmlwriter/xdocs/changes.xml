@@ -7,18 +7,17 @@
   </properties>
 
   <body>
-    <release version="2.2.1" date="2007-04-07">
+    <release version="2.2.1" date="2007-04-07" description="Minor update so the Maven transitive dependencies will work">
          <action dev="hen" type="update">Upgrading to depend on xmlenc 0.52 (as that is on maven central)</action>
-         <action dev="hen" type="update"></action>
     </release>
-    <release version="2.2" date="2003-12-17">
+    <release version="2.2" date="2003-12-17" description="Lang dependency gone, JDK 1.4 the target JVM">
          <action dev="hen" type="update">Modified code so the dependency on Commons-Lang is no longer necessary. This did mean moving to JDK 1.4 as the dependent JVM. </action>
          <action dev="hen" type="update">Removed unnecessary throwing of IOException in the FormattingXmlWriter. </action>
     </release>
-    <release version="2.1" date="2003-09-02">
+    <release version="2.1" date="2003-09-02" description="XmEnc dependency upgrade">
          <action dev="hen" type="update">Upgraded the depdency for xmlenc from 0.20 to 0.37. Had to change the XmlEncXmlWriter slightly and improve the unit test. </action>  
     </release>
-    <release version="2.0" date="2003-09-02">
+    <release version="2.0" date="2003-09-02" description="Rewritten API, XmlWriter goes from class to interface">
          <action dev="hen" type="update">Migration from the xmlwriter.sf.net location.</action>
          <action dev="hen" type="add">Rework of system so that it is very adaptable/pluggable. There are two underlying core writers, one on top of xmlenc and the other an osjava version. On top there are multiple decorator pattern implementations. </action>
          <action dev="hen" type="add">On the fly schema checking.</action>
