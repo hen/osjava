@@ -19,13 +19,14 @@
     &lt;br/&gt;
    While XmlWriter contains its own xml outputter, it has the ability to sit on top of other core Xml writing products, such as &lt;a href="http://xmlenc.sf.net/"&gt;XmlEnc&lt;/a&gt;. In addition, the user may layer &lt;a href="Optional.html"&gt;other functionalities&lt;/a&gt; on top of the core writing, such as on the fly schema checking, date/number formatting, specific empty-element handling and pretty-printing. 
   </description>
+
+  <url>http://www.osjava.org/xmlwriter/</url>
   
-<!--
-  <repository>
-    <connection>scm:svn:http://svn.osjava.org/svn/osjava/trunk/xmlwriter</connection>
-    <url>http://svn.osjava.org/svn/osjava/trunk/xmlwriter</url>
-  </repository>
--->
+  <scm>
+    <connection>scm:svn:https://osjava.googlecode.com/svn/trunk/xmlwriter</connection>
+    <developerConnection>scm:svn:https://osjava.googlecode.com/svn/trunk/xmlwriter</developerConnection>
+    <url>http://code.google.com/p/osjava/source</url>
+  </scm>
 
   <mailingLists>
     <mailingList>
