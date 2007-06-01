@@ -3,7 +3,7 @@
          xmlns:xsi="http://www.w3c.org/2001/XMLSchema-instance">
   
   <modelVersion>4.0.0</modelVersion>
-  <groupId>org.osjava</groupId>
+  <groupId>xmlwriter</groupId>
   <artifactId>xmlwriter</artifactId>
   <name>xmlwriter</name>
   <version>2.2.1</version>
