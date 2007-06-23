@@ -76,7 +76,7 @@ public class CustomProperties extends AbstractProperties {
             reader.close();
         } catch(IOException ioe) {
             ioe.printStackTrace();
-        } finally {}
+        }
     }
 
 }
