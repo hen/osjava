@@ -106,7 +106,7 @@ public class SimpleNameParser implements NameParser {
         return ret;
     }
     
-    /**
+    /* *
      * Determine whether or not <code>ob</code> is equal to this object.
      * If the ob is an instance of ThreadNameParser, it is considered to be 
      * equal.
@@ -118,10 +118,13 @@ public class SimpleNameParser implements NameParser {
      * @param ob the objct which is being compared to this one.
      * @see java.lang.Object#equals(java.lang.Object)
      */
+     /* HEN: No hashCode() method, and I'm rather concerned with the 
+             implementation of equals below.
     public boolean equals(Object ob) {
         if(ob instanceof SimpleNameParser) {
             return true;
         }
         return false;
     }    
+    /*
 }
