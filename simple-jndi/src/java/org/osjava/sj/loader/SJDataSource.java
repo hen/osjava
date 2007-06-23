@@ -80,7 +80,7 @@ public class SJDataSource implements DataSource {
         String tmpUrl = this.url;
 
         if(pool != null) {
-System.err.println("[DS]Setting Pool information");
+//System.err.println("[DS]Setting Pool information");
 
             // url is now a pooling link
             // TODO: Fix this, it pools each time, which is probably bad
@@ -88,7 +88,7 @@ System.err.println("[DS]Setting Pool information");
             tmpUrl = PoolSetup.getUrl(pool);
         }
 
-System.err.println("[DS]Getting Connection for url: " + tmpUrl);
+//System.err.println("[DS]Getting Connection for url: " + tmpUrl);
         if(username == null || password == null) {
             return DriverManager.getConnection(tmpUrl);
         }
