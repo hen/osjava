@@ -126,5 +126,5 @@ public class SimpleNameParser implements NameParser {
         }
         return false;
     }    
-    /*
+    */
 }
