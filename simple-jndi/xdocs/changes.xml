@@ -7,6 +7,11 @@
   </properties>
 
   <body>
+    <release version="0.11.2" date="2007-06-26" description="Minor bugfixes">
+        <action dev="hen" type="add">Maven2 build added</action>
+        <action dev="hen" type="fix">Removed debug from SJDataSource</action>
+        <action dev="hen" type="fix">Updated to latest dbcp/pool</action>
+    </release>
     <release version="0.11.1" date="2005-09-29" description="Some critical bugfixes">
         <action dev="hen" type="add">BeanConverter, create empty instance and call setXxx(String) methods</action>
         <action dev="hen" type="fix" issue="SJN-69">Can't have 'type' at the top level inside a file</action>
