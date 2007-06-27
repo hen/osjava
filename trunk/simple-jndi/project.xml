@@ -36,10 +36,10 @@
 
   <mailingLists>
     <mailingList>
-      <name>osjava-users</name>
-      <subscribe>http://lists.osjava.org/mailman/listinfo/osjava-users</subscribe>
-      <unsubscribe>http://lists.osjava.org/mailman/listinfo/osjava-users</unsubscribe>
-      <archive>http://lists.osjava.org/mailman/private/osjava-users/</archive>
+      <name>osjava google group</name>
+      <subscribe>http://groups.google.com/group/osjava</subscribe>
+      <unsubscribe>http://groups.google.com/group/osjava</unsubscribe>
+      <archive>http://groups.google.com/group/osjava</archive>
     </mailingList>
   </mailingLists>
 
