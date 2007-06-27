@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<document>
+
+  <properties>
+    <author email="bayard@generationjava.com">Henri Yandell</author>
+    <title>Implementing your own Converters</title>
+  </properties>
+
+  <body>
+  <section><div><a href="DataFiles.html">previous</a> - <a href="index.html">contents</a> - <a href="AsConfig.html">next</a></div></section>
+
+  <section name="Converters">
+    <p>It can't have escaped your attention that JNDI is an object technology while .xml, .properties and .ini files are very noticeably text based. Simple-JNDI solves this via the <i>org.osjava.sj.loader.convert.Converter</i> interface. </p>
+    <pre>
+    /**
+     * Turn a String-based tree-structure into an Object. Additionally 
+     * the type of object desired is known. This is usually a Java 
+     * class, but this is not mandatory. 
+     *
+     * The properties structure is located at the point of the 
+     * lookup key, so if the code asked for a com.example.Foo object, 
+     * the properties structure would be everything below Foo.
+     *
+     * To get at the value of com.example.Foo itself, request the 
+     * empty string, "".
+     *
+     * TODO: No way for a converter to know the delimiter-type. 
+     *
+     * @param Properties data structure
+     * @param String type of object desired
+     */
+    Object convert(Properties properties, String type);
+    </pre>
+
+    <p>Converters are nice and easy to implement. It's recommended that you look at the code to some of the existing converter implementations, say the <a href="../xref/org/osjava/sj/loader/convert/DataSourceConverter.html">DataSource</a> and <a href="../xref/org/osjava/sj/loader/convert/DateConverter.html">Date</a> converters. </p>
+
+    <p>Before implementing your own Converter, make sure there is not an existing implementation which you could use. The <a href="../xref/org/osjava/sj/loader/convert/DataSourceConverter.html">ConstructorConverter</a> is a very generic converter that should be able to handle many of your basic conversions. </p>
+
+  </section>
+
+  <section name="Existing Converters">
+    <p>The following is a brief list of the existing converter implementations. </p>
+    <ul>
+      <li>DataSourceConverter - Default for javax.sql.DataSource. Four mandatory subparameters (url, driver, user, password) and one optional subparameter (pool). </li>
+      <li>DateConverter - Default for java.util.Date. One mandatory subparameter (format), and an empty String value is requried. </li>
+      <li>ConstructorConverter - Default for java.lang.Boolean. The empty String value is required, this converter will create anything with a single String argument to its constructor. </li>
+      <li>MapConverter - Loads all values in the properties object into a Map. (TODO: Why not just pass the Properties object straight back, it's a Map?).</li>
+      <li>NullConverter - Returns the empty String value. </li>
+      <li>BeanConverter - Creates an empty instance of the type, then calls setXxx(String) methods for each specified property. </li>
+    </ul>
+  </section>
+
+  </body>
+
+</document>

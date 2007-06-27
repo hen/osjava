@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<document>
+
+  <properties>
+      <author email="bayard@generationjava.com">Henri Yandell</author>
+      <title>Future Ideas</title>
+  </properties>
+
+  <body>
+  <section><div><a href="PropertyIndex.html">previous</a> - <a href="index.html">contents</a> - <a href="SubmittingBugs.html">next</a></div></section>
+    <section name="Future Ideas">
+<ul>
+<li>Allow converters to be configured/plugged in somehow. </li>
+<li>Implement Type in such a way that the object to create may be specified, say JDOPersistenceFactory, and that sub-properties may be set as bean properties.</li>
+<li>Implement binding so that values may be stored in the system, making it Read/Write. </li>
+<li>Implementing the list methods so you can see the values in a particular directory/properties file. </li>
+<li>Searches. Consider implementing DirContext. </li>
+<li>Switch to using Names in the system, with the String argument being turned to a Name based on delimiters specified in the jndi.properties. Allow more than one delimiter.</li>
+<li>Other DataSource like things? JDO?</li>
+<li>Allow the root to be a url, so properties can be found online</li>
+<li>Make it nice to hook up Enhanced drivers from DbUtils??</li>
+<li>Confirm that jars and zips may be used in the classpath protocol. </li>
+<li>Add a jdbc implementation underneath for the configuration. </li>
+<li>Allow the underlying Properties class to use [when applicable] to be specified. </li>
+<li>multiple domains. ie) Configure org.osjava to use .properties over http, and org.osjava to use xml over classpath. </li>
+<li>Implement a Name class which finds the lookup key separator and injects that inside the name values [a string array]</li>
+<li>When a value is unbound, don't return to the default but instead make it so it throws an exception when you try to obtain that value [unless bound again]. </li>
+<li>Allow a map-delimiter so that something like  bob.foo.thing#bah=fred uses bah as the key, and fred as the value. </li>
+<li>Is there a way to specify the type of a List or Map, or must ArrayList and HashMap always be used?</li>
+<li>Write a simple-jndi server/client setup. Maybe use beep4j</li>
+<li>Enable BlahDS.url so you can see the url of a datasource. Block passwords. </li>
+<li>Implement DataSource creation as a part of the converter. </li>
+<li>Test DataSources in various situations. Given a lookup of java:/TestDS and a delimiter of /, a directory of java: and a file of TestDS.properties, it appears to still look for TestDS/url and not url. Basically the PropertiesDataSource is buggy in its lookup. </li>
+<li>Implement satisfactory unit testing. </li>
+<li>A way to federate over to another JNDIContext. </li>
+<li>A JNDIResourceBundle class which loads resources from JNDI. </li>
+</ul>
+
+</section>
+</body>
+</document>

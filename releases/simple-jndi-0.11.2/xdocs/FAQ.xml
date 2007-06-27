@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<document>
+
+  <properties>
+      <author email="bayard@generationjava.com">Henri Yandell</author>
+      <title>FAQ</title>
+  </properties>
+
+  <body>
+<section name="FAQ">
+<dl>
+<dt>I get "javax.naming.NoInitialContextException: Need to specify class name in environment or system property, or as an applet parameter, or in an application resource file:  java.naming.factory.initial".</dt>
+<dd>You do not have a jndi.properties file in your classpath, or your jndi.properties lacks a java.naming.factory.initial property.</dd>
+<!-- TODO: See what the error is in this case
+<dt>I get a ClassCastException with java.util.Properties.</dt>
+<dd>Most likely you are trying to get a DataSource but you have forgotten to include type=javax.sql.DataSource.</dd>
+-->
+<dt>I am trying to specify a DataSource with org.osjava.jndi.datasource, but it no longer seems to work.</dt>
+<dd>Simple-JNDI 0.9 removed this feature [deprecated in 0.8] in favour of the conversion system in which you have type=javax.sql.DataSource. It still uses a simple-jndi implementation of a DataSource as this is an interface. </dd>
+<dt>I get an SQLException of 'No suitable driver'.</dt>
+<dd>Your driver's jar is not in the classpath.</dd>
+<!-- TODO: See what the error is in this case
+<dt>I get InvalidNameException of [key] not found.</dt>
+<dd>You have not specified the org.osjava.jndi.root correctly in your jndi.properties.</dd>
+-->
+<dt>ClassNotFoundException: org.osjava.sj.SimpleContextFactory or ClassNotFoundException: org.osjava.sj.memory.MemoryContextFactory.</dt>
+<dd>You don't have the simple-jndi jar in the classpath.</dd>
+<dt>How do I use xml instead of .properties?</dt>
+<dd>Each delimited option in the .properties simply becomes a tag in the xml. The last element may be a tag or may be an attribute. </dd>
+</dl>
+
+</section>
+</body>
+</document>

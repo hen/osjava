@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<document>
+
+  <properties>
+    <author email="bayard@generationjava.com">Henri Yandell</author>
+    <title>Why use Simple-JNDI?</title>
+  </properties>
+
+  <body>
+  <section><div><a href="index.html">contents</a> - <a href="Downloading.html">next</a></div></section>
+  <section name="Why use Simple-JNDI?">
+    <p>The biggest reason to use Simple-JNDI is in the name, it's simple. No matter which text file option you choose, it creates an easy to edit database for your JNDI. Coupled with SJ's in-memory JNDI implementation and your unit tests or simple application can easily get its required infrastructure with minimal effort. </p>
+  </section>
+  </body>
+
+</document>
