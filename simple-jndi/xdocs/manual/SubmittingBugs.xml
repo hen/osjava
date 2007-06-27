@@ -12,9 +12,9 @@
 Bugs should be reported to one of the following:
 
 <ul>
-<li>Henri Yandell</li>
-<li>The <a href="http://lists.osjava.org/mailman/listinfo/osjava-users">osjava-users mailing list</a></li>
-<li>The <a href="http://issues.osjava.org:8080/jira/secure/BrowseProject.jspa?id=10000">OSJava Issue Tracker</a></li>
+<li>The <a href="http://issues.osjava.org/jira/secure/BrowseProject.jspa?id=10000">OSJava Issue Tracker</a></li>
+<li>The <a href="http://groups.google.com/group/osjava">osjava-users mailing list</a></li>
+<li>Failing that, directly to Henri Yandell</li>
 </ul>
 
 Please report them, you'll be doing Simple-JNDI a great service.
