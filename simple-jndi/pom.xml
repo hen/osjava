@@ -10,7 +10,7 @@
     <name>OSJava</name>
   </organization>
   <inceptionYear>2003</inceptionYear>
-  <groupId>org.osjava</groupId>
+  <groupId>simple-jndi</groupId>
   <url>http://www.osjava.org/simple-jndi/</url>
   
   <description>
