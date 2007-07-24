@@ -104,7 +104,7 @@ public class SetupProcedures {
         } catch(ClassNotFoundException cnfe) {
             throw new RuntimeException("Unable to load oracle driver");
         }
-        return DriverManager.getConnection("jdbc:oracle:thin:@devdb.genscape.com:1532:dev", "genscape", "beer123");
+        return DriverManager.getConnection("jdbcurl", "user", "passwd");
     }
 
     public static final String updateTriggerSql = 
