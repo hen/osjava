@@ -265,7 +265,6 @@ public class OrcsProcedures {
             throw new RuntimeException("Unable to load oracle driver");
         }
         return dataSource.getConnection();
-//        return DriverManager.getConnection("jdbc:oracle:thin:@devdb.genscape.com:1532:dev", "genscape", "beer123");
     }
 
 }
