@@ -37,6 +37,11 @@
             <bookmark label="css" uri="http://www.htmlhelp.com/reference/css/"/>
             <bookmark label="html" uri="http://www.htmlhelp.com/reference/html40/"/>
         </category>
+        <category name="Books">
+            <bookmark label="Struts 2" uri="http://www.infoq.com/news/2007/05/struts2-book"/>
+            <bookmark label="Little Ruby Book" uri="http://www.infoq.com/minibooks/ruby"/>
+            <bookmark label="Grails" uri="http://www.infoq.com/minibooks/grails"/>
+        </category>
     </section>
     <section name="Of Java Interest" order="4">
         <category name="API glossaries">
