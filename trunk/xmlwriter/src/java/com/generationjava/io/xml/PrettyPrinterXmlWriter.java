@@ -190,6 +190,33 @@ public class PrettyPrinterXmlWriter extends DelegatingXmlWriter {
         getWriter().write(newline); 
         return this;
     }
+
+    /**
+     * A helper method. It writes out an entity which contains only text.
+     *
+     * @param name String name of tag
+     * @param text String of text to go inside the tag
+     */
+    public XmlWriter writeEntityWithText(String name, Object text)
+                     throws IOException {
+        indentChunk();
+        super.writeEntityWithText(name, text);
+        getWriter().write(newline);
+        return this;
+    }
+
+    /**
+     * A helper method. It writes out empty entities.
+     *
+     * @param name String name of tag
+     */
+    public XmlWriter writeEmptyEntity(String name) throws IOException {
+        indentChunk();
+        super.writeEmptyEntity(name);
+        getWriter().write(newline);
+        return this;
+    }
+
     private void indentChunk() throws IOException {
         this.empty = false;
         if(!this.wroteText) {
