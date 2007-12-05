@@ -105,4 +105,34 @@ public class XmlWriterTest extends TestCase {
                      sw.toString());
     }
 
+    public void testPrettyPrinterWithEntityWithText() throws IOException {
+        StringWriter sw = new StringWriter();
+        XmlWriter xw = new PrettyPrinterXmlWriter(new SimpleXmlWriter(sw));
+        xw.writeEntity("a");
+        xw.writeEntity("unit");
+        xw.writeCData("test");
+        xw.endEntity();
+        xw.writeEntityWithText("entityWithText", "text");
+        xw.endEntity();
+        xw.close();
+        assertEquals("PrettyPrinterXmlWriter not outputting test correctly ",
+                     "<a>\n  <unit><![CDATA[ test ]]></unit>\n  <entityWithText>text</entityWithText>\n</a>\n",
+                     sw.toString());
+    }
+
+    public void testPrettyPrinterWithEmptyEntity() throws IOException {
+        StringWriter sw = new StringWriter();
+        XmlWriter xw = new PrettyPrinterXmlWriter(new SimpleXmlWriter(sw));
+        xw.writeEntity("a");
+        xw.writeEntity("unit");
+        xw.writeCData("test");
+        xw.endEntity();
+        xw.writeEmptyEntity("emptyEntity");
+        xw.endEntity();
+        xw.close();
+        assertEquals("PrettyPrinterXmlWriter not outputting test correctly ",
+                     "<a>\n  <unit><![CDATA[ test ]]></unit>\n  <emptyEntity/>\n</a>\n",
+                     sw.toString());
+    }
+
 }
