@@ -28,8 +28,8 @@ public class XmlWriterTest extends TestCase {
         xw.endEntity();
         xw.close();
         assertEquals("SimpleXmlWriter not outputting test-1 correctly ",
-                     sw.toString(),
-                     "<unit/>");
+                     "<unit/>",
+                     sw.toString());
 
 
         sw = new StringWriter();
@@ -37,7 +37,7 @@ public class XmlWriterTest extends TestCase {
         writeTest2(xw);
         xw.close();
         assertEquals("SimpleXmlWriter not outputting test-2 correctly ",
-                     sw.toString(), getTest2Output() );
+                     getTest2Output(), sw.toString() );
     }
 
     public void testXmlEncXmlWriter() throws IOException {
@@ -48,15 +48,15 @@ public class XmlWriterTest extends TestCase {
         xw.endEntity();
         xw.close();
         assertEquals("XmlEncXmlWriter not outputting test-1 correctly ",
-                     sw.toString(),
-                     "<unit/>");
+                     "<unit/>",
+                     sw.toString());
 
         StringWriter sw2 = new StringWriter();
         xw = new XmlEncXmlWriter(sw2);
         writeTest2(xw);
         xw.close();
         assertEquals("XmlEncXmlWriter not outputting test-2 correctly ",
-                     sw2.toString(), getTest2Output() );
+                     getTest2Output(), sw2.toString() );
     }
 
     private void writeTest2(XmlWriter xw) throws IOException {
@@ -87,8 +87,8 @@ public class XmlWriterTest extends TestCase {
         xw.endEntity();
         xw.close();
         assertEquals("PrettyPrinterXmlWriter not outputting test correctly ",
-                     sw.toString(),
-                     "<a>\n  <unit>test</unit>\n</a>\n");
+                     "<a>\n  <unit>test</unit>\n</a>\n",
+                     sw.toString());
     }
 
     public void testPrettyPrinterWithCData() throws IOException {
@@ -101,8 +101,8 @@ public class XmlWriterTest extends TestCase {
         xw.endEntity();
         xw.close();
         assertEquals("PrettyPrinterXmlWriter not outputting test correctly ",
-                     sw.toString(),
-                     "<a>\n  <unit><![CDATA[ test ]]></unit>\n</a>\n");
+                     "<a>\n  <unit><![CDATA[ test ]]></unit>\n</a>\n",
+                     sw.toString());
     }
 
 }
