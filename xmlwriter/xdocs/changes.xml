@@ -7,6 +7,10 @@
   </properties>
 
   <body>
+    <release version="2.2.2" date="2007-12-05" description="Improving PrettyPrinterXMLWriter">
+         <action dev="hen" type="update">PrettyPrinterXMLWriter does not implement all methods</action>
+         <action dev="hen" type="update">expected/actual in the incorrect order in XmlWriterTest</action>
+    </release>
     <release version="2.2.1" date="2007-04-07" description="Minor update so the Maven transitive dependencies will work">
          <action dev="hen" type="update">Upgrading to depend on xmlenc 0.52 (as that is on maven central)</action>
     </release>
