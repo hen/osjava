@@ -24,8 +24,8 @@
     <menu name="Resources">
       <item name="Mailing List"              href="/mail-lists.html"/>
       <item name="Jar Dependencies"              href="/dependencies.html"/>
-      <item name="SVN Repository"              href="http://www.osjava.org/svn.html?project=xmlwriter"/>
-      <item name="Bug Tracking"              href="/issue-tracking.html"/>
+      <item name="SVN Repository"              href="http://code.google.com/p/osjava/source"/>
+      <item name="Bug Tracking"              href="http://issues.osjava.org/jira/browse/XMLW"/>
     </menu>
   </body>
 </project>
