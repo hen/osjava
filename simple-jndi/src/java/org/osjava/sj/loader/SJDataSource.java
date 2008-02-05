@@ -133,5 +133,15 @@ public class SJDataSource implements DataSource {
         return this.url.hashCode() & this.username.hashCode() & this.driver.hashCode();
     }
 
+    // Added by JDK 1.6 via java.sql.Wrapper
+    public boolean isWrapperFor(Class<?> iface) throws SQLException {
+         return false;
+    }
+
+    // Added by JDK 1.6 via java.sql.Wrapper
+    public <T>  T unwrap(Class<T> iface) throws SQLException {
+        throw new SQLException("This object is not a wrapper");
+    }
+
 }
 
