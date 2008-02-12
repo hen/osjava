@@ -360,7 +360,11 @@ LABEL:  while(nodes.hasMoreElements()) {
         try {
             XMLParser parser = new XMLParser();
             file = "/"+file;
-            reader = new InputStreamReader( parser.getClass().getResourceAsStream(file) );
+            InputStream in = parser.getClass().getResourceAsStream(file);
+            if(in == null) {
+                throw new RuntimeException("Unable to find: " + file);
+            }
+            reader = new InputStreamReader(in);
             return parser.parseXML(reader);
         } catch(IOException ioe) {
             throw new RuntimeException("XML failed to be parsed: "+ioe, ioe);
