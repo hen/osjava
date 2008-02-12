@@ -18,13 +18,13 @@
  </report>
  <report name="datesql" label="DateSql" class="org.osjava.reportrunner.reports.SqlReport" description="This report shows the calendar widget which allows the weblog entries between two times to be seen. It also shows the usage of columns to specify what the headers and format of the report columns will be. ">
   <sql>select id, title, text, pubtime from weblogentry where pubtime between ? and ?</sql>
-  <param name="after date" type="java.sql.Timestamp" pattern="dd/MM/YYYY" parser="org.osjava.reportrunner.parser.DateTimeParser"/>
-  <param name="before date" type="java.sql.Timestamp" pattern="dd/MM/YYYY" parser="org.osjava.reportrunner.parser.DateTimeParser"/>
+  <param name="after date" type="java.sql.Timestamp" pattern="dd/MM/YYYY" parser="org.osjava.reportrunner.parsers.DateTimeParser"/>
+  <param name="before date" type="java.sql.Timestamp" pattern="dd/MM/YYYY" parser="org.osjava.reportrunner.parsers.DateTimeParser"/>
   <renderer name="html"/>
   <column name="id" label="Weblog ID"/>
   <column name="title" label="Title"/>
   <column name="text" label="Text"/>
-  <column name="pubtime" label="Publication time" pattern="dd/MM/YYYY" formatter="org.osjava.reportrunner.formatter.DateTimeFormatter"/>
+  <column name="pubtime" label="Publication time" pattern="dd/MM/YYYY" formatter="org.osjava.reportrunner.formatters.DateTimeFormatter"/>
  </report>
  <report name="bookmarks" label="Bookmarks" class="org.osjava.reportrunner.reports.SqlReport" description="A report to show typed parameters and columns. Much of the code for this is unimplemented. ">
   <sql>select name, url from bookmark where priority = ?</sql>
