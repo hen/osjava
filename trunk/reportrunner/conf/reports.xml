@@ -1,22 +1,28 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
 <reports>
- <report author="hen" name="basicsql" label="BasicSql" class="org.osjava.reportrunner.reports.SqlReport" description="Lists the user roles that exist">
-  <sql>select * from userrole</sql>
+
+ <report author="hen" name="basicsql" label="BasicSql" class="org.osjava.reportrunner.reports.SqlReport" description="Lists the users that exist">
+  <sql>select username from userbase</sql>
   <renderer name="html"/>
  </report>
+
  <report name="hardcode" label="Dummy" class="org.osjava.reportrunner.reports.DummyReport" description="This shows that a report may be hard-coded, which in itself is boring, but proves that Java of any kind can create the report. ">
   <renderer name="txt"/>
-  <renderer name="html"/>
- </report>
- <report name="paramsql" label="ParamSql" class="org.osjava.reportrunner.reports.SqlReport" description="This shows the usage of parameters, and binding of a parameter to a list of options. It prints out the user roles for a particular rolename and username. ">
-  <sql>select * from userrole where rolename=? and username=?</sql>
-  <param name="rolename" type="java.lang.String" description="The role name of the user role; most likely author. " default="author"/>
-  <param name="username" type="java.lang.String" binding="select username, username from userrole"/>
   <renderer name="html"/>
   <renderer name="csv"/>
   <renderer name="excel"/>
  </report>
+
+ <report name="paramsql" label="ParamSql" class="org.osjava.reportrunner.reports.SqlReport" description="This shows the usage of parameters, and binding of a parameter to a list of options. This report lets you search on Issue Type and Reporter for Simple JNDI issues. ">
+  <sql>select * from jiraissue where pkey like 'SJN%' and reporter=? and issuetype=?</sql>
+  <param name="reporter" label="Reporter" type="java.lang.String" description="The reporter of the JIRA issue. " default="bayard"/>
+  <param name="issuetype" label="Issue Type" type="java.lang.String" binding="select id, pname from issuetype"/>
+  <renderer name="html"/>
+  <renderer name="csv"/>
+  <renderer name="excel"/>
+ </report>
+
  <report name="datesql" label="DateSql" class="org.osjava.reportrunner.reports.SqlReport" description="This report shows the calendar widget which allows the weblog entries between two times to be seen. It also shows the usage of columns to specify what the headers and format of the report columns will be. ">
   <sql>select id, title, text, pubtime from weblogentry where pubtime between ? and ?</sql>
   <param name="after date" type="java.sql.Timestamp" pattern="dd/MM/YYYY" parser="org.osjava.reportrunner.parsers.DateTimeParser"/>
@@ -27,6 +33,7 @@
   <column name="text" label="Text"/>
   <column name="pubtime" label="Publication time" pattern="dd/MM/YYYY" formatter="org.osjava.reportrunner.formatters.DateTimeFormatter"/>
  </report>
+
  <report name="bookmarks" label="Bookmarks" class="org.osjava.reportrunner.reports.SqlReport" description="A report to show typed parameters and columns. Much of the code for this is unimplemented. ">
   <sql>select name, url from bookmark where priority = ?</sql>
   <param name="Priority" type="java.lang.Integer"/>
@@ -34,6 +41,7 @@
   <column name="name" label="Name" pattern="?" format="org.osjava.reportrunner.StringFormat"/>
   <column name="url" label="Web address"/>
  </report>
+
  <report author="hen" name="variant" label="Variant example" class="org.osjava.reportrunner.reports.SqlReport" description="Shows a use of variants">
   <sql>select * from userrole</sql>
   <variant name="where-role" label="Where">
@@ -48,4 +56,5 @@
   </variant>
   <renderer name="html"/>
  </report>
+
 </reports>
