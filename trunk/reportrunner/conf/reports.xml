@@ -3,6 +3,7 @@
 <reports>
  <report author="hen" name="basicsql" label="BasicSql" class="org.osjava.reportrunner.reports.SqlReport" description="Lists the user roles that exist">
   <sql>select * from userrole</sql>
+  <renderer name="html"/>
  </report>
  <report name="hardcode" label="Dummy" class="org.osjava.reportrunner.reports.DummyReport" description="This shows that a report may be hard-coded, which in itself is boring, but proves that Java of any kind can create the report. ">
   <renderer name="txt"/>
@@ -45,5 +46,6 @@
    <option name="nothing" value="" label="Natural ordering"/>
    <option name="username" value="order by username" label="By username"/>
   </variant>
+  <renderer name="html"/>
  </report>
 </reports>
