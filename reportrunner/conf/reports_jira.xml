@@ -24,16 +24,17 @@
  </report>
 
  <report name="datesql" label="DateSql" class="org.osjava.reportrunner.reports.SqlReport" description="This report shows the calendar widget which allows the weblog entries between two times to be seen. It also shows the usage of columns to specify what the headers and format of the report columns will be. ">
-  <sql>select id, title, text, pubtime from weblogentry where pubtime between ? and ?</sql>
-  <param name="after date" type="java.sql.Timestamp" pattern="dd/MM/YYYY" parser="org.osjava.reportrunner.parsers.DateTimeParser"/>
-  <param name="before date" type="java.sql.Timestamp" pattern="dd/MM/YYYY" parser="org.osjava.reportrunner.parsers.DateTimeParser"/>
+  <sql>select id, pkey, reporter, created from jiraissue where project=10000 and created between ? and ?</sql>
+  <param name="after date" label="After (dd/mm/yyyy)" type="java.sql.Timestamp" pattern="dd/MM/yyyy" parser="org.osjava.reportrunner.parsers.DateTimeParser"/>
+  <param name="before date" label="Before (dd/mm/yyyy)" type="java.sql.Timestamp" pattern="dd/MM/yyyy" parser="org.osjava.reportrunner.parsers.DateTimeParser"/>
   <renderer name="html"/>
-  <column name="id" label="Weblog ID"/>
-  <column name="title" label="Title"/>
-  <column name="text" label="Text"/>
-  <column name="pubtime" label="Publication time" pattern="dd/MM/YYYY" formatter="org.osjava.reportrunner.formatters.DateTimeFormatter"/>
+  <column name="id" label="JIRA ID"/>
+  <column name="title" label="JIRA Key"/>
+  <column name="text" label="Reporter"/>
+  <column name="pubtime" label="Created Date" pattern="dd/MM/yyyy" formatter="org.osjava.reportrunner.formatters.DateTimeFormatter"/>
  </report>
 
+<!--
  <report name="bookmarks" label="Bookmarks" class="org.osjava.reportrunner.reports.SqlReport" description="A report to show typed parameters and columns. Much of the code for this is unimplemented. ">
   <sql>select name, url from bookmark where priority = ?</sql>
   <param name="Priority" type="java.lang.Integer"/>
@@ -41,18 +42,22 @@
   <column name="name" label="Name" pattern="?" format="org.osjava.reportrunner.StringFormat"/>
   <column name="url" label="Web address"/>
  </report>
+-->
 
  <report author="hen" name="variant" label="Variant example" class="org.osjava.reportrunner.reports.SqlReport" description="Shows a use of variants">
-  <sql>select * from userrole</sql>
+  <sql>select * from jiraissue where pkey like 'SJN%' ?where-role ?order-by</sql>
   <variant name="where-role" label="Where">
-   <option name="all-roles" values="" label="All roles"/>
-   <option name="by-role" value="where rolename=?" label="Specific rolename">
-    <param name="rolename" type="java.lang.String" description="The role name of the user role; most likely author. " default="author"/>
+   <option name="all-types" values="" label="All issues"/>
+   <option name="by-reporter" value="and reporter=?" label="Specific reporter">
+    <param name="reporter" label="Reporter" type="java.lang.String" description="The reporter of the JIRA issue. " default="bayard"/>
+   </option>
+   <option name="by-type" value="and issuetype=?" label="Specific issue type">
+    <param name="issuetype" label="Issue Type" type="java.lang.String" binding="select id, pname from issuetype"/>
    </option>
   </variant>
   <variant name="order-by" label="Order by">
    <option name="nothing" value="" label="Natural ordering"/>
-   <option name="username" value="order by username" label="By username"/>
+   <option name="reporter" value="order by reporter" label="By reporter"/>
   </variant>
   <renderer name="html"/>
  </report>
