@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
 <reportrunner>
- <reports name="jira" label="Jira" filename="reports.xml" description="Reports for the database behind the Jira issue tracker. ">
+ <reports name="jira" label="Jira" filename="reports_jira.xml" description="Reports for the database behind the Jira issue tracker. ">
    <resource-param name="SqlReportDS" value="jira"/>
  </reports>
 </reportrunner>
