@@ -46,7 +46,7 @@
 </div>
 
 <div class="input">
-<p>This report may be run against the following resources; would you please select from the following: </p>
+<p>This report may be run against the following variants; would you please select from the following: </p>
 
 <form action="choosereport">
 <%= ReportRunnerServlet.parametersToHiddens(request, variants) %>
