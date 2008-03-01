@@ -47,16 +47,16 @@ public class EnumerationGrouper implements Grouper {
 
     private Hashtable table = new Hashtable();
 
-    public EnumerationGrouper(Enumeration enum) {
-        addEnumeration(enum);
+    public EnumerationGrouper(Enumeration enumeration) {
+        addEnumeration(enumeration);
     }
     
     /**
      * Add this enumeration to the grouper.
      */
-    public void addEnumeration(Enumeration enum) {
-        while(enum.hasMoreElements()) {
-            Object obj = enum.nextElement();
+    public void addEnumeration(Enumeration enumeration) {
+        while(enumeration.hasMoreElements()) {
+            Object obj = enumeration.nextElement();
             String classname = obj.getClass().getName();
             Object vec = table.get(classname);
             if(vec == null) {
