@@ -58,4 +58,9 @@ public class NumericStringComparatorTest extends TestCase {
         assertTrue( str1+" and "+str2+" should compare as "+expected+" and not "+cmp, cmp == expected);
     }
 
+    public void testBug() {
+        compare("aaa1.bbb1 + ge-3/0/0/0", "aaa1.bbb1 + ge-3/0/0", 1);
+        compare("aaa1.bbb1 + ge-3/0/0", "aaa1.bbb1 + ge-3/0/0/0", -1);
+    }
+
 }
