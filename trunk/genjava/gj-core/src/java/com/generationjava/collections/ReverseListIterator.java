@@ -36,6 +36,8 @@ import java.util.List;
 
 /**
  * An iterator that iterates over an array or List, backwards.
+ *
+ * @deprecated in favour of Commons Collections
  */
 public class ReverseListIterator implements Iterator {
 
