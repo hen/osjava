@@ -75,13 +75,13 @@
     <dependency>
       <id>commons-dbcp</id>
       <version>1.2.2</version>
-      <url>http://www.ibiblio.org/maven/commons-dbcp/jars/commons-dbcp-1.2.1.jar</url>
+      <url>http://www.ibiblio.org/maven/commons-dbcp/jars/commons-dbcp-1.2.2.jar</url>
     </dependency>
     <!-- used if you turn on dbcp usage -->
     <dependency>
       <id>commons-pool</id>
       <version>1.3</version>
-      <url>http://www.ibiblio.org/maven/commons-pool/jars/commons-pool-1.2.jar</url>
+      <url>http://www.ibiblio.org/maven/commons-pool/jars/commons-pool-1.3.jar</url>
     </dependency>
 
     <!--
