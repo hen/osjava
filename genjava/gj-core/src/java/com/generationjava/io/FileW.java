@@ -52,6 +52,7 @@ final public class FileW {
     /**
      * Load the contents of a given filename. Return null if the 
      * file is not loadable.
+     * @deprecated for Commons IO FileUtils.readFileToString
      */
     static public String loadFile(String filename) {
         File file = new File( filename );
@@ -61,6 +62,7 @@ final public class FileW {
     /**
      * Load the contents of a given stream. Return null if the 
      * file is not loadable.
+     * @deprecated for Commons IO 
      */
     static public String loadFile(InputStream in) {
         try {
@@ -79,6 +81,7 @@ final public class FileW {
     /**
      * Load the contents of a given url. Return null if the 
      * file is not loadable.
+     * @deprecated for Commons IO
      */
     static public String loadFile(URL url) {
         try {
@@ -95,6 +98,7 @@ final public class FileW {
     /**
      * Load the contents of a given java.io.File. Return null if the 
      * file is not loadable.
+     * @deprecated for Commons IO
      */
     static public String loadFile(File file) {
         try {
@@ -135,6 +139,7 @@ final public class FileW {
      * Save a String to a file with the given filename.
      * 
      * @return boolean did the save work.
+     * @deprecated for Commons IO
      */
     static public boolean saveFile(String filename, String contents) {
         try {
@@ -203,6 +208,7 @@ final public class FileW {
      * @param in String pathname
      *
      * @return String pathname without extension.
+     * @deprecated for Commons IO
      */
     static public String removeExtension(String in) {
         if(in == null) {
@@ -260,9 +266,15 @@ final public class FileW {
     // deals with wildcards. That is:
     //    * any number of chars
     //    ? one char
+    /**
+     * @deprecated as not that useful
+     */
     static public File[] findFiles(String str) {
         return findFiles(str, new File(System.getProperty("user.home")));
     }
+    /**
+     * @deprecated as not that useful
+     */
     static public File[] findFiles(String str, File directory) {
         LinkedList files = new LinkedList();
         /*
