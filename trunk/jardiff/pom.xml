@@ -6,20 +6,15 @@
   <packaging>jar</packaging>
   <version>1.0.0</version>
   <name>JarDiff</name>
+  <organisation>
+  	<name>OSJAVA</name>
+  </organisation>
   <url>http://www.osjava.org/jardiff</url>
   <inceptionYear>2005</inceptionYear>
   <description>A tool to help visualise API differences between two different versions of
   a project. Jardiff takes two jar files and outputs all the public API changes
   as xml, html or plain text. Currently this is command line driven, though 
-  we are working on an ant plugin. It requires java 1.4 to run.
-  &lt;h2&gt;Background&lt;/h2&gt;
-  At OSjava, we were using a shell script to work out API differences between
-  our release versions. This unfortunately doesn't scale very well to larger
-  projects, the main reason for jardiff was to do the same in a much shorter
-  time (From memory it was taking minutes to get the API diff from two fairly
-  small jars). In it's current state, jardiff can generate the api differences
-  between rt.jar for java 1.4 and java 1.5 in under 20 seconds, so it should 
-  scale to even the largest of projects.</description>
+  we are working on an ant plugin. It requires java 1.4 to run.</description>
   <issueManagement>
     <system>Jira</system>
     <url>http://issues.osjava.org/jira/browse/JDF</url>
@@ -52,10 +47,49 @@
       <groupId>org.apache.ant</groupId>
       <artifactId>ant</artifactId>
       <version>1.7.0</version>
-      <scope>compile</scope>
+      <scope>provided</scope>
     </dependency>
   </dependencies>
   <build>
-  	<sourceDirectory>src/java</sourceDirectory>
+    <sourceDirectory>src/java</sourceDirectory>
+    <resources>
+      <resource>
+        <directory>src/resources</directory>
+      </resource>
+      <resource>
+        <directory>src/xsl</directory>
+      </resource>
+    </resources>
+	<plugins>
+	  <plugin>
+		<groupId>org.apache.maven.plugins</groupId>
+		<artifactId>maven-jar-plugin</artifactId>
+		<configuration>
+		  <archive>
+			<manifest>
+			  <mainClass>org.osjava.jardiff.Main</mainClass>
+			  <addClasspath>true</addClasspath>
+			  <classpathPrefix>lib</classpathPrefix>
+			</manifest>
+		  </archive>
+		</configuration>
+	  </plugin>
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <configuration>
+          <descriptors>
+            <descriptor>src/assembly/dist.xml</descriptor>
+          </descriptors>
+        </configuration>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>attached</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+	</plugins>
   </build>
 </project>
