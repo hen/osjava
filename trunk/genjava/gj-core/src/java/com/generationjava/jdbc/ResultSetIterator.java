@@ -36,6 +36,9 @@ import java.sql.SQLException;
 
 import java.util.Iterator;
 
+/**
+ * @deprecated in favour of Dbutils
+ */
 public class ResultSetIterator implements Iterator {
 
     private ResultSet rs;

@@ -38,6 +38,9 @@ import com.generationjava.namespace.Namespace;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.collections.IteratorUtils;
 
+/**
+ * @deprecated in favour of Commons Lang StrSubstitutor
+ */
 public class Interpolator {
 
     /**

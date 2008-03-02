@@ -35,6 +35,7 @@ package com.generationjava.math;
 
 /**
  * A Fraction, containing a denominator and a numerator.
+ * @deprecated in favour of Commons Math
  */
 public class Fraction {
     

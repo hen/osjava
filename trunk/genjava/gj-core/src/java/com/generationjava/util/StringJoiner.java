@@ -34,6 +34,9 @@ package com.generationjava.util;
 import org.apache.commons.lang.StringUtils;
 
 // needs a better name obviously
+/**
+ * @deprecated in favour of just calling split then join
+ */
 public class StringJoiner {
 
     private String[] snippets;

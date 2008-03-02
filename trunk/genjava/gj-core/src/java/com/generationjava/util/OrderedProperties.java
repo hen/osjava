@@ -52,6 +52,8 @@ import com.generationjava.collections.OrderedSet;
  * an ordered way. Annoyingly, there is no easy way to splice this feature in, 
  * rather it leads to a rewrite of most of the methods and the creation.
  * This is that rewrite.
+ *
+ * @deprecated in favour of Commons Collections ExtendedProperties
  */
 public class OrderedProperties extends Properties {
 
