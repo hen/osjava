@@ -40,16 +40,16 @@
   <distributionDirectory>/sites/org/osjava/www/maven/builds/jardiff/</distributionDirectory>
 
   <repository>
-    <connection>scm:svn:http://svn.osjava.org/svn/osjava/trunk/jardiff</connection>
-    <url>http://svn.osjava.org/svn/osjava/trunk/jardiff</url>
+    <connection>scm:svn:http://osjava.googlecode.com/svn/trunk/jardiff</connection>
+    <url>http://osjava.googlecode.com/svn/trunk/jardiff</url>
   </repository>
 
   <mailingLists>
     <mailingList>
-      <name>osjava-users</name>
-      <subscribe>http://lists.osjava.org/mailman/listinfo/osjava-users</subscribe>
-      <unsubscribe>http://lists.osjava.org/mailman/listinfo/osjava-users</unsubscribe>
-      <archive>http://lists.osjava.org/mailman/private/osjava-users/</archive>
+      <name>users</name>
+      <subscribe>http://groups.google.com/group/osjava</subscribe>
+      <unsubscribe>http://groups.google.com/group/osjava</unsubscribe>
+      <archive>http://groups.google.com/group/osjava</archive>
     </mailingList>
   </mailingLists>
 

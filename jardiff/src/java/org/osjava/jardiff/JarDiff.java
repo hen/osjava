@@ -191,7 +191,7 @@ public class JarDiff
         throws IOException 
     {
         infoVisitor.reset();
-        reader.accept(infoVisitor, false);
+        reader.accept(infoVisitor, ClassReader.SKIP_CODE);
         return infoVisitor.getClassInfo();
     }
 
