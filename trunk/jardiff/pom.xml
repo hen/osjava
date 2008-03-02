@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.osjava.jardiff</groupId>
+  <artifactId>jardiff</artifactId>
+  <packaging>jar</packaging>
+  <version>1.0.0</version>
+  <name>JarDiff</name>
+  <url>http://www.osjava.org/jardiff</url>
+  <inceptionYear>2005</inceptionYear>
+  <description>A tool to help visualise API differences between two different versions of
+  a project. Jardiff takes two jar files and outputs all the public API changes
+  as xml, html or plain text. Currently this is command line driven, though 
+  we are working on an ant plugin. It requires java 1.4 to run.
+  &lt;h2&gt;Background&lt;/h2&gt;
+  At OSjava, we were using a shell script to work out API differences between
+  our release versions. This unfortunately doesn't scale very well to larger
+  projects, the main reason for jardiff was to do the same in a much shorter
+  time (From memory it was taking minutes to get the API diff from two fairly
+  small jars). In it's current state, jardiff can generate the api differences
+  between rt.jar for java 1.4 and java 1.5 in under 20 seconds, so it should 
+  scale to even the largest of projects.</description>
+  <issueManagement>
+    <system>Jira</system>
+    <url>http://issues.osjava.org/jira/browse/JDF</url>
+  </issueManagement>
+  <mailingLists>
+    <mailingList>
+      <name>users</name>
+      <subscribe>http://groups.google.com/group/osjava</subscribe>
+      <unsubscribe>http://groups.google.com/group/osjava</unsubscribe>
+      <archive>http://groups.google.com/group/osjava</archive>
+    </mailingList>
+  </mailingLists>
+  <dependencies>
+    <dependency>
+      <groupId>asm</groupId>
+      <artifactId>asm</artifactId>
+      <version>3.1</version>
+    </dependency>
+    <dependency>
+      <groupId>asm</groupId>
+      <artifactId>asm-commons</artifactId>
+      <version>3.1</version>
+    </dependency>
+    <dependency>
+      <groupId>commons-cli</groupId>
+      <artifactId>commons-cli</artifactId>
+      <version>1.1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.ant</groupId>
+      <artifactId>ant</artifactId>
+      <version>1.7.0</version>
+      <scope>compile</scope>
+    </dependency>
+  </dependencies>
+  <build>
+  	<sourceDirectory>src/java</sourceDirectory>
+  </build>
+</project>
