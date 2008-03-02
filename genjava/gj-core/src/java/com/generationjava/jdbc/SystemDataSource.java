@@ -41,6 +41,9 @@ import javax.sql.DataSource;
 
 import com.generationjava.lang.ClassW;
 
+/**
+ * @deprecated as DBCP's BasicDataSource is pretty much the same
+ */
 public class SystemDataSource implements DataSource {
 
     private String driver = System.getProperty("gj.jdbc.driver");
