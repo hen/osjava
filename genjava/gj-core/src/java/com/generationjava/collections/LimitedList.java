@@ -35,12 +35,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.apache.commons.collections.list.AbstractListDecorator;
+
 /**
  * Only allows N elements in. Once size N is reached, all 
  * new adds are ignored and inserts mean the one on the end 
  * of the list is removed.
  */
-public class LimitedList extends ProxyList {
+public class LimitedList extends AbstractListDecorator {
 
     private int capacity;
 
