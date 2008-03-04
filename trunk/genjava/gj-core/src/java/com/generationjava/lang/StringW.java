@@ -43,15 +43,6 @@ import org.apache.commons.lang.NumberUtils;
  */
 final public class StringW {
 
-	static public String join(Object[] objs, String sep, String pre, String post) {
-		String ret = StringUtils.join(objs, sep);
-		if( (ret != null) && (ret != "")) {
-			return pre + ret + post;
-		} else {
-			return ret;
-		}
-	}
-
     /**
      * Create a word-wrapped version of a String. Wrap at 80 characters and 
      * use newlines as the delimiter. If a word is over 80 characters long 
