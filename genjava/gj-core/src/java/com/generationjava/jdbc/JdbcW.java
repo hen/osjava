@@ -46,24 +46,6 @@ import org.apache.commons.lang.StringUtils;
 
 public final class JdbcW {
 
-    // assumes next() has been called already
-    /**
-     * @deprecated in favour of DbUtils ResultSetHandler and their ilk
-     */
-    static Object[] resultSetToArray(ResultSet rs) throws SQLException {
-        ResultSetMetaData meta = rs.getMetaData();
-        int sz = meta.getColumnCount();
-        Object[] objs = new Object[sz];
-        for(int i=0; i<sz; i++) {
-            Object obj = rs.getObject(i+1);
-            if(rs.wasNull()) {
-                obj = null;
-            }
-            objs[i] = obj;
-        }
-        return objs;
-    }
-
     static public String[] getColumnNames(ResultSet rs) throws SQLException {
         ResultSetMetaData rsmd = rs.getMetaData();
         int sz = rsmd.getColumnCount();

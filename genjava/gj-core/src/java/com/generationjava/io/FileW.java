@@ -44,75 +44,13 @@ import java.net.URL;
 
 import java.util.LinkedList;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
+
 /**
  * Provides useful, standard behaviour for dealing with java.io.Files.
  */
 final public class FileW {
-
-    /**
-     * Load the contents of a given filename. Return null if the 
-     * file is not loadable.
-     * @deprecated for Commons IO FileUtils.readFileToString
-     */
-    static public String loadFile(String filename) {
-        File file = new File( filename );
-        return loadFile(file);
-    }
-
-    /**
-     * Load the contents of a given stream. Return null if the 
-     * file is not loadable.
-     * @deprecated for Commons IO 
-     */
-    static public String loadFile(InputStream in) {
-        try {
-            int ptr = 0;
-            StringBuffer buffer = new StringBuffer();
-            while( (ptr = in.read()) != -1 ) {
-                buffer.append((char)ptr);
-            }
-            return buffer.toString();
-        } catch(IOException ioe) {
-//            ioe.printStackTrace();
-            return null;
-        }
-    }
-
-    /**
-     * Load the contents of a given url. Return null if the 
-     * file is not loadable.
-     * @deprecated for Commons IO
-     */
-    static public String loadFile(URL url) {
-        try {
-            InputStream in = url.openStream();
-            String str = loadFile(in);
-            in.close();
-            return str;
-        } catch(IOException ioe) {
-//            ioe.printStackTrace();
-            return null;
-        }
-    }
-
-    /**
-     * Load the contents of a given java.io.File. Return null if the 
-     * file is not loadable.
-     * @deprecated for Commons IO
-     */
-    static public String loadFile(File file) {
-        try {
-            Reader rdr = new FileReader( file );
-            long sz = file.length();
-            char[] ch = new char[(int)sz];   // can only read in things of MAXINT length
-            rdr.read(ch);
-            rdr.close();
-            return new String(ch);
-        } catch(IOException ioe) {
-//            ioe.printStackTrace();
-            return null;
-        }
-    }
 
     static public String loadFromClasspath(String file) {
         return loadFromClasspath(file, ClassLoader.getSystemClassLoader());
@@ -132,29 +70,10 @@ final public class FileW {
         if(url == null) {
             return null;
         }
-        return loadFile(url);
-    }
-
-    /**
-     * Save a String to a file with the given filename.
-     * 
-     * @return boolean did the save work.
-     * @deprecated for Commons IO
-     */
-    static public boolean saveFile(String filename, String contents) {
         try {
-            File file = new File( filename );
-            if(file.getParent() != null) {
-	        new File(file.getParent()).mkdirs();
-            }
-            Writer wtr = new FileWriter( file );
-            char[] ch = contents.toCharArray();
-            wtr.write(ch);
-            wtr.close();
-            return true;
+            return FileUtils.readFileToString(FileUtils.toFile(url));
         } catch(IOException ioe) {
-//            ioe.printStackTrace();
-            return false;
+            throw new RuntimeException("Unexpected IOException", ioe);
         }
     }
 
@@ -168,7 +87,7 @@ final public class FileW {
     static public String getClassName(File file) {
         String path = file.getPath();
         path = removePwd( path );
-        return dottify( removeExtension(path) );
+        return dottify( FilenameUtils.removeExtension(path) );
     }
 
     /**
@@ -192,36 +111,6 @@ final public class FileW {
         int idx = in.indexOf(pwd);
         if(idx == 0) {
             in = in.substring(pwd.length()+1);
-        }
-
-        return in;
-    }
-
-    // change  bob.blah to bob
-    // change bob/jim/fred.blah to bob/jim/fred
-    // change bob.jim/fred to bob.jim/fred
-    // change //// to empty string
-    // change null to null
-    /**
-     * If a filename has an extension, then it removes this.
-     *
-     * @param in String pathname
-     *
-     * @return String pathname without extension.
-     * @deprecated for Commons IO
-     */
-    static public String removeExtension(String in) {
-        if(in == null) {
-            return null;
-        }
-
-        // use File.SEP etc...
-        int idx = in.lastIndexOf( java.io.File.separator );
-        int dot = in.indexOf(".");
-        if(dot != -1) {
-            if( dot > idx ) {   // handles idx being -1
-                in = in.substring(0,dot);
-            }
         }
 
         return in;
@@ -263,40 +152,4 @@ final public class FileW {
         return in;
     }
 
-    // deals with wildcards. That is:
-    //    * any number of chars
-    //    ? one char
-    /**
-     * @deprecated as not that useful
-     */
-    static public File[] findFiles(String str) {
-        return findFiles(str, new File(System.getProperty("user.home")));
-    }
-    /**
-     * @deprecated as not that useful
-     */
-    static public File[] findFiles(String str, File directory) {
-        LinkedList files = new LinkedList();
-        /*
-        LinkedList dirs = new LinkedList();
-        dirs.add(directory);
-        String[] elements = StringUtils.split(str, File.separator);
-        */
-        files.add( new File(directory, str) );
-        return (File[])files.toArray(new File[0]);
-    }
-
 }
-
-/*
-class WildcardFilter implements FilenameFilter {
-
-    private Wildcard wildcard = new Wildcard();
-
-    public boolean accept(File file, String str) {
-        String name = file.getName();
-        return wildcard.match(str, name);
-    }
-
-}
-*/

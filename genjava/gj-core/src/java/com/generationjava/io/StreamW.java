@@ -38,23 +38,6 @@ import java.io.OutputStream;
 
 public class StreamW {
 
-    /**
-     * @deprecated as now IOUtils.copy
-     */
-    static public void pushStream(InputStream in, OutputStream out) 
-        throws IOException 
-    {
-        byte[] buffer = new byte[1023];
-        while(true) {
-            int size = in.read(buffer);
-            if(size == -1) {
-                break;
-            }
-            out.write(buffer,0,size);
-        }
-    }
-
-
     static public InputStream loadFromClasspath(String file) {
         return loadFromClasspath(file, ClassLoader.getSystemClassLoader());
     }
@@ -71,20 +54,6 @@ public class StreamW {
             in = loader.getResourceAsStream("/"+file);
         }
         return in;
-    }
-
-    /**
-     * @deprecated as now found in Commons IO
-     */
-    static public void closeQuietly(InputStream in) {
-        try { if(in != null) in.close(); } catch(IOException ioe) { ; }
-    }
-
-    /**
-     * @deprecated as now found in Commons IO
-     */
-    static public void closeQuietly(OutputStream out) {
-        try { if(out != null) out.close(); } catch(IOException ioe) { ; }
     }
 
 }

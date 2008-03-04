@@ -45,10 +45,10 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.Set;
 
-import com.generationjava.collections.OrderedSet;
 import com.generationjava.lang.StringW;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.collections.set.ListOrderedSet;
 
 
 /**
@@ -114,7 +114,7 @@ public class CommentedOrderedProperties extends OrderedProperties {
 
     public synchronized Set keySet() {
         Iterator iterator = index.iterator();
-        Set set = new OrderedSet();
+        Set set = new ListOrderedSet();
         while(iterator.hasNext()) {
             Object key = iterator.next();
             if(get(key) != null) {

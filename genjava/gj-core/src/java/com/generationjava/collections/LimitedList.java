@@ -39,8 +39,6 @@ import java.util.List;
  * Only allows N elements in. Once size N is reached, all 
  * new adds are ignored and inserts mean the one on the end 
  * of the list is removed.
- *
- * @deprecated in favour of Commons Collections FixedSizeList
  */
 public class LimitedList extends ProxyList {
 
