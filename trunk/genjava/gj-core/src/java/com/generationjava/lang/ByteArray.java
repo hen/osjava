@@ -39,6 +39,8 @@ package com.generationjava.lang;
  *
  * Todo: Integrate faster byte handling supplied by sclayman.
  *
+ * #deprecated in favour of Codec's Hex class
+ *
  * @author bayard@generationjava.com
  * @date   2000-09-25
  */
