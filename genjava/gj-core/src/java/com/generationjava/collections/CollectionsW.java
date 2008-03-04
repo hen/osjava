@@ -53,7 +53,7 @@ final public class CollectionsW {
             return null;
         }
         Iterator iterator = coll.iterator();
-        Collection sub = cloneNewEmptyCollection(coll);
+        Collection sub = (Collection)ClassW.createObject(coll.getClass());
         end -= start;
         while(iterator.hasNext()) {
             if(start == 0) {
@@ -72,15 +72,24 @@ final public class CollectionsW {
     }
 
     // unimplemented 
+    /**
+     * @deprecated as it's not doing much
+     */
     public static Collection cloneNewEmptyCollection(Collection coll) {
         return (Collection)ClassW.createObject(coll.getClass());
     }
 
+    /**
+     * @deprecated as it's not doing much
+     */
     public static Map cloneNewEmptyMap(Map map) {
         return (Map)ClassW.createObject(map.getClass());
     }
 
     /// TODO: Improve this, so it takes start and end and is a slice()
+    /**
+     * @deprecated in favour of Lang's ArrayUtils.subarray
+     */
     public static String[] getSubArray(String[] ob, int idx) {
         if (idx > ob.length) {
             return new String[0];
