@@ -43,8 +43,8 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.MalformedURLException;
 
-import com.generationjava.io.FileW;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.io.IOUtils;
 
 public class UrlW {
 
@@ -79,7 +79,7 @@ public class UrlW {
     }
 
     static public Object getContent(InputStream in) throws IOException {
-        String str = FileW.loadFile(in);
+        String str = IOUtils.toString(in);
         str = StringUtils.chopNewline(str);
         str = StringUtils.chopNewline(str);
         return str;

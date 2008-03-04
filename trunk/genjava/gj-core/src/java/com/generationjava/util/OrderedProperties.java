@@ -44,16 +44,13 @@ import java.util.ArrayList;
 import java.util.Set;
 
 import org.apache.commons.collections.IteratorUtils;
-
-import com.generationjava.collections.OrderedSet;
+import org.apache.commons.collections.set.ListOrderedSet;
 
 /**
  * java.util.Properties stores keys and values, but it does not store them in 
  * an ordered way. Annoyingly, there is no easy way to splice this feature in, 
  * rather it leads to a rewrite of most of the methods and the creation.
  * This is that rewrite.
- *
- * @deprecated in favour of Commons Collections ExtendedProperties
  */
 public class OrderedProperties extends Properties {
 
@@ -120,7 +117,7 @@ public class OrderedProperties extends Properties {
     }
     
     public synchronized Set keySet() {
-        return new OrderedSet(index);
+        return ListOrderedSet.decorate(index);
     }
  
     /**
