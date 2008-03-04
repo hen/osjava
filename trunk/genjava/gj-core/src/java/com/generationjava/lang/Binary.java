@@ -35,6 +35,8 @@ package com.generationjava.lang;
  * Handles encoding binary as a string. Inefficient, but easy to read.
  *
  * State: Prototype - 20010622
+ *
+ * @deprecated in favour of Commons Codec's BinaryCodec
  */
 public class Binary {
 
