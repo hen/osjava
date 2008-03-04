@@ -39,6 +39,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.HashSet;
 
+import com.generationjava.lang.ClassW;
+
 /**
  * A Map in which multiple keys are used, ie) an Object array 
  * of keys. 
@@ -177,7 +179,7 @@ public class MultiKeyedMap implements Map {
                     map = (Map)obj;
                 } else {
                     Map oldmap = map;
-                    map = CollectionsW.cloneNewEmptyMap(map);
+                    map = (Map)ClassW.createObject(map.getClass());
                     oldmap.put(keys[i], map);
                 }
             }

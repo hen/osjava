@@ -71,36 +71,6 @@ final public class CollectionsW {
         return sub;
     }
 
-    // unimplemented 
-    /**
-     * @deprecated as it's not doing much
-     */
-    public static Collection cloneNewEmptyCollection(Collection coll) {
-        return (Collection)ClassW.createObject(coll.getClass());
-    }
-
-    /**
-     * @deprecated as it's not doing much
-     */
-    public static Map cloneNewEmptyMap(Map map) {
-        return (Map)ClassW.createObject(map.getClass());
-    }
-
-    /// TODO: Improve this, so it takes start and end and is a slice()
-    /**
-     * @deprecated in favour of Lang's ArrayUtils.subarray
-     */
-    public static String[] getSubArray(String[] ob, int idx) {
-        if (idx > ob.length) {
-            return new String[0];
-        }
-        String[] ob2 = new String[ob.length - idx];
-        for (int i = idx; i < ob.length; i++) {
-            ob2[i - idx] = ob[i];
-        }
-        return ob2;
-    }
-
     // A search that doesn't involve the list needing to be sorted
     public static int simpleSearch(List list, Object obj) {
         return simpleSearch(list, obj, new ComparableComparator() );
