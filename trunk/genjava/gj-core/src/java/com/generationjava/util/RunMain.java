@@ -33,6 +33,9 @@ package com.generationjava.util;
 
 import com.generationjava.lang.ClassW;
 
+/**
+ * @deprecated as it doesn't add much to BeanUtils invokeStatic
+ */
 public class RunMain implements Runnable {
 
     private Class clss;
