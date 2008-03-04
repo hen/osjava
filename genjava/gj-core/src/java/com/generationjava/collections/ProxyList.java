@@ -39,6 +39,7 @@ import java.util.ListIterator;
 /**
  * A List which wraps another List. Intended mainly to 
  * be used as a superclass.
+ * @deprecated in favour of Collections' AbstractListDecorator
  */
 public class ProxyList implements List {
 

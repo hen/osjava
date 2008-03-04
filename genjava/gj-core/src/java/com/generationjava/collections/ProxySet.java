@@ -38,6 +38,7 @@ import java.util.Iterator;
 /**
  * A Set which wraps another Set. Intended mainly to 
  * be used as a superclass.
+ * @deprecated in favour of Collections' AbstractSetDecorator
  */
 public class ProxySet implements Set {
 
