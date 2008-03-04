@@ -4,6 +4,7 @@ import java.util.*;
 import java.io.*;
 import javax.swing.InputMap;
 import javax.swing.KeyStroke;
+import java.awt.Font;
 
 import org.cyberiantiger.mudclient.input.Alias;
 
@@ -27,6 +28,10 @@ public class ClientConfiguration {
     private String proxyHost;
     private int proxyPort;
     private String characterEncoding;
+    private String font;
+    private int fontSize;
+    private boolean bold;
+    private boolean italic;
 
     public ClientConfiguration() {
     }
@@ -69,6 +74,10 @@ public class ClientConfiguration {
         proxyHost = getString(props,"net.proxyHost","");
         proxyPort = getInt(props,"net.proxyPort",0);
         characterEncoding = getString(props,"net.characterEncoding","UTF-8");
+	font = getString(props, "ui.font", "Monospaced");
+	fontSize = getInt(props, "ui.fontSize", 14);
+	bold = getBoolean(props, "ui.bold", false);
+	italic = getBoolean(props, "ui.italic", false);
 
 	tmp = new StringTokenizer(props.getProperty("output"),",");
 
@@ -177,6 +186,10 @@ public class ClientConfiguration {
         props.setProperty("net.proxyHost", proxyHost);
         props.setProperty("net.proxyPort", "" + proxyPort);
         props.setProperty("net.characterEncoding", characterEncoding);
+	props.setProperty("ui.font", font);
+	props.setProperty("ui.fontSize", "" + fontSize);
+	props.setProperty("ui.bold", bold ? "yes" : "no");
+	props.setProperty("ui.italic", italic ? "yes" : "no");
 
         StringBuffer tmp = new StringBuffer();
         i = outputs.iterator();
@@ -445,5 +458,68 @@ public class ClientConfiguration {
      */
     public List getMacros() {
         return macros;
+    }
+
+    /**
+     * Set the font name to use
+     */
+    public void setFont(String font) {
+    	this.font = font;
+    }
+
+    /**
+     * Get the font name to use
+     */
+    public String getFont() {
+	return font;
+    }
+
+    /**
+     * Set the font size
+     */
+    public void setFontSize(int fontSize) {
+    	this.fontSize = fontSize;
+    }
+
+    /**
+     * Get the font size
+     */
+    public int getFontSize() {
+	return fontSize;
+    }
+
+    /**
+     * Set the font bold flag
+     */
+    public void setBold(boolean bold) {
+    	this.bold = bold;
+    }
+
+    /**
+     * Get the font bold flag
+     */
+    public boolean getBold() {
+	return bold;
+    }
+
+    /**
+     * Set the font italic flag
+     */
+    public void setItalic(boolean italic) {
+        this.italic = italic;
+    }
+
+    /**
+     * Get the font italic flag
+     */
+    public boolean getItalic() {
+	return italic;
+    }
+
+    /**
+     * Get the java Font object
+     */
+    public Font getJavaFont() {
+	return new Font(font, (bold ? Font.BOLD : Font.PLAIN) | (italic ? Font.ITALIC : Font.PLAIN), fontSize);
     }
 }

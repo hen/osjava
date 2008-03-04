@@ -20,14 +20,16 @@ implements ConsoleModelListener, ConsoleWriter {
     private ControlWindow control;
     private OutputConfiguration config;
 
-    public MudClientUI(ControlWindow control,OutputConfiguration config) {
+    public MudClientUI(ControlWindow control, OutputConfiguration config) {
 	this.control = control;
 	this.config = config;
+	
 	model = new ConsoleModel(
 		config.getWidth(),
 		config.getHeight(),
 		config.getBuffer()
 		);
+
 	view = new ConsoleView(model);
 	scrollBar = new JScrollBar(JScrollBar.VERTICAL);
 	
@@ -94,5 +96,15 @@ implements ConsoleModelListener, ConsoleWriter {
 	model.setLineOffset(model.getLineOffset() + model.getHeight());
 	consoleChanged();
 	view.repaint();
+    }
+
+    public void setViewFont(Font font) {
+	view.setFont(font);
+    }
+
+    public void resizeConsole() {
+	if (getParent() != null) {
+	    view.resizeConsole();
+	}
     }
 }

@@ -5,6 +5,7 @@ import java.awt.datatransfer.*;
 import java.awt.event.*;
 import javax.swing.*;
 import org.cyberiantiger.console.*;
+import org.cyberiantiger.mudclient.config.*;
 
 public class ConsoleView extends JComponent implements ConsoleModelListener
 {
@@ -21,7 +22,6 @@ public class ConsoleView extends JComponent implements ConsoleModelListener
 	model.addView(this);
 	setOpaque(true);
 	borderArea = new Insets(0,0,0,0);
-	setFont(new Font("monospaced",Font.PLAIN,14));
 	setForeground(Color.white);
 	setBackground(Color.black);
 	setCursor(Cursor.getPredefinedCursor(Cursor.TEXT_CURSOR));
@@ -252,14 +252,14 @@ public class ConsoleView extends JComponent implements ConsoleModelListener
 	    if(model.hasSelection()) {
 		String selection = model.getSelection();
 		if(selection != null) {
-		    getToolkit().getSystemSelection().setContents(
-			    new StringSelection(selection),
-			    getClipboardOwner()
-			    );
-                    getToolkit().getSystemClipboard().setContents(
-                            new StringSelection(selection),
-                            getClipboardOwner()
-                            );
+		    Clipboard cp = getToolkit().getSystemSelection();
+		    if (cp != null) {
+			cp.setContents(new StringSelection(selection), getClipboardOwner());
+		    }
+		    cp = getToolkit().getSystemClipboard();
+		    if (cp != null) {
+			cp.setContents(new StringSelection(selection), getClipboardOwner());
+		    }
 		}
 	    }
 	} else if(me.getID() == MouseEvent.MOUSE_CLICKED) {

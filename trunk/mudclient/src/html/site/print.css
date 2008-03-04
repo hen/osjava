@@ -1,0 +1,53 @@
+body {
+	font-family:"Bitstream Vera Sans",Verdana,Arial,Helvetica,Sans,"Bitstream Vera Serif";
+	font-size: 0.75em;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	color: #000000;
+}
+img {
+	display: none;
+}
+a {	
+	content: " (" attr(href) ") ";
+	color: #000000;
+	text-decoration: underline;
+}
+a:hover {
+	color: #000000;
+	text-decoration: underline;
+}
+#top {
+	height: 75px;
+	padding: 5px;
+	font-family: script;
+	font-size: 4em;
+}
+#menu {
+	display: none;
+}
+.author {
+	font-size: .75em;
+	color: #000000;
+	padding-bottom: 1em;
+}
+.content {
+	text-align: justify;
+	margin-bottom: 2em;
+}
+.content:first-letter {
+	font-family: script;
+	font-size: 1.5em;
+	color: #000000;
+	padding-left: 0.5em;
+}
+.column2 {
+	display: none;
+}
+#footer {
+	clear: both;
+	font-size: .75em;
+	padding: 5px;
+	text-align: right;
+}

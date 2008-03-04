@@ -16,6 +16,10 @@ public class OptionsDialog extends JDialog {
     private JLabel proxyPortLabel;
     private JLabel useProxyLabel;
     private JLabel useJvmProxyLabel;
+    private JLabel boldLabel;
+    private JLabel italicLabel;
+    private JLabel fontLabel;
+    private JLabel fontSizeLabel;
     private JTextField host;
     private JTextField port;
     private JTextField proxyHost;
@@ -25,6 +29,10 @@ public class OptionsDialog extends JDialog {
     private JButton save;
     private JPanel formPanel;
     private JPanel buttonPanel;
+    private JComboBox font;
+    private JCheckBox bold;
+    private JCheckBox italic;
+    private JTextField fontSize;
 
     public OptionsDialog(ControlWindow ctrl) {
         super(ctrl, "Options", true);
@@ -39,6 +47,10 @@ public class OptionsDialog extends JDialog {
         proxyPortLabel = new JLabel("Proxy port");
         useProxyLabel = new JLabel("Use proxy");
         useJvmProxyLabel = new JLabel("Use default proxy");
+	boldLabel = new JLabel("Bold");
+	italicLabel = new JLabel("Italic");
+	fontLabel = new JLabel("Font");
+	fontSizeLabel = new JLabel("Font size");
         host = new JTextField(20);
         port = new JTextField(20);
         proxyHost = new JTextField(20);
@@ -48,6 +60,10 @@ public class OptionsDialog extends JDialog {
         save = new JButton("Save");
         formPanel = new JPanel();
         buttonPanel = new JPanel();
+	bold = new JCheckBox();
+	italic = new JCheckBox();
+	font = new JComboBox();
+	fontSize = new JTextField();
 
         getContentPane().setLayout(new BorderLayout());
         getContentPane().add(formPanel, BorderLayout.CENTER);
@@ -70,8 +86,16 @@ public class OptionsDialog extends JDialog {
         formPanel.add(proxyHost);
         formPanel.add(proxyPortLabel);
         formPanel.add(proxyPort);
+	formPanel.add(fontLabel);
+	formPanel.add(font);
+	formPanel.add(fontSizeLabel);
+	formPanel.add(fontSize);
+	formPanel.add(boldLabel);
+	formPanel.add(bold);
+	formPanel.add(italicLabel);
+	formPanel.add(italic);
 
-        SpringUtilities.makeCompactGrid(formPanel, 6, 2, 5, 5, 5, 5);
+        SpringUtilities.makeCompactGrid(formPanel, 10, 2, 5, 5, 5, 5);
 
         pack();
 
@@ -118,6 +142,7 @@ public class OptionsDialog extends JDialog {
         port.getDocument().addDocumentListener(updateListener);
         proxyHost.getDocument().addDocumentListener(updateListener);
         proxyPort.getDocument().addDocumentListener(updateListener);
+	fontSize.getDocument().addDocumentListener(updateListener);
 
         loadConfig();
     }
@@ -167,6 +192,14 @@ public class OptionsDialog extends JDialog {
                 return false;
             }
         }
+	try {
+	    int f = Integer.parseInt(fontSize.getText());
+	    if ( f < 1 || f > 72 ) {
+		return false;
+	    }
+	} catch (NumberFormatException nfe) {
+	    return false;
+	}
         return true;
     }
     
@@ -177,7 +210,21 @@ public class OptionsDialog extends JDialog {
         useProxy.setSelected(config.getUseProxy());
         useJvmProxy.setSelected(config.getUseJvmProxy());
         proxyHost.setText(config.getUseJvmProxy() ? config.getJvmProxyHost() : config.getProxyHost());
-        proxyPort.setText("" + (config.getUseJvmProxy() ? config.getJvmProxyPort() : config.getProxyPort()));
+	proxyPort.setText("" + (config.getUseJvmProxy() ? config.getJvmProxyPort() : config.getProxyPort()));
+	String[] fonts =
+	    GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
+	font.removeAllItems();
+	int selectedIndex = -1;
+	for (int i=0; i< fonts.length;i++) {
+	    if (fonts[i].equalsIgnoreCase(config.getFont())) {
+		selectedIndex = i;
+	    }
+	    font.addItem(fonts[i]);
+	}
+	font.setSelectedIndex(selectedIndex);
+	fontSize.setText("" + config.getFontSize());
+	bold.setSelected(config.getBold());
+	italic.setSelected(config.getItalic());
         updateEnabled();
     }
 
@@ -191,5 +238,10 @@ public class OptionsDialog extends JDialog {
             config.setProxyHost(proxyHost.getText());
             config.setProxyPort(Integer.parseInt(proxyPort.getText()));
         }
+	config.setFont((String)font.getSelectedItem());
+	config.setFontSize(Integer.parseInt(fontSize.getText()));
+	config.setBold(bold.isSelected());
+	config.setItalic(italic.isSelected());
+	ctrl.updateFont();
     }
 }
