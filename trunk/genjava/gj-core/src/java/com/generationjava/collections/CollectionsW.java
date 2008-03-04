@@ -48,6 +48,9 @@ import org.apache.commons.collections.comparators.ComparableComparator;
  */
 final public class CollectionsW {
 
+    /**
+     * @deprecated as it's just the Collection version of Collections.subList(int, int)
+     */
     public static Collection slice(Collection coll, int start, int end) {
         if(coll == null) {
             return null;
