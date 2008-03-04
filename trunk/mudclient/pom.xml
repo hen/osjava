@@ -10,5 +10,36 @@
 	    <directory>src/resources</directory>
 	  </resource>
 	</resources>
+	<plugins>
+	  <plugin>
+		<groupId>org.apache.maven.plugins</groupId>
+		<artifactId>maven-jar-plugin</artifactId>
+		<configuration>
+		  <archive>
+			<manifest>
+			  <mainClass>org.cyberiantiger.mudclient.ElephantMudClient</mainClass>
+			  <addClasspath>true</addClasspath>
+			  <classpathPrefix>lib</classpathPrefix>
+			</manifest>
+		  </archive>
+		</configuration>
+	  </plugin>
+      <plugin>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <configuration>
+          <descriptors>
+            <descriptor>src/assembly/dist.xml</descriptor>
+          </descriptors>
+        </configuration>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>attached</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+	</plugins>
   </build>
 </project>
