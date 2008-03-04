@@ -34,7 +34,7 @@ package com.generationjava.lang;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import com.generationjava.collections.CollectionsW;
+import org.apache.commons.lang.ArrayUtils;
 
 /**
  * A set of static utilities for use with Classes.
@@ -137,12 +137,21 @@ final public class ClassW {
         return tmpClass;   
     }
 
+    /**
+     * @deprecated as it doesn't add much
+     */
     static public void callMain(String[] args) {
-        callMain(args[0], CollectionsW.getSubArray(args, 1) );
+        callMain(args[0], (String[]) ArrayUtils.subarray(args, 1, args.length) );
     }
+    /**
+     * @deprecated as it doesn't add much
+     */
     static public void callMain(String classname, String[] args) {
         callStatic(classname, "main", new Class[] { String[].class }, new Object[] { args } );
     }
+    /**
+     * @deprecated as it doesn't add much
+     */
     static public void callMain(Class clss, String[] args) {
         callStatic(clss, "main", new Class[] { String[].class }, new Object[] { args } );
     }
@@ -155,6 +164,7 @@ final public class ClassW {
      * @param classname     String name of class to invoke on.
      * @param methodName    String name of method to call.
      * @param args          Object[] arguments to method.
+     * @deprecated in favour of BeanUtils MethodUtils
      */
     static public Object callStatic(String classname, String methodName, 
                                     Class[] types, Object[] args) 
@@ -162,6 +172,9 @@ final public class ClassW {
         return callStatic(getClass(classname), methodName, types, args);
     }
 
+    /**
+     * @deprecated in favour of BeanUtils MethodUtils
+     */
     static public Object callStatic(Class clss, String methodName, 
                                   Class[] types, Object[] args) 
     {
