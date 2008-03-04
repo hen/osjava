@@ -72,9 +72,15 @@ final public class CollectionsW {
     }
 
     // A search that doesn't involve the list needing to be sorted
+    /**
+     * @deprecated as it doesn't add much
+     */
     public static int simpleSearch(List list, Object obj) {
         return simpleSearch(list, obj, new ComparableComparator() );
     }
+    /**
+     * @deprecated as it doesn't add much
+     */
     public static int simpleSearch(List list, Object obj, Comparator cmp) {
         int sz = list.size();
         for( int i=0; i<sz; i++ ) {
