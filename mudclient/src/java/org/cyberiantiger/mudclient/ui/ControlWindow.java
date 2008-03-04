@@ -235,15 +235,17 @@ public class ControlWindow extends JFrame {
     }
 
     public ConsoleWriter createView(final String id) {
-	ConsoleWriter ui = getView(id);
+	MudClientUI ui = (MudClientUI) getView(id);
 	if(ui != null) {
 	    return ui;
 	} else {
+	    ClientConfiguration clientConfig = client.getConfiguration();
 	    OutputConfiguration config = 
-	    client.getConfiguration().getOutputConfiguration(id);
+		clientConfig.getOutputConfiguration(id);
 
 	    if(config != null) {
 		ui = new MudClientUI(this,config);
+		ui.setViewFont(clientConfig.getJavaFont());
 		views.put(id,ui);
 
 		if(config.getVisible()) {
@@ -340,6 +342,16 @@ public class ControlWindow extends JFrame {
 
     public ClientConfiguration getConfiguration() {
         return client.getConfiguration();
+    }
+
+    public void updateFont() {
+	Font font = client.getConfiguration().getJavaFont();
+	Iterator i = views.values().iterator();
+	while (i.hasNext()) {
+	    MudClientUI ui = (MudClientUI) i.next();
+	    ui.setViewFont(font);
+	    ui.resizeConsole();
+	}
     }
 
     private class MacroAction extends AbstractAction {
