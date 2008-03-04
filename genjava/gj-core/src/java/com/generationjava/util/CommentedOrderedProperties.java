@@ -45,9 +45,8 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.Set;
 
-import com.generationjava.lang.StringW;
-
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.WordUtils;
 import org.apache.commons.collections.set.ListOrderedSet;
 
 
@@ -181,7 +180,7 @@ public class CommentedOrderedProperties extends OrderedProperties {
         index.add("");
     }
     public void wordWrapComment(char ch, String str, int width) {
-        str = StringW.wordWrap(str, width - 2);
+        str = WordUtils.wrap(str, width - 2);
         String[] strs = StringUtils.split(str, "\n");
         int sz = strs.length;
         for(int i=0; i<sz; i++) {
