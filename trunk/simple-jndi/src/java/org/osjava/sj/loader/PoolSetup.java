@@ -53,7 +53,22 @@ public class PoolSetup {
 
     public static void setupConnection(String pool, String url, String username, String password, Properties properties) throws SQLException {
         // we have a pool-name to setup using dbcp
-        ObjectPool connectionPool = new GenericObjectPool(null);
+        GenericObjectPool connectionPool = new GenericObjectPool(null, 
+            toInt(properties.getProperty("dbcpMaxActive"), GenericObjectPool.DEFAULT_MAX_ACTIVE),
+            (byte) toInt(properties.getProperty("dbcpWhenExhaustedAction"), GenericObjectPool.DEFAULT_WHEN_EXHAUSTED_ACTION),
+            toLong(properties.getProperty("dbcpMaxWait"), GenericObjectPool.DEFAULT_MAX_WAIT),
+            toInt(properties.getProperty("dbcpMaxIdle"), GenericObjectPool.DEFAULT_MAX_IDLE),
+            toInt(properties.getProperty("dbcpMinIdle"), GenericObjectPool.DEFAULT_MIN_IDLE),
+            toBoolean(properties.getProperty("dbcpTestOnBorrow"), GenericObjectPool.DEFAULT_TEST_ON_BORROW),
+            toBoolean(properties.getProperty("dbcpTestOnReturn"), GenericObjectPool.DEFAULT_TEST_ON_RETURN),
+            toLong(properties.getProperty("dbcpTimeBetweenEvictionRunsMillis"), GenericObjectPool.DEFAULT_TIME_BETWEEN_EVICTION_RUNS_MILLIS),
+            toInt(properties.getProperty("dbcpNumTestsPerEvictionRun"), GenericObjectPool.DEFAULT_NUM_TESTS_PER_EVICTION_RUN),
+            toLong(properties.getProperty("dbcpMinEvictableIdleTimeMillis"), GenericObjectPool.DEFAULT_MIN_EVICTABLE_IDLE_TIME_MILLIS),
+            toBoolean(properties.getProperty("dbcpTestWhileIdle"), GenericObjectPool.DEFAULT_TEST_WHILE_IDLE),
+            toLong(properties.getProperty("dbcpSoftMinEvictableIdleTimeMillis"), GenericObjectPool.DEFAULT_SOFT_MIN_EVICTABLE_IDLE_TIME_MILLIS)
+        );
+//            toBoolean(properties.getProperty("dbcpLifo"), GenericObjectPool.DEFAULT_LIFO)
+
         ConnectionFactory connectionFactory = null;
         if(username == null || password == null) {
             // TODO: Suck configuration in and build a Properties to replace the null below
@@ -78,14 +93,39 @@ public class PoolSetup {
         return "jdbc:apache:commons:dbcp:"+pool;
     }
 
+    private static int toInt(String str, int def) {
+        if(str == null) {
+            return def;
+        }
+        try {
+            return Integer.parseInt(str);
+        } catch(NumberFormatException nfe) {
+            throw new RuntimeException("Unable to parse as int: '" + str + "'", nfe);
+        }
+    }
+
+    private static long toLong(String str, long def) {
+        if(str == null) {
+            return def;
+        }
+        try {
+            return Long.parseLong(str);
+        } catch(NumberFormatException nfe) {
+            throw new RuntimeException("Unable to parse as long: '" + str + "'", nfe);
+        }
+    }
+
     private static boolean toBoolean(String str, boolean def) {
+        if(str == null) {
+            return def;
+        } else
         if("true".equals(str)) {
             return true;
         } else
         if("false".equals(str)) {
             return false;
         } else {
-            return def;
+            throw new RuntimeException("Unable to parse as boolean: '" + str + "'");
         }
     }
 
