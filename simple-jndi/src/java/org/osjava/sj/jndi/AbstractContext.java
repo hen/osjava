@@ -701,7 +701,15 @@ public abstract class AbstractContext
             it = table.keySet().iterator();
             while(it.hasNext()) {
                 Name name = (Name)it.next();
-                if(!((Thread)table.get(name)).isAlive()) {
+
+                Object entry = table.get(name);
+
+                if(entry instanceof Thread) {
+                    Thread thread = (Thread) entry;
+                    if(thread.isAlive()) {
+                        table.remove(name);
+                    }
+                } else {
                     table.remove(name);
                 }
             }
