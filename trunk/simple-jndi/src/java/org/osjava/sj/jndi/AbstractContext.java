@@ -60,6 +60,10 @@ import java.util.Map;
 public abstract class AbstractContext 
         implements Cloneable, Context  {
 
+    // used for the shared feature
+    private static final Hashtable TABLE = new Hashtable();
+    private static final Hashtable SUB_CONTEXTS = new Hashtable();
+
     // table is used as a read-write cache which sits 
     // above the file-store
     private Hashtable table = new Hashtable();
@@ -171,8 +175,8 @@ public abstract class AbstractContext
         }
         
         if("true".equals(shared)) {
-            this.table = new StaticHashtable();
-            this.subContexts = new StaticHashtable();
+            this.table = new StaticHashtable(TABLE);
+            this.subContexts = new StaticHashtable(SUB_CONTEXTS);
         }
 
         if(parser == null) {
@@ -321,9 +325,9 @@ public abstract class AbstractContext
         
         if(object instanceof Context) {
             subContexts.put(name, object);
-            return;
+        } else {
+            table.put(name, object);
         }
-        table.put(name, object);
     }
 
     /**

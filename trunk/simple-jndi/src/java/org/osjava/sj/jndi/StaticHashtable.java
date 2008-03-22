@@ -40,82 +40,86 @@ import java.util.Map;
 /**
  * A hashtable that shares its space with any other instance of StaticHashtable.
  */
-public class StaticHashtable extends Hashtable {
+class StaticHashtable extends Hashtable {
 
-    private static final Hashtable SELF = new Hashtable();
+    private Hashtable self;
+
+    public StaticHashtable(Hashtable h) {
+        self = h;
+    }
 
     public synchronized int size() {
-        return SELF.size();
+        return self.size();
     }
 
     public synchronized boolean isEmpty() {
-        return SELF.isEmpty();
+        return self.isEmpty();
     }
 
     public synchronized java.util.Enumeration keys() {
-        return SELF.keys();
+        return self.keys();
     }
 
     public synchronized java.util.Enumeration elements() {
-        return SELF.elements();
+        return self.elements();
     }
 
     public synchronized boolean contains(Object obj) {
-        return SELF.contains(obj);
+        return self.contains(obj);
     }
 
     public boolean containsValue(Object obj) {
-        return SELF.containsValue(obj);
+        return self.containsValue(obj);
     }
 
     public synchronized boolean containsKey(Object obj) {
-        return SELF.containsKey(obj);
+        return self.containsKey(obj);
     }
 
     public synchronized Object get(Object obj) {
-        return SELF.get(obj);
+        return self.get(obj);
     }
 
     public synchronized Object put(Object key, Object value) {
-        return SELF.put(key, value);
+        return self.put(key, value);
     }
 
     public synchronized Object remove(Object obj) {
-        return SELF.remove(obj);
+        return self.remove(obj);
     }
 
     public synchronized void putAll(Map map) {
-        SELF.putAll(map);
+        self.putAll(map);
     }
 
     public synchronized void clear() {
-        SELF.clear();
+        self.clear();
     }
 
 //    public synchronized Object clone()
 
     public synchronized String toString() {
-        return SELF.toString();
+        return self.toString();
     }
 
     public Set keySet() {
-        return SELF.keySet();
+        return self.keySet();
     }
 
     public Set entrySet() {
-        return SELF.entrySet();
+        return self.entrySet();
     }
 
     public Collection values() {
-        return SELF.values();
+        return self.values();
     }
 
     public synchronized boolean equals(Object obj) {
-        return SELF.equals(obj);
+        return self.equals(obj);
     }
 
     public synchronized int hashCode() {
-        return SELF.hashCode();
+        return self.hashCode();
     }
 
 

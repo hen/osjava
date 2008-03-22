@@ -10,10 +10,14 @@ public class Sjn77Test extends TestCase {
     public void testPut() throws NamingException {
         System.setProperty("java.naming.factory.initial", "org.osjava.sj.memory.MemoryContextFactory");
         InitialContext ic = new InitialContext();
-        String name = "falez:/hoba";
-        String value = "hoba1";
-        ic.bind(name, value);
-        String result = (String) ic.lookup(name);
+        ic.bind("test", "value");
+        assertEquals("value", ic.lookup("test"));
+        ic.close();
+
+        System.setProperty("org.osjava.sj.jndi.shared", "true");
+        ic = new InitialContext();
+        ic.bind("test", "value");
+        assertEquals("value", ic.lookup("test"));
         ic.close();
     }
 }
