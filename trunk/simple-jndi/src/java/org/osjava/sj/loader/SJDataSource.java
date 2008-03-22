@@ -37,6 +37,7 @@ import java.sql.SQLException;
 import javax.sql.DataSource;
 import java.sql.DriverManager;
 import java.io.PrintWriter;
+import java.util.Properties;
 
 /**
  * A basic implementation of a DataSource. 
@@ -50,16 +51,16 @@ public class SJDataSource implements DataSource {
     private String driver;
 
     // for pooling
-    private String pool;
+    private Properties properties;
 
-    public SJDataSource(String driver, String url, String username, String password, String pool) {
+    public SJDataSource(String driver, String url, String username, String password, Properties properties) {
         ensureLoaded(driver);
         this.driver = driver;
         this.url = url;
         this.pw = new PrintWriter(System.err);
         this.username = username;
         this.password = password;
-        this.pool = pool;
+        this.properties = properties;
     }
 
     // nicked from DbUtils
@@ -79,12 +80,13 @@ public class SJDataSource implements DataSource {
     public Connection getConnection(String username, String password) throws SQLException {
         String tmpUrl = this.url;
 
+        String pool = properties.getProperty("pool");
         if(pool != null) {
 //System.err.println("[DS]Setting Pool information");
 
             // url is now a pooling link
             // TODO: Fix this, it pools each time, which is probably bad
-            PoolSetup.setupConnection(pool, url, username, password);
+            PoolSetup.setupConnection(pool, url, username, password, properties);
             tmpUrl = PoolSetup.getUrl(pool);
         }
 
