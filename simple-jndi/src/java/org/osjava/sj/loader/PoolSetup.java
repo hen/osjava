@@ -34,6 +34,7 @@ package org.osjava.sj.loader;
 
 import java.sql.SQLException;
 import java.sql.DriverManager;
+import java.util.Properties;
 
 // gives us pooling
 import org.apache.commons.pool.ObjectPool;
@@ -50,7 +51,7 @@ import org.apache.commons.dbcp.DriverManagerConnectionFactory;
  */
 public class PoolSetup {
 
-    public static void setupConnection(String pool, String url, String username, String password) throws SQLException {
+    public static void setupConnection(String pool, String url, String username, String password, Properties properties) throws SQLException {
         // we have a pool-name to setup using dbcp
         ObjectPool connectionPool = new GenericObjectPool(null);
         ConnectionFactory connectionFactory = null;
@@ -60,7 +61,7 @@ public class PoolSetup {
         } else {
             connectionFactory = new DriverManagerConnectionFactory(url, username, password);
         }
-        PoolableConnectionFactory poolableConnectionFactory = new PoolableConnectionFactory(connectionFactory, connectionPool, null, null, false, true);
+        PoolableConnectionFactory poolableConnectionFactory = new PoolableConnectionFactory(connectionFactory, connectionPool, null, properties.getProperty("dbcpValidationQuery"), toBoolean(properties.getProperty("dbcpDefaultReadOnly"), false), toBoolean(properties.getProperty("dbcpDefaultAutoCommit"), true));
         try {
             Class.forName("org.apache.commons.dbcp.PoolingDriver");
         } catch(ClassNotFoundException cnfe) {
@@ -75,6 +76,17 @@ public class PoolSetup {
 
     public static String getUrl(String pool) {
         return "jdbc:apache:commons:dbcp:"+pool;
+    }
+
+    private static boolean toBoolean(String str, boolean def) {
+        if("true".equals(str)) {
+            return true;
+        } else
+        if("false".equals(str)) {
+            return false;
+        } else {
+            return def;
+        }
     }
 
 }

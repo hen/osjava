@@ -13,7 +13,7 @@
 
     <p>The most popular object to get from JNDI is a object of type <i>javax.sql.DataSource</i>, allowing the developer to obtain JDBC connections to databases. Simple-JNDI supports this out of the box.</p>
 
-    <p>There are four mandator parameters for a DataSource in Simple-JNDI, and one optional parameter (see next section). The mandatory parameters are <i>url, driver, user, password</i>. The following shows an example of a DataSource that will be available under the lookup key <i>application1/ds/TestDS</i>. </p>
+    <p>There are four mandatory parameters for a DataSource in Simple-JNDI, and four optional parameters (see next section). The mandatory parameters are <i>url, driver, user, password</i>. The following shows an example of a DataSource that will be available under the lookup key <i>application1/ds/TestDS</i>. </p>
 
     <code>application1/ds.properties</code>
     <pre>
@@ -36,6 +36,13 @@
   <section name="Connection pooling">
     <p>Often when using a DataSource you will want to pool the Connections the DataSource is handing out. Simple-JNDI delegates to the Jakarta Commons DBCP project for this feature so you will need commons-dbcp, commons-pool and commons-collections jars in your classpath. </p>
     <p>The feature is turned on by adding a sub-parameter of '<i>pool=true</i>' in your datasource properties file. For example, <i>ApacheDS.pool=true</i>, will turn DBCP Connection pooling on for the ApacheDS datasource. </p>
+    <p>The following parameters are used to configure DBCP:</p>
+    <table>
+      <tr><th>Param</th><th>Type</th><th>Default</th></tr>
+      <tr><td>dbcpValidationQuery</td><td>String</td><td>not set</td></tr>
+      <tr><td>dbcpDefaultReadOnly</td><td>true/false</td><td>false</td></tr>
+      <tr><td>dbcpDefaultAutoCommit</td><td>true/false</td><td>true</td></tr>
+    </table>
   </section>
 
   </body>

@@ -43,7 +43,6 @@ public class DataSourceConverter implements Converter {
         String url = properties.getProperty("url");
         String user = properties.getProperty("user");
         String password = properties.getProperty("password");
-        String pool = properties.getProperty("pool");
 
         if(driver == null) {
             throw new RuntimeException("Required subelement 'driver'");
@@ -58,7 +57,7 @@ public class DataSourceConverter implements Converter {
             throw new RuntimeException("Required subelement 'password'");
         }
 
-        return new SJDataSource(driver, url, user, password, pool);
+        return new SJDataSource(driver, url, user, password, properties);
     }
 
 }

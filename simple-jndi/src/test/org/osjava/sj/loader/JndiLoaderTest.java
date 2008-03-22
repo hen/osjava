@@ -244,4 +244,11 @@ public class JndiLoaderTest extends TestCase {
         }
     }
 
+    public void testDbcp() throws IOException, NamingException {
+        File file = new File("src/test/config/");
+        loader.loadDirectory( file, ctxt );
+        DataSource ds1 = (DataSource) ctxt.lookup("pooltest/OneDS");
+        DataSource ds2 = (DataSource) ctxt.lookup("pooltest/TwoDS");
+    }
+
 }
