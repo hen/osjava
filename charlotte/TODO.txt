@@ -1,0 +1,8 @@
+From the now defunct JIRA:
+
+* user documentation
+
+* move utility functions out the encoding class into the EncodingUtil class
+
+* code generation
+  the ability to generate class files representing the values described by an encoding instance.
