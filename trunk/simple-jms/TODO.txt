@@ -19,3 +19,17 @@ MemoryMessage
 MemoryMessageConsumer
 MemoryMessageProducer
 
+From the now defunct JIRA:
+
+* MessageWatcher.run needs a yield
+  having a thread that just goes round in a tight loop can really hammer the processor. best practice it to at least put a yield in.. if not a short sleep
+
+* Slow down configuration?
+  Simple-JMS is going to be very fast. You might want to make it run slower so you can get a better feel for the speed issues :)
+
+* JMS Spec
+  Find URL to latest JMS Spec.
+  Currently we're implementing the one in J2EE 1.4
+
+* Understand how to use StreamMessage and BytesMessage
+  Weird classes. We need to figure out how we use them on the client side so we can figure out how to use them on the server side.
