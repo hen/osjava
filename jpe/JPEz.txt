@@ -1,0 +1,31 @@
+From the JIRA project for JPEz (JPE for the Zaurus):
+
+* Machines do not include Zaurus. Add two Z form factors?
+
+* Compilation fails as tools.jar does not work on Z. 
+  Need to switch to a command line compilation method, rather than using the tools.jar Javac. This needs to be pluggable.
+  Plug in compiler system written. Needs testing on the zaurus at some point.
+
+* Unable to run Java programs on the Z
+  Nothing happens when you run the class. God knows why.
+
+* IPKG package lacks icon
+
+* Fonts don't do change
+  They do on the Mac though, so a Z thing
+
+* JPEz icon opens up in PDA mode
+  You can only open in clam shell mode if you type jpe on the command line. Why??
+  If you hold down on icon, and turn off magnify, then it opens fine.
+  So how to put this in the install package?
+
+* Pluggable tab completion
+  Need to co-opt the tab key for completing text. This would be looked up against a properties file of some kind.
+
+* IPKG plugin
+  Take the Deploy app + new genjava-ipkg package and integrate them into JPEz.
+
+* jpe.properties is too much of a pain
+  The jpe.properties needs to be in the CLASSPATH. It wasn't before due to psion bugs.
+  This now loads using the correct ResourceBundle system.
+  This is not working correctly, so re-opening it until it is satisfactorily fixed.
