@@ -1,0 +1,4 @@
+From the now defunct JIRA:
+
+* FileUtil class should accept a java.io.File object in addition to String
+  its the decent thing to do
