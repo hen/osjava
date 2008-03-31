@@ -1,0 +1,10 @@
+From the now delete JIRA project:
+
+* Select data row -> Show which revision that row is in the revision list
+  Possibly not just selecting that row, possibly the background colour would change.
+
+* Show differences between revisions
+  Possibly by selecting more than one revision in the revision list.
+
+* Login panel needs to get focus when it starts up
+  When you choose the db and the login panel is shown, focus needs to be on the login textfield.
