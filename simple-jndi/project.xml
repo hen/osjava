@@ -125,6 +125,8 @@
         <report>maven-javadoc-plugin</report>
         <report>maven-license-plugin</report>
         <report>maven-changes-plugin</report>           
+        <report>maven-pmd-plugin</report>           
+        <report>maven-findbugs-plugin</report>           
     </reports>
 
 
