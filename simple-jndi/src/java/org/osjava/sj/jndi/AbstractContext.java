@@ -693,6 +693,7 @@ public abstract class AbstractContext
      */
     public void close() throws NamingException {
         /* Don't try anything if we're already in the process of closing */
+        // BUG: closing is never actually set
         if(closing) {
             return;
         }
