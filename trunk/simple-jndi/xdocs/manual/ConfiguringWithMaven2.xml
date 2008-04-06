@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<document>
+
+  <properties>
+      <author>Paul Spencer</author>
+      <title>Configuring with Maven2</title>
+  </properties>
+
+  <body>
+  <section><div><a href="Configuring.html">previous</a> - <a href="index.html">contents</a> - <a href="GeneralDesign.html">next</a></div></section>
+      <section name="Configuring with Maven2">
+<ol>
+<li>Add simple-jndi dependency to pom.xml:
+  <pre>
+  &lt;dependency&gt;
+    &lt;groupId&gt;simple-jndi&lt;/groupId&gt;
+    &lt;artifactId&gt;simple-jndi&lt;/artifactId&gt;
+    &lt;version&gt;0.11.1&lt;/version&gt;
+    &lt;scope&gt;test&lt;/scope&gt;
+  &lt;/dependency&gt;
+  </pre></li>
+<li>Add your jdbc driver dependency with <scope>test</scope> to pom.xml<pre></pre></li>
+<li>Tell the JVM to use simple-jndi by creating jndi.properties in the test resource directory. By default the directory is <code>src/test/resources</code>.
+The file <code>jndi.properties</code> contains the following lines. The properties <code>org.osjava.sj.colon.replace</code> and <code>org.osjava.sj.delimiter</code> are used in this example because the application being tested will run on Tomcat on Windows.
+<pre>
+  java.naming.factory.initial=org.osjava.sj.SimpleContextFactory
+  org.osjava.sj.root=src/test/resources/simple-jndi
+  org.osjava.sj.colon.replace=--
+  org.osjava.sj.delimiter=/
+</pre></li>
+<li>Create the files to define the JNDI datasource myDataSource. Please note the directory below is in the directory defined by os.java.js.root.
+    <pre>
+     /java--comp
+       /env
+         default.properties
+    </pre>
+default.properties contains the following:
+  <pre>
+  myDataSource/type=javax.sql.DataSource
+  myDataSource/driver=&lt;jdbc driver class&gt;
+  myDataSource/url=&lt;jdbc url&gt;
+  myDataSource/user=foo
+  myDataSource/password=bar
+  </pre></li>
+</ol>
+
+</section>
+</body>
+</document>
