@@ -75,7 +75,7 @@ public class PoolSetup {
         } else {
             connectionFactory = new DriverManagerConnectionFactory(url, username, password);
         }
-        PoolableConnectionFactory poolableConnectionFactory = new PoolableConnectionFactory(connectionFactory, connectionPool, null, properties.getProperty("dbcpValidationQuery"), toBoolean(properties.getProperty("dbcpDefaultReadOnly"), false), toBoolean(properties.getProperty("dbcpDefaultAutoCommit"), true));
+        new PoolableConnectionFactory(connectionFactory, connectionPool, null, properties.getProperty("dbcpValidationQuery"), toBoolean(properties.getProperty("dbcpDefaultReadOnly"), false), toBoolean(properties.getProperty("dbcpDefaultAutoCommit"), true));
         try {
             Class.forName("org.apache.commons.dbcp.PoolingDriver");
         } catch(ClassNotFoundException cnfe) {
