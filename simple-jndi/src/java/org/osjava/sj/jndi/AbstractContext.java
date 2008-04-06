@@ -789,6 +789,15 @@ public abstract class AbstractContext
     protected Hashtable getSubContexts() {
         return (Hashtable)subContexts.clone();
     }
+
+    /**
+     * Whether this context is running in shared mode AND has already 
+     * been loaded with data. 
+     */
+    public static boolean isSharedAndLoaded() {
+        return (TABLE.size() != 0 || SUB_CONTEXTS.size() != 0);
+    }
+
 }
 
 
