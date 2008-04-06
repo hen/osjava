@@ -51,7 +51,7 @@ public class Utils {
             list.add(str.substring(0, idx));
             str = str.substring(idx + delimiter.length());
         }
-        return (String[]) list.toArray( new String[0] );
+        return (String[]) list.toArray( new String[list.size()] );
     }
 
     public static String replace(String str, String repl, String with) {
