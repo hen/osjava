@@ -32,6 +32,7 @@
 package org.osjava.sj;
 
 import org.osjava.sj.jndi.DelegatingContext;
+import org.osjava.sj.jndi.AbstractContext;
 
 import java.io.File;
 import java.io.IOException;
@@ -82,20 +83,22 @@ public class SimpleContext extends DelegatingContext {
             root = root.substring("file://".length());
         }
 
-        Context ctxt = this;
-        String space = (String) env.get(SIMPLE_SPACE);
-        if(space != null) {
-            // make contexts for space...
-            String[] array = Utils.split(space, (String) env.get(JndiLoader.SIMPLE_DELIMITER) );
-            for(int i=0; i<array.length; i++) {
-                ctxt = ctxt.createSubcontext(array[i]);
+        if(!AbstractContext.isSharedAndLoaded()) {
+            Context ctxt = this;
+            String space = (String) env.get(SIMPLE_SPACE);
+            if(space != null) {
+                // make contexts for space...
+                String[] array = Utils.split(space, (String) env.get(JndiLoader.SIMPLE_DELIMITER) );
+                for(int i=0; i<array.length; i++) {
+                    ctxt = ctxt.createSubcontext(array[i]);
+                }
             }
-        }
 
-        try {
-            loader.loadDirectory( new File(root), ctxt );
-        } catch(IOException ioe) {
-            throw new NamingException("Unable to load data from directory: "+root+" due to error: "+ioe.getMessage());
+            try {
+                loader.loadDirectory( new File(root), ctxt );
+            } catch(IOException ioe) {
+                throw new NamingException("Unable to load data from directory: "+root+" due to error: "+ioe.getMessage());
+            }
         }
     }
     
