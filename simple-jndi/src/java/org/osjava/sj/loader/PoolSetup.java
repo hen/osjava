@@ -37,7 +37,6 @@ import java.sql.DriverManager;
 import java.util.Properties;
 
 // gives us pooling
-import org.apache.commons.pool.ObjectPool;
 import org.apache.commons.pool.impl.GenericObjectPool;
 import org.apache.commons.dbcp.ConnectionFactory;
 import org.apache.commons.dbcp.PoolingDriver;
