@@ -168,5 +168,9 @@ public abstract class DelegatingContext implements Context {
         return this.target.getNameInNamespace();
     }
 
+    protected Context getTarget() {
+        return this.target;
+    }
+
 }
 
