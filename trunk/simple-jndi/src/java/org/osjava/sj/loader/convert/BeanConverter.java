@@ -85,7 +85,7 @@ public class BeanConverter implements Converter {
                     for(int i=0; i<sz; i++) {
                         Object item = list.get(i);
                         if(item instanceof String) {
-                            m.invoke(bean, new Object[] { new Integer(i), (String) property });
+                            m.invoke(bean, new Object[] { new Integer(i), (String) item });
                         } else {
                             throw new RuntimeException("Only Strings and Lists of String are supported");
                         }
