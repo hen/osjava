@@ -85,4 +85,14 @@ public class SharedMemoryTest extends TestCase {
             fail("NamingException " + e.getMessage());
         }
     }
+
+    public void testSjn73() throws Exception {
+        String propShared = "org.osjava.sj.jndi.shared";
+        System.setProperty(propShared, "true");
+        InitialContext ctx = new InitialContext();
+        assertNotNull(ctx.lookup("path.foo"));
+        InitialContext ctx1 = new InitialContext();
+        assertNotNull(ctx1.lookup("path.foo"));
+        System.getProperties().remove(propShared);
+    }
 }
