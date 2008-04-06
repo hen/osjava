@@ -104,7 +104,7 @@ public class BeanConverter implements Converter {
         } catch(IllegalAccessException ie) {
             throw new RuntimeException("Unable to access class: "+type, ie);
         } catch(IllegalArgumentException iae) {
-            throw new RuntimeException("Unable to pass argument "+value+" to class: "+type, iae);
+            throw new RuntimeException("Unable to pass argument to class: "+type, iae);
         } catch(InvocationTargetException ite) {
             throw new RuntimeException("Unable to invoke (String) constructor on class: "+type, ite);
         }
