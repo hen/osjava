@@ -223,6 +223,11 @@ public abstract class AbstractContext
      * <li>A named object in the Context's store</li>
      * <li>A named sub-Context of this Context</li>
      * </ol>
+     * Unlike many implementations of the JNDI specification, this 
+     * implementation returns null when a name is not found, rather than 
+     * throwing an exception. The specification does not appear to state 
+     * which way it should be. 
+     *
      * @see javax.naming.Context#lookup(javax.naming.Name)
      */
     public Object lookup(Name name) throws NamingException {
