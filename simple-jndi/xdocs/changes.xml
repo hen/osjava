@@ -7,6 +7,16 @@
   </properties>
 
   <body>
+    <release version="0.11.3" date="2008-04-08" description="More bugfixes">
+        <action dev="hen" type="fix" issue="SJN-54">If a resource directory config/java and file config/java.properties both exist, indeterminate result</action>
+        <action dev="hen" type="fix" issue="SJN-73">Using shared memory (org.osjava.sj.jndi.shared=true) causes javax.naming.NameAlreadyBoundException</action>
+        <action dev="hen" type="fix" issue="SJN-74">Avoiding "Missing javax.sql:jdbc-stdext:jar:2.0" caused by DBCP 1.1 while using Maven 2</action>
+        <action dev="hen" type="add" issue="SJN-75">Using simple-jndi for testing with Maven 2</action>
+        <action dev="hen" type="fix" issue="SJN-77">InitialContext.close() improperly throws exception when using JNDI Memory implementation separately  </action>
+        <action dev="hen" type="fix" issue="SJN-78">Does not compiled with JDK-1.6</action>
+        <action dev="hen" type="add" issue="SJN-79">lookup return null instead throiwiung exceptions</action>
+        <action dev="hen" type="add" issue="SJN-81">Allow DBCP parameters to be passed in</action>
+    </release>
     <release version="0.11.2" date="2007-06-26" description="Minor bugfixes">
         <action dev="hen" type="add">Maven2 build added</action>
         <action dev="hen" type="fix">Removed debug from SJDataSource</action>
