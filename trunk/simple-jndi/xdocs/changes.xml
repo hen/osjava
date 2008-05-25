@@ -7,6 +7,9 @@
   </properties>
 
   <body>
+    <release version="0.11.4" description="Unreleased bugfixes">
+        <action dev="hen" type="fix">The element removal in the AbstractContext.close() method is bad and will lead to a ConcurrentModificationException. Code rewritten such that removal happens separately from the collection iteration</action>
+    </release>
     <release version="0.11.3" date="2008-04-08" description="More bugfixes">
         <action dev="hen" type="fix" issue="SJN-54">If a resource directory config/java and file config/java.properties both exist, indeterminate result</action>
         <action dev="hen" type="fix" issue="SJN-73">Using shared memory (org.osjava.sj.jndi.shared=true) causes javax.naming.NameAlreadyBoundException</action>
