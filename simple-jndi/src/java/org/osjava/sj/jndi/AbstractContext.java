@@ -48,6 +48,9 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Map;
 
+import java.util.List;
+import java.util.LinkedList;
+
 /**
  * The heart of the system, the abstract implementation of context for 
  * simple-jndi.  There are no abstract methods in this class, but it is
@@ -709,6 +712,7 @@ public abstract class AbstractContext
         
         while(table.size() > 0 || subContexts.size() > 0) {
             it = table.keySet().iterator();
+            List toRemove = new LinkedList();
             while(it.hasNext()) {
                 Name name = (Name)it.next();
 
@@ -717,19 +721,27 @@ public abstract class AbstractContext
                 if(entry instanceof Thread) {
                     Thread thread = (Thread) entry;
                     if(thread.isAlive()) {
-                        table.remove(name);
+                        toRemove.add(name);
                     }
                 } else {
-                    table.remove(name);
+                    toRemove.add(name);
                 }
             }
+            for(it = toRemove.iterator(); it.hasNext();) {
+                table.remove(it.next());
+            }
+
+            toRemove.clear();
             it = subContexts.keySet().iterator();
             while(it.hasNext()) {
                 Name name = (Name)it.next();
                 AbstractContext context = (AbstractContext)subContexts.get(name);
                 if(context.isEmpty()) {
-                    subContexts.remove(name);
+                    toRemove.add(name);
                 }
+            }
+            for(it = toRemove.iterator(); it.hasNext();) {
+                subContexts.remove(it.next());
             }
         }
         this.env = null;
