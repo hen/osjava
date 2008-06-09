@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:noNamespaceSchemaLocation="http://maven.apache.org/xsd/maven-project-3.0.0.xsd" 
+         xmlns:xsi="http://www.w3c.org/2001/XMLSchema-instance">
+  
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.osjava</groupId>
+  <artifactId>pound</artifactId>
+  <name>Pound</name>
+  <version>0.1</version>
+  <organization>
+    <name>OSJava</name>
+  </organization>
+  <inceptionYear>2005</inceptionYear>
+  
+  <description>
+    Game for my son to play.  Pound the keyboard.
+  </description>
+
+  <url>http://www.osjava.org/pound/</url>
+  
+  <scm>
+    <connection>scm:svn:https://osjava.googlecode.com/svn/trunk/pound</connection>
+    <developerConnection>scm:svn:https://osjava.googlecode.com/svn/trunk/pound</developerConnection>
+    <url>http://code.google.com/p/osjava/source</url>
+  </scm>
+
+  <mailingLists>
+    <mailingList>
+      <name>osjava-users</name>
+      <subscribe>http://lists.osjava.org/mailman/listinfo/osjava-users</subscribe>
+      <unsubscribe>http://lists.osjava.org/mailman/listinfo/osjava-users</unsubscribe>
+      <archive>http://lists.osjava.org/mailman/private/osjava-users/</archive>
+    </mailingList>
+  </mailingLists>
+
+  <developers>
+
+    <developer>
+      <name>Henri Yandell</name>
+      <id>hen</id>
+      <email>bayard@generationjava.com</email>
+      <organization>GenerationJava</organization>
+    </developer>
+    <developer>
+      <name>David Petersheim</name>
+      <id>reassembler</id>
+    </developer>
+
+  </developers>
+  
+  <build>
+    <sourceDirectory>src/java</sourceDirectory>
+    <testSourceDirectory>src/test</testSourceDirectory>
+  </build>
+
+</project>
