@@ -461,7 +461,7 @@ class SimpleCanvas extends Canvas {
 
         // TODO draw in the inverse color? that might be to hard on the eyes.
         g.setColor(Color.WHITE);
-        int y = fm.getAscent() - (int) (d.height / 4);
+        int y = fm.getAscent();
         int x = (int) (d.width / 2) - (int) (fm.charWidth('w') / 2);
 
         if (this.showMessage) {
