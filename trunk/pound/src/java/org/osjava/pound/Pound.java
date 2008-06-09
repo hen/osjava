@@ -19,6 +19,10 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.awt.Image;
+
+import java.awt.GraphicsEnvironment;
+import java.awt.GraphicsDevice;
+
 import java.io.File;
 import java.text.NumberFormat;
 import java.io.FileFilter;
@@ -57,8 +61,22 @@ public class Pound extends JFrame {
     private boolean updateColor = true;
  
     public static void main(String[] args) {
-        Pound p = new Pound();
-        p.show();
+        GraphicsDevice myDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+
+        try {
+            Pound p = new Pound();
+            if(myDevice.isFullScreenSupported()) {
+                p.setUndecorated(true);
+                p.setVisible(true);
+                myDevice.setFullScreenWindow(p);
+            } else {
+                System.err.println("Full screen not supported. ");
+                p.setVisible(true);
+                p.show();
+            }
+        } finally {
+//            myDevice.setFullScreenWindow(null);
+        }
     }
  
     private SimpleCanvas canvas;
@@ -78,7 +96,6 @@ public class Pound extends JFrame {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         setSize(1280, 1024);
-        setVisible(true);
     }
 
     class KeyL extends KeyAdapter {
