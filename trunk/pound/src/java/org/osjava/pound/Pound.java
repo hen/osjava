@@ -187,6 +187,11 @@ public class Pound extends JFrame {
         // ignore
     }
  
+    /**
+     * Based on code from http://www.jsresources.org/examples/MidiPlayer.java.html
+     * Licensed under BSD
+     * Copyright (c) 1999 - 2006 by Matthias Pfisterer
+     */
     public static void playNote(int note) {
         Sequence sequence = null;
         try {
