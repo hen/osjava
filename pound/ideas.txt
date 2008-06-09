@@ -3,7 +3,7 @@ Still.
 
 Game #1:
   Bash n Pound. Kid hits the keyboard and hears musical notes and the screen changes colour. 
-    TODO: Needs to go full-screen. Needs to stop special-chars quitting it. Needs new ideas in colour-maps and sound-maps.
+    TODO: Needs to stop special-chars quitting it. Needs new ideas in colour-maps and sound-maps.
 
 Game #2: 
   Shape Pound. Kid hits the keyboard and hears musical notes and sees the screen change, with shapes displayed on the screen.
