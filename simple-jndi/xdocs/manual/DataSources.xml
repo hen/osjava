@@ -42,6 +42,18 @@
       <tr><td>dbcpValidationQuery</td><td>String</td><td>not set</td></tr>
       <tr><td>dbcpDefaultReadOnly</td><td>true/false</td><td>false</td></tr>
       <tr><td>dbcpDefaultAutoCommit</td><td>true/false</td><td>true</td></tr>
+      <tr><td>dbcpMaxActive</td><td>See DBCP's GenericObjectPool</td><td>GenericObjectPool.DEFAULT_MAX_ACTIVE</td></tr>
+      <tr><td>dbcpWhenExhaustedAction</td><td>See DBCP's GenericObjectPool</td><td>GenericObjectPool.DEFAULT_WHEN_EXHAUSTED_ACTION</td></tr>
+      <tr><td>dbcpMaxWait</td><td>See DBCP's GenericObjectPool</td><td>GenericObjectPool.DEFAULT_MAX_WAIT</td></tr>
+      <tr><td>dbcpMaxIdle</td><td>See DBCP's GenericObjectPool</td><td>GenericObjectPool.DEFAULT_MAX_IDLE</td></tr>
+      <tr><td>dbcpMinIdle</td><td>See DBCP's GenericObjectPool</td><td>GenericObjectPool.DEFAULT_MIN_IDLE</td></tr>
+      <tr><td>dbcpTestOnBorrow</td><td>See DBCP's GenericObjectPool</td><td>GenericObjectPool.DEFAULT_TEST_ON_BORROW</td></tr>
+      <tr><td>dbcpTestOnReturn</td><td>See DBCP's GenericObjectPool</td><td>GenericObjectPool.DEFAULT_TEST_ON_RETURN</td></tr>
+      <tr><td>dbcpTimeBetweenEvictionRunsMillis</td><td>See DBCP's GenericObjectPool</td><td>GenericObjectPool.DEFAULT_TIME_BETWEEN_EVICTION_RUNS_MILLIS</td></tr>
+      <tr><td>dbcpNumTestsPerEvictionRun</td><td>See DBCP's GenericObjectPool</td><td>GenericObjectPool.DEFAULT_NUM_TESTS_PER_EVICTION_RUN</td></tr>
+      <tr><td>dbcpMinEvictableIdleTimeMillis</td><td>See DBCP's GenericObjectPool</td><td>GenericObjectPool.DEFAULT_MIN_EVICTABLE_IDLE_TIME_MILLIS</td></tr>
+      <tr><td>dbcpTestWhileIdle</td><td>See DBCP's GenericObjectPool</td><td>GenericObjectPool.DEFAULT_TEST_WHILE_IDLE</td></tr>
+      <tr><td>dbcpSoftMinEvictableIdleTimeMillis</td><td>See DBCP's GenericObjectPool</td><td>GenericObjectPool.DEFAULT_SOFT_MIN_EVICTABLE_IDLE_TIME_MILLIS</td></tr>
     </table>
   </section>
 
