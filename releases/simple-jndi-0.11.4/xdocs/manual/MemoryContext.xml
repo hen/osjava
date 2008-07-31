@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<document>
+
+  <properties>
+    <author email="bayard@generationjava.com">Henri Yandell</author>
+    <title>Memory Context</title>
+  </properties>
+
+  <body>
+  <section><div><a href="AsConfig.html">previous</a> - <a href="index.html">contents</a> - <a href="Loader.html">next</a></div></section>
+  <section name="Using the JNDI Memory implementation separately">
+   <p>All this loading of .properties files is all well and good, but there's a good chance that all you want to do is utilize Simple-JNDI's in-memory JNDI implementation. To do this just have a <i>jndi.properties</i> file containing the following line. </p>
+   <pre>
+     java.naming.factory.initial=org.osjava.sj.memory.MemoryContextFactory 
+   </pre>
+  </section>
+  </body>
+
+</document>

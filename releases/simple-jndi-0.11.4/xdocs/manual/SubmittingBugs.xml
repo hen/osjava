@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<document>
+
+  <properties>
+    <author email="bayard@generationjava.com">Henri Yandell</author>
+    <title>Submitting bugs</title>
+  </properties>
+
+  <body>
+  <section><div><a href="Todo.html">previous</a> - <a href="index.html">contents</a> - <a href="CompilingTheSource.html">next</a></div></section>
+  <section name="Bugs?"><p>
+Bugs should be reported to one of the following:
+
+<ul>
+<li>The <a href="http://issues.osjava.org/jira/secure/BrowseProject.jspa?id=10000">OSJava Issue Tracker</a></li>
+<li>The <a href="http://groups.google.com/group/osjava">osjava-users mailing list</a></li>
+<li>Failing that, directly to Henri Yandell</li>
+</ul>
+
+Please report them, you'll be doing Simple-JNDI a great service.
+  </p></section>
+  </body>
+
+</document>
