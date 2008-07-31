@@ -128,6 +128,7 @@
 
   </build>
 
+    <!-- NOT USED FOR SITE YET; USE MAVEN 1 -->
     <reports>
         <report>maven-jxr-plugin</report>
         <report>maven-javadoc-plugin</report>
