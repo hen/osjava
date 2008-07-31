@@ -13,7 +13,8 @@
       <item name="License"              href="/license.html"/>
     </menu>
     <menu name="Code docs">
-      <item name="JavaDocs"              href="http://dist.osjava.org/releases/multidoc-jnr/simple-jndi/index.html"/>
+      <item name="JavaDocs (0.11.4)"              href="/apidocs"/>
+      <item name="MultiDocs (0.11.1-)"              href="http://dist.osjava.org/releases/multidoc-jnr/simple-jndi/index.html"/>
       <!-- TODO: Switch this to builds.osjava.org when that starts showing the right reports -->
       <item name="Latest Source XReference"              href="/xref/index.html"/>
       <item name="Latest Test XReference"              href="/xref-test/index.html"/>
@@ -22,7 +23,8 @@
       <item name="Mailing List"              href="/mail-lists.html"/>
       <item name="Optional Jar Dependencies"              href="/dependencies.html"/>
       <item name="SVN Repository"              href="http://www.osjava.org/svn.html?project=simple-jndi"/>
-      <item name="Bug Tracking"              href="http://issues.osjava.org/jira/browse/SJN"/>
+      <item name="Bug Tracking"              href="/issue-tracking.html"/>
+      <item name="Old Bug Tracking"              href="http://issues.osjava.org/jira/browse/SJN"/>
     </menu>
   </body>
 </project>
