@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
   <artifactId>simple-jndi</artifactId>
   <name>simple-jndi</name>
-  <version>0.11.3</version>
+  <version>0.11.4</version>
   <organization>
     <name>OSJava</name>
   </organization>
@@ -22,8 +22,7 @@
     <connection>scm:svn:http://osjava.googlecode.com/svn/trunk/simple-jndi</connection>
   </scm>
   <issueManagement>
-    <system>jira</system>
-    <url>http://issues.osjava.org/jira/browse/SJN</url>
+    <url>http://code.google.com/p/osjava/issues/list</url>
   </issueManagement>
   
   <mailingLists>
