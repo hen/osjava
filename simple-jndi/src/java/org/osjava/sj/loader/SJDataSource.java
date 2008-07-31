@@ -53,6 +53,11 @@ public class SJDataSource implements DataSource {
     // for pooling
     private Properties properties;
 
+    /**
+     * if a connection pool has been built, its url is stored in here
+     */
+    private String poolUrl = null;
+
     public SJDataSource(String driver, String url, String username, String password, Properties properties) {
         ensureLoaded(driver);
         this.driver = driver;
@@ -63,7 +68,7 @@ public class SJDataSource implements DataSource {
         this.properties = properties;
     }
 
-    // nicked from DbUtils
+    // Method from Apache Commons DbUtils
     private static boolean ensureLoaded(String name) {
         try {
             Class.forName(name).newInstance();
@@ -77,20 +82,24 @@ public class SJDataSource implements DataSource {
         return this.getConnection(this.username, this.password);
     }
 
+    /**
+     * returns a connection to the database specified in the properties and
+     * creates a connection pool, if neccessary 
+     */
     public Connection getConnection(String username, String password) throws SQLException {
         String tmpUrl = this.url;
 
         String pool = properties.getProperty("pool");
-        if(pool != null) {
-//System.err.println("[DS]Setting Pool information");
-
-            // url is now a pooling link
-            // TODO: Fix this, it pools each time, which is probably bad
-            PoolSetup.setupConnection(pool, url, username, password, properties);
-            tmpUrl = PoolSetup.getUrl(pool);
+        if (pool != null) {  // we want a connection name named like the pool property
+            synchronized (poolUrl) {
+                if (poolUrl == null) {  // we didn't create a connection pool already, so do it now
+                    PoolSetup.setupConnection(pool, url, username, password, properties);
+                    poolUrl = PoolSetup.getUrl(pool);
+                }
+            }
+            tmpUrl = poolUrl;  // url is now a pooling link
         }
 
-//System.err.println("[DS]Getting Connection for url: " + tmpUrl);
         if(username == null || password == null) {
             return DriverManager.getConnection(tmpUrl);
         }
