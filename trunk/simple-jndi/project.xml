@@ -7,7 +7,7 @@
   <artifactId>simple-jndi</artifactId>
   <name>simple-jndi</name>
   <groupId>simple-jndi</groupId>
-  <currentVersion>0.11.3</currentVersion>
+  <currentVersion>0.11.4</currentVersion>
   <organization>
     <name>OSJava</name>
     <url>http://www.osjava.org/</url>
@@ -22,14 +22,14 @@
   </description>
 
   <repository>
-    <connection>scm:svn:http://svn.osjava.org/svn/osjava/trunk/simple-jndi</connection>
-    <url>http://svn.osjava.org/svn/osjava/trunk/simple-jndi</url>
+    <connection>scm:svn:http://osjava.googlecode.com/svn/trunk/simple-jndi</connection>
+    <url>http://code.google.com/p/osjava/source/checkout</url>
   </repository>
   
   <shortDescription>A JNDI implementation using .properties</shortDescription>
 
   <url>http://www.osjava.org/simple-jndi/</url>
-  <issueTrackingUrl>http://issues.osjava.org/jira/browse/SJN</issueTrackingUrl>
+  <issueTrackingUrl>http://code.google.com/p/osjava/issues/list</issueTrackingUrl>
   <siteAddress>dist.osjava.org/maven/simple-jndi</siteAddress>
   <siteDirectory>/sites/org/osjava/www/maven/genjava/simple-jndi/</siteDirectory>
   <distributionDirectory>/sites/org/osjava/www/maven/builds/</distributionDirectory>
