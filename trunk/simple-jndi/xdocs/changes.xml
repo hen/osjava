@@ -7,6 +7,9 @@
   </properties>
 
   <body>
+    <release version="0.11.4.1" date="2008-08-02" description="Bugfix bugfix">
+        <action dev="hen" type="fix">The previous fix to support multiple pool names had a bug in that it tried to synchronize on null, generating a NullPointerException - now we synchronize on the class</action>
+    </release>
     <release version="0.11.4" date="2008-07-31" description="Two more bugfixes">
         <action dev="hen" type="fix">The element removal in the AbstractContext.close() method is bad and will lead to a ConcurrentModificationException. Code rewritten such that removal happens separately from the collection iteration</action>
         <action dev="hen" type="fix">DBCP pooling now supports pool names such that two separate DataSources will no longer clash and reuse the same pool</action>
