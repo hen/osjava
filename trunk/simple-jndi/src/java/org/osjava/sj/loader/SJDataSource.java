@@ -91,7 +91,7 @@ public class SJDataSource implements DataSource {
 
         String pool = properties.getProperty("pool");
         if (pool != null) {  // we want a connection name named like the pool property
-            synchronized (poolUrl) {
+            synchronized (SJDataSource.class) {
                 if (poolUrl == null) {  // we didn't create a connection pool already, so do it now
                     PoolSetup.setupConnection(pool, url, username, password, properties);
                     poolUrl = PoolSetup.getUrl(pool);
