@@ -44,6 +44,8 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import javax.sql.DataSource;
 
 import junit.framework.TestCase;
@@ -251,6 +253,13 @@ public class JndiLoaderTest extends TestCase {
         DataSource ds1 = (DataSource) ctxt.lookup("pooltest/OneDS");
         DataSource ds2 = (DataSource) ctxt.lookup("pooltest/TwoDS");
         DataSource ds3 = (DataSource) ctxt.lookup("pooltest/ThreeDS");
+
+        try {
+            Connection conn = ds.getConnection();
+            fail("No database is hooked up, so this should have failed");
+        } catch (SQLException sqle) {
+            // expected
+        }
     }
 
 }
