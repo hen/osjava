@@ -1,0 +1,110 @@
+<?xml version="1.0"?>
+<document>
+
+  <properties>
+      <author email="bayard@generationjava.com">Henri Yandell</author>
+      <title>Changes</title>
+  </properties>
+
+  <body>
+    <release version="0.11.4.1" date="2008-08-02" description="Bugfix bugfix">
+        <action dev="hen" type="fix">The previous fix to support multiple pool names had a bug in that it tried to synchronize on null, generating a NullPointerException - now we synchronize on the class</action>
+    </release>
+    <release version="0.11.4" date="2008-07-31" description="Two more bugfixes">
+        <action dev="hen" type="fix">The element removal in the AbstractContext.close() method is bad and will lead to a ConcurrentModificationException. Code rewritten such that removal happens separately from the collection iteration</action>
+        <action dev="hen" type="fix">DBCP pooling now supports pool names such that two separate DataSources will no longer clash and reuse the same pool</action>
+    </release>
+    <release version="0.11.3" date="2008-04-08" description="More bugfixes">
+        <action dev="hen" type="fix" issue="SJN-54">If a resource directory config/java and file config/java.properties both exist, indeterminate result</action>
+        <action dev="hen" type="fix" issue="SJN-73">Using shared memory (org.osjava.sj.jndi.shared=true) causes javax.naming.NameAlreadyBoundException</action>
+        <action dev="hen" type="fix" issue="SJN-74">Avoiding "Missing javax.sql:jdbc-stdext:jar:2.0" caused by DBCP 1.1 while using Maven 2</action>
+        <action dev="hen" type="add" issue="SJN-75">Using simple-jndi for testing with Maven 2</action>
+        <action dev="hen" type="fix" issue="SJN-77">InitialContext.close() improperly throws exception when using JNDI Memory implementation separately  </action>
+        <action dev="hen" type="fix" issue="SJN-78">Does not compiled with JDK-1.6</action>
+        <action dev="hen" type="add" issue="SJN-79">lookup return null instead throiwiung exceptions</action>
+        <action dev="hen" type="add" issue="SJN-81">Allow DBCP parameters to be passed in</action>
+    </release>
+    <release version="0.11.2" date="2007-06-26" description="Minor bugfixes">
+        <action dev="hen" type="add">Maven2 build added</action>
+        <action dev="hen" type="fix">Removed debug from SJDataSource</action>
+        <action dev="hen" type="fix">Updated to latest dbcp/pool</action>
+    </release>
+    <release version="0.11.1" date="2005-09-29" description="Some critical bugfixes">
+        <action dev="hen" type="add">BeanConverter, create empty instance and call setXxx(String) methods</action>
+        <action dev="hen" type="fix" issue="SJN-69">Can't have 'type' at the top level inside a file</action>
+        <action dev="hen" type="fix" issue="SJN-68">Shared memory not working</action>
+    </release>
+    <release version="0.11" date="2005-09-05" description="Complete rewrite with major improvements">
+        <action dev="eric" type="fix" issue="SJN-59">Move from gj-xml to DOM</action>
+        <action dev="hen" type="add" issue="SJN-60">Create user manual</action>
+        <action dev="hen" type="add" issue="SJN-22">Pluggable converters</action>
+        <action dev="hen" type="add" issue="SJN-65">COLON_REPLACE concept</action>
+        <action dev="hen" type="add" issue="SJN-63">System properties supported</action>
+        <action dev="hen" type="add" issue="SJN-64">SPACE concept</action>
+        <action dev="hen" type="fix" issue="SJN-33">Unable to have DataSource files with more than 2 elements</action>
+        <action dev="hen" type="fix" issue="SJN-3">Unable to use simple-jndi on Windows with standard java naming</action>
+        <action dev="rzigweid" type="fix" issue="SJN-57">NotContextException error in GenericContext.createSubContext</action>
+        <action dev="rzigweid" type="add">Created in-memory JNDI implementation</action>
+        <action dev="rzigweid" type="fix" issue="SJN-58">Unable to create subcontexts</action>
+    </release>
+    <release version="0.10" date="2004-12-09" description="Non-public release to support osjava-threads">
+        <action dev="rzigweid" type="add">Added NameParser support.</action>
+        <action dev="rzigweid" type="add">Added subcontext support.</action>
+        <action dev="rzigweid" type="add">Added additional constructors.  This includes a default constructor, a constructor which allows the system environment to not override the passed in environment and one to supply a NameParser different from the default.</action>
+        <action dev="rzigweid" type="update">Converted the basis of storage to be Name's instead of Strings.  This goes along with the NameParser support above.</action>
+    </release>
+    <release version="0.9.1" date="2004-02-10" description="DataSource bugfix">
+        <action dev="hen" type="add">Fixed #SJN-49, a problem in loading DataSources from particular .properties files. </action>
+    </release>
+    <release version="0.9" date="2004-02-07" description="HTTP protocol and shared memory ability">
+        <action dev="hen" type="add">Tested, and fixed, the usage of http as a protocol for getting simple-jndi values, #SJN-27. Untested on servers that do not allow directory-listings. </action>
+        <action dev="hen" type="add">Feature #SJN-30, to have a static memory behind the contexts and not a per-instance memory. It is turned on via the org.osjava.jndi.shared=true jndi.properties parameter. </action>
+    </release>
+    <release version="0.8.1" date="2004-01-18" description="Standard JNDI System property support">
+        <action dev="hen" type="add">Added feature #SJN-48, in which the simple-jndi is configurable from system properties as well as jndi.properties and a Hashtable. The system property takes precedence. </action>
+    </release>
+    <release version="0.8" date="2004-01-03" description="Improved quality, better docs, no mandatory dependencies">
+        <action dev="hen" type="fix">Fixed bug #SJN-45, in which the XML property loader did not correctly handle multiple tags with the same name forming a List object. </action>
+        <action dev="hen" type="fix">Fixed a bug in which 'type' did not work in a DataSource file in which you had the DS name as the filename and not delimited in the file. </action>
+        <action dev="hen" type="remove">Deprecated usage of the 'org.osjava.jndi.datasource' property in favour of a simple type=javax.sql.DataSource. Especially as JIRA issue #SJN-42 exists with the datasource usage. Will be removed in 0.9. </action>
+        <action dev="hen" type="add">Added an example for xml, ini and properties creation of Collections in simple-jndi. </action>
+        <action dev="hen" type="add">Added an example for xml, ini and properties built DataSources in simple-jndi. </action>
+        <action dev="hen" type="add">Connection pooling added via the use of Jakarta Commons DBCP. </action>
+        <action dev="hen" type="update">While I've decided not to use log4j, I have implemented a classic System.out debug system with a -DSJ.DEBUG=true system property to turn it on. </action>
+        <action dev="hen" type="update">Switched dependencies and inlined code so that no jars are needed by default, but to get the xml feature you need gj-xml, to get converting you need commons-convert and to get connection-pooling you need commons-dbcp, which needs commons-pool and commons-collections. </action>
+    </release>
+
+    <release version="0.7" date="2003-12-06" description="XML support added">
+        <action dev="hen" type="fix">XML bug #SJN-39 fixed. In 0.6, XML was barely functional and 0.7 fixes those bugs. </action>
+        <action dev="hen" type="add">In addition to .properties and .xml files, simple-jndi now supports .ini files. The precedence in case of similar naming is .properties, .xml then .ini. </action>
+        <action dev="hen" type="update">DataSources may now be configured through the '.type' conversion mechanism as well as the org.osjava.jndi.datasource mechanism. This is needed for XML which cannot use the org.osjava.jndi.datasource mechanism. Most likely this will be the only mechanism for DataSources in a future version. </action>
+    </release>
+
+    <release version="0.6" date="2003-08-12" description="java: on Windows">
+        <action dev="hen" type="update">You may now see and modify the Simple-JNDI parameters through Simple-JNDI. </action>
+        <action dev="hen" type="fix">Because Windows cannot handle ':' in a filename, "java:" is quietly converted to "java". </action>
+        <action dev="hen" type="update">Unit Tests written and plugged into Maven. </action>
+    </release>
+
+    <release version="0.5" date="2003-04-08" description="r/w Context, System property support">
+        <action dev="hen" type="update">Moved from the 'com.generationjava' namespace to the 'org.osjava' namespace, and an accompanying change in look and feel to the site. </action>
+        <action dev="hen" type="add">Boolean and URL Converters added. </action>
+        <action dev="hen" type="add">Values in the System properties [ie) -Dfoo.bar=baa] now override simple-jndi. </action>
+        <action dev="hen" type="add">Values may now be bound to the JNDI space, where they override the configured simple-jndi properties. When removed, the value goes back to the simple-jndi default. </action>
+    </release>
+
+    <release version="0.4" date="2003-02-27" description="Type support, early XML support, Lists">
+      <action dev="hen" type="add">com.foo.Value can have a partner key of com.foo.Value.type which specifies the type of object to use for the key. While this system will be pluggable, currently it supports java.lang.Number only.</action>
+      <action dev="hen" type="add">Any XML format may be used underneath instead of a .properties system. Properties files take precedence over XML files, so in the light of foo.xml and foo.properties, only foo.properties will be read. </action>
+      <action dev="hen" type="update">The underlying properties parsing has been improved. It now handles ordered collections. These are implemented by specifying a key multiple times. One issue with this is that the object returned maybe a List or a String [or something else depending on type], leading to an ugly instanceof style of programming. The following eases this. </action>
+      <action dev="hen" type="add">org.osjava.naming.Jndi is a wrapper which automatically grabs the default InitialContext and provides simple helper routines for getting data out. One such example is getList(String key) which improves the situation in the previous bullet point. </action>
+    </release>
+
+    <release version="0.3" date="2003-02-14" description="Classpath protocol, configurable delimiter">
+      <action dev="hen" type="add">Implemented a protocol system for the simple-jndi root's location. The original file location was retrofitted into this and a classpath location was added. A http location is planned</action>
+      <action dev="hen" type="add">If a protocol is unspecified, then resort to v0.2 format, ie) file://</action>
+      <action dev="hen" type="add">If root is unspecified, then use the classpath</action>
+      <action dev="hen" type="update">The delimiter in the search values is configurable, so people can more easily mimic LDAP</action>
+    </release>
+</body>
+</document>

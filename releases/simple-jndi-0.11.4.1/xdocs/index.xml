@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<document>
+
+  <properties>
+      <author email="bayard@generationjava.com">Henri Yandell</author>
+      <title>Simple-JNDI</title>
+  </properties>
+
+  <body>
+    <section name="The Problem">
+<p>
+Simple-JNDI is intended to solve two problems. The first is that of finding a container independent way of opening a database connection, the second is to find a good way of specifying application configurations.
+</p>
+<ol>
+<li>Unit tests or prototype code often need to emulate the environment within which the code is expected to run. A very common one is to get an object of type <i>javax.sql.DataSource</i> from JNDI so a <i>java.sql.Connection</i> to your database of choice may be opened. </li>
+<li>Applications need configuration; a JNDI implementation makes a handy location for configuration values. Either as a globally available system, or via IoC through the use of some kind of JNDI configuration facade (see gj-config). </li>
+</ol>
+</section>
+    <section name="A Solution">
+    <p>A simple implementation of JNDI. It is entirely library based, so no server instances are started, and it sits upon Java .properties files, XML files or Windows-style .ini files, so it is easy to use and simple to understand. The files may be either on the file system or in the classpath. </p>
+    <p>Simple-JNDI depends on no external jars for its basic functionality, however to get certain optional features you will still need to download external jars. When describing these features, the manual will point out which jars are needed and where to get them. </p>
+</section>
+<section name="Getting more help">
+    <p>Please report bugs either in the <a href="http://issues.osjava.org/jira/browse/SJN ">issue tracker</a> or to the <a href="http://www.osjava.org/simple-jndi/mail-lists.html">mailing list</a>. </p>
+    </section>
+</body>
+</document>

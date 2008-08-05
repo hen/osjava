@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="simple-jndi">
+
+  <title>simple-jndi</title>
+
+  <body>
+    <menu name="Overview">
+      <item name="Introduction"              href="/index.html"/>
+      <item name="Release Notes"              href="/changes-report.html"/>
+      <item name="Manual"              href="/manual/index.html"/>
+      <item name="Download"              href="/Download.html"/>
+      <item name="FAQ"              href="/FAQ.html"/>
+      <item name="License"              href="/license.html"/>
+    </menu>
+    <menu name="Code docs">
+      <item name="JavaDocs (0.11.4.1)"              href="/apidocs"/>
+      <item name="MultiDocs (0.11.1-)"              href="http://dist.osjava.org/releases/multidoc-jnr/simple-jndi/index.html"/>
+      <!-- TODO: Switch this to builds.osjava.org when that starts showing the right reports -->
+      <item name="Latest Source XReference"              href="/xref/index.html"/>
+      <item name="Latest Test XReference"              href="/xref-test/index.html"/>
+    </menu>
+    <menu name="Resources">
+      <item name="Mailing List"              href="/mail-lists.html"/>
+      <item name="Optional Jar Dependencies"              href="/dependencies.html"/>
+      <item name="SVN Repository"              href="http://www.osjava.org/svn.html?project=simple-jndi"/>
+      <item name="Bug Tracking"              href="/issue-tracking.html"/>
+      <item name="Old Bug Tracking"              href="http://issues.osjava.org/jira/browse/SJN"/>
+    </menu>
+  </body>
+</project>

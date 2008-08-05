@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<document>
+
+  <properties>
+    <author email="bayard@generationjava.com">Henri Yandell</author>
+    <title>General Design</title>
+  </properties>
+
+  <body>
+  <section><div><a href="ConfiguringWithMaven2.html">previous</a> - <a href="index.html">contents</a> - <a href="DataFiles.html">next</a></div></section>
+    <section name="General Design">
+      <p>Much of the design of Simple-JNDI is driven by the JNDI specification. The packages break down to the following list. </p>
+      <ul>
+        <li>org.osjava.sj - Relatively backwards compatible JNDI implementation</li>
+        <li>org.osjava.sj.jndi - Utilities for implementing JNDI implementations</li>
+        <li>org.osjava.sj.loader - Loader system for loading data from a filesystem into a JNDI implementation</li>
+        <li>org.osjava.sj.loader.util - Generic utilities to assist with the loading implementation</li>
+        <li>org.osjava.sj.loader.convert - Conversion API when loading</li>
+        <li>org.osjava.sj.memory - In-memory JNDI implementation</li>
+        <li>org.osjava.sj.naming - Utilities for talking to JNDI servers</li>
+      </ul>
+      <p>Currently the loader loads all the data into a JNDI implementation recursively in one go from the file system. Loaders that load just-in-time, and support HTTP and the Classpath are on the TODO list. </p>
+      <p><i>org.osjava.sj.jndi.AbstractContext</i> is a generic super-class that should prove useful in creating JNDI implementations. </p>
+      <p><i>org.osjava.sj.jndi.DelegatingContext</i> is a super-class designed to make it easy to put a filter (such as SimpleContext) in front of a JNDI implementation. </p>
+    </section>
+  </body>
+
+</document>

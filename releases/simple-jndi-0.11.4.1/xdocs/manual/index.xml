@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<document>
+
+  <properties>
+    <author email="bayard@generationjava.com">Henri Yandell</author>
+    <title>Manual</title>
+  </properties>
+
+  <body>
+  <section name="Simple-JNDI Manual"><p>
+<ul>
+<li><a href="Justifying.html">Why use Simple-JNDI?</a></li>
+<li><a href="Downloading.html">Downloading</a></li>
+<li><a href="Configuring.html">Configuring</a></li>
+<li><a href="ConfiguringWithMaven2.html">Configuring with Maven2</a></li>
+<li><a href="GeneralDesign.html">Simple-JNDI design</a></li>
+<li><a href="DataFiles.html">Creating your data files</a></li>
+<li><a href="ConverterPlugins.html">Using Converters</a></li>
+<li><a href="AsConfig.html">Using as a Configuration system</a></li>
+<li><a href="MemoryContext.html">Using the JNDI Memory implementation separately</a></li>
+<li><a href="Loader.html">Using the JNDI loader system separately</a></li>
+<li><a href="DataSources.html">DataSources + Pooling</a></li>
+<li><a href="PropertyIndex.html">Index of supported properties for jndi.properties</a></li>
+<li><a href="Todo.html">List of future ideas</a></li>
+<li><a href="SubmittingBugs.html">Submitting bugs</a></li>
+<li><a href="CompilingTheSource.html">Compiling the source</a></li>
+<li><a href="SubmittingPatches.html">Submitting patches</a></li>
+</ul>
+  </p></section>
+  </body>
+
+</document>

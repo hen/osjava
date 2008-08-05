@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<document>
+
+  <properties>
+    <author email="bayard@generationjava.com">Henri Yandell</author>
+    <title>DataSources</title>
+  </properties>
+
+  <body>
+  <section><div><a href="Loader.html">previous</a> - <a href="index.html">contents</a> - <a href="PropertyIndex.html">next</a></div></section>
+
+  <section name="DataSources">
+
+    <p>The most popular object to get from JNDI is a object of type <i>javax.sql.DataSource</i>, allowing the developer to obtain JDBC connections to databases. Simple-JNDI supports this out of the box.</p>
+
+    <p>There are four mandatory parameters for a DataSource in Simple-JNDI, and four optional parameters (see next section). The mandatory parameters are <i>url, driver, user, password</i>. The following shows an example of a DataSource that will be available under the lookup key <i>application1/ds/TestDS</i>. </p>
+
+    <code>application1/ds.properties</code>
+    <pre>
+    TestDS.type=javax.sql.DataSource<br />
+    TestDS.driver=org.gjt.mm.mysql.Driver<br />
+    TestDS.url=jdbc:mysql://localhost/testdb<br />
+    TestDS.user=testuser<br />
+    TestDS.password=testing
+    </pre>
+
+    <p>The code to obtain it would be: </p>
+    <pre>
+      InitialContext ctxt = new InitialContext();
+      DataSource ds = (DataSource) ctxt.lookup("application1/ds/TestDS");
+    </pre>
+
+    <p>This example uses a delimiter of '/', which must be set with the <i>org.osjava.sj.delimiter</i> property. </p>
+  </section>
+
+  <section name="Connection pooling">
+    <p>Often when using a DataSource you will want to pool the Connections the DataSource is handing out. Simple-JNDI delegates to the Jakarta Commons DBCP project for this feature so you will need commons-dbcp, commons-pool and commons-collections jars in your classpath. </p>
+    <p>The feature is turned on by adding a sub-parameter of '<i>pool=&lt;pool-name&gt;</i>' in your datasource properties file. For example, <i>ApacheDS.pool=apachePool</i>, will turn DBCP Connection pooling on for the ApacheDS datasource under a name of '<i>apachePool</i>'. </p>
+    <p>Note: The pool variable used to be a boolean '<i>true</i>' variable, but now a pool name is provided. This is fully backwards compatible as you'll just get a pool name of '<i>true</i>'. </p>
+    <p>The following parameters are used to configure DBCP:</p>
+    <table>
+      <tr><th>Param</th><th>Type</th><th>Default</th></tr>
+      <tr><td>dbcpValidationQuery</td><td>String</td><td>not set</td></tr>
+      <tr><td>dbcpDefaultReadOnly</td><td>true/false</td><td>false</td></tr>
+      <tr><td>dbcpDefaultAutoCommit</td><td>true/false</td><td>true</td></tr>
+      <tr><td>dbcpMaxActive</td><td>See DBCP's GenericObjectPool</td><td>GenericObjectPool.DEFAULT_MAX_ACTIVE</td></tr>
+      <tr><td>dbcpWhenExhaustedAction</td><td>See DBCP's GenericObjectPool</td><td>GenericObjectPool.DEFAULT_WHEN_EXHAUSTED_ACTION</td></tr>
+      <tr><td>dbcpMaxWait</td><td>See DBCP's GenericObjectPool</td><td>GenericObjectPool.DEFAULT_MAX_WAIT</td></tr>
+      <tr><td>dbcpMaxIdle</td><td>See DBCP's GenericObjectPool</td><td>GenericObjectPool.DEFAULT_MAX_IDLE</td></tr>
+      <tr><td>dbcpMinIdle</td><td>See DBCP's GenericObjectPool</td><td>GenericObjectPool.DEFAULT_MIN_IDLE</td></tr>
+      <tr><td>dbcpTestOnBorrow</td><td>See DBCP's GenericObjectPool</td><td>GenericObjectPool.DEFAULT_TEST_ON_BORROW</td></tr>
+      <tr><td>dbcpTestOnReturn</td><td>See DBCP's GenericObjectPool</td><td>GenericObjectPool.DEFAULT_TEST_ON_RETURN</td></tr>
+      <tr><td>dbcpTimeBetweenEvictionRunsMillis</td><td>See DBCP's GenericObjectPool</td><td>GenericObjectPool.DEFAULT_TIME_BETWEEN_EVICTION_RUNS_MILLIS</td></tr>
+      <tr><td>dbcpNumTestsPerEvictionRun</td><td>See DBCP's GenericObjectPool</td><td>GenericObjectPool.DEFAULT_NUM_TESTS_PER_EVICTION_RUN</td></tr>
+      <tr><td>dbcpMinEvictableIdleTimeMillis</td><td>See DBCP's GenericObjectPool</td><td>GenericObjectPool.DEFAULT_MIN_EVICTABLE_IDLE_TIME_MILLIS</td></tr>
+      <tr><td>dbcpTestWhileIdle</td><td>See DBCP's GenericObjectPool</td><td>GenericObjectPool.DEFAULT_TEST_WHILE_IDLE</td></tr>
+      <tr><td>dbcpSoftMinEvictableIdleTimeMillis</td><td>See DBCP's GenericObjectPool</td><td>GenericObjectPool.DEFAULT_SOFT_MIN_EVICTABLE_IDLE_TIME_MILLIS</td></tr>
+    </table>
+  </section>
+
+  </body>
+
+</document>
