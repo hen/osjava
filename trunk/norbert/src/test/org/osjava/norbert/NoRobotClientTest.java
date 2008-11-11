@@ -152,7 +152,7 @@ public class NoRobotClientTest extends TestCase {
     }
 
     // Tests NRB-3
-    // http://www.osjava.org:8080/jira/secure/ViewIssue.jspa?key=NRB-3
+    // http://www.osjava.org/jira/browse/NRB-3
     public void testNrb3() throws MalformedURLException, NoRobotException {
         String base = this.hardCode + "basic/";
         NoRobotClient nrc = new NoRobotClient("Scabies-1.0");
@@ -161,7 +161,7 @@ public class NoRobotClientTest extends TestCase {
     }
 
     // Tests NRB-6
-    // http://issues.osjava.org/jira/secure/ViewIssue.jspa?key=NRB-6
+    // http://issues.osjava.org/jira/browse/NRB-6
     public void testNrb6() throws MalformedURLException, NoRobotException {
         String base = this.hardCode + "order/";
         NoRobotClient nrc = new NoRobotClient("Scabies-1.0");
@@ -175,7 +175,7 @@ public class NoRobotClientTest extends TestCase {
     }      
 
     // Tests NRB-9
-    // http://issues.osjava.org/jira/secure/ViewIssue.jspa?key=NRB-9
+    // http://issues.osjava.org/jira/browse/NRB-9
     public void testNrb9() throws MalformedURLException, NoRobotException {
         String base = this.hardCode + "disallow-empty/";
         NoRobotClient nrc = new NoRobotClient("test");
@@ -184,7 +184,7 @@ public class NoRobotClientTest extends TestCase {
     }      
 
     // Tests NRB-8
-    // http://issues.osjava.org/jira/secure/ViewIssue.jspa?key=NRB-8
+    // http://issues.osjava.org/jira/browse/NRB-8
     public void testNrb8() throws MalformedURLException, NoRobotException {
         String base = this.hardCode + "ua-case-insensitive/";
         String[] names = new String[] { "test", "TEST", "tEsT" };
