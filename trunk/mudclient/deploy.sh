@@ -1,5 +1,6 @@
 #! /bin/sh
 
+
 # Deploy script for mudclient.
 
 java-config -s 1
