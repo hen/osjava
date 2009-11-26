@@ -192,7 +192,7 @@ public class NumericStringComparator implements Comparator {
         return -1;
     }
 
-    public int countZeroes(String str) {
+    private int countZeroes(String str) {
         int count = 0;
 
         // assuming str is small...
@@ -207,20 +207,4 @@ public class NumericStringComparator implements Comparator {
         return count;
     }
 
-    // UNUSED
-    private boolean containsOnly(String str, char ch) {
-        return containsOnly( str.toCharArray(), ch );
-    }
-    private boolean containsOnly(char[] chrs, char ch) {
-        int sz = chrs.length;
-
-        for(int i=0; i<sz; i++) {
-            if(chrs[i] != ch) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-        
 }
