@@ -129,10 +129,10 @@ public class NoRobotClient {
                     continue;
                 }
 
-                // if User-agent == userAgent 
-                // record the rest up until end or next User-agent
+                // if user-agent == userAgent 
+                // record the rest up until end or next user-agent
                 // then quit (? check spec)
-                if(line.startsWith("User-agent:")) {
+                if(line.toLowerCase().startsWith("user-agent:")) {
 
                     if(parsingAllowBlock) {
                         // we've just finished reading allows/disallows
@@ -145,7 +145,7 @@ public class NoRobotClient {
                         }
                     }
 
-                    value = line.substring("User-agent:".length()).trim();
+                    value = line.substring("user-agent:".length()).trim();
                     if(value.equalsIgnoreCase(userAgent)) {
                         parsingAllowBlock = true;
                         continue;
