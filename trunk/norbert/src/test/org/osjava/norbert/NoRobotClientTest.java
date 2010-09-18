@@ -185,6 +185,7 @@ public class NoRobotClientTest extends TestCase {
 
     // Tests NRB-8
     // http://issues.osjava.org/jira/browse/NRB-8
+    // Also: http://code.google.com/p/osjava/issues/detail?id=8
     public void testNrb8() throws MalformedURLException, NoRobotException {
         String base = this.hardCode + "ua-case-insensitive/";
         String[] names = new String[] { "test", "TEST", "tEsT" };
