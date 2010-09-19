@@ -135,4 +135,20 @@ public class XmlWriterTest extends TestCase {
                      sw.toString());
     }
 
+    public void testPrettyPrinterIssue6() throws IOException {
+        StringWriter sw = new StringWriter();
+        PrettyPrinterXmlWriter xw = new PrettyPrinterXmlWriter(new SimpleXmlWriter(sw));
+        xw.setIndent("\t");
+        xw.setNewline("\n");
+
+        xw.writeEntity("Person");
+        xw.writeEntityWithText("FirstName", "John");
+        xw.writeEntityWithText("LastName", "Doe");
+        xw.endEntity();
+        xw.close();
+        assertEquals("PrettyPrinterXmlWriter not outputting test correctly ",
+                     "<Person>\n\t<FirstName>John</FirstName>\n\t<LastName>Doe</LastName>\n</Person>\n",
+                     sw.toString());
+    }
+
 }
