@@ -309,6 +309,14 @@ public abstract class AbstractContext
      * @see javax.naming.Context#bind(javax.naming.Name, java.lang.Object)
      */
     public void bind(Name name, Object object) throws NamingException {
+
+        // See the above XXX; namely we assume that JNDI isn't used to 
+        // store keys. This is here to stop the underlying Hashtable 
+        // barfing. 
+        if (object == null) {
+            return;
+        }
+
         /* 
          * If the name of obj doesn't start with the name of this context, 
          * it is an error, throw a NamingException
