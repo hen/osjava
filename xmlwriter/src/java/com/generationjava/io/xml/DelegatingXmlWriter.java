@@ -78,10 +78,15 @@ public class DelegatingXmlWriter implements XmlWriter {
      * @param name String name of tag
      * @param text String of text to go inside the tag
      */
-    public XmlWriter writeEntityWithText(String name, Object text) throws
-    IOException {
-        this.xmlWriter.writeEntityWithText(name, text);
-        return this;
+    public XmlWriter writeEntityWithText(String name, Object text)
+                     throws IOException {
+        // Reimplements the version from AbstractXmlWriter rather 
+        // than delegating directly. This allows the 
+        // behaviour to naturally be correct rather than trying 
+        // to splice it through to the delegated writer
+        writeEntity(name);
+        writeText(text);
+        return endEntity();
     }
 
     /**
