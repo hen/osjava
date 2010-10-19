@@ -1,0 +1,194 @@
+<?xml version="1.0"?>
+<project>
+  
+  <pomVersion>3</pomVersion>
+  
+  <!-- This is the unique id of your project. It should be the same 
+       as the CVS module name -->
+  <id>reportrunner</id>
+
+  <!-- The name of your project. Doesn't have to be unique, but life is 
+       easy if you keep it the same as your id -->
+  <name>Report Runner</name>
+
+  <!-- The version of your software. Life is easy if you use 
+       major.minor.bugfix, but you can also use RC's, alpha, -dev or anything 
+       you want. SNAPSHOT is a special version which is never cached by the 
+       dependency downloader. -->
+  <currentVersion>0.4.0</currentVersion>
+
+  <organization>
+    <name>OSJava</name>
+    <url>http://www.osjava.org</url>
+    <logo>http://www.osjava.org/images/osjava.gif</logo>
+  </organization>
+  <!-- When you started the project. Appears as copyright start in the site -->
+  <inceptionYear>2002</inceptionYear>
+
+  <!-- The Java package. Javadoc will not build without this. -->
+  <package>org.osjava</package>
+
+  <!-- Or provide your own if you have a logo -->
+  <logo>http://www.osjava.org/images/1x1.gif</logo>
+  
+  <description>
+    System for easily creating reports.
+  </description>
+  
+  <shortDescription>System for easily creating reports</shortDescription>
+
+  <!-- This stuff contains OSJava linked bits. Only change the capitals -->
+  <url>http://www.osjava.org/reportrunner/</url>
+
+  <!-- You'll need to log into JIRA and find out what your ID is -->
+  <issueTrackingUrl>http://www.osjava.org:8080/jira/secure/BrowseProject.jspa?id=10070</issueTrackingUrl>
+
+  <mailingLists>
+    <mailingList>
+        <name>osjava-users</name>
+	<subscribe>http://lists.osjava.org/mailman/listinfo/osjava-users</subscribe>
+        <unsubscribe>http://lists.osjava.org/mailman/listinfo/osjava-users</unsubscribe>
+        <archive>http://lists.osjava.org/mailman/private/osjava-users/</archive>
+    </mailingList>
+  </mailingLists>
+
+
+  <!-- Put your name in here -->
+  <developers>
+
+    <developer>
+      <name>Henri Yandell</name>
+      <id>bayard</id>
+      <email>bayard at osjava.org</email>
+      <organization>GenerationJava</organization>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+
+  </developers>
+
+  <!-- Same as above. Use this to recognise important users/ideasmiths -->
+  <contributors>
+    <contributor>
+    </contributor>
+  </contributors>
+  
+  <!-- One of the major parts of Maven. Record your dependencies here. 
+       Look in http://www.ibiblio.org/maven for public copies of your 
+       dependencies. There is an OSJava specific one which may 
+       need to be used, http://www.osjava.org/maven -->
+  <dependencies>
+    <dependency>
+      <groupId>genjava</groupId>
+      <artifactId>gj-core</artifactId>
+      <version>3.0</version>
+    </dependency>
+    <dependency>
+      <groupId>genjava</groupId>
+      <artifactId>gj-xml</artifactId>
+      <version>1.0</version>
+    </dependency>
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+      <version>1.0</version>
+    </dependency>
+    <dependency>
+      <groupId>commons-codec</groupId>
+      <artifactId>commons-codec</artifactId>
+      <version>1.3</version>
+    </dependency>
+    <dependency>
+      <groupId>commons-lang</groupId>
+      <artifactId>commons-lang</artifactId>
+      <version>2.0</version>
+    </dependency>
+    <!-- for the csv renderer -->
+    <dependency>
+      <groupId>genjava</groupId>
+      <artifactId>gj-csv</artifactId>
+      <version>1.0</version>
+    </dependency>
+    <!-- for sqlreport -->
+    <dependency>
+      <groupId>commons-dbutils</groupId>
+      <artifactId>commons-dbutils</artifactId>
+      <version>1.0</version>
+    </dependency>
+    <!-- for the excel renderer -->
+    <dependency>
+      <groupId>poi</groupId>
+      <artifactId>poi</artifactId>
+      <version>2.0-final-20040126</version>
+    </dependency>
+    <!-- xml renderer -->
+    <dependency>
+      <groupId>xmlwriter</groupId>
+      <artifactId>xmlwriter</artifactId>
+      <version>2.2</version>
+    </dependency>
+    <!-- servlet compilation -->
+    <dependency>
+      <groupId>servletapi</groupId>
+      <artifactId>servletapi</artifactId>
+      <version>2.3</version>
+    </dependency>
+    <!-- plugin deps -->
+    <dependency>
+      <groupId>jfreechart</groupId>
+      <artifactId>jfreechart</artifactId>
+      <version>0.9.21</version>
+    </dependency>
+    <dependency>
+      <groupId>jcommon</groupId>
+      <artifactId>jcommon</artifactId>
+      <version>0.9.6</version>
+    </dependency>
+    <dependency>
+      <groupId>velocity</groupId>
+      <artifactId>velocity</artifactId>
+      <version>1.4</version>
+    </dependency>
+    <dependency>
+      <groupId>velocity-tools</groupId>
+      <artifactId>velocity-tools</artifactId>
+      <version>1.1</version>
+    </dependency>
+  </dependencies>
+  <build>
+
+    <!-- This is usually a good default -->
+    <sourceDirectory>src/java</sourceDirectory>
+
+    <!-- Also, usually a good default -->
+    <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
+
+    <unitTest>
+      <includes>
+        <include>**/*Test.java</include>
+      </includes>
+    </unitTest>
+
+    <resources>
+      <resource>
+        <includes>
+          <include>webapp/</include>
+          <include>conf/renderers.xml</include>
+        </includes>
+      </resource>
+    </resources>
+
+  </build>
+
+  <reports>
+    <report>maven-jxr-plugin</report>
+    <report>maven-javadoc-plugin</report>
+    <report>maven-license-plugin</report>
+    <report>maven-changes-plugin</report>
+    <report>maven-statcvs-plugin</report>
+    <report>maven-changelog-plugin</report>
+  </reports>
+  
+</project>
+
