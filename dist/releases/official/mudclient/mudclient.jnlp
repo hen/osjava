@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- JNLP File for mudclient application -->
+<jnlp
+  spec="1.0+"
+  codebase="http://www.osjava.org/releases/official/mudclient"
+  href="mudclient.jnlp">
+  <information>
+    <title>Elephant Mudclient</title>
+    <vendor>OS Java</vendor>
+    <homepage href="/mudclient/"/>
+    <description>Elephant Mudclient</description>
+    <description kind="short">An elephant mudclient written wholey in java with extensions to support the elephant mud external client mode.</description>
+    <!--icon href="images/swingset2.jpg"/>
+    <icon kind="splash" href="images/splash.gif"/-->
+    <offline-allowed/>
+  </information>
+  <security>
+      <all-permissions/>
+  </security>
+  <resources>
+    <j2se version="1.4"/>
+    <jar href="mudclient-0.5.jar"/>
+  </resources>
+  <application-desc main-class="org.cyberiantiger.mudclient.ElephantMudClient"/>
+</jnlp>
