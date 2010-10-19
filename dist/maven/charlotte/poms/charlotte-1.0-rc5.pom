@@ -1,0 +1,112 @@
+<?xml version="1.0"?>
+<project>
+  
+  <pomVersion>3</pomVersion>
+  <id>charlotte</id>
+  <name>charlotte</name>
+
+  <!-- The version of your software. Life is easy if you use 
+       major.minor.bugfix, but you can also use RC's, alpha, -dev or anything 
+       you want. SNAPSHOT is a special version which is never cached by the 
+       dependency downloader. -->
+  <currentVersion>1.0-rc5</currentVersion>
+
+  <organization>
+    <name>OSJava</name>
+    <url>http://www.osjava.org</url>
+    <logo>http://www.osjava.org/images/osjava-green.gif</logo>
+  </organization>
+  
+  <inceptionYear>2003</inceptionYear>
+  <package>code316.charlotte</package>
+
+  <logo>http://www.osjava.org/images/1x1.gif</logo>
+  
+  <description>
+     A bit format utility
+  </description>
+  
+  <shortDescription>A bit format utility</shortDescription>
+
+  <url>http://www.osjava.org/charlotte/</url>
+
+  <!-- You'll need to log into JIRA and find out what your ID is -->
+  <issueTrackingUrl>http://www.osjava.org:8080/jira/secure/BrowseProject.jspa?id=10031</issueTrackingUrl>
+
+  <mailingLists>
+    <mailingList>
+        <name>osjava-users</name>
+	<subscribe>http://lists.flamefew.net/mailman/listinfo/osjava-users</subscribe>
+        <unsubscribe>http://lists.flamefew.net/mailman/listinfo/osjava-users</unsubscribe>
+        <archive>http://lists.flamefew.net/mailman/private/osjava-users/</archive>
+    </mailingList>
+  </mailingLists>
+
+
+  <!-- Put your name in here -->
+  <developers>
+    <developer>
+      <name>David Petersheim</name>
+      <id>dave</id>
+      <email>david.petersheim@genscape.com</email>
+      <organization>code316</organization>
+      <roles>
+        <role>Java Developer</role>
+      </roles>
+    </developer>
+
+  </developers>
+
+  <!-- Same as above. Use this to recognise important users/ideasmiths -->
+  <contributors>
+    <contributor>
+    </contributor>
+  </contributors>
+  
+  <!-- One of the major parts of Maven. Record your dependencies here. 
+       Look in http://www.ibiblio.org/maven for public copies of your 
+       dependencies. There is an OSJava specific one which may 
+       need to be used, http://www.osjava.org/maven -->
+  <dependencies>
+    <dependency>
+      <groupId>code316</groupId>
+      <artifactId>code316-core</artifactId>
+      <version>0.8</version>
+      <url>http://www.code316.com/</url>
+    </dependency>
+
+    <dependency>
+      <id>jep</id>
+      <version>2.24</version>
+    </dependency>
+
+    <dependency>
+      <id>junit</id>
+      <version>3.8.1</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+
+    <!-- This is usually a good default -->
+    <sourceDirectory>src/java</sourceDirectory>
+
+    <!-- Also, usually a good default -->
+    <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
+
+    <unitTest>
+      <includes>
+        <include>**/*Test.java</include>
+      </includes>
+    </unitTest>
+
+  </build>
+
+  <reports>
+    <report>maven-jxr-plugin</report>
+    <report>maven-javadoc-plugin</report>
+    <report>maven-license-plugin</report>
+    <report>maven-changes-plugin</report>
+  </reports>
+</project>
+
