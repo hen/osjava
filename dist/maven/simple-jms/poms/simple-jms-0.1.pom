@@ -1,0 +1,91 @@
+<?xml version="1.0"?>
+<project>
+  
+  <pomVersion>3</pomVersion>
+  
+  <id>simple-jms</id>
+  <name>simple-jms</name>
+
+  <currentVersion>0.1</currentVersion>
+
+  <organization>
+    <name>OSJava</name>
+    <url>http://www.osjava.org</url>
+    <logo>http://www.osjava.org/images/osjava.gif</logo>
+  </organization>
+  <inceptionYear>2005</inceptionYear>
+
+  <package>org.osjava.jms</package>
+
+  <logo>http://www.osjava.org/images/1x1.gif</logo>
+  
+  <description>
+     A simple memory implementation of a JMS server. Useful for unit testing and prototyping.
+  </description>
+  
+  <shortDescription>JMS memory implementation</shortDescription>
+
+  <url>http://www.osjava.org/simple-jms/</url>
+
+  <!-- TODO
+  <issueTrackingUrl>http://www.osjava.org:8080/jira/secure/BrowseProject.jspa?id=YOUR_ID</issueTrackingUrl>
+  -->
+
+  <mailingLists>
+    <mailingList>
+        <name>osjava-users</name>
+	<subscribe>http://lists.flamefew.net/mailman/listinfo/osjava-users</subscribe>
+        <unsubscribe>http://lists.flamefew.net/mailman/listinfo/osjava-users</unsubscribe>
+        <archive>http://lists.flamefew.net/mailman/private/osjava-users/</archive>
+    </mailingList>
+  </mailingLists>
+
+
+  <dependencies>
+    <dependency>
+      <groupId>geronimo-spec</groupId>
+      <artifactId>geronimo-spec-jms</artifactId>
+      <version>1.1-rc4</version>
+    </dependency>
+    <dependency>
+      <groupId>simple-jndi</groupId>
+      <artifactId>simple-jndi</artifactId>
+      <version>0.11.1</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+
+    <sourceDirectory>src/java</sourceDirectory>
+
+    <unitTestSourceDirectory>src/test</unitTestSourceDirectory>
+
+    <unitTest>
+      <includes>
+        <include>**/*Test.java</include>
+      </includes>
+      <resources>
+        <resource>
+          <directory>src/test/config</directory>
+          <targetPath>config</targetPath>
+        </resource>
+        <resource>
+          <directory>src/test</directory>
+          <includes>
+            <include>jndi.properties</include>
+          </includes>
+        </resource>
+      </resources>
+    </unitTest>
+
+  </build>
+
+  <reports>
+    <report>maven-jxr-plugin</report>
+    <report>maven-javadoc-plugin</report>
+    <report>maven-license-plugin</report>
+    <report>maven-changes-plugin</report>
+  </reports>
+  
+</project>
+
