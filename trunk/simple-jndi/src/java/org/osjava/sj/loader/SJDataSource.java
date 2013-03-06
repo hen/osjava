@@ -34,10 +34,12 @@ package org.osjava.sj.loader;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.SQLFeatureNotSupportedException;
 import javax.sql.DataSource;
 import java.sql.DriverManager;
 import java.io.PrintWriter;
 import java.util.Properties;
+import java.util.logging.Logger;
 
 /**
  * A basic implementation of a DataSource. 
@@ -153,6 +155,10 @@ public class SJDataSource implements DataSource {
     public <T>  T unwrap(Class<T> iface) throws SQLException {
         throw new SQLException("This object is not a wrapper");
     }
+
+    public Logger getParentLogger() throws SQLFeatureNotSupportedException {
+        throw new SQLFeatureNotSupportedException( "This class does not support this operation." );
+}
 
 }
 
