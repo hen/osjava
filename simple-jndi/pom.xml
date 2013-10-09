@@ -5,7 +5,8 @@
   <modelVersion>4.0.0</modelVersion>
   <artifactId>simple-jndi</artifactId>
   <name>simple-jndi</name>
-  <version>0.11.4.1</version>
+  <version>0.11.4-SNAPSHOT</version>
+  <packaging>bundle</packaging>
   <organization>
     <name>OSJava</name>
   </organization>
@@ -124,18 +125,21 @@
           <target>1.5</target>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
+        <version>1.4.0</version>
+        <extensions>true</extensions>
+        <configuration>
+          <instructions>
+            <Export-Package>org.osjava.sj.*</Export-Package>
+            <Bundle-SymbolicName>org.osjava.sj</Bundle-SymbolicName>
+          </instructions>
+        </configuration>
+      </plugin>
     </plugins>
 
   </build>
-
-    <!-- NOT USED FOR SITE YET; USE MAVEN 1 -->
-    <reports>
-        <report>maven-jxr-plugin</report>
-        <report>maven-javadoc-plugin</report>
-        <report>maven-license-plugin</report>
-        <report>maven-changes-plugin</report>           
-    </reports>
-
 
 </project>
 
