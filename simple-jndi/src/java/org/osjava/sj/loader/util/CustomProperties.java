@@ -67,7 +67,7 @@ public class CustomProperties extends AbstractProperties {
                 // split equals sign
                 idx = line.indexOf('=');
                 if(idx != -1) {
-                    this.setProperty(line.substring(0,idx), line.substring(idx+1));
+                    this.setProperty(line.substring(0,idx).trim(), line.substring(idx+1).trim());
                 } else {
                     // blank line, or just a bad line
                     // we ignore it

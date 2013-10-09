@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2005, Henri Yandell
+ * Copyright (c) 2003-2013, Henri Yandell
  * All rights reserved.
  * 
  * Redistribution and use in source and binary forms, with or 
@@ -132,6 +132,7 @@ public class JndiLoaderTest extends TestCase {
             assertEquals( "Henri", list.get(0) );
             assertEquals( "Fred", list.get(1) );
             assertEquals( "Foo", ctxt.lookup("com.genjava") );
+            assertEquals( "Check", ctxt.lookup("withspace") );
         } catch(IOException ioe) {
             ioe.printStackTrace();
             fail("IOException: "+ioe.getMessage());
