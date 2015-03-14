@@ -1,0 +1,3 @@
+A great way to output Xml. Far easier to code with than painful DOM or SAX like solutions and much nicer in terms of speed and memory usage.
+
+While XmlWriter contains its own xml outputter, it has the ability to sit on top of other core Xml writing products, such as XmlEnc. In addition, the user may layer other functionalities on top of the core writing, such as on the fly schema checking, date/number formatting, specific empty-element handling and pretty-printing.
